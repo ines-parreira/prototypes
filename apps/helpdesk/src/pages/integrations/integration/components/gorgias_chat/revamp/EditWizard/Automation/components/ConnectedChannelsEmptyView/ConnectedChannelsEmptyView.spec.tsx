@@ -9,16 +9,6 @@ import { AutomateFeatures } from 'pages/automate/common/types'
 
 import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: ({
-        children,
-        onClick,
-    }: {
-        children: ReactNode
-        onClick?: () => void
-    }) => <button onClick={onClick}>{children}</button>,
-}))
 jest.mock('pages/automate/common/components/AutomatePaywallView', () => ({
     __esModule: true,
     default: ({
@@ -28,8 +18,8 @@ jest.mock('pages/automate/common/components/AutomatePaywallView', () => ({
         automateFeature: string
         customCta: ReactNode
     }) => (
-        <div data-automate-feature={automateFeature}>
-            <span>Paywall View</span>
+        <div>
+            <span>Paywall feature: {automateFeature}</span>
             {customCta}
         </div>
     ),
@@ -146,13 +136,13 @@ describe('ConnectedChannelsEmptyView', () => {
         })
     })
     it('should pass the correct automateFeature to AutomatePaywallView', () => {
-        const { container } = renderComponent(
+        renderComponent(
             AutomateFeatures.AutomateChat,
             '/app/settings/channels/gorgias_chat',
             '/app/settings/channels/gorgias_chat',
         )
         expect(
-            container.querySelector('[data-automate-feature="AutomateChat"]'),
+            screen.getByText('Paywall feature: AutomateChat'),
         ).toBeInTheDocument()
     })
 })

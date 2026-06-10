@@ -24,11 +24,6 @@ import TagDropdownMenu from '../TagDropdownMenu'
 jest.mock('tags/useListTags')
 const mockUseListTags = useListTags as jest.Mock
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyLoadingSpinner: () => 'SpinnerMock',
-}))
-
 const mockStore = configureMockStore([thunk])
 
 const mockContext: ContextType<typeof DropdownContext> = {
@@ -99,7 +94,7 @@ describe('<TagDropdownMenu />', () => {
 
         renderWithWrappers(props)
 
-        expect(screen.getByText('SpinnerMock')).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
     it('should display tags', () => {

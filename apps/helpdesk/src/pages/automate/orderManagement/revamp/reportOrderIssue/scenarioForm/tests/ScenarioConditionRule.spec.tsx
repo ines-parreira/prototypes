@@ -11,37 +11,6 @@ import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import { ScenarioConditionRule } from '../conditionBuilder/ScenarioConditionRule'
 
-jest.mock('@gorgias/axiom', () => {
-    const actual = jest.requireActual('@gorgias/axiom')
-    return {
-        ...actual,
-        SelectField: ({
-            items,
-            value,
-            onChange,
-            'aria-label': ariaLabel,
-        }: {
-            items: { label: string; value: string }[]
-            value?: { label: string; value: string }
-            onChange: (option: { label: string; value: string } | null) => void
-            'aria-label'?: string
-            keyName?: string
-            children?: unknown
-        }) => {
-            return (
-                <div aria-label={ariaLabel} data-mock="SelectField">
-                    <span>{value?.label}</span>
-                    {items.map((item) => (
-                        <button key={item.value} onClick={() => onChange(item)}>
-                            {item.label}
-                        </button>
-                    ))}
-                </div>
-            )
-        },
-    }
-})
-
 jest.mock(
     'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField',
     () => ({
@@ -163,7 +132,9 @@ describe('ScenarioConditionRule', () => {
         expect(screen.getByText('is one of')).toBeInTheDocument()
     })
 
-    it('should render SelectField for variables with multiple operator options', () => {
+    it('should render SelectField for variables with multiple operator options', async () => {
+        const user = userEvent.setup()
+
         render(
             <ScenarioConditionRule
                 value={makeIsOneOfValue(ReportIssueVariable.ORDER_STATUS)}
@@ -172,11 +143,17 @@ describe('ScenarioConditionRule', () => {
             />,
         )
 
+        await user.click(
+            screen.getByRole('textbox', {
+                name: `Operator for ${ReportIssueVariable.ORDER_STATUS}`,
+            }),
+        )
+
         expect(
-            screen.getByRole('button', { name: 'is one of' }),
+            await screen.findByRole('option', { name: 'is one of' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: 'is empty' }),
+            screen.getByRole('option', { name: 'is empty' }),
         ).toBeInTheDocument()
     })
 
@@ -192,7 +169,14 @@ describe('ScenarioConditionRule', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: 'is empty' }))
+        await user.click(
+            screen.getByRole('textbox', {
+                name: `Operator for ${ReportIssueVariable.ORDER_STATUS}`,
+            }),
+        )
+        await user.click(
+            await screen.findByRole('option', { name: 'is empty' }),
+        )
 
         expect(onChange).toHaveBeenCalledWith({
             [JsonLogicOperator.EQUALS]: [
@@ -214,7 +198,14 @@ describe('ScenarioConditionRule', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: 'is one of' }))
+        await user.click(
+            screen.getByRole('textbox', {
+                name: `Operator for ${ReportIssueVariable.ORDER_STATUS}`,
+            }),
+        )
+        await user.click(
+            await screen.findByRole('option', { name: 'is one of' }),
+        )
 
         expect(onChange).toHaveBeenCalledWith({
             [JsonLogicOperator.IS_ONE_OF]: [
@@ -285,7 +276,14 @@ describe('ScenarioConditionRule', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: 'is one of' }))
+        await user.click(
+            screen.getByRole('textbox', {
+                name: `Operator for ${ReportIssueVariable.ORDER_STATUS}`,
+            }),
+        )
+        await user.click(
+            await screen.findByRole('option', { name: 'is one of' }),
+        )
 
         expect(onChange).not.toHaveBeenCalled()
     })

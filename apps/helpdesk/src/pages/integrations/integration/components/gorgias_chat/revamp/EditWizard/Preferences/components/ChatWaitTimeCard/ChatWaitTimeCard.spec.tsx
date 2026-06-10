@@ -1,5 +1,3 @@
-import type { ChangeEvent, ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,69 +9,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import { ChatWaitTimeCard } from './ChatWaitTimeCard'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <p>{children}</p>,
-    ToggleField: ({
-        value,
-        onChange,
-    }: {
-        value: boolean
-        onChange: (value: boolean) => void
-    }) => (
-        <input
-            type="checkbox"
-            aria-label="Share wait time with shoppers"
-            checked={value}
-            onChange={(e) => onChange(e.target.checked)}
-        />
-    ),
-    RadioGroup: ({
-        children,
-        value,
-        onChange,
-    }: {
-        children: ReactNode
-        value: string
-        onChange: (value: string) => void
-    }) => (
-        <div
-            role="radiogroup"
-            data-value={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                if (e.target.type === 'radio') onChange(e.target.value)
-            }}
-        >
-            {children}
-        </div>
-    ),
-    Radio: ({
-        value,
-        label,
-        caption,
-        isDisabled,
-    }: {
-        value: string
-        label: string
-        caption?: string
-        isDisabled?: boolean
-    }) => (
-        <label>
-            <input
-                type="radio"
-                value={value}
-                disabled={isDisabled}
-                onChange={() => {}}
-            />
-            {label}
-            {caption && <span>{caption}</span>}
-        </label>
-    ),
-}))
 
 describe('ChatWaitTimeCard', () => {
     const defaultProps = {
@@ -115,12 +50,18 @@ describe('ChatWaitTimeCard', () => {
         renderComponent()
 
         expect(
-            screen.getByLabelText(/Dynamic wait time \(recommended\)/),
+            screen.getByRole('radio', {
+                name: /Dynamic wait time \(recommended\)/,
+            }),
         ).toBeInTheDocument()
-        expect(screen.getByLabelText('In a few minutes')).toBeInTheDocument()
-        expect(screen.getByLabelText('In a few hours')).toBeInTheDocument()
         expect(
-            screen.queryByLabelText('Do not share wait time'),
+            screen.getByRole('radio', { name: /In a few minutes/ }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('radio', { name: /In a few hours/ }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('radio', { name: /Do not share wait time/ }),
         ).not.toBeInTheDocument()
     })
 
@@ -138,17 +79,13 @@ describe('ChatWaitTimeCard', () => {
         it('should render checked when autoResponderEnabled is true', () => {
             renderComponent({ autoResponderEnabled: true })
 
-            expect(
-                screen.getByLabelText('Share wait time with shoppers'),
-            ).toBeChecked()
+            expect(screen.getByRole('switch')).toBeChecked()
         })
 
         it('should render unchecked when autoResponderEnabled is false', () => {
             renderComponent({ autoResponderEnabled: false })
 
-            expect(
-                screen.getByLabelText('Share wait time with shoppers'),
-            ).not.toBeChecked()
+            expect(screen.getByRole('switch')).not.toBeChecked()
         })
 
         it('should call onAutoResponderEnabledChange when toggled on', async () => {
@@ -159,9 +96,7 @@ describe('ChatWaitTimeCard', () => {
                 onAutoResponderEnabledChange,
             })
 
-            await user.click(
-                screen.getByLabelText('Share wait time with shoppers'),
-            )
+            await user.click(screen.getByRole('switch'))
 
             expect(onAutoResponderEnabledChange).toHaveBeenCalledWith(true)
         })
@@ -174,9 +109,7 @@ describe('ChatWaitTimeCard', () => {
                 onAutoResponderEnabledChange,
             })
 
-            await user.click(
-                screen.getByLabelText('Share wait time with shoppers'),
-            )
+            await user.click(screen.getByRole('switch'))
 
             expect(onAutoResponderEnabledChange).toHaveBeenCalledWith(false)
         })
@@ -190,10 +123,9 @@ describe('ChatWaitTimeCard', () => {
                     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
             })
 
-            expect(screen.getByRole('radiogroup')).toHaveAttribute(
-                'data-value',
-                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-            )
+            expect(
+                screen.getByRole('radio', { name: /In a few minutes/ }),
+            ).toBeChecked()
         })
 
         it('should reflect autoResponderReply when disabled', () => {
@@ -202,10 +134,11 @@ describe('ChatWaitTimeCard', () => {
                 autoResponderReply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
             })
 
-            expect(screen.getByRole('radiogroup')).toHaveAttribute(
-                'data-value',
-                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-            )
+            expect(
+                screen.getByRole('radio', {
+                    name: /Dynamic wait time \(recommended\)/,
+                }),
+            ).toBeChecked()
         })
     })
 
@@ -214,20 +147,32 @@ describe('ChatWaitTimeCard', () => {
             renderComponent({ autoResponderEnabled: false })
 
             expect(
-                screen.getByLabelText(/Dynamic wait time \(recommended\)/),
+                screen.getByRole('radio', {
+                    name: /Dynamic wait time \(recommended\)/,
+                }),
             ).toBeDisabled()
-            expect(screen.getByLabelText('In a few minutes')).toBeDisabled()
-            expect(screen.getByLabelText('In a few hours')).toBeDisabled()
+            expect(
+                screen.getByRole('radio', { name: /In a few minutes/ }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('radio', { name: /In a few hours/ }),
+            ).toBeDisabled()
         })
 
         it('should enable all radio options when autoResponderEnabled is true', () => {
             renderComponent({ autoResponderEnabled: true })
 
             expect(
-                screen.getByLabelText(/Dynamic wait time \(recommended\)/),
+                screen.getByRole('radio', {
+                    name: /Dynamic wait time \(recommended\)/,
+                }),
             ).not.toBeDisabled()
-            expect(screen.getByLabelText('In a few minutes')).not.toBeDisabled()
-            expect(screen.getByLabelText('In a few hours')).not.toBeDisabled()
+            expect(
+                screen.getByRole('radio', { name: /In a few minutes/ }),
+            ).not.toBeDisabled()
+            expect(
+                screen.getByRole('radio', { name: /In a few hours/ }),
+            ).not.toBeDisabled()
         })
     })
 
@@ -242,7 +187,9 @@ describe('ChatWaitTimeCard', () => {
             })
 
             await user.click(
-                screen.getByLabelText(/Dynamic wait time \(recommended\)/),
+                screen.getByRole('radio', {
+                    name: /Dynamic wait time \(recommended\)/,
+                }),
             )
 
             expect(onAutoResponderReplyChange).toHaveBeenCalledWith(
@@ -258,7 +205,9 @@ describe('ChatWaitTimeCard', () => {
                 onAutoResponderReplyChange,
             })
 
-            await user.click(screen.getByLabelText('In a few minutes'))
+            await user.click(
+                screen.getByRole('radio', { name: /In a few minutes/ }),
+            )
 
             expect(onAutoResponderReplyChange).toHaveBeenCalledWith(
                 GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
@@ -273,7 +222,9 @@ describe('ChatWaitTimeCard', () => {
                 onAutoResponderReplyChange,
             })
 
-            await user.click(screen.getByLabelText('In a few hours'))
+            await user.click(
+                screen.getByRole('radio', { name: /In a few hours/ }),
+            )
 
             expect(onAutoResponderReplyChange).toHaveBeenCalledWith(
                 GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,

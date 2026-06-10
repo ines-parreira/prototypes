@@ -30,13 +30,6 @@ import AIAgentSimplifiedFeedback from '../AIAgentSimplifiedFeedback'
 import { useEnrichFeedbackData } from '../useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 import { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyTooltip: () => <div>Tooltip</div>,
-    }
-})
-
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('hooks/useAppDispatch')

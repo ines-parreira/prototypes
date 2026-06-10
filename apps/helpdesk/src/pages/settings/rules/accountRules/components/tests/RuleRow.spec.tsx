@@ -7,18 +7,6 @@ import { useLocation } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    LegacyTooltip: ({
-        children,
-        innerProps,
-    }: {
-        children: any
-        innerProps?: { onMouseEnter?: () => void }
-    }) => <div onMouseEnter={innerProps?.onMouseEnter}>{children}</div>,
-}))
-
 import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -320,23 +308,25 @@ describe('<RuleRow />', () => {
         fireEvent.mouseEnter(icon)
         expect(icon).not.toBeNull()
     })
-    it('should fire onMouseEnter on the deprecated sentiment tooltip inner container', () => {
+    it('should fire onMouseEnter on the deprecated sentiment tooltip inner container', async () => {
         const ruleWithDeprecatedSentiment = {
             ...ruleFixture,
             code: `if (containsAny(message.sentiments.name, ["urgent"])) { Action("addTags", { tags: "test" }) }`,
         }
         render(<RuleRow {...minProps} rule={ruleWithDeprecatedSentiment} />, {})
-        const link = screen.getByText('See more here.')
-        fireEvent.mouseEnter(link.parentElement!)
+        fireEvent.mouseEnter(screen.getByText('warning'))
+        const link = await screen.findByText('See more here.')
+        fireEvent.mouseEnter(link)
         expect(link).not.toBeNull()
     })
-    it('should stop propagation when clicking the "See more here." link in the deprecated sentiment tooltip', () => {
+    it('should stop propagation when clicking the "See more here." link in the deprecated sentiment tooltip', async () => {
         const ruleWithDeprecatedSentiment = {
             ...ruleFixture,
             code: `if (containsAny(message.sentiments.name, ["urgent"])) { Action("addTags", { tags: "test" }) }`,
         }
         render(<RuleRow {...minProps} rule={ruleWithDeprecatedSentiment} />, {})
-        const link = screen.getByText('See more here.')
+        fireEvent.mouseEnter(screen.getByText('warning'))
+        const link = await screen.findByText('See more here.')
         const clickEvent = new MouseEvent('click', { bubbles: true })
         const stopPropagationSpy = jest.spyOn(clickEvent, 'stopPropagation')
         link.dispatchEvent(clickEvent)

@@ -12,8 +12,6 @@ import { AxiosError, AxiosHeaders } from 'axios'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
-import { toast } from '@gorgias/axiom'
-
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -81,13 +79,6 @@ jest.mock('@repo/billing', () => ({
     ...jest.requireActual('@repo/billing'),
     useBillingState: jest.fn(),
 }))
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    toast: {
-        success: jest.fn(),
-        error: jest.fn(),
-    },
-}))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('state/notifications/actions')
 const mockUseFlag = useFlag as jest.Mock
@@ -95,8 +86,6 @@ const mockUseBillingState = assumeMock(useBillingState)
 const mockUseBillingPlans = assumeMock(useBillingPlans)
 const mockUseProductCancellations = assumeMock(useProductCancellations)
 const mockReportError = assumeMock(reportError)
-const mockToastSuccess = toast.success as jest.Mock
-const mockToastError = toast.error as jest.Mock
 const mockShouldPayWithShopify = shouldPayWithShopify as unknown as jest.Mock
 const mockGetShopifyBillingStatus =
     getShopifyBillingStatus as unknown as jest.Mock
@@ -266,10 +255,11 @@ describe('BillingFrequencyView submit flow', () => {
             await waitFor(() => {
                 expect(updateSubscription).toHaveBeenCalledTimes(1)
             })
-            expect(mockToastSuccess).toHaveBeenCalledWith(
-                'Your subscription has successfully been updated.',
-                expect.objectContaining({ duration: 5000 }),
-            )
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Your subscription has successfully been updated.',
+                }),
+            ).toBeInTheDocument()
             expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 BILLING_BASE_PATH,
             )
@@ -304,7 +294,11 @@ describe('BillingFrequencyView submit flow', () => {
             await waitFor(() => {
                 expect(mockReportError).toHaveBeenCalledWith(expect.any(Error))
             })
-            expect(mockToastError).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('status', {
+                    name: 'Your subscription has successfully been updated.',
+                }),
+            ).not.toBeInTheDocument()
             expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 billingFrequencyRoute,
             )
@@ -430,7 +424,11 @@ describe('BillingFrequencyView submit flow', () => {
                     expect(screen.getByText(bannerText)).toBeInTheDocument()
                 })
                 expect(mockReportError).not.toHaveBeenCalled()
-                expect(mockToastError).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('status', {
+                        name: 'Your subscription has successfully been updated.',
+                    }),
+                ).not.toBeInTheDocument()
             })
             it('clears the banner when the modal is closed and reopened', async () => {
                 const user = userEvent.setup()
@@ -481,7 +479,11 @@ describe('BillingFrequencyView submit flow', () => {
                 expect(mockReportError).toHaveBeenCalledWith(apiError)
             })
             expect(dispatchBillingError).toHaveBeenCalledWith(apiError)
-            expect(mockToastError).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('status', {
+                    name: 'Your subscription has successfully been updated.',
+                }),
+            ).not.toBeInTheDocument()
             expect(screen.getByText('confirm modal open')).toBeInTheDocument()
             expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 billingFrequencyRoute,

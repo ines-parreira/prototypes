@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Map } from 'immutable'
@@ -15,14 +13,6 @@ jest.mock('state/integrations/helpers', () => ({
         }
         return 'app-bicommerce'
     }),
-}))
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
-    TooltipContent: ({ children }: { children?: React.ReactNode }) => (
-        <>{children}</>
-    ),
 }))
 
 const mockChat = Map({
@@ -59,7 +49,7 @@ describe('StoreIntegrationCell', () => {
         expect(screen.getByText('my-test-shop')).toBeInTheDocument()
     })
 
-    it('should show warning tooltip when store is disconnected', () => {
+    it('should show warning indicator when store is disconnected', () => {
         const storeIntegration = Map({
             type: IntegrationType.Shopify,
             deactivated_datetime: '2024-01-01T00:00:00Z',
@@ -75,7 +65,7 @@ describe('StoreIntegrationCell', () => {
 
         expect(screen.getByText('disconnected-shop')).toBeInTheDocument()
         expect(
-            screen.getByText('This store is currently disconnected'),
+            screen.getByRole('img', { name: 'warning-triangle' }),
         ).toBeInTheDocument()
     })
 
@@ -94,7 +84,7 @@ describe('StoreIntegrationCell', () => {
 
         expect(screen.getByText('connected-shop')).toBeInTheDocument()
         expect(
-            screen.queryByText('This store is currently disconnected'),
+            screen.queryByRole('img', { name: 'warning-triangle' }),
         ).not.toBeInTheDocument()
     })
 })

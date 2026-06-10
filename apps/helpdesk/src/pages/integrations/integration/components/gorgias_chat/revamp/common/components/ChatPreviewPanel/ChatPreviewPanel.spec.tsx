@@ -4,13 +4,26 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { ButtonGroupItemProps, ButtonGroupProps } from '@gorgias/axiom'
-
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 
 import type { ChatPreviewPanelHandle } from './ChatPreviewPanel'
 import { ChatPreviewPanel } from './ChatPreviewPanel'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
+
+const PAGE_NAV_ICON: Record<'homepage' | 'conversation', string> = {
+    homepage: 'nav-home',
+    conversation: 'chat-conversation-circle',
+}
+
+const getPageNavButton = (page: 'homepage' | 'conversation') =>
+    screen
+        .getByRole('img', { name: PAGE_NAV_ICON[page] })
+        .closest('[role="radio"]') as HTMLElement
+
+const getAllPageNavButtons = (page: 'homepage' | 'conversation') =>
+    screen
+        .getAllByRole('img', { name: PAGE_NAV_ICON[page] })
+        .map((icon) => icon.closest('[role="radio"]') as HTMLElement)
 
 let mockIsLoaded = true
 let mockHasError = false
@@ -25,37 +38,6 @@ jest.mock(
         }),
     }),
 )
-
-jest.mock('@gorgias/axiom', () => {
-    const React = jest.requireActual<typeof import('react')>('react')
-    const actualAxiom =
-        jest.requireActual<typeof import('@gorgias/axiom')>('@gorgias/axiom')
-    const ButtonGroupContext = React.createContext<
-        ((key: string) => void) | undefined
-    >(undefined)
-
-    return {
-        ...actualAxiom,
-        ButtonGroup: ({ children, onSelectionChange }: ButtonGroupProps) => {
-            return (
-                <ButtonGroupContext.Provider value={onSelectionChange}>
-                    <div>{children}</div>
-                </ButtonGroupContext.Provider>
-            )
-        },
-        ButtonGroupItem: (props: ButtonGroupItemProps) => {
-            const onSelectionChange = React.useContext(ButtonGroupContext)
-            return (
-                <button
-                    data-testid={`button-group-item-${props.id}`}
-                    onClick={() => onSelectionChange?.(props.id)}
-                >
-                    {'children' in props ? props.children : props.id}
-                </button>
-            )
-        },
-    }
-})
 
 let mockMountCount = 0
 
@@ -179,6 +161,12 @@ const { mockGorgiasChat, mockGorgiasChatConfiguration, triggerOnLoaded } =
     )
 
 describe('ChatPreviewPanel', () => {
+    beforeAll(() => {
+        if (!Element.prototype.getAnimations) {
+            Element.prototype.getAnimations = () => []
+        }
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockIsLoaded = true
@@ -229,7 +217,7 @@ describe('ChatPreviewPanel', () => {
 
             expect(screen.getByText('Custom actions')).toBeInTheDocument()
             expect(
-                screen.queryByTestId('button-group-item-homepage'),
+                screen.queryByRole('img', { name: 'nav-home' }),
             ).not.toBeInTheDocument()
         })
 
@@ -269,7 +257,7 @@ describe('ChatPreviewPanel', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(screen.getByTestId('button-group-item-homepage'))
+            await user.click(getPageNavButton('homepage'))
 
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
                 'homepage',
@@ -282,9 +270,7 @@ describe('ChatPreviewPanel', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByTestId('button-group-item-conversation'),
-            )
+            await user.click(getPageNavButton('conversation'))
 
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
                 'conversation',
@@ -652,12 +638,12 @@ describe('ChatPreviewPanel', () => {
             renderComponent('test-app-id')
 
             expect(
-                screen.queryByRole('button', {
+                screen.queryByRole('radio', {
                     name: 'During Business Hours',
                 }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', {
+                screen.queryByRole('radio', {
                     name: 'Outside Business Hours',
                 }),
             ).not.toBeInTheDocument()
@@ -667,10 +653,10 @@ describe('ChatPreviewPanel', () => {
             renderComponent('test-app-id', { showBusinessHoursToggle: true })
 
             expect(
-                screen.getByRole('button', { name: 'During Business Hours' }),
+                screen.getByRole('radio', { name: 'During Business Hours' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Outside Business Hours' }),
+                screen.getByRole('radio', { name: 'Outside Business Hours' }),
             ).toBeInTheDocument()
         })
 
@@ -681,10 +667,10 @@ describe('ChatPreviewPanel', () => {
             })
 
             expect(
-                screen.getByRole('button', { name: 'During Business Hours' }),
+                screen.getByRole('radio', { name: 'During Business Hours' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Outside Business Hours' }),
+                screen.getByRole('radio', { name: 'Outside Business Hours' }),
             ).toBeInTheDocument()
         })
 
@@ -692,12 +678,12 @@ describe('ChatPreviewPanel', () => {
             renderComponent(null, { showBusinessHoursToggle: true })
 
             expect(
-                screen.queryByRole('button', {
+                screen.queryByRole('radio', {
                     name: 'During Business Hours',
                 }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', {
+                screen.queryByRole('radio', {
                     name: 'Outside Business Hours',
                 }),
             ).not.toBeInTheDocument()
@@ -741,7 +727,7 @@ describe('ChatPreviewPanel', () => {
             renderComponent('test-app-id', { showBusinessHoursToggle: true })
 
             await user.click(
-                screen.getByRole('button', {
+                screen.getByRole('radio', {
                     name: 'Outside Business Hours',
                 }),
             )
@@ -761,7 +747,7 @@ describe('ChatPreviewPanel', () => {
             const user = userEvent.setup()
             renderComponent('test-app-id', { showBusinessHoursToggle: true })
 
-            await user.click(screen.getByTestId('button-group-item-homepage'))
+            await user.click(getPageNavButton('homepage'))
 
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
                 'homepage',
@@ -790,9 +776,7 @@ describe('ChatPreviewPanel', () => {
             const { ref } = renderComponent()
             ref.current?.displayPage('orders')
 
-            await user.click(
-                screen.getAllByTestId('button-group-item-conversation')[0],
-            )
+            await user.click(getAllPageNavButtons('conversation')[0])
             jest.clearAllMocks()
 
             ref.current?.displayPage('orders')

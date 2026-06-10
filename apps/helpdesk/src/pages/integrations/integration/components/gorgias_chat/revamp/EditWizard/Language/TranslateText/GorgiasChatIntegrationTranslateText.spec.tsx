@@ -6,7 +6,6 @@ import { fromJS } from 'immutable'
 import { GorgiasChatIntegrationTranslateTextRevamp } from './GorgiasChatIntegrationTranslateText'
 
 const mockUseGorgiasTranslateText = jest.fn()
-const mockSelectField = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/hooks/useUpdateApplicationTexts',
@@ -89,32 +88,6 @@ jest.mock(
     }),
 )
 
-const mockButton = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SelectField: (props: any) => {
-        mockSelectField(props)
-        return <div data-testid="language-select-field" />
-    },
-    ListItem: ({ label }: { label: string }) => <li>{label}</li>,
-    Banner: ({ description }: { description: React.ReactNode }) => (
-        <div data-testid="advanced-customization-banner">{description}</div>
-    ),
-    Button: (props: any) => {
-        mockButton(props)
-        return <button onClick={props.onClick}>{props.children}</button>
-    },
-    ButtonVariant: {},
-    ButtonIntent: {},
-    ButtonSize: {},
-    IconName: { ArrowLeft: 'arrow-left' },
-    Icon: () => null,
-    Skeleton: ({ height }: { height: string }) => (
-        <div data-testid="skeleton" style={{ height }} />
-    ),
-}))
-
 const defaultHookReturn = {
     language: fromJS({ value: 'en-US', label: 'English (US)' }),
     handleLanguageChange: jest.fn(),
@@ -169,7 +142,7 @@ describe('GorgiasChatIntegrationTranslateTextRevamp', () => {
             />,
         )
 
-        expect(screen.getAllByTestId('skeleton').length).toBeGreaterThan(0)
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
         expect(screen.queryByTestId('section-General')).not.toBeInTheDocument()
     })
 
@@ -180,7 +153,9 @@ describe('GorgiasChatIntegrationTranslateTextRevamp', () => {
             />,
         )
 
-        expect(screen.getByTestId('language-select-field')).toBeInTheDocument()
+        expect(
+            screen.getByRole('textbox', { name: 'Current language' }),
+        ).toBeInTheDocument()
     })
 
     it('should render the General section when dependencies are loaded', () => {
@@ -310,7 +285,8 @@ describe('GorgiasChatIntegrationTranslateTextRevamp', () => {
         })
     })
 
-    it('should pass language options to SelectField', () => {
+    it('should render language options in the language selector', async () => {
+        const user = userEvent.setup()
         const languagePickerLanguages = [
             { value: 'en-US', label: 'English (US)' },
             { value: 'fr', label: 'French' },
@@ -326,14 +302,16 @@ describe('GorgiasChatIntegrationTranslateTextRevamp', () => {
             />,
         )
 
-        expect(mockSelectField).toHaveBeenCalledWith(
-            expect.objectContaining({
-                items: expect.arrayContaining([
-                    expect.objectContaining({ value: 'en-US' }),
-                    expect.objectContaining({ value: 'fr' }),
-                ]),
-            }),
+        await user.click(
+            screen.getByRole('textbox', { name: 'Current language' }),
         )
+
+        expect(
+            await screen.findByRole('option', { name: 'English (US)' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: 'French' }),
+        ).toBeInTheDocument()
     })
 
     it('should render dynamic wait time section when isAutomateSubscriber is true', () => {
@@ -452,9 +430,6 @@ describe('GorgiasChatIntegrationTranslateTextRevamp', () => {
             />,
         )
 
-        expect(
-            screen.getByTestId('advanced-customization-banner'),
-        ).toBeInTheDocument()
         expect(
             screen.getByRole('link', { name: /advanced customization/i }),
         ).toBeInTheDocument()

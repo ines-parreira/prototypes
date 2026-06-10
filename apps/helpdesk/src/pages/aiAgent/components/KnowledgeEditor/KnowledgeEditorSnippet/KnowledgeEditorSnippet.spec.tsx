@@ -38,46 +38,6 @@ jest.mock('pages/aiAgent/components/PlaygroundPanel/PlaygroundPanel', () => ({
     ),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({
-        children,
-        className,
-        ...props
-    }: Record<string, unknown> & {
-        children?: React.ReactNode
-        className?: string
-    }) => (
-        <div className={className} {...props}>
-            {children}
-        </div>
-    ),
-    Card: ({ children }: { children?: React.ReactNode }) => (
-        <div data-testid="axiom-card">{children}</div>
-    ),
-    Skeleton: () => <div data-testid="axiom-skeleton" />,
-    SidePanel: ({
-        isOpen,
-        onOpenChange,
-        children,
-    }: {
-        isOpen: boolean
-        onOpenChange: (open: boolean) => void
-        children: React.ReactNode
-    }) =>
-        isOpen ? (
-            <div data-testid="side-panel" data-is-open={isOpen}>
-                <button
-                    data-testid="close-panel-button"
-                    onClick={() => onOpenChange(false)}
-                >
-                    Close
-                </button>
-                {children}
-            </div>
-        ) : null,
-}))
-
 const { useGetHelpCenter } = jest.requireMock('models/helpCenter/queries')
 
 describe('KnowledgeEditorSnippet', () => {

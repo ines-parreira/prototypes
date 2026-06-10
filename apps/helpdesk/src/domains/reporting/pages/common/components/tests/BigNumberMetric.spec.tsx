@@ -4,11 +4,6 @@ import { render } from '@repo/testing'
 
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div data-testid="skeleton" />,
-}))
-
 describe('<BigNumberMetric />', () => {
     it('should render the number metric', () => {
         const { container } = render(<BigNumberMetric>content</BigNumberMetric>)
@@ -23,10 +18,10 @@ describe('<BigNumberMetric />', () => {
     })
 
     it('should render the loading skeleton', () => {
-        const { getAllByTestId } = render(
+        const { getAllByLabelText } = render(
             <BigNumberMetric isLoading>content</BigNumberMetric>,
         )
 
-        expect(getAllByTestId('skeleton')).toHaveLength(1)
+        expect(getAllByLabelText('Loading')).toHaveLength(1)
     })
 })

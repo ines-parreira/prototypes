@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Map } from 'immutable'
@@ -10,60 +8,6 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: ({
-        children,
-        href,
-        leadingSlot,
-        onClick,
-    }: {
-        children: React.ReactNode
-        href?: string
-        leadingSlot?: string
-        onClick?: (e: React.MouseEvent) => void
-    }) => {
-        if (href) {
-            return (
-                <a
-                    data-testid="button"
-                    href={href}
-                    data-icon={leadingSlot}
-                    onClick={onClick}
-                >
-                    {children}
-                </a>
-            )
-        }
-        return (
-            <button
-                data-testid="button"
-                data-icon={leadingSlot}
-                onClick={onClick}
-            >
-                {children}
-            </button>
-        )
-    },
-    Tag: ({
-        children,
-        color,
-        leadingSlot,
-    }: {
-        children: React.ReactNode
-        color: string
-        leadingSlot?: React.ReactNode
-    }) => (
-        <div data-testid="tag" data-color={color}>
-            {leadingSlot}
-            {children}
-        </div>
-    ),
-    Icon: ({ name }: { name: string }) => (
-        <span data-testid="icon" data-icon={name} />
-    ),
-}))
 
 const mockUseAiAgentAccess = jest.requireMock('hooks/aiAgent/useAiAgentAccess')
     .useAiAgentAccess as jest.MockedFunction<any>
@@ -119,9 +63,7 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('Loading...')
-        expect(tag).toHaveAttribute('data-color', 'grey')
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render loading state when AI agent access is loading', () => {
@@ -132,9 +74,7 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('Loading...')
-        expect(tag).toHaveAttribute('data-color', 'grey')
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render "No store connected" tag when store integration is undefined', () => {
@@ -146,9 +86,7 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('No store connected')
-        expect(tag).toHaveAttribute('data-color', 'grey')
+        expect(screen.getByText('No store connected')).toBeInTheDocument()
     })
 
     it('should render "No store connected" tag when store is not connected', () => {
@@ -164,9 +102,7 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('No store connected')
-        expect(tag).toHaveAttribute('data-color', 'grey')
+        expect(screen.getByText('No store connected')).toBeInTheDocument()
     })
 
     it('should render "Try AI agent" button when user has no subscription access', () => {
@@ -186,13 +122,11 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const button = screen.getByTestId('button')
-        expect(button).toHaveTextContent('Try AI agent')
-        expect(button).toHaveAttribute(
-            'href',
-            '/app/ai-agent/shopify/test-shop',
-        )
-        expect(button).toHaveAttribute('data-icon', 'ai-agent-feedback')
+        const link = screen.getByRole('link', { name: /Try AI agent/ })
+        expect(link).toHaveAttribute('href', '/app/ai-agent/shopify/test-shop')
+        expect(
+            screen.getByRole('img', { name: 'ai-agent-feedback' }),
+        ).toBeInTheDocument()
     })
 
     it('should render "Try AI agent" button when shop name is missing', () => {
@@ -207,7 +141,9 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        expect(screen.getByTestId('button')).toHaveTextContent('Try AI agent')
+        expect(
+            screen.getByRole('link', { name: /Try AI agent/ }),
+        ).toBeInTheDocument()
     })
 
     it('should render "Enabled" tag when AI agent is enabled', () => {
@@ -221,12 +157,8 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('Enabled')
-        expect(tag).toHaveAttribute('data-color', 'green')
-
-        const icon = screen.getByTestId('icon')
-        expect(icon).toHaveAttribute('data-icon', 'check')
+        expect(screen.getByText('Enabled')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'check' })).toBeInTheDocument()
     })
 
     it('should render "Disabled" tag when chat is not in monitored integrations', () => {
@@ -240,12 +172,8 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('Disabled')
-        expect(tag).toHaveAttribute('data-color', 'red')
-
-        const icon = screen.getByTestId('icon')
-        expect(icon).toHaveAttribute('data-icon', 'close')
+        expect(screen.getByText('Disabled')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'close' })).toBeInTheDocument()
     })
 
     it('should render "Disabled" tag when chat channel is deactivated', () => {
@@ -259,12 +187,8 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('Disabled')
-        expect(tag).toHaveAttribute('data-color', 'red')
-
-        const icon = screen.getByTestId('icon')
-        expect(icon).toHaveAttribute('data-icon', 'close')
+        expect(screen.getByText('Disabled')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'close' })).toBeInTheDocument()
     })
 
     it('should render "Disabled" tag when store configuration is null', () => {
@@ -275,11 +199,7 @@ describe('AiAgentStatusCell', () => {
 
         render(<AiAgentStatusCell chat={mockChat} />)
 
-        const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('Disabled')
-        expect(tag).toHaveAttribute('data-color', 'red')
-
-        const icon = screen.getByTestId('icon')
-        expect(icon).toHaveAttribute('data-icon', 'close')
+        expect(screen.getByText('Disabled')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'close' })).toBeInTheDocument()
     })
 })

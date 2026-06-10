@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { TicketChannel } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/types'
@@ -7,36 +8,6 @@ import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasCha
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ChannelSelector } from './ChannelSelector'
-
-const captured: {
-    onChange: ((item: { id: number; label: string }) => void) | undefined
-    value: { id: number; label: string } | undefined
-} = {
-    onChange: undefined,
-    value: undefined,
-}
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SelectField: ({
-        onChange,
-        value,
-        items,
-        children,
-        'aria-label': ariaLabel,
-    }: any) => {
-        captured.onChange = onChange
-        captured.value = value
-        return (
-            <div aria-label={ariaLabel}>
-                {items?.map((item: any) => (
-                    <span key={item.id}>{children(item)}</span>
-                ))}
-            </div>
-        )
-    },
-    ListItem: ({ label }: any) => <span>{label}</span>,
-}))
 
 const makeChannel = (id: number, name: string): SelfServiceChatChannel => ({
     type: TicketChannel.Chat,
@@ -67,22 +38,33 @@ const renderComponent = (selectedChannel = channelA) =>
 describe('<ChannelSelector />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        captured.onChange = undefined
-        captured.value = undefined
     })
 
-    it('renders all channel labels', () => {
+    it('renders all channel labels when the dropdown is open', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        expect(screen.getByText('Chat A')).toBeInTheDocument()
-        expect(screen.getByText('Chat B')).toBeInTheDocument()
-        expect(screen.getByText('Chat C')).toBeInTheDocument()
+        await user.click(
+            screen.getByRole('textbox', { name: 'Channel selector' }),
+        )
+
+        expect(
+            await screen.findByRole('option', { name: 'Chat A' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: 'Chat B' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: 'Chat C' }),
+        ).toBeInTheDocument()
     })
 
-    it('passes the matched channel option as value', () => {
+    it('displays the matched channel as the selected value', () => {
         renderComponent(channelB)
 
-        expect(captured.value).toEqual({ id: 2, label: 'Chat B' })
+        expect(
+            screen.getByRole('textbox', { name: 'Channel selector' }),
+        ).toHaveValue('Chat B')
     })
 
     it('falls back to the first option when selected channel id does not match', () => {
@@ -90,29 +72,31 @@ describe('<ChannelSelector />', () => {
 
         renderComponent(unknownChannel)
 
-        expect(captured.value).toEqual({ id: 1, label: 'Chat A' })
-    })
-
-    it('renders with the correct aria-label', () => {
-        renderComponent()
-
         expect(
-            screen.getByRole('generic', { name: 'Channel selector' }),
-        ).toBeInTheDocument()
+            screen.getByRole('textbox', { name: 'Channel selector' }),
+        ).toHaveValue('Chat A')
     })
 
-    it('calls onSelect with the matching channel when onChange fires', () => {
+    it('calls onSelect with the matching channel when an option is selected', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        captured.onChange?.({ id: 2, label: 'Chat B' })
+        await user.click(
+            screen.getByRole('textbox', { name: 'Channel selector' }),
+        )
+        await user.click(await screen.findByRole('option', { name: 'Chat B' }))
 
         expect(onSelect).toHaveBeenCalledWith(channelB)
     })
 
-    it('calls onSelect with the first channel when onChange fires with the first channel option', () => {
+    it('calls onSelect with the first channel when the first option is selected', async () => {
+        const user = userEvent.setup()
         renderComponent(channelB)
 
-        captured.onChange?.({ id: 1, label: 'Chat A' })
+        await user.click(
+            screen.getByRole('textbox', { name: 'Channel selector' }),
+        )
+        await user.click(await screen.findByRole('option', { name: 'Chat A' }))
 
         expect(onSelect).toHaveBeenCalledWith(channelA)
     })

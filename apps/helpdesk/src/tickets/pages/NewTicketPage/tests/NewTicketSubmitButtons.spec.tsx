@@ -37,12 +37,6 @@ jest.mock('providers/OutboundTranslationProvider', () => ({
     }),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: jest.fn(() => null),
-    TooltipContent: jest.fn(() => null),
-}))
-
 jest.mock('pages/common/components/button/ConfirmButton', () => ({
     __esModule: true,
     default: jest.fn(({ children, isDisabled, isLoading, onConfirm }) => (

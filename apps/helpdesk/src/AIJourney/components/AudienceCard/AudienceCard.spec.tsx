@@ -8,25 +8,6 @@ import { screen } from '@testing-library/react'
 
 import { AudienceCard } from './AudienceCard'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: ReactNode
-        children: ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ title }: { title?: ReactNode }) => (
-        <div role="tooltip">{title}</div>
-    ),
-}))
-
 jest.mock('AIJourney/formFields', () => ({
     AudienceSelect: ({ type }: { type: string }) => {
         const { watch } = useFormContext()
@@ -178,10 +159,15 @@ describe('<AudienceCard />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('renders the info tooltip beside the "Narrow down audience" toggle', () => {
+        it('renders the info tooltip beside the "Narrow down audience" toggle', async () => {
+            const user = userEvent.setup()
             renderComponent(true, { isV3Architecture: true })
 
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
+            const trigger = screen.getByRole('img', { name: 'info' })
+            await user.unhover(trigger)
+            await user.hover(trigger)
+
+            expect(await screen.findByRole('tooltip')).toHaveTextContent(
                 'By default, every shopper who triggers this flow gets the message. Add filters to target a specific group.',
             )
         })

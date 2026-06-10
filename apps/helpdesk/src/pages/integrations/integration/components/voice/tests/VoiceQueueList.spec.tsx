@@ -11,11 +11,6 @@ import mockedVirtuoso from 'tests/mockedVirtuoso'
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import VoiceQueueList from '../VoiceQueueList'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div>Skeleton</div>,
-}))
-
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
 const CurrentPath = () => {
@@ -93,7 +88,7 @@ describe('VoiceQueueList', () => {
     it('should render skeleton loading state with no queues', () => {
         renderComponent({ queues: [], onScroll: mockOnScroll })
 
-        const skeletons = screen.getAllByText('Skeleton')
+        const skeletons = screen.getAllByLabelText('Loading')
         expect(skeletons.length).toBeGreaterThan(0)
     })
 

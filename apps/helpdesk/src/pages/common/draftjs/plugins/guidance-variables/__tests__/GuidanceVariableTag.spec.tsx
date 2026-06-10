@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
@@ -13,15 +14,6 @@ jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarContext', () => ({
 jest.mock('../utils', () => ({
     parseGuidanceVariable: jest.fn(),
     pickCategoryLogo: jest.requireActual('../utils').pickCategoryLogo,
-}))
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: jest.fn(({ children, target }) => (
-        <div data-testid="tooltip" data-target={target}>
-            {children}
-        </div>
-    )),
 }))
 
 jest.mock('@gorgias/toolkit-react', () => ({
@@ -78,9 +70,7 @@ describe('GuidanceVariableTag', () => {
 
         expect(screen.getByText('Variable Content')).toBeInTheDocument()
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
-
-        const container = screen.getByText('Variable Content').parentElement
-        expect(container).toHaveAttribute('id', 'guidance-variable-tag-mock-id')
+        expect(screen.getByLabelText('Customer: Name')).toBeInTheDocument()
     })
 
     it('displays variable prefix', () => {
@@ -99,9 +89,7 @@ describe('GuidanceVariableTag', () => {
 
         expect(screen.getByText('Variable Content')).toBeInTheDocument()
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
-
-        const container = screen.getByText('Variable Content').parentElement
-        expect(container).toHaveAttribute('id', 'guidance-variable-tag-mock-id')
+        expect(screen.getByLabelText('Order: Is cancelled')).toBeInTheDocument()
     })
 
     it('renders with small size', () => {
@@ -118,11 +106,7 @@ describe('GuidanceVariableTag', () => {
             </GuidanceVariableTag>,
         )
 
-        const contentElement = document.querySelector(
-            '[aria-label="Customer: Name"]',
-        )
-        expect(contentElement).toBeInTheDocument()
-        expect(contentElement).toHaveClass('small')
+        expect(screen.getByLabelText('Customer: Name')).toBeInTheDocument()
     })
 
     it('handles invalid variables', () => {
@@ -135,16 +119,11 @@ describe('GuidanceVariableTag', () => {
             </GuidanceVariableTag>,
         )
 
-        const contentElement = document.querySelector(
-            '[aria-label="Invalid variable"]',
-        )
-        expect(contentElement).toBeInTheDocument()
-
-        const container = contentElement?.parentElement
-        expect(container).toHaveClass('invalid')
+        expect(screen.getByLabelText('Invalid variable')).toBeInTheDocument()
     })
 
-    it('calls onClick when clicked', () => {
+    it('calls onClick when clicked', async () => {
+        const user = userEvent.setup()
         const variableValue = '&&&customer.name&&&'
         const handleClick = jest.fn()
         ;(parseGuidanceVariable as jest.Mock).mockReturnValue({
@@ -159,16 +138,13 @@ describe('GuidanceVariableTag', () => {
             </GuidanceVariableTag>,
         )
 
-        const contentElement = document.querySelector(
-            '[aria-label="Customer: Name"]',
-        )
-        const container = contentElement?.parentElement
-        fireEvent.click(container as HTMLElement)
+        await user.click(screen.getByLabelText('Customer: Name'))
 
         expect(handleClick).toHaveBeenCalled()
     })
 
-    it('shows tooltip when text overflows', () => {
+    it('shows tooltip when text overflows', async () => {
+        const user = userEvent.setup()
         // Mock text overflow
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,
@@ -192,16 +168,18 @@ describe('GuidanceVariableTag', () => {
             </GuidanceVariableTag>,
         )
 
-        const tooltip = screen.getByTestId('tooltip')
-        expect(tooltip).toBeInTheDocument()
-        expect(tooltip).toHaveTextContent('Customer: Name')
-        expect(tooltip).toHaveAttribute(
-            'data-target',
-            'guidance-variable-tag-mock-id',
-        )
+        await user.hover(screen.getByLabelText('Customer: Name'))
+
+        await waitFor(() => {
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                'Customer: Name',
+            )
+        })
     })
 
-    it('does not show tooltip when text does not overflow', () => {
+    it('does not show tooltip when text does not overflow', async () => {
+        const user = userEvent.setup()
+
         // Ensure no text overflow
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,
@@ -225,7 +203,9 @@ describe('GuidanceVariableTag', () => {
             </GuidanceVariableTag>,
         )
 
-        expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        await user.hover(screen.getByLabelText('Customer: Name'))
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
     it('passes the correct variable to parseGuidanceVariable', () => {

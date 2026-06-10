@@ -1,53 +1,8 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { TranslateUnsavedChangesModal } from './TranslateUnsavedChangesModal'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Button: ({
-        children,
-        onClick,
-    }: {
-        children: React.ReactNode
-        onClick?: () => void
-    }) => <button onClick={onClick}>{children}</button>,
-    ButtonIntent: { Regular: 'regular', Destructive: 'destructive' },
-    ButtonSize: { Md: 'md' },
-    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
-    Modal: ({
-        children,
-        isOpen,
-        onOpenChange,
-    }: {
-        children: React.ReactNode
-        isOpen: boolean
-        onOpenChange: (isOpen: boolean) => void
-    }) =>
-        isOpen ? (
-            <div role="dialog">
-                {children}
-                <button onClick={() => onOpenChange(false)}>Close</button>
-            </div>
-        ) : null,
-    ModalSize: { Md: 'md' },
-    OverlayContent: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    OverlayFooter: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    OverlayHeader: ({ title }: { title: string }) => <div>{title}</div>,
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-}))
 
 const defaultProps = {
     isOpen: true,
@@ -165,7 +120,7 @@ describe('TranslateUnsavedChangesModal', () => {
                 />,
             )
 
-            await user.click(screen.getByRole('button', { name: /close/i }))
+            await user.keyboard('{Escape}')
 
             expect(onClose).toHaveBeenCalledTimes(1)
         })

@@ -1,10 +1,7 @@
-import { forwardRef } from 'react'
-import type { ReactNode, Ref } from 'react'
-
 import { UserRole } from '@repo/permissions'
 import { render } from '@repo/testing'
 import { useCurrentUserRole } from '@repo/users'
-import { act, screen } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
@@ -26,43 +23,6 @@ import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 
 import { Segments } from './Segments'
-
-type MockSidePanelProps = {
-    children: ReactNode
-    isOpen: boolean
-    onOpenChange: () => void
-}
-
-type MockSelectProps = {
-    trigger: (args: { ref: Ref<HTMLElement> }) => ReactNode
-    items: { id: string; name: string; icon: string }[]
-    onSelect: (item: { id: string; name: string; icon: string }) => void
-}
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({ children, isOpen, onOpenChange }: MockSidePanelProps) =>
-        isOpen ? (
-            <div>
-                <button onClick={onOpenChange}>Close panel</button>
-                {children}
-            </div>
-        ) : null,
-    Select: ({ trigger, items, onSelect }: MockSelectProps) => (
-        <div>
-            {trigger({ ref: { current: null } as Ref<HTMLElement> })}
-            {items.map((item) => (
-                <button key={item.id} onClick={() => onSelect(item)}>
-                    {item.name}
-                </button>
-            ))}
-        </div>
-    ),
-    SelectTrigger: forwardRef<HTMLDivElement, { children: ReactNode }>(
-        ({ children }, ref) => <div ref={ref}>{children}</div>,
-    ),
-    ListItem: ({ label }: { label: string }) => <div>{label}</div>,
-}))
 
 jest.mock('AIJourney/queries', () => ({
     useSegments: jest.fn(),
@@ -176,6 +136,19 @@ const initialState: Partial<RootState> = {
 }
 
 const renderSegments = () => render(<Segments />, { storeState: initialState })
+
+const openRowMenuAndSelect = async (
+    user: ReturnType<typeof userEvent.setup>,
+    rowIndex: number,
+    optionLabel: string,
+) => {
+    const triggers = screen.getAllByRole('button', {
+        name: 'dots-meatballs-horizontal',
+    })
+    await user.click(triggers[rowIndex])
+    const listbox = await screen.findByRole('listbox')
+    await user.click(within(listbox).getByText(optionLabel))
+}
 
 describe('<Segments />', () => {
     beforeEach(() => {
@@ -501,7 +474,7 @@ describe('<Segments />', () => {
 
             await act(async () => {
                 await user.click(
-                    screen.getByRole('button', { name: /close panel/i }),
+                    screen.getByRole('button', { name: 'Dismiss' }),
                 )
             })
 
@@ -515,9 +488,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: /duplicate/i })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Duplicate')
             })
 
             expect(
@@ -535,9 +506,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: 'Delete' })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Delete')
             })
 
             expect(screen.getByText('Delete segment?')).toBeInTheDocument()
@@ -550,9 +519,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: 'Delete' })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Delete')
             })
 
             await act(async () => {
@@ -571,9 +538,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: 'Delete' })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Delete')
             })
 
             await act(async () => {
@@ -599,9 +564,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: 'Delete' })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Delete')
             })
 
             expect(
@@ -630,9 +593,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: 'Delete' })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Delete')
             })
 
             await act(async () => {
@@ -665,9 +626,7 @@ describe('<Segments />', () => {
             renderSegments()
 
             await act(async () => {
-                await user.click(
-                    screen.getAllByRole('button', { name: 'Delete' })[0],
-                )
+                await openRowMenuAndSelect(user, 0, 'Delete')
             })
 
             expect(screen.getByText('Delete segment?')).toBeInTheDocument()
@@ -698,15 +657,20 @@ describe('<Segments />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render the Edit/Duplicate/Delete action menu for admin users', () => {
+        it('should render the Edit/Duplicate/Delete action menu for admin users', async () => {
+            const user = userEvent.setup()
             renderSegments()
 
-            expect(
-                screen.getAllByRole('button', { name: /duplicate/i })[0],
-            ).toBeInTheDocument()
-            expect(
-                screen.getAllByRole('button', { name: 'Delete' })[0],
-            ).toBeInTheDocument()
+            await user.click(
+                screen.getAllByRole('button', {
+                    name: 'dots-meatballs-horizontal',
+                })[0],
+            )
+
+            const listbox = await screen.findByRole('listbox')
+            expect(within(listbox).getByText('Edit')).toBeInTheDocument()
+            expect(within(listbox).getByText('Duplicate')).toBeInTheDocument()
+            expect(within(listbox).getByText('Delete')).toBeInTheDocument()
         })
 
         it('should not render the Edit/Duplicate/Delete action menu for basic-agent users', () => {
@@ -717,10 +681,9 @@ describe('<Segments />', () => {
             render(<Segments />)
 
             expect(
-                screen.queryByRole('button', { name: /duplicate/i }),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'Delete' }),
+                screen.queryByRole('button', {
+                    name: 'dots-meatballs-horizontal',
+                }),
             ).not.toBeInTheDocument()
         })
     })

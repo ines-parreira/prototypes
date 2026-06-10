@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
@@ -10,70 +8,6 @@ import { MacroActionType } from 'models/macroAction/types'
 import type { Team } from 'models/team/types'
 
 import TicketReplyActionHelpdeskV2 from '../AIAgentDraftMessageHelpdeskV2/TicketReplyActionHelpdeskV2/TicketReplyActionHelpdeskV2'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Avatar: ({ name }: { name: string }) => <span>{name}</span>,
-    Box: ({
-        children,
-        className,
-    }: {
-        children?: ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    Dot: () => <span>dot</span>,
-    Icon: ({ name }: { name: string }) => <span>{name}</span>,
-    StatusButton: ({
-        children,
-        color,
-        leadingSlot,
-    }: {
-        children?: ReactNode
-        color?: string
-        leadingSlot?: ReactNode
-    }) => (
-        <button type="button" data-color={color}>
-            {leadingSlot}
-            {children}
-        </button>
-    ),
-    Tag: ({
-        children,
-        leadingSlot,
-    }: {
-        children?: ReactNode
-        leadingSlot?: ReactNode
-    }) => (
-        <span>
-            {leadingSlot}
-            {children}
-        </span>
-    ),
-    TextField: ({
-        value,
-        isDisabled,
-        'aria-label': ariaLabel,
-    }: {
-        value?: string
-        isDisabled?: boolean
-        'aria-label'?: string
-    }) => (
-        <input
-            type="text"
-            value={value}
-            disabled={isDisabled}
-            aria-label={ariaLabel}
-            readOnly={true}
-        />
-    ),
-    Text: ({
-        children,
-        className,
-    }: {
-        children?: ReactNode
-        className?: string
-    }) => <span className={className}>{children}</span>,
-}))
 
 function renderAction(action: MacroAction) {
     return render(<TicketReplyActionHelpdeskV2 action={action} />)
@@ -214,16 +148,15 @@ describe('TicketReplyActionHelpdeskV2', () => {
         expect(screen.getByText('refund-watch')).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: /pending/i }),
-        ).toHaveAttribute('data-color', 'purple')
+        ).toBeInTheDocument()
         const priorityButton = screen.getByRole('button', { name: /high/i })
         expect(priorityButton).toBeInTheDocument()
         expect(
-            within(priorityButton).getByText('arrow-chevron-up'),
+            within(priorityButton).getByRole('img', {
+                name: 'arrow-chevron-up',
+            }),
         ).toBeInTheDocument()
-        expect(screen.getByRole('button', { name: /2d/i })).toHaveAttribute(
-            'data-color',
-            'blue',
-        )
+        expect(screen.getByRole('button', { name: /2d/i })).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: /jamie rivera/i }),
         ).toBeInTheDocument()

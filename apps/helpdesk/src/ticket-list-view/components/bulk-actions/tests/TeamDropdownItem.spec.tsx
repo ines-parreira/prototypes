@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react'
-
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Emoji } from 'emoji-mart'
 
 import TeamDropdownItem from '../TeamDropdownItem'
@@ -9,13 +8,6 @@ import TeamDropdownItem from '../TeamDropdownItem'
 jest.mock('emoji-mart')
 const mockEmojiMart = assumeMock(Emoji)
 mockEmojiMart.mockReturnValue(<div>mockEmojiMart</div>)
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-        <div>Tooltip{children}</div>
-    ),
-}))
 
 describe('<TeamDropdownItem />', () => {
     const props = {
@@ -45,7 +37,8 @@ describe('<TeamDropdownItem />', () => {
         expect(screen.getByText('TS')).toBeInTheDocument()
     })
 
-    it('should display tooltip when text is overflowing', () => {
+    it('should display tooltip when text is overflowing', async () => {
+        const user = userEvent.setup()
         jest.spyOn(
             HTMLElement.prototype,
             'offsetWidth',
@@ -59,9 +52,11 @@ describe('<TeamDropdownItem />', () => {
 
         render(<TeamDropdownItem {...props} />)
 
-        expect(screen.getByText(/Tooltip/)).toBeInTheDocument()
+        await user.hover(screen.getByText(props.item.name))
+
+        const tooltip = await screen.findByRole('tooltip')
         expect(
-            screen.getAllByText(new RegExp(props.item.name, 'i')),
-        ).toHaveLength(2)
+            within(tooltip).getByText(new RegExp(props.item.name, 'i')),
+        ).toBeInTheDocument()
     })
 })

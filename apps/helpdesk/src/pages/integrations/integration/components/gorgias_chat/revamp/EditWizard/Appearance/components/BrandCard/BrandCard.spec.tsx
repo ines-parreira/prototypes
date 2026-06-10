@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -57,62 +55,8 @@ type LogoUploadProps = {
     onChange: (url?: string) => void
 }
 
-type CheckBoxFieldProps = {
-    label: string
-    value: boolean
-    onChange: (value: boolean) => void
-}
-
-type RadioGroupProps = {
-    value: string
-    onChange: (value: string) => void
-    children?: ReactNode
-}
-
 const mockColorPicker = jest.fn()
 const mockLogoUpload = jest.fn()
-const mockCheckBoxField = jest.fn()
-const mockRadioGroup = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-    CheckBoxField: (props: CheckBoxFieldProps) => {
-        mockCheckBoxField(props)
-        return null
-    },
-    RadioGroup: (props: RadioGroupProps) => {
-        mockRadioGroup(props)
-        return <div>{props.children}</div>
-    },
-    Radio: ({ value, label }: { value: string; label: string }) => (
-        <span data-value={value}>{label}</span>
-    ),
-    TextField: ({
-        label,
-        value,
-        onChange,
-        onFocus,
-    }: {
-        label: string
-        value: string
-        onChange: (value: string) => void
-        onFocus?: () => void
-    }) => (
-        <div>
-            <label>{label}</label>
-            <input
-                aria-label={label}
-                value={value}
-                onChange={(event) => onChange(event.target.value)}
-                onFocus={onFocus}
-            />
-        </div>
-    ),
-}))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker',
@@ -254,20 +198,22 @@ describe('BrandCard', () => {
                 useMainColorOutsideBusinessHours: true,
             })
 
-            expect(mockCheckBoxField).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    label: 'Keep main color when outside business hours',
-                    value: true,
+            expect(
+                screen.getByRole('checkbox', {
+                    name: 'Keep main color when outside business hours',
                 }),
-            )
+            ).toBeChecked()
         })
 
-        it('should call onUseMainColorOutsideBusinessHoursChange when the checkbox toggles', () => {
+        it('should call onUseMainColorOutsideBusinessHoursChange when the checkbox toggles', async () => {
+            const user = userEvent.setup()
             renderComponent({ shouldShowLegacyChatCustomization: true })
 
-            const { onChange } = mockCheckBoxField.mock
-                .calls[0][0] as CheckBoxFieldProps
-            onChange(true)
+            await user.click(
+                screen.getByRole('checkbox', {
+                    name: 'Keep main color when outside business hours',
+                }),
+            )
 
             expect(
                 defaultProps.onUseMainColorOutsideBusinessHoursChange,
@@ -277,7 +223,11 @@ describe('BrandCard', () => {
         it('should not render the checkbox when legacy chat customization is hidden', () => {
             renderComponent()
 
-            expect(mockCheckBoxField).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('checkbox', {
+                    name: 'Keep main color when outside business hours',
+                }),
+            ).not.toBeInTheDocument()
         })
 
         it('should render the Chat title field with the current name', () => {
@@ -329,19 +279,17 @@ describe('BrandCard', () => {
                 backgroundStyle: GorgiasChatBackgroundColorStyle.Solid,
             })
 
-            expect(mockRadioGroup).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    value: GorgiasChatBackgroundColorStyle.Solid,
-                }),
-            )
+            expect(screen.getByRole('radio', { name: 'Solid' })).toBeChecked()
+            expect(
+                screen.getByRole('radio', { name: 'Gradient' }),
+            ).not.toBeChecked()
         })
 
-        it('should call onBackgroundStyleChange and sync the preview when the background style changes', () => {
+        it('should call onBackgroundStyleChange and sync the preview when the background style changes', async () => {
+            const user = userEvent.setup()
             renderComponent({ shouldShowLegacyChatCustomization: true })
 
-            const { onChange } = mockRadioGroup.mock
-                .calls[0][0] as RadioGroupProps
-            onChange(GorgiasChatBackgroundColorStyle.Solid)
+            await user.click(screen.getByRole('radio', { name: 'Solid' }))
 
             expect(defaultProps.onBackgroundStyleChange).toHaveBeenCalledWith(
                 GorgiasChatBackgroundColorStyle.Solid,
@@ -354,7 +302,12 @@ describe('BrandCard', () => {
         it('should not render the background style radio group when legacy chat customization is hidden', () => {
             renderComponent()
 
-            expect(mockRadioGroup).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('radio', { name: 'Gradient' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('radio', { name: 'Solid' }),
+            ).not.toBeInTheDocument()
         })
     })
 

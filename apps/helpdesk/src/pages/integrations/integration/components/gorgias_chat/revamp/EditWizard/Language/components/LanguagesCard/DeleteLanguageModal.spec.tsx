@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,57 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { LANGUAGE } from 'constants/languages'
 
 import { DeleteLanguageModal } from './DeleteLanguageModal'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Button: ({
-        children,
-        onClick,
-        isDisabled,
-        isLoading,
-    }: {
-        children: React.ReactNode
-        onClick?: () => void
-        isDisabled?: boolean
-        isLoading?: boolean
-    }) => (
-        <button onClick={onClick} disabled={isDisabled || isLoading}>
-            {children}
-        </button>
-    ),
-    ButtonIntent: { Regular: 'regular', Destructive: 'destructive' },
-    ButtonSize: { Md: 'md' },
-    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
-    Modal: ({
-        children,
-        isOpen,
-        onOpenChange,
-    }: {
-        children: React.ReactNode
-        isOpen: boolean
-        onOpenChange: (isOpen: boolean) => void
-    }) =>
-        isOpen ? (
-            <div role="dialog">
-                <button onClick={() => onOpenChange(false)}>Close modal</button>
-                {children}
-            </div>
-        ) : null,
-    ModalSize: { Md: 'md' },
-    OverlayContent: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    OverlayFooter: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    OverlayHeader: ({ title }: { title: string }) => <div>{title}</div>,
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-}))
 
 const frenchLanguage = {
     language: LANGUAGE.FR,
@@ -214,9 +161,7 @@ describe('DeleteLanguageModal', () => {
                 />,
             )
 
-            await user.click(
-                screen.getByRole('button', { name: /close modal/i }),
-            )
+            await user.keyboard('{Escape}')
 
             expect(onDiscard).toHaveBeenCalledTimes(1)
         })
@@ -270,7 +215,7 @@ describe('DeleteLanguageModal', () => {
             )
 
             expect(
-                screen.getByRole('button', { name: /^delete$/i }),
+                screen.getByRole('button', { name: /delete/i }),
             ).toBeDisabled()
         })
 
@@ -288,9 +233,7 @@ describe('DeleteLanguageModal', () => {
                 />,
             )
 
-            await user.click(
-                screen.getByRole('button', { name: /close modal/i }),
-            )
+            await user.keyboard('{Escape}')
 
             expect(onDiscard).toHaveBeenCalledTimes(1)
         })
@@ -309,9 +252,7 @@ describe('DeleteLanguageModal', () => {
                 />,
             )
 
-            await user.click(
-                screen.getByRole('button', { name: /close modal/i }),
-            )
+            await user.keyboard('{Escape}')
 
             expect(onDiscard).not.toHaveBeenCalled()
         })

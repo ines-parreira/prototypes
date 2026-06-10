@@ -11,11 +11,6 @@ import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
 
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div>Loading</div>,
-}))
-
 jest.mock('../Timeline', () => ({ children }: any) => (
     <div data-testid="timeline">{children}</div>
 ))
@@ -61,7 +56,7 @@ describe('TicketVoiceCallEvents', () => {
 
         render(<TicketVoiceCallEvents callId={1} />)
 
-        expect(screen.getByText('Loading')).toBeInTheDocument()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
 
     it('should render error message when data is not available', () => {

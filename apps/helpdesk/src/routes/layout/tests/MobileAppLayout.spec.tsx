@@ -13,17 +13,6 @@ jest.mock('routes/layout/MobileHeaderActions', () => ({
     MobileHeaderActions: () => <div>Header Actions</div>,
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({
-        children,
-        isOpen,
-    }: {
-        children?: React.ReactNode
-        isOpen?: boolean
-    }) => (isOpen ? <div>{children}</div> : null),
-}))
-
 jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => false),
 }))
@@ -92,7 +81,9 @@ describe('MobileAppLayout', () => {
         await user.click(menuButton)
         expect(screen.getByText('Sidebar')).toBeInTheDocument()
 
-        await user.click(screen.getByRole('button', { name: 'Navigate' }))
+        await user.click(
+            screen.getByRole('button', { name: 'Navigate', hidden: true }),
+        )
 
         await waitFor(() => {
             expect(screen.queryByText('Sidebar')).not.toBeInTheDocument()

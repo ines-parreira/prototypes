@@ -1,5 +1,3 @@
-import type { ReactNode, Ref } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,28 +5,6 @@ import userEvent from '@testing-library/user-event'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 
 import { SegmentMoreOptions } from './SegmentMoreOptions'
-
-type MockSelectProps = {
-    trigger: (args: { ref: Ref<HTMLElement> }) => ReactNode
-    items: { id: string; name: string; icon: string }[]
-    onSelect: (item: { id: string; name: string; icon: string }) => void
-}
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Select: ({ trigger, items, onSelect }: MockSelectProps) => (
-        <div>
-            {trigger({ ref: { current: null } })}
-            {items.map((item) => (
-                <button key={item.id} onClick={() => onSelect(item)}>
-                    {item.name}
-                </button>
-            ))}
-        </div>
-    ),
-    SelectTrigger: ({ children }: { children?: ReactNode }) => <>{children}</>,
-    ListItem: ({ label }: { label: string }) => <div>{label}</div>,
-}))
 
 const mockSegment: Segment = {
     id: '1',
@@ -58,17 +34,24 @@ describe('<SegmentMoreOptions />', () => {
         jest.clearAllMocks()
     })
 
-    it('should render Edit, Duplicate and Delete options', () => {
+    const openMenu = async (user: ReturnType<typeof userEvent.setup>) => {
+        await user.click(screen.getByRole('button'))
+    }
+
+    it('should render Edit, Duplicate and Delete options', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
+        await openMenu(user)
+
         expect(
-            screen.getByRole('button', { name: /edit/i }),
+            await screen.findByRole('option', { name: /edit/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: /duplicate/i }),
+            screen.getByRole('option', { name: /duplicate/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: /delete/i }),
+            screen.getByRole('option', { name: /delete/i }),
         ).toBeInTheDocument()
     })
 
@@ -76,7 +59,8 @@ describe('<SegmentMoreOptions />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await user.click(screen.getByRole('button', { name: /edit/i }))
+        await openMenu(user)
+        await user.click(await screen.findByRole('option', { name: /edit/i }))
 
         expect(onEditClick).toHaveBeenCalledWith(mockSegment)
         expect(onDuplicateClick).not.toHaveBeenCalled()
@@ -87,7 +71,10 @@ describe('<SegmentMoreOptions />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await user.click(screen.getByRole('button', { name: /duplicate/i }))
+        await openMenu(user)
+        await user.click(
+            await screen.findByRole('option', { name: /duplicate/i }),
+        )
 
         expect(onDuplicateClick).toHaveBeenCalledWith(mockSegment)
         expect(onEditClick).not.toHaveBeenCalled()
@@ -98,7 +85,8 @@ describe('<SegmentMoreOptions />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await user.click(screen.getByRole('button', { name: /delete/i }))
+        await openMenu(user)
+        await user.click(await screen.findByRole('option', { name: /delete/i }))
 
         expect(onDeleteClick).toHaveBeenCalledWith(mockSegment)
         expect(onEditClick).not.toHaveBeenCalled()

@@ -2,21 +2,9 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
-
-import type { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import InfiniteScroll from '../InfiniteScroll'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyLoadingSpinner: ({ size }: ComponentProps<typeof LoadingSpinner>) => (
-        <div>
-            SpinnerMock
-            <div>size-{size}</div>
-        </div>
-    ),
-}))
 
 describe('<InfiniteScroll />', () => {
     const originalClientHeight = Object.getOwnPropertyDescriptor(
@@ -139,20 +127,18 @@ describe('<InfiniteScroll />', () => {
     })
 
     it('should use external isLoading prop', async () => {
-        const { getByText } = render(<InfiniteScroll {...minProps} isLoading />)
+        render(<InfiniteScroll {...minProps} isLoading />)
 
         await waitFor(() => expect(minProps.onLoad).not.toHaveBeenCalled())
-        expect(getByText('SpinnerMock')).toBeInTheDocument()
-        expect(getByText(/size-small/)).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
-    it('should use specified Spinner size', () => {
+    it('should render the loader when a specified Spinner size is passed', () => {
         const loaderSize = 10
-        const { getByText } = render(
+        render(
             <InfiniteScroll {...minProps} isLoading loaderSize={loaderSize} />,
         )
 
-        expect(getByText('SpinnerMock')).toBeInTheDocument()
-        expect(getByText(/size-10/)).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
 })

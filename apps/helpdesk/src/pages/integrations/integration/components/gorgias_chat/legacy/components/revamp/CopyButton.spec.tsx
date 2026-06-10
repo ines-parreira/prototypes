@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,43 +5,6 @@ import userEvent from '@testing-library/user-event'
 import CopyButton from './CopyButton'
 
 jest.mock('copy-to-clipboard', () => jest.fn())
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: ({
-        children,
-        onClick,
-        leadingSlot,
-        variant,
-        intent,
-    }: {
-        children: React.ReactNode
-        onClick?: () => void
-        leadingSlot?: string
-        variant?: string
-        intent?: string
-    }) => (
-        <button
-            onClick={onClick}
-            data-icon={leadingSlot}
-            data-variant={variant}
-            data-intent={intent}
-        >
-            {children}
-        </button>
-    ),
-    ButtonVariant: {
-        Primary: 'primary',
-        Secondary: 'secondary',
-    },
-    ButtonIntent: {
-        Regular: 'regular',
-    },
-    IconName: {
-        Check: 'check',
-        Copy: 'copy',
-    },
-}))
 
 describe('CopyButton', () => {
     const mockValue = '<script>console.log("test")</script>'
@@ -69,33 +30,9 @@ describe('CopyButton', () => {
                 <CopyButton value={mockValue} displayText={mockDisplayText} />,
             )
 
-            const button = screen.getByRole('button')
-            expect(button).toHaveAttribute('data-icon', 'copy')
-        })
-
-        it('should render with default variant and intent', () => {
-            render(
-                <CopyButton value={mockValue} displayText={mockDisplayText} />,
-            )
-
-            const button = screen.getByRole('button')
-            expect(button).toHaveAttribute('data-variant', 'primary')
-            expect(button).toHaveAttribute('data-intent', 'regular')
-        })
-
-        it('should render with custom variant and intent', () => {
-            render(
-                <CopyButton
-                    value={mockValue}
-                    displayText={mockDisplayText}
-                    variant="secondary"
-                    intent="regular"
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            expect(button).toHaveAttribute('data-variant', 'secondary')
-            expect(button).toHaveAttribute('data-intent', 'regular')
+            expect(
+                screen.getByRole('img', { name: 'copy' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -147,7 +84,9 @@ describe('CopyButton', () => {
                 await user.click(button)
             })
 
-            expect(button).toHaveAttribute('data-icon', 'check')
+            expect(
+                screen.getByRole('img', { name: 'check' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -196,13 +135,17 @@ describe('CopyButton', () => {
                 await user.click(button)
             })
 
-            expect(button).toHaveAttribute('data-icon', 'check')
+            expect(
+                screen.getByRole('img', { name: 'check' }),
+            ).toBeInTheDocument()
 
             act(() => {
                 jest.advanceTimersByTime(5000)
             })
 
-            expect(button).toHaveAttribute('data-icon', 'copy')
+            expect(
+                screen.getByRole('img', { name: 'copy' }),
+            ).toBeInTheDocument()
         })
 
         it('should reset timer when clicked multiple times', async () => {

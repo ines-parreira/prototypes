@@ -27,11 +27,6 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div>Skeleton</div>,
-}))
-
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/components/RenderChart',
     () => ({
@@ -142,7 +137,7 @@ describe('<SalesOverview />', () => {
             })
 
             renderComponent({ path })
-            expect(screen.getAllByText('Skeleton')).toHaveLength(3)
+            expect(screen.getAllByLabelText('Loading')).toHaveLength(3)
         })
 
         it('should render main metrics section', async () => {

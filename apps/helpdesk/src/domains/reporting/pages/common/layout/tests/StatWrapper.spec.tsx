@@ -1,5 +1,4 @@
 import type { ComponentProps } from 'react'
-import React from 'react'
 
 import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
@@ -9,8 +8,6 @@ import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
-import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
@@ -24,24 +21,6 @@ import { saveFileAsDownloaded } from 'utils/file'
 jest.mock('utils/file')
 jest.mock('domains/reporting/models/stat/resources')
 jest.mock('@repo/logging')
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyTooltip: ({
-            children,
-            ...otherProps
-        }: ComponentProps<typeof Tooltip>) => {
-            return (
-                <div aria-label="tooltip mock">
-                    <div aria-label="children">{children}</div>
-                    <div aria-label="other props">
-                        {JSON.stringify(otherProps, null, 2)}
-                    </div>
-                </div>
-            )
-        },
-    } as Record<string, unknown>
-})
 
 const mockStore = configureMockStore([thunk])
 const saveFileAsDownloadedMock = saveFileAsDownloaded as jest.MockedFunction<

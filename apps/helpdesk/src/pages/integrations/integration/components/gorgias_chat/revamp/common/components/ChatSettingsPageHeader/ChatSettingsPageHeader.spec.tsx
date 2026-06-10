@@ -8,70 +8,6 @@ import { ChatSettingsPageHeader } from './ChatSettingsPageHeader'
 
 const mockPush = jest.fn()
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Breadcrumb: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Breadcrumbs: ({
-        items,
-        children,
-    }: {
-        items: Array<{ id: string; label: string; link?: string }>
-        children: (item: {
-            id: string
-            label: string
-            link?: string
-        }) => React.ReactNode
-    }) => (
-        <nav>
-            {items.map((item) => (
-                <div key={item.id}>{children(item)}</div>
-            ))}
-        </nav>
-    ),
-    PageHeader: ({
-        title,
-        children,
-    }: {
-        title: React.ReactNode
-        children?: React.ReactNode
-    }) => (
-        <div>
-            {typeof title === 'string' ? <h1>{title}</h1> : title}
-            {children}
-        </div>
-    ),
-    Button: ({
-        children,
-        onClick,
-        icon,
-        'aria-label': ariaLabel,
-    }: {
-        children?: React.ReactNode
-        onClick?: () => void
-        icon?: string
-        'aria-label'?: string
-    }) => (
-        <button onClick={onClick} data-icon={icon} aria-label={ariaLabel}>
-            {children}
-        </button>
-    ),
-    Heading: ({ children }: { children?: React.ReactNode }) => (
-        <h1>{children}</h1>
-    ),
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-    TextSize: { Sm: 'sm' },
-    TextVariant: { Medium: 'medium' },
-    ButtonIntent: { Regular: 'regular' },
-    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
-    ButtonSize: { Sm: 'sm', Md: 'md' },
-    HeadingSize: { Xl: 'xl' },
-    IconName: { ArrowLeft: 'arrow-left' },
-}))
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: mockPush }),
@@ -134,13 +70,9 @@ describe('ChatSettingsPageHeader', () => {
         })
 
         it('should render without breadcrumbs when not provided', () => {
-            const { container } = render(
-                <ChatSettingsPageHeader title="Chat Settings" />,
-            )
+            render(<ChatSettingsPageHeader title="Chat Settings" />)
 
-            const nav = container.querySelector('nav')
-            expect(nav).toBeInTheDocument()
-            expect(nav?.children).toHaveLength(0)
+            expect(screen.queryByRole('listitem')).not.toBeInTheDocument()
         })
     })
 

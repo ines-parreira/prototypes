@@ -1,4 +1,4 @@
-import type { ComponentProps, MouseEventHandler, ReactNode } from 'react'
+import type { ComponentProps } from 'react'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -21,50 +21,6 @@ import type { RootState } from 'state/types'
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import { AiAgentDraftMessageHelpdeskV2 } from '../AIAgentDraftMessageHelpdeskV2/AiAgentDraftMessageHelpdeskV2'
 import { AIAgentUsedDataHelpdeskV2 } from '../AIAgentDraftMessageHelpdeskV2/AIAgentUsedDataHelpdeskV2'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({
-        children,
-        className,
-    }: {
-        children?: ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    Button: ({
-        children,
-        isDisabled,
-        onClick,
-    }: {
-        children?: ReactNode
-        isDisabled?: boolean
-        onClick?: MouseEventHandler<HTMLButtonElement>
-    }) => (
-        <button disabled={isDisabled} onClick={onClick} type="button">
-            {children}
-        </button>
-    ),
-    Card: ({
-        children,
-        className,
-    }: {
-        children?: ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    CardContent: ({ children }: { children?: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Disclosure: ({ children }: { children?: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    DisclosureHeader: ({ title }: { title?: ReactNode }) => <div>{title}</div>,
-    DisclosurePanel: ({ children }: { children?: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Icon: ({ name }: { name: string }) => <span>{name}</span>,
-    Skeleton: () => <div data-testid="skeleton" />,
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-}))
 
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('state/currentAccount/selectors')
@@ -177,7 +133,7 @@ describe('AiAgentDraftMessageHelpdeskV2', () => {
 
         renderComponent()
 
-        expect(screen.getAllByTestId('skeleton')).toHaveLength(8)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(8)
         expect(
             screen.queryByRole('button', {
                 name: 'Copy message and actions',

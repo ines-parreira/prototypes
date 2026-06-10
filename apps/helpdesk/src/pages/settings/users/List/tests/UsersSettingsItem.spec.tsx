@@ -4,7 +4,6 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-types'
 
 import {
@@ -27,13 +26,6 @@ jest.mock('react-router-dom', () => ({
     Link: jest.fn(({ children }) => <div data-testid="link">{children}</div>),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyBadge: jest.fn(({ children, type }) => (
-        <div data-testid={`badge-${type}`}>{children}</div>
-    )),
-}))
-
 jest.mock('pages/common/components/Avatar/Avatar', () =>
     jest.fn(() => <div data-testid="avatar" />),
 )
@@ -48,7 +40,6 @@ jest.mock('state/currentAccount/selectors')
 const mockedUseAppSelector = assumeMock(useAppSelector)
 const mockedGetAccountOwnerId = assumeMock(getAccountOwnerId)
 const mockedLink = assumeMock(Link)
-const mockedBadge = assumeMock(Badge)
 const mockedAvatar = assumeMock(Avatar)
 const mockedRoleLabel = assumeMock(RoleLabel)
 
@@ -86,10 +77,6 @@ describe('<UsersSettingsItem />', () => {
         expect(screen.getByText(defaultUser.email!)).toBeInTheDocument()
 
         // 2FA badge
-        expect(mockedBadge).toHaveBeenCalledWith(
-            expect.objectContaining({ type: 'light-success' }),
-            {},
-        )
         expect(screen.getByText('Enabled')).toBeInTheDocument()
 
         // Link to "edit user" settings page
@@ -106,10 +93,6 @@ describe('<UsersSettingsItem />', () => {
 
         render(<UsersSettingsItem user={defaultUser} />)
 
-        expect(mockedBadge).toHaveBeenCalledWith(
-            expect.objectContaining({ type: 'blue' }),
-            {},
-        )
         expect(screen.getByText('Account Owner')).toBeInTheDocument()
 
         expect(mockedRoleLabel).not.toHaveBeenCalled()
@@ -134,12 +117,6 @@ describe('<UsersSettingsItem />', () => {
         render(<UsersSettingsItem user={user} />)
 
         // 2FA badge
-        expect(mockedBadge).toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: 'light-error',
-            }),
-            expect.anything(),
-        )
         expect(screen.getByText('Disabled')).toBeInTheDocument()
     })
 
@@ -190,11 +167,5 @@ describe('<UsersSettingsItem />', () => {
 
         expect(screen.getByText(aiAgentUser.name!)).toBeInTheDocument()
         expect(screen.getByText('N/A')).toBeInTheDocument()
-        expect(mockedBadge).toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: 'light-grey',
-            }),
-            expect.anything(),
-        )
     })
 })

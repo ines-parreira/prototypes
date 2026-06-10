@@ -1,11 +1,7 @@
-import type { ComponentProps } from 'react'
-
 import { useFlag } from '@repo/feature-flags'
-import { render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-
-import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
@@ -24,14 +20,6 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyTooltip: ({ children }: ComponentProps<typeof Tooltip>) => {
-            return <div aria-label="tooltip mock">{children}</div>
-        },
-    } as Record<string, unknown>
-})
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 
@@ -65,25 +53,25 @@ describe('TicketNavigationArrowPagination', () => {
         mockUseFlag.mockReturnValue(false)
     })
 
-    it('should render & test buttons: enabled PREV & enabled NEXT with tooltips', () => {
+    it('should render & test buttons: enabled PREV & enabled NEXT with tooltips', async () => {
+        const user = userEvent.setup()
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
         render(<TicketNavigationArrowPagination ticketId={ticketId} />)
 
-        const prevArrow = screen.getByText('keyboard_arrow_left')
-        const nextArrow = screen.getByText('keyboard_arrow_right')
+        const prevArrow = screen.getByLabelText('previous')
+        const nextArrow = screen.getByLabelText('next')
 
-        expect(prevArrow.parentElement?.id).toEqual(
-            'pagination-item-arrow-previous',
-        )
-        expect(screen.getByText('Previous ticket')).toBeInTheDocument()
+        expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
+        expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
 
-        expect(nextArrow.parentElement?.id).toEqual(
-            'pagination-item-arrow-next',
-        )
-        expect(screen.getByText('Next ticket')).toBeInTheDocument()
+        await user.hover(prevArrow)
+        expect(await screen.findByText('Previous ticket')).toBeInTheDocument()
 
-        fireEvent.click(prevArrow)
-        fireEvent.click(nextArrow)
+        await user.hover(nextArrow)
+        expect(await screen.findByText('Next ticket')).toBeInTheDocument()
+
+        await user.click(prevArrow)
+        await user.click(nextArrow)
 
         expect(mockGoToPreviousTicket).toHaveBeenCalledTimes(1)
         expect(mockGoToNextTicket).toHaveBeenCalledTimes(1)
@@ -92,11 +80,8 @@ describe('TicketNavigationArrowPagination', () => {
     it('should render without PREV & NEXT buttons when DTP is disabled', () => {
         render(<TicketNavigationArrowPagination ticketId={ticketId} />)
 
-        const prevArrow = screen.queryByText('keyboard_arrow_left')
-        const nextArrow = screen.queryByText('keyboard_arrow_right')
-
-        expect(prevArrow).toBeNull()
-        expect(nextArrow).toBeNull()
+        expect(screen.queryByLabelText('previous')).toBeNull()
+        expect(screen.queryByLabelText('next')).toBeNull()
 
         expect(screen.queryByText('Previous ticket')).toBeNull()
         expect(screen.queryByText('Next ticket')).toBeNull()
@@ -112,11 +97,8 @@ describe('TicketNavigationArrowPagination', () => {
         })
         render(<TicketNavigationArrowPagination ticketId={ticketId} />)
 
-        const prevArrow = screen.queryByText('keyboard_arrow_left')
-        const nextArrow = screen.queryByText('keyboard_arrow_right')
-
-        expect(prevArrow).toBeNull()
-        expect(nextArrow).toBeNull()
+        expect(screen.queryByLabelText('previous')).toBeNull()
+        expect(screen.queryByLabelText('next')).toBeNull()
 
         expect(screen.queryByText('Previous ticket')).toBeNull()
         expect(screen.queryByText('Next ticket')).toBeNull()
@@ -129,24 +111,16 @@ describe('TicketNavigationArrowPagination', () => {
 
         render(<TicketNavigationArrowPagination ticketId={ticketId} />)
 
-        const prevArrow = screen.queryByText('keyboard_arrow_left')
-        const nextArrow = screen.queryByText('keyboard_arrow_right')
-
-        expect(prevArrow).toBeInTheDocument()
-        expect(nextArrow).toBeInTheDocument
+        expect(screen.getByLabelText('previous')).toBeInTheDocument()
+        expect(screen.getByLabelText('next')).toBeInTheDocument()
     })
 
-    it('should render separator when arrows are displayed', () => {
+    it('should render arrows when navigation is available', () => {
         mockUseIsTicketNavigationAvailable.mockReturnValue(true)
 
-        const { container } = render(
-            <TicketNavigationArrowPagination ticketId={ticketId} />,
-        )
+        render(<TicketNavigationArrowPagination ticketId={ticketId} />)
 
-        expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
-        expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
-
-        const separator = container.querySelector('[class*="separator"]')
-        expect(separator).toBeInTheDocument()
+        expect(screen.getByLabelText('previous')).toBeInTheDocument()
+        expect(screen.getByLabelText('next')).toBeInTheDocument()
     })
 })

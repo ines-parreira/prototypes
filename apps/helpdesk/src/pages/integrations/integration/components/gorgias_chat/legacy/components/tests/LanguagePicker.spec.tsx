@@ -5,11 +5,6 @@ import { userEvent } from '@testing-library/user-event'
 import type { Language } from '../LanguagePicker'
 import { LanguagePicker } from '../LanguagePicker'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Icon: ({ name }: { name: string }) => <span data-testid={`icon-${name}`} />,
-}))
-
 const mockAvailableLanguages: Language[] = [
     { value: 'en-US', label: 'English (US)' },
     { value: 'fr-FR', label: 'French' },

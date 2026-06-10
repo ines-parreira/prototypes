@@ -9,79 +9,6 @@ import { OrderManagementFlowHeader } from './OrderManagementFlowHeader'
 const mockPush = jest.fn()
 const mockUseStoreSelector = jest.fn()
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Breadcrumb: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Breadcrumbs: ({
-        items,
-        children,
-    }: {
-        items: Array<{ id: string; label: string; link?: string }>
-        children: (item: {
-            id: string
-            label: string
-            link?: string
-        }) => React.ReactNode
-    }) => (
-        <nav>
-            {items.map((item) => (
-                <div key={item.id}>{children(item)}</div>
-            ))}
-        </nav>
-    ),
-    PageHeader: ({
-        title,
-        children,
-    }: {
-        title: React.ReactNode
-        children?: React.ReactNode
-    }) => (
-        <div>
-            {typeof title === 'string' ? <h1>{title}</h1> : title}
-            {children}
-        </div>
-    ),
-    Button: ({
-        children,
-        onClick,
-        icon,
-        'aria-label': ariaLabel,
-        isDisabled,
-    }: {
-        children?: React.ReactNode
-        onClick?: () => void
-        icon?: string
-        'aria-label'?: string
-        isDisabled?: boolean
-    }) => (
-        <button
-            onClick={onClick}
-            data-icon={icon}
-            aria-label={ariaLabel}
-            disabled={isDisabled}
-        >
-            {children}
-        </button>
-    ),
-    Heading: ({ children }: { children?: React.ReactNode }) => (
-        <h1>{children}</h1>
-    ),
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-    Icon: ({ name }: { name: string }) => <span data-icon={name} />,
-    TextSize: { Sm: 'sm' },
-    TextVariant: { Medium: 'medium' },
-    ButtonIntent: { Regular: 'regular' },
-    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
-    ButtonSize: { Sm: 'sm', Md: 'md' },
-    ButtonAs: { Button: 'button' },
-    HeadingSize: { Xl: 'xl' },
-    IconName: { ArrowLeft: 'arrow-left' },
-}))
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: mockPush }),
@@ -150,8 +77,9 @@ describe('OrderManagementFlowHeader', () => {
         it('should render Order Management breadcrumb with link', () => {
             render(<OrderManagementFlowHeader {...defaultProps} />)
 
-            const link = screen.getByText('Order Management').closest('a')
-            expect(link).toHaveAttribute(
+            expect(
+                screen.getByRole('link', { name: 'Order Management' }),
+            ).toHaveAttribute(
                 'href',
                 '/app/settings/order-management/shopify/my-store',
             )
@@ -160,10 +88,9 @@ describe('OrderManagementFlowHeader', () => {
         it('should render the flow title as the last breadcrumb without a link', () => {
             render(<OrderManagementFlowHeader {...defaultProps} />)
 
-            const titleBreadcrumb = screen
-                .getAllByText('Cancel Order')
-                .find((el) => el.closest('nav'))
-            expect(titleBreadcrumb?.closest('a')).toBeNull()
+            expect(
+                screen.queryByRole('link', { name: 'Cancel Order' }),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -208,9 +135,9 @@ describe('OrderManagementFlowHeader', () => {
         it('should render the help link', () => {
             render(<OrderManagementFlowHeader {...defaultProps} />)
 
-            const link = screen
-                .getByText(/learn more about order statuses/i)
-                .closest('a')
+            const link = screen.getByRole('link', {
+                name: /learn more about order statuses/i,
+            })
             expect(link).toHaveAttribute('target', '_blank')
             expect(link).toHaveAttribute('rel', 'noreferrer')
         })

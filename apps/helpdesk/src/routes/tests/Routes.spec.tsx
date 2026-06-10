@@ -43,10 +43,6 @@ import { initialState } from 'state/billing/reducers'
 import type { RootState } from 'state/types'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    PanelHeader: ({ title }: { title: string }) => <div>{title}</div>,
-}))
 jest.mock('@repo/logging')
 const logPageMock = assumeMock(logPageChange)
 

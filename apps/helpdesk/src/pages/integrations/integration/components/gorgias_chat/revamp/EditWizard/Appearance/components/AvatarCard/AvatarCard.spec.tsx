@@ -1,5 +1,3 @@
-import type { ChangeEvent, ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -49,69 +47,6 @@ jest.mock(
     }),
 )
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-    RadioGroup: ({
-        children,
-        value,
-        onChange,
-    }: {
-        children: ReactNode
-        value: string
-        onChange: (value: string) => void
-    }) => (
-        <div
-            role="radiogroup"
-            data-value={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                if (e.target.type === 'radio') onChange(e.target.value)
-            }}
-        >
-            {children}
-        </div>
-    ),
-    Radio: ({
-        value,
-        label,
-        isDisabled,
-    }: {
-        value: string
-        label: string
-        isDisabled?: boolean
-    }) => (
-        <label>
-            <input
-                type="radio"
-                value={value}
-                disabled={isDisabled}
-                onChange={() => {}}
-            />
-            {label}
-        </label>
-    ),
-    TextField: ({
-        value,
-        onChange,
-        className,
-    }: {
-        value: string
-        onChange: (value: string) => void
-        className?: string
-    }) => (
-        <input
-            type="text"
-            value={value}
-            className={className}
-            onChange={(e) => onChange(e.target.value)}
-            aria-label="Chat title input"
-        />
-    ),
-}))
-
 describe('AvatarCard', () => {
     const defaultAvatar = {
         imageType: GorgiasChatAvatarImageType.AGENT_PICTURE,
@@ -156,9 +91,7 @@ describe('AvatarCard', () => {
         it('should not show chat title input when nameType is not CHAT_TITLE', () => {
             renderComponent()
 
-            expect(
-                screen.queryByRole('textbox', { name: 'Chat title input' }),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
         })
 
         it('should show chat title input when nameType is CHAT_TITLE', () => {
@@ -169,9 +102,7 @@ describe('AvatarCard', () => {
                 },
             })
 
-            expect(
-                screen.getByRole('textbox', { name: 'Chat title input' }),
-            ).toBeInTheDocument()
+            expect(screen.getByRole('textbox')).toBeInTheDocument()
         })
 
         it('should display current name value in chat title input', () => {
@@ -182,9 +113,7 @@ describe('AvatarCard', () => {
                 },
             })
 
-            expect(
-                screen.getByRole('textbox', { name: 'Chat title input' }),
-            ).toHaveValue('Test Chat')
+            expect(screen.getByRole('textbox')).toHaveValue('Test Chat')
         })
 
         it('should call onAvatarChange with new nameType when a name radio is selected', async () => {

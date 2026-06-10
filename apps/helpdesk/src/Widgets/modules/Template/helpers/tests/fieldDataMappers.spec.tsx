@@ -1,12 +1,10 @@
-import type { ReactElement, ReactNode } from 'react'
+import type { ReactElement } from 'react'
 import React from 'react'
 
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
-
-import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
@@ -16,20 +14,10 @@ import { getStringFromData, getValueFromData } from '../fieldDataMappers'
 jest.mock('pages/common/utils/DatetimeLabel', () => {
     return jest.fn(() => null)
 })
-jest.mock('@gorgias/axiom', () => {
-    return {
-        __esModule: true,
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyBadge: jest.fn(
-            ({ children }: { children?: ReactNode }) => children,
-        ),
-    } as Record<string, unknown>
-})
 jest.mock('pages/common/components/StarRating', () => {
     return jest.fn(() => null)
 })
 const DatetimeLabelMock = assumeMock(DatetimeLabel)
-const BadgeMock = assumeMock(Badge)
 
 describe('getValueFromData()', () => {
     it('should return passed data because passed type is `text`', () => {
@@ -63,7 +51,7 @@ describe('getValueFromData()', () => {
 
     it('should return a link because passed type is `url` and passed data is an url', () => {
         render(<>{getValueFromData('https://gorgias.io', 'url')}</>)
-        expect(document.querySelector('a')).toHaveAttribute(
+        expect(screen.getByRole('link')).toHaveAttribute(
             'href',
             'https://gorgias.io',
         )
@@ -76,7 +64,7 @@ describe('getValueFromData()', () => {
 
     it('should return a link because passed type is `email` and passed data is an email address', () => {
         render(<>{getValueFromData('developers@gorgias.io', 'email')}</>)
-        expect(document.querySelector('a')).toHaveAttribute(
+        expect(screen.getByRole('link')).toHaveAttribute(
             'href',
             'mailto:developers@gorgias.io',
         )
@@ -135,10 +123,7 @@ describe('getValueFromData()', () => {
         'should return a success badge because passed data is a `true` value',
         (data) => {
             render(<>{getValueFromData(data, 'boolean')}</>)
-            expect(getLastMockCall(BadgeMock)[0]).toEqual({
-                type: 'success',
-                children: 'True',
-            })
+            expect(screen.getByText('True')).toBeInTheDocument()
         },
     )
 
@@ -146,10 +131,7 @@ describe('getValueFromData()', () => {
         'should return a danger badge because passed data is a `false` value',
         (data) => {
             render(<>{getValueFromData(data, 'boolean')}</>)
-            expect(getLastMockCall(BadgeMock)[0]).toEqual({
-                type: 'error',
-                children: 'False',
-            })
+            expect(screen.getByText('False')).toBeInTheDocument()
         },
     )
 

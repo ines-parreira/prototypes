@@ -8,12 +8,6 @@ import { submitCustomer } from 'state/customers/actions'
 
 import CustomerNote from '../CustomerNote'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    ...jest.requireActual<typeof import('@gorgias/axiom')>('@gorgias/axiom'),
-    LegacyLoadingSpinner: () => <div>SpinnerMock</div>,
-}))
-
 jest.mock('state/customers/actions')
 const submitCustomerMock = assumeMock(submitCustomer)
 const mockStore = configureMockStore([thunk])
@@ -64,7 +58,7 @@ describe('<CustomerNote />', () => {
 
         fireEvent.blur(screen.getByPlaceholderText(notePlaceholder))
         expect(submitCustomerMock).toHaveBeenCalledWith({ note: newNote }, id)
-        expect(screen.getByText('SpinnerMock')).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
 
         await act(flushPromises)
     })
@@ -84,7 +78,7 @@ describe('<CustomerNote />', () => {
         expect(screen.getByText(newNote)).toBeInTheDocument()
 
         await act(flushPromises)
-        expect(screen.queryByText('SpinnerMock')).not.toBeInTheDocument()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
         expect(screen.queryByText(error)).not.toBeInTheDocument()
     })
 

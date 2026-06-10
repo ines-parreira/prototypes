@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -8,23 +6,6 @@ import { useResourceMetrics } from 'domains/reporting/models/queryFactories/know
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionLinkedIntents } from './KnowledgeEditorSidePanelSectionLinkedIntents'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: ReactNode
-        children: ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ children }: { children?: ReactNode }) => <>{children}</>,
-}))
 
 const mockUpdateGuidanceArticle = jest.fn()
 

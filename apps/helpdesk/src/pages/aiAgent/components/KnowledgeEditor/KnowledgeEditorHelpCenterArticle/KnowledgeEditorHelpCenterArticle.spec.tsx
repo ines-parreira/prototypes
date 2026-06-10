@@ -44,64 +44,6 @@ jest.mock('./useKnowledgeEditorArticleData', () => ({
     ) => mockUseKnowledgeEditorArticleData(...args),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({
-        children,
-        className,
-        ...props
-    }: Record<string, unknown> & {
-        children?: React.ReactNode
-        className?: string
-    }) => (
-        <div className={className} {...props}>
-            {children}
-        </div>
-    ),
-    SidePanel: ({
-        isOpen,
-        onOpenChange,
-        children,
-    }: {
-        isOpen: boolean
-        onOpenChange: (open: boolean) => void
-        children: React.ReactNode
-    }) =>
-        isOpen ? (
-            <div data-testid="side-panel" data-is-open={isOpen}>
-                <button
-                    data-testid="close-panel-button"
-                    onClick={() => onOpenChange(false)}
-                >
-                    Close
-                </button>
-                {children}
-            </div>
-        ) : null,
-    Card: ({
-        children,
-        className,
-    }: {
-        children: React.ReactNode
-        className?: string
-        elevation?: string
-    }) => (
-        <div data-testid="card" className={className}>
-            {children}
-        </div>
-    ),
-    LegacyLoadingSpinner: () => (
-        <div data-testid="loading-spinner">Loading</div>
-    ),
-    Skeleton: ({ height, containerClassName }: any) => (
-        <div
-            data-testid="skeleton"
-            data-height={height}
-            className={containerClassName}
-        />
-    ),
-}))
-
 jest.mock('models/api/types', () => ({
     ...jest.requireActual('models/api/types'),
     isGorgiasApiError: jest.fn(),
@@ -385,7 +327,6 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 />,
             )
 
-            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
             expect(
                 screen.getByTestId('article-editor-content'),
             ).toBeInTheDocument()

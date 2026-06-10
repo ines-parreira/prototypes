@@ -10,11 +10,6 @@ import Body from '../Body'
 import Context from '../Context'
 import focusOnNextItem from '../focusOnNextItem'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyLoadingSpinner: () => 'SpinnerMock',
-}))
-
 jest.mock('../focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock
 
@@ -53,12 +48,12 @@ describe('<Body />', () => {
         )
 
     it('should display loading state', () => {
-        const { getByText } = renderWithContexts({
+        const { getByRole } = renderWithContexts({
             ...mockContext,
             isLoading: true,
         })
 
-        expect(getByText('SpinnerMock')).toBeInTheDocument()
+        expect(getByRole('status')).toBeInTheDocument()
     })
 
     it('should handle case for no results', () => {

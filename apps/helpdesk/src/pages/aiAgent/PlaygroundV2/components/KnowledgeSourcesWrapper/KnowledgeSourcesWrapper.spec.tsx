@@ -1,8 +1,6 @@
 import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-
-import { Skeleton } from '@gorgias/axiom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
@@ -18,10 +16,6 @@ jest.mock('../../hooks/useFeedbackPolling')
 jest.mock(
     '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData',
 )
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: jest.fn(),
-}))
 jest.mock('../../contexts/EventsContext', () => ({
     useSubscribeToEvent: jest.fn(),
 }))
@@ -31,7 +25,6 @@ jest.mock('../../contexts/SettingsContext', () => ({
 const mockUseFeedbackPolling = jest.mocked(useFeedbackPolling)
 const mockUseEnrichFeedbackData = jest.mocked(useEnrichFeedbackData)
 const mockUseSettingsContext = jest.mocked(useSettingsContext)
-const SkeletonMock = assumeMock(Skeleton)
 const mockStoreConfiguration = {
     shopType: 'shopify',
     storeName: 'Test Store',
@@ -48,8 +41,6 @@ const renderComponent = (props: {
 describe('KnowledgeSourcesWrapper', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        // Mock Skeleton component to render a test-id for easy testing
-        SkeletonMock.mockImplementation(() => <div data-testid="skeleton" />)
         // Mock SettingsContext to return inbound mode by default
         mockUseSettingsContext.mockReturnValue({
             mode: 'inbound',
@@ -379,7 +370,7 @@ describe('KnowledgeSourcesWrapper', () => {
                 storeConfiguration: mockStoreConfiguration,
             })
             // Should show loading skeleton while polling
-            expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         })
         it('should stop polling when feedback data is received', () => {
             const startPollingMock = jest.fn()
@@ -435,7 +426,7 @@ describe('KnowledgeSourcesWrapper', () => {
                 storeConfiguration: mockStoreConfiguration,
             })
             // Should show loading skeleton while polling
-            expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
             expect(startPollingMock).toHaveBeenCalledTimes(1)
             // Now mock the state after data is received
             mockUseFeedbackPolling.mockReturnValue({
@@ -458,7 +449,7 @@ describe('KnowledgeSourcesWrapper', () => {
             // Should display the knowledge sources when data is received
             expect(screen.getByText('Test Article')).toBeInTheDocument()
             // Should no longer show loading skeleton (indicates polling has stopped)
-            expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
         })
     })
     describe('outbound mode', () => {

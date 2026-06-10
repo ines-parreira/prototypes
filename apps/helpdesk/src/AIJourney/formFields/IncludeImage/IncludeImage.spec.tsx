@@ -9,25 +9,6 @@ import { JOURNEY_TYPES } from 'AIJourney/constants'
 
 import { IncludeImage } from './IncludeImage'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ title }: { title?: React.ReactNode }) => (
-        <div role="tooltip">{title}</div>
-    ),
-}))
-
 const renderComponent = (
     journeyType: string,
     defaultValues: Record<string, unknown> = {},
@@ -159,10 +140,13 @@ describe('<IncludeImage />', () => {
     })
 
     describe('info tooltip (v3 architecture)', () => {
-        it('should render the info tooltip with the correct content when isV3Architecture is true', () => {
+        it('should render the info tooltip with the correct content when isV3Architecture is true', async () => {
+            const user = userEvent.setup()
             renderComponent(JOURNEY_TYPES.CART_ABANDONMENT, {}, true)
 
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
+            await user.hover(screen.getByRole('img', { name: 'info' }))
+
+            expect(await screen.findByRole('tooltip')).toHaveTextContent(
                 "Shows the relevant product from the shopper's session, pulled from Shopify",
             )
         })
@@ -170,12 +154,18 @@ describe('<IncludeImage />', () => {
         it('should not render the info tooltip when isV3Architecture is false', () => {
             renderComponent(JOURNEY_TYPES.CART_ABANDONMENT, {}, false)
 
+            expect(
+                screen.queryByRole('img', { name: 'info' }),
+            ).not.toBeInTheDocument()
             expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
         })
 
         it('should not render the info tooltip when isV3Architecture is undefined', () => {
             renderComponent(JOURNEY_TYPES.CART_ABANDONMENT)
 
+            expect(
+                screen.queryByRole('img', { name: 'info' }),
+            ).not.toBeInTheDocument()
             expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
         })
     })

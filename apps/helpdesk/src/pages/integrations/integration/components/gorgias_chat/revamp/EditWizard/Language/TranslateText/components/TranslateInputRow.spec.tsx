@@ -4,34 +4,6 @@ import userEvent from '@testing-library/user-event'
 
 import { TranslateInputRow } from './TranslateInputRow'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    TextAreaField: ({
-        value,
-        isDisabled,
-        isRequired,
-        onChange,
-        'aria-label': ariaLabel,
-        placeholder,
-    }: {
-        value: string
-        isDisabled?: boolean
-        isRequired?: boolean
-        onChange?: (value: string) => void
-        'aria-label'?: string
-        placeholder?: string
-    }) => (
-        <input
-            value={value}
-            disabled={isDisabled}
-            required={isRequired}
-            onChange={(e) => onChange?.(e.target.value)}
-            aria-label={ariaLabel}
-            placeholder={placeholder}
-        />
-    ),
-}))
-
 const defaultProps = {
     keyName: 'texts.chatTitle',
     value: 'Hello',

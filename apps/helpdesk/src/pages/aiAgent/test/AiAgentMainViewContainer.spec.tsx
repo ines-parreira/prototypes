@@ -28,12 +28,6 @@ const LocationPath = () => {
     return <div>{location.pathname}</div>
 }
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyLoadingSpinner: () => (
-        <div data-testid="loading-spinner">Loading...</div>
-    ),
-}))
 jest.mock(
     'pages/settings/billing/automate/AutomateSubscriptionModal',
     () => () => <div>Automate Subscription Modal</div>,
@@ -231,9 +225,7 @@ describe('AiAgentMainViewContainer', () => {
     it('renders loader if loading store configuration', () => {
         setupMocks({ isStoreConfigurationLoading: true })
         renderComponent()
-        // The LoadingSpinner component should be rendered with a loading div
-        const loadingDiv = document.querySelector('[aria-label="loading"]')
-        expect(loadingDiv).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
     it('renders welcome page if onboarding wizard is not completed', () => {
         setupMocks({ hasStoreConfiguration: false })

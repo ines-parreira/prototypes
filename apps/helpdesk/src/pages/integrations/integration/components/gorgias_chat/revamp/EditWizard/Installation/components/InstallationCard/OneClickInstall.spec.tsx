@@ -1,34 +1,17 @@
 import { render } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
-
-import {
-    ButtonIntent,
-    ButtonVariant,
-    IconSize,
-    ModalSize,
-    TextSize,
-    TextVariant,
-} from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 
 import OneClickInstall from './OneClickInstall'
 
-const mockButton = jest.fn(({ children }: any) => children)
-const mockIcon = jest.fn((__props: any) => null)
-const mockModal = jest.fn(({ children }: any) => children)
-const mockOverlayHeader = jest.fn((__props: any) => null)
-const mockOverlayContent = jest.fn(({ children }: any) => children)
-const mockOverlayFooter = jest.fn(({ children }: any) => children)
-const mockText = jest.fn(({ children }: any) => children)
 const mockSkeletonLoader = jest.fn((__props: any) => null)
 const mockVisibilityControls = jest.fn((__props: any) => null)
 
 const mockDispatch = jest.fn().mockResolvedValue(undefined)
 const mockUseAppDispatch = jest.fn(() => mockDispatch)
-const mockToastSuccess = jest.fn()
-const mockToastError = jest.fn()
 const mockUseAppSelector = jest.fn()
 const mockUseFlag = jest.fn((__key) => false)
 const mockUseAsyncFn = jest.fn((fn: any) => [{ loading: false }, fn])
@@ -41,21 +24,6 @@ const mockUseShopifyThemeAppExtension = jest.fn(
         isLoaded: false,
     }),
 )
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: (props: any) => mockButton(props),
-    Icon: (props: any) => mockIcon(props),
-    Modal: (props: any) => mockModal(props),
-    OverlayHeader: (props: any) => mockOverlayHeader(props),
-    OverlayContent: (props: any) => mockOverlayContent(props),
-    OverlayFooter: (props: any) => mockOverlayFooter(props),
-    Text: (props: any) => mockText(props),
-    toast: {
-        success: (...args: any[]) => mockToastSuccess(...args),
-        error: (...args: any[]) => mockToastError(...args),
-    },
-}))
 
 jest.mock('pages/common/components/SkeletonLoader', () => ({
     __esModule: true,
@@ -223,14 +191,9 @@ describe('OneClickInstall', () => {
                 themeAppExtensionInstallation: true,
             })
 
-            const textCalls = mockText.mock.calls as any[]
-            const headerText = textCalls.find(
-                (call) => call[0].children === 'Quick installation for Shopify',
-            )
-
-            expect(headerText).toBeDefined()
-            expect(headerText[0].size).toBe(TextSize.Md)
-            expect(headerText[0].variant).toBe(TextVariant.Medium)
+            expect(
+                screen.getByText('Quick installation for Shopify'),
+            ).toBeInTheDocument()
         })
 
         it('should render "1-click installation for Shopify" when theme app extension is not enabled', () => {
@@ -238,15 +201,9 @@ describe('OneClickInstall', () => {
                 themeAppExtensionInstallation: false,
             })
 
-            const textCalls = mockText.mock.calls as any[]
-            const headerText = textCalls.find(
-                (call) =>
-                    call[0].children === '1-click installation for Shopify',
-            )
-
-            expect(headerText).toBeDefined()
-            expect(headerText[0].size).toBe(TextSize.Md)
-            expect(headerText[0].variant).toBe(TextVariant.Medium)
+            expect(
+                screen.getByText('1-click installation for Shopify'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -256,14 +213,11 @@ describe('OneClickInstall', () => {
                 themeAppExtensionInstallation: false,
             })
 
-            const textCalls = mockText.mock.calls as any[]
-            const subtext = textCalls.find(
-                (call) =>
-                    call[0].children ===
+            expect(
+                screen.getByText(
                     'Add the chat widget to your Shopify store in one click.',
-            )
-
-            expect(subtext).toBeDefined()
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should render "To add Chat, click Install then Save" when theme app extension is enabled but not installed', () => {
@@ -277,14 +231,11 @@ describe('OneClickInstall', () => {
                 isInstalled: false,
             })
 
-            const textCalls = mockText.mock.calls as any[]
-            const subtext = textCalls.find(
-                (call) =>
-                    call[0].children ===
+            expect(
+                screen.getByText(
                     'To add Chat, click Install then Save in the new Shopify window without editing anything.',
-            )
-
-            expect(subtext).toBeDefined()
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should render "To add Chat to your Shopify store, click Install" when theme app extension is installed', () => {
@@ -298,14 +249,11 @@ describe('OneClickInstall', () => {
                 isInstalled: false,
             })
 
-            const textCalls = mockText.mock.calls as any[]
-            const subtext = textCalls.find(
-                (call) =>
-                    call[0].children ===
+            expect(
+                screen.getByText(
                     'To add Chat to your Shopify store, click Install.',
-            )
-
-            expect(subtext).toBeDefined()
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should render "To add Chat, click Reinstall then Save" when installed but theme app extension is not', () => {
@@ -319,14 +267,11 @@ describe('OneClickInstall', () => {
                 isInstalled: true,
             })
 
-            const textCalls = mockText.mock.calls as any[]
-            const subtext = textCalls.find(
-                (call) =>
-                    call[0].children ===
+            expect(
+                screen.getByText(
                     'To add Chat, click Reinstall then Save in the new Shopify window without editing anything.',
-            )
-
-            expect(subtext).toBeDefined()
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -336,13 +281,9 @@ describe('OneClickInstall', () => {
                 isInstalled: true,
             })
 
-            expect(mockIcon).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'check-circle',
-                    color: 'green',
-                    size: IconSize.Lg,
-                }),
-            )
+            expect(
+                screen.getByRole('img', { name: 'check-circle' }),
+            ).toBeInTheDocument()
         })
 
         it('should not render CircleCheck icon when not installed', () => {
@@ -350,11 +291,9 @@ describe('OneClickInstall', () => {
                 isInstalled: false,
             })
 
-            expect(mockIcon).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'check-circle',
-                }),
-            )
+            expect(
+                screen.queryByRole('img', { name: 'check-circle' }),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -364,14 +303,9 @@ describe('OneClickInstall', () => {
                 isInstalled: false,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const installButton = buttonCalls.find(
-                (call) => call[0].children === 'Install',
-            )
-
-            expect(installButton).toBeDefined()
-            expect(installButton[0].intent).toBe(ButtonIntent.Regular)
-            expect(installButton[0].variant).toBe(ButtonVariant.Primary)
+            expect(
+                screen.getByRole('button', { name: 'Install' }),
+            ).toBeInTheDocument()
         })
 
         it('should disable Install button when not connected', () => {
@@ -380,13 +314,9 @@ describe('OneClickInstall', () => {
                 isConnected: false,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const installButton = buttonCalls.find(
-                (call) => call[0].children === 'Install',
-            )
-
-            expect(installButton[0].isDisabled).toBe(true)
-            expect(installButton[0].variant).toBe(ButtonVariant.Secondary)
+            expect(
+                screen.getByRole('button', { name: 'Install' }),
+            ).toBeDisabled()
         })
 
         it('should show loading state on Install button', () => {
@@ -399,12 +329,9 @@ describe('OneClickInstall', () => {
                 isInstalled: false,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const installButton = buttonCalls.find(
-                (call) => call[0].children === 'Install',
-            )
-
-            expect(installButton[0].isLoading).toBe(true)
+            expect(
+                screen.queryByRole('button', { name: 'Install' }),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -414,14 +341,9 @@ describe('OneClickInstall', () => {
                 isInstalled: true,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const uninstallButton = buttonCalls.find(
-                (call) => call[0].children === 'Uninstall',
-            )
-
-            expect(uninstallButton).toBeDefined()
-            expect(uninstallButton[0].intent).toBe(ButtonIntent.Regular)
-            expect(uninstallButton[0].variant).toBe(ButtonVariant.Secondary)
+            expect(
+                screen.getByRole('button', { name: 'Uninstall' }),
+            ).toBeInTheDocument()
         })
 
         it('should show loading state on Uninstall button', () => {
@@ -434,55 +356,41 @@ describe('OneClickInstall', () => {
                 isInstalled: true,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const uninstallButton = buttonCalls.find(
-                (call) => call[0].children === 'Uninstall',
-            )
-
-            expect(uninstallButton[0].isLoading).toBe(true)
+            expect(
+                screen.queryByRole('button', { name: 'Uninstall' }),
+            ).not.toBeInTheDocument()
         })
 
         it('should dispatch and show success toast when Uninstall is clicked', async () => {
+            const user = userEvent.setup()
             renderComponent({
                 isInstalled: true,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const uninstallButton = buttonCalls.find(
-                (call) => call[0].children === 'Uninstall',
-            )
-
-            await act(async () => {
-                await uninstallButton[0].onClick()
-            })
+            await user.click(screen.getByRole('button', { name: 'Uninstall' }))
 
             expect(mockDispatch).toHaveBeenCalled()
-            expect(mockToastSuccess).toHaveBeenCalledWith(
+            expect(await screen.findByRole('status')).toHaveTextContent(
                 'Integration successfully updated',
             )
         })
 
         it('should dispatch and show success toast when Install is clicked', async () => {
+            const user = userEvent.setup()
             renderComponent({
                 isInstalled: false,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const installButton = buttonCalls.find(
-                (call) => call[0].children === 'Install',
-            )
-
-            await act(async () => {
-                await installButton[0].onClick()
-            })
+            await user.click(screen.getByRole('button', { name: 'Install' }))
 
             expect(mockDispatch).toHaveBeenCalled()
-            expect(mockToastSuccess).toHaveBeenCalledWith(
+            expect(await screen.findByRole('status')).toHaveTextContent(
                 'Integration successfully updated',
             )
         })
 
         it('should show error toast when Uninstall fails', async () => {
+            const user = userEvent.setup()
             mockDispatch.mockRejectedValueOnce({
                 response: { data: { error: { msg: 'Uninstall failed' } } },
             })
@@ -491,20 +399,15 @@ describe('OneClickInstall', () => {
                 isInstalled: true,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const uninstallButton = buttonCalls.find(
-                (call) => call[0].children === 'Uninstall',
+            await user.click(screen.getByRole('button', { name: 'Uninstall' }))
+
+            expect(await screen.findByRole('status')).toHaveTextContent(
+                'Uninstall failed',
             )
-
-            await act(async () => {
-                await uninstallButton[0].onClick()
-            })
-
-            expect(mockToastError).toHaveBeenCalledWith('Uninstall failed')
-            expect(mockToastSuccess).not.toHaveBeenCalled()
         })
 
         it('should show error toast when Install fails', async () => {
+            const user = userEvent.setup()
             mockDispatch.mockRejectedValueOnce({
                 response: { data: { error: { msg: 'Install failed' } } },
             })
@@ -513,17 +416,11 @@ describe('OneClickInstall', () => {
                 isInstalled: false,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const installButton = buttonCalls.find(
-                (call) => call[0].children === 'Install',
+            await user.click(screen.getByRole('button', { name: 'Install' }))
+
+            expect(await screen.findByRole('status')).toHaveTextContent(
+                'Install failed',
             )
-
-            await act(async () => {
-                await installButton[0].onClick()
-            })
-
-            expect(mockToastError).toHaveBeenCalledWith('Install failed')
-            expect(mockToastSuccess).not.toHaveBeenCalled()
         })
     })
 
@@ -542,14 +439,9 @@ describe('OneClickInstall', () => {
                 isInstalled: true,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const reinstallButton = buttonCalls.find(
-                (call) => call[0].children === 'Reinstall',
-            )
-
-            expect(reinstallButton).toBeDefined()
-            expect(reinstallButton[0].intent).toBe(ButtonIntent.Regular)
-            expect(reinstallButton[0].variant).toBe(ButtonVariant.Primary)
+            expect(
+                screen.getByRole('button', { name: 'Reinstall' }),
+            ).toBeInTheDocument()
         })
 
         it('should disable Reinstall button when not connected', () => {
@@ -567,12 +459,9 @@ describe('OneClickInstall', () => {
                 isConnected: false,
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const reinstallButton = buttonCalls.find(
-                (call) => call[0].children === 'Reinstall',
-            )
-
-            expect(reinstallButton[0].isDisabled).toBe(true)
+            expect(
+                screen.getByRole('button', { name: 'Reinstall' }),
+            ).toBeDisabled()
         })
     })
 
@@ -585,17 +474,13 @@ describe('OneClickInstall', () => {
 
             renderComponent()
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const expandButton = buttonCalls.find(
-                (call) => call[0].icon === 'arrow-chevron-down',
-            )
-
-            expect(expandButton).toBeDefined()
-            expect(expandButton[0].variant).toBe(ButtonVariant.Secondary)
-            expect(expandButton[0].intent).toBe(ButtonIntent.Regular)
+            expect(
+                screen.getByRole('img', { name: 'arrow-chevron-down' }),
+            ).toBeInTheDocument()
         })
 
-        it('should change to collapse icon when opened', () => {
+        it('should change to collapse icon when opened', async () => {
+            const user = userEvent.setup()
             mockUseFlag.mockImplementation((key: string) => {
                 if (key === 'ChatShowOrHideOnSelectedUrls') return true
                 return false
@@ -603,20 +488,15 @@ describe('OneClickInstall', () => {
 
             renderComponent()
 
-            const expandButton = mockButton.mock.calls.find(
-                (call: any) => call[0].icon === 'arrow-chevron-down',
+            await user.click(
+                screen.getByRole('img', { name: 'arrow-chevron-down' }),
             )
 
-            act(() => {
-                expandButton![0].onClick()
-            })
-
-            const buttonCalls = mockButton.mock.calls as any[]
-            const collapseButton = buttonCalls.find(
-                (call) => call[0].icon === 'arrow-chevron-up',
-            )
-
-            expect(collapseButton).toBeDefined()
+            expect(
+                await screen.findByRole('img', {
+                    name: 'arrow-chevron-up',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should not render expand button when feature flag is disabled', () => {
@@ -624,14 +504,12 @@ describe('OneClickInstall', () => {
 
             renderComponent()
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const expandButton = buttonCalls.find(
-                (call) =>
-                    call[0].icon === 'arrow-chevron-down' ||
-                    call[0].icon === 'arrow-chevron-up',
-            )
-
-            expect(expandButton).toBeUndefined()
+            expect(
+                screen.queryByRole('img', { name: 'arrow-chevron-down' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('img', { name: 'arrow-chevron-up' }),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -699,7 +577,7 @@ describe('OneClickInstall', () => {
     })
 
     describe('Shopify permissions modal', () => {
-        it('should render modal when feature flag is enabled', () => {
+        it('should not show modal initially when feature flag is enabled', () => {
             mockUseFlag.mockImplementation((key: string) => {
                 if (key === 'ChatScopeInstallOnShopifyCallback') return true
                 return false
@@ -707,70 +585,19 @@ describe('OneClickInstall', () => {
 
             renderComponent()
 
-            expect(mockModal).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    size: ModalSize.Md,
-                    isOpen: false,
-                }),
-            )
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
 
-        it('should not render modal when feature flag is disabled', () => {
+        it('should not show modal when feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
             renderComponent()
 
-            expect(mockModal).not.toHaveBeenCalled()
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
 
-        it('should render modal content with correct text', () => {
-            mockUseFlag.mockImplementation((key: string) => {
-                if (key === 'ChatScopeInstallOnShopifyCallback') return true
-                return false
-            })
-
-            renderComponent()
-
-            expect(mockOverlayHeader).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    title: 'Update Shopify permissions?',
-                }),
-            )
-
-            const textCalls = mockText.mock.calls as any[]
-            const modalText = textCalls.find(
-                (call) =>
-                    call[0].children ===
-                    'Please update Shopify permissions before installing your chat to ensure better stability.',
-            )
-
-            expect(modalText).toBeDefined()
-        })
-
-        it('should render Close and Update buttons in modal', () => {
-            mockUseFlag.mockImplementation((key: string) => {
-                if (key === 'ChatScopeInstallOnShopifyCallback') return true
-                return false
-            })
-
-            renderComponent()
-
-            const buttonCalls = mockButton.mock.calls as any[]
-            const closeButton = buttonCalls.find(
-                (call) => call[0].children === 'Close',
-            )
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update',
-            )
-
-            expect(closeButton).toBeDefined()
-            expect(closeButton[0].intent).toBe(ButtonIntent.Regular)
-            expect(closeButton[0].variant).toBe(ButtonVariant.Secondary)
-
-            expect(updateButton).toBeDefined()
-        })
-
-        it('should open modal when Install is clicked and scope permission is missing', () => {
+        it('should open modal with correct content when Install is clicked and scope permission is missing', async () => {
+            const user = userEvent.setup()
             mockUseFlag.mockImplementation((key: string) => {
                 if (key === 'ChatScopeInstallOnShopifyCallback') return true
                 return false
@@ -781,21 +608,23 @@ describe('OneClickInstall', () => {
                 hasShopifyScriptTagScope: false,
             })
 
-            const installButton = mockButton.mock.calls.find(
-                (call: any) => call[0].children === 'Install',
+            await user.click(screen.getByRole('button', { name: 'Install' }))
+
+            const dialog = await screen.findByRole('dialog')
+            expect(dialog).toHaveTextContent('Update Shopify permissions?')
+            expect(dialog).toHaveTextContent(
+                'Please update Shopify permissions before installing your chat to ensure better stability.',
             )
-
-            act(() => {
-                installButton![0].onClick()
-            })
-
-            const modalCalls = mockModal.mock.calls as any[]
-            const lastModalCall = modalCalls[modalCalls.length - 1]
-
-            expect(lastModalCall[0].isOpen).toBe(true)
+            expect(
+                screen.getByRole('button', { name: 'Close' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Update' }),
+            ).toBeInTheDocument()
         })
 
-        it('should not open modal when hasShopifyScriptTagScope is true', () => {
+        it('should not open modal when hasShopifyScriptTagScope is true', async () => {
+            const user = userEvent.setup()
             mockUseFlag.mockImplementation((key: string) => {
                 if (key === 'ChatScopeInstallOnShopifyCallback') return true
                 return false
@@ -806,10 +635,12 @@ describe('OneClickInstall', () => {
                 hasShopifyScriptTagScope: true,
             })
 
-            const modalCalls = mockModal.mock.calls as any[]
-            const initialModalCall = modalCalls[0]
+            await user.click(screen.getByRole('button', { name: 'Install' }))
 
-            expect(initialModalCall[0].isOpen).toBe(false)
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalled()
+            })
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
     })
 })

@@ -22,10 +22,6 @@ const mockUseListTeams = useListTeams as jest.Mock
 jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyLoadingSpinner: () => 'SpinnerMock',
-}))
 const queryClient = mockQueryClient()
 
 jest.mock(
@@ -92,7 +88,7 @@ describe('<TeamAssigneeDropdownMenu />', () => {
 
         renderWithWrapper()
 
-        expect(screen.getByText('SpinnerMock')).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
         expect(screen.queryByText(/Clear assignee/)).toBeInTheDocument()
     })
 

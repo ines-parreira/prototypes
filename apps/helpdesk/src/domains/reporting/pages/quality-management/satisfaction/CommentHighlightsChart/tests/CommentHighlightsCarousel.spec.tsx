@@ -21,14 +21,9 @@ const dummyData = [
     },
 ]
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div>Skeleton</div>,
-}))
-
 describe('CommentHighlightsCarousel', () => {
     it('renders skeletons when fetching', () => {
-        const { getAllByText } = render(
+        const { getAllByLabelText } = render(
             <MemoryRouter>
                 <CommentHighlightsCarousel
                     isFetching={true}
@@ -38,7 +33,7 @@ describe('CommentHighlightsCarousel', () => {
             </MemoryRouter>,
         )
 
-        expect(getAllByText('Skeleton').length).toEqual(2)
+        expect(getAllByLabelText('Loading')).toHaveLength(2)
     })
 
     it('renders slider with provided data when not fetching', () => {

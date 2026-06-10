@@ -1,4 +1,4 @@
-import type { ComponentProps, MouseEventHandler, ReactNode } from 'react'
+import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
@@ -19,36 +19,6 @@ import type { RootState } from 'state/types'
 
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import { AiAgentTrialMessageHelpdeskV2 } from '../AIAgentTrialMessageHelpdeskV2/AiAgentTrialMessageHelpdeskV2'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({
-        children,
-        className,
-    }: {
-        children?: ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    Button: ({
-        children,
-        isDisabled,
-        onClick,
-    }: {
-        children?: ReactNode
-        isDisabled?: boolean
-        onClick?: MouseEventHandler<HTMLButtonElement>
-    }) => (
-        <button disabled={isDisabled} onClick={onClick} type="button">
-            {children}
-        </button>
-    ),
-    Icon: ({ name }: { name: string }) => <span>{name}</span>,
-    Link: ({ children, href }: { children?: ReactNode; href?: string }) => (
-        <a href={href}>{children}</a>
-    ),
-    Skeleton: () => <div data-testid="skeleton" />,
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-}))
 
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('state/currentAccount/selectors')
@@ -132,7 +102,7 @@ describe('AiAgentTrialMessageHelpdeskV2', () => {
 
         renderComponent()
 
-        expect(screen.getAllByTestId('skeleton')).toHaveLength(5)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(5)
         expect(
             screen.queryByRole('button', { name: 'Copy message' }),
         ).not.toBeInTheDocument()

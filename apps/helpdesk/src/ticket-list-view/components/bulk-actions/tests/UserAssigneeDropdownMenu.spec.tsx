@@ -22,10 +22,6 @@ const mockUseListUsers = useListUsers as jest.Mock
 jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyLoadingSpinner: () => 'SpinnerMock',
-}))
 jest.mock(
     '../UserDropdownItem',
     () =>
@@ -93,7 +89,7 @@ describe('<UserAssigneeDropdownMenu />', () => {
 
         renderWithWrapper()
 
-        expect(screen.getByText('SpinnerMock')).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
         expect(screen.getByText(/Clear assignee/)).toBeInTheDocument()
     })
 

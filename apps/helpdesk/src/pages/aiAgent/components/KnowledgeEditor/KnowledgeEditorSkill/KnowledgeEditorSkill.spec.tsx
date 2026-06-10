@@ -30,17 +30,6 @@ jest.mock('./modals/SkillRestoreVersionModal', () => ({
     SkillRestoreVersionModal: () => null,
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({
-        isOpen,
-        children,
-    }: {
-        isOpen: boolean
-        children: React.ReactNode
-    }) => (isOpen ? <div>{children}</div> : null),
-}))
-
 const mockNotifyError = jest.fn()
 jest.mock('./hooks/useSkillNotify', () => ({
     useSkillNotify: jest.fn(() => ({
@@ -196,14 +185,12 @@ describe('KnowledgeEditorSkill', () => {
             isLoading: true,
         })
 
-        const { container } = render(<KnowledgeEditorSkill {...defaultProps} />)
+        render(<KnowledgeEditorSkill {...defaultProps} />)
 
         expect(
             screen.queryByRole('button', { name: /back to skills/i }),
         ).not.toBeInTheDocument()
-        expect(
-            container.querySelector('.react-loading-skeleton'),
-        ).not.toBeNull()
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
     it('renders loading shell while article is loading', () => {
@@ -214,16 +201,12 @@ describe('KnowledgeEditorSkill', () => {
             error: null,
         })
 
-        const { container } = render(
-            <KnowledgeEditorSkill {...defaultProps} skillId="1" />,
-        )
+        render(<KnowledgeEditorSkill {...defaultProps} skillId="1" />)
 
         expect(
             screen.queryByRole('button', { name: /back to skills/i }),
         ).not.toBeInTheDocument()
-        expect(
-            container.querySelector('.react-loading-skeleton'),
-        ).not.toBeNull()
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
     it('renders the editor content when data is loaded', () => {

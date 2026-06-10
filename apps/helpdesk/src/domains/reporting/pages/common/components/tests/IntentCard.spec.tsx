@@ -1,8 +1,6 @@
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { Skeleton } from '@gorgias/axiom'
-
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
 import type { IntentCardProps } from 'domains/reporting/pages/common/components/IntentCard'
 import { IntentCard } from 'domains/reporting/pages/common/components/IntentCard'
@@ -10,11 +8,6 @@ import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge/Tre
 
 jest.mock('domains/reporting/pages/common/components/TrendBadge/TrendBadge')
 const TrendBadgeMock = assumeMock(TrendBadge)
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: jest.fn().mockImplementation((props) => <div {...props} />),
-}))
 
 describe('IntentCard', () => {
     const onViewTickets = jest.fn()
@@ -74,6 +67,6 @@ describe('IntentCard', () => {
         expect(screen.queryByText(L3)).not.toBeInTheDocument()
         expect(screen.queryByText('220/8,857 tickets')).not.toBeInTheDocument()
 
-        expect(Skeleton).toHaveBeenCalledTimes(4)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(4)
     })
 })

@@ -5,11 +5,6 @@ import { screen } from '@testing-library/react'
 
 import RecordsTableSkeleton from '../RecordsTableSkeleton'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div> Skeleton</div>,
-}))
-
 describe('RecordsTableSkeleton', () => {
     const renderComponent = () => render(<RecordsTableSkeleton />)
 
@@ -21,6 +16,6 @@ describe('RecordsTableSkeleton', () => {
 
         const cells = screen.getAllByRole('cell')
         expect(cells).toHaveLength(12)
-        expect(screen.getAllByText('Skeleton')).toHaveLength(12)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(12)
     })
 })

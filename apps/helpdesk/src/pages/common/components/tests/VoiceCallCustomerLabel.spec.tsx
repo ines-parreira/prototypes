@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import { render } from '@repo/testing'
+import { render, userEvent } from '@repo/testing'
 import { cleanup, screen } from '@testing-library/react'
 
 import type { CustomerLabel } from 'pages/common/utils/labels'
@@ -17,13 +17,6 @@ jest.mock('pages/common/utils/labels', () => ({
 
 jest.mock('pages/phoneNumbers/utils', () => ({
     formatPhoneNumberInternational: jest.fn((phone: string) => `+1 ${phone}`),
-}))
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-        <div data-testid="tooltip">{children}</div>
-    ),
 }))
 
 const useCustomerDetailsSpy = jest.spyOn(voiceCallHooks, 'useCustomerDetails')
@@ -172,7 +165,8 @@ describe('VoiceCallCustomerLabel', () => {
             expect(container).not.toHaveTextContent('(+1 1234567890)')
         })
 
-        it('should display phone number in tooltip when withTooltip and showBothNameAndPhone are true', () => {
+        it('should display phone number in tooltip when withTooltip and showBothNameAndPhone are true', async () => {
+            const user = userEvent.setup()
             useCustomerDetailsSpy.mockReturnValue({
                 customer: { name: 'Guybrush Threepwood' },
             } as any)
@@ -184,8 +178,11 @@ describe('VoiceCallCustomerLabel', () => {
                 withTooltip: true,
             })
 
-            const tooltip = screen.getByTestId('tooltip')
-            expect(tooltip).toBeInTheDocument()
+            await user.hover(
+                screen.getAllByText(/Guybrush Threepwood/)[0] as HTMLElement,
+            )
+
+            const tooltip = await screen.findByRole('tooltip')
             expect(tooltip).toHaveTextContent(
                 'CustomerLabel Guybrush Threepwood (+1 1234567890)',
             )

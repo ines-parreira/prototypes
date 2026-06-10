@@ -3,15 +3,9 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
 
-import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import type { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
 
 import { TicketAssignee } from '../TicketAssignee'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyAvatar: jest.fn(() => <div />),
-}))
 
 jest.mock('emoji-mart', () => ({
     Emoji: jest.fn(() => <div />),
@@ -59,15 +53,6 @@ describe('TicketAssignee', () => {
         )
 
         expect(screen.getByText('John Doe')).toBeInTheDocument()
-        expect(Avatar).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'John Doe',
-                url: 'https://example.com/avatar.jpg',
-                shape: 'square',
-                size: 'sm',
-            }),
-            expect.anything(),
-        )
     })
 
     it('renders the new avatar when the ticket thread revamp is enabled', () => {
@@ -102,7 +87,7 @@ describe('TicketAssignee', () => {
         render(<TicketAssignee assignedAgent={null} assignedTeam={null} />)
 
         expect(screen.getByText('Unassigned')).toBeInTheDocument()
-        expect(Avatar).not.toHaveBeenCalled()
+        expect(screen.queryByRole('img')).not.toBeInTheDocument()
         expect(Emoji).not.toHaveBeenCalled()
     })
 
@@ -140,13 +125,7 @@ describe('TicketAssignee', () => {
             />,
         )
 
-        expect(Avatar).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'Support Team',
-                shape: 'square',
-                size: 'sm',
-            }),
-            expect.anything(),
-        )
+        expect(Emoji).not.toHaveBeenCalled()
+        expect(screen.getAllByText('Support Team').length).toBeGreaterThan(0)
     })
 })

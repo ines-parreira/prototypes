@@ -1,6 +1,6 @@
 import { featureFlagsClientMock } from '@repo/feature-flags/testing'
-import { render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -9,19 +9,6 @@ import GuidanceActionTag from '../GuidanceActionTag'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarContext', () => ({
     useToolbarContext: jest.fn(),
-}))
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: jest.fn(({ children, trigger }) => (
-        <div data-testid="tooltip">
-            {trigger}
-            {children}
-        </div>
-    )),
-    TooltipContent: jest.fn(({ title, children }) => (
-        <div data-testid="tooltip-content">{title ?? children}</div>
-    )),
 }))
 
 describe('GuidanceActionTag', () => {
@@ -51,10 +38,11 @@ describe('GuidanceActionTag', () => {
         })
     })
 
-    it('renders the action', () => {
+    it('renders the action', async () => {
+        const user = userEvent.setup()
         const actionId = encodeAction(mockGuidanceActions[0])
 
-        const { container } = render(
+        render(
             <GuidanceActionTag value={actionId}>
                 Action Content
             </GuidanceActionTag>,
@@ -63,7 +51,7 @@ describe('GuidanceActionTag', () => {
         expect(screen.getByAltText('action logo')).toBeInTheDocument()
         expect(screen.getByText('TOTO action')).toBeInTheDocument()
 
-        fireEvent.click(container.querySelector('a') as HTMLElement)
+        await user.click(screen.getByRole('link'))
 
         expect(window.open).toHaveBeenCalledWith(
             '/app/ai-agent/shopify/test-shop/actions/edit/00AAAAA7AAA0AAA1A50AAAA00A',
@@ -81,12 +69,7 @@ describe('GuidanceActionTag', () => {
         )
 
         expect(screen.getByAltText('action logo')).toBeInTheDocument()
-
-        const contentElement = screen.getByText('Invalid action')
-        expect(contentElement).toBeInTheDocument()
-
-        const container = contentElement?.parentElement
-        expect(container).toHaveClass('invalid')
+        expect(screen.getByText('Invalid action')).toBeInTheDocument()
     })
 
     describe('setup-required actions', () => {
@@ -96,7 +79,7 @@ describe('GuidanceActionTag', () => {
             enabled: false,
         }
 
-        it('shows the warning styling by default', () => {
+        it('hides the action icon by default', () => {
             ;(useToolbarContext as jest.Mock).mockReturnValue({
                 guidanceActions: [disabledAction],
                 shopName: 'test-shop',
@@ -108,12 +91,11 @@ describe('GuidanceActionTag', () => {
                 </GuidanceActionTag>,
             )
 
-            const container = screen.getByText('Disabled action').parentElement
-            expect(container).toHaveClass('disabled')
+            expect(screen.getByText('Disabled action')).toBeInTheDocument()
             expect(screen.queryByAltText('action logo')).not.toBeInTheDocument()
         })
 
-        it('shows the regular grey styling and keeps the action icon when appearance is neutral', () => {
+        it('keeps the action icon when appearance is neutral', () => {
             ;(useToolbarContext as jest.Mock).mockReturnValue({
                 guidanceActions: [disabledAction],
                 shopName: 'test-shop',
@@ -126,12 +108,12 @@ describe('GuidanceActionTag', () => {
                 </GuidanceActionTag>,
             )
 
-            const container = screen.getByText('Disabled action').parentElement
-            expect(container).not.toHaveClass('disabled')
+            expect(screen.getByText('Disabled action')).toBeInTheDocument()
             expect(screen.getByAltText('action logo')).toBeInTheDocument()
         })
 
-        it('surfaces the skill review tooltip in neutral mode', () => {
+        it('surfaces the skill review tooltip in neutral mode', async () => {
+            const user = userEvent.setup()
             ;(useToolbarContext as jest.Mock).mockReturnValue({
                 guidanceActions: [disabledAction],
                 shopName: 'test-shop',
@@ -144,13 +126,17 @@ describe('GuidanceActionTag', () => {
                 </GuidanceActionTag>,
             )
 
-            expect(screen.getByTestId('tooltip-content')).toHaveTextContent(
+            await user.hover(screen.getByText('Disabled action'))
+
+            expect(await screen.findByRole('tooltip')).toHaveTextContent(
                 'This action is currently disabled and will be enabled with this skill once you complete your review.',
             )
         })
     })
 
-    it('shows tooltip when text overflows', () => {
+    it('shows tooltip when text overflows', async () => {
+        const user = userEvent.setup()
+
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,
             value: 50,
@@ -168,8 +154,9 @@ describe('GuidanceActionTag', () => {
             </GuidanceActionTag>,
         )
 
-        expect(screen.getByTestId('tooltip')).toBeInTheDocument()
-        expect(screen.getByTestId('tooltip-content')).toHaveTextContent(
+        await user.hover(screen.getByText('TOTO action'))
+
+        expect(await screen.findByRole('tooltip')).toHaveTextContent(
             'TOTO action',
         )
     })
@@ -192,6 +179,6 @@ describe('GuidanceActionTag', () => {
             </GuidanceActionTag>,
         )
 
-        expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 })

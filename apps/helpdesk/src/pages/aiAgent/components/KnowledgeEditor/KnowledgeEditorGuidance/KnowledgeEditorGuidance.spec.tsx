@@ -26,30 +26,6 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({
-        isOpen,
-        onOpenChange,
-        children,
-    }: {
-        isOpen: boolean
-        onOpenChange: (open: boolean) => void
-        children: React.ReactNode
-    }) =>
-        isOpen ? (
-            <div data-testid="side-panel" data-is-open={isOpen}>
-                <button
-                    data-testid="close-panel-button"
-                    onClick={() => onOpenChange(false)}
-                >
-                    Close
-                </button>
-                {children}
-            </div>
-        ) : null,
-}))
-
 const mockGuidanceTemplate: GuidanceTemplate = {
     id: 'test-template',
     name: 'Test Article',
@@ -1297,7 +1273,8 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
-            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
 
             await waitFor(() => {
                 expect(onSharedPanelStateChange).toHaveBeenCalled()
@@ -1337,7 +1314,8 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
-            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
         })
     })
 

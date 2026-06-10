@@ -3,8 +3,6 @@ import type { ReactNode } from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { Skeleton } from '@gorgias/axiom'
-
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTopIntentPerProduct } from 'domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
@@ -16,12 +14,6 @@ const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct')
 const useTopIntentPerProductMock = assumeMock(useTopIntentPerProduct)
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: jest.fn(),
-}))
-const SkeletonMock = assumeMock(Skeleton)
 
 const renderWithTable = (ui: ReactNode) => {
     return render(
@@ -47,8 +39,6 @@ describe('ProductFeedbackCell', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        SkeletonMock.mockImplementation(() => <div />)
 
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: {
@@ -106,7 +96,7 @@ describe('ProductFeedbackCell', () => {
             />,
         )
 
-        expect(SkeletonMock).toHaveBeenCalled()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
 
     it('handles null intent value', () => {

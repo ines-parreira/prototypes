@@ -1,5 +1,3 @@
-import type { ChangeEvent, ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,48 +9,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import { ChatAvailabilityCard } from './ChatAvailabilityCard'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-    RadioGroup: ({
-        children,
-        value,
-        onChange,
-    }: {
-        children: ReactNode
-        value: string
-        onChange: (value: string) => void
-    }) => (
-        <div
-            role="radiogroup"
-            data-value={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                if (e.target.type === 'radio') onChange(e.target.value)
-            }}
-        >
-            {children}
-        </div>
-    ),
-    Radio: ({
-        value,
-        label,
-        caption,
-    }: {
-        value: string
-        label: string
-        caption?: string
-    }) => (
-        <label>
-            <input type="radio" value={value} onChange={() => {}} />
-            {label}
-            {caption && <span>{caption}</span>}
-        </label>
-    ),
-}))
 
 describe('ChatAvailabilityCard', () => {
     const defaultProps = {
@@ -128,10 +84,16 @@ describe('ChatAvailabilityCard', () => {
                     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
             })
 
-            expect(screen.getByRole('radiogroup')).toHaveAttribute(
-                'data-value',
-                GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
-            )
+            expect(
+                screen.getByRole('radio', {
+                    name: /Always live during business hours/,
+                }),
+            ).toBeChecked()
+            expect(
+                screen.getByRole('radio', {
+                    name: /Live when agents are available/,
+                }),
+            ).not.toBeChecked()
         })
 
         it('should call onChange with the correct value when an option is selected', async () => {
@@ -246,10 +208,16 @@ describe('ChatAvailabilityCard', () => {
                     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
             })
 
-            expect(screen.getByRole('radiogroup')).toHaveAttribute(
-                'data-value',
-                GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
-            )
+            expect(
+                screen.getByRole('radio', {
+                    name: /Outside business hours only/,
+                }),
+            ).toBeChecked()
+            expect(
+                screen.getByRole('radio', {
+                    name: /When no agent is live on chat/,
+                }),
+            ).not.toBeChecked()
         })
 
         it('should call onChange with the correct value when "Outside business hours only" is selected', async () => {
@@ -269,7 +237,10 @@ describe('ChatAvailabilityCard', () => {
         it('should call onChange with the correct value when "When no agent is live on chat" is selected', async () => {
             const user = userEvent.setup()
             const onChange = jest.fn()
-            renderAiAgent({ onChange })
+            renderAiAgent({
+                onChange,
+                liveChatAvailability: GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+            })
 
             await user.click(
                 screen.getByLabelText(/When no agent is live on chat/),

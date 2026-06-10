@@ -4,13 +4,11 @@ import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render as testingRender } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
-
-import { toast } from '@gorgias/axiom'
 
 import {
     AUTOMATION_PRODUCT_ID,
@@ -43,15 +41,6 @@ jest.mock('@repo/billing', () => ({
     useBillingState: jest.fn(),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    toast: {
-        success: jest.fn(),
-        warning: jest.fn(),
-        dismiss: jest.fn(),
-    },
-}))
-
 const mockUseBillingState = assumeMock(useBillingState)
 
 const mockedDispatch = jest.fn()
@@ -78,8 +67,8 @@ const ScheduledCancellationSummaryMock = assumeMock(
 const mockUseProductCancellations = assumeMock(useProductCancellations)
 const mockUseIsPaymentEnabled = assumeMock(useIsPaymentEnabled)
 const SummaryTotalMock = assumeMock(SummaryTotal)
-const mockToastWarning = toast.warning as jest.Mock
-const mockToastDismiss = toast.dismiss as jest.Mock
+const ineligiblePlanMessage =
+    'This plan is only available through the Gorgias sales team.'
 
 // Mock PendingChangesModal to capture props
 jest.mock(
@@ -114,6 +103,11 @@ const render = (
     )
 
 const mockedServer = new MockAdapter(client)
+
+// jsdom does not implement pointer capture, which react-aria pressable
+// elements (e.g. the toast action Button) invoke on pointer interactions.
+Element.prototype.setPointerCapture = jest.fn()
+Element.prototype.releasePointerCapture = jest.fn()
 
 const storeInitialState = {
     billing: fromJS({
@@ -159,8 +153,6 @@ describe('BillingProcessView', () => {
         mockUseIsPaymentEnabled.mockReturnValue(true)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
-        mockToastWarning.mockClear()
-        mockToastDismiss.mockClear()
     })
 
     afterEach(() => {
@@ -169,8 +161,6 @@ describe('BillingProcessView', () => {
         mockUseIsPaymentEnabled.mockReset()
         logEventMock.mockReset()
         SummaryTotalMock.mockReset()
-        mockToastWarning.mockReset()
-        mockToastDismiss.mockReset()
     })
 
     it('should render', async () => {
@@ -444,33 +434,21 @@ describe('BillingProcessView', () => {
         const enterpriseItem = menuitems[menuitems.length - 1]
         await act(() => userEvent.click(enterpriseItem))
 
-        await waitFor(() => {
-            expect(mockToastWarning).toHaveBeenCalledWith(
-                'This plan is only available through the Gorgias sales team.',
-                expect.objectContaining({
-                    actions: expect.any(Function),
-                }),
-            )
+        const ineligibleToast = await screen.findByRole('status', {
+            name: ineligiblePlanMessage,
         })
 
-        const toastOptions = mockToastWarning.mock.calls.at(-1)?.[1]
-        const toastAction = toastOptions.actions({
-            id: 'ineligible-plan-toast',
-        }) as {
-            props: {
-                children: string
-                onClick: () => void
-                variant: string
-            }
-        }
-
-        expect(toastAction.props.children).toBe('Contact support')
-        expect(toastAction.props.variant).toBe('secondary')
-        toastAction.props.onClick()
-        expect(mockToastDismiss).toHaveBeenCalledWith('ineligible-plan-toast')
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+        const contactSupportButton = within(ineligibleToast).getByRole(
+            'button',
+            { name: 'Contact support' },
         )
+        await act(() => userEvent.click(contactSupportButton))
+
+        await waitFor(() => {
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+            )
+        })
         expect(setDefaultMessageMock).toHaveBeenCalledWith(
             expect.stringContaining('(Enterprise)'),
         )
@@ -527,14 +505,9 @@ describe('BillingProcessView', () => {
         const enterpriseItem = menuitems[menuitems.length - 1]
         await act(() => userEvent.click(enterpriseItem))
 
-        await waitFor(() => {
-            expect(mockToastWarning).toHaveBeenCalledWith(
-                'This plan is only available through the Gorgias sales team.',
-                expect.objectContaining({
-                    actions: expect.any(Function),
-                }),
-            )
-        })
+        expect(
+            await screen.findByRole('status', { name: ineligiblePlanMessage }),
+        ).toBeInTheDocument()
 
         expect(mockUseIsPaymentEnabled).toHaveBeenCalled()
     })
@@ -595,7 +568,9 @@ describe('BillingProcessView', () => {
             expect.stringContaining('Enterprise'),
         )
         expect(setIsModalOpenMock).toHaveBeenCalledWith(true)
-        expect(mockToastWarning).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { name: ineligiblePlanMessage }),
+        ).not.toBeInTheDocument()
     })
 
     describe('Product cancellations hook integration', () => {
@@ -1413,14 +1388,9 @@ describe('BillingProcessView', () => {
         const enterpriseItem = menuitems[menuitems.length - 1]
         await act(() => userEvent.click(enterpriseItem))
 
-        await waitFor(() => {
-            expect(mockToastWarning).toHaveBeenCalledWith(
-                'This plan is only available through the Gorgias sales team.',
-                expect.objectContaining({
-                    actions: expect.any(Function),
-                }),
-            )
-        })
+        expect(
+            await screen.findByRole('status', { name: ineligiblePlanMessage }),
+        ).toBeInTheDocument()
 
         const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
         const pendingChangesModalProps =

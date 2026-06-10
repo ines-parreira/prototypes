@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,16 +5,6 @@ import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'core/theme'
 
 import { ShopifyVariablesDropdown } from '../ShopifyVariablesDropdown'
-
-jest.mock('@gorgias/axiom', () => {
-    const actual = jest.requireActual('@gorgias/axiom')
-    return {
-        ...actual,
-        LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-            <span data-testid="tooltip">{children}</span>
-        ),
-    }
-})
 
 jest.mock('../ShopifyMetafieldVariablePicker', () => ({
     ShopifyMetafieldVariablePicker: ({ onCloseParentMenu, onSelect }: any) => (
@@ -110,9 +98,10 @@ describe('<ShopifyVariablesDropdown />', () => {
 
         await user.click(screen.getByRole('button', { name: /test category/i }))
 
-        const tooltips = screen.getAllByTestId('tooltip')
-        expect(tooltips).toHaveLength(1)
-        expect(tooltips[0]).toHaveTextContent('Tooltip for var2')
+        await user.hover(screen.getByRole('menuitem', { name: 'Variable 2' }))
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent('Tooltip for var2')
     })
 
     it('does not render tooltip when variable has no tooltip property', async () => {
@@ -124,7 +113,13 @@ describe('<ShopifyVariablesDropdown />', () => {
 
         await user.click(screen.getByRole('button', { name: /test category/i }))
 
-        expect(screen.getByText('No Tooltip Var')).toBeInTheDocument()
-        expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        const menuItem = screen.getByRole('menuitem', {
+            name: 'No Tooltip Var',
+        })
+        expect(menuItem).toBeInTheDocument()
+
+        await user.hover(menuItem)
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 })

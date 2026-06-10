@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -19,43 +17,6 @@ type LauncherPositionPickerProps = {
 }
 
 const mockLauncherPositionPicker = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children: ReactNode; variant?: string }) => (
-        <span>{children}</span>
-    ),
-    TextField: ({
-        label,
-        value,
-        onChange,
-        caption,
-        isRequired,
-    }: {
-        label: string
-        value: string
-        onChange: (value: string) => void
-        caption?: string
-        isRequired?: boolean
-    }) => (
-        <div>
-            <label>
-                {label}
-                {isRequired && ' *'}
-            </label>
-            <input
-                aria-label={label}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-            />
-            {caption && <span>{caption}</span>}
-        </div>
-    ),
-    Icon: () => null,
-}))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/LauncherPreview',
@@ -150,10 +111,10 @@ describe('ChatLauncherCard', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: 'Icon only' }),
+                screen.getByRole('button', { name: /Icon only/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Icon and label' }),
+                screen.getByRole('button', { name: /Icon and label/ }),
             ).toBeInTheDocument()
         })
 

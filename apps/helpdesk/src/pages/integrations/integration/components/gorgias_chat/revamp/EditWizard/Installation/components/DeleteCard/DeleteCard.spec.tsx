@@ -1,56 +1,11 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import DeleteCard from './DeleteCard'
-
-const mockButton = jest.fn(
-    ({ children, onClick, isLoading, isDisabled, ...props }: any) => (
-        <button
-            onClick={onClick}
-            disabled={isDisabled || isLoading}
-            data-testid={props['data-testid']}
-        >
-            {isLoading ? 'Loading...' : children}
-        </button>
-    ),
-)
-
-const mockToastSuccess = jest.fn()
-const mockToastError = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: (props: any) => mockButton(props),
-    Card: ({ children }: any) => <div data-testid="card">{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children, size }: any) => <h1 data-size={size}>{children}</h1>,
-    Modal: ({ children, isOpen, onOpenChange }: any) =>
-        isOpen ? (
-            <div data-testid="modal" role="dialog">
-                {typeof children === 'function'
-                    ? children({ onOpenChange })
-                    : children}
-            </div>
-        ) : null,
-    OverlayContent: ({ children }: any) => (
-        <div data-testid="overlay-content">{children}</div>
-    ),
-    OverlayFooter: ({ children }: any) => (
-        <div data-testid="overlay-footer">{children}</div>
-    ),
-    OverlayHeader: ({ title }: any) => (
-        <div data-testid="overlay-header">{title}</div>
-    ),
-    Text: ({ children }: any) => <p>{children}</p>,
-    toast: {
-        success: (...args: any[]) => mockToastSuccess(...args),
-        error: (...args: any[]) => mockToastError(...args),
-    },
-}))
 
 describe('DeleteCard', () => {
     const mockOnDeleteIntegration = jest.fn()
@@ -65,7 +20,6 @@ describe('DeleteCard', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockButton.mockClear()
     })
 
     const renderComponent = (integration = defaultIntegration) => {
@@ -75,6 +29,12 @@ describe('DeleteCard', () => {
                 onDeleteIntegration={mockOnDeleteIntegration}
             />,
         )
+    }
+
+    const openModal = async (user: ReturnType<typeof userEvent.setup>) => {
+        await user.click(screen.getByRole('button', { name: 'Delete chat' }))
+
+        return screen.findByRole('dialog')
     }
 
     it('should render the delete card description', () => {
@@ -91,27 +51,16 @@ describe('DeleteCard', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(deleteButton)
-        })
+        const dialog = await openModal(user)
 
-        expect(await screen.findByTestId('modal')).toBeInTheDocument()
-        expect(screen.getByText('Delete Chat ?')).toBeInTheDocument()
+        expect(within(dialog).getByText('Delete Chat ?')).toBeInTheDocument()
     })
 
     it('should show confirmation message in modal', async () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(deleteButton)
-        })
+        await openModal(user)
 
         expect(
             await screen.findByText(
@@ -132,12 +81,7 @@ describe('DeleteCard', () => {
 
         renderComponent(manualIntegration)
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(deleteButton)
-        })
+        await openModal(user)
 
         expect(
             await screen.findByText(
@@ -158,12 +102,7 @@ describe('DeleteCard', () => {
 
         renderComponent(oneClickIntegration)
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(deleteButton)
-        })
+        await openModal(user)
 
         expect(
             screen.queryByText(
@@ -176,23 +115,13 @@ describe('DeleteCard', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(deleteButton)
+        const dialog = await openModal(user)
+
+        await user.click(within(dialog).getByRole('button', { name: 'Cancel' }))
+
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
-
-        expect(await screen.findByTestId('modal')).toBeInTheDocument()
-
-        const cancelButton = screen.getByTestId(
-            'cancel-delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(cancelButton)
-        })
-
-        expect(screen.queryByTestId('modal')).not.toBeInTheDocument()
     })
 
     it('should call onDeleteIntegration when delete is confirmed', async () => {
@@ -201,26 +130,18 @@ describe('DeleteCard', () => {
 
         renderComponent()
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-        await act(async () => {
-            await user.click(deleteButton)
-        })
+        const dialog = await openModal(user)
 
-        const confirmButton = screen.getByTestId(
-            'delete-chat-integration-confirmation-button',
+        await user.click(
+            within(dialog).getByRole('button', { name: 'Delete chat' }),
         )
-        await act(async () => {
-            await user.click(confirmButton)
-        })
 
         expect(mockOnDeleteIntegration).toHaveBeenCalledWith(
             defaultIntegration,
             true,
             true,
         )
-        expect(mockToastSuccess).toHaveBeenCalledWith(
+        expect(await screen.findByRole('status')).toHaveTextContent(
             'Integration successfully deleted',
         )
     })
@@ -233,84 +154,41 @@ describe('DeleteCard', () => {
 
         renderComponent()
 
-        await act(async () => {
-            await user.click(
-                screen.getByTestId('delete-chat-integration-button'),
-            )
-        })
+        const dialog = await openModal(user)
 
-        await act(async () => {
-            await user.click(
-                screen.getByTestId(
-                    'delete-chat-integration-confirmation-button',
-                ),
-            )
-        })
+        await user.click(
+            within(dialog).getByRole('button', { name: 'Delete chat' }),
+        )
 
-        expect(mockToastError).toHaveBeenCalledWith('Delete failed')
-        expect(mockToastSuccess).not.toHaveBeenCalled()
+        expect(await screen.findByRole('status')).toHaveTextContent(
+            'Delete failed',
+        )
     })
 
-    it('should disable cancel button while deleting', async () => {
+    it('should disable buttons while deleting', async () => {
         const user = userEvent.setup()
+
+        let resolveDelete: () => void = () => {}
+        mockOnDeleteIntegration.mockReturnValue(
+            new Promise<void>((resolve) => {
+                resolveDelete = resolve
+            }),
+        )
 
         renderComponent()
 
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
+        const dialog = await openModal(user)
+
+        await user.click(
+            within(dialog).getByRole('button', { name: 'Delete chat' }),
         )
-        await act(async () => {
-            await user.click(deleteButton)
+
+        await waitFor(() => {
+            expect(
+                within(dialog).getByRole('button', { name: 'Cancel' }),
+            ).toBeDisabled()
         })
 
-        const confirmButton = screen.getByTestId(
-            'delete-chat-integration-confirmation-button',
-        )
-
-        mockButton.mockClear()
-        await act(async () => {
-            await user.click(confirmButton)
-        })
-
-        const cancelButtonCalls = mockButton.mock.calls.filter(
-            (call) =>
-                call[0]['data-testid'] ===
-                'cancel-delete-chat-integration-button',
-        )
-        const lastCancelButtonCall =
-            cancelButtonCalls[cancelButtonCalls.length - 1]
-        expect(lastCancelButtonCall[0].isDisabled).toBe(true)
-    })
-
-    it('should show loading state on delete button while deleting', async () => {
-        const user = userEvent.setup()
-
-        renderComponent()
-
-        const deleteButton = screen.getByTestId(
-            'delete-chat-integration-button',
-        )
-
-        await act(async () => await user.click(deleteButton))
-
-        const confirmButton = screen.getByTestId(
-            'delete-chat-integration-confirmation-button',
-        )
-
-        mockButton.mockClear()
-
-        await act(async () => {
-            await user.click(confirmButton)
-        })
-
-        const confirmButtonCalls = mockButton.mock.calls.filter(
-            (call) =>
-                call[0]['data-testid'] ===
-                'delete-chat-integration-confirmation-button',
-        )
-        const lastConfirmButtonCall =
-            confirmButtonCalls[confirmButtonCalls.length - 1]
-
-        expect(lastConfirmButtonCall[0].isLoading).toBe(true)
+        resolveDelete()
     })
 })

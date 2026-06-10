@@ -4,22 +4,14 @@ import { render } from '@repo/testing'
 
 import SaveBadge from '../SaveBadge'
 
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyLoadingSpinner: () => <div>Spinner</div>,
-    } as Record<string, unknown>
-})
-
 describe('SaveBadge', () => {
     it('should return null if the state is idle', () => {
         const { container } = render(<SaveBadge state="idle" />)
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should show a spinner and a saving label if the state is saving', () => {
+    it('should show a saving label if the state is saving', () => {
         const { getByText } = render(<SaveBadge state="saving" />)
-        expect(getByText('Spinner')).toBeInTheDocument()
         expect(getByText('Saving')).toBeInTheDocument()
     })
 

@@ -5,33 +5,14 @@ import { fromJS } from 'immutable'
 
 import AdvancedInstallationCard from './AdvancedInstallationCard'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: ({ children, onClick, ...props }: any) => (
-        <button onClick={onClick} data-testid={props['data-testid']}>
-            {children}
-        </button>
-    ),
-    ButtonAs: { Button: 'button' },
-    ButtonIntent: { Regular: 'regular' },
-    ButtonVariant: { Secondary: 'secondary' },
-    Card: ({ children }: any) => <div data-testid="card">{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children, size }: any) => <h1 data-size={size}>{children}</h1>,
-    Icon: ({ name }: any) => <span data-testid="icon">{name}</span>,
-    Text: ({ children }: any) => <p>{children}</p>,
-}))
-
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/AdvancedInstallationCard/AdvancedInstallationSidePanel',
     () => ({
         __esModule: true,
         default: ({ isOpen, onOpenChange, integration }: any) =>
             isOpen ? (
-                <div
-                    data-testid="advanced-installation-side-panel"
-                    data-integration-id={integration.get('id')}
-                >
+                <div role="dialog" aria-label="Advanced Installation Panel">
+                    <p>Integration {integration.get('id')}</p>
                     <button onClick={() => onOpenChange(false)}>Close</button>
                 </div>
             ) : null,
@@ -57,7 +38,9 @@ describe('AdvancedInstallationCard', () => {
     it('should render the card with heading', () => {
         renderComponent()
 
-        expect(screen.getByText('Advanced Installation')).toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', { name: 'Advanced Installation' }),
+        ).toBeInTheDocument()
     })
 
     it('should render the description text', () => {
@@ -93,15 +76,18 @@ describe('AdvancedInstallationCard', () => {
     it('should render external link icon', () => {
         renderComponent()
 
-        const icon = screen.getByTestId('icon')
-        expect(icon).toHaveTextContent('external-link')
+        expect(
+            screen.getByRole('img', { name: 'external-link' }),
+        ).toBeInTheDocument()
     })
 
     it('should not show side panel initially', () => {
         renderComponent()
 
         expect(
-            screen.queryByTestId('advanced-installation-side-panel'),
+            screen.queryByRole('dialog', {
+                name: 'Advanced Installation Panel',
+            }),
         ).not.toBeInTheDocument()
     })
 
@@ -117,7 +103,9 @@ describe('AdvancedInstallationCard', () => {
         })
 
         expect(
-            screen.getByTestId('advanced-installation-side-panel'),
+            screen.getByRole('dialog', {
+                name: 'Advanced Installation Panel',
+            }),
         ).toBeInTheDocument()
     })
 
@@ -132,8 +120,7 @@ describe('AdvancedInstallationCard', () => {
             await user.click(installButton)
         })
 
-        const sidePanel = screen.getByTestId('advanced-installation-side-panel')
-        expect(sidePanel).toHaveAttribute('data-integration-id', '1')
+        expect(screen.getByText('Integration 1')).toBeInTheDocument()
     })
 
     it('should close side panel when onOpenChange is called with false', async () => {
@@ -148,7 +135,9 @@ describe('AdvancedInstallationCard', () => {
         })
 
         expect(
-            screen.getByTestId('advanced-installation-side-panel'),
+            screen.getByRole('dialog', {
+                name: 'Advanced Installation Panel',
+            }),
         ).toBeInTheDocument()
 
         const closeButton = screen.getByRole('button', { name: /close/i })
@@ -157,7 +146,9 @@ describe('AdvancedInstallationCard', () => {
         })
 
         expect(
-            screen.queryByTestId('advanced-installation-side-panel'),
+            screen.queryByRole('dialog', {
+                name: 'Advanced Installation Panel',
+            }),
         ).not.toBeInTheDocument()
     })
 })

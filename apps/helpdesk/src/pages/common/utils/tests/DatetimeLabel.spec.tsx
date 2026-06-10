@@ -9,12 +9,6 @@ import DatetimeLabel from '../DatetimeLabel'
 
 const mockStore = configureMockStore()
 
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyTooltip: () => 'TooltipMock',
-    } as Record<string, unknown>
-})
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationChannel: () => () => mockChannels[0],
 }))

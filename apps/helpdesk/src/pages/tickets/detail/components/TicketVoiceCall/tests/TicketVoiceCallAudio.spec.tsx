@@ -12,10 +12,6 @@ import VoiceCallAudio from '../VoiceCallAudio'
 
 jest.mock('../VoiceCallAudio', () => jest.fn(() => null))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div> Loading...</div>,
-}))
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
@@ -81,9 +77,9 @@ describe('TicketVoiceCallAudios', () => {
             ),
         )
 
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
         expect(
-            screen.queryByTestId('recording-failure'),
+            screen.queryByText(/Recording is not available/),
         ).not.toBeInTheDocument()
         expect(VoiceCallAudio).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -110,9 +106,9 @@ describe('TicketVoiceCallAudios', () => {
 
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         expect(
-            screen.queryByTestId('recording-failure'),
+            screen.queryByText(/Recording is not available/),
         ).not.toBeInTheDocument()
         expect(VoiceCallAudio).not.toHaveBeenCalled()
     })
@@ -126,8 +122,10 @@ describe('TicketVoiceCallAudios', () => {
 
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        expect(
+            screen.getByText(/Recording is not available/),
+        ).toBeInTheDocument()
         expect(VoiceCallAudio).not.toHaveBeenCalled()
     })
 
@@ -140,8 +138,10 @@ describe('TicketVoiceCallAudios', () => {
 
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
-        expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
-        expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        expect(
+            screen.getByText(/Recording is not available/),
+        ).toBeInTheDocument()
         expect(VoiceCallAudio).not.toHaveBeenCalled()
     })
 })

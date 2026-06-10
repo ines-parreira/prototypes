@@ -3,11 +3,6 @@ import { screen } from '@testing-library/react'
 
 import { SegmentCountPreview } from './SegmentCountPreview'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div role="status" aria-label="loading" />,
-}))
-
 describe('<SegmentCountPreview />', () => {
     it('should render the segment preview heading', () => {
         render(<SegmentCountPreview />)
@@ -46,18 +41,14 @@ describe('<SegmentCountPreview />', () => {
     it('should show skeleton and hide count tag while loading', () => {
         render(<SegmentCountPreview count={42} isLoading={true} />)
 
-        expect(
-            screen.getByRole('status', { name: 'loading' }),
-        ).toBeInTheDocument()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         expect(screen.queryByText('±42 shoppers')).not.toBeInTheDocument()
     })
 
     it('should not show skeleton when not loading', () => {
         render(<SegmentCountPreview count={100} isLoading={false} />)
 
-        expect(
-            screen.queryByRole('status', { name: 'loading' }),
-        ).not.toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
         expect(screen.getByText('±100 shoppers')).toBeInTheDocument()
     })
 })

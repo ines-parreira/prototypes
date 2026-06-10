@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -398,23 +396,6 @@ jest.mock('AIJourney/providers', () => ({
 
 jest.mock('AIJourney/queries', () => ({
     useCreateSegment: jest.fn(),
-}))
-
-type MockSidePanelProps = {
-    children: ReactNode
-    isOpen: boolean
-    onOpenChange: () => void
-}
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({ children, isOpen, onOpenChange }: MockSidePanelProps) =>
-        isOpen ? (
-            <div>
-                <button onClick={onOpenChange}>Close panel</button>
-                {children}
-            </div>
-        ) : null,
 }))
 
 const mockSegment: Segment = {
@@ -963,14 +944,12 @@ describe('<SegmentsSidePanel />', () => {
     })
 
     describe('panel close (onOpenChange)', () => {
-        it('should call onClose when the panel is closed externally', async () => {
+        it('should call onClose when the panel is dismissed with Escape', async () => {
             const user = userEvent.setup()
             renderComponent()
 
             await act(async () => {
-                await user.click(
-                    screen.getByRole('button', { name: /close panel/i }),
-                )
+                await user.keyboard('{Escape}')
             })
 
             expect(onClose).toHaveBeenCalledTimes(1)

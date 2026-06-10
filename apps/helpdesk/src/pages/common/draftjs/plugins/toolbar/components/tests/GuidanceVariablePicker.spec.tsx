@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
@@ -30,13 +30,6 @@ jest.mock('../GuidanceVariableDropdown', () => {
         ) : null,
     )
 })
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: jest.fn(({ children }) => (
-        <div role="tooltip">{children}</div>
-    )),
-}))
 
 describe('GuidanceVariablePicker', () => {
     const defaultProps = {
@@ -67,7 +60,8 @@ describe('GuidanceVariablePicker', () => {
         expect(button).toBeInTheDocument()
     })
 
-    it('renders tooltip when tooltipMessage is provided', () => {
+    it('renders tooltip when tooltipMessage is provided', async () => {
+        const user = userEvent.setup()
         render(
             <GuidanceVariablePicker
                 {...defaultProps}
@@ -75,14 +69,24 @@ describe('GuidanceVariablePicker', () => {
             />,
         )
 
-        const tooltip = screen.getByRole('tooltip')
-        expect(tooltip).toBeInTheDocument()
-        expect(tooltip).toHaveTextContent('Custom tooltip')
+        await user.hover(
+            screen.getByRole('button', { name: /\{\+\} Variables/i }),
+        )
+
+        await waitFor(() => {
+            const tooltip = screen.getByRole('tooltip')
+            expect(tooltip).toHaveTextContent('Custom tooltip')
+        })
     })
 
-    it('does not render tooltip when tooltipMessage is null', () => {
+    it('does not render tooltip when tooltipMessage is null', async () => {
+        const user = userEvent.setup()
         render(
             <GuidanceVariablePicker {...defaultProps} tooltipMessage={null} />,
+        )
+
+        await user.hover(
+            screen.getByRole('button', { name: /\{\+\} Variables/i }),
         )
 
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()

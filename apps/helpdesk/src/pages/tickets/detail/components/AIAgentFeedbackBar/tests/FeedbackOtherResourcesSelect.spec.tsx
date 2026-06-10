@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
@@ -39,15 +37,6 @@ jest.mock(
         )
     },
 )
-
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-            <div>TooltipMock{children}</div>
-        ),
-    } as Record<string, unknown>
-})
 
 describe('FeedbackOtherResourcesSelect Component', () => {
     const setupMockResourcesValues = ({
@@ -384,10 +373,12 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             initialValues,
         })
 
-        await waitFor(() => {
-            userEvent.hover(screen.getByText(label))
-            expect(screen.getByText(`TooltipMock${label}`)).toBeInTheDocument()
-        })
+        const user = userEvent.setup()
+
+        await user.hover(await screen.findByText(label))
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent(label)
     })
 
     it("doesn't render tag tooltip", async () => {
@@ -415,11 +406,12 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             initialValues,
         })
 
+        const user = userEvent.setup()
+
+        await user.hover(await screen.findByText(label))
+
         await waitFor(() => {
-            userEvent.hover(screen.getByText(label))
-            expect(
-                screen.queryByText(`TooltipMock${label}`),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
         })
     })
 })

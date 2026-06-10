@@ -10,11 +10,6 @@ import { IntegrationType } from 'models/integration/types'
 
 import { StorePicker } from '../StorePicker'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Icon: ({ name }: { name: string }) => <span data-testid={`icon-${name}`} />,
-}))
-
 jest.mock('../../hooks/useThemeAppExtensionInstallation', () => ({
     __esModule: true,
     default: jest.fn(() => ({

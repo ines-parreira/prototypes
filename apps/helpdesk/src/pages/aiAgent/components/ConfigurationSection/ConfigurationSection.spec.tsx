@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
@@ -7,19 +5,6 @@ import { ConfigurationSection } from './ConfigurationSection'
 
 // Mock CSS module
 jest.mock('./ConfigurationSection.less', () => ({}))
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    __esModule: true,
-    LegacyBadge: ({
-        children,
-        className,
-    }: {
-        children: React.ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    ColorType: { Magenta: 'magenta' },
-}))
 
 describe('ConfigurationSection Component', () => {
     const defaultProps = {

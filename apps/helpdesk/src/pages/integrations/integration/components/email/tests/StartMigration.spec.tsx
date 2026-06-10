@@ -4,8 +4,6 @@ import { fromJS } from 'immutable'
 import type { Moment } from 'moment'
 import { useLocation } from 'react-router-dom'
 
-import { toast } from '@gorgias/axiom'
-
 import { IntegrationType } from 'models/integration/constants'
 import * as resources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
@@ -24,22 +22,6 @@ jest.mock(
         }) as Record<string, any>,
 )
 
-jest.mock('@gorgias/axiom', () => {
-    const actual = jest.requireActual('@gorgias/axiom')
-    const toastMock = Object.assign(jest.fn(), {
-        info: jest.fn(),
-        success: jest.fn(),
-        warning: jest.fn(),
-        error: jest.fn(),
-        ai: jest.fn(),
-        promise: jest.fn(),
-        dismiss: jest.fn(),
-    })
-    return {
-        ...actual,
-        toast: toastMock,
-    }
-})
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment')
 const mockFetchMigrationStatus = jest.fn()
 jest.spyOn(migrationBannerHook, 'default').mockImplementation(
@@ -155,7 +137,9 @@ describe('StartMigration', () => {
         fireEvent.click(screen.getByText('Start migration'))
 
         await waitFor(() => {
-            expect(toast.error).toHaveBeenCalledWith('Something went wrong')
+            expect(
+                screen.getByRole('status', { name: 'Something went wrong' }),
+            ).toBeInTheDocument()
         })
     })
 })

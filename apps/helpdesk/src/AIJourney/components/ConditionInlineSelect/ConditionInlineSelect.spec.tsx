@@ -1,44 +1,9 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { SelectOption } from '../../types/conditionField'
 import { ConditionInlineSelect } from './ConditionInlineSelect'
-
-const captured: {
-    onChange: ((item: SelectOption | null | undefined) => void) | undefined
-    value: SelectOption | undefined
-    placeholder: string | undefined
-} = {
-    onChange: undefined,
-    value: undefined,
-    placeholder: undefined,
-}
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({ children }: any) => <div>{children}</div>,
-    SelectField: ({
-        onChange,
-        placeholder,
-        value,
-        items,
-        children,
-        'aria-label': ariaLabel,
-    }: any) => {
-        captured.onChange = onChange
-        captured.value = value
-        captured.placeholder = placeholder
-        return (
-            <div>
-                <span>{placeholder}</span>
-                <div aria-label={ariaLabel}>
-                    {items?.map((item: any) => children(item))}
-                </div>
-            </div>
-        )
-    },
-    ListItem: ({ label }: any) => <span>{label}</span>,
-}))
 
 const items: SelectOption[] = [
     { id: 'eq', label: 'is' },
@@ -63,62 +28,68 @@ const renderComponent = (
 describe('<ConditionInlineSelect />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        captured.onChange = undefined
-        captured.value = undefined
-        captured.placeholder = undefined
     })
 
-    it('renders all item labels via the children render function', () => {
+    it('renders all item labels in the dropdown', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        expect(screen.getByText('is')).toBeInTheDocument()
-        expect(screen.getByText('is not')).toBeInTheDocument()
+        await user.click(screen.getByRole('textbox', { name: 'operator' }))
+
+        expect(
+            await screen.findByRole('option', { name: 'is' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: 'is not' }),
+        ).toBeInTheDocument()
     })
 
     it('uses "Select" as default placeholder when none is provided', () => {
         renderComponent()
 
-        expect(captured.placeholder).toBe('Select')
+        expect(screen.getByPlaceholderText('Select')).toBeInTheDocument()
     })
 
     it('uses the provided placeholder', () => {
         renderComponent({ placeholder: 'Choose...' })
 
-        expect(captured.placeholder).toBe('Choose...')
+        expect(screen.getByPlaceholderText('Choose...')).toBeInTheDocument()
     })
 
-    it('passes the found item as value when selectedId matches', () => {
+    it('shows the matching item as the selected value when selectedId matches', () => {
         renderComponent({ selectedId: 'eq' })
 
-        expect(captured.value).toEqual({ id: 'eq', label: 'is' })
+        expect(screen.getByRole('textbox', { name: 'operator' })).toHaveValue(
+            'is',
+        )
     })
 
-    it('passes undefined as value when selectedId does not match any item', () => {
+    it('shows the placeholder when selectedId does not match any item', () => {
         renderComponent({ selectedId: 'unknown' })
 
-        expect(captured.value).toBeUndefined()
+        const field = screen.getByRole('textbox', { name: 'operator' })
+        expect(field).not.toHaveValue('is')
+        expect(field).not.toHaveValue('is not')
+        expect(screen.getByPlaceholderText('Select')).toBeInTheDocument()
     })
 
-    it('calls onSelect with the item id when onChange fires with a truthy item', () => {
+    it('calls onSelect with the item id when an option is selected', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        captured.onChange?.({ id: 'eq', label: 'is' })
+        await user.click(screen.getByRole('textbox', { name: 'operator' }))
+        await user.click(await screen.findByRole('option', { name: 'is' }))
 
         expect(onSelect).toHaveBeenCalledWith('eq')
     })
 
-    it('does not call onSelect when onChange fires with null', () => {
+    it('does not call onSelect when the dropdown is opened and closed without a selection', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        captured.onChange?.(null)
-
-        expect(onSelect).not.toHaveBeenCalled()
-    })
-
-    it('does not call onSelect when onChange fires with undefined', () => {
-        renderComponent()
-
-        captured.onChange?.(undefined)
+        await user.click(screen.getByRole('textbox', { name: 'operator' }))
+        await screen.findByRole('option', { name: 'is' })
+        await user.keyboard('{Escape}')
 
         expect(onSelect).not.toHaveBeenCalled()
     })

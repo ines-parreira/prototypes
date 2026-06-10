@@ -13,13 +13,6 @@ jest.mock('@repo/logging', () => ({
         MacrosExportClicked: 'macros-export-clicked',
     },
 }))
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    toast: {
-        error: jest.fn(),
-        success: jest.fn(),
-    },
-}))
 jest.mock('models/job/resources', () => ({
     createJob: jest.fn(() => Promise.resolve()),
 }))

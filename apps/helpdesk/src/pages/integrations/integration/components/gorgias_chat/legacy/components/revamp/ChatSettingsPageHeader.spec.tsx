@@ -6,77 +6,26 @@ import userEvent from '@testing-library/user-event'
 
 import ChatSettingsPageHeader from './ChatSettingsPageHeader'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Breadcrumb: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Breadcrumbs: ({
-        items,
-        children,
-    }: {
-        items: Array<{ id: string; label: string; link?: string }>
-        children: (item: {
-            id: string
-            label: string
-            link?: string
-        }) => React.ReactNode
-    }) => (
-        <nav>
-            {items.map((item) => (
-                <div key={item.id}>{children(item)}</div>
-            ))}
-        </nav>
-    ),
-    Button: ({
-        children,
-        onClick,
-        icon,
-    }: {
-        children?: React.ReactNode
-        onClick?: () => void
-        icon?: string
-    }) => (
-        <button onClick={onClick} data-icon={icon}>
-            {children}
-        </button>
-    ),
-    Heading: ({ children }: { children?: React.ReactNode }) => (
-        <h1>{children}</h1>
-    ),
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-    TextSize: { Sm: 'sm' },
-    TextVariant: { Medium: 'medium' },
-    ButtonIntent: { Regular: 'regular' },
-    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
-    ButtonSize: { Md: 'md' },
-}))
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    Link: ({
-        children,
-        to,
-        'data-testid': dataTestId,
-    }: {
-        children: React.ReactNode
-        to: string
-        'data-testid'?: string
-    }) => (
-        <a href={to} data-testid={dataTestId}>
-            {children}
-        </a>
+    Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
+        <a href={to}>{children}</a>
     ),
 }))
+
+const getBackButtonHref = () =>
+    screen
+        .getAllByRole('link', { name: 'arrow-left' })
+        .find((el) => el.tagName === 'A' && el.hasAttribute('href'))
 
 describe('ChatSettingsPageHeader', () => {
     describe('title rendering', () => {
         it('should render title', () => {
             render(<ChatSettingsPageHeader title="Chat Settings" />)
 
-            expect(screen.getByText('Chat Settings')).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', { name: 'Chat Settings' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -113,21 +62,20 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const homeLink = screen.getByText('Home').closest('a')
-            expect(homeLink).toHaveAttribute('href', '/home')
-
-            const chatLink = screen.queryByText('Chat')?.closest('a')
-            expect(chatLink).not.toBeInTheDocument()
-        })
-
-        it('should render without breadcrumbs when not provided', () => {
-            const { container } = render(
-                <ChatSettingsPageHeader title="Chat Settings" />,
+            expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute(
+                'href',
+                '/home',
             )
 
-            const nav = container.querySelector('nav')
-            expect(nav).toBeInTheDocument()
-            expect(nav?.children).toHaveLength(0)
+            expect(
+                screen.queryByRole('link', { name: 'Chat' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render without breadcrumb links when not provided', () => {
+            render(<ChatSettingsPageHeader title="Chat Settings" />)
+
+            expect(screen.queryAllByRole('link')).toHaveLength(0)
         })
     })
 
@@ -140,10 +88,7 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const backButton = screen.getByTestId(
-                'chat-settings-header-back-button',
-            )
-            expect(backButton).toBeInTheDocument()
+            expect(getBackButtonHref()).toHaveAttribute('href', '/back')
         })
 
         it('should render back button with link from breadcrumbItems', () => {
@@ -160,10 +105,7 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const backButton = screen.getByTestId(
-                'chat-settings-header-back-button',
-            )
-            expect(backButton).toHaveAttribute('href', '/settings')
+            expect(getBackButtonHref()).toHaveAttribute('href', '/settings')
         })
 
         it('should prioritize backButtonLink over breadcrumb links', () => {
@@ -180,10 +122,7 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const backButton = screen.getByTestId(
-                'chat-settings-header-back-button',
-            )
-            expect(backButton).toHaveAttribute('href', '/custom-back')
+            expect(getBackButtonHref()).toHaveAttribute('href', '/custom-back')
         })
 
         it('should not render back button when showBackButton is false', () => {
@@ -195,10 +134,9 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const backButton = screen.queryByTestId(
-                'chat-settings-header-back-button',
-            )
-            expect(backButton).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('link', { name: 'arrow-left' }),
+            ).not.toBeInTheDocument()
         })
 
         it('should not render back button when no links are available', () => {
@@ -214,10 +152,9 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const backButton = screen.queryByTestId(
-                'chat-settings-header-back-button',
-            )
-            expect(backButton).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('link', { name: 'arrow-left' }),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -232,10 +169,9 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const saveButton = screen.getByTestId(
-                'chat-settings-header-action-button',
-            )
-            expect(saveButton).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Save' }),
+            ).toBeInTheDocument()
         })
 
         it('should call onSave when save button is clicked', async () => {
@@ -249,10 +185,7 @@ describe('ChatSettingsPageHeader', () => {
                 />,
             )
 
-            const saveButton = screen.getByTestId(
-                'chat-settings-header-action-button',
-            )
-            await user.click(saveButton.querySelector('button')!)
+            await user.click(screen.getByRole('button', { name: 'Save' }))
 
             expect(onSave).toHaveBeenCalledTimes(1)
         })
@@ -260,10 +193,9 @@ describe('ChatSettingsPageHeader', () => {
         it('should not render save button when onSave is not provided', () => {
             render(<ChatSettingsPageHeader title="Chat Settings" />)
 
-            const saveButton = screen.queryByTestId(
-                'chat-settings-header-action-button',
-            )
-            expect(saveButton).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'Save' }),
+            ).not.toBeInTheDocument()
         })
     })
 })

@@ -18,10 +18,6 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useCopyToClipboard: jest.fn(),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-}))
-
 describe('KnowledgeEditorSidePanelFieldKnowledgeType', () => {
     it('renders type', () => {
         render(

@@ -15,12 +15,6 @@ import { MacroSortableProperties } from 'models/macro/types'
 
 import { MacrosSettingsItem } from '../MacrosSettingsItem'
 
-jest.mock('@gorgias/axiom', () => {
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        LegacyTooltip: () => <div>Tooltip</div>,
-    } as Record<string, unknown>
-})
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
     history: {

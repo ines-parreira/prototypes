@@ -1,9 +1,11 @@
 import { render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import AdvancedInstallationSidePanel from './AdvancedInstallationSidePanel'
+
+HTMLElement.prototype.getAnimations = jest.fn().mockReturnValue([])
 
 jest.mock('models/integration/queries', () => ({
     useGetInstallationSnippet: jest.fn(),
@@ -30,70 +32,32 @@ jest.mock(
 jest.mock('./ShopifyWebsiteContent', () => ({
     __esModule: true,
     default: ({ isLoadingInstallationCode, installationCode }: any) => (
-        <div data-testid="shopify-content">
-            <div data-testid="loading-state">
-                {isLoadingInstallationCode.toString()}
-            </div>
-            <div data-testid="installation-code">{installationCode}</div>
-        </div>
+        <section aria-label="Shopify Website content">
+            <p>Loading: {isLoadingInstallationCode.toString()}</p>
+            <pre>{installationCode}</pre>
+        </section>
     ),
 }))
 
 jest.mock('./AnyOtherWebsiteContent', () => ({
     __esModule: true,
     default: ({ isLoadingInstallationCode, installationCode }: any) => (
-        <div data-testid="any-other-website-content">
-            <div data-testid="loading-state">
-                {isLoadingInstallationCode.toString()}
-            </div>
-            <div data-testid="installation-code">{installationCode}</div>
-        </div>
+        <section aria-label="Any Other Website content">
+            <p>Loading: {isLoadingInstallationCode.toString()}</p>
+            <pre>{installationCode}</pre>
+        </section>
     ),
 }))
 
 jest.mock('./GoogleTagManagerContent', () => ({
     __esModule: true,
     default: ({ isLoadingApplicationKey, applicationKey }: any) => (
-        <div data-testid="google-tag-manager-content">
-            <div data-testid="loading-state">
-                {isLoadingApplicationKey.toString()}
-            </div>
-            <div data-testid="application-key">{applicationKey}</div>
-        </div>
+        <section aria-label="Google Tag Manager content">
+            <p>Loading: {isLoadingApplicationKey.toString()}</p>
+            <pre>{applicationKey}</pre>
+        </section>
     ),
 }))
-
-jest.mock('@gorgias/axiom', () => {
-    let mockOnSelectionChange: any = null
-
-    return {
-        ...jest.requireActual('@gorgias/axiom'),
-        SidePanel: ({ children, isOpen }: any) =>
-            isOpen ? <div data-testid="side-panel">{children}</div> : null,
-        OverlayHeader: ({ title }: any) => (
-            <div data-testid="overlay-header">{title}</div>
-        ),
-        OverlayContent: ({ children }: any) => (
-            <div data-testid="overlay-content">{children}</div>
-        ),
-        ButtonGroup: ({ children, selectedKey, onSelectionChange }: any) => {
-            mockOnSelectionChange = onSelectionChange
-            return (
-                <div data-testid="button-group" data-selected-key={selectedKey}>
-                    {children}
-                </div>
-            )
-        },
-        ButtonGroupItem: ({ children, id }: any) => (
-            <button
-                data-testid={`button-group-item-${id}`}
-                onClick={() => mockOnSelectionChange?.(id)}
-            >
-                {children}
-            </button>
-        ),
-    }
-})
 
 describe('AdvancedInstallationSidePanel', () => {
     const mockUseGetInstallationSnippet = jest.requireMock(
@@ -157,46 +121,48 @@ describe('AdvancedInstallationSidePanel', () => {
     it('should not render when isOpen is false', () => {
         renderComponent(defaultIntegration, false)
 
-        expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('heading', { name: 'Advanced Installation' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should render side panel when isOpen is true', () => {
         renderComponent()
 
-        expect(screen.getByTestId('side-panel')).toBeInTheDocument()
-    })
-
-    it('should render with correct title', () => {
-        renderComponent()
-
-        expect(screen.getByTestId('overlay-header')).toHaveTextContent(
-            'Advanced Installation',
-        )
+        expect(
+            screen.getByRole('heading', { name: 'Advanced Installation' }),
+        ).toBeInTheDocument()
     })
 
     it('should render button group with three options', () => {
         renderComponent()
 
         expect(
-            screen.getByTestId('button-group-item-shopify-website'),
+            screen.getByRole('radio', { name: 'Shopify Website' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId('button-group-item-any-other-website'),
+            screen.getByRole('radio', { name: 'Any Other Website' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId('button-group-item-google-tag-manager'),
+            screen.getByRole('radio', { name: 'Google Tag Manager' }),
         ).toBeInTheDocument()
     })
 
     it('should render Shopify Website content by default', () => {
         renderComponent()
 
-        expect(screen.getByTestId('shopify-content')).toBeInTheDocument()
         expect(
-            screen.queryByTestId('any-other-website-content'),
+            screen.getByRole('region', { name: 'Shopify Website content' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('region', {
+                name: 'Any Other Website content',
+            }),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByTestId('google-tag-manager-content'),
+            screen.queryByRole('region', {
+                name: 'Google Tag Manager content',
+            }),
         ).not.toBeInTheDocument()
     })
 
@@ -204,66 +170,73 @@ describe('AdvancedInstallationSidePanel', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const anyOtherWebsiteButton = screen.getByTestId(
-            'button-group-item-any-other-website',
-        )
         await act(async () => {
-            await user.click(anyOtherWebsiteButton)
+            await user.click(
+                screen.getByRole('radio', { name: 'Any Other Website' }),
+            )
         })
 
         expect(
-            screen.getByTestId('any-other-website-content'),
+            screen.getByRole('region', { name: 'Any Other Website content' }),
         ).toBeInTheDocument()
-        expect(screen.queryByTestId('shopify-content')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('region', { name: 'Shopify Website content' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should switch to Google Tag Manager content when clicked', async () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const googleTagManagerButton = screen.getByTestId(
-            'button-group-item-google-tag-manager',
-        )
         await act(async () => {
-            await user.click(googleTagManagerButton)
+            await user.click(
+                screen.getByRole('radio', { name: 'Google Tag Manager' }),
+            )
         })
 
         expect(
-            screen.getByTestId('google-tag-manager-content'),
+            screen.getByRole('region', { name: 'Google Tag Manager content' }),
         ).toBeInTheDocument()
-        expect(screen.queryByTestId('shopify-content')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('region', { name: 'Shopify Website content' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should pass correct props to Shopify Website content', () => {
         renderComponent()
 
-        const shopifyContent = screen.getByTestId('shopify-content')
+        const shopifyContent = screen.getByRole('region', {
+            name: 'Shopify Website content',
+        })
         expect(
-            shopifyContent.querySelector('[data-testid="loading-state"]'),
-        ).toHaveTextContent('false')
+            within(shopifyContent).getByText('Loading: false'),
+        ).toBeInTheDocument()
         expect(
-            shopifyContent.querySelector('[data-testid="installation-code"]'),
-        ).toHaveTextContent('<script>console.log("test")</script>')
+            within(shopifyContent).getByText(
+                '<script>console.log("test")</script>',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should pass correct props to Google Tag Manager content', async () => {
         const user = userEvent.setup()
         renderComponent()
 
-        const googleTagManagerButton = screen.getByTestId(
-            'button-group-item-google-tag-manager',
-        )
         await act(async () => {
-            await user.click(googleTagManagerButton)
+            await user.click(
+                screen.getByRole('radio', { name: 'Google Tag Manager' }),
+            )
         })
 
-        const googleContent = screen.getByTestId('google-tag-manager-content')
+        const googleContent = screen.getByRole('region', {
+            name: 'Google Tag Manager content',
+        })
         expect(
-            googleContent.querySelector('[data-testid="loading-state"]'),
-        ).toHaveTextContent('false')
+            within(googleContent).getByText('Loading: false'),
+        ).toBeInTheDocument()
         expect(
-            googleContent.querySelector('[data-testid="application-key"]'),
-        ).toHaveTextContent('test-app-key')
+            within(googleContent).getByText('test-app-key'),
+        ).toBeInTheDocument()
     })
 
     it('should show loading state when installation snippet is loading', () => {
@@ -274,10 +247,12 @@ describe('AdvancedInstallationSidePanel', () => {
 
         renderComponent()
 
-        const shopifyContent = screen.getByTestId('shopify-content')
+        const shopifyContent = screen.getByRole('region', {
+            name: 'Shopify Website content',
+        })
         expect(
-            shopifyContent.querySelector('[data-testid="loading-state"]'),
-        ).toHaveTextContent('true')
+            within(shopifyContent).getByText('Loading: true'),
+        ).toBeInTheDocument()
     })
 
     it('should show loading state when convert bundle is loading', () => {
@@ -288,10 +263,12 @@ describe('AdvancedInstallationSidePanel', () => {
 
         renderComponent()
 
-        const shopifyContent = screen.getByTestId('shopify-content')
+        const shopifyContent = screen.getByRole('region', {
+            name: 'Shopify Website content',
+        })
         expect(
-            shopifyContent.querySelector('[data-testid="loading-state"]'),
-        ).toHaveTextContent('true')
+            within(shopifyContent).getByText('Loading: true'),
+        ).toBeInTheDocument()
     })
 
     it('should append bundle snippet when enabled', () => {
@@ -299,14 +276,13 @@ describe('AdvancedInstallationSidePanel', () => {
 
         renderComponent()
 
-        const shopifyContent = screen.getByTestId('shopify-content')
-        const installationCodeElement = shopifyContent.querySelector(
-            '[data-testid="installation-code"]',
-        )
-        expect(installationCodeElement).toHaveTextContent(
+        const shopifyContent = screen.getByRole('region', {
+            name: 'Shopify Website content',
+        })
+        expect(shopifyContent).toHaveTextContent(
             '<script>console.log("test")</script>',
         )
-        expect(installationCodeElement).toHaveTextContent(
+        expect(shopifyContent).toHaveTextContent(
             '<script>console.log("bundle")</script>',
         )
     })
@@ -316,10 +292,14 @@ describe('AdvancedInstallationSidePanel', () => {
 
         renderComponent()
 
-        const shopifyContent = screen.getByTestId('shopify-content')
+        const shopifyContent = screen.getByRole('region', {
+            name: 'Shopify Website content',
+        })
         expect(
-            shopifyContent.querySelector('[data-testid="installation-code"]'),
-        ).toHaveTextContent('<script>console.log("test")</script>')
+            within(shopifyContent).getByText(
+                '<script>console.log("test")</script>',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should fetch installation snippet with correct application ID', () => {

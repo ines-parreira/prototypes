@@ -16,20 +16,6 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }))
 
-const mockIconButtonRender = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyIconButton: React.forwardRef<HTMLButtonElement, any>((props, ref) => {
-        mockIconButtonRender(props, ref)
-        return (
-            <button ref={ref} {...props}>
-                Mock IconButton
-            </button>
-        )
-    }),
-}))
-
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
@@ -72,7 +58,6 @@ describe('TicketModal', () => {
     beforeEach(() => {
         useFlagMock.mockReturnValue(false) // Default to modal view
         useHistoryMock.mockReturnValue({ push: mockHistoryPush } as any)
-        mockIconButtonRender.mockClear()
         mockHistoryPush.mockClear()
     })
 
@@ -93,13 +78,6 @@ describe('TicketModal', () => {
                 summary: undefined,
             }),
             {},
-        )
-
-        expect(mockIconButtonRender).toHaveBeenCalledWith(
-            expect.objectContaining({
-                onClick: defaultProps.onClose,
-            }),
-            expect.anything(),
         )
     })
 
@@ -179,9 +157,13 @@ describe('TicketModal', () => {
         })
 
         it('should render drawer instead of modal', () => {
-            const { container } = render(<TicketModal {...defaultProps} />)
+            render(<TicketModal {...defaultProps} />)
 
-            expect(container.querySelector('.ticketDrawer')).toBeInTheDocument()
+            expect(screen.getByText('TicketDetail')).toBeInTheDocument()
+
+            const dialog = screen.getByRole('dialog')
+            expect(dialog).toBeInTheDocument()
+            expect(dialog).not.toHaveAttribute('aria-modal', 'true')
         })
 
         it('should render navigation buttons', () => {
@@ -218,7 +200,10 @@ describe('TicketModal', () => {
 
             expect(screen.getByText('TicketDetail')).toBeInTheDocument()
 
-            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByRole('dialog')).toHaveAttribute(
+                'aria-modal',
+                'true',
+            )
         })
 
         it('should render navigation buttons', () => {

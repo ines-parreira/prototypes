@@ -1,5 +1,3 @@
-import type { ChangeEvent, ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,69 +8,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import { ChatEmailCaptureCard } from './ChatEmailCaptureCard'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <p>{children}</p>,
-    ToggleField: ({
-        value,
-        onChange,
-    }: {
-        value: boolean
-        onChange: (value: boolean) => void
-    }) => (
-        <input
-            type="checkbox"
-            aria-label="Collect shopper emails"
-            checked={value}
-            onChange={(e) => onChange(e.target.checked)}
-        />
-    ),
-    RadioGroup: ({
-        children,
-        value,
-        onChange,
-    }: {
-        children: ReactNode
-        value: string
-        onChange: (value: string) => void
-    }) => (
-        <div
-            role="radiogroup"
-            data-value={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                if (e.target.type === 'radio') onChange(e.target.value)
-            }}
-        >
-            {children}
-        </div>
-    ),
-    Radio: ({
-        value,
-        label,
-        caption,
-        isDisabled,
-    }: {
-        value: string
-        label: string
-        caption?: string
-        isDisabled?: boolean
-    }) => (
-        <label>
-            <input
-                type="radio"
-                value={value}
-                disabled={isDisabled}
-                onChange={() => {}}
-            />
-            {label}
-            {caption && <span>{caption}</span>}
-        </label>
-    ),
-}))
 
 describe('ChatEmailCaptureCard', () => {
     const defaultProps = {
@@ -189,17 +124,13 @@ describe('ChatEmailCaptureCard', () => {
         it('should render checked when emailCaptureEnabled is true', () => {
             renderComponent({ emailCaptureEnabled: true })
 
-            expect(
-                screen.getByLabelText('Collect shopper emails'),
-            ).toBeChecked()
+            expect(screen.getByRole('switch')).toBeChecked()
         })
 
         it('should render unchecked when emailCaptureEnabled is false', () => {
             renderComponent({ emailCaptureEnabled: false })
 
-            expect(
-                screen.getByLabelText('Collect shopper emails'),
-            ).not.toBeChecked()
+            expect(screen.getByRole('switch')).not.toBeChecked()
         })
 
         it('should call onEmailCaptureEnabledChange when toggled on', async () => {
@@ -210,7 +141,7 @@ describe('ChatEmailCaptureCard', () => {
                 onEmailCaptureEnabledChange,
             })
 
-            await user.click(screen.getByLabelText('Collect shopper emails'))
+            await user.click(screen.getByRole('switch'))
 
             expect(onEmailCaptureEnabledChange).toHaveBeenCalledWith(true)
         })
@@ -223,7 +154,7 @@ describe('ChatEmailCaptureCard', () => {
                 onEmailCaptureEnabledChange,
             })
 
-            await user.click(screen.getByLabelText('Collect shopper emails'))
+            await user.click(screen.getByRole('switch'))
 
             expect(onEmailCaptureEnabledChange).toHaveBeenCalledWith(false)
         })
@@ -236,10 +167,12 @@ describe('ChatEmailCaptureCard', () => {
                     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
             })
 
-            expect(screen.getByRole('radiogroup')).toHaveAttribute(
-                'data-value',
-                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
-            )
+            expect(
+                screen.getByRole('radio', { name: /Required/ }),
+            ).toBeChecked()
+            expect(
+                screen.getByRole('radio', { name: /Optional/ }),
+            ).not.toBeChecked()
         })
     })
 

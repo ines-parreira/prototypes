@@ -1,19 +1,10 @@
-import { assumeMock, render } from '@repo/testing'
-
-import { LegacySelectField as SelectField } from '@gorgias/axiom'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import SelectDropdownField from '../SelectDropdownField'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacySelectField: jest.fn(),
-}))
-
-const SelectFieldMock = assumeMock(SelectField)
-SelectFieldMock.mockReturnValue(<div>Mocked SelectField</div>)
-
 describe('SelectDropdownField', () => {
-    it('should render SelectField with correct props', () => {
+    it('should render the select with the selected value', () => {
         render(
             <SelectDropdownField
                 options={[]}
@@ -22,13 +13,8 @@ describe('SelectDropdownField', () => {
             />,
         )
 
-        expect(SelectFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                options: [],
-                onChange: expect.any(Function),
-                selectedOption: 'value',
-            }),
-            {},
-        )
+        const combobox = screen.getByRole('combobox')
+        expect(combobox).toBeInTheDocument()
+        expect(combobox).toHaveTextContent('value')
     })
 })

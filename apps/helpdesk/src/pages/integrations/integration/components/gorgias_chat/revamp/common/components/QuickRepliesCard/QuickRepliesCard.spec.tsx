@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,69 +8,6 @@ import {
 } from 'config/integrations/gorgias_chat'
 
 import { QuickRepliesCard } from './QuickRepliesCard'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <p>{children}</p>,
-    Box: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Icon: () => null,
-    ToggleField: ({
-        value,
-        onChange,
-        'aria-label': ariaLabel,
-    }: {
-        value: boolean
-        onChange: (value: boolean) => void
-        'aria-label': string
-    }) => (
-        <input
-            type="checkbox"
-            aria-label={ariaLabel}
-            checked={value}
-            onChange={(e) => onChange(e.target.checked)}
-        />
-    ),
-    Button: ({
-        children,
-        onClick,
-        isDisabled,
-        'aria-label': ariaLabel,
-    }: {
-        children?: ReactNode
-        onClick: () => void
-        isDisabled?: boolean
-        'aria-label'?: string
-    }) => (
-        <button onClick={onClick} disabled={isDisabled} aria-label={ariaLabel}>
-            {children}
-        </button>
-    ),
-    TextField: ({
-        value,
-        onChange,
-        'aria-label': ariaLabel,
-        placeholder,
-        maxLength,
-    }: {
-        value: string
-        onChange: (value: string) => void
-        'aria-label': string
-        placeholder?: string
-        maxLength?: number
-    }) => (
-        <input
-            type="text"
-            value={value}
-            aria-label={ariaLabel}
-            placeholder={placeholder}
-            maxLength={maxLength}
-            onChange={(e) => onChange(e.target.value)}
-        />
-    ),
-}))
 
 describe('QuickRepliesCard', () => {
     const defaultProps = {
@@ -111,15 +46,13 @@ describe('QuickRepliesCard', () => {
         it('should render checked when isEnabled is true', () => {
             renderComponent({ isEnabled: true })
 
-            expect(screen.getByLabelText('Enable quick replies')).toBeChecked()
+            expect(screen.getByRole('switch')).toBeChecked()
         })
 
         it('should render unchecked when isEnabled is false', () => {
             renderComponent({ isEnabled: false })
 
-            expect(
-                screen.getByLabelText('Enable quick replies'),
-            ).not.toBeChecked()
+            expect(screen.getByRole('switch')).not.toBeChecked()
         })
 
         it('should call onChange with enabled true when toggled on', async () => {
@@ -127,7 +60,7 @@ describe('QuickRepliesCard', () => {
             const onChange = jest.fn()
             renderComponent({ isEnabled: false, replies: ['hello'], onChange })
 
-            await user.click(screen.getByLabelText('Enable quick replies'))
+            await user.click(screen.getByRole('switch'))
 
             expect(onChange).toHaveBeenCalledWith({
                 enabled: true,
@@ -140,7 +73,7 @@ describe('QuickRepliesCard', () => {
             const onChange = jest.fn()
             renderComponent({ isEnabled: true, replies: ['hello'], onChange })
 
-            await user.click(screen.getByLabelText('Enable quick replies'))
+            await user.click(screen.getByRole('switch'))
 
             expect(onChange).toHaveBeenCalledWith({
                 enabled: false,
@@ -154,7 +87,7 @@ describe('QuickRepliesCard', () => {
             renderComponent({ isEnabled: false })
 
             expect(
-                screen.queryByRole('button', { name: 'Add quick reply' }),
+                screen.queryByRole('button', { name: /Add quick reply/ }),
             ).not.toBeInTheDocument()
         })
     })
@@ -164,7 +97,7 @@ describe('QuickRepliesCard', () => {
             renderComponent({ isEnabled: true })
 
             expect(
-                screen.getByRole('button', { name: 'Add quick reply' }),
+                screen.getByRole('button', { name: /Add quick reply/ }),
             ).toBeInTheDocument()
         })
 
@@ -241,7 +174,7 @@ describe('QuickRepliesCard', () => {
             })
 
             await user.click(
-                screen.getByRole('button', { name: 'Add quick reply' }),
+                screen.getByRole('button', { name: /Add quick reply/ }),
             )
 
             expect(onChange).toHaveBeenCalledWith({
@@ -275,7 +208,7 @@ describe('QuickRepliesCard', () => {
                 })
 
                 expect(
-                    screen.getByRole('button', { name: 'Add quick reply' }),
+                    screen.getByRole('button', { name: /Add quick reply/ }),
                 ).not.toBeDisabled()
             })
 
@@ -286,7 +219,7 @@ describe('QuickRepliesCard', () => {
                 })
 
                 expect(
-                    screen.getByRole('button', { name: 'Add quick reply' }),
+                    screen.getByRole('button', { name: /Add quick reply/ }),
                 ).toBeDisabled()
             })
         })

@@ -1,4 +1,6 @@
 import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { LANGUAGE } from 'constants/languages'
@@ -9,7 +11,6 @@ const mockAddLanguage = jest.fn()
 const mockUpdateDefaultLanguage = jest.fn().mockResolvedValue(undefined)
 const mockDeleteLanguage = jest.fn()
 const mockLanguagesCard = jest.fn()
-const mockSelect = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout',
@@ -54,24 +55,6 @@ jest.mock(
     }),
 )
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Button: ({ children, ...rest }: { children?: React.ReactNode }) => (
-        <button {...rest}>{children}</button>
-    ),
-    ButtonIntent: { Regular: 'regular' },
-    ButtonSize: { Md: 'md' },
-    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
-    Icon: ({ name }: { name: string }) => <span data-icon={name} />,
-    ListItem: ({ id, label }: { id: string; label: string }) => (
-        <li id={id}>{label}</li>
-    ),
-    Select: (props: any) => {
-        mockSelect(props)
-        return null
-    },
-}))
-
 const mockLoading = fromJS({ integration: false })
 
 describe('GorgiasChatIntegrationLanguagesRevamp', () => {
@@ -97,6 +80,7 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
     })
 
     it('should call addLanguage when a language option is selected', async () => {
+        const user = userEvent.setup()
         render(
             <GorgiasChatIntegrationLanguagesRevamp
                 integration={fromJS({ id: 1 })}
@@ -104,15 +88,16 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
             />,
         )
 
-        const { onSelect } = mockSelect.mock.calls[0][0]
-        await onSelect({ value: LANGUAGE.FR, label: 'French' })
+        await user.click(screen.getByRole('button', { name: /add language/i }))
+        await user.click(await screen.findByRole('option', { name: 'German' }))
 
         expect(mockAddLanguage).toHaveBeenCalledWith({
-            language: LANGUAGE.FR,
+            language: LANGUAGE.DE,
         })
     })
 
-    it('should pass languagesAvailable items to Select', () => {
+    it('should render the available language options in the Select', async () => {
+        const user = userEvent.setup()
         render(
             <GorgiasChatIntegrationLanguagesRevamp
                 integration={fromJS({ id: 1 })}
@@ -120,11 +105,11 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
             />,
         )
 
-        expect(mockSelect).toHaveBeenCalledWith(
-            expect.objectContaining({
-                items: [{ value: LANGUAGE.DE, label: 'German' }],
-            }),
-        )
+        await user.click(screen.getByRole('button', { name: /add language/i }))
+
+        expect(
+            await screen.findByRole('option', { name: 'German' }),
+        ).toBeInTheDocument()
     })
 
     describe('handleUpdateDefaultLanguage', () => {

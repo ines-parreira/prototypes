@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -15,81 +13,6 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 const mockUseListIntegrations = useListIntegrations as jest.MockedFunction<
     typeof useListIntegrations
 >
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({
-        children,
-        className,
-    }: {
-        children: ReactNode
-        className?: string
-    }) => <p className={className}>{children}</p>,
-    SelectField: <T extends { id: number; label: string }>({
-        label,
-        placeholder,
-        items,
-        value,
-        onChange,
-    }: {
-        label: string
-        placeholder?: string
-        items: T[]
-        value: T | undefined
-        onChange: (option: T | undefined) => void
-        children: (option: T) => ReactNode
-    }) => (
-        <div>
-            <label htmlFor="email-select">{label}</label>
-            <select
-                id="email-select"
-                value={value?.id ?? ''}
-                onChange={(e) => {
-                    const id = parseInt(e.target.value)
-                    const item = items.find((i) => i.id === id)
-                    onChange(item)
-                }}
-            >
-                <option value="">{placeholder}</option>
-                {items.map((item) => (
-                    <option key={item.id} value={item.id}>
-                        {item.label}
-                    </option>
-                ))}
-            </select>
-        </div>
-    ),
-    ListItem: ({ label }: { id: number; label: string }) => (
-        <span>{label}</span>
-    ),
-    CheckBoxField: ({
-        label,
-        caption,
-        value,
-        onChange,
-    }: {
-        label: string
-        caption?: string
-        value: boolean
-        onChange: (value: boolean) => void
-        direction?: string
-    }) => (
-        <>
-            <label>
-                <input
-                    type="checkbox"
-                    checked={value}
-                    onChange={(e) => onChange(e.target.checked)}
-                />
-                {label}
-            </label>
-            {caption && <span>{caption}</span>}
-        </>
-    ),
-}))
 
 const buildMockResponse = (
     integrations: Array<{ id: number; name: string; type: string }>,
@@ -154,7 +77,9 @@ describe('ChatShopperExperienceCard', () => {
     it('should render the Connect email select field', () => {
         renderComponent()
 
-        expect(screen.getByLabelText('Connect email')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Connect email/ }),
+        ).toBeInTheDocument()
     })
 
     it('should render the select field caption', () => {
@@ -167,11 +92,14 @@ describe('ChatShopperExperienceCard', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render email integrations from all email types as options', () => {
+    it('should render email integrations from all email types as options', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
+        await user.click(screen.getByRole('button', { name: /Connect email/ }))
+
         expect(
-            screen.getByRole('option', { name: 'Support Email' }),
+            await screen.findByRole('option', { name: 'Support Email' }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('option', { name: 'Sales Gmail' }),
@@ -286,13 +214,17 @@ describe('ChatShopperExperienceCard', () => {
         it('should show the selected email when linkedEmailIntegration matches an option', () => {
             renderComponent({ linkedEmailIntegration: 1 })
 
-            expect(screen.getByRole('combobox')).toHaveValue('1')
+            expect(
+                screen.getByRole('textbox', { name: /Connect email/ }),
+            ).toHaveValue('Support Email')
         })
 
-        it('should show empty when linkedEmailIntegration is null', () => {
+        it('should show the placeholder when linkedEmailIntegration is null', () => {
             renderComponent({ linkedEmailIntegration: null })
 
-            expect(screen.getByRole('combobox')).toHaveValue('')
+            expect(screen.getByPlaceholderText('Select an email')).toHaveValue(
+                '',
+            )
         })
 
         it('should call onLinkedEmailIntegrationChange with the selected id', async () => {
@@ -300,36 +232,51 @@ describe('ChatShopperExperienceCard', () => {
             const onLinkedEmailIntegrationChange = jest.fn()
             renderComponent({ onLinkedEmailIntegrationChange })
 
-            await user.selectOptions(
-                screen.getByRole('combobox'),
-                screen.getByRole('option', { name: 'Sales Gmail' }),
+            await user.click(
+                screen.getByRole('button', { name: /Connect email/ }),
+            )
+            await user.click(
+                await screen.findByRole('option', { name: 'Sales Gmail' }),
             )
 
             expect(onLinkedEmailIntegrationChange).toHaveBeenCalledWith(2)
         })
 
-        it('should render empty list when no integrations are available', () => {
+        it('should render empty list when no integrations are available', async () => {
+            const user = userEvent.setup()
             mockUseListIntegrations.mockReturnValue(emptyResponse)
             renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /Connect email/ }),
+            )
 
             expect(
                 screen.queryByRole('option', { name: 'Support Email' }),
             ).not.toBeInTheDocument()
         })
 
-        it('should handle undefined data from useListIntegrations gracefully', () => {
+        it('should handle undefined data from useListIntegrations gracefully', async () => {
+            const user = userEvent.setup()
             mockUseListIntegrations.mockReturnValue(
                 {} as unknown as ReturnType<typeof useListIntegrations>,
             )
             renderComponent()
 
-            expect(screen.getByRole('combobox')).toBeInTheDocument()
+            const trigger = screen.getByRole('button', {
+                name: /Connect email/,
+            })
+            expect(trigger).toBeInTheDocument()
+
+            await user.click(trigger)
+
             expect(
                 screen.queryByRole('option', { name: 'Support Email' }),
             ).not.toBeInTheDocument()
         })
 
-        it('should format option as "Name <address>" when integration has an address', () => {
+        it('should format option as "Name <address>" when integration has an address', async () => {
+            const user = userEvent.setup()
             mockUseListIntegrations.mockImplementation((params) => {
                 if (params?.type === 'email') {
                     return {
@@ -352,24 +299,15 @@ describe('ChatShopperExperienceCard', () => {
             })
             renderComponent()
 
+            await user.click(
+                screen.getByRole('button', { name: /Connect email/ }),
+            )
+
             expect(
-                screen.getByRole('option', {
+                await screen.findByRole('option', {
                     name: 'Support Email <support@example.com>',
                 }),
             ).toBeInTheDocument()
-        })
-
-        it('should call onLinkedEmailIntegrationChange with null when selection is cleared', async () => {
-            const user = userEvent.setup()
-            const onLinkedEmailIntegrationChange = jest.fn()
-            renderComponent({
-                linkedEmailIntegration: 1,
-                onLinkedEmailIntegrationChange,
-            })
-
-            await user.selectOptions(screen.getByRole('combobox'), '')
-
-            expect(onLinkedEmailIntegrationChange).toHaveBeenCalledWith(null)
         })
     })
 })

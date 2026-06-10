@@ -10,8 +10,6 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AxiosError, AxiosHeaders } from 'axios'
 
-import { toast } from '@gorgias/axiom'
-
 import {
     basicMonthlyHelpdeskPlan,
     convertPlan1,
@@ -47,14 +45,6 @@ jest.mock('state/currentAccount/selectors', () => ({
     shouldPayWithShopify: jest.fn(),
     getShopifyBillingStatus: jest.fn(),
 }))
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    toast: {
-        error: jest.fn(),
-        success: jest.fn(),
-    },
-}))
-
 jest.mock('../../../components/Card', () =>
     jest.fn(({ children }) => <div>{children}</div>),
 )
@@ -131,8 +121,10 @@ const mockShouldPayWithShopify = jest.mocked(shouldPayWithShopify)
 const mockGetShopifyBillingStatus = jest.mocked(getShopifyBillingStatus)
 const mockReportError = jest.mocked(reportError)
 const mockUseFlag = jest.mocked(useFlag)
-const mockToastError = jest.mocked(toast.error)
-const mockToastSuccess = jest.mocked(toast.success)
+
+const updateErrorMessage =
+    "Sorry, we couldn't update your subscription. Please try again."
+const updateSuccessMessage = 'Your subscription has successfully been updated.'
 
 const plansByProduct: PlansByProduct = {
     [ProductType.Helpdesk]: {
@@ -233,10 +225,9 @@ describe('BillingSummaryCard', () => {
         await waitFor(() => {
             expect(updateSubscription).toHaveBeenCalledTimes(1)
         })
-        expect(mockToastSuccess).toHaveBeenCalledWith(
-            'Your subscription has successfully been updated.',
-            { duration: 5000 },
-        )
+        expect(
+            await screen.findByRole('status', { name: updateSuccessMessage }),
+        ).toBeInTheDocument()
 
         await waitFor(() => {
             expect(screen.getByText('closed')).toBeInTheDocument()
@@ -311,10 +302,9 @@ describe('BillingSummaryCard', () => {
 
         await user.click(screen.getByRole('button', { name: /confirm modal/i }))
 
-        expect(mockToastError).toHaveBeenCalledWith(
-            "Sorry, we couldn't update your subscription. Please try again.",
-            { duration: 5000 },
-        )
+        expect(
+            await screen.findByRole('status', { name: updateErrorMessage }),
+        ).toBeInTheDocument()
 
         expect(mockSetUpdateProcessStarted).toHaveBeenCalledWith(false)
     })
@@ -625,7 +615,9 @@ describe('BillingSummaryCard', () => {
                 ).toBeInTheDocument()
             })
 
-            expect(mockToastError).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('status', { name: updateErrorMessage }),
+            ).not.toBeInTheDocument()
             expect(mockReportError).not.toHaveBeenCalled()
         })
 
@@ -652,7 +644,9 @@ describe('BillingSummaryCard', () => {
                 ).toBeInTheDocument()
             })
 
-            expect(mockToastError).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('status', { name: updateErrorMessage }),
+            ).not.toBeInTheDocument()
         })
 
         it('clears pending-invoice banner when modal is closed and reopened', async () => {
@@ -705,10 +699,11 @@ describe('BillingSummaryCard', () => {
                 screen.getByRole('button', { name: /confirm modal/i }),
             )
 
-            expect(mockToastError).toHaveBeenCalledWith(
-                "Sorry, we couldn't update your subscription. Please try again.",
-                { duration: 5000 },
-            )
+            expect(
+                await screen.findByRole('status', {
+                    name: updateErrorMessage,
+                }),
+            ).toBeInTheDocument()
 
             expect(mockReportError).toHaveBeenCalledWith(expect.any(Error))
             expect(
@@ -757,7 +752,11 @@ describe('BillingSummaryCard', () => {
                     ).toBeInTheDocument()
                 })
 
-                expect(mockToastError).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('status', {
+                        name: updateErrorMessage,
+                    }),
+                ).not.toBeInTheDocument()
                 expect(
                     screen.queryByText('pending invoice error'),
                 ).not.toBeInTheDocument()

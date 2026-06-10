@@ -1,21 +1,7 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { TranslateSection } from './TranslateSection'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: React.ReactNode }) => (
-        <h2>{children}</h2>
-    ),
-    HeadingSize: { Sm: 'sm' },
-}))
 
 describe('TranslateSection', () => {
     it('should render the section title', () => {

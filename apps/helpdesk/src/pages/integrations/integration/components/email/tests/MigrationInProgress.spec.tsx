@@ -6,29 +6,10 @@ import { cleanup, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
-import { toast } from '@gorgias/axiom'
-
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 
 import MigrationInProgress from '../EmailMigration/MigrationInProgress'
 import * as migrationUtils from '../EmailMigration/utils'
-
-jest.mock('@gorgias/axiom', () => {
-    const actual = jest.requireActual('@gorgias/axiom')
-    const toastMock = Object.assign(jest.fn(), {
-        info: jest.fn(),
-        success: jest.fn(),
-        warning: jest.fn(),
-        error: jest.fn(),
-        ai: jest.fn(),
-        promise: jest.fn(),
-        dismiss: jest.fn(),
-    })
-    return {
-        ...actual,
-        toast: toastMock,
-    }
-})
 
 const getInboundUnverifiedMigrationsSpy = jest.spyOn(
     migrationUtils,
@@ -88,9 +69,9 @@ describe('MigrationInProgress', () => {
         renderComponent()
 
         await waitFor(() => {
-            expect(toast.error).toHaveBeenCalledWith(
-                'Could not fetch migrations',
-            )
+            const toast = screen.getByRole('status', { hidden: true })
+            expect(toast).toHaveTextContent('Could not fetch migrations')
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
 
         failingServer.restore()

@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import {
     AiAgentMessageType,
@@ -26,105 +24,6 @@ import { useKnowledgeSourceSideBar } from '../../AIAgentFeedbackBar/hooks/useKno
 import { AiAgentReasoningFeedback } from '../AiAgentReasoningFeedback'
 import { AiAgentReasoningHelpdeskV2 } from '../AiAgentReasoningHelpdeskV2'
 import { AiAgentReasoningContent } from '../AiReasoningContent'
-
-const DisclosureContext = React.createContext<{
-    isDisabled: boolean
-    isExpanded: boolean
-    onExpandedChange: (expanded: boolean) => void
-}>({
-    isDisabled: false,
-    isExpanded: false,
-    onExpandedChange: () => undefined,
-})
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    Button: ({
-        children,
-        isDisabled,
-        onClick,
-    }: {
-        children: React.ReactNode
-        isDisabled?: boolean
-        onClick?: React.MouseEventHandler<HTMLButtonElement>
-    }) => {
-        const { act } = jest.requireActual('react-dom/test-utils')
-
-        return (
-            <button
-                disabled={isDisabled}
-                onClick={(event) => {
-                    act(() => {
-                        onClick?.(event)
-                    })
-                }}
-                type="button"
-            >
-                {children}
-            </button>
-        )
-    },
-    Disclosure: ({
-        children,
-        isDisabled = false,
-        isExpanded,
-        onExpandedChange,
-    }: {
-        children: React.ReactNode
-        isDisabled?: boolean
-        isExpanded: boolean
-        onExpandedChange: (expanded: boolean) => void
-    }) => (
-        <DisclosureContext.Provider
-            value={{ isDisabled, isExpanded, onExpandedChange }}
-        >
-            <div data-testid="disclosure-root">{children}</div>
-        </DisclosureContext.Provider>
-    ),
-    DisclosureHeader: ({
-        title,
-    }: {
-        title:
-            | React.ReactNode
-            | ((params: { isExpanded: boolean }) => React.ReactNode)
-    }) => {
-        const { isDisabled, isExpanded, onExpandedChange } =
-            React.useContext(DisclosureContext)
-        const { act } = jest.requireActual('react-dom/test-utils')
-
-        return (
-            <button
-                disabled={isDisabled}
-                onClick={() => {
-                    act(() => {
-                        onExpandedChange(!isExpanded)
-                    })
-                }}
-                type="button"
-            >
-                {typeof title === 'function' ? title({ isExpanded }) : title}
-            </button>
-        )
-    },
-    DisclosurePanel: ({ children }: { children?: React.ReactNode }) => {
-        const { isExpanded } = React.useContext(DisclosureContext)
-
-        return isExpanded ? (
-            <div data-testid="disclosure-panel">{children}</div>
-        ) : null
-    },
-    DropdownIcon: ({ isOpen }: { isOpen: boolean }) => (
-        <span>{isOpen ? 'open' : 'closed'}</span>
-    ),
-    Icon: ({ name }: { name: string }) => <span>{name}</span>,
-    Loader: () => <span aria-hidden="true">loader</span>,
-    Text: ({ children }: { children?: React.ReactNode }) => (
-        <span>{children}</span>
-    ),
-}))
 
 jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(),
@@ -274,7 +173,7 @@ describe('AiAgentReasoningHelpdeskV2', () => {
         expect(
             await screen.findByText(EVOLI_STATIC_MESSAGE),
         ).toBeInTheDocument()
-        expect(screen.getByText('info')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'info' })).toBeInTheDocument()
         expect(screen.queryByRole('button')).not.toBeInTheDocument()
         expect(mockUseAiAgentReasoning).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -406,12 +305,11 @@ describe('AiAgentReasoningHelpdeskV2', () => {
             ).toBeInTheDocument()
         })
 
-        expect(screen.getByTestId('disclosure-panel')).toBeInTheDocument()
-        expect(screen.getByText('AiAgentReasoningContent')).toBeInTheDocument()
-        expect(screen.getByText('AiAgentReasoningFeedback')).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: /give feedback/i }),
         ).toBeInTheDocument()
+        expect(screen.getByText('AiAgentReasoningContent')).toBeInTheDocument()
+        expect(screen.getByText('AiAgentReasoningFeedback')).toBeInTheDocument()
         expect(mockAiAgentReasoningContent).toHaveBeenCalledWith(
             expect.objectContaining({
                 data: [{ id: 'resource-1' }],
@@ -446,7 +344,11 @@ describe('AiAgentReasoningHelpdeskV2', () => {
         expect(
             screen.getByRole('button', { name: /show reasoning/i }),
         ).toBeInTheDocument()
-        expect(screen.queryByTestId('disclosure-panel')).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /give feedback/i }),
+            ).not.toBeInTheDocument()
+        })
     })
 
     it('opens the AI feedback tab from the panel action', async () => {

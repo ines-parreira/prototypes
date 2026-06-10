@@ -1,65 +1,52 @@
 import React from 'react'
 
-import { assumeMock, render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
-
-import { LegacySelectField as SelectField } from '@gorgias/axiom'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacySelectField: jest.fn(),
-}))
-
-const SelectFieldMock = assumeMock(SelectField)
 
 describe('EmailDomainVerificationSupportContentSidebar', () => {
     const renderComponent = () =>
         render(<EmailDomainVerificationSupportContentSidebar />)
 
-    beforeEach(() => {
-        SelectFieldMock.mockReturnValue(<div>SelectField</div>)
-    })
-
-    it('default state - should display dropdown, dynamic content and links', () => {
-        const { container } = renderComponent()
-
-        expect(screen.getByText('SelectField')).toBeInTheDocument()
-        expect(
-            container.querySelector(
-                '[data-candu-id=email-domain-verification-support-content-default]',
-            ),
-        ).toBeInTheDocument()
-
-        expect(screen.getByText('Verify Your Email Domain')).toBeInTheDocument()
-        expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
-    })
-
-    it('should display dynamic content and links based on dropdown selection', () => {
-        const { container } = renderComponent()
-
-        act(() => {
-            SelectFieldMock.mock.lastCall?.[0].onChange({
-                value: 'godaddy',
-                label: 'GoDaddy',
-                learnMoreURL: 'https://www.godaddy.com/',
-            })
-        })
-
-        expect(
-            container.querySelector(
-                '[data-candu-id=email-domain-verification-support-content-godaddy]',
-            ),
-        ).toBeInTheDocument()
-
-        expect(screen.getByText('Verify Your Email Domain')).toBeInTheDocument()
-        expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
-    })
-
-    it('should display all options in the dropdown', () => {
+    it('default state - should display dropdown, default selection and links', () => {
         renderComponent()
 
-        expect(SelectFieldMock.mock.calls[0][0].options).toHaveLength(11)
+        const combobox = screen.getByRole('combobox', {
+            name: 'Domain verification guide',
+        })
+        expect(combobox).toHaveTextContent('Standard guidelines')
+
+        expect(screen.getByText('Verify Your Email Domain')).toBeInTheDocument()
+        expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
+    })
+
+    it('should update the selection based on dropdown choice', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(
+            screen.getByRole('combobox', { name: 'Domain verification guide' }),
+        )
+        await user.click(await screen.findByRole('option', { name: 'GoDaddy' }))
+
+        expect(
+            screen.getByRole('combobox', { name: 'Domain verification guide' }),
+        ).toHaveTextContent('GoDaddy')
+
+        expect(screen.getByText('Verify Your Email Domain')).toBeInTheDocument()
+        expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
+    })
+
+    it('should display all options in the dropdown', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(
+            screen.getByRole('combobox', { name: 'Domain verification guide' }),
+        )
+
+        expect(await screen.findAllByRole('option')).toHaveLength(11)
     })
 })

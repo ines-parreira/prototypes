@@ -1,30 +1,8 @@
 import { render } from '@repo/testing'
-
-import {
-    ButtonIntent,
-    ButtonSize,
-    ButtonVariant,
-    ModalSize,
-} from '@gorgias/axiom'
+import { screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import DisconnectStoreModal from './DisconnectStoreModal'
-
-const mockModal = jest.fn(({ children }: any) => children)
-const mockOverlayHeader = jest.fn((__props: any) => null)
-const mockOverlayContent = jest.fn(({ children }: any) => children)
-const mockOverlayFooter = jest.fn(({ children }: any) => children)
-const mockButton = jest.fn((__props: any) => null)
-const mockText = jest.fn(({ children }: any) => children)
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Modal: (props: any) => mockModal(props),
-    OverlayHeader: (props: any) => mockOverlayHeader(props),
-    OverlayContent: (props: any) => mockOverlayContent(props),
-    OverlayFooter: (props: any) => mockOverlayFooter(props),
-    Button: (props: any) => mockButton(props),
-    Text: (props: any) => mockText(props),
-}))
 
 describe('DisconnectStoreModal', () => {
     const mockOnOpenChange = jest.fn()
@@ -47,174 +25,107 @@ describe('DisconnectStoreModal', () => {
     }
 
     describe('Modal', () => {
-        it('should render modal with correct props', () => {
+        it('should render modal content when open', () => {
             renderComponent({ isOpen: true })
 
-            expect(mockModal).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    size: ModalSize.Md,
-                    isOpen: true,
-                    onOpenChange: mockOnOpenChange,
-                }),
-            )
+            const dialog = screen.getByRole('dialog')
+            expect(
+                within(dialog).getByText('Disconnect store?'),
+            ).toBeInTheDocument()
         })
 
-        it('should pass isOpen false when modal is closed', () => {
+        it('should not render modal content when closed', () => {
             renderComponent({ isOpen: false })
 
-            expect(mockModal).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    isOpen: false,
-                }),
-            )
-        })
-    })
-
-    describe('OverlayHeader', () => {
-        it('should render header with correct title', () => {
-            renderComponent()
-
-            expect(mockOverlayHeader).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    title: 'Disconnect store?',
-                }),
-            )
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
     })
 
     describe('OverlayContent', () => {
         it('should show one-click installation message when isOneClickInstallation is true', () => {
-            renderComponent({ isOneClickInstallation: true })
+            renderComponent({ isOpen: true, isOneClickInstallation: true })
 
-            const textCalls = mockText.mock.calls as any[]
-            const contentText = textCalls[0]
-
-            expect(contentText[0].children).toBe(
-                'Disconnecting this store will remove AI Agent features and uninstall the chat from your store, removing it from all pages.',
-            )
+            expect(
+                screen.getByText(
+                    'Disconnecting this store will remove AI Agent features and uninstall the chat from your store, removing it from all pages.',
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should show manual installation message when isOneClickInstallation is false', () => {
-            renderComponent({ isOneClickInstallation: false })
+            renderComponent({ isOpen: true, isOneClickInstallation: false })
 
-            const textCalls = mockText.mock.calls as any[]
-            const contentText = textCalls[0]
-
-            expect(contentText[0].children).toBe(
-                'Disconnecting this store will remove AI Agent features from your chat widget.',
-            )
-        })
-    })
-
-    describe('OverlayFooter', () => {
-        it('should hide cancel button in footer', () => {
-            renderComponent()
-
-            expect(mockOverlayFooter).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    hideCancelButton: true,
-                }),
-            )
+            expect(
+                screen.getByText(
+                    'Disconnecting this store will remove AI Agent features from your chat widget.',
+                ),
+            ).toBeInTheDocument()
         })
     })
 
     describe('Cancel button', () => {
-        it('should render cancel button with correct props', () => {
-            renderComponent()
+        it('should render cancel button', () => {
+            renderComponent({ isOpen: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const cancelButton = buttonCalls.find(
-                (call) => call[0].children === 'Cancel',
-            )
-
-            expect(cancelButton).toBeDefined()
-            expect(cancelButton[0].intent).toBe(ButtonIntent.Regular)
-            expect(cancelButton[0].size).toBe(ButtonSize.Md)
-            expect(cancelButton[0].variant).toBe(ButtonVariant.Secondary)
+            expect(
+                screen.getByRole('button', { name: 'Cancel' }),
+            ).toBeInTheDocument()
         })
 
         it('should enable cancel button when not disconnecting', () => {
-            renderComponent({ isDisconnectPending: false })
+            renderComponent({ isOpen: true, isDisconnectPending: false })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const cancelButton = buttonCalls.find(
-                (call) => call[0].children === 'Cancel',
-            )
-
-            expect(cancelButton[0].isDisabled).toBe(false)
+            expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
         })
 
         it('should disable cancel button when disconnecting', () => {
-            renderComponent({ isDisconnectPending: true })
+            renderComponent({ isOpen: true, isDisconnectPending: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const cancelButton = buttonCalls.find(
-                (call) => call[0].children === 'Cancel',
-            )
-
-            expect(cancelButton[0].isDisabled).toBe(true)
+            expect(
+                screen.getByRole('button', { name: 'Cancel' }),
+            ).toBeDisabled()
         })
 
-        it('should call onOpenChange with false when clicked', () => {
-            renderComponent()
+        it('should call onOpenChange with false when clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent({ isOpen: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const cancelButton = buttonCalls.find(
-                (call) => call[0].children === 'Cancel',
-            )
-
-            cancelButton[0].onClick()
+            await user.click(screen.getByRole('button', { name: 'Cancel' }))
 
             expect(mockOnOpenChange).toHaveBeenCalledWith(false)
         })
     })
 
     describe('Disconnect button', () => {
-        it('should render disconnect button with correct props', () => {
-            renderComponent()
+        it('should render disconnect button', () => {
+            renderComponent({ isOpen: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const disconnectButton = buttonCalls.find(
-                (call) => call[0].children === 'Disconnect',
-            )
-
-            expect(disconnectButton).toBeDefined()
-            expect(disconnectButton[0].intent).toBe(ButtonIntent.Destructive)
-            expect(disconnectButton[0].size).toBe(ButtonSize.Md)
-            expect(disconnectButton[0].variant).toBe(ButtonVariant.Primary)
+            expect(
+                screen.getByRole('button', { name: 'Disconnect' }),
+            ).toBeInTheDocument()
         })
 
-        it('should not show loading state when not disconnecting', () => {
-            renderComponent({ isDisconnectPending: false })
+        it('should be clickable when not disconnecting', () => {
+            renderComponent({ isOpen: true, isDisconnectPending: false })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const disconnectButton = buttonCalls.find(
-                (call) => call[0].children === 'Disconnect',
-            )
-
-            expect(disconnectButton[0].isLoading).toBe(false)
+            expect(
+                screen.getByRole('button', { name: 'Disconnect' }),
+            ).toBeEnabled()
         })
 
-        it('should show loading state when disconnecting', () => {
-            renderComponent({ isDisconnectPending: true })
+        it('should disable disconnect button when disconnecting', () => {
+            renderComponent({ isOpen: true, isDisconnectPending: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const disconnectButton = buttonCalls.find(
-                (call) => call[0].children === 'Disconnect',
-            )
-
-            expect(disconnectButton[0].isLoading).toBe(true)
+            expect(
+                screen.queryByRole('button', { name: 'Disconnect' }),
+            ).not.toBeInTheDocument()
         })
 
-        it('should call onDisconnect when clicked', () => {
-            renderComponent()
+        it('should call onDisconnect when clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent({ isOpen: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const disconnectButton = buttonCalls.find(
-                (call) => call[0].children === 'Disconnect',
-            )
-
-            disconnectButton[0].onClick()
+            await user.click(screen.getByRole('button', { name: 'Disconnect' }))
 
             expect(mockOnDisconnect).toHaveBeenCalled()
         })

@@ -21,17 +21,6 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useIsMobileResolution: jest.fn(),
 }))
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({
-        children,
-        isOpen,
-    }: {
-        children?: React.ReactNode
-        isOpen?: boolean
-    }) => (isOpen ? <div>{children}</div> : null),
-}))
-
 jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => false),
 }))

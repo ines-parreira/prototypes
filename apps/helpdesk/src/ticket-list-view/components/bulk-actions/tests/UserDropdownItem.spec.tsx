@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -9,13 +8,6 @@ import UserDropdownItem from '../UserDropdownItem'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-        <div>Tooltip{children}</div>
-    ),
-}))
 
 describe('<UserDropdownItem />', () => {
     const props = {
@@ -64,7 +56,8 @@ describe('<UserDropdownItem />', () => {
         expect(screen.getByText(item.email)).toBeInTheDocument()
     })
 
-    it('should display tooltip when text is overflowing', () => {
+    it('should display tooltip when text is overflowing', async () => {
+        const user = userEvent.setup()
         jest.spyOn(
             HTMLElement.prototype,
             'offsetWidth',
@@ -78,9 +71,11 @@ describe('<UserDropdownItem />', () => {
 
         render(<UserDropdownItem {...props} />)
 
-        expect(screen.getByText(/Tooltip/)).toBeInTheDocument()
+        await user.hover(screen.getByText(props.item.name))
+
+        const tooltip = await screen.findByRole('tooltip')
         expect(
-            screen.getAllByText(new RegExp(props.item.name, 'i')),
-        ).toHaveLength(2)
+            within(tooltip).getByText(new RegExp(props.item.name, 'i')),
+        ).toBeInTheDocument()
     })
 })

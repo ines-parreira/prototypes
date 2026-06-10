@@ -7,59 +7,6 @@ import type { ReportIssueCaseReasonAction } from 'models/selfServiceConfiguratio
 import { ScenarioReasonAction } from '../reasonEditor/ScenarioReasonAction'
 import { ScenarioFormContext } from '../ScenarioFormContext'
 
-jest.mock('@gorgias/axiom', () => {
-    const actual = jest.requireActual('@gorgias/axiom')
-    return {
-        ...actual,
-        Box: ({ children }: { children?: React.ReactNode }) => (
-            <div>{children}</div>
-        ),
-        Text: ({ children }: { children?: React.ReactNode }) => (
-            <span>{children}</span>
-        ),
-        TextAreaField: ({
-            value,
-            onChange,
-            isInvalid,
-            'aria-label': ariaLabel,
-        }: {
-            value: string
-            onChange: (text: string) => void
-            isInvalid?: boolean
-            'aria-label'?: string
-            maxLength?: number
-            rows?: number
-        }) => (
-            <textarea
-                aria-label={ariaLabel}
-                aria-invalid={isInvalid}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-            />
-        ),
-        ToggleField: ({
-            value,
-            onChange,
-            isDisabled,
-            label,
-        }: {
-            value: boolean
-            onChange: (next: boolean) => void
-            isDisabled?: boolean
-            label: string
-            caption?: string
-        }) => (
-            <input
-                type="checkbox"
-                aria-label={label}
-                checked={value}
-                disabled={isDisabled}
-                onChange={(e) => onChange(e.target.checked)}
-            />
-        ),
-    }
-})
-
 const noopContext = { setError: jest.fn() }
 
 const makeAction = (

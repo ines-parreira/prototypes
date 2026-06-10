@@ -3,22 +3,6 @@ import { screen } from '@testing-library/react'
 
 import AnyOtherWebsiteContent from './AnyOtherWebsiteContent'
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Text: ({ children }: any) => <p data-testid="text">{children}</p>,
-    Heading: ({ children, size }: any) => (
-        <h2 data-testid="heading" data-size={size}>
-            {children}
-        </h2>
-    ),
-    HeadingSize: {
-        Sm: 'sm',
-    },
-    Skeleton: ({ width }: any) => (
-        <div data-testid="skeleton" aria-label="Loading" data-width={width} />
-    ),
-}))
-
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CodeSnippet',
     () => ({
@@ -49,15 +33,17 @@ describe('AnyOtherWebsiteContent', () => {
     it('should render the description text', () => {
         renderComponent()
 
-        expect(screen.getByTestId('text')).toHaveTextContent(
-            'By inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.',
-        )
+        expect(
+            screen.getByText(
+                'By inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should render first instruction heading', () => {
         renderComponent()
 
-        const headings = screen.getAllByTestId('heading')
+        const headings = screen.getAllByRole('heading')
         expect(headings[0]).toHaveTextContent(
             '1. Edit the source code of your website and find the closing HTML tag',
         )
@@ -67,18 +53,17 @@ describe('AnyOtherWebsiteContent', () => {
     it('should render second instruction heading', () => {
         renderComponent()
 
-        const headings = screen.getAllByTestId('heading')
+        const headings = screen.getAllByRole('heading')
         expect(headings[1]).toHaveTextContent(
             '2. Above the </body> tag, paste the code snippet below and save changes.',
         )
     })
 
-    it('should render headings with correct size', () => {
+    it('should render headings as level 5 elements', () => {
         renderComponent()
 
-        const headings = screen.getAllByTestId('heading')
-        expect(headings[0]).toHaveAttribute('data-size', 'sm')
-        expect(headings[1]).toHaveAttribute('data-size', 'sm')
+        const headings = screen.getAllByRole('heading', { level: 5 })
+        expect(headings).toHaveLength(2)
     })
 
     it('should show loading skeleton when loading', () => {

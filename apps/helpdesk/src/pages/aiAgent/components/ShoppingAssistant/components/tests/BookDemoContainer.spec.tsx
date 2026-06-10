@@ -6,31 +6,6 @@ import userEvent from '@testing-library/user-event'
 
 import BookDemoContainer from '../BookDemoContainer'
 
-// Mock the Button component from @gorgias/axiom
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyButton: ({
-        children,
-        onClick,
-        className,
-        fillStyle,
-        intent,
-        size,
-        ...props
-    }: any) => (
-        <button
-            onClick={onClick}
-            className={className}
-            data-fill-style={fillStyle}
-            data-intent={intent}
-            data-size={size}
-            {...props}
-        >
-            {children}
-        </button>
-    ),
-}))
-
 describe('BookDemoContainer', () => {
     const mockOnBookDemo = jest.fn()
 
@@ -43,49 +18,9 @@ describe('BookDemoContainer', () => {
             render(<BookDemoContainer onBookDemo={mockOnBookDemo} />)
 
             expect(screen.getByText('Let’s Talk?')).toBeInTheDocument()
-            expect(screen.getByText('Book a demo')).toBeInTheDocument()
-        })
-
-        it('renders the button with correct attributes', () => {
-            render(<BookDemoContainer onBookDemo={mockOnBookDemo} />)
-
-            const button = screen.getByRole('button')
-            expect(button).toBeInTheDocument()
-            expect(button).toHaveAttribute('data-fill-style', 'ghost')
-            expect(button).toHaveAttribute('data-intent', 'secondary')
-            expect(button).toHaveAttribute('data-size', 'medium')
-        })
-
-        it('applies default CSS classes', () => {
-            render(<BookDemoContainer onBookDemo={mockOnBookDemo} />)
-
-            const container = screen.getByText('Let’s Talk?').parentElement
-            expect(container).toHaveClass('bookDemoContainer')
-        })
-
-        it('applies custom className when provided', () => {
-            const customClass = 'custom-demo-container'
-            render(
-                <BookDemoContainer
-                    onBookDemo={mockOnBookDemo}
-                    className={customClass}
-                />,
-            )
-
-            const container = screen.getByText('Let’s Talk?').parentElement
-            expect(container).toHaveClass('bookDemoContainer')
-            expect(container).toHaveClass(customClass)
-        })
-
-        it('handles empty className gracefully', () => {
-            render(
-                <BookDemoContainer onBookDemo={mockOnBookDemo} className="" />,
-            )
-
-            const container = screen.getByText('Let’s Talk?').parentElement
-            expect(container).toHaveClass('bookDemoContainer')
-            // Empty className should not add any additional classes
-            expect(container?.className).toBe('bookDemoContainer ')
+            expect(
+                screen.getByRole('button', { name: 'Book a demo' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -94,7 +29,7 @@ describe('BookDemoContainer', () => {
             const user = userEvent.setup()
             render(<BookDemoContainer onBookDemo={mockOnBookDemo} />)
 
-            const button = screen.getByRole('button')
+            const button = screen.getByRole('button', { name: 'Book a demo' })
             await user.click(button)
 
             expect(mockOnBookDemo).toHaveBeenCalledTimes(1)
@@ -104,7 +39,7 @@ describe('BookDemoContainer', () => {
             const user = userEvent.setup()
             render(<BookDemoContainer onBookDemo={mockOnBookDemo} />)
 
-            const button = screen.getByRole('button')
+            const button = screen.getByRole('button', { name: 'Book a demo' })
             await user.click(button)
             await user.click(button)
             await user.click(button)

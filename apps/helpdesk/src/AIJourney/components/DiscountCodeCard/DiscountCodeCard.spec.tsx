@@ -1,29 +1,9 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 
 import { DiscountCodeCard } from './DiscountCodeCard'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: ReactNode
-        children: ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ title }: { title?: ReactNode }) => (
-        <div role="tooltip">{title}</div>
-    ),
-}))
 
 jest.mock('AIJourney/formFields', () => ({
     EnableDiscountCode: () => <div>EnableDiscountCode</div>,
@@ -203,10 +183,15 @@ describe('<DiscountCodeCard />', () => {
             expect(getValues().discount_code_message_threshold).toBe(2)
         })
 
-        it('renders the info tooltip beside the "Offer discount" toggle', () => {
+        it('renders the info tooltip beside the "Offer discount" toggle', async () => {
+            const user = userEvent.setup()
             renderComponent(true, {}, { isV3Architecture: true })
 
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
+            const trigger = screen.getByRole('img', { name: 'info' })
+            await user.unhover(trigger)
+            await user.hover(trigger)
+
+            expect(await screen.findByRole('tooltip')).toHaveTextContent(
                 'Add a discount amount or code, and choose which message offers it.',
             )
         })

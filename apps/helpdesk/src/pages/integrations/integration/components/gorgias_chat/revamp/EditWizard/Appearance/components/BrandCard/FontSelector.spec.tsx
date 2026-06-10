@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -30,49 +28,6 @@ jest.mock(
     }),
 )
 
-const mockSelectField = jest.fn()
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    SelectField: ({
-        items,
-        value,
-        onChange,
-        header,
-        children,
-        'aria-label': ariaLabel,
-    }: any) => {
-        mockSelectField({ items, value, onChange, ariaLabel })
-        return (
-            <div>
-                {header}
-                {items.map((section: any) => (
-                    <div key={section.id}>{children(section)}</div>
-                ))}
-            </div>
-        )
-    },
-    ListSection: ({ name, items, children }: any) => (
-        <div>
-            {name && <span>{name}</span>}
-            {items.map((item: any) => (
-                <div key={item.id}>{children(item)}</div>
-            ))}
-        </div>
-    ),
-    ListItem: ({ textValue }: any) => <span>{textValue}</span>,
-    ListHeader: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    ListHeaderItem: ({
-        label,
-        onClick,
-    }: {
-        label: string
-        onClick: () => void
-    }) => <button onClick={onClick}>{label}</button>,
-}))
-
 describe('FontSelector', () => {
     const defaultProps = {
         mainFontFamily: 'Inter',
@@ -81,6 +36,9 @@ describe('FontSelector', () => {
 
     const renderComponent = (props: Partial<typeof defaultProps> = {}) =>
         render(<FontSelector {...defaultProps} {...props} />)
+
+    const openFontDropdown = async (user: ReturnType<typeof userEvent.setup>) =>
+        user.click(screen.getByRole('textbox', { name: 'Font family' }))
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -93,51 +51,69 @@ describe('FontSelector', () => {
             .forEach((el) => el.remove())
     })
 
-    it('should render the More fonts button', () => {
+    it('should render the More fonts button', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
+        await openFontDropdown(user)
+
         expect(
-            screen.getByRole('button', { name: 'More fonts' }),
+            await screen.findByRole('button', { name: /more fonts/i }),
         ).toBeInTheDocument()
     })
 
-    it('should pass the current mainFontFamily as the selected value', () => {
+    it('should display the current mainFontFamily as the selected value', () => {
         renderComponent({ mainFontFamily: 'Georgia' })
 
-        expect(mockSelectField).toHaveBeenCalledWith(
-            expect.objectContaining({ value: { id: 'Georgia' } }),
-        )
+        expect(
+            screen.getByRole('textbox', { name: 'Font family' }),
+        ).toHaveValue('Georgia')
     })
 
-    it('should call onMainFontFamilyChange when a font is selected', () => {
+    it('should call onMainFontFamilyChange when a font is selected', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
-        const { onChange } = mockSelectField.mock.calls[0][0]
-        onChange({ id: 'Roboto' })
+        await openFontDropdown(user)
+        await user.click(await screen.findByRole('option', { name: 'Georgia' }))
 
         expect(defaultProps.onMainFontFamilyChange).toHaveBeenCalledWith(
-            'Roboto',
+            'Georgia',
         )
     })
 
     describe('font sections', () => {
-        it('should render all fonts in a flat list without section headers when no recently added fonts exist', () => {
+        it('should render all fonts in a flat list without section headers when no recently added fonts exist', async () => {
+            const user = userEvent.setup()
             renderComponent({ mainFontFamily: 'Inter' })
 
+            await openFontDropdown(user)
+
+            expect(
+                await screen.findByRole('option', { name: 'Arial' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'Inter' }),
+            ).toBeInTheDocument()
             expect(screen.queryByText('RECENTLY ADDED')).not.toBeInTheDocument()
             expect(screen.queryByText('STANDARD FONTS')).not.toBeInTheDocument()
-            expect(screen.getByText('Arial')).toBeInTheDocument()
-            expect(screen.getByText('Inter')).toBeInTheDocument()
         })
 
-        it('should not show section headers when the only recently added font is the currently selected font', () => {
+        it('should not show section headers when the only recently added font is the currently selected font', async () => {
+            const user = userEvent.setup()
             renderComponent({ mainFontFamily: 'CustomFont' })
 
+            await openFontDropdown(user)
+
+            expect(
+                await screen.findByRole('option', { name: 'CustomFont' }),
+            ).toBeInTheDocument()
             expect(screen.queryByText('RECENTLY ADDED')).not.toBeInTheDocument()
             expect(screen.queryByText('STANDARD FONTS')).not.toBeInTheDocument()
         })
 
-        it('should show RECENTLY ADDED and STANDARD FONTS sections when fonts exist in localStorage', () => {
+        it('should show RECENTLY ADDED and STANDARD FONTS sections when fonts exist in localStorage', async () => {
+            const user = userEvent.setup()
             localStorage.setItem(
                 AGENT_ADDED_FONTS_KEY,
                 JSON.stringify(['Roboto']),
@@ -145,11 +121,16 @@ describe('FontSelector', () => {
 
             renderComponent({ mainFontFamily: 'Inter' })
 
-            expect(screen.getByText('RECENTLY ADDED')).toBeInTheDocument()
+            await openFontDropdown(user)
+
+            expect(
+                await screen.findByText('RECENTLY ADDED'),
+            ).toBeInTheDocument()
             expect(screen.getByText('STANDARD FONTS')).toBeInTheDocument()
         })
 
-        it('should list all localStorage fonts under RECENTLY ADDED', () => {
+        it('should list all localStorage fonts under RECENTLY ADDED', async () => {
+            const user = userEvent.setup()
             localStorage.setItem(
                 AGENT_ADDED_FONTS_KEY,
                 JSON.stringify(['Roboto', 'Lato']),
@@ -157,12 +138,21 @@ describe('FontSelector', () => {
 
             renderComponent({ mainFontFamily: 'Inter' })
 
-            expect(screen.getByText('RECENTLY ADDED')).toBeInTheDocument()
-            expect(screen.getByText('Roboto')).toBeInTheDocument()
-            expect(screen.getByText('Lato')).toBeInTheDocument()
+            await openFontDropdown(user)
+
+            expect(
+                await screen.findByText('RECENTLY ADDED'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'Roboto' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'Lato' }),
+            ).toBeInTheDocument()
         })
 
-        it('should include a non-default selected font in the RECENTLY ADDED section alongside localStorage fonts', () => {
+        it('should include a non-default selected font in the RECENTLY ADDED section alongside localStorage fonts', async () => {
+            const user = userEvent.setup()
             localStorage.setItem(
                 AGENT_ADDED_FONTS_KEY,
                 JSON.stringify(['Lato']),
@@ -170,9 +160,17 @@ describe('FontSelector', () => {
 
             renderComponent({ mainFontFamily: 'CustomFont' })
 
-            expect(screen.getByText('RECENTLY ADDED')).toBeInTheDocument()
-            expect(screen.getByText('CustomFont')).toBeInTheDocument()
-            expect(screen.getByText('Lato')).toBeInTheDocument()
+            await openFontDropdown(user)
+
+            expect(
+                await screen.findByText('RECENTLY ADDED'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'CustomFont' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'Lato' }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -189,7 +187,10 @@ describe('FontSelector', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(screen.getByRole('button', { name: 'More fonts' }))
+            await openFontDropdown(user)
+            await user.click(
+                await screen.findByRole('button', { name: /more fonts/i }),
+            )
 
             expect(mockFontCatalogueModal).toHaveBeenLastCalledWith(
                 expect.objectContaining({ isModalOpen: true }),

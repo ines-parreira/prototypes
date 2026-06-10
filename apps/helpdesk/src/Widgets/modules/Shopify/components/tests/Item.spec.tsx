@@ -1,21 +1,9 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { itemCustomization } from '../Item'
 import { OrderContext } from '../Order'
-
-// Mock Badge component
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    ColorType: {
-        Warning: 'warning',
-    },
-    LegacyBadge: ({ children }: { children?: React.ReactNode }) => (
-        <div data-testid="badge">{children}</div>
-    ),
-}))
 
 const { BeforeContent, Wrapper } = itemCustomization
 
@@ -37,7 +25,7 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const { queryByTestId } = render(
+            render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
@@ -45,7 +33,7 @@ describe('Shopify widget Item component', () => {
                 </OrderContext.Provider>,
             )
 
-            expect(queryByTestId('badge')).not.toBeInTheDocument()
+            expect(screen.queryByText(/item/)).not.toBeInTheDocument()
         })
 
         it('should render badge with singular text for 1 refunded item', () => {
@@ -75,7 +63,7 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const { getByTestId } = render(
+            render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
@@ -83,7 +71,17 @@ describe('Shopify widget Item component', () => {
                 </OrderContext.Provider>,
             )
 
-            expect(getByTestId('badge')).toHaveTextContent('1 item')
+            expect(
+                screen.getByText('Refunded', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    (_, element) =>
+                        element?.childElementCount === 0 &&
+                        element?.textContent?.replace(/\s+/g, ' ').trim() ===
+                            '1 item',
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should render badge with plural text for multiple refunded items', () => {
@@ -113,7 +111,7 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const { getByTestId } = render(
+            render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
@@ -121,7 +119,17 @@ describe('Shopify widget Item component', () => {
                 </OrderContext.Provider>,
             )
 
-            expect(getByTestId('badge')).toHaveTextContent('2 items')
+            expect(
+                screen.getByText('Refunded', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    (_, element) =>
+                        element?.childElementCount === 0 &&
+                        element?.textContent?.replace(/\s+/g, ' ').trim() ===
+                            '2 items',
+                ),
+            ).toBeInTheDocument()
         })
 
         it('should sum quantities across multiple refunds', () => {
@@ -159,7 +167,7 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const { getByTestId } = render(
+            render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
@@ -167,7 +175,17 @@ describe('Shopify widget Item component', () => {
                 </OrderContext.Provider>,
             )
 
-            expect(getByTestId('badge')).toHaveTextContent('5 items')
+            expect(
+                screen.getByText('Refunded', { exact: false }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    (_, element) =>
+                        element?.childElementCount === 0 &&
+                        element?.textContent?.replace(/\s+/g, ' ').trim() ===
+                            '5 items',
+                ),
+            ).toBeInTheDocument()
         })
     })
 })

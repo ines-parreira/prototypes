@@ -25,11 +25,6 @@ jest.mock(
         ),
 )
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div data-testid="skeleton" />,
-}))
-
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (
     <div data-testid="avatar" />
 ))
@@ -86,7 +81,7 @@ describe('PhoneDeviceDialerBody', () => {
             isLoading: true,
         }
         renderComponent(props)
-        expect(screen.getAllByTestId('skeleton')).toHaveLength(4)
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(4)
     })
 
     it('should render no results when search value is not null and no results are found', () => {

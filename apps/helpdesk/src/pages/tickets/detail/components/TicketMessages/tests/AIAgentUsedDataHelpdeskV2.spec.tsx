@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react'
-
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
@@ -13,41 +12,6 @@ import {
     getKnowledgeUrl,
 } from '../../AIAgentFeedbackBar/utils'
 import { AIAgentUsedDataHelpdeskV2 } from '../AIAgentDraftMessageHelpdeskV2/AIAgentUsedDataHelpdeskV2'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Box: ({
-        children,
-        className,
-    }: {
-        children?: ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Disclosure: ({ children }: { children?: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    DisclosureHeader: ({
-        title,
-    }: {
-        title?: ReactNode | ((args: { isExpanded: boolean }) => ReactNode)
-    }) => (
-        <div>
-            {typeof title === 'function' ? title({ isExpanded: false }) : title}
-        </div>
-    ),
-    DisclosurePanel: ({ children }: { children?: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    DropdownIcon: ({ isOpen }: { isOpen: boolean }) => (
-        <span>{isOpen ? 'open' : 'closed'}</span>
-    ),
-    Icon: ({ name }: { name: string }) => <span>{name}</span>,
-    Link: ({ children, href }: { children?: ReactNode; href?: string }) => (
-        <a href={href}>{children}</a>
-    ),
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-}))
 
 jest.mock('hooks/useHasAgentPrivileges')
 jest.mock('models/aiAgentFeedback/queries')
@@ -100,7 +64,8 @@ describe('AIAgentUsedDataHelpdeskV2', () => {
         expect(screen.queryByText('Data Used')).not.toBeInTheDocument()
     })
 
-    it('renders orders, actions, guidance, and knowledge from the provided feedback', () => {
+    it('renders orders, actions, guidance, and knowledge from the provided feedback', async () => {
+        const user = userEvent.setup()
         render(
             <AIAgentUsedDataHelpdeskV2
                 messageId={messageFeedback.messageId}
@@ -109,20 +74,22 @@ describe('AIAgentUsedDataHelpdeskV2', () => {
         )
 
         expect(screen.getByText('Data Used')).toBeInTheDocument()
-        expect(screen.getByText('#3324').closest('a')).toHaveAttribute(
+
+        await user.click(screen.getByRole('button', { name: /data used/i }))
+
+        expect(screen.getByRole('link', { name: /#3324/ })).toHaveAttribute(
             'href',
             'https://gorgias.com',
         )
         expect(
-            screen.getByText('Get loyalty points').closest('a'),
+            screen.getByRole('link', { name: /get loyalty points/i }),
         ).toHaveAttribute('href', 'https://example.com/action')
         expect(
-            screen.getByText('Cancelling an order').closest('a'),
+            screen.getByRole('link', { name: /cancelling an order/i }),
         ).toHaveAttribute('href', 'https://example.com/guidance')
-        expect(screen.getByText('Refund Policy').closest('a')).toHaveAttribute(
-            'href',
-            'https://example.com/knowledge',
-        )
+        expect(
+            screen.getByRole('link', { name: /refund policy/i }),
+        ).toHaveAttribute('href', 'https://example.com/knowledge')
 
         expect(getActionUrlMock).toHaveBeenCalledWith(
             messageFeedback.actions?.[0],
@@ -141,7 +108,8 @@ describe('AIAgentUsedDataHelpdeskV2', () => {
         )
     })
 
-    it('falls back to queried feedback and omits privileged URLs when needed', () => {
+    it('falls back to queried feedback and omits privileged URLs when needed', async () => {
+        const user = userEvent.setup()
         useHasAgentPrivilegesMock.mockReturnValue(false)
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
@@ -156,16 +124,19 @@ describe('AIAgentUsedDataHelpdeskV2', () => {
         )
 
         expect(screen.getByText('Data Used')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /data used/i }))
+
         expect(
-            screen.getByText('Get shipping address').closest('a'),
+            screen.getByRole('link', { name: /get shipping address/i }),
         ).not.toHaveAttribute('href')
-        expect(screen.getByText('Refund').closest('a')).not.toHaveAttribute(
-            'href',
-        )
         expect(
-            screen.getByText('Shipping times').closest('a'),
+            screen.getByRole('link', { name: /refund external-link/i }),
         ).not.toHaveAttribute('href')
-        expect(screen.getByText('#3324').closest('a')).toHaveAttribute(
+        expect(
+            screen.getByRole('link', { name: /shipping times/i }),
+        ).not.toHaveAttribute('href')
+        expect(screen.getByRole('link', { name: /#3324/ })).toHaveAttribute(
             'href',
             'https://gorgias.com',
         )

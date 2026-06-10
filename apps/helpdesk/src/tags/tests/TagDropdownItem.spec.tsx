@@ -1,19 +1,12 @@
-import type { ReactNode } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { tags } from 'fixtures/tag'
 
 import TagDropdownItem from '../TagDropdownItem'
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-        <div>Tooltip{children}</div>
-    ),
-}))
 
 describe('<TagDropdownItem />', () => {
     const props = {
@@ -47,7 +40,7 @@ describe('<TagDropdownItem />', () => {
         )
     })
 
-    it('should display tooltip when text is overflowing', () => {
+    it('should display tooltip when text is overflowing', async () => {
         jest.spyOn(
             HTMLElement.prototype,
             'offsetWidth',
@@ -59,9 +52,13 @@ describe('<TagDropdownItem />', () => {
             'get',
         ).mockImplementation(() => 1)
 
+        const user = userEvent.setup()
         render(<TagDropdownItem {...props} />)
 
-        expect(screen.getByText(/Tooltip/)).toBeInTheDocument()
+        await user.hover(screen.getByText(props.item.name))
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent(props.item.name)
         expect(
             screen.getAllByText(new RegExp(props.item.name, 'i')),
         ).toHaveLength(2)

@@ -1,21 +1,9 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
-
-import { Skeleton } from '@gorgias/axiom'
 
 import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { OrderDirection } from 'models/api/types'
-
-jest.mock('@gorgias/axiom', () => {
-    const actual = jest.requireActual('@gorgias/axiom')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return {
-        ...actual,
-        Skeleton: jest.fn(() => <div>Skeleton</div>),
-    }
-})
-const SkeletonMock = assumeMock(Skeleton)
 
 const data = [
     {
@@ -47,9 +35,6 @@ const tableState = {
 const handleSort = jest.fn()
 
 describe('<ScoredSurveysTable>', () => {
-    beforeEach(() => {
-        SkeletonMock.mockImplementation(() => <div>Skeleton</div>)
-    })
     it('should render table header', () => {
         const { getByText } = render(
             <ScoredSurveysTable
@@ -68,7 +53,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should render table body content', () => {
-        const { getByText, getAllByText, container } = render(
+        const { getByText, getAllByText, getAllByRole } = render(
             <ScoredSurveysTable
                 data={data}
                 isFetching={false}
@@ -77,9 +62,7 @@ describe('<ScoredSurveysTable>', () => {
             />,
         )
 
-        const rows = container.querySelectorAll('tr')
-
-        expect(rows.length).toEqual(3)
+        expect(getAllByRole('row')).toHaveLength(3)
         expect(getByText('Alice')).toBeInTheDocument()
         expect(getByText('Bob')).toBeInTheDocument()
         expect(getByText('2')).toBeInTheDocument()
@@ -118,7 +101,7 @@ describe('<ScoredSurveysTable>', () => {
     })
 
     it('should render loading state while fetching', () => {
-        const { getAllByText } = render(
+        const { getAllByLabelText } = render(
             <ScoredSurveysTable
                 data={data}
                 isFetching={true}
@@ -127,7 +110,7 @@ describe('<ScoredSurveysTable>', () => {
             />,
         )
 
-        const skeletons = getAllByText('Skeleton')
+        const skeletons = getAllByLabelText('Loading')
         expect(skeletons.length).toBeGreaterThan(0)
     })
 })

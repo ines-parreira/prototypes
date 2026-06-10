@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -17,32 +15,6 @@ jest.mock(
         }),
     }),
 )
-
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Card: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-    Elevation: { Mid: 'mid' },
-    Heading: ({ children }: { children?: ReactNode }) => <h2>{children}</h2>,
-    Text: ({ children }: { children?: ReactNode }) => <span>{children}</span>,
-    CheckBoxField: ({
-        label,
-        value,
-        onChange,
-    }: {
-        label: string
-        value: boolean
-        onChange: (value: boolean) => void
-    }) => (
-        <label>
-            <input
-                type="checkbox"
-                checked={value}
-                onChange={(e) => onChange(e.target.checked)}
-            />
-            {label}
-        </label>
-    ),
-}))
 
 jest.mock('pages/common/forms/RichField/TicketRichField', () => ({
     __esModule: true,

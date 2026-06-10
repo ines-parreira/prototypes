@@ -1,24 +1,8 @@
-import type { ReactNode } from 'react'
-import React from 'react'
-
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import InfoIconWithTooltip from '../InfoIconWithTooltip'
-
-// Mocking the StatsHelpIcon component
-jest.mock(
-    'domains/reporting/pages/common/components/StatsHelpIcon',
-    () => () => <div data-testid="stats-help-icon" />,
-)
-
-// Mocking the Tooltip component
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    LegacyTooltip: ({ children }: { children?: ReactNode }) => (
-        <div data-testid="tooltip">{children}</div>
-    ),
-}))
 
 describe('InfoIconWithTooltip Component', () => {
     const id = 'tooltip-message-feedback'
@@ -33,10 +17,11 @@ describe('InfoIconWithTooltip Component', () => {
             </InfoIconWithTooltip>,
         )
 
-        expect(screen.getByTestId('stats-help-icon')).toBeInTheDocument()
+        expect(screen.getByText('info_outline')).toBeInTheDocument()
     })
 
-    it('renders the Tooltip component with the correct content', () => {
+    it('renders the Tooltip component with the correct content', async () => {
+        const user = userEvent.setup()
         render(
             <InfoIconWithTooltip
                 id={id}
@@ -46,12 +31,14 @@ describe('InfoIconWithTooltip Component', () => {
             </InfoIconWithTooltip>,
         )
 
-        expect(screen.getByTestId('tooltip')).toHaveTextContent(
-            'Tooltip content here',
-        )
+        await user.hover(screen.getByText('info_outline'))
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent('Tooltip content here')
     })
 
-    it('renders the children inside the Tooltip', () => {
+    it('renders the children inside the Tooltip', async () => {
+        const user = userEvent.setup()
         render(
             <InfoIconWithTooltip
                 id={id}
@@ -67,11 +54,12 @@ describe('InfoIconWithTooltip Component', () => {
             </InfoIconWithTooltip>,
         )
 
-        expect(screen.getByTestId('tooltip')).toHaveTextContent(
+        await user.hover(screen.getByText('info_outline'))
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent(
             'Provide feedback on the resources AI Agent',
         )
-        expect(screen.getByTestId('tooltip')).toHaveTextContent(
-            '1. Use thumbs up/down to indicate',
-        )
+        expect(tooltip).toHaveTextContent('1. Use thumbs up/down to indicate')
     })
 })
