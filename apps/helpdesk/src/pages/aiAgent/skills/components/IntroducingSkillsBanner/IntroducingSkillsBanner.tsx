@@ -49,15 +49,15 @@ export const IntroducingSkillsBanner: React.FC<Props> = ({ shopName }) => {
                         <Tag color={TagColor.Purple}>New</Tag>
                     </Box>
                     <Heading size="xl">
-                        Introducing Skills - precise control over your most
+                        Introducing skills: the source of truth for your most
                         common conversations
                     </Heading>
                     <Text>
                         Skills give you control over how AI Agent handles each
-                        type of conversation. When it detects what a customer
-                        wants, it follows your matching skill. Knowledge fills
-                        in the rest, answering anything your skills don&apos;t
-                        cover.
+                        conversation type. When AI Agent detects a conversation
+                        intent, it follows the matching skill instructions.
+                        Knowledge complements skills for questions they
+                        don&apos;t cover.
                     </Text>
                 </Box>
                 <SkillsVideo />
