@@ -218,7 +218,13 @@ export const useGetResourcesReasoningMetadata = ({
 
             resource.resourceType = type as typeof resource.resourceType
 
+            const resourceData =
+                resource.resourceIsDraft && draftResourceData
+                    ? draftResourceData
+                    : publishedResourceData
+
             const versionedData = versionedArticlesMap.get(resource.resourceId)
+
             if (versionedData) {
                 const fallbackMetadata = getResourceMetadata(
                     {
@@ -227,7 +233,7 @@ export const useGetResourcesReasoningMetadata = ({
                         type: resource.resourceType,
                     },
                     shopName,
-                    publishedResourceData,
+                    resourceData,
                 )
                 return {
                     title: versionedData.title,
@@ -245,28 +251,6 @@ export const useGetResourcesReasoningMetadata = ({
                 }
             }
 
-            // For draft resources, try to get metadata from draftResourceData first
-            // Fall back to publishedResourceData if draft data is not available
-            if (resource.resourceIsDraft && draftResourceData) {
-                const draftMetadata = getResourceMetadata(
-                    {
-                        id: resource.resourceId,
-                        title: resource.resourceTitle,
-                        type: resource.resourceType,
-                    },
-                    shopName,
-                    draftResourceData,
-                )
-                // If we found draft metadata and it's not deleted, use it
-                if (
-                    draftMetadata &&
-                    !('isDeleted' in draftMetadata && draftMetadata.isDeleted)
-                ) {
-                    return draftMetadata
-                }
-            }
-
-            // For non-draft resources or fallback, use current (published) data
             return getResourceMetadata(
                 {
                     id: resource.resourceId,
@@ -274,7 +258,7 @@ export const useGetResourcesReasoningMetadata = ({
                     type: resource.resourceType,
                 },
                 shopName,
-                publishedResourceData,
+                resourceData,
             )
         }),
     }

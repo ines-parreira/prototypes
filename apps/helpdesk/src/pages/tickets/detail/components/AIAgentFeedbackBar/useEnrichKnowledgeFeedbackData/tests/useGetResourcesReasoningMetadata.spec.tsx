@@ -1098,26 +1098,44 @@ describe('useGetResourcesReasoningMetadata', () => {
             })
         })
 
-        it('should fall back to published data when draft resource is deleted', () => {
+        it('should resolve draft data (including origin) for versioned draft resources', () => {
             const publishedData = { ...mockResourceData }
             const draftData = { ...mockResourceData }
             ;(useGetResourceData as jest.Mock)
                 .mockReturnValueOnce(publishedData)
                 .mockReturnValueOnce(draftData)
+
+            const versionedMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Old Title',
+                        content: 'Old Content',
+                        helpCenterId: 100,
+                        updatedDatetime: null,
+                        versionId: 42,
+                    },
+                ],
+            ])
+            ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+                isLoading: false,
+                versionedArticlesMap: versionedMap,
+            })
             ;(getResourceMetadata as jest.Mock).mockImplementation(
                 (_resource, _shopName, resourceData) => {
                     if (resourceData === draftData) {
                         return {
-                            title: '',
-                            content: '',
-                            isDeleted: true,
-                            isLoading: false,
+                            title: 'Draft Title',
+                            content: 'Draft Content',
+                            url: '/mock/ARTICLE/1',
+                            origin: 'skill',
                         }
                     }
                     return {
-                        title: 'Published Title',
-                        content: 'Published Content',
-                        url: '/mock/ARTICLE/1',
+                        title: '',
+                        content: '',
+                        isDeleted: true,
+                        isLoading: false,
                     }
                 },
             )
@@ -1143,9 +1161,65 @@ describe('useGetResourcesReasoningMetadata', () => {
             )
 
             expect(result.current?.data[0]).toEqual({
-                title: 'Published Title',
-                content: 'Published Content',
+                title: 'Old Title',
+                content: 'Old Content',
+                helpCenterId: 100,
                 url: '/mock/ARTICLE/1',
+                versionId: 42,
+                origin: 'skill',
+            })
+        })
+
+        it('should resolve origin from published data for versioned non-draft resources', () => {
+            const versionedMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Old Title',
+                        content: 'Old Content',
+                        helpCenterId: 100,
+                        updatedDatetime: null,
+                        versionId: 42,
+                    },
+                ],
+            ])
+            ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+                isLoading: false,
+                versionedArticlesMap: versionedMap,
+            })
+            ;(getResourceMetadata as jest.Mock).mockReturnValue({
+                title: 'Current Title',
+                content: 'Current Content',
+                url: '/mock/ARTICLE/1',
+                origin: 'skill',
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Old Title',
+                content: 'Old Content',
+                helpCenterId: 100,
+                url: '/mock/ARTICLE/1',
+                versionId: 42,
+                origin: 'skill',
             })
         })
     })
@@ -1261,25 +1335,30 @@ describe('useGetResourcesReasoningMetadata', () => {
             })
         })
 
-        it('should fall back to published data when draft metadata is deleted', () => {
+        it('should return deleted metadata for draft resources without falling back to published', () => {
             const draftResourceData = {
                 ...mockResourceData,
             }
             ;(useGetResourceData as jest.Mock)
                 .mockReturnValueOnce(mockResourceData)
                 .mockReturnValueOnce(draftResourceData)
-            ;(getResourceMetadata as jest.Mock)
-                .mockReturnValueOnce({
-                    title: '',
-                    content: '',
-                    isDeleted: true,
-                    isLoading: false,
-                })
-                .mockReturnValueOnce({
-                    title: 'Published Title',
-                    content: 'Published Content',
-                    url: '/mock/ARTICLE/1',
-                })
+            ;(getResourceMetadata as jest.Mock).mockImplementation(
+                (_resource, _shopName, resourceData) => {
+                    if (resourceData === draftResourceData) {
+                        return {
+                            title: '',
+                            content: '',
+                            isDeleted: true,
+                            isLoading: false,
+                        }
+                    }
+                    return {
+                        title: 'Published Title',
+                        content: 'Published Content',
+                        url: '/mock/ARTICLE/1',
+                    }
+                },
+            )
 
             const storeConfiguration = createMockStoreConfiguration()
             const resources: KnowledgeReasoningResource[] = [
@@ -1302,9 +1381,10 @@ describe('useGetResourcesReasoningMetadata', () => {
             )
 
             expect(result.current?.data[0]).toEqual({
-                title: 'Published Title',
-                content: 'Published Content',
-                url: '/mock/ARTICLE/1',
+                title: '',
+                content: '',
+                isDeleted: true,
+                isLoading: false,
             })
         })
 
