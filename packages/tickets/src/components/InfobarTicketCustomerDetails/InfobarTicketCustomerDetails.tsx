@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 
 import { useGetCustomer } from '@repo/customer/hooks'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { SidePanel } from '@gorgias/axiom'
 import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
@@ -57,6 +58,12 @@ export function InfobarTicketCustomerDetails({
     const isLoadingDetails = !ticketCustomer && isLoadingTicket
 
     const { updateTicketCustomer } = useUpdateTicketCustomer(ticketId!)
+
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
+    const showToggle = hasNewOrdersSidebar
+
+    const [isExpanded, setIsExpanded] = useState(true)
+    const toggle = useCallback(() => setIsExpanded((v) => !v), [])
 
     const [isSearchAndPreviewPanelOpen, setIsSearchAndPreviewPanelOpen] =
         useState(false)
@@ -129,18 +136,24 @@ export function InfobarTicketCustomerDetails({
                         onEditCustomer={onEditCustomer}
                         onSyncToShopify={onSyncToShopify}
                         hasShopifyIntegration={hasShopifyIntegration}
+                        isExpanded={showToggle ? isExpanded : undefined}
+                        onToggle={showToggle ? toggle : undefined}
                     />
-                    {!!similarCustomer && !isLoadingSimilarCustomer && (
-                        <div className={css.duplicateCustomer}>
-                            <DuplicateCustomer
-                                onClick={handleViewSimilarCustomer}
+                    {(!showToggle || isExpanded) && (
+                        <>
+                            {!!similarCustomer && !isLoadingSimilarCustomer && (
+                                <div className={css.duplicateCustomer}>
+                                    <DuplicateCustomer
+                                        onClick={handleViewSimilarCustomer}
+                                    />
+                                </div>
+                            )}
+                            <InfobarCustomerFields
+                                customer={customer}
+                                ticketId={ticketId}
                             />
-                        </div>
+                        </>
                     )}
-                    <InfobarCustomerFields
-                        customer={customer}
-                        ticketId={ticketId}
-                    />
                 </>
             )}
             <SearchAndPreviewCustomersPanel

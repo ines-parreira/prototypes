@@ -3,4 +3,17 @@
         border-bottom: 1px solid var(--border-neutral-default);
         background: var(--elevation-neutral-default);
     }
+
+    .containerNoBottomBorder {
+        border-bottom: none;
+    }
+
+    .sectionSpacer {
+        height: 4px;
+        background: var(--elevation-neutral-low);
+
+        :global(.dark) & {
+            background: var(--elevation-neutral-mid);
+        }
+    }
 }

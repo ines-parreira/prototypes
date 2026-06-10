@@ -96,6 +96,12 @@
             border-top: 4px solid var(--border-neutral-default);
         }
 
+        &.newOrdersSidebar
+            .integrationContent
+            > :global([class*='--widgetWrapper--']) {
+            border-top: none;
+        }
+
         &.editMode {
             display: flex;
             flex-direction: column;
@@ -124,9 +130,14 @@
         flex: 0 0 auto;
         display: block;
         scroll-margin-top: var(--spacing-xs);
+    }
 
-        &:nth-child(2) {
-            border-top: 4px solid var(--border-neutral-default);
+    .sectionSpacer {
+        height: 4px;
+        background: var(--elevation-neutral-low);
+
+        :global(.dark) & {
+            background: var(--elevation-neutral-mid);
         }
     }
 

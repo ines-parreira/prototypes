@@ -1,8 +1,18 @@
 import type { ReactNode } from 'react'
+import { useCallback, useState } from 'react'
 
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
 
-import { Box, Icon, StickyLayer, StickyStack, Text } from '@gorgias/axiom'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
+import {
+    Box,
+    Button,
+    Icon,
+    StickyLayer,
+    StickyStack,
+    Text,
+} from '@gorgias/axiom'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import type { ShopperEcommerceData } from '../../types'
@@ -35,7 +45,6 @@ type Props = {
     customerId?: number
     ticketId?: string
     shopper: ShopperEcommerceData | undefined
-    hasNewOrdersSidebar?: boolean
     children?: ReactNode
 }
 
@@ -55,7 +64,6 @@ export function CustomerDetailsPanel({
     customerId,
     ticketId,
     shopper,
-    hasNewOrdersSidebar,
     children,
 }: Props) {
     const isLoadingDetails =
@@ -64,6 +72,12 @@ export function CustomerDetailsPanel({
             isLoadingPurchaseSummary ||
             isLoadingIntegrations ||
             !!isLoadingTicket)
+
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
+    const showToggle = hasNewOrdersSidebar
+
+    const [isExpanded, setIsExpanded] = useState(true)
+    const toggle = useCallback(() => setIsExpanded((v) => !v), [])
 
     const headerContent = (
         <Box
@@ -79,13 +93,32 @@ export function CustomerDetailsPanel({
                 </Text>
             </Box>
 
-            <StorePicker
-                integrations={filteredIntegrations}
-                selectedIntegrationId={selectedIntegration?.id}
-                onChange={onStoreChange}
-                isLoading={isLoadingIntegrations || isLoadingTicket}
-                onSyncProfile={onSyncProfile}
-            />
+            <Box flexDirection="row" alignItems="center" gap="xxs">
+                <StorePicker
+                    integrations={filteredIntegrations}
+                    selectedIntegrationId={selectedIntegration?.id}
+                    onChange={onStoreChange}
+                    isLoading={isLoadingIntegrations || isLoadingTicket}
+                    onSyncProfile={onSyncProfile}
+                />
+                {showToggle && (
+                    <Button
+                        as="button"
+                        icon={
+                            isExpanded
+                                ? 'arrow-chevron-up'
+                                : 'arrow-chevron-down'
+                        }
+                        variant="tertiary"
+                        size="md"
+                        aria-expanded={isExpanded}
+                        aria-label={
+                            isExpanded ? 'Collapse Shopify' : 'Expand Shopify'
+                        }
+                        onClick={toggle}
+                    />
+                )}
+            </Box>
         </Box>
     )
 
@@ -102,7 +135,7 @@ export function CustomerDetailsPanel({
                         <div
                             ref={ref}
                             {...stickyProps}
-                            className={`${css.header} ${css.headerSticky}`}
+                            className={css.headerSticky}
                         >
                             {headerContent}
                         </div>
@@ -112,54 +145,125 @@ export function CustomerDetailsPanel({
                 <div className={css.header}>{headerContent}</div>
             )}
 
-            <Box flexDirection="column" gap="sm" padding="md">
-                <CustomerLink
-                    selectedIntegration={selectedIntegration}
-                    shopper={shopper}
-                    isLoading={isLoadingIntegrations}
-                />
-                <CustomActions
-                    integrationId={selectedIntegration?.id}
-                    customerId={customerId}
-                    ticketId={ticketId}
-                />
-                {isLoadingDetails ? (
-                    <CustomerDetailsBodySkeleton />
-                ) : hasData ? (
-                    <>
-                        <Box flexDirection="column" gap="xxs">
-                            <CustomerInfoFieldList
-                                fields={customerFields}
-                                context={context}
+            {(!showToggle || isExpanded) && (
+                <>
+                    {hasNewOrdersSidebar ? (
+                        <Box
+                            flexDirection="column"
+                            gap="sm"
+                            pt={0}
+                            pb="md"
+                            className={css.panelBody}
+                        >
+                            <CustomerLink
+                                selectedIntegration={selectedIntegration}
+                                shopper={shopper}
+                                isLoading={isLoadingIntegrations}
                             />
-
-                            <MetafieldsSection
+                            <CustomActions
                                 integrationId={selectedIntegration?.id}
-                                metafields={normalizeMetafields(
-                                    shopper?.data?.metafields,
-                                )}
-                                storeName={selectedIntegration?.name}
+                                customerId={customerId}
+                                ticketId={ticketId}
                             />
-                        </Box>
-                        {sections.map((section) => {
-                            const addresses =
-                                context.shopper?.data?.addresses ?? []
-                            return resolveSectionFields(section, addresses).map(
-                                (rs) => (
-                                    <CollapsibleFieldSection
-                                        key={rs.key}
-                                        label={rs.label}
-                                        fields={rs.fields}
-                                        context={context}
-                                    />
-                                ),
-                            )
-                        })}
-                    </>
-                ) : null}
-            </Box>
+                            {isLoadingDetails ? (
+                                <CustomerDetailsBodySkeleton />
+                            ) : hasData ? (
+                                <>
+                                    <Box flexDirection="column" gap="xxs">
+                                        <CustomerInfoFieldList
+                                            fields={customerFields}
+                                            context={context}
+                                        />
 
-            {children}
+                                        <MetafieldsSection
+                                            integrationId={
+                                                selectedIntegration?.id
+                                            }
+                                            metafields={normalizeMetafields(
+                                                shopper?.data?.metafields,
+                                            )}
+                                            storeName={
+                                                selectedIntegration?.name
+                                            }
+                                        />
+                                    </Box>
+                                    {sections.map((section) => {
+                                        const addresses =
+                                            context.shopper?.data?.addresses ??
+                                            []
+                                        return resolveSectionFields(
+                                            section,
+                                            addresses,
+                                        ).map((rs) => (
+                                            <CollapsibleFieldSection
+                                                key={rs.key}
+                                                label={rs.label}
+                                                fields={rs.fields}
+                                                context={context}
+                                            />
+                                        ))
+                                    })}
+                                </>
+                            ) : null}
+                        </Box>
+                    ) : (
+                        <Box flexDirection="column" gap="sm" padding="md">
+                            <CustomerLink
+                                selectedIntegration={selectedIntegration}
+                                shopper={shopper}
+                                isLoading={isLoadingIntegrations}
+                            />
+                            <CustomActions
+                                integrationId={selectedIntegration?.id}
+                                customerId={customerId}
+                                ticketId={ticketId}
+                            />
+                            {isLoadingDetails ? (
+                                <CustomerDetailsBodySkeleton />
+                            ) : hasData ? (
+                                <>
+                                    <Box flexDirection="column" gap="xxs">
+                                        <CustomerInfoFieldList
+                                            fields={customerFields}
+                                            context={context}
+                                        />
+
+                                        <MetafieldsSection
+                                            integrationId={
+                                                selectedIntegration?.id
+                                            }
+                                            metafields={normalizeMetafields(
+                                                shopper?.data?.metafields,
+                                            )}
+                                            storeName={
+                                                selectedIntegration?.name
+                                            }
+                                        />
+                                    </Box>
+                                    {sections.map((section) => {
+                                        const addresses =
+                                            context.shopper?.data?.addresses ??
+                                            []
+                                        return resolveSectionFields(
+                                            section,
+                                            addresses,
+                                        ).map((rs) => (
+                                            <CollapsibleFieldSection
+                                                key={rs.key}
+                                                label={rs.label}
+                                                fields={rs.fields}
+                                                context={context}
+                                            />
+                                        ))
+                                    })}
+                                </>
+                            ) : null}
+                        </Box>
+                    )}
+
+                    {children}
+                </>
+            )}
         </Box>
     )
 

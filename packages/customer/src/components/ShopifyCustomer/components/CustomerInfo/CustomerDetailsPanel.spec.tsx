@@ -3,6 +3,13 @@ import { screen } from '@testing-library/react'
 
 import { CustomerDetailsPanel } from './CustomerDetailsPanel'
 
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar',
+    },
+    useFlag: vi.fn().mockReturnValue(true),
+}))
+
 vi.mock('./CustomActions', () => ({
     CustomActions: () => null,
 }))
@@ -30,17 +37,8 @@ const baseProps = {
 }
 
 describe('CustomerDetailsPanel', () => {
-    it('renders the Shopify header without the NewOrdersSidebar flag', () => {
+    it('renders the Shopify header inside a sticky layer', () => {
         render(<CustomerDetailsPanel {...baseProps} />)
-
-        expect(screen.getByText('Shopify')).toBeInTheDocument()
-        expect(
-            screen.getByText('Shopify').closest('[data-sticky-state]'),
-        ).toBeNull()
-    })
-
-    it('renders the Shopify header with the NewOrdersSidebar flag and applies sticky state', () => {
-        render(<CustomerDetailsPanel {...baseProps} hasNewOrdersSidebar />)
 
         expect(screen.getByText('Shopify')).toBeInTheDocument()
         expect(

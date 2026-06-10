@@ -1,7 +1,8 @@
-import type { ContextType } from 'react'
-import { Component } from 'react'
+import { Component, useContext } from 'react'
 
 import type { Map } from 'immutable'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import logo from 'assets/img/infobar/yotpo.svg'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -50,35 +51,26 @@ type TitleWrapperProps = {
     isEditing: boolean
 }
 
-class TitleWrapper extends Component<TitleWrapperProps> {
-    static contextType = IntegrationContext
-    declare context: ContextType<typeof IntegrationContext>
-    render() {
-        const { source, isEditing } = this.props
-        const pointBalance = source.getIn([
-            'loyalty_statistics',
-            'point_balance',
-        ])
-        const vipTierName = source.getIn([
-            'loyalty_statistics',
-            'vip_tier_name',
-        ])
-        return (
-            <>
-                {!isEditing && <ExpandAllButton />}
-                <CardHeaderTitle>
-                    <CardHeaderIcon src={logo} alt="Yotpo" />
-                    Yotpo
-                    {pointBalance > 0 && (
-                        <CardHeaderYotpoBadge iconName="stars">
-                            {parseFloat(pointBalance).toLocaleString()}
-                        </CardHeaderYotpoBadge>
-                    )}
-                    <CardHeaderStatusLabel>{vipTierName}</CardHeaderStatusLabel>
-                </CardHeaderTitle>
-            </>
-        )
-    }
+function TitleWrapper({ source, isEditing }: TitleWrapperProps) {
+    useContext(IntegrationContext)
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
+    const pointBalance = source.getIn(['loyalty_statistics', 'point_balance'])
+    const vipTierName = source.getIn(['loyalty_statistics', 'vip_tier_name'])
+    return (
+        <>
+            {!isEditing && !hasNewOrdersSidebar && <ExpandAllButton />}
+            <CardHeaderTitle>
+                <CardHeaderIcon src={logo} alt="Yotpo" />
+                Yotpo
+                {pointBalance > 0 && (
+                    <CardHeaderYotpoBadge iconName="stars">
+                        {parseFloat(pointBalance).toLocaleString()}
+                    </CardHeaderYotpoBadge>
+                )}
+                <CardHeaderStatusLabel>{vipTierName}</CardHeaderStatusLabel>
+            </CardHeaderTitle>
+        </>
+    )
 }
 
 type BeforeContentProps = {

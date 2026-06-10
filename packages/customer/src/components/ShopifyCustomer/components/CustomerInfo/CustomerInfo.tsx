@@ -194,7 +194,6 @@ export function CustomerInfo({
                 customerId={customerId}
                 ticketId={ticketId}
                 shopper={shopper}
-                hasNewOrdersSidebar={hasNewOrdersSidebar}
             >
                 {hasNewOrdersSidebar ? (
                     <OrdersSidebarV2

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useGetCustomer } from '@repo/customer/hooks'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import type { EnrichedTicket } from '@repo/tickets'
 import { TicketTimelineWidget } from '@repo/tickets'
+import classnames from 'classnames'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -40,6 +42,7 @@ export function TicketTimelineWidgetContainer({
     shopperId,
     activeTicketId,
 }: TicketTimelineWidgetContainerProps) {
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
     const { onChangeTab, onToggle, isExpanded } = useTicketInfobarNavigation()
     const { tickets, isLoading: isLoadingTickets } = useTicketList(shopperId)
 
@@ -122,7 +125,11 @@ export function TicketTimelineWidgetContainer({
 
     return (
         <>
-            <div className={css.container}>
+            <div
+                className={classnames(css.container, {
+                    [css.containerNoBottomBorder]: hasNewOrdersSidebar,
+                })}
+            >
                 <TicketTimelineWidget
                     tickets={displayedTickets}
                     totalNumber={totalNumber}

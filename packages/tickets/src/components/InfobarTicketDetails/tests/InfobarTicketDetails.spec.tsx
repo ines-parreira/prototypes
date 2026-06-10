@@ -1,5 +1,11 @@
+vi.mock('@repo/feature-flags', async () => ({
+    ...(await vi.importActual('@repo/feature-flags')),
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
+import { vi } from 'vitest'
 
 import {
     mockCustomer,
@@ -22,9 +28,13 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { InfobarTicketDetails } from '../InfobarTicketDetails'
+
+const mockUseFlag = vi.mocked(useFlag)
 
 const ticketId = '12345'
 const customerId = 6789
@@ -157,5 +167,57 @@ describe('InfobarTicketDetails', () => {
                 screen.getByRole('link', { name: 'John Doe' }),
             ).toBeInTheDocument()
         })
+    })
+})
+
+describe('when NewOrdersSidebar FF is enabled', () => {
+    beforeEach(() => {
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.NewOrdersSidebar,
+        )
+    })
+
+    afterEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
+    it('renders a collapse toggle for the ticket details section', () => {
+        render(
+            <InfobarTicketDetails {...baseProps} ticketSummaryIcon={null} />,
+            {
+                initialEntries: [`/tickets/${ticketId}`],
+                path: '/tickets/:ticketId',
+            },
+        )
+        expect(
+            screen.getByRole('button', { name: 'Collapse Ticket details' }),
+        ).toBeInTheDocument()
+    })
+
+    it('collapses and re-expands the section on toggle click', async () => {
+        const { user } = render(
+            <InfobarTicketDetails {...baseProps} ticketSummaryIcon={null} />,
+            {
+                initialEntries: [`/tickets/${ticketId}`],
+                path: '/tickets/:ticketId',
+            },
+        )
+        const collapseButton = screen.getByRole('button', {
+            name: 'Collapse Ticket details',
+        })
+        expect(collapseButton).toHaveAttribute('aria-expanded', 'true')
+
+        await user.click(collapseButton)
+
+        const expandButton = screen.getByRole('button', {
+            name: 'Expand Ticket details',
+        })
+        expect(expandButton).toHaveAttribute('aria-expanded', 'false')
+
+        await user.click(expandButton)
+
+        expect(
+            screen.getByRole('button', { name: 'Collapse Ticket details' }),
+        ).toHaveAttribute('aria-expanded', 'true')
     })
 })

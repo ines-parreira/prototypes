@@ -1,5 +1,8 @@
-import { Box, Heading, Tag, Text } from '@gorgias/axiom'
+import classNames from 'classnames'
 
+import { Box, Heading, Icon, Tag, Text } from '@gorgias/axiom'
+
+import { SectionToggleButton } from '../SectionToggleButton'
 import styles from './WidgetHeader.less'
 
 type WidgetHeaderProps = {
@@ -9,6 +12,9 @@ type WidgetHeaderProps = {
     customerName?: string
     isLoading: boolean
     fetchLimit?: number
+    isExpanded?: boolean
+    onToggle?: () => void
+    className?: string
 }
 
 function formatCount(count: number, limit?: number): string {
@@ -25,14 +31,35 @@ export function WidgetHeader({
     customerName,
     isLoading,
     fetchLimit,
+    isExpanded,
+    onToggle,
+    className,
 }: WidgetHeaderProps) {
+    const showToggle = onToggle !== undefined && isExpanded !== undefined
+
     return (
-        <Box mb={totalNumber > 1 ? 'sm' : undefined}>
+        <Box
+            flexDirection={showToggle ? 'row' : undefined}
+            alignItems={showToggle ? 'center' : undefined}
+            justifyContent={showToggle ? 'space-between' : undefined}
+            gap={showToggle ? 'xs' : undefined}
+            mb={!showToggle && totalNumber > 1 ? 'sm' : undefined}
+            className={classNames(
+                showToggle ? styles.clickableHeader : undefined,
+                className,
+            )}
+            onClick={showToggle ? onToggle : undefined}
+        >
             <Heading size="md">
                 <Box gap="xs" flexDirection="row" alignItems="center">
-                    <Text size="md" variant="bold">
-                        Tickets
-                    </Text>
+                    <Box flexDirection="row" alignItems="center" gap="xxxs">
+                        {showToggle && (
+                            <Icon name="chat-conversation-circle" size="md" />
+                        )}
+                        <Text size="md" variant="bold">
+                            Tickets
+                        </Text>
+                    </Box>
                     {!isLoading && (
                         <Box gap="xs" alignItems="center">
                             <Tag color="grey" className={styles.tag}>
@@ -62,6 +89,13 @@ export function WidgetHeader({
                     )}
                 </Box>
             </Heading>
+            {showToggle && (
+                <SectionToggleButton
+                    isExpanded={isExpanded}
+                    onToggle={onToggle}
+                    sectionLabel="Tickets"
+                />
+            )}
         </Box>
     )
 }

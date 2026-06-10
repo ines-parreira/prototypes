@@ -1,3 +1,8 @@
+vi.mock('@repo/feature-flags', async () => ({
+    ...(await vi.importActual('@repo/feature-flags')),
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 import { screen, waitFor } from '@testing-library/react'
 import { delay, http, HttpResponse } from 'msw'
 

@@ -47,6 +47,7 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         getValue: (ctx) => ctx.order.tags,
         render: (ctx) => {
             if (!ctx.integrationId || ctx.order.id === undefined) return null
+            if (ctx.isDraftOrder && !ctx.order.tags) return null
             return (
                 <OrderTags
                     tags={ctx.order.tags}

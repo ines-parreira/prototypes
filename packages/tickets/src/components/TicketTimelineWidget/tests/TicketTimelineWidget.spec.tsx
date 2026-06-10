@@ -1,3 +1,8 @@
+vi.mock('@repo/feature-flags', async () => ({
+    ...(await vi.importActual('@repo/feature-flags')),
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
@@ -6,8 +11,12 @@ import { vi } from 'vitest'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type { TicketTimelineWidgetProps } from '../TicketTimelineWidget'
 import { TicketTimelineWidget } from '../TicketTimelineWidget'
+
+const mockUseFlag = vi.mocked(useFlag)
 import type { EnrichedTicket } from '../types'
 import { formatTicketTime } from '../utils'
 
@@ -597,6 +606,61 @@ describe('TicketTimelineWidget', () => {
             const result = formatTicketTime(fiveMinutesAgo)
 
             expect(result).toBe('5m ago')
+        })
+    })
+
+    describe('when NewOrdersSidebar FF is enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.NewOrdersSidebar,
+            )
+        })
+
+        afterEach(() => {
+            mockUseFlag.mockReturnValue(false)
+        })
+
+        it('renders a collapse toggle button for the tickets section', () => {
+            renderComponent({ totalNumber: 3, openTicketsNumber: 2 })
+
+            expect(
+                screen.getByRole('button', { name: 'Collapse Tickets' }),
+            ).toBeInTheDocument()
+        })
+
+        it('collapses and re-expands the ticket list on toggle click', async () => {
+            const user = userEvent.setup()
+            const tickets = [
+                createEnrichedTicket(
+                    createTicketCompact({ id: 1, subject: 'Ticket 1' }),
+                ),
+                createEnrichedTicket(
+                    createTicketCompact({ id: 2, subject: 'Ticket 2' }),
+                ),
+            ]
+
+            renderComponent({ tickets, totalNumber: 2 })
+
+            expect(screen.getByText('Ticket 1')).toBeInTheDocument()
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Collapse Tickets' }),
+                ),
+            )
+
+            expect(screen.queryByText('Ticket 1')).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Expand Tickets' }),
+            ).toBeInTheDocument()
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Expand Tickets' }),
+                ),
+            )
+
+            expect(screen.getByText('Ticket 1')).toBeInTheDocument()
         })
     })
 })

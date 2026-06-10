@@ -3,6 +3,11 @@
         min-height: 0;
     }
 
+    .panelBody {
+        padding-left: calc(var(--spacing-md) + var(--spacing-xxxs));
+        padding-right: calc(var(--spacing-md) + var(--spacing-xxxs));
+    }
+
     .header {
         background-color: var(--elevation-neutral-default);
         padding: var(--spacing-xs) var(--spacing-md);
@@ -13,5 +18,7 @@
         position: sticky;
         top: var(--sticky-stack-offset, 0px);
         z-index: var(--sticky-stack-z-index, 4);
+        padding: var(--spacing-sm) calc(var(--spacing-md) + var(--spacing-xxxs));
+        background-color: var(--elevation-neutral-default);
     }
 }

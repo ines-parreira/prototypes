@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import { CopyableField } from '@repo/ecommerce/shopify/components'
 
-import { Box, Button, Icon, StickyLayer, Text } from '@gorgias/axiom'
+import { Box, Button, Dot, Icon, StickyLayer, Text } from '@gorgias/axiom'
 
 import css from './OrderRowHeader.less'
 
@@ -63,6 +63,7 @@ export function OrderRowHeader({
                             stickyRef(el)
                         }}
                         {...stickyProps}
+                        data-stuck={isExpanded && stuck ? 'true' : undefined}
                         className={className}
                         style={{
                             ...stickyProps?.style,
@@ -137,9 +138,25 @@ export function OrderRowHeader({
                                 />
                             </Box>
                         </Box>
-                        <Text size="md" className={css.metadata}>
-                            {`${dateLabel} · ${itemCount} ${itemCount === 1 ? 'item' : 'items'} · ${total}`}
-                        </Text>
+                        <Box
+                            flexDirection="row"
+                            alignItems="center"
+                            gap="xxs"
+                            className={css.metadata}
+                        >
+                            <Text as="span" size="md">
+                                {dateLabel}
+                            </Text>
+                            <Dot size="sm" />
+                            <Text
+                                as="span"
+                                size="md"
+                            >{`${itemCount} ${itemCount === 1 ? 'item' : 'items'}`}</Text>
+                            <Dot size="sm" />
+                            <Text as="span" size="md">
+                                {total}
+                            </Text>
+                        </Box>
                     </div>
                 )
             }}

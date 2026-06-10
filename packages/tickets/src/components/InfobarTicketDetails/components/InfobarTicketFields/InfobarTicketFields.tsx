@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import {
     Box,
     OverflowList,
@@ -5,6 +7,8 @@ import {
     OverflowListShowMore,
     Skeleton,
 } from '@gorgias/axiom'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { useTicketFields } from './hooks/useTicketFields'
 import {
@@ -30,6 +34,7 @@ export function InfobarTicketFields({
 }: InfobarTicketFieldsProps) {
     const { isExpanded, setIsExpanded } = useTicketFieldsDisplay()
     const { ticketFields, isLoading } = useTicketFields()
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
 
     if (isLoading) {
         return <Skeleton count={3} />
@@ -41,7 +46,9 @@ export function InfobarTicketFields({
 
     return (
         <OverflowList
-            className={css.overflowList}
+            className={classNames(css.overflowList, {
+                [css.overflowListFF]: hasNewOrdersSidebar,
+            })}
             nonExpandedLineCount={DEFAULT_VISIBLE_FIELD_COUNT}
             isExpanded={isExpanded}
             onExpandedChange={setIsExpanded}

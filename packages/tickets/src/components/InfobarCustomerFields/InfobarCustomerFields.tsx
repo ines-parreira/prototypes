@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import {
     Box,
     OverflowList,
@@ -5,6 +7,8 @@ import {
     OverflowListShowMore,
 } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-queries'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { InfobarBaseCustomerFields } from './InfobarBaseCustomerFields'
 import { InfobarCustomCustomerFields } from './InfobarCustomCustomerFields'
@@ -22,13 +26,17 @@ export function InfobarCustomerFields({
     ticketId,
     isReadOnly = false,
 }: InfobarCustomerFieldsProps) {
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
+
     if (!customer || !customer.id) {
         return null
     }
 
     return (
         <OverflowList
-            className={css.overflowList}
+            className={classNames(css.overflowList, {
+                [css.overflowListFF]: hasNewOrdersSidebar,
+            })}
             nonExpandedLineCount={7}
             key={customer.id}
             gap="xxxs"

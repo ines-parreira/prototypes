@@ -1,7 +1,11 @@
 import type { ComponentType, Dispatch, ReactNode, SetStateAction } from 'react'
 
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
-import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2MS2Flag,
+} from '@repo/feature-flags'
 import {
     EditFieldsType,
     TicketInfobarTab,
@@ -117,6 +121,7 @@ export function TicketCustomerSections({
     setIsCustomerSyncFormOpen,
 }: Props) {
     const hasUIVisionMS2 = useHelpdeskV2MS2Flag()
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
     const flags = useTicketInfobarSectionFlags()
     const customerFilteredIntegrations = useCustomerFilteredIntegrations()
     const { activeTab, editingWidgetType } = useTicketInfobarNavigation()
@@ -233,14 +238,24 @@ export function TicketCustomerSections({
     }
 
     const customerSection = sectionsByTab.get(TicketInfobarTab.Customer)
+    const sectionsWithSpacers = Array.from(sectionsByTab.values()).flatMap(
+        (section, i) =>
+            i === 0
+                ? [section]
+                : [
+                      <div key={`spacer-${i}`} className={css.sectionSpacer} />,
+                      section,
+                  ],
+    )
     const renderedSections = isEditMode
         ? (sectionsByTab.get(activeTab) ?? customerSection)
-        : Array.from(sectionsByTab.values())
+        : sectionsWithSpacers
 
     return (
         <div
             className={classNames(css.scrollableSections, {
                 [css.editMode]: isEditMode,
+                [css.newOrdersSidebar]: hasNewOrdersSidebar,
             })}
         >
             {renderedSections}
