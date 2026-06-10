@@ -1,4 +1,4 @@
-import type { ClipboardEvent, KeyboardEvent } from 'react'
+import type { ClipboardEvent, FocusEvent, KeyboardEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import { isMacOs } from '@repo/utils'
@@ -14,11 +14,19 @@ import {
 
 import css from './EditableField.less'
 
+function getInputValueFromBlurEvent(event: FocusEvent<Element>) {
+    if (event.target instanceof HTMLInputElement) {
+        return event.target.value
+    }
+
+    return event.currentTarget.querySelector('input')?.value
+}
+
 type EditableFieldProps<T extends string | number> = {
     id?: string
     value: T | undefined
     onValueChange: (value: T) => unknown
-    onBlur?: (value: T) => void
+    onBlur?: (value: T | undefined) => void
     placeholder?: string
     validator?: (value: T) => string | undefined
     className?: string
@@ -87,9 +95,9 @@ export function EditableField<T extends string | number = string | number>(
         [error, isReadOnly, onValueChange],
     )
 
-    const handleValue = useCallback(() => {
+    const handleValue = useCallback((): [false] | [true, T | undefined] => {
         if (value === undefined) {
-            return [true]
+            return [true, undefined]
         }
 
         const finalValue =
@@ -108,12 +116,12 @@ export function EditableField<T extends string | number = string | number>(
 
         if (finalValue === value || (!finalValue && !value)) {
             setError(undefined)
-            return [true, finalValue]
+            return [true, finalValue as T]
         }
 
         setError(undefined)
         onValueChange(finalValue as T)
-        return [true, finalValue]
+        return [true, finalValue as T]
     }, [value, validator, onValueChange, type])
 
     const handleFieldBlur = useCallback(() => {
@@ -125,7 +133,7 @@ export function EditableField<T extends string | number = string | number>(
 
         const [isValid, value] = handleValue()
         if (isValid) {
-            onBlur?.(value as T)
+            onBlur?.(value)
         }
     }, [handleValue, isReadOnly, onBlur, value])
 
@@ -185,6 +193,26 @@ export function EditableField<T extends string | number = string | number>(
         [handleChange, type],
     )
 
+    const handleNumberBlur = useCallback(
+        (event: FocusEvent<Element>) => {
+            setIsFocused(false)
+
+            if (isReadOnly) {
+                return
+            }
+
+            const rawValue = getInputValueFromBlurEvent(event)
+            const parsedValue = rawValue ? Number(rawValue) : undefined
+
+            if (rawValue && Number.isNaN(parsedValue)) {
+                return
+            }
+
+            onBlur?.(parsedValue as T | undefined)
+        },
+        [isReadOnly, onBlur],
+    )
+
     const tooltipContent = useMemo(() => value?.toString(), [value])
 
     if (type === 'number') {
@@ -205,7 +233,7 @@ export function EditableField<T extends string | number = string | number>(
                         variant="secondary"
                         autoFocus={autoFocus}
                         onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
+                        onBlur={handleNumberBlur}
                         onPaste={handleNumberPaste}
                         error={error}
                         minValue={minValue}

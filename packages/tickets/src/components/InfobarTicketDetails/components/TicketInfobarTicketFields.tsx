@@ -27,9 +27,35 @@ export function TicketInfobarTicketFields({
     const updateFieldValue = useTicketFieldsStore(
         (state) => state.updateFieldValue,
     )
+    const updateNumberFieldValueIfChanged = useTicketFieldsStore(
+        (state) => state.updateNumberFieldValueIfChanged,
+    )
 
     const { updateOrDeleteCustomerFieldValue } =
         useUpdateOrDeleteTicketFieldValue(Number(ticketId))
+
+    const saveNumberFieldValue = useCallback(
+        ({
+            fieldId,
+            nextValue,
+        }: {
+            fieldId: number
+            nextValue: FieldEventHandlerParams['nextValue']
+        }) => {
+            const numberFieldValueChange = updateNumberFieldValueIfChanged(
+                fieldId,
+                getNumberOrUndefined(nextValue),
+            )
+
+            if (!numberFieldValueChange.hasChanged) {
+                return
+            }
+
+            const value = numberFieldValueChange.value
+            return updateOrDeleteCustomerFieldValue({ fieldId, value })
+        },
+        [updateNumberFieldValueIfChanged, updateOrDeleteCustomerFieldValue],
+    )
 
     const handleChange = useCallback(
         ({ field, nextValue }: FieldEventHandlerParams) => {
@@ -43,16 +69,10 @@ export function TicketInfobarTicketFields({
                 return
             }
 
-            /**
-             * The Axiom NumberField component onChange event triggers when the
-             * user leaves the input, we which enable us to save the change here
-             */
             if (isNumberInput(field.fieldDefinition)) {
-                const numberValue = getNumberOrUndefined(nextValue)
-                updateFieldValue(field.fieldDefinition.id, numberValue)
-                return updateOrDeleteCustomerFieldValue({
+                return saveNumberFieldValue({
                     fieldId: field.fieldDefinition.id,
-                    value: numberValue,
+                    nextValue,
                 })
             }
 
@@ -62,11 +82,28 @@ export function TicketInfobarTicketFields({
                 value: nextValue,
             })
         },
-        [updateFieldValue, updateOrDeleteCustomerFieldValue],
+        [
+            saveNumberFieldValue,
+            updateFieldValue,
+            updateOrDeleteCustomerFieldValue,
+        ],
     )
 
     const handleBlur = useCallback(
         ({ field, nextValue }: FieldEventHandlerParams) => {
+            if (isNumberInput(field.fieldDefinition)) {
+                /**
+                 * React Aria NumberField commits its typed value on blur, but the
+                 * commit can be skipped when users paste then leave the field very
+                 * quickly. Saving from blur as well keeps the DOM value from being
+                 * lost, while saveNumberFieldValue dedupes normal commit+blur flows.
+                 */
+                return saveNumberFieldValue({
+                    fieldId: field.fieldDefinition.id,
+                    nextValue,
+                })
+            }
+
             if (isTextInput(field.fieldDefinition)) {
                 const textValue = nextValue?.toString()?.trim()
                 updateFieldValue(field.fieldDefinition.id, textValue)
@@ -76,7 +113,11 @@ export function TicketInfobarTicketFields({
                 })
             }
         },
-        [updateFieldValue, updateOrDeleteCustomerFieldValue],
+        [
+            saveNumberFieldValue,
+            updateFieldValue,
+            updateOrDeleteCustomerFieldValue,
+        ],
     )
 
     if (isLoadingFieldsStore) {

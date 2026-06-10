@@ -14,6 +14,55 @@ import {
 import { updateResult } from '../../../../../utils/optimisticUpdates/updateResult'
 import { useCustomFieldDefinitions } from './useCustomFieldDefinitions'
 
+function getOptimisticValue(value: unknown) {
+    if (typeof value !== 'string') {
+        return value
+    }
+
+    try {
+        return JSON.parse(value)
+    } catch {
+        return value
+    }
+}
+
+function updateTicketCustomFieldValues({
+    ticketFieldValues,
+    fieldDefinition,
+    fieldId,
+    value,
+}: {
+    ticketFieldValues: TicketCustomFieldValue[]
+    fieldDefinition: TicketCustomField
+    fieldId: number
+    value: unknown
+}) {
+    // Mutations send JSON.stringify(value) so axios preserves string fields that look numeric.
+    // The optimistic cache must still store the semantic field value used by the UI.
+    const optimisticValue = getOptimisticValue(value)
+    const hasExistingFieldValue = ticketFieldValues.some(
+        (ticketFieldValue) => ticketFieldValue.field?.id === fieldId,
+    )
+
+    if (!hasExistingFieldValue) {
+        return [
+            ...ticketFieldValues,
+            {
+                field: fieldDefinition,
+                value: optimisticValue,
+            },
+        ]
+    }
+
+    return ticketFieldValues.map((ticketFieldValue) => {
+        if (ticketFieldValue.field?.id !== fieldId) {
+            return ticketFieldValue
+        }
+
+        return { ...ticketFieldValue, value: optimisticValue }
+    })
+}
+
 export function useUpdateTicketFieldValue(ticketId: number) {
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.listTicketCustomFields(ticketId)
@@ -31,64 +80,38 @@ export function useUpdateTicketFieldValue(ticketId: number) {
                 const fieldDefinition = ticketFieldDefinitions.find(
                     (field) => field.id === fieldId,
                 ) as TicketCustomField | undefined
-                const previewTicketFieldsValuesResult =
+                const previousTicketFieldsValuesResult =
                     queryClient.getQueryData<ListTicketCustomFieldsResult>(
                         queryKey,
                     )
-                if (!previewTicketFieldsValuesResult || !fieldDefinition) {
+                if (!previousTicketFieldsValuesResult || !fieldDefinition) {
                     return
                 }
-                if (previewTicketFieldsValuesResult?.data.data.length === 0) {
-                    const updatedTicketFieldsValuesResult = updateResult(
-                        previewTicketFieldsValuesResult,
-                        [
-                            {
-                                field: fieldDefinition,
-                                value: value,
-                            },
-                        ],
-                    )
-                    queryClient.setQueryData<ListTicketCustomFieldsResult>(
-                        queryKey,
-                        updatedTicketFieldsValuesResult,
-                    )
-                    return {
-                        previewTicketFieldsValuesResult,
-                        updatedTicketFieldsValuesResult,
-                    }
-                }
                 const updatedTicketFieldsValuesResult = updateResult(
-                    previewTicketFieldsValuesResult,
-                    previewTicketFieldsValuesResult.data.data.reduce<
-                        TicketCustomFieldValue[]
-                    >((acc, field) => {
-                        if (field.id === fieldId) {
-                            return [
-                                ...acc,
-                                {
-                                    ...field,
-                                    value: value,
-                                },
-                            ]
-                        }
-                        return [...acc, field]
-                    }, []),
+                    previousTicketFieldsValuesResult,
+                    updateTicketCustomFieldValues({
+                        ticketFieldValues:
+                            previousTicketFieldsValuesResult.data.data,
+                        fieldDefinition,
+                        fieldId,
+                        value,
+                    }),
                 )
                 queryClient.setQueryData<ListTicketCustomFieldsResult>(
                     queryKey,
                     updatedTicketFieldsValuesResult,
                 )
                 return {
-                    previewTicketFieldsValuesResult,
+                    previousTicketFieldsValuesResult,
                     updatedTicketFieldsValuesResult,
                 }
             },
             onError: (_, __, context) => {
-                const { previewTicketFieldsValuesResult } = context ?? {}
-                if (previewTicketFieldsValuesResult) {
+                const { previousTicketFieldsValuesResult } = context ?? {}
+                if (previousTicketFieldsValuesResult) {
                     queryClient.setQueryData<ListTicketCustomFieldsResult>(
                         queryKey,
-                        previewTicketFieldsValuesResult,
+                        previousTicketFieldsValuesResult,
                     )
                 }
             },

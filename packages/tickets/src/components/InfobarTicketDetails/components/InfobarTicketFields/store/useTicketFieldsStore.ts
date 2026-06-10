@@ -1,6 +1,8 @@
 import { isEmpty } from 'lodash'
 import { create } from 'zustand'
 
+import { getNumberOrUndefined } from '../../../../InfobarCustomerFields/utils'
+
 export type CustomFieldValue = string | number | boolean
 
 export type CustomFieldPrediction = {
@@ -22,6 +24,29 @@ export type TicketFieldsState = {
     [fieldId: string]: CustomFieldState
 }
 
+export type NumberFieldValueChange =
+    | {
+          hasChanged: false
+      }
+    | {
+          hasChanged: true
+          value: number | undefined
+      }
+
+export function getNumberFieldValueChange({
+    currentValue,
+    nextValue,
+}: {
+    currentValue: CustomFieldValue | undefined
+    nextValue: number | undefined
+}): NumberFieldValueChange {
+    if (getNumberOrUndefined(currentValue) === nextValue) {
+        return { hasChanged: false }
+    }
+
+    return { hasChanged: true, value: nextValue }
+}
+
 type TicketFieldsStore = {
     fields: TicketFieldsState
     /**
@@ -31,6 +56,14 @@ type TicketFieldsStore = {
     validationFailureCount: number
     updateFieldState: (fieldState: CustomFieldState) => void
     updateFieldValue: (id: number, value: CustomFieldValue | undefined) => void
+    /**
+     * NumberField can emit the same committed value from both change and blur
+     * before React re-renders, so this action dedupes against latest store state.
+     */
+    updateNumberFieldValueIfChanged: (
+        id: number,
+        value: number | undefined,
+    ) => NumberFieldValueChange
     updateFieldError: (id: number, hasError: boolean) => void
     updateFieldPrediction: (
         id: number,
@@ -63,6 +96,30 @@ export const useTicketFieldsStore = create<TicketFieldsStore>((set, get) => ({
                 },
             },
         })),
+    updateNumberFieldValueIfChanged: (id, value) => {
+        const change = getNumberFieldValueChange({
+            currentValue: get().fields[id]?.value,
+            nextValue: value,
+        })
+
+        if (!change.hasChanged) {
+            return change
+        }
+
+        set((state) => ({
+            fields: {
+                ...state.fields,
+                [id]: {
+                    ...state.fields[id],
+                    id,
+                    value: change.value,
+                    hasError: false,
+                },
+            },
+        }))
+
+        return change
+    },
     updateFieldError: (id, hasError) =>
         set((state) => ({
             fields: {

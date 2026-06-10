@@ -58,7 +58,7 @@ export function InfobarBaseCustomerFields({
                         id="note-field"
                         value={note}
                         onValueChange={setNote}
-                        onBlur={handleNoteBlur}
+                        onBlur={(value) => handleNoteBlur(value ?? '')}
                         placeholder="+ Add"
                         ariaLabel="Note"
                         type="textarea"
@@ -97,7 +97,9 @@ export function InfobarBaseCustomerFields({
                                     email: value,
                                 }))
                             }
-                            onBlur={(value) => createChannel('email', value)}
+                            onBlur={(value) =>
+                                createChannel('email', value ?? '')
+                            }
                             placeholder="+ Add"
                             validator={(value) =>
                                 validateChannelField('email', value)
@@ -137,7 +139,9 @@ export function InfobarBaseCustomerFields({
                                     phone: value,
                                 }))
                             }
-                            onBlur={(value) => createChannel('phone', value)}
+                            onBlur={(value) =>
+                                createChannel('phone', value ?? '')
+                            }
                             placeholder="+ Add"
                             validator={(value) =>
                                 validateChannelField('phone', value)

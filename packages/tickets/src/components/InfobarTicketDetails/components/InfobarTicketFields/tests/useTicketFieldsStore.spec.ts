@@ -1,4 +1,7 @@
-import { useTicketFieldsStore } from '../store/useTicketFieldsStore'
+import {
+    getNumberFieldValueChange,
+    useTicketFieldsStore,
+} from '../store/useTicketFieldsStore'
 import type { TicketFieldsState } from '../store/useTicketFieldsStore'
 
 describe('useTicketFieldsStore', () => {
@@ -108,6 +111,117 @@ describe('useTicketFieldsStore', () => {
                 id: 1,
                 value: undefined,
                 hasError: false,
+            })
+        })
+    })
+
+    describe('updateNumberFieldValueIfChanged', () => {
+        it('should update a changed number field value and clear error state', () => {
+            const store = useTicketFieldsStore.getState()
+
+            store.updateFieldState({
+                id: 1,
+                value: 41,
+                hasError: true,
+            })
+
+            expect(store.updateNumberFieldValueIfChanged(1, 42)).toEqual({
+                hasChanged: true,
+                value: 42,
+            })
+            expect(useTicketFieldsStore.getState().fields[1]).toEqual({
+                id: 1,
+                value: 42,
+                hasError: false,
+            })
+        })
+
+        it('should not update an unchanged number field value', () => {
+            const store = useTicketFieldsStore.getState()
+
+            store.updateFieldState({
+                id: 1,
+                value: 42,
+                hasError: true,
+            })
+
+            expect(store.updateNumberFieldValueIfChanged(1, 42)).toEqual({
+                hasChanged: false,
+            })
+            expect(useTicketFieldsStore.getState().fields[1]).toEqual({
+                id: 1,
+                value: 42,
+                hasError: true,
+            })
+        })
+
+        it('should use the latest store state for repeated number updates', () => {
+            const store = useTicketFieldsStore.getState()
+
+            store.updateFieldState({
+                id: 1,
+                value: 4,
+            })
+
+            expect(store.updateNumberFieldValueIfChanged(1, 42)).toEqual({
+                hasChanged: true,
+                value: 42,
+            })
+            expect(store.updateNumberFieldValueIfChanged(1, 42)).toEqual({
+                hasChanged: false,
+            })
+        })
+
+        it('should mark a cleared number field value as changed', () => {
+            const store = useTicketFieldsStore.getState()
+
+            store.updateFieldState({
+                id: 1,
+                value: 42,
+            })
+
+            expect(store.updateNumberFieldValueIfChanged(1, undefined)).toEqual(
+                {
+                    hasChanged: true,
+                    value: undefined,
+                },
+            )
+            expect(useTicketFieldsStore.getState().fields[1]).toEqual({
+                id: 1,
+                value: undefined,
+                hasError: false,
+            })
+        })
+    })
+
+    describe('getNumberFieldValueChange', () => {
+        it('should not mark an unchanged number field value as changed', () => {
+            expect(
+                getNumberFieldValueChange({
+                    currentValue: 42,
+                    nextValue: 42,
+                }),
+            ).toEqual({ hasChanged: false })
+        })
+
+        it('should compare numeric current values after normalization', () => {
+            expect(
+                getNumberFieldValueChange({
+                    currentValue: '42',
+                    nextValue: 42,
+                }),
+            ).toEqual({ hasChanged: false })
+        })
+
+        it('should mark a changed number field value as changed', () => {
+            expect(
+                getNumberFieldValueChange({
+                    currentValue: 41,
+                    nextValue: 42,
+                }),
+            ).toEqual({
+                hasChanged: true,
+                value: 42,
             })
         })
     })

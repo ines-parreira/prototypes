@@ -26,7 +26,8 @@ export function useDeleteTicketFieldValue(ticketId: number) {
                 const updatedTicketFieldsValuesResult = updateResult(
                     previewTicketFieldsValuesResult,
                     previewTicketFieldsValuesResult.data.data.filter(
-                        (field) => field.id !== fieldId,
+                        (ticketFieldValue) =>
+                            ticketFieldValue.field?.id !== fieldId,
                     ),
                 )
                 queryClient.setQueryData<ListTicketCustomFieldsResult>(

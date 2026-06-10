@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { render } from '../../../../../tests/render.utils'
 import { EditableField } from '../EditableField'
@@ -643,6 +643,88 @@ describe('EditableField', () => {
 
                 expect(onValueChange).not.toHaveBeenCalled()
             })
+
+            it('should call onBlur with the latest typed number value', async () => {
+                const onBlur = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={vi.fn()}
+                        onBlur={onBlur}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+
+                await user.type(input, '42')
+                await user.tab()
+
+                expect(onBlur).toHaveBeenCalledWith(42)
+            })
+
+            it('should call onBlur with a direct number input blur target value', () => {
+                const onBlur = vi.fn()
+
+                const { getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={vi.fn()}
+                        onBlur={onBlur}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                fireEvent.blur(getByPlaceholderText('+ Add number'), {
+                    target: { value: '42' },
+                })
+
+                expect(onBlur).toHaveBeenCalledWith(42)
+            })
+
+            it('should call onBlur with undefined when a direct number input blur target is empty', () => {
+                const onBlur = vi.fn()
+
+                const { getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={vi.fn()}
+                        onBlur={onBlur}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                fireEvent.blur(getByPlaceholderText('+ Add number'), {
+                    target: { value: '' },
+                })
+
+                expect(onBlur).toHaveBeenCalledWith(undefined)
+            })
+
+            it('should not call onBlur when a direct number input blur target is not numeric', () => {
+                const onBlur = vi.fn()
+
+                const { getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={vi.fn()}
+                        onBlur={onBlur}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                fireEvent.blur(getByPlaceholderText('+ Add number'), {
+                    target: { value: 'abc' },
+                })
+
+                expect(onBlur).not.toHaveBeenCalled()
+            })
+
             it('should not show tooltip when showTooltip is false', async () => {
                 const onValueChange = vi.fn()
 

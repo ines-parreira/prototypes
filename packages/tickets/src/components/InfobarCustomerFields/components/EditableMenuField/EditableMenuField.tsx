@@ -72,13 +72,13 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
     )
 
     const handleBlur = useCallback(
-        (value: string) => {
+        (value: string | undefined) => {
             if (isReadOnly) {
                 setIsEditing(false)
                 return
             }
 
-            onBlur(value)
+            onBlur(value ?? '')
             setIsEditing(false)
         },
         [isReadOnly, onBlur],
