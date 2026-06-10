@@ -3,13 +3,16 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Node } from '@xyflow/react'
 import _isEqual from 'lodash/isEqual'
+import { useParams } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
     LegacyLabel as Label,
     Skeleton,
 } from '@gorgias/axiom'
+import { useListStores } from '@gorgias/helpdesk-queries'
 
+import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
@@ -33,6 +36,7 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import Caption from 'pages/common/forms/Caption/Caption'
 
+import { useStepServiceConnectionStatuses } from '../hooks/useStepServiceConnectionStatuses'
 import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
 import type { StepListItemProps } from './StepListItem'
 import { StepListItem } from './StepListItem'
@@ -59,6 +63,27 @@ export const SimplifiedStepBuilderSteps = ({
     const { apps, actionsApps } = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
     const { connections } = useStoreTrackstarContext()
+    const { isEnabled: isCentralizedLibraryEnabled } =
+        useActionCentralizedLibraryEnabled()
+    const { shopName } = useParams<{ shopName?: string }>()
+    const { data: storesResponse } = useListStores(
+        { limit: 100 },
+        { query: { enabled: isCentralizedLibraryEnabled && !!shopName } },
+    )
+    const currentStoreId = useMemo(() => {
+        if (!shopName) return undefined
+        return storesResponse?.data?.data?.find(
+            (store) => store.name === shopName,
+        )?.store_integration_id
+    }, [storesResponse, shopName])
+    const {
+        byAppId: connectionStatusByAppId,
+        isLoading: isConnectionsLoading,
+    } = useStepServiceConnectionStatuses(
+        graph,
+        isCentralizedLibraryEnabled,
+        currentStoreId,
+    )
     const orderedNodes = useMemo(() => {
         const nodes: ReusableLLMPromptCallNodeType[] = []
 
@@ -161,7 +186,7 @@ export const SimplifiedStepBuilderSteps = ({
                         : undefined
                 const {
                     isClickable,
-                    hasMissingCredentials,
+                    hasMissingCredentials: hasMissingCredentialsLegacy,
                     hasCredentials,
                     hasAllValues,
                     hasMissingValues,
@@ -175,6 +200,19 @@ export const SimplifiedStepBuilderSteps = ({
                     isTemplate: graph.isTemplate,
                     trackstarConnection,
                 })
+
+                const connectionAppId =
+                    templateApp.type === 'app' ? templateApp.app_id : undefined
+                const connectionStatus = connectionAppId
+                    ? connectionStatusByAppId[connectionAppId]
+                    : undefined
+                const hasMissingCredentials =
+                    isCentralizedLibraryEnabled &&
+                    !graph.isTemplate &&
+                    templateApp.type === 'app' &&
+                    !isConnectionsLoading
+                        ? !connectionStatus?.hasConnection
+                        : hasMissingCredentialsLegacy
 
                 return {
                     id: node.id,
@@ -216,6 +254,9 @@ export const SimplifiedStepBuilderSteps = ({
         handleDrop,
         setDirtyNodes,
         connections,
+        isCentralizedLibraryEnabled,
+        connectionStatusByAppId,
+        isConnectionsLoading,
     ])
 
     const hasMissingValues = displayNodesProps.some(

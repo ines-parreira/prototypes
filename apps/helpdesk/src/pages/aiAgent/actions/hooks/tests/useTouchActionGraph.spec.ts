@@ -1,13 +1,63 @@
 import { renderHook } from '@repo/testing'
 
+import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import useTouchActionGraph from '../useTouchActionGraph'
 
+jest.mock('hooks/integrations/useActionCentralizedLibraryEnabled')
+const mockUseActionCentralizedLibraryEnabled = jest.mocked(
+    useActionCentralizedLibraryEnabled,
+)
+
+const buildAppGraph = (): VisualBuilderGraph =>
+    ({
+        id: '',
+        internal_id: '',
+        is_draft: false,
+        isTemplate: false,
+        name: '',
+        available_languages: [],
+        nodes: [
+            {
+                ...buildNodeCommonProperties(),
+                id: 'trigger',
+                type: 'llm_prompt_trigger' as const,
+                data: {
+                    instructions: '',
+                    requires_confirmation: false,
+                    inputs: [],
+                    conditionsType: 'and' as const,
+                    conditions: [],
+                },
+            },
+        ],
+        edges: [],
+        nodeEditingId: null,
+        choiceEventIdEditing: null,
+        branchIdsEditing: [],
+        apps: [
+            {
+                app_id: 'app_id',
+                api_key: 'api_key',
+                type: 'app' as const,
+            },
+        ],
+    }) as unknown as VisualBuilderGraph
+
 describe('useTouchActionGraph()', () => {
+    beforeEach(() => {
+        mockUseActionCentralizedLibraryEnabled.mockReturnValue({
+            isEnabled: false,
+            milestone: 'OFF',
+            isLoading: false,
+        })
+    })
+
     it('should touch action graph', () => {
         const { result } = renderHook(() =>
             useTouchActionGraph([
@@ -199,5 +249,26 @@ describe('useTouchActionGraph()', () => {
                 },
             }),
         )
+    })
+
+    it('does not touch app credential fields when centralized library is enabled', () => {
+        mockUseActionCentralizedLibraryEnabled.mockReturnValue({
+            isEnabled: true,
+            milestone: 'MILESTONE-1',
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() =>
+            useTouchActionGraph([
+                {
+                    id: 'app_id',
+                    auth_type: 'api-key',
+                    auth_settings: {},
+                },
+            ]),
+        )
+
+        const touched = result.current(buildAppGraph())
+        expect(touched.apps?.[0]?.touched).toBeUndefined()
     })
 })

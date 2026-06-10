@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { produce } from 'immer'
 
+import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import type { ActionsApp } from 'pages/automate/actionsPlatform/types'
 import {
     getConditionsNodeTouched,
@@ -13,6 +14,9 @@ import {
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
+    const { isEnabled: isCentralizedLibraryEnabled } =
+        useActionCentralizedLibraryEnabled()
+
     return useCallback(
         (graph: VisualBuilderGraph) => {
             return produce(graph, (draft) => {
@@ -27,7 +31,10 @@ const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
                                         actionsApp.id === app.app_id,
                                 )
 
-                                if (actionsApp) {
+                                if (
+                                    actionsApp &&
+                                    !isCentralizedLibraryEnabled
+                                ) {
                                     app.touched = getGraphAppAppTouched(
                                         actionsApp.auth_type,
                                     )
@@ -60,7 +67,7 @@ const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
                 })
             })
         },
-        [actionsApps],
+        [actionsApps, isCentralizedLibraryEnabled],
     )
 }
 

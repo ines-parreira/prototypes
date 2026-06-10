@@ -1,5 +1,10 @@
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import {
+    Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Text,
+} from '@gorgias/axiom'
 
+import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import ActionFormMerchantInputValue from 'pages/aiAgent/actions/components/ActionFormMerchantInputValue'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
@@ -17,6 +22,9 @@ import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 
+const CREDENTIAL_INPUT_PATTERN =
+    /\b(api[\s_-]?key|private[\s_-]?key|access[\s_-]?token|refresh[\s_-]?token|auth[\s_-]?token|bearer[\s_-]?token|client[\s_-]?secret|list[\s_-]?id|store[\s_-]?id|password|credential)\b/i
+
 export default function ReusableLLMPromptCallEditor({
     nodeInEdition,
 }: {
@@ -29,13 +37,20 @@ export default function ReusableLLMPromptCallEditor({
     )
     const { apps, actionsApps } = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
+    const { isEnabled: isCentralizedLibraryEnabled } =
+        useActionCentralizedLibraryEnabled()
 
     if (!step) {
         return <LoadingSpinner size="medium" />
     }
 
     const templateApp = step.apps[0]
-    const inputs = step.inputs ?? []
+    const allInputs = step.inputs ?? []
+    const inputs = isCentralizedLibraryEnabled
+        ? allInputs.filter(
+              (input) => !CREDENTIAL_INPUT_PATTERN.test(input.name),
+          )
+        : allInputs
     const values = nodeInEdition.data.values
 
     const actionsApp = actionsApps.find(
@@ -140,22 +155,50 @@ export default function ReusableLLMPromptCallEditor({
             )
         )
     }
+    const credentialsUrl =
+        actionsApp &&
+        `/app/settings/integrations/app/${actionsApp.id}/credentials`
+
     return (
         <>
             <NodeEditorDrawerHeader label={`${step.name} in ${app.name}`} />
             <Drawer.Content>
                 <div className={css.container}>
-                    {hasAuthentication && (
-                        <div className={css.reusableLLMPromptCallStepSection}>
-                            {renderInput()}
-                            {actionsApp.auth_type === 'trackstar' && (
-                                <ConnectTrackstarButton
-                                    app={app}
-                                    actionApp={actionsApp}
-                                />
-                            )}
-                        </div>
-                    )}
+                    {hasAuthentication &&
+                        (isCentralizedLibraryEnabled ? (
+                            <div
+                                className={css.reusableLLMPromptCallStepSection}
+                            >
+                                <Text>
+                                    Authentication for {app.name} is managed
+                                    under Integrations.
+                                </Text>
+                                <Button
+                                    variant="secondary"
+                                    onClick={() =>
+                                        window.open(
+                                            credentialsUrl,
+                                            '_blank',
+                                            'noopener,noreferrer',
+                                        )
+                                    }
+                                >
+                                    Manage authentication
+                                </Button>
+                            </div>
+                        ) : (
+                            <div
+                                className={css.reusableLLMPromptCallStepSection}
+                            >
+                                {renderInput()}
+                                {actionsApp.auth_type === 'trackstar' && (
+                                    <ConnectTrackstarButton
+                                        app={app}
+                                        actionApp={actionsApp}
+                                    />
+                                )}
+                            </div>
+                        ))}
 
                     {hasAuthentication && hasInputs && (
                         <div className={css.separator} />

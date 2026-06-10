@@ -1,6 +1,7 @@
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
+import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
@@ -14,12 +15,24 @@ import ReusableLLMPromptCallEditor from '../ReusableLLMPromptCallEditor'
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp')
+jest.mock('hooks/integrations/useActionCentralizedLibraryEnabled')
 
 const mockUseGetWorkflowConfigurationTemplate = jest.mocked(
     useGetWorkflowConfigurationTemplate,
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetAppFromTemplateApp = jest.mocked(useGetAppFromTemplateApp)
+const mockUseActionCentralizedLibraryEnabled = jest.mocked(
+    useActionCentralizedLibraryEnabled,
+)
+
+beforeEach(() => {
+    mockUseActionCentralizedLibraryEnabled.mockReturnValue({
+        isEnabled: false,
+        milestone: 'OFF',
+        isLoading: false,
+    })
+})
 
 mockUseApps.mockReturnValue({
     isLoading: false,
@@ -446,6 +459,209 @@ describe('<ReusableLLMPromptCallEditor />', () => {
             type: 'SET_APP_REFRESH_TOKEN',
             appId: 'someid2',
             refreshToken: 'new some refresh token',
+        })
+    })
+
+    describe('with centralized library milestone enabled', () => {
+        beforeEach(() => {
+            mockUseActionCentralizedLibraryEnabled.mockReturnValue({
+                isEnabled: true,
+                milestone: 'MILESTONE-1',
+                isLoading: false,
+            })
+        })
+
+        const renderEditorWith = (
+            inputs: Array<{
+                id: string
+                name: string
+                description: string
+                data_type: string
+            }>,
+        ) => {
+            mockUseGetWorkflowConfigurationTemplate.mockReturnValue({
+                data: {
+                    internal_id: 't-internal',
+                    id: 't-id',
+                    account_id: 1,
+                    name: 'Add subscriber',
+                    is_draft: false,
+                    initial_step_id: 'init',
+                    entrypoint: null,
+                    steps: [],
+                    transitions: [],
+                    available_languages: [],
+                    created_datetime: '2024-04-29T11:53:11.586Z',
+                    updated_datetime: '2024-04-29T13:32:57.221Z',
+                    deleted_datetime: null,
+                    triggers: [],
+                    entrypoints: [],
+                    apps: [{ type: 'app', app_id: 'someid' }],
+                    inputs,
+                },
+            } as unknown as ReturnType<
+                typeof mockUseGetWorkflowConfigurationTemplate
+            >)
+            mockUseGetAppFromTemplateApp.mockReturnValue(
+                jest.fn().mockReturnValue({
+                    id: 'someid',
+                    type: 'app',
+                    name: 'Klaviyo',
+                    icon: 'https://ok.com/1.png',
+                }),
+            )
+
+            const nodeInEdition: ReusableLLMPromptCallNodeType = {
+                ...buildNodeCommonProperties(),
+                id: 'reusable_llm_prompt_call1',
+                type: 'reusable_llm_prompt_call',
+                data: {
+                    configuration_id: 'configuration_id1',
+                    configuration_internal_id: 'configuration_internal_id1',
+                    values: {},
+                },
+            }
+
+            render(
+                <VisualBuilderContext.Provider
+                    value={
+                        {
+                            visualBuilderGraph: {
+                                id: '',
+                                internal_id: '',
+                                is_draft: false,
+                                name: '',
+                                nodes: [
+                                    {
+                                        ...buildNodeCommonProperties(),
+                                        id: 'llm_prompt_trigger1',
+                                        type: 'llm_prompt_trigger',
+                                        data: {
+                                            requires_confirmation: false,
+                                            inputs: [],
+                                            conditionsType: null,
+                                            conditions: [],
+                                            instructions: '',
+                                        },
+                                    },
+                                    nodeInEdition,
+                                ],
+                                edges: [],
+                                available_languages: [],
+                                nodeEditingId: null,
+                                isTemplate: false,
+                                apps: [{ type: 'app', app_id: 'someid' }],
+                            },
+                            checkNodeHasVariablesUsedInChildren: () => false,
+                            dispatch: jest.fn(),
+                            getVariableListForNode: () => [],
+                            initialVisualBuilderGraph: {
+                                id: '',
+                                internal_id: '',
+                                is_draft: false,
+                                name: '',
+                                nodes: [],
+                                edges: [],
+                                available_languages: [],
+                                nodeEditingId: null,
+                                isTemplate: false,
+                            },
+                            isNew: false,
+                        } as unknown as React.ComponentProps<
+                            typeof VisualBuilderContext.Provider
+                        >['value']
+                    }
+                >
+                    <NodeEditorDrawerContext.Provider
+                        value={{ onClose: jest.fn() }}
+                    >
+                        <ReusableLLMPromptCallEditor
+                            nodeInEdition={nodeInEdition}
+                        />
+                    </NodeEditorDrawerContext.Provider>
+                </VisualBuilderContext.Provider>,
+            )
+        }
+
+        it('renders a Manage authentication button instead of api-key input', () => {
+            const windowOpenSpy = jest
+                .spyOn(window, 'open')
+                .mockReturnValue(null)
+
+            renderEditorWith([])
+
+            const button = screen.getByRole('button', {
+                name: /manage authentication/i,
+            })
+            expect(button).toBeInTheDocument()
+            expect(
+                screen.queryByText(/Find your API key in Klaviyo\./),
+            ).not.toBeInTheDocument()
+
+            act(() => {
+                fireEvent.click(button)
+            })
+
+            expect(windowOpenSpy).toHaveBeenCalledWith(
+                '/app/settings/integrations/app/someid/credentials',
+                '_blank',
+                'noopener,noreferrer',
+            )
+
+            windowOpenSpy.mockRestore()
+        })
+
+        it('filters credential-style merchant inputs from the values section', () => {
+            renderEditorWith([
+                {
+                    id: 'list',
+                    name: 'List ID',
+                    description: '',
+                    data_type: 'string',
+                },
+                {
+                    id: 'store',
+                    name: 'Store ID',
+                    description: '',
+                    data_type: 'string',
+                },
+                {
+                    id: 'apikey',
+                    name: 'Your Klaviyo private API key (Settings > API Keys)',
+                    description: '',
+                    data_type: 'string',
+                },
+                {
+                    id: 'tags',
+                    name: 'Tags to add',
+                    description: '',
+                    data_type: 'string',
+                },
+            ])
+
+            expect(screen.getByText('Tags to add')).toBeInTheDocument()
+            expect(screen.queryByText('List ID')).not.toBeInTheDocument()
+            expect(screen.queryByText('Store ID')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    'Your Klaviyo private API key (Settings > API Keys)',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides the additional values section when all inputs are credential-style', () => {
+            renderEditorWith([
+                {
+                    id: 'apikey',
+                    name: 'API Key',
+                    description: '',
+                    data_type: 'string',
+                },
+            ])
+
+            expect(
+                screen.queryByText('This step requires additional values.'),
+            ).not.toBeInTheDocument()
         })
     })
 })
