@@ -10,8 +10,8 @@ export default function BrowseAllActionsButton() {
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
     return (
-        <Link to={routes.actionsTemplates}>
-            <Button>Create from template</Button>
-        </Link>
+        <Button as={Link} to={routes.actionsTemplates}>
+            Create from template
+        </Button>
     )
 }
