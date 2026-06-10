@@ -20,6 +20,7 @@ import { useSearchParam } from 'hooks/useSearchParam'
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 
 import { GuidanceConfirmationPreview } from './confirmation/GuidanceConfirmationPreview'
+import { SkillConfirmationPreview } from './confirmation/SkillConfirmationPreview'
 import { CopilotContextAttachmentProvider } from './contextAttachments/CopilotContextAttachmentProvider'
 import { useCopilotContextAttachmentSync } from './contextAttachments/useCopilotContextAttachmentSync'
 import { CopilotConversationStarters } from './CopilotConversationStarters'
@@ -107,6 +108,8 @@ const renderConfirmationPreview: RenderConfirmationPreview = ({
             return (
                 <GuidanceConfirmationPreview payload={payload} {...actions} />
             )
+        case 'skill':
+            return <SkillConfirmationPreview payload={payload} {...actions} />
         default:
             return null
     }

@@ -14,6 +14,7 @@ import {
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 
 import { GuidanceConfirmationPreview } from './confirmation/GuidanceConfirmationPreview'
+import { SkillConfirmationPreview } from './confirmation/SkillConfirmationPreview'
 import {
     COPILOT_CONVERSATION_ID_QUERY_PARAM,
     CopilotProvider,
@@ -100,7 +101,7 @@ describe('CopilotProvider', () => {
         )
     })
 
-    it('routes guidance confirmations to the preview and falls back to null otherwise', () => {
+    it('routes guidance and skill confirmations to their previews and falls back to null otherwise', () => {
         render(
             <CopilotProvider>
                 <div>Helpdesk</div>
@@ -128,6 +129,20 @@ describe('CopilotProvider', () => {
         expect(isValidElement(guidanceElement)).toBe(true)
         expect((guidanceElement as ReactElement).type).toBe(
             GuidanceConfirmationPreview,
+        )
+
+        const skillElement = renderConfirmationPreview!({
+            ...handlers,
+            payload: {
+                type: 'skill',
+                id: 7,
+                shopName: 'acme',
+                shopType: 'shopify',
+            },
+        })
+        expect(isValidElement(skillElement)).toBe(true)
+        expect((skillElement as ReactElement).type).toBe(
+            SkillConfirmationPreview,
         )
 
         const unknownElement = renderConfirmationPreview!({
