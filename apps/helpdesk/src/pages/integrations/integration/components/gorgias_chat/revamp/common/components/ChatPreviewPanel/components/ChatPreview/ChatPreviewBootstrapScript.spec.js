@@ -136,6 +136,81 @@ describe('ChatPreviewBootstrapScript', () => {
         })
     })
 
+    describe('interaction blocking', () => {
+        const interactionEvents = [
+            'click',
+            'mousedown',
+            'mouseup',
+            'dblclick',
+            'contextmenu',
+            'keydown',
+            'keyup',
+            'keypress',
+            'input',
+            'submit',
+            'pointerdown',
+            'pointerup',
+        ]
+
+        it.each(interactionEvents)(
+            'prevents the default action of a %s event on the window',
+            (type) => {
+                const event = new Event(type, {
+                    bubbles: true,
+                    cancelable: true,
+                })
+
+                window.dispatchEvent(event)
+
+                expect(event.defaultPrevented).toBe(true)
+            },
+        )
+
+        it('does not block events that are not interaction events', () => {
+            const event = new Event('mousemove', {
+                bubbles: true,
+                cancelable: true,
+            })
+
+            window.dispatchEvent(event)
+
+            expect(event.defaultPrevented).toBe(false)
+        })
+
+        it('stops the event from reaching descendant listeners', () => {
+            const target = document.createElement('button')
+            document.body.appendChild(target)
+            const targetListener = jest.fn()
+            target.addEventListener('click', targetListener)
+
+            target.dispatchEvent(
+                new Event('click', { bubbles: true, cancelable: true }),
+            )
+
+            expect(targetListener).not.toHaveBeenCalled()
+
+            target.removeEventListener('click', targetListener)
+            document.body.removeChild(target)
+        })
+
+        it('blocks interactions inside same-origin iframes added to the document', async () => {
+            const iframe = document.createElement('iframe')
+            document.body.appendChild(iframe)
+
+            await new Promise((resolve) => setTimeout(resolve))
+
+            const event = new Event('click', {
+                bubbles: true,
+                cancelable: true,
+            })
+            iframe.contentWindow.dispatchEvent(event)
+
+            expect(event.defaultPrevented).toBe(true)
+
+            document.body.removeChild(iframe)
+        })
+    })
+
     describe('window event listeners', () => {
         let postMessageSpy
 

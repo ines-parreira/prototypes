@@ -48,6 +48,59 @@ window.WebSocket.OPEN = 1
 window.WebSocket.CLOSING = 2
 window.WebSocket.CLOSED = 3
 
+const interactionEvents = [
+    'click',
+    'mousedown',
+    'mouseup',
+    'dblclick',
+    'contextmenu',
+    'keydown',
+    'keyup',
+    'keypress',
+    'input',
+    'submit',
+    'pointerdown',
+    'pointerup',
+]
+const blockedWindows = new WeakSet()
+const blockInteraction = (event) => {
+    event.stopPropagation()
+    event.preventDefault()
+}
+const blockInteractions = (targetWindow) => {
+    if (!targetWindow || blockedWindows.has(targetWindow)) return
+    blockedWindows.add(targetWindow)
+    interactionEvents.forEach((type) => {
+        targetWindow.addEventListener(type, blockInteraction, true)
+    })
+}
+
+const attachToFrame = (iframeEl) => {
+    try {
+        blockInteractions(iframeEl.contentWindow)
+        iframeEl.addEventListener('load', () => {
+            try {
+                blockInteractions(iframeEl.contentWindow)
+            } catch {
+                // Cross-origin frame: not accessible, leave it alone.
+            }
+        })
+    } catch {
+        // Cross-origin frame: not accessible, leave it alone.
+    }
+}
+
+const sweepFrames = () => {
+    document.querySelectorAll('iframe').forEach(attachToFrame)
+}
+
+blockInteractions(window)
+sweepFrames()
+new MutationObserver(sweepFrames).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+})
+
 window.addEventListener('gorgias-widget-loaded', () => {
     window.GorgiasChat.init().then(() => {
         window.parent.postMessage({ type: 'helpdesk-chat-preview-loaded' }, '*')
