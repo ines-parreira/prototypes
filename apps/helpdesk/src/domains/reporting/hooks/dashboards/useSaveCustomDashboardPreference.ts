@@ -1,7 +1,5 @@
 import { useRef } from 'react'
 
-import { useDebouncedCallback } from '@repo/hooks'
-
 import { useQueryClient } from '@tanstack/react-query'
 
 import { toast } from '@gorgias/axiom'
@@ -11,6 +9,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { Duration } from '@gorgias/toolkit'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 import type {
     ChartPreferences,
     DashboardSchema,
