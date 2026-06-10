@@ -4,6 +4,13 @@ import userEvent from '@testing-library/user-event'
 
 import { ChatRedesignSwitchConfirmModal } from './ChatRedesignSwitchConfirmModal'
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignCutoffDate',
+    () => ({
+        useChatRedesignCutoffDate: () => 'July 15th',
+    }),
+)
+
 const noop = () => undefined
 
 describe('<ChatRedesignSwitchConfirmModal />', () => {
@@ -37,6 +44,9 @@ describe('<ChatRedesignSwitchConfirmModal />', () => {
 
         expect(
             screen.getByText('Switch back to the old chat?'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(/Switch anytime before July 15th\./),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: 'Switch' }),

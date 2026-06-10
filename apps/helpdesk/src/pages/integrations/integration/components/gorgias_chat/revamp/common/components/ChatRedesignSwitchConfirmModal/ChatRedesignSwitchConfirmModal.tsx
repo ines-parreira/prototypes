@@ -12,6 +12,8 @@ import {
     Text,
 } from '@gorgias/axiom'
 
+import { useChatRedesignCutoffDate } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignCutoffDate'
+
 type Props = {
     isOpen: boolean
     /**
@@ -35,49 +37,53 @@ export const ChatRedesignSwitchConfirmModal = ({
     isSubmitting,
     onConfirm,
     onOpenChange,
-}: Props) => (
-    <Modal
-        size={ModalSize.Md}
-        isOpen={isOpen}
-        onOpenChange={(open) => {
-            if (!isSubmitting) onOpenChange(open)
-        }}
-    >
-        <OverlayHeader
-            title={
-                isOptedIn
-                    ? 'Switch back to the old chat?'
-                    : 'Switch to new chat'
-            }
-        />
-        <OverlayContent>
-            <Text>
-                {isOptedIn
-                    ? 'Switch anytime before July 27. Changes can take up to 30 minutes to appear across your store.'
-                    : 'Changes can take up to 30 minutes to appear across your store.'}
-            </Text>
-        </OverlayContent>
-        <OverlayFooter hideCancelButton>
-            <Box gap="xs" justifyContent="flex-end">
-                <Button
-                    intent={ButtonIntent.Regular}
-                    size={ButtonSize.Md}
-                    variant={ButtonVariant.Secondary}
-                    isDisabled={isSubmitting}
-                    onClick={() => onOpenChange(false)}
-                >
-                    Cancel
-                </Button>
-                <Button
-                    intent={ButtonIntent.Regular}
-                    size={ButtonSize.Md}
-                    variant={ButtonVariant.Primary}
-                    isLoading={isSubmitting}
-                    onClick={onConfirm}
-                >
-                    Switch
-                </Button>
-            </Box>
-        </OverlayFooter>
-    </Modal>
-)
+}: Props) => {
+    const cutoffDateLabel = useChatRedesignCutoffDate()
+
+    return (
+        <Modal
+            size={ModalSize.Md}
+            isOpen={isOpen}
+            onOpenChange={(open) => {
+                if (!isSubmitting) onOpenChange(open)
+            }}
+        >
+            <OverlayHeader
+                title={
+                    isOptedIn
+                        ? 'Switch back to the old chat?'
+                        : 'Switch to new chat'
+                }
+            />
+            <OverlayContent>
+                <Text>
+                    {isOptedIn
+                        ? `Switch anytime before ${cutoffDateLabel}. Changes can take up to 30 minutes to appear across your store.`
+                        : 'Changes can take up to 30 minutes to appear across your store.'}
+                </Text>
+            </OverlayContent>
+            <OverlayFooter hideCancelButton>
+                <Box gap="xs" justifyContent="flex-end">
+                    <Button
+                        intent={ButtonIntent.Regular}
+                        size={ButtonSize.Md}
+                        variant={ButtonVariant.Secondary}
+                        isDisabled={isSubmitting}
+                        onClick={() => onOpenChange(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        intent={ButtonIntent.Regular}
+                        size={ButtonSize.Md}
+                        variant={ButtonVariant.Primary}
+                        isLoading={isSubmitting}
+                        onClick={onConfirm}
+                    >
+                        Switch
+                    </Button>
+                </Box>
+            </OverlayFooter>
+        </Modal>
+    )
+}

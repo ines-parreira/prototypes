@@ -175,6 +175,7 @@ export enum FeatureFlagKey {
     NewSatisfactionReport = 'new-satisfaction-report',
     NewUsersListPage = 'new-users-list-page',
     NonAiAgentChat2Revamp = 'non_ai_agent_chat_2_revamp',
+    NonAiAgentChatRevampCutoffDate = 'non_ai_agent_chat_revamp_cutoff_date',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityROICalculator = 'roi-calculator-for-automate',

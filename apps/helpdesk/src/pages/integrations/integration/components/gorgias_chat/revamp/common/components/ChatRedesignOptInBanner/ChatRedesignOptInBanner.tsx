@@ -19,6 +19,7 @@ import {
 
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { ChatRedesignSwitchConfirmModal } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatRedesignSwitchConfirmModal/ChatRedesignSwitchConfirmModal'
+import { useChatRedesignCutoffDate } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignCutoffDate'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
 import { useLogMigrationEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent'
 import { useSetChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn'
@@ -46,6 +47,7 @@ export const ChatRedesignOptInBanner = ({
         useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
 
     const { isOptedIn } = useChatRedesignOptIn(integration.get('id'))
+    const cutoffDateLabel = useChatRedesignCutoffDate()
     const { isPreviewingNewChat, setIsPreviewingNewChat } =
         useChatPreviewPanelContext()
     const { setOptIn } = useSetChatRedesignOptIn(integration)
@@ -175,8 +177,8 @@ export const ChatRedesignOptInBanner = ({
                     </Text>
                     <Text>
                         {isPreviewing
-                            ? 'Customers still see your current chat. Switch to the new chat below, and switch back anytime before July 27th.'
-                            : 'Preview and edit the refreshed settings and design before updating. Update now and switch back anytime before July 27th.'}
+                            ? `Customers still see your current chat. Switch to the new chat below, and switch back anytime before ${cutoffDateLabel}.`
+                            : `Preview and edit the refreshed settings and design before updating. Update now and switch back anytime before ${cutoffDateLabel}.`}
                     </Text>
                 </div>
                 {isPreviewing ? (

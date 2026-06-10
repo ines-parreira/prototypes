@@ -17,6 +17,12 @@ let mockIsPreviewingNewChat = false
 
 jest.mock('hooks/useAppDispatch')
 jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignCutoffDate',
+    () => ({
+        useChatRedesignCutoffDate: () => 'July 15th',
+    }),
+)
+jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn',
 )
 jest.mock(
@@ -138,6 +144,9 @@ describe('<ChatRedesignOptInBanner />', () => {
                 screen.getByText('A fresh look for chat'),
             ).toBeInTheDocument()
             expect(
+                screen.getByText(/switch back anytime before July 15th\./),
+            ).toBeInTheDocument()
+            expect(
                 screen.getByRole('button', { name: 'Preview new chat' }),
             ).toBeInTheDocument()
         })
@@ -169,6 +178,9 @@ describe('<ChatRedesignOptInBanner />', () => {
 
             expect(
                 screen.getByText("You're previewing the new chat. Switch now?"),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(/switch back anytime before July 15th\./),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Switch to new chat' }),
