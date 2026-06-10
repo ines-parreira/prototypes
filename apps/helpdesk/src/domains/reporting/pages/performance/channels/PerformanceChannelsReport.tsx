@@ -66,6 +66,8 @@ export const PerformanceChannelsReport = () => {
                         tabId={PerformanceChannelsQueryParams.Email}
                         tabName={PERFORMANCE_CHANNELS_EMAIL_TAB_NAME}
                         DashboardComponent={DashboardComponent}
+                        enableCustomDashboards
+                        enableTablesPersistence
                     />
                 )
             case PerformanceChannelsQueryParams.Voice:

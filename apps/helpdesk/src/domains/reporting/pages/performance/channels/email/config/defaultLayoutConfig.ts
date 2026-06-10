@@ -64,5 +64,23 @@ export const DEFAULT_PERFORMANCE_CHANNELS_EMAIL_LAYOUT: DashboardLayoutConfig<Pe
                     },
                 ],
             },
+            {
+                id: 'visualizations',
+                type: ChartType.Graph,
+                items: [
+                    {
+                        chartId:
+                            PerformanceChannelsEmailChart.ConfigurableBarGraph,
+                        gridSize: 6,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            PerformanceChannelsEmailChart.ConfigurableLineGraph,
+                        gridSize: 6,
+                        visibility: true,
+                    },
+                ],
+            },
         ],
     }

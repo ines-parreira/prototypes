@@ -16,6 +16,14 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import {
+    CHANNELS_EMAIL_CHANNEL_BAR_METRICS,
+    ChannelsEmailConfigurableBarGraph,
+} from 'domains/reporting/pages/performance/channels/email/charts/configurableGraphs/ChannelsEmailConfigurableBarGraph/ChannelsEmailConfigurableBarGraph'
+import {
+    CHANNELS_EMAIL_CHANNEL_LINE_METRICS,
+    ChannelsEmailConfigurableLineGraph,
+} from 'domains/reporting/pages/performance/channels/email/charts/configurableGraphs/ChannelsEmailConfigurableLineGraph/ChannelsEmailConfigurableLineGraph'
 import { ChannelsEmailAverageCSATCard } from 'domains/reporting/pages/performance/channels/email/charts/kpiCharts/ChannelsEmailAverageCSATCard'
 import { ChannelsEmailClosedTicketsCard } from 'domains/reporting/pages/performance/channels/email/charts/kpiCharts/ChannelsEmailClosedTicketsCard'
 import { ChannelsEmailCreatedTicketsCard } from 'domains/reporting/pages/performance/channels/email/charts/kpiCharts/ChannelsEmailCreatedTicketsCard'
@@ -25,6 +33,12 @@ import { ChannelsEmailMessagesPerTicketCard } from 'domains/reporting/pages/perf
 import { ChannelsEmailMessagesSentCard } from 'domains/reporting/pages/performance/channels/email/charts/kpiCharts/ChannelsEmailMessagesSentCard'
 import { ChannelsEmailResolutionTimeCard } from 'domains/reporting/pages/performance/channels/email/charts/kpiCharts/ChannelsEmailResolutionTimeCard'
 import { ChannelsEmailTicketsRepliedCard } from 'domains/reporting/pages/performance/channels/email/charts/kpiCharts/ChannelsEmailTicketsRepliedCard'
+import {
+    CHANNELS_EMAIL_BAR_CHART_DESCRIPTION,
+    CHANNELS_EMAIL_LINE_CHART_DESCRIPTION,
+} from 'domains/reporting/pages/performance/channels/email/constants'
+import { createPerformanceWithSubChannelsBarChartFetch } from 'domains/reporting/pages/performance/utils/getPerformanceWithSubChannelsConfigurableBarGraphConfig'
+import { createPerformanceWithSubChannelsLineChartFetch } from 'domains/reporting/pages/performance/utils/getPerformanceWithSubChannelsConfigurableLineGraphConfig'
 import { PERFORMANCE_CHANNELS_OPTIONAL_FILTERS } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -38,6 +52,8 @@ export enum PerformanceChannelsEmailChart {
     ClosedTicketsCard = 'performance-channels-email-closed-tickets-card',
     TicketsRepliedCard = 'performance-channels-email-tickets-replied-card',
     MessagesSentCard = 'performance-channels-email-messages-sent-card',
+    ConfigurableBarGraph = 'performance-channels-email-configurable-bar-graph',
+    ConfigurableLineGraph = 'performance-channels-email-configurable-line-graph',
 }
 
 export const ChannelsEmailReportConfig: ReportConfig<PerformanceChannelsEmailChart> =
@@ -202,6 +218,34 @@ export const ChannelsEmailReportConfig: ReportConfig<PerformanceChannelsEmailCha
                 chartType: ChartType.CardWithTimeseries,
                 metricFormat: 'decimal',
                 interpretAs: 'neutral',
+            },
+            [PerformanceChannelsEmailChart.ConfigurableBarGraph]: {
+                chartComponent: ChannelsEmailConfigurableBarGraph,
+                label: 'Configurable bar chart for email performance metrics',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableBarGraph,
+                        fetch: createPerformanceWithSubChannelsBarChartFetch(
+                            CHANNELS_EMAIL_CHANNEL_BAR_METRICS,
+                        ),
+                    },
+                ],
+                chartType: ChartType.Graph,
+                description: CHANNELS_EMAIL_BAR_CHART_DESCRIPTION,
+            },
+            [PerformanceChannelsEmailChart.ConfigurableLineGraph]: {
+                chartComponent: ChannelsEmailConfigurableLineGraph,
+                label: 'Configurable line chart for email performance metrics over time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: createPerformanceWithSubChannelsLineChartFetch(
+                            CHANNELS_EMAIL_CHANNEL_LINE_METRICS,
+                        ),
+                    },
+                ],
+                chartType: ChartType.Graph,
+                description: CHANNELS_EMAIL_LINE_CHART_DESCRIPTION,
             },
         },
         reportFilters: {
