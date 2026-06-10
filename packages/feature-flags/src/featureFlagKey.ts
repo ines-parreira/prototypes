@@ -226,7 +226,6 @@ export enum FeatureFlagKey {
     TicketNavViewSourceSdk = 'linear-help-6446-ticket-nav-view-source-sdk',
     TicketThreadLoadingState = 'linear-HELP-6428-ticket-thread-loading-state',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
-    TicketTypingActivityShopperStartedAblyMigration = 'linear.task_HELP-5717.migrate-ticket-typing-activity-shopper-started-to-ably',
     UIVisionBetaBaseline = 'linear.initiative_helpdesk-v2',
     UIVisionMilestone1 = 'linear.project_ui-vision.milestone-1',
     UIVisionMilestone1Dot5 = 'linear.project_ui-vision.milestone-1-5',

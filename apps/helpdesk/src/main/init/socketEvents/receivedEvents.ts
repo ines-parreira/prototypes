@@ -46,7 +46,6 @@ import type {
     TicketMessageActionFailedEvent,
     TicketMessageChatCreatedEvent,
     TicketMessageCreatedEvent,
-    TicketTypingActivityShopperStartedEvent,
     TicketUpdatedEvent,
     ViewCountUpdatedEvent,
     ViewCreatedEvent,
@@ -117,15 +116,6 @@ async function isEmailIntegrationMigrationToAblyEnabled() {
 async function isTicketMessageActionFailedToAblyEnabled() {
     const { flag } = await fetchFlag(
         FeatureFlagKey.TicketMessageActionFailedToAbly,
-        false,
-    )
-
-    return flag
-}
-
-async function isTicketTypingActivityShopperStartedAblyMigrationEnabled() {
-    const { flag } = await fetchFlag(
-        FeatureFlagKey.TicketTypingActivityShopperStartedAblyMigration,
         false,
     )
 
@@ -726,23 +716,6 @@ const receivedEvents: ReceivedEvent[] = [
             )
 
             chatsActions.fetchChatsThrottled(reduxStore.dispatch)
-        },
-    },
-    {
-        name: SocketEventType.TicketTypingActivityShopperStarted,
-        onReceive: async function (json) {
-            if (
-                await isTicketTypingActivityShopperStartedAblyMigrationEnabled()
-            ) {
-                return
-            }
-
-            const { ticket } =
-                json as unknown as TicketTypingActivityShopperStartedEvent
-
-            reduxStore.dispatch(
-                ticketActions.setTypingActivityShopper(ticket.id) as any,
-            )
         },
     },
     {

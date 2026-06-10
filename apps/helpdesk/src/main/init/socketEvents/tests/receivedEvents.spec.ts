@@ -1718,48 +1718,6 @@ describe('receivedEvents', () => {
         })
     })
 
-    describe(SocketEventType.TicketTypingActivityShopperStarted, () => {
-        const handler = _find(receivedEvents, {
-            name: SocketEventType.TicketTypingActivityShopperStarted,
-        }) as ReceivedEvent
-
-        beforeEach(() => {
-            mockFetchFlag.mockResolvedValue({ flag: false, error: null })
-        })
-
-        it('should dispatch a shopper typing activity update', async () => {
-            await handler.onReceive({
-                event: {
-                    type: SocketEventType.TicketTypingActivityShopperStarted,
-                },
-                ticket: { id: 100 },
-            })
-
-            expect(ticketActions.setTypingActivityShopper).toHaveBeenCalledWith(
-                100,
-            )
-            expect(mockFetchFlag).toHaveBeenCalledWith(
-                FeatureFlagKey.TicketTypingActivityShopperStartedAblyMigration,
-                false,
-            )
-        })
-
-        it('should not dispatch a shopper typing activity update when the Ably migration feature flag is enabled', async () => {
-            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
-
-            await handler.onReceive({
-                event: {
-                    type: SocketEventType.TicketTypingActivityShopperStarted,
-                },
-                ticket: { id: 100 },
-            })
-
-            expect(
-                ticketActions.setTypingActivityShopper,
-            ).not.toHaveBeenCalled()
-        })
-    })
-
     describe('MigrationIntegrationInbound events', () => {
         const migration = {
             integration: {

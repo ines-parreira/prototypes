@@ -75,7 +75,6 @@ export enum SocketEventType {
     TwilioEventTriggered = 'twilio-event-triggered',
     AgentAvailabilityUpdated = 'agent-availability-updated',
     CustomerExternalDataUpdated = 'customer-external-data-updated',
-    TicketTypingActivityShopperStarted = 'ticket-typing-activity-shopper-started',
     ViewDeactivated = 'view-deactivated',
     ViewSectionCreated = 'view-section-created',
     ViewSectionDeleted = 'view-section-deleted',
@@ -267,15 +266,6 @@ export type AgentAvailabilityUpdatedEvent = {
     }
 }
 
-export type TicketTypingActivityShopperStartedEvent = {
-    event: {
-        type: SocketEventType.TicketTypingActivityShopperStarted
-    }
-    ticket: {
-        id: number
-    }
-}
-
 export type ViewDeactivated = {
     event: {
         type: SocketEventType.ViewDeactivated
@@ -409,7 +399,6 @@ export type ServerMessage =
     | OutboundPhoneCallInitiated
     | MacroParamsUpdatedEvent
     | AgentAvailabilityUpdatedEvent
-    | TicketTypingActivityShopperStartedEvent
     | ViewDeactivated
     | WhatsAppOnboardingSucceededEvent
     | WhatsAppOnboardingFailedEvent
