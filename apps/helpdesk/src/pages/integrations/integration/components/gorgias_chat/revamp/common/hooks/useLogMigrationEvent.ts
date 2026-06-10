@@ -13,8 +13,9 @@ export type MigrationBusinessHoursMode = 'within' | 'outside'
 
 /**
  * Logs the Chat 2.0 migration Segment events. Every event carries the common
- * `account_domain`, `shop_type` and `chat_integration_id` properties, derived
- * from the current account and the chat integration in the route.
+ * `account_id`, `account_domain`, `shop_type`, `shop_name` and
+ * `chat_integration_id` properties, derived from the current account and the
+ * chat integration in the route.
  */
 export const useLogMigrationEvent = () => {
     const { integrationId } = useParams<{ integrationId: string }>()
@@ -27,13 +28,17 @@ export const useLogMigrationEvent = () => {
             const integration = integrations.find(
                 (item) => item.id === Number(integrationId),
             )
-            const shopType = (
-                integration?.meta as { shop_type?: string } | undefined
-            )?.shop_type
+            const meta = integration?.meta as
+                | { shop_type?: string; shop_name?: string }
+                | undefined
+            const shopType = meta?.shop_type
+            const shopName = meta?.shop_name
 
             logEvent(event, {
+                account_id: currentAccount.get('id') as number | undefined,
                 account_domain: currentAccount.get('domain'),
                 shop_type: shopType,
+                shop_name: shopName,
                 chat_integration_id: Number(integrationId) || undefined,
                 ...data,
             })

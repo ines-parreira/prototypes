@@ -8,6 +8,7 @@ import { useLogMigrationEvent } from './useLogMigrationEvent'
 
 const defaultState = {
     currentAccount: fromJS({
+        id: 123,
         domain: 'test-domain',
     }),
     integrations: fromJS({
@@ -16,23 +17,29 @@ const defaultState = {
                 id: 1,
                 meta: {
                     shop_type: IntegrationType.Shopify,
+                    shop_name: 'test-shop',
                 },
             },
         ],
     }),
 }
 
-const renderUseLogMigrationEvent = () =>
+const renderUseLogMigrationEvent = (
+    storeState = defaultState,
+    initialEntry = '/1',
+) =>
     renderHook(() => useLogMigrationEvent(), {
-        initialEntries: ['/1'],
+        initialEntries: [initialEntry],
         path: '/:integrationId',
-        storeState: defaultState,
+        storeState,
     })
 
 describe('useLogMigrationEvent()', () => {
     const commonProps = {
+        account_id: 123,
         account_domain: 'test-domain',
         shop_type: 'shopify',
+        shop_name: 'test-shop',
         chat_integration_id: 1,
     }
 
@@ -102,5 +109,85 @@ describe('useLogMigrationEvent()', () => {
             SegmentTracker.SegmentEvent.ChatMigrationOptOutClicked,
             { ...commonProps, time_since_opt_in_seconds: 42 },
         )
+    })
+
+    describe('account_id and shop_name properties', () => {
+        it('sources account_id from the current account and shop_name from the integration meta', () => {
+            const { result } = renderUseLogMigrationEvent()
+
+            result.current.logBannerViewed()
+
+            expect(logEventSpy).toHaveBeenCalledWith(
+                SegmentTracker.SegmentEvent.ChatMigrationBannerViewed,
+                expect.objectContaining({
+                    account_id: 123,
+                    shop_name: 'test-shop',
+                }),
+            )
+        })
+
+        it('emits an undefined account_id when the current account has no id', () => {
+            const { result } = renderUseLogMigrationEvent({
+                ...defaultState,
+                currentAccount: fromJS({ domain: 'test-domain' }),
+            })
+
+            result.current.logBannerViewed()
+
+            expect(logEventSpy).toHaveBeenCalledWith(
+                SegmentTracker.SegmentEvent.ChatMigrationBannerViewed,
+                expect.objectContaining({ account_id: undefined }),
+            )
+        })
+
+        it('emits an undefined shop_name when the integration meta has no shop_name', () => {
+            const { result } = renderUseLogMigrationEvent({
+                ...defaultState,
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            meta: { shop_type: IntegrationType.Shopify },
+                        },
+                    ],
+                }),
+            })
+
+            result.current.logBannerViewed()
+
+            expect(logEventSpy).toHaveBeenCalledWith(
+                SegmentTracker.SegmentEvent.ChatMigrationBannerViewed,
+                expect.objectContaining({ shop_name: undefined }),
+            )
+        })
+
+        it('emits undefined shop_type and shop_name when no integration matches the route', () => {
+            const { result } = renderUseLogMigrationEvent(defaultState, '/999')
+
+            result.current.logBannerViewed()
+
+            expect(logEventSpy).toHaveBeenCalledWith(
+                SegmentTracker.SegmentEvent.ChatMigrationBannerViewed,
+                expect.objectContaining({
+                    shop_type: undefined,
+                    shop_name: undefined,
+                    chat_integration_id: 999,
+                }),
+            )
+        })
+
+        it('emits an undefined chat_integration_id when the route param is not numeric', () => {
+            const { result } = renderUseLogMigrationEvent(
+                defaultState,
+                '/not-a-number',
+            )
+
+            result.current.logBannerViewed()
+
+            expect(logEventSpy).toHaveBeenCalledWith(
+                SegmentTracker.SegmentEvent.ChatMigrationBannerViewed,
+                expect.objectContaining({ chat_integration_id: undefined }),
+            )
+        })
     })
 })
