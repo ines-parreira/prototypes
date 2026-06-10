@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Box, Heading, Icon, Tag, Text } from '@gorgias/axiom'
+import { Box, Dot, Heading, Icon, Tag, Text } from '@gorgias/axiom'
 
 import { SectionToggleButton } from '../SectionToggleButton'
 import styles from './WidgetHeader.less'
@@ -75,14 +75,22 @@ export function WidgetHeader({
                             )}
 
                             {totalNumber > 1 && openTicketsNumber > 0 && (
-                                <Tag color="purple" className={styles.tag}>
-                                    {`${openTicketsNumber} Open`}
+                                <Tag
+                                    color="purple"
+                                    className={styles.tag}
+                                    leadingSlot={<Dot color="purple" />}
+                                >
+                                    {`${openTicketsNumber} open`}
                                 </Tag>
                             )}
 
                             {totalNumber > 1 && snoozedTicketsNumber > 0 && (
-                                <Tag color="blue" className={styles.tag}>
-                                    {`${snoozedTicketsNumber} Snoozed`}
+                                <Tag
+                                    color="blue"
+                                    className={styles.tag}
+                                    leadingSlot={<Dot color="blue" />}
+                                >
+                                    {`${snoozedTicketsNumber} snoozed`}
                                 </Tag>
                             )}
                         </Box>

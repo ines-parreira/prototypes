@@ -177,7 +177,7 @@ describe('TicketTimelineWidget', () => {
                 snoozedTicketsNumber: 0,
             })
 
-            expect(screen.getByText('2 Open')).toBeInTheDocument()
+            expect(screen.getByText('2 open')).toBeInTheDocument()
         })
 
         it('should display snoozed tickets count when present', () => {
@@ -187,7 +187,7 @@ describe('TicketTimelineWidget', () => {
                 snoozedTicketsNumber: 2,
             })
 
-            expect(screen.getByText('2 Snoozed')).toBeInTheDocument()
+            expect(screen.getByText('2 snoozed')).toBeInTheDocument()
         })
 
         it('should display customer name for first ticket', () => {

@@ -270,7 +270,7 @@ describe('TicketTimelineWidgetContainer', () => {
 
         expect(screen.getByText('Tickets')).toBeInTheDocument()
         expect(screen.getByText('2')).toBeInTheDocument()
-        expect(screen.getByText('2 Open')).toBeInTheDocument()
+        expect(screen.getByText('2 open')).toBeInTheDocument()
         expect(screen.getByText('First Ticket')).toBeInTheDocument()
         expect(screen.getByText('Second Ticket')).toBeInTheDocument()
     })
