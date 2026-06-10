@@ -2,6 +2,7 @@ import { BarChart, DonutChart } from '../../ChartCard'
 import type { ChartType } from '../../ChartCard'
 import { HorizontalBarChart } from '../../HorizontalBarChart'
 import { NoDataPlaceholder } from '../../NoDataPlaceholder/NoDataPlaceholder'
+import { SankeyChart } from '../../SankeyChart/SankeyChart'
 import { MultipleTimeSeriesChart } from '../../TimeSeriesChart/MultipleTimeSeriesChart'
 import { TimeSeriesChart } from '../../TimeSeriesChart/TimeSeriesChart'
 import type { ConfigurableGraphGroupingConfig } from '../types'
@@ -22,6 +23,10 @@ type MultipleTimeSeriesGroupingConfig = Extract<
 type HorizontalBarGroupingConfig = Extract<
     ConfigurableGraphGroupingConfig,
     { configurableGraphType: 'horizontal-bar' }
+>
+type SankeyGroupingConfig = Extract<
+    ConfigurableGraphGroupingConfig,
+    { configurableGraphType: 'sankey' }
 >
 
 // allow in the future a 'donut-or-bar' type
@@ -138,6 +143,37 @@ function HorizontalBarRenderer({
     )
 }
 
+function SankeyRenderer({
+    groupingConfig,
+}: {
+    groupingConfig: SankeyGroupingConfig
+}) {
+    const { data, isLoading } = groupingConfig.useChartData()
+
+    if (!isLoading && data.nodes.length === 0) {
+        return <NoDataPlaceholder />
+    }
+
+    return (
+        <SankeyChart
+            data={data}
+            isLoading={isLoading}
+            containerHeight={300}
+            valueFormatter={groupingConfig.valueFormatter}
+            onLinkClick={groupingConfig.onLinkClick}
+            hoverableNodeNames={groupingConfig.hoverableNodeNames}
+            nodeWidth={groupingConfig.nodeWidth}
+            nodePadding={groupingConfig.nodePadding}
+            minNodeHeight={groupingConfig.minNodeHeight}
+            maxNodeHeight={groupingConfig.maxNodeHeight}
+            minHeightToShowLabel={groupingConfig.minHeightToShowLabel}
+            showPercentageWithValue={groupingConfig.showPercentageWithValue}
+            nodeAlign={groupingConfig.nodeAlign}
+            verticalAlign={groupingConfig.verticalAlign}
+        />
+    )
+}
+
 type Props = {
     groupingConfig: ConfigurableGraphGroupingConfig
 }
@@ -166,5 +202,7 @@ export function ConfigurableGraphContent({ groupingConfig }: Props) {
             )
         case ConfigurableGraphType.HorizontalBar:
             return <HorizontalBarRenderer groupingConfig={groupingConfig} />
+        case ConfigurableGraphType.Sankey:
+            return <SankeyRenderer groupingConfig={groupingConfig} />
     }
 }

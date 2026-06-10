@@ -41,6 +41,9 @@ export const SankeyChart = <NodeName extends string = string>({
     maxNodeHeight,
     hoverableNodeNames,
     minHeightToShowLabel,
+    showPercentageWithValue = false,
+    nodeAlign = 'justify',
+    verticalAlign = 'justify',
 }: SankeyChartProps<NodeName>) => {
     const [linkTooltip, setLinkTooltip] = useState<{
         value: number
@@ -95,6 +98,7 @@ export const SankeyChart = <NodeName extends string = string>({
                 hoverableNodeNames,
                 hoveredNodeHighlight,
                 minHeightToShowLabel,
+                showPercentageWithValue,
             }),
         [
             data.nodes,
@@ -105,6 +109,7 @@ export const SankeyChart = <NodeName extends string = string>({
             hoverableNodeNames,
             hoveredNodeHighlight,
             minHeightToShowLabel,
+            showPercentageWithValue,
         ],
     )
 
@@ -150,7 +155,7 @@ export const SankeyChart = <NodeName extends string = string>({
                     <div
                         className={`${css.skeletonColumn} ${css.skeletonCenter}`}
                     >
-                        <Skeleton height={CHART_HEIGHT - 40} />
+                        <Skeleton height={chartHeight - 40} />
                     </div>
                     <div className={css.skeletonColumn}>
                         <Skeleton height={50} />
@@ -172,6 +177,8 @@ export const SankeyChart = <NodeName extends string = string>({
                             link={linkRenderer}
                             nodeWidth={nodeWidth}
                             nodePadding={nodePadding}
+                            align={nodeAlign}
+                            verticalAlign={verticalAlign}
                             sort={false}
                             margin={{
                                 top: 20,

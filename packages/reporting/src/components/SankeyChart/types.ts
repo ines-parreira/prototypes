@@ -41,4 +41,20 @@ export type SankeyChartProps<NodeName extends string = string> = {
     maxNodeHeight?: number
     hoverableNodeNames?: NodeName[]
     minHeightToShowLabel?: number
+    /**
+     * When true, the node label shows the value and percentage on a single line
+     * as `value (percentage%)` instead of stacking them on separate lines.
+     */
+    showPercentageWithValue?: boolean
+    /**
+     * Controls horizontal node placement. `'justify'` (default) pushes terminal
+     * nodes to the rightmost column; `'left'` keeps every node at its natural
+     * depth, so siblings like inbound/outbound line up in the same column.
+     */
+    nodeAlign?: 'left' | 'justify'
+    /**
+     * Controls vertical node placement within a column. `'justify'` (default)
+     * spreads nodes to fill the height; `'top'` stacks them from the top.
+     */
+    verticalAlign?: 'top' | 'justify'
 }

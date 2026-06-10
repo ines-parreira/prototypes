@@ -8,6 +8,10 @@ import type {
     MultipleTimeSeriesDataItem,
     TimeSeriesDataItem,
 } from '../ChartCard'
+import type {
+    SankeyChartData,
+    SankeyLinkClickPayload,
+} from '../SankeyChart/types'
 
 export enum ConfigurableGraphType {
     Donut = 'donut',
@@ -15,6 +19,7 @@ export enum ConfigurableGraphType {
     TimeSeries = 'timeSeries',
     MultipleTimeSeries = 'multipleTimeSeries',
     HorizontalBar = 'horizontal-bar',
+    Sankey = 'sankey',
 }
 
 type DonutOrBarGroupingConfig = {
@@ -59,11 +64,30 @@ type HorizontalBarGroupingConfig = {
     maxExpandedHeight?: number
 }
 
+type SankeyGroupingConfig = {
+    id: string
+    name: string
+    configurableGraphType: 'sankey'
+    useChartData: () => { data: SankeyChartData; isLoading: boolean }
+    valueFormatter?: (value: number) => string
+    onLinkClick?: (payload: SankeyLinkClickPayload) => void
+    hoverableNodeNames?: string[]
+    nodeWidth?: number
+    nodePadding?: number
+    minNodeHeight?: number
+    maxNodeHeight?: number
+    minHeightToShowLabel?: number
+    showPercentageWithValue?: boolean
+    nodeAlign?: 'left' | 'justify'
+    verticalAlign?: 'top' | 'justify'
+}
+
 export type ConfigurableGraphGroupingConfig =
     | DonutOrBarGroupingConfig
     | TimeSeriesGroupingConfig
     | MultipleTimeSeriesGroupingConfig
     | HorizontalBarGroupingConfig
+    | SankeyGroupingConfig
 
 export type ConfigurableGraphMetricConfig = {
     measure: string

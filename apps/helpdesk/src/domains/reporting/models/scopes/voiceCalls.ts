@@ -576,3 +576,24 @@ export const { valueQueryFactory: channelsVoiceTotalCallsValueQueryFactoryV2 } =
         channelsVoiceTotalCallsBaseQuery,
         METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE,
     )
+
+const channelsVoiceCallOutcomeBaseQuery = () => ({
+    measures: [
+        'inboundCallsCount',
+        'outboundCallsCount',
+        'inboundAnsweredCallsCount',
+        'inboundUnansweredCallsCount',
+        'inboundMissedCallsCount',
+        'inboundAbandonedCallsCount',
+        'inboundCancelledCallsCount',
+        'inboundCallbackRequestedCallsCount',
+    ] as const,
+})
+
+export const {
+    valueQueryFactory: channelsVoiceCallOutcomeValueQueryFactoryV2,
+} = getValueQuery(
+    voiceCallsScope,
+    channelsVoiceCallOutcomeBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_VALUE,
+)

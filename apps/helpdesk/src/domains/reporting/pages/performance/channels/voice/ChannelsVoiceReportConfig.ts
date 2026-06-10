@@ -12,6 +12,7 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { ChannelsVoiceConfigurableGraph } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/ChannelsVoiceConfigurableGraph'
 import { ChannelsVoiceTotalCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTotalCallsCard'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -27,6 +28,7 @@ export const CHANNELS_VOICE_OPTIONAL_FILTERS: OptionalFilter[] = [
 
 export enum PerformanceChannelsVoiceChart {
     TotalCallsCard = 'performance-channels-voice-total-calls-card',
+    ConfigurableGraph = 'performance-channels-voice-configurable-graph',
 }
 
 export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceChart> =
@@ -51,6 +53,13 @@ export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceCha
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
+            },
+            [PerformanceChannelsVoiceChart.ConfigurableGraph]: {
+                chartComponent: ChannelsVoiceConfigurableGraph,
+                label: 'Call outcome',
+                csvProducer: null,
+                chartType: ChartType.Graph,
+                metricFormat: 'decimal',
             },
         },
         reportFilters: {

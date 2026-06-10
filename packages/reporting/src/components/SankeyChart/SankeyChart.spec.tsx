@@ -429,6 +429,24 @@ describe('createNodeRenderer', () => {
         expect(getByText('50.0%')).toBeInTheDocument()
     })
 
+    it('should render value and percentage on one line when showPercentageWithValue is set', () => {
+        const renderer = createNodeRenderer({
+            nodes,
+            totalSourceValue: 200,
+            showPercentageWithValue: true,
+        })
+
+        const { getByText } = render(
+            <svg>
+                {renderer(baseNodeProps as Parameters<typeof renderer>[0])}
+            </svg>,
+        )
+
+        expect(getByText('Source A')).toBeInTheDocument()
+        expect(getByText('100')).toBeInTheDocument()
+        expect(getByText('(50.0%)')).toBeInTheDocument()
+    })
+
     it('should use custom valueFormatter', () => {
         const renderer = createNodeRenderer({
             nodes,

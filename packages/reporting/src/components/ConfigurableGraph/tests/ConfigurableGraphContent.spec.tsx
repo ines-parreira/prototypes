@@ -26,12 +26,20 @@ vi.mock('../../TimeSeriesChart/MultipleTimeSeriesChart', () => ({
     MultipleTimeSeriesChart: () => <div>MultipleTimeSeriesChart</div>,
 }))
 
+vi.mock('../../SankeyChart/SankeyChart', () => ({
+    SankeyChart: () => <div>SankeyChart</div>,
+}))
+
 describe('ConfigurableGraphContent', () => {
     const chartData = [{ name: 'Support', value: 10 }]
     const timeSeriesData = [{ date: '2024-01-01', value: 10 }]
     const multipleTimeSeriesData = [
         { label: 'Series A', values: [{ date: '2024-01-01', value: 10 }] },
     ]
+    const sankeyData = {
+        nodes: [{ name: 'A', color: '#A084E1' }],
+        links: [{ source: 'A', target: 'B', value: 10 }],
+    }
 
     describe('donut chart type', () => {
         it('renders DonutChart', () => {
@@ -270,6 +278,53 @@ describe('ConfigurableGraphContent', () => {
                 name: 'By agent',
                 configurableGraphType: 'horizontal-bar' as const,
                 useChartData: () => ({ data: [], isLoading: true }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('sankey chart type', () => {
+        it('renders SankeyChart', () => {
+            const groupingConfig = {
+                id: 'call_outcome',
+                name: 'Call outcome',
+                configurableGraphType: 'sankey' as const,
+                useChartData: () => ({ data: sankeyData, isLoading: false }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('SankeyChart')).toBeInTheDocument()
+        })
+
+        it('renders NoDataPlaceholder when data is empty', () => {
+            const groupingConfig = {
+                id: 'call_outcome',
+                name: 'Call outcome',
+                configurableGraphType: 'sankey' as const,
+                useChartData: () => ({
+                    data: { nodes: [], links: [] },
+                    isLoading: false,
+                }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
+
+        it('does not render NoDataPlaceholder while loading', () => {
+            const groupingConfig = {
+                id: 'call_outcome',
+                name: 'Call outcome',
+                configurableGraphType: 'sankey' as const,
+                useChartData: () => ({
+                    data: { nodes: [], links: [] },
+                    isLoading: true,
+                }),
             }
 
             render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)

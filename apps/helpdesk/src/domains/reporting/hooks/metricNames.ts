@@ -775,6 +775,8 @@ export const METRIC_NAMES = {
     VOICE_CALL_WITH_SLA_STATUS_LIST: 'voice-call-with-sla-status-list',
     PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE:
         'performance-channels-voice-total-calls-value',
+    PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_VALUE:
+        'performance-channels-voice-call-outcome-value',
 
     // VoiceCallsSummary scope
     VOICE_CALL_SUMMARY: 'voice-call-summary',

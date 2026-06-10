@@ -17,5 +17,17 @@ export const DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT: DashboardLayoutConfig<Pe
                     },
                 ],
             },
+            {
+                id: 'visualisations',
+                type: ChartType.Graph,
+                items: [
+                    {
+                        chartId:
+                            PerformanceChannelsVoiceChart.ConfigurableGraph,
+                        gridSize: 6,
+                        visibility: true,
+                    },
+                ],
+            },
         ],
     }
