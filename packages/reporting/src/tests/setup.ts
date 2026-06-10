@@ -18,6 +18,10 @@ global.ResizeObserver = class ResizeObserver {
     unobserve() {}
 } as any
 
+if (typeof Element.prototype.getAnimations !== 'function') {
+    Element.prototype.getAnimations = () => []
+}
+
 if (typeof document.elementFromPoint !== 'function') {
     document.elementFromPoint = () => document.body ?? document.documentElement
 }

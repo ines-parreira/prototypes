@@ -18,7 +18,7 @@
         "lint:unused": "knip --directory .. --workspace @repo/config --no-progress"
     },
     "devDependencies": {
-        "@gorgias/oxlint-custom-rules": "0.3.0",
+        "@gorgias/oxlint-custom-rules": "0.4.0",
         "@testing-library/jest-dom": "catalog:test",
         "jest": "catalog:test",
         "jest-extended": "catalog:test",

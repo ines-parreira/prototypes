@@ -16,23 +16,6 @@ import { render } from '../../../../tests/render.utils'
 import { server } from '../../../../tests/server'
 import { TicketListActions } from '../TicketListActions'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ title }: { title: string }) => <div>{title}</div>,
-}))
-
 vi.mock('../../../../components/TicketAssignee/hooks/useTeamOptions', () => ({
     NO_TEAM_OPTION: { id: 'no_team', label: 'No team' },
     useTeamOptions: vi.fn(),
@@ -196,16 +179,18 @@ describe('TicketListActions', () => {
         })
     })
 
-    it('shows a disabled tooltip on the close button when nothing is selected', () => {
-        render(<TicketListActions {...defaultProps} />)
+    it('shows a disabled tooltip on the close button when nothing is selected', async () => {
+        const { user } = render(<TicketListActions {...defaultProps} />)
+
+        await user.tab()
 
         expect(
-            screen.getByText('Select one or more tickets to close'),
+            await screen.findByText('Select one or more tickets to close'),
         ).toBeInTheDocument()
     })
 
-    it('shows the default tooltip on the close button when tickets are selected', () => {
-        render(
+    it('shows the default tooltip on the close button when tickets are selected', async () => {
+        const { user } = render(
             <TicketListActions
                 {...defaultProps}
                 selectionCount={1}
@@ -213,7 +198,9 @@ describe('TicketListActions', () => {
             />,
         )
 
-        expect(screen.getByText('Close tickets')).toBeInTheDocument()
+        await user.tab()
+
+        expect(await screen.findByText('Close tickets')).toBeInTheDocument()
     })
 
     it('enables action buttons when tickets are selected', () => {

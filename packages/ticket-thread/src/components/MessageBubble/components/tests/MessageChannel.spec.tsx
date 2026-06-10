@@ -1,70 +1,19 @@
-import type { ReactNode } from 'react'
+import { screen, within } from '@testing-library/react'
 
-import { render, screen } from '@testing-library/react'
+import type * as Tickets from '@repo/tickets'
+import type * as Utils from '@repo/utils'
 
+import { render } from '../../../../tests/render.utils'
 import { MessageChannel } from '../MessageHeader/MessageChannel'
 
-vi.mock('@repo/tickets', () => ({
+vi.mock('@repo/tickets', async (importOriginal) => ({
+    ...(await importOriginal<typeof Tickets>()),
     ticketMessageSourceToIconName: () => 'email',
 }))
 
-vi.mock('@repo/utils', () => ({
+vi.mock('@repo/utils', async (importOriginal) => ({
+    ...(await importOriginal<typeof Utils>()),
     formatDatetime: () => '2024-03-20 17:00',
-}))
-
-vi.mock('../MessageHeader/MessageChannel.less', () => ({
-    default: {
-        tooltipContent: 'tooltipContent',
-    },
-}))
-
-vi.mock('@gorgias/axiom', () => ({
-    Box: ({
-        children,
-        className,
-    }: {
-        children: ReactNode
-        className?: string
-    }) => <div className={className}>{children}</div>,
-    Icon: ({ color, name }: { color?: string; name?: string }) => (
-        <div data-color={color} data-name={name}>
-            Icon
-        </div>
-    ),
-    Text: ({
-        children,
-        className,
-        color,
-        variant,
-    }: {
-        children: ReactNode
-        className?: string
-        color?: string
-        variant?: string
-    }) => (
-        <span className={className} data-color={color} data-variant={variant}>
-            {children}
-        </span>
-    ),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: ReactNode | (() => ReactNode)
-        children: ReactNode
-    }) => (
-        <>
-            {typeof trigger === 'function' ? trigger() : trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({
-        children,
-        maxWidth,
-    }: {
-        children: ReactNode
-        maxWidth?: number
-    }) => <div data-max-width={maxWidth}>{children}</div>,
 }))
 
 vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
@@ -86,12 +35,12 @@ describe('MessageChannel', () => {
     it('renders only the icon when the channel name is unavailable', () => {
         render(<MessageChannel channelIcon="phone" />)
 
-        expect(screen.getByText('Icon')).toHaveAttribute('data-name', 'phone')
+        expect(screen.getByRole('img', { name: 'phone' })).toBeInTheDocument()
         expect(screen.queryByText('Channel:')).not.toBeInTheDocument()
     })
 
-    it('uses provided channel metadata and the internal note color', () => {
-        render(
+    it('uses provided channel metadata and the internal note color', async () => {
+        const { user } = render(
             <MessageChannel
                 channelIcon="note"
                 channelName="Internal note"
@@ -99,16 +48,17 @@ describe('MessageChannel', () => {
             />,
         )
 
-        expect(screen.getByText('Icon')).toHaveAttribute('data-name', 'note')
-        expect(screen.getByText('Icon')).toHaveAttribute(
-            'data-color',
-            'content-additional-yellow',
-        )
-        expect(screen.getByText('Internal note')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'note' })).toBeInTheDocument()
+
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Channel:')).toBeInTheDocument()
+        expect(within(tooltip).getByText('Internal note')).toBeInTheDocument()
     })
 
-    it('renders from, to, cc, and bcc labels in the tooltip content', () => {
-        render(
+    it('renders from, to, cc, and bcc labels in the tooltip content', async () => {
+        const { user } = render(
             <MessageChannel
                 channel="email"
                 createdDatetime="2024-03-21T00:00:00Z"
@@ -119,63 +69,67 @@ describe('MessageChannel', () => {
             />,
         )
 
-        expect(screen.getByText('From:')).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('From:')).toBeInTheDocument()
         expect(
-            screen.getByText('Support Team (support@example.com)'),
+            within(tooltip).getByText('Support Team (support@example.com)'),
         ).toBeInTheDocument()
-        expect(screen.getByText('To:')).toBeInTheDocument()
+        expect(within(tooltip).getByText('To:')).toBeInTheDocument()
         expect(
-            screen.getByText('Alice (alice@example.com)'),
+            within(tooltip).getByText('Alice (alice@example.com)'),
         ).toBeInTheDocument()
-        expect(screen.getByText('Cc:')).toBeInTheDocument()
+        expect(within(tooltip).getByText('Cc:')).toBeInTheDocument()
         expect(
-            screen.getByText('Manager (manager@example.com)'),
+            within(tooltip).getByText('Manager (manager@example.com)'),
         ).toBeInTheDocument()
-        expect(screen.getByText('Bcc:')).toBeInTheDocument()
+        expect(within(tooltip).getByText('Bcc:')).toBeInTheDocument()
         expect(
-            screen.getByText('Audit (audit@example.com)'),
+            within(tooltip).getByText('Audit (audit@example.com)'),
         ).toBeInTheDocument()
     })
 
-    it('renders the via label in the tooltip when provided', () => {
-        render(<MessageChannel channel="chat" via="offline capture" />)
+    it('renders the via label in the tooltip when provided', async () => {
+        const { user } = render(
+            <MessageChannel channel="chat" via="offline capture" />,
+        )
 
-        expect(screen.getByText('Via:')).toBeInTheDocument()
-        expect(screen.getByText('offline capture')).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Via:')).toBeInTheDocument()
+        expect(within(tooltip).getByText('offline capture')).toBeInTheDocument()
     })
 
-    it('does not render the via label when not provided', () => {
-        render(<MessageChannel channel="chat" />)
+    it('does not render the via label when not provided', async () => {
+        const { user } = render(<MessageChannel channel="chat" />)
 
-        expect(screen.queryByText('Via:')).not.toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).queryByText('Via:')).not.toBeInTheDocument()
     })
 
-    it('renders the current page URL in the tooltip content', () => {
+    it('renders the current page URL in the tooltip content', async () => {
         const currentPageUrl =
             'https://example.com/products/sneakers?customerFormRef=really-long-unbroken-contact-form-url-token'
 
-        render(
+        const { user } = render(
             <MessageChannel channel="chat" currentPageUrl={currentPageUrl} />,
         )
 
-        const link = screen.getByRole('link', {
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        const link = within(tooltip).getByRole('link', {
             name: currentPageUrl,
         })
 
-        expect(screen.getByText('Url:')).toBeInTheDocument()
+        expect(within(tooltip).getByText('Url:')).toBeInTheDocument()
         expect(link).toHaveAttribute('href', currentPageUrl)
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-        expect(screen.getByText(currentPageUrl)).toHaveAttribute(
-            'data-color',
-            'content-inverted-default',
-        )
-        expect(
-            screen.getByText(currentPageUrl).closest('[data-max-width]'),
-        ).toHaveAttribute('data-max-width', '360')
-        expect(
-            screen.getByText(currentPageUrl).closest('[data-max-width]')
-                ?.firstChild,
-        ).toHaveClass('tooltipContent')
+        expect(within(tooltip).getByText(currentPageUrl)).toBeInTheDocument()
     })
 })

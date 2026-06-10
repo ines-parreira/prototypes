@@ -1,10 +1,7 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing/vitest'
+import { screen } from '@testing-library/react'
 
 import { MetricCard } from './MetricCard'
-
-vi.mock('@gorgias/axiom', () => ({
-    Skeleton: () => <div>Loading</div>,
-}))
 
 vi.mock('@gorgias/analytics-ui-kit', () => ({
     Card: ({ children }: { children: React.ReactNode }) => (

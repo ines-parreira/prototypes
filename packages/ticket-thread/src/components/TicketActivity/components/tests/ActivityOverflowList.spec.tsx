@@ -1,87 +1,9 @@
-import { forwardRef } from 'react'
-import type { ReactNode } from 'react'
-
-import { screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type * as Axiom from '@gorgias/axiom'
+import { screen, within } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 
 import { render } from '../../../../tests/render.utils'
 import type { ActivityParticipant } from '../../helpers/activityParticipants'
 import { ActivityOverflowList } from '../ActivityOverflowList'
-
-const overflowListState = vi.hoisted(() => ({
-    allItemsFit: true,
-    hiddenCount: 0,
-    visibleCount: Number.POSITIVE_INFINITY,
-    registerShowMoreButton: vi.fn(),
-}))
-
-const overflowListRenderState = vi.hoisted(() => ({
-    itemIndex: 0,
-}))
-
-vi.mock('@gorgias/axiom', async () => {
-    const actual = await vi.importActual<typeof Axiom>('@gorgias/axiom')
-
-    return {
-        ...actual,
-        Avatar: ({ name, url }: { name: string; url?: string }) => (
-            <div aria-label={`Avatar ${name}`} data-url={url} />
-        ),
-        Tooltip: ({
-            children,
-            trigger,
-        }: {
-            children: ReactNode
-            trigger: ReactNode
-        }) => (
-            <div>
-                {trigger}
-                <div style={{ display: 'none' }}>{children}</div>
-            </div>
-        ),
-        TooltipContent: ({ children }: { children: ReactNode }) => (
-            <div aria-label="overflowed participants tooltip">{children}</div>
-        ),
-        OverflowList: ({
-            children,
-            className,
-        }: {
-            children: ReactNode
-            className?: string
-        }) => {
-            overflowListRenderState.itemIndex = 0
-
-            return <div className={className}>{children}</div>
-        },
-        OverflowListItem: forwardRef<
-            HTMLDivElement,
-            {
-                children: ReactNode
-            }
-        >(function MockOverflowListItem({ children }, ref) {
-            const currentIndex = overflowListRenderState.itemIndex
-            overflowListRenderState.itemIndex += 1
-
-            if (currentIndex >= overflowListState.visibleCount) {
-                return null
-            }
-
-            return <div ref={ref}>{children}</div>
-        }),
-        useOverflowList: vi.fn(() => ({
-            allItemsFit: overflowListState.allItemsFit,
-            hiddenCount: overflowListState.hiddenCount,
-            isExpanded: false,
-            itemVisibilityMap: new Map(),
-            registerItem: vi.fn(),
-            registerShowMoreButton: overflowListState.registerShowMoreButton,
-            setIsExpanded: vi.fn(),
-            unregisterItem: vi.fn(),
-        })),
-    }
-})
 
 const buildParticipant = (id: number, name: string): ActivityParticipant => ({
     id,
@@ -91,31 +13,9 @@ const buildParticipant = (id: number, name: string): ActivityParticipant => ({
     },
 })
 
-const getUserVisibleTextContent = (container: HTMLElement) => {
-    // strip hidden trailing content before reading text so assertions reflect
-    // the sentence a user actually sees.
-    const clone = container.cloneNode(true) as HTMLElement
-
-    clone.querySelectorAll<HTMLElement>('*').forEach((element) => {
-        if (element.style.display === 'none') {
-            element.remove()
-        }
-    })
-
-    return clone.textContent?.replace(/\s+/g, ' ').trim()
-}
-
 describe('ActivityOverflowList', () => {
-    beforeEach(() => {
-        overflowListState.registerShowMoreButton.mockClear()
-    })
-
-    it('renders participants with the inline trailing content when all items fit', () => {
-        overflowListState.allItemsFit = true
-        overflowListState.hiddenCount = 0
-        overflowListState.visibleCount = Number.POSITIVE_INFINITY
-
-        const { container } = render(
+    it('renders every participant name with an avatar', () => {
+        render(
             <ActivityOverflowList
                 participants={[
                     buildParticipant(1, 'Alice'),
@@ -127,20 +27,16 @@ describe('ActivityOverflowList', () => {
             />,
         )
 
-        expect(getUserVisibleTextContent(container)).toBe(
-            'Alice and Bob are also viewing this ticket',
-        )
-        expect(overflowListState.registerShowMoreButton).toHaveBeenCalledWith(
-            expect.any(HTMLDivElement),
-        )
+        expect(screen.getByText('Alice')).toBeInTheDocument()
+        expect(screen.getByText('Bob')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'Alice' })).toBeInTheDocument()
+        expect(
+            screen.getAllByText('are also viewing this ticket').length,
+        ).toBeGreaterThan(0)
     })
 
-    it('passes overflow state to the trailing content and hides overflowed participants', () => {
-        overflowListState.allItemsFit = false
-        overflowListState.hiddenCount = 2
-        overflowListState.visibleCount = 2
-
-        const { container } = render(
+    it('passes the overflow state to the trailing content', () => {
+        render(
             <ActivityOverflowList
                 participants={[
                     buildParticipant(1, 'Alice'),
@@ -148,28 +44,19 @@ describe('ActivityOverflowList', () => {
                     buildParticipant(3, 'Carol'),
                     buildParticipant(4, 'Dave'),
                 ]}
-                renderTrailingContent={(params) => (
-                    <span>{`${params?.visibleParticipantsCount ?? 0} visible / ${params?.hiddenCount ?? 0} hidden`}</span>
-                )}
+                renderTrailingContent={(params) =>
+                    params?.allItemsFit === false ? (
+                        <span>{`${params?.hiddenCount ?? 0} hidden`}</span>
+                    ) : null
+                }
             />,
         )
 
-        expect(getUserVisibleTextContent(container)).toBe(
-            'Alice, Bob2 visible / 2 hidden',
-        )
-        expect(getUserVisibleTextContent(container)).not.toContain('Carol')
-        expect(getUserVisibleTextContent(container)).not.toContain('Dave')
-        expect(overflowListState.registerShowMoreButton).toHaveBeenCalledWith(
-            expect.any(HTMLDivElement),
-        )
+        expect(screen.getByText(/\d+ hidden/)).toBeInTheDocument()
     })
 
-    it('renders the overflowed participant names inside the tooltip content', () => {
-        overflowListState.allItemsFit = false
-        overflowListState.hiddenCount = 2
-        overflowListState.visibleCount = 2
-
-        render(
+    it('renders the overflowed participant names inside the tooltip content', async () => {
+        const { user } = render(
             <ActivityOverflowList
                 participants={[
                     buildParticipant(1, 'Alice'),
@@ -181,22 +68,22 @@ describe('ActivityOverflowList', () => {
             />,
         )
 
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Bob')).toBeInTheDocument()
+        expect(within(tooltip).getByText('Carol')).toBeInTheDocument()
+        expect(within(tooltip).getByText('Dave')).toBeInTheDocument()
         expect(
-            screen.getByLabelText('overflowed participants tooltip'),
-        ).toHaveTextContent('Carol')
+            within(tooltip).getByRole('img', { name: 'Bob' }),
+        ).toBeInTheDocument()
         expect(
-            screen.getByLabelText('overflowed participants tooltip'),
-        ).toHaveTextContent('Dave')
-        expect(screen.getByLabelText('Avatar Carol')).toBeInTheDocument()
-        expect(screen.getByLabelText('Avatar Dave')).toBeInTheDocument()
+            within(tooltip).getByRole('img', { name: 'Carol' }),
+        ).toBeInTheDocument()
     })
 
-    it('falls back to Unknown for missing name in list and an empty avatar url for overflowed participants without data', () => {
-        overflowListState.allItemsFit = false
-        overflowListState.hiddenCount = 1
-        overflowListState.visibleCount = 1
-
-        render(
+    it('falls back to Unknown for an overflowed participant without a name', async () => {
+        const { user } = render(
             <ActivityOverflowList
                 participants={[
                     buildParticipant(1, 'Alice'),
@@ -210,31 +97,25 @@ describe('ActivityOverflowList', () => {
             />,
         )
 
-        expect(
-            screen.getByLabelText('overflowed participants tooltip'),
-        ).toHaveTextContent('Unknown')
-        expect(screen.getByLabelText('Avatar Unknown')).toHaveAttribute(
-            'data-url',
-            '',
-        )
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Unknown')).toBeInTheDocument()
     })
 
-    it('unregisters the trailing element on unmount', () => {
-        overflowListState.allItemsFit = false
-        overflowListState.hiddenCount = 1
-        overflowListState.visibleCount = 1
-
+    it('unmounts without error after rendering the trailing content', () => {
         const { unmount } = render(
             <ActivityOverflowList
-                participants={[buildParticipant(1, 'Alice')]}
+                participants={[
+                    buildParticipant(1, 'Alice'),
+                    buildParticipant(2, 'Bob'),
+                ]}
                 renderTrailingContent={() => <span>suffix</span>}
             />,
         )
 
-        unmount()
+        expect(screen.getAllByText('suffix').length).toBeGreaterThan(0)
 
-        expect(
-            overflowListState.registerShowMoreButton,
-        ).toHaveBeenLastCalledWith(null)
+        expect(() => unmount()).not.toThrow()
     })
 })

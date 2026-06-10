@@ -3,25 +3,6 @@ import { screen } from '@testing-library/react'
 import { render } from '../../../../../tests/render.utils'
 import { TicketListItemTrailingSlot } from '../TicketListItemTrailingSlot'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-}))
-
 vi.mock('@repo/utils', async (importOriginal) => ({
     ...(await importOriginal()),
     shortenRelativeDurationLabel: vi.fn(() => '2h'),
@@ -34,18 +15,24 @@ describe('TicketListItemTrailingSlot', () => {
             expect(screen.queryByText('Open')).not.toBeInTheDocument()
         })
 
-        it('shows "Closed" tooltip label for closed status', () => {
-            render(
+        it('shows "Closed" tooltip label for closed status', async () => {
+            const { user } = render(
                 <TicketListItemTrailingSlot status="closed" datetime={null} />,
             )
-            expect(screen.getByText('Closed')).toBeInTheDocument()
+
+            await user.tab()
+
+            expect(await screen.findByText('Closed')).toBeInTheDocument()
         })
 
-        it('shows "Snoozed" tooltip label for snoozed status', () => {
-            render(
+        it('shows "Snoozed" tooltip label for snoozed status', async () => {
+            const { user } = render(
                 <TicketListItemTrailingSlot status="snoozed" datetime={null} />,
             )
-            expect(screen.getByText('Snoozed')).toBeInTheDocument()
+
+            await user.tab()
+
+            expect(await screen.findByText('Snoozed')).toBeInTheDocument()
         })
 
         it('renders no status label when status is not provided', () => {
@@ -57,21 +44,29 @@ describe('TicketListItemTrailingSlot', () => {
     })
 
     describe('priority', () => {
-        it('shows "High priority" tooltip label for high priority', () => {
-            render(
+        it('shows "High priority" tooltip label for high priority', async () => {
+            const { user } = render(
                 <TicketListItemTrailingSlot priority="high" datetime={null} />,
             )
-            expect(screen.getByText('High priority')).toBeInTheDocument()
+
+            await user.tab()
+
+            expect(await screen.findByText('High priority')).toBeInTheDocument()
         })
 
-        it('shows "Critical priority" tooltip label for critical priority', () => {
-            render(
+        it('shows "Critical priority" tooltip label for critical priority', async () => {
+            const { user } = render(
                 <TicketListItemTrailingSlot
                     priority="critical"
                     datetime={null}
                 />,
             )
-            expect(screen.getByText('Critical priority')).toBeInTheDocument()
+
+            await user.tab()
+
+            expect(
+                await screen.findByText('Critical priority'),
+            ).toBeInTheDocument()
         })
 
         it('renders no priority label when priority is not provided', () => {

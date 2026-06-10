@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -19,40 +17,6 @@ import { getCurrentUserHandler } from '../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../tests/render.utils'
 import { server } from '../../../../../tests/server'
 import { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemComponent } from '../TicketThreadActionExecutedEventItem'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = (await importOriginal()) as Record<string, unknown>
-
-    return {
-        ...actual,
-        Tooltip: ({
-            trigger,
-            children,
-        }: {
-            trigger: ReactNode
-            children: ReactNode
-        }) => (
-            <>
-                {trigger}
-                {children}
-            </>
-        ),
-        TooltipContent: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
-        ),
-        Modal: ({
-            isOpen,
-            children,
-        }: {
-            isOpen: boolean
-            children: ReactNode
-        }) => (isOpen ? <>{children}</> : null),
-        OverlayHeader: ({ title }: { title: string }) => <div>{title}</div>,
-        OverlayContent: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
-        ),
-    }
-})
 
 function getIntegrationHandler(
     integration: ReturnType<typeof mockIntegration>,

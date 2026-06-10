@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import {
     mockTicketMessage,
@@ -14,14 +14,11 @@ import type {
     TicketThreadRegularMessageItem,
 } from '../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { render } from '../../../tests/render.utils'
 import type { MessageChannelProps } from '../../MessageBubble/components/MessageHeader/MessageChannel'
 import { TicketThreadGroupedMessages } from '../TicketThreadGroupedMessages'
 
 const messageChannelSpy = vi.fn()
-
-vi.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-}))
 
 vi.mock('../../MessageBubble/MessageBubble', () => ({
     MessageBubble: ({ children }: { children: ReactNode }) => (

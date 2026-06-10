@@ -2,42 +2,10 @@ import { proxifyURL } from '@repo/utils'
 import type * as Utils from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 
-import type * as Axiom from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import { render } from '../../../../tests/render.utils'
 import { ProductAttachment } from '../ProductAttachment'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = await importOriginal<typeof Axiom>()
-
-    return {
-        ...actual,
-        Image: vi.fn(
-            ({
-                src,
-                alt,
-                className,
-                width,
-                height,
-            }: {
-                src: string
-                alt: string
-                className?: string
-                width?: string
-                height?: string
-            }) => (
-                <img
-                    src={src}
-                    alt={alt}
-                    className={className}
-                    width={width}
-                    height={height}
-                />
-            ),
-        ),
-    }
-})
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()

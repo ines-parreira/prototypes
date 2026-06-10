@@ -1,11 +1,7 @@
-import { createContext, useContext } from 'react'
-
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type * as Axiom from '@gorgias/axiom'
 
 import { DashboardLayoutRenderer } from '../DashboardLayoutRenderer'
 import { useGetManagedDashboardsLayoutConfig } from '../hooks/useGetManagedDashboardsLayoutConfig'
@@ -37,11 +33,6 @@ const ARTICLE_RECOMMENDATION_TABLE =
 const FLOWS_TABLE = 'revamp-ai_agent_overview-flows_table'
 const ORDER_MANAGEMENT_TABLE = 'revamp-ai_agent_overview-order_management_table'
 
-const ButtonGroupContext = createContext<{
-    selectedKey: string | undefined
-    onSelectionChange: (key: string) => void
-}>({ selectedKey: undefined, onSelectionChange: () => {} })
-
 vi.mock('../hooks/useGetManagedDashboardsLayoutConfig', () => ({
     useGetManagedDashboardsLayoutConfig: vi.fn(({ defaultLayoutConfig }) => ({
         layoutConfig: defaultLayoutConfig,
@@ -62,50 +53,6 @@ vi.mock('../MetricsConfigurator', () => ({
         metrics: Array<{ id: string; label: string; visibility: boolean }>
     }) => <div>MetricsConfigurator with {metrics.length} metrics</div>,
 }))
-
-vi.mock('@gorgias/axiom', async () => {
-    const actual = await vi.importActual<typeof Axiom>('@gorgias/axiom')
-    return {
-        ...actual,
-        ButtonGroup: ({
-            children,
-            selectedKey,
-            onSelectionChange,
-        }: {
-            children: React.ReactNode
-            selectedKey?: string
-            onSelectionChange?: (key: string) => void
-        }) => (
-            <ButtonGroupContext.Provider
-                value={{
-                    selectedKey,
-                    onSelectionChange: onSelectionChange ?? (() => {}),
-                }}
-            >
-                <div role="group">{children}</div>
-            </ButtonGroupContext.Provider>
-        ),
-        ButtonGroupItem: ({
-            children,
-            id,
-        }: {
-            children: React.ReactNode
-            id?: string
-        }) => {
-            const { selectedKey, onSelectionChange } =
-                useContext(ButtonGroupContext)
-            return (
-                <button
-                    role="radio"
-                    aria-checked={id === selectedKey}
-                    onClick={() => id && onSelectionChange(id)}
-                >
-                    {children}
-                </button>
-            )
-        },
-    }
-})
 
 const mockedUseGetManagedDashboardsLayoutConfig = vi.mocked(
     useGetManagedDashboardsLayoutConfig,

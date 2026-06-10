@@ -1,6 +1,4 @@
-import type { ReactNode } from 'react'
-
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import parsePhoneNumberFromString from 'libphonenumber-js'
 import { HttpResponse } from 'msw'
 
@@ -16,29 +14,6 @@ import { getCurrentUserHandler } from '../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../tests/render.utils'
 import { server } from '../../../../../tests/server'
 import { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemComponent } from '../TicketThreadPhoneEventItem'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = (await importOriginal()) as Record<string, unknown>
-
-    return {
-        ...actual,
-        Tooltip: ({
-            trigger,
-            children,
-        }: {
-            trigger: ReactNode
-            children: ReactNode
-        }) => (
-            <>
-                {trigger}
-                {children}
-            </>
-        ),
-        TooltipContent: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
-        ),
-    }
-})
 
 function getUsersHandler(users: unknown[]) {
     return mockListUsersHandler(async () =>
@@ -209,14 +184,14 @@ describe('TicketThreadPhoneEventItem', () => {
         },
     )
 
-    it('renders forwarded tooltip details with formatted number', () => {
+    it('renders forwarded tooltip details with formatted number', async () => {
         const forwardedNumber = '+14567654985'
         const expectedFormattedNumber =
             parsePhoneNumberFromString(
                 forwardedNumber,
             )?.formatInternational() ?? forwardedNumber
 
-        render(
+        const { user } = render(
             <TicketThreadPhoneEventItemComponent
                 item={buildItem({
                     eventOverrides: {
@@ -235,12 +210,17 @@ describe('TicketThreadPhoneEventItem', () => {
             />,
         )
 
-        expect(screen.getByText('Forwarded to:')).toBeInTheDocument()
-        expect(screen.getByText(expectedFormattedNumber)).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Forwarded to:')).toBeInTheDocument()
+        expect(
+            within(tooltip).getByText(expectedFormattedNumber),
+        ).toBeInTheDocument()
     })
 
-    it('renders message-played audio and text tooltip details', () => {
-        const { rerender } = render(
+    it('renders message-played audio tooltip details', async () => {
+        const { user } = render(
             <TicketThreadPhoneEventItemComponent
                 item={buildItem({
                     eventOverrides: {
@@ -261,10 +241,17 @@ describe('TicketThreadPhoneEventItem', () => {
             />,
         )
 
-        expect(screen.getByText('Audio recording:')).toBeInTheDocument()
-        expect(screen.getByText('voice.mp3')).toBeInTheDocument()
+        await user.tab()
 
-        rerender(
+        const tooltip = await screen.findByRole('tooltip')
+        expect(
+            within(tooltip).getByText('Audio recording:'),
+        ).toBeInTheDocument()
+        expect(within(tooltip).getByText('voice.mp3')).toBeInTheDocument()
+    })
+
+    it('renders message-played text-to-speech tooltip details', async () => {
+        const { user } = render(
             <TicketThreadPhoneEventItemComponent
                 item={buildItem({
                     eventOverrides: {
@@ -285,12 +272,17 @@ describe('TicketThreadPhoneEventItem', () => {
             />,
         )
 
-        expect(screen.getByText('Text:')).toBeInTheDocument()
-        expect(screen.getByText('Text to speech content')).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Text:')).toBeInTheDocument()
+        expect(
+            within(tooltip).getByText('Text to speech content'),
+        ).toBeInTheDocument()
     })
 
-    it('shows "No additional details" when details payload is missing', () => {
-        render(
+    it('shows "No additional details" when details payload is missing', async () => {
+        const { user } = render(
             <TicketThreadPhoneEventItemComponent
                 item={buildItem({
                     eventOverrides: {
@@ -300,7 +292,12 @@ describe('TicketThreadPhoneEventItem', () => {
             />,
         )
 
-        expect(screen.getByText('No additional details')).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(
+            within(tooltip).getByText('No additional details'),
+        ).toBeInTheDocument()
     })
 
     it('renders the event datetime', () => {

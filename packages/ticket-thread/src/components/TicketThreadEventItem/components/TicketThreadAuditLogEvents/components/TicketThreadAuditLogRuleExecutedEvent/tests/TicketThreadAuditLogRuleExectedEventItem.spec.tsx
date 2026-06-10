@@ -1,6 +1,4 @@
-import type { ReactNode } from 'react'
-
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 
 import { SYSTEM_RULE_TYPE } from '../../../../../../../hooks/events/constants'
 import type { TicketThreadAuditLogEventByType } from '../../../../../../../hooks/events/types'
@@ -9,31 +7,6 @@ import { getCurrentUserHandler } from '../../../../../../../tests/getCurrentUser
 import { render } from '../../../../../../../tests/render.utils'
 import { server } from '../../../../../../../tests/server'
 import { TicketThreadAuditLogRuleExecutedEvent } from '../TicketThreadAuditLogRuleExecutedEvent'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = (await importOriginal()) as Record<string, unknown>
-    return {
-        ...actual,
-        Tooltip: ({
-            children,
-            trigger,
-        }: {
-            children: ReactNode
-            trigger?: ReactNode
-        }) => (
-            <>
-                {trigger}
-                {children}
-            </>
-        ),
-        TooltipTrigger: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
-        ),
-        TooltipContent: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
-        ),
-    }
-})
 
 function buildItem(
     eventData: TicketThreadAuditLogEventByType<'rule-executed'>['data']['data'],
@@ -71,8 +44,8 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('renders rule link and triggering event type when rule metadata exists', () => {
-        renderItem(
+    it('renders rule link and triggering event type when rule metadata exists', async () => {
+        const { user } = renderItem(
             buildItem({
                 code: "if (ticket.tags.name == 'vip')",
                 id: 153054,
@@ -86,8 +59,12 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
         })
         expect(ruleLink).toHaveAttribute('href', '/app/settings/rules/153054')
         expect(screen.getByText('on "ticket-updated"')).toBeInTheDocument()
+
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
         expect(
-            screen.getByText("if (ticket.tags.name == 'vip')"),
+            within(tooltip).getByText("if (ticket.tags.name == 'vip')"),
         ).toBeInTheDocument()
     })
 
@@ -97,8 +74,8 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
         expect(screen.getByText('Rule executed')).toBeInTheDocument()
     })
 
-    it('renders transformed failed action details', () => {
-        renderItem(
+    it('renders transformed failed action details', async () => {
+        const { user } = renderItem(
             buildItem({
                 failed_actions: [
                     {
@@ -109,16 +86,21 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
             }),
         )
 
-        expect(screen.getByText('Assign agent failed:')).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
         expect(
-            screen.getByText(
+            within(tooltip).getByText('Assign agent failed:'),
+        ).toBeInTheDocument()
+        expect(
+            within(tooltip).getByText(
                 'Could not find the agent to assign this ticket to.',
             ),
         ).toBeInTheDocument()
     })
 
-    it('truncates long rule preview code', () => {
-        renderItem(
+    it('truncates long rule preview code', async () => {
+        const { user } = renderItem(
             buildItem({
                 code: 'a'.repeat(600),
                 id: 153054,
@@ -126,8 +108,11 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
             }),
         )
 
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
         expect(
-            screen.getByText(
+            within(tooltip).getByText(
                 `${'a'.repeat(454)}... [see the rest of the rule in the settings]`,
             ),
         ).toBeInTheDocument()

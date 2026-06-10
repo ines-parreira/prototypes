@@ -7,23 +7,6 @@ import { useUserOptions } from '../../../../components/TicketAssignee/hooks/useU
 import { render } from '../../../../tests/render.utils'
 import { AssignUserMenu } from '../AssignUserMenu'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ title }: { title: string }) => <div>{title}</div>,
-}))
-
 vi.mock('../../../../components/TicketAssignee/hooks/useUserOptions', () => ({
     NO_USER_OPTION: { id: 'no_user', label: 'Unassigned' },
     useUserOptions: vi.fn(),
@@ -92,8 +75,8 @@ describe('AssignUserMenu', () => {
         expect(screen.getByRole('button', { name: /user/i })).toBeDisabled()
     })
 
-    it('shows a disabled tooltip message when isDisabled is true', () => {
-        render(
+    it('shows a disabled tooltip message when isDisabled is true', async () => {
+        const { user } = render(
             <AssignUserMenu
                 value={null}
                 isDisabled={true}
@@ -101,13 +84,17 @@ describe('AssignUserMenu', () => {
             />,
         )
 
+        await user.tab()
+
         expect(
-            screen.getByText('Select one or more tickets to assign an agent'),
+            await screen.findByText(
+                'Select one or more tickets to assign an agent',
+            ),
         ).toBeInTheDocument()
     })
 
-    it('shows the default tooltip message when enabled', () => {
-        render(
+    it('shows the default tooltip message when enabled', async () => {
+        const { user } = render(
             <AssignUserMenu
                 value={null}
                 isDisabled={false}
@@ -115,7 +102,9 @@ describe('AssignUserMenu', () => {
             />,
         )
 
-        expect(screen.getByText('Assign agent')).toBeInTheDocument()
+        await user.tab()
+
+        expect(await screen.findByText('Assign agent')).toBeInTheDocument()
     })
 
     it('opens the user dropdown when the button is clicked', async () => {
@@ -157,7 +146,7 @@ describe('AssignUserMenu', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: /assign agent/i }))
+        await user.click(screen.getByRole('button', { name: /user/i }))
 
         await waitFor(() => {
             expect(
@@ -175,7 +164,7 @@ describe('AssignUserMenu', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: /assign agent/i }))
+        await user.click(screen.getByRole('button', { name: /user/i }))
 
         await waitFor(() => {
             expect(
@@ -194,7 +183,7 @@ describe('AssignUserMenu', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: /assign agent/i }))
+        await user.click(screen.getByRole('button', { name: /user/i }))
         await waitFor(() => {
             expect(
                 screen.getByRole('button', { name: /unassigned/i }),

@@ -2,7 +2,6 @@ import { proxifyURL, replaceAttachmentURL, shortcutManager } from '@repo/utils'
 import type * as Utils from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 
-import type * as Axiom from '@gorgias/axiom'
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
@@ -10,40 +9,6 @@ import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
 import { MessageAttachments } from '../MessageAttachments'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = await importOriginal<typeof Axiom>()
-
-    return {
-        ...actual,
-        Image: vi.fn(
-            ({
-                src,
-                alt,
-                onClick,
-                className,
-                width,
-                height,
-            }: {
-                src: string
-                alt: string
-                onClick?: () => void
-                className?: string
-                width?: string
-                height?: string
-            }) => (
-                <img
-                    src={src}
-                    alt={alt}
-                    onClick={onClick}
-                    className={className}
-                    width={width}
-                    height={height}
-                />
-            ),
-        ),
-    }
-})
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()

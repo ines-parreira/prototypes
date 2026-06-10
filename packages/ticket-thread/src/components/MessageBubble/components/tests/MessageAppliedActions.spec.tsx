@@ -1,33 +1,10 @@
-import type { ReactNode } from 'react'
+import { screen, within } from '@testing-library/react'
 
-import { screen } from '@testing-library/react'
-
-import type * as Axiom from '@gorgias/axiom'
 import { mockListTicketTagsHandler } from '@gorgias/helpdesk-mocks'
 
 import { render } from '../../../../tests/render.utils'
 import { server } from '../../../../tests/server'
 import { MessageAppliedActions } from '../MessageAppliedActions'
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = await importOriginal<typeof Axiom>()
-    return {
-        ...actual,
-        Tooltip: ({
-            trigger,
-            children,
-        }: {
-            trigger: ReactNode
-            children: ReactNode
-        }) => (
-            <>
-                {trigger}
-                {children}
-            </>
-        ),
-        TooltipContent: ({ title }: { title?: string }) => <>{title}</>,
-    }
-})
 
 vi.mock(
     '../../../TicketThreadEventItem/components/TicketThreadEventDateTime',
@@ -483,8 +460,8 @@ describe('MessageAppliedActions', () => {
         },
     )
 
-    it('shows "Action failed." tooltip on the triangle-warning icon', () => {
-        render(
+    it('shows "Action failed." tooltip on the triangle-warning icon', async () => {
+        const { user } = render(
             <MessageAppliedActions
                 message={makeMessage([
                     makeAction({
@@ -496,7 +473,10 @@ describe('MessageAppliedActions', () => {
             />,
         )
 
-        expect(screen.getByText('Action failed.')).toBeInTheDocument()
+        await user.tab()
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(within(tooltip).getByText('Action failed.')).toBeInTheDocument()
     })
 
     it('does not show an info icon for successful actions', () => {

@@ -3,25 +3,6 @@ import { screen } from '@testing-library/react'
 import { render } from '../../../../../tests/render.utils'
 import { TicketListItemAgentsViewing } from '../TicketListItemAgentsViewing'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
-    TooltipContent: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-}))
-
 const agentWithName = { id: 1, name: 'Alice Smith', email: 'alice@example.com' }
 const agentWithEmailOnly = { id: 2, name: undefined, email: 'bob@example.com' }
 const agentWithName2 = {
@@ -46,17 +27,27 @@ describe('TicketListItemAgentsViewing', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('shows the agent name in the tooltip when a single named agent is viewing', () => {
-        render(<TicketListItemAgentsViewing agents={[agentWithName]} />)
+    it('shows the agent name in the tooltip when a single named agent is viewing', async () => {
+        const { user } = render(
+            <TicketListItemAgentsViewing agents={[agentWithName]} />,
+        )
 
-        expect(screen.getByText('Alice Smith is viewing')).toBeInTheDocument()
-    })
-
-    it('falls back to email in the tooltip when the agent has no name', () => {
-        render(<TicketListItemAgentsViewing agents={[agentWithEmailOnly]} />)
+        await user.tab()
 
         expect(
-            screen.getByText('bob@example.com is viewing'),
+            await screen.findByText('Alice Smith is viewing'),
+        ).toBeInTheDocument()
+    })
+
+    it('falls back to email in the tooltip when the agent has no name', async () => {
+        const { user } = render(
+            <TicketListItemAgentsViewing agents={[agentWithEmailOnly]} />,
+        )
+
+        await user.tab()
+
+        expect(
+            await screen.findByText('bob@example.com is viewing'),
         ).toBeInTheDocument()
     })
 
@@ -76,26 +67,31 @@ describe('TicketListItemAgentsViewing', () => {
         expect(screen.queryByText('DM')).not.toBeInTheDocument()
     })
 
-    it('shows a multiple-agents header and lists each name when more than one agent is viewing', () => {
-        render(
+    it('shows a multiple-agents header and lists each name when more than one agent is viewing', async () => {
+        const { user } = render(
             <TicketListItemAgentsViewing
                 agents={[agentWithName, agentWithName2]}
             />,
         )
-        expect(
-            screen.getByText('Multiple agents are viewing'),
-        ).toBeInTheDocument()
 
+        await user.tab()
+
+        expect(
+            await screen.findByText('Multiple agents are viewing'),
+        ).toBeInTheDocument()
         expect(screen.getByText('Alice Smith')).toBeInTheDocument()
         expect(screen.getByText('Charlie Davis')).toBeInTheDocument()
     })
 
-    it('falls back to email in the multi-agent tooltip list when agent has no name', () => {
-        render(
+    it('falls back to email in the multi-agent tooltip list when agent has no name', async () => {
+        const { user } = render(
             <TicketListItemAgentsViewing
                 agents={[agentWithName, agentWithEmailOnly]}
             />,
         )
-        expect(screen.getByText('bob@example.com')).toBeInTheDocument()
+
+        await user.tab()
+
+        expect(await screen.findByText('bob@example.com')).toBeInTheDocument()
     })
 })

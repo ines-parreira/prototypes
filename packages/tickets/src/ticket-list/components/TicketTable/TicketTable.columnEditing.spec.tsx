@@ -1,119 +1,26 @@
-import type { ReactNode } from 'react'
+import { screen, waitFor, within } from '@testing-library/react'
 
-import { act } from '@testing-library/react'
-
-import type * as AxiomModule from '@gorgias/axiom'
 import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
 
 import { render } from '../../../tests/render.utils'
 import { TicketTable } from './TicketTable'
 
-const {
-    createLocalStoragePersistenceMock,
-    persistenceClearMock,
-    saveForEveryoneSpy,
-    toastSuccessMock,
-    toastErrorMock,
-    setIsOpenMock,
-    latestFooterProps,
-    latestDataTableProps,
-    columnEditingConfig,
-} = vi.hoisted(() => ({
-    createLocalStoragePersistenceMock: vi.fn(),
-    persistenceClearMock: vi.fn(),
+const { saveForEveryoneSpy, columnVisibilityConfig } = vi.hoisted(() => ({
     saveForEveryoneSpy: vi.fn(),
-    toastSuccessMock: vi.fn(),
-    toastErrorMock: vi.fn(),
-    setIsOpenMock: vi.fn(),
-    columnEditingConfig: {
-        defaultColumnOrder: ['ticket', 'subject', 'customer'],
+    columnVisibilityConfig: {
+        defaultColumnOrder: [
+            'ticket',
+            'subject',
+            'customer',
+            'assignee',
+            'status',
+        ],
         defaultVisibleColumns: ['ticket', 'subject'],
         canSaveForEveryone: true,
         isSavingForEveryone: false,
-        viewVisibility: 'public',
-        orderedColumns: ['ticket', 'customer'],
-        visibleColumns: ['ticket', 'customer'],
-    },
-    latestDataTableProps: {
-        current: null as {
-            columnEditing?: {
-                defaultColumnOrder?: string[]
-                defaultVisibleColumns?: string[]
-            }
-        } | null,
-    },
-    latestFooterProps: {
-        current: null as {
-            visibleColumns: string[]
-            canSaveForEveryone: boolean
-            isSavingForEveryone: boolean
-            onClose: () => void
-            onResetToDefault: () => void
-            onSaveForEveryone: (visibleColumns: string[]) => Promise<void>
-        } | null,
+        viewVisibility: 'public' as string,
     },
 }))
-
-vi.mock('@gorgias/axiom', async () => {
-    const actual = await vi.importActual<typeof AxiomModule>('@gorgias/axiom')
-
-    return {
-        ...actual,
-        DataTable: ({
-            columnEditing,
-            topContent,
-            children,
-        }: {
-            columnEditing?: {
-                defaultColumnOrder?: string[]
-                defaultVisibleColumns?: string[]
-            }
-            topContent?: ReactNode
-            children?: ReactNode
-        }) => {
-            latestDataTableProps.current = { columnEditing }
-
-            return (
-                <div>
-                    <div role="table" />
-                    {topContent}
-                    {children}
-                </div>
-            )
-        },
-        DataTableItemCount: () => <div />,
-        DataTableBulkActions: ({
-            children,
-        }: {
-            children?: () => ReactNode
-        }) => <div>{children?.()}</div>,
-        DataTableColumnEditing: ({
-            footer,
-        }: {
-            footer?: (props: {
-                visibleColumns: string[]
-                orderedColumns: string[]
-                setVisibleColumns: (columns: string[]) => void
-                setIsOpen: (isOpen: boolean) => void
-            }) => ReactNode
-        }) => (
-            <div>
-                {footer?.({
-                    visibleColumns: columnEditingConfig.visibleColumns,
-                    orderedColumns: columnEditingConfig.orderedColumns,
-                    setVisibleColumns: vi.fn(),
-                    setIsOpen: setIsOpenMock,
-                })}
-            </div>
-        ),
-        DataTablePagination: () => <div />,
-        createLocalStoragePersistence: createLocalStoragePersistenceMock,
-        toast: {
-            success: toastSuccessMock,
-            error: toastErrorMock,
-        },
-    }
-})
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
@@ -143,7 +50,7 @@ vi.mock('@gorgias/helpdesk-queries', async () => {
             data: {
                 data: {
                     id: 123,
-                    visibility: columnEditingConfig.viewVisibility,
+                    visibility: columnVisibilityConfig.viewVisibility,
                 },
             },
         }),
@@ -211,19 +118,19 @@ vi.mock('../../hooks/useTicketTableBulkActionShortcuts', () => ({
 
 vi.mock('../../hooks/useTicketTableColumnVisibility', () => ({
     useTicketTableColumnVisibility: () => ({
-        defaultColumnOrder: columnEditingConfig.defaultColumnOrder,
-        defaultVisibleColumns: columnEditingConfig.defaultVisibleColumns,
+        defaultColumnOrder: columnVisibilityConfig.defaultColumnOrder,
+        defaultVisibleColumns: columnVisibilityConfig.defaultVisibleColumns,
         onLocalChange: vi.fn(),
         onColumnOrderChange: vi.fn(),
         saveForEveryone: saveForEveryoneSpy,
-        canSaveForEveryone: columnEditingConfig.canSaveForEveryone,
-        isSavingForEveryone: columnEditingConfig.isSavingForEveryone,
+        canSaveForEveryone: columnVisibilityConfig.canSaveForEveryone,
+        isSavingForEveryone: columnVisibilityConfig.isSavingForEveryone,
     }),
 }))
 
 vi.mock('../../hooks/useTicketTableData', () => ({
     useTicketTableData: () => ({
-        items: [],
+        items: [{ id: 1, subject: 'First ticket' }],
         isLoading: false,
         hasNextPage: false,
         hasPreviousPage: false,
@@ -241,189 +148,256 @@ vi.mock('../../hooks/useViewVisibleTickets', () => ({
     }),
 }))
 
+vi.mock('./components/TicketTableBulkActions', () => ({
+    TicketTableBulkActions: () => <div />,
+}))
+
 vi.mock('./TicketTableColumns', () => ({
     createTicketTableColumns: () => [
         {
             id: 'ticket',
             accessorKey: 'subject',
             header: 'Ticket',
+            enableHiding: false,
         },
+        { id: 'subject', accessorKey: 'subject', header: 'Subject' },
+        { id: 'customer', accessorKey: 'subject', header: 'Customer' },
+        { id: 'assignee', accessorKey: 'subject', header: 'Assignee' },
+        { id: 'status', accessorKey: 'subject', header: 'Status' },
     ],
 }))
 
-vi.mock('./components/TicketTableColumnEditingFooter', () => ({
-    TicketTableColumnEditingFooter: (
-        props: (typeof latestFooterProps)['current'],
-    ) => {
-        latestFooterProps.current = props
-        return <div>Column editing footer</div>
-    },
-}))
+const PERSISTENCE_KEY = 'axiom-datatable-ticket-table-123'
 
-vi.mock('./components/TicketTableBulkActions', () => ({
-    TicketTableBulkActions: () => <div />,
-}))
+function seedDivergedColumns() {
+    window.localStorage.setItem(
+        PERSISTENCE_KEY,
+        JSON.stringify({
+            visibleColumns: ['ticket', 'subject', 'customer'],
+            columnOrder: [
+                'ticket',
+                'subject',
+                'customer',
+                'assignee',
+                'status',
+            ],
+        }),
+    )
+}
 
-describe('TicketTable column editing footer wiring', () => {
+async function openColumnEditingPanel(user: ReturnType<typeof render>['user']) {
+    await waitFor(() => {
+        expect(screen.getByRole('table')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByRole('button', { name: /edit table/i }))
+}
+
+async function findColumnEditingPanel() {
+    return screen.findByRole('dialog')
+}
+
+describe('TicketTable column editing footer', () => {
     beforeEach(() => {
-        persistenceClearMock.mockReset()
-        createLocalStoragePersistenceMock.mockReset()
-        createLocalStoragePersistenceMock.mockReturnValue({
-            clear: persistenceClearMock,
-            ready: vi.fn().mockResolvedValue(undefined),
-            getItem: vi.fn(),
-            observeTable: vi.fn(() => ({ unsubscribe: vi.fn() })),
-        })
+        window.localStorage.clear()
         saveForEveryoneSpy.mockReset()
         saveForEveryoneSpy.mockResolvedValue(undefined)
-        toastSuccessMock.mockReset()
-        toastErrorMock.mockReset()
-        setIsOpenMock.mockReset()
-        latestDataTableProps.current = null
-        latestFooterProps.current = null
-        columnEditingConfig.defaultColumnOrder = [
+        columnVisibilityConfig.defaultColumnOrder = [
             'ticket',
             'subject',
             'customer',
-        ]
-        columnEditingConfig.defaultVisibleColumns = ['ticket', 'subject']
-        columnEditingConfig.canSaveForEveryone = true
-        columnEditingConfig.isSavingForEveryone = false
-        columnEditingConfig.viewVisibility = 'public'
-        columnEditingConfig.orderedColumns = ['ticket', 'customer']
-        columnEditingConfig.visibleColumns = ['ticket', 'customer']
-    })
-
-    it('passes default visible columns and column order to column editing', () => {
-        columnEditingConfig.defaultColumnOrder = [
-            'ticket',
             'assignee',
-            'customer',
             'status',
         ]
-        columnEditingConfig.defaultVisibleColumns = [
+        columnVisibilityConfig.defaultVisibleColumns = ['ticket', 'subject']
+        columnVisibilityConfig.canSaveForEveryone = true
+        columnVisibilityConfig.isSavingForEveryone = false
+        columnVisibilityConfig.viewVisibility = 'public'
+    })
+
+    it('lists the configured columns in the column editing panel', async () => {
+        const { user } = render(<TicketTable viewId={123} />)
+
+        await openColumnEditingPanel(user)
+
+        const panel = await findColumnEditingPanel()
+        expect(within(panel).getByText('Customer')).toBeInTheDocument()
+        expect(within(panel).getByText('Assignee')).toBeInTheDocument()
+        expect(within(panel).getByText('Status')).toBeInTheDocument()
+    })
+
+    it('shows the footer actions when the visible columns diverge from the saved view', async () => {
+        seedDivergedColumns()
+
+        const { user } = render(<TicketTable viewId={123} />)
+
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+
+        expect(
+            await within(panel).findByRole('button', {
+                name: /restore saved view/i,
+            }),
+        ).toBeInTheDocument()
+        expect(
+            within(panel).getByRole('button', { name: /save for everyone/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('does not show the footer when the visible columns match the saved view', async () => {
+        columnVisibilityConfig.defaultVisibleColumns = [
             'ticket',
+            'subject',
+            'customer',
             'assignee',
-            'customer',
+            'status',
         ]
 
-        render(<TicketTable viewId={123} />)
+        const { user } = render(<TicketTable viewId={123} />)
 
-        expect(latestDataTableProps.current?.columnEditing).toMatchObject({
-            defaultColumnOrder: ['ticket', 'assignee', 'customer', 'status'],
-            defaultVisibleColumns: ['ticket', 'assignee', 'customer'],
-        })
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+
+        expect(
+            within(panel).queryByRole('button', {
+                name: /restore saved view/i,
+            }),
+        ).not.toBeInTheDocument()
     })
 
-    it('does not render the footer when backend-managed columns match the saved view', () => {
-        columnEditingConfig.defaultVisibleColumns = [
-            'select',
-            'ticket',
-            'customer',
-        ]
+    it('does not show the footer for private views', async () => {
+        columnVisibilityConfig.viewVisibility = 'private'
+        seedDivergedColumns()
 
-        render(<TicketTable viewId={123} />)
+        const { user } = render(<TicketTable viewId={123} />)
 
-        expect(latestFooterProps.current).toBeNull()
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+
+        expect(
+            within(panel).queryByRole('button', {
+                name: /restore saved view/i,
+            }),
+        ).not.toBeInTheDocument()
     })
 
-    it('does not render the footer for private views', () => {
-        columnEditingConfig.viewVisibility = 'private'
+    it('does not show the footer for draft views', async () => {
+        seedDivergedColumns()
 
-        render(<TicketTable viewId={123} />)
+        const { user } = render(<TicketTable viewId={123} isDraftView />)
 
-        expect(latestFooterProps.current).toBeNull()
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+
+        expect(
+            within(panel).queryByRole('button', {
+                name: /restore saved view/i,
+            }),
+        ).not.toBeInTheDocument()
     })
 
-    it('does not render the footer for draft views', () => {
-        render(<TicketTable viewId={123} isDraftView={true} />)
+    it('hides the save action when the user cannot save for everyone', async () => {
+        columnVisibilityConfig.canSaveForEveryone = false
+        seedDivergedColumns()
 
-        expect(latestFooterProps.current).toBeNull()
+        const { user } = render(<TicketTable viewId={123} />)
+
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+
+        expect(
+            await within(panel).findByRole('button', {
+                name: /restore saved view/i,
+            }),
+        ).toBeInTheDocument()
+        expect(
+            within(panel).queryByRole('button', {
+                name: /save for everyone/i,
+            }),
+        ).not.toBeInTheDocument()
     })
 
-    it('passes save permissions and loading state to the footer when columns diverge', () => {
-        columnEditingConfig.canSaveForEveryone = false
-        columnEditingConfig.isSavingForEveryone = true
+    it('clears persisted state and closes the panel when restoring the saved view', async () => {
+        seedDivergedColumns()
 
-        render(<TicketTable viewId={123} />)
+        const { user } = render(<TicketTable viewId={123} />)
 
-        expect(latestFooterProps.current).not.toBeNull()
-        expect(latestFooterProps.current).toMatchObject({
-            canSaveForEveryone: false,
-            isSavingForEveryone: true,
-            visibleColumns: ['ticket', 'customer'],
-        })
-    })
-
-    it('closes the column editing panel through setIsOpen(false)', () => {
-        render(<TicketTable viewId={123} />)
-
-        expect(latestFooterProps.current).not.toBeNull()
-
-        act(() => {
-            latestFooterProps.current?.onClose()
-        })
-
-        expect(setIsOpenMock).toHaveBeenCalledWith(false)
-    })
-
-    it('does nothing when resetting without a persistence adapter', () => {
-        createLocalStoragePersistenceMock.mockReturnValue(undefined)
-
-        render(<TicketTable viewId={123} />)
-
-        expect(latestFooterProps.current).not.toBeNull()
-
-        act(() => {
-            latestFooterProps.current?.onResetToDefault()
-        })
-
-        expect(persistenceClearMock).not.toHaveBeenCalled()
-    })
-
-    it('clears persisted state when resetting to the saved view', () => {
-        render(<TicketTable viewId={123} />)
-
-        expect(latestFooterProps.current).not.toBeNull()
-
-        act(() => {
-            latestFooterProps.current?.onResetToDefault()
-        })
-
-        expect(persistenceClearMock).toHaveBeenCalledTimes(1)
-    })
-
-    it('shows a success toast when saving columns for everyone succeeds', async () => {
-        render(<TicketTable viewId={123} />)
-
-        expect(latestFooterProps.current).not.toBeNull()
-
-        await latestFooterProps.current?.onSaveForEveryone([
-            'ticket',
-            'customer',
-        ])
-
-        expect(saveForEveryoneSpy).toHaveBeenCalledWith(['ticket', 'customer'])
-        expect(toastSuccessMock).toHaveBeenCalledWith(
-            'Columns saved for everyone',
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+        await user.click(
+            await within(panel).findByRole('button', {
+                name: /restore saved view/i,
+            }),
         )
+
+        await waitFor(() => {
+            expect(window.localStorage.getItem(PERSISTENCE_KEY)).toBeNull()
+        })
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        })
     })
 
-    it('shows an error toast and rethrows when saving columns for everyone fails', async () => {
+    it('saves columns for everyone and shows a success toast', async () => {
+        seedDivergedColumns()
+
+        const { user } = render(<TicketTable viewId={123} />)
+
+        await openColumnEditingPanel(user)
+        const panel = await findColumnEditingPanel()
+        await user.click(
+            await within(panel).findByRole('button', {
+                name: /save for everyone/i,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(saveForEveryoneSpy).toHaveBeenCalledTimes(1)
+        })
+        expect(saveForEveryoneSpy).toHaveBeenCalledWith(
+            expect.arrayContaining(['subject', 'customer']),
+        )
+        expect(
+            await screen.findByText('Columns saved for everyone'),
+        ).toBeInTheDocument()
+    })
+
+    it('shows an error toast when saving columns for everyone fails', async () => {
         saveForEveryoneSpy.mockRejectedValue(new Error('boom'))
-        render(<TicketTable viewId={123} />)
+        seedDivergedColumns()
 
-        expect(latestFooterProps.current).not.toBeNull()
+        // The footer's save handler rethrows on failure so the panel stays
+        // open; that rejection is surfaced through React's event system and is
+        // expected here, so swallow it to keep the run free of noise.
+        const swallowExpectedRejection = (reason: unknown) => {
+            if (
+                reason instanceof Error &&
+                reason.message === 'Failed to save columns for everyone'
+            ) {
+                return
+            }
 
-        await expect(
-            latestFooterProps.current?.onSaveForEveryone([
-                'ticket',
-                'customer',
-            ]),
-        ).rejects.toThrow('Failed to save columns for everyone')
+            throw reason
+        }
+        process.on('unhandledRejection', swallowExpectedRejection)
 
-        expect(toastErrorMock).toHaveBeenCalledWith(
-            'Failed to save columns for everyone',
-        )
+        try {
+            const { user } = render(<TicketTable viewId={123} />)
+
+            await openColumnEditingPanel(user)
+            const panel = await findColumnEditingPanel()
+            await user.click(
+                await within(panel).findByRole('button', {
+                    name: /save for everyone/i,
+                }),
+            )
+
+            expect(
+                await screen.findByText('Failed to save columns for everyone'),
+            ).toBeInTheDocument()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+        } finally {
+            process.off('unhandledRejection', swallowExpectedRejection)
+        }
     })
 })

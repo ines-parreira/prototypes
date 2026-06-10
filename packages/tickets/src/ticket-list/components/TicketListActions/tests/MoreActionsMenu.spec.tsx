@@ -19,40 +19,6 @@ import { server } from '../../../../tests/server'
 import { useIsTrashLikeView } from '../../../hooks/useIsTrashLikeView'
 import { MoreActionsMenu } from '../MoreActionsMenu'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Tooltip: React.forwardRef<
-        HTMLElement,
-        {
-            trigger: React.ReactNode
-            children: React.ReactNode
-        } & React.HTMLAttributes<HTMLElement>
-    >(({ trigger, children, ...props }, ref) => {
-        const triggerElement = React.isValidElement(trigger) ? (
-            React.cloneElement(trigger as React.ReactElement, {
-                ...props,
-                ref,
-            })
-        ) : (
-            <span
-                ref={ref as React.Ref<HTMLSpanElement>}
-                tabIndex={-1}
-                {...props}
-            >
-                {trigger}
-            </span>
-        )
-
-        return (
-            <>
-                {triggerElement}
-                {children}
-            </>
-        )
-    }),
-    TooltipContent: ({ title }: { title: string }) => <div>{title}</div>,
-}))
-
 vi.mock('../../../../components/TicketAssignee/hooks/useTeamOptions', () => ({
     NO_TEAM_OPTION: {
         id: 'no_team',
@@ -267,18 +233,26 @@ describe('MoreActionsMenu', () => {
         ).toBeDisabled()
     })
 
-    it('shows a disabled tooltip message when isDisabled is true', () => {
-        render(<MoreActionsMenu {...defaultProps} isDisabled />)
+    it('shows a disabled tooltip message when isDisabled is true', async () => {
+        const { user } = render(
+            <MoreActionsMenu {...defaultProps} isDisabled />,
+        )
+
+        await user.tab()
 
         expect(
-            screen.getByText('Select one or more tickets to perform actions'),
+            await screen.findByText(
+                'Select one or more tickets to perform actions',
+            ),
         ).toBeInTheDocument()
     })
 
-    it('shows the default tooltip message when enabled', () => {
-        render(<MoreActionsMenu {...defaultProps} />)
+    it('shows the default tooltip message when enabled', async () => {
+        const { user } = render(<MoreActionsMenu {...defaultProps} />)
 
-        expect(screen.getByText('More actions')).toBeInTheDocument()
+        await user.tab()
+
+        expect(await screen.findByText('More actions')).toBeInTheDocument()
     })
 
     describe('menu items', () => {

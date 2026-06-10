@@ -15,10 +15,6 @@ vi.mock('react-dnd-html5-backend', () => ({
     HTML5Backend: vi.fn(),
 }))
 
-vi.mock('@gorgias/axiom', () => ({
-    Toaster: () => <div data-testid="toaster" />,
-}))
-
 type StoreState = {
     account: {
         name: string

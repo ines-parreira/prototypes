@@ -1,7 +1,5 @@
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 
-import type * as AxiomModule from '@gorgias/axiom'
-import { toast } from '@gorgias/axiom'
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 import {
     useDeleteTicketMessage,
@@ -11,18 +9,6 @@ import {
 import { render } from '../../../../tests/render.utils'
 import type { LegacyBridgeActions } from '../../../../utils/LegacyBridge'
 import { MessageErrors } from '../MessageErrors'
-
-vi.mock('@gorgias/axiom', async () => {
-    const actual = await vi.importActual<typeof AxiomModule>('@gorgias/axiom')
-
-    return {
-        ...actual,
-        toast: {
-            ...actual.toast,
-            error: vi.fn(),
-        },
-    }
-})
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
     const actual = await vi.importActual('@gorgias/helpdesk-queries')
@@ -44,7 +30,6 @@ function makeLegacyActions(): LegacyBridgeActions {
 
 const mutateAsyncDeleteTicketMessage = vi.fn()
 const mutateAsyncUpdateTicketMessage = vi.fn()
-const mockToastError = vi.mocked(toast.error)
 const mockUseDeleteTicketMessage = vi.mocked(useDeleteTicketMessage)
 const mockUseUpdateTicketMessage = vi.mocked(useUpdateTicketMessage)
 
@@ -52,7 +37,6 @@ describe('MessageErrors', () => {
     beforeEach(() => {
         mutateAsyncDeleteTicketMessage.mockReset()
         mutateAsyncUpdateTicketMessage.mockReset()
-        mockToastError.mockReset()
 
         mockUseDeleteTicketMessage.mockReturnValue({
             mutateAsync: mutateAsyncDeleteTicketMessage,
@@ -252,9 +236,12 @@ describe('MessageErrors', () => {
 
         await user.click(screen.getByRole('button', { name: 'Retry' }))
 
-        expect(mockToastError).toHaveBeenCalledWith(
-            'Message was not sent. Please try again in a few moments. If the problem persists, contact us.',
-        )
+        const toast = await screen.findByRole('status')
+        expect(
+            within(toast).getByText(
+                'Message was not sent. Please try again in a few moments. If the problem persists, contact us.',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('notifies when deleting a persisted message fails', async () => {
@@ -272,9 +259,12 @@ describe('MessageErrors', () => {
 
         await user.click(screen.getByRole('button', { name: 'Cancel Message' }))
 
-        expect(mockToastError).toHaveBeenCalledWith(
-            'Failed to delete message 456 from ticket 123',
-        )
+        const toast = await screen.findByRole('status')
+        expect(
+            within(toast).getByText(
+                'Failed to delete message 456 from ticket 123',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('splits long failed message text between title and content', () => {

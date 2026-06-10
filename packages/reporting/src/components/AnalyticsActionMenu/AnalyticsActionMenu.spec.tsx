@@ -2,28 +2,6 @@ import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = await importOriginal()
-    return {
-        ...(actual as object),
-        Tooltip: ({
-            trigger,
-            children,
-        }: {
-            trigger: unknown
-            children: unknown
-        }) => (
-            <>
-                {trigger as React.ReactNode}
-                {children as React.ReactNode}
-            </>
-        ),
-        TooltipContent: ({ title }: { title: string }) => (
-            <div role="tooltip">{title}</div>
-        ),
-    }
-})
-
 import { AnalyticsActionMenu } from './AnalyticsActionMenu'
 import type { AnalyticsActionItem } from './AnalyticsActionMenu'
 
@@ -92,8 +70,8 @@ describe('AnalyticsActionMenu', () => {
         })
 
         describe('with tooltip', () => {
-            it('renders tooltip content when tooltip is provided', () => {
-                render(
+            it('renders tooltip content when tooltip is provided', async () => {
+                const { user } = render(
                     <AnalyticsActionMenu
                         actions={[
                             { ...downloadAction, tooltip: 'Export data' },
@@ -101,7 +79,11 @@ describe('AnalyticsActionMenu', () => {
                     />,
                 )
 
-                expect(screen.getByRole('tooltip')).toHaveTextContent(
+                await user.hover(
+                    screen.getByRole('button', { name: 'Export as CSV' }),
+                )
+
+                expect(await screen.findByRole('tooltip')).toHaveTextContent(
                     'Export data',
                 )
             })

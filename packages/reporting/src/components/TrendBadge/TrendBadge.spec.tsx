@@ -1,6 +1,7 @@
-import { act, render, screen } from '@testing-library/react'
+import { render } from '@repo/testing/vitest'
+import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { vi } from 'vitest'
+import { afterEach, beforeEach, vi } from 'vitest'
 
 import {
     DEFAULT_BADGE_TEXT,
@@ -10,20 +11,6 @@ import {
 import { formatMetricTrend, formatMetricValue } from '../../utils/helpers'
 import { TrendBadge } from './TrendBadge'
 
-vi.mock('@gorgias/axiom', async (importOriginal) => ({
-    ...(await importOriginal()),
-    Skeleton: () => <div role="progressbar" />,
-    Tooltip: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
-    TooltipContent: ({ title }: { title: string }) => (
-        <div role="tooltip">{title}</div>
-    ),
-}))
-
 describe('<TrendBadge />', () => {
     it('should render the badge with default value when no values provided', () => {
         render(<TrendBadge />)
@@ -32,9 +19,11 @@ describe('<TrendBadge />', () => {
     })
 
     it('should render the loading skeleton', () => {
-        render(<TrendBadge isLoading />)
+        const { container } = render(<TrendBadge isLoading />)
 
-        expect(screen.getByRole('progressbar')).toBeInTheDocument()
+        expect(
+            container.querySelector('[data-name="skeleton"]'),
+        ).toBeInTheDocument()
     })
 
     it('should render undefined variation text when prev value is zero and current value is non-zero', () => {
@@ -59,33 +48,44 @@ describe('<TrendBadge />', () => {
         expect(screen.queryByRole('img')).not.toBeInTheDocument()
     })
 
-    it('should render Badge tooltip', async () => {
-        const badgeClass = 'badge'
-        const value = 5
-        const prevValue = 10
-        const tooltipData = { period: 'random text' }
-        const tooltipResultingText = `Compared to ${formatMetricValue(prevValue)} on ${tooltipData.period}`
+    describe('tooltip', () => {
+        beforeEach(() => {
+            vi.useFakeTimers()
+        })
 
-        render(
-            <TrendBadge
-                className={badgeClass}
-                interpretAs="more-is-better"
-                value={value}
-                prevValue={prevValue}
-                tooltipData={tooltipData}
-            />,
-        )
-        const badge = document.querySelector(`[class*=${badgeClass}]`)
+        afterEach(() => {
+            vi.runOnlyPendingTimers()
+            vi.useRealTimers()
+        })
 
-        if (badge) {
-            await act(async () => {
-                await userEvent.hover(badge)
+        it('should render Badge tooltip', async () => {
+            const user = userEvent.setup({
+                advanceTimers: vi.advanceTimersByTime,
             })
-        }
+            const value = 5
+            const prevValue = 10
+            const tooltipData = { period: 'random text' }
+            const tooltipResultingText = `Compared to ${formatMetricValue(prevValue)} on ${tooltipData.period}`
 
-        expect(await screen.findByRole('tooltip')).toHaveTextContent(
-            tooltipResultingText,
-        )
+            render(
+                <TrendBadge
+                    interpretAs="more-is-better"
+                    value={value}
+                    prevValue={prevValue}
+                    tooltipData={tooltipData}
+                />,
+            )
+
+            await user.tab()
+
+            await act(async () => {
+                await vi.runAllTimersAsync()
+            })
+
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                tooltipResultingText,
+            )
+        })
     })
 
     it('should render a formatted value when a value is provided', () => {

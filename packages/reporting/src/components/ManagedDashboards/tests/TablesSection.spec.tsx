@@ -1,11 +1,9 @@
-import { createContext, useContext, useState } from 'react'
+import { useState } from 'react'
 
 import { render } from '@repo/testing/vitest'
-import { act, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type * as Axiom from '@gorgias/axiom'
 
 import { useSaveSelectedTable } from '../hooks/useSaveSelectedTable'
 import { TablesSection } from '../TablesSection'
@@ -40,60 +38,6 @@ const mockSaveSelectedTable = vi.fn()
 let saveSelectedTableImpl = (chartId: string) => {
     mockSaveSelectedTable(chartId)
 }
-
-const ButtonGroupContext = createContext<{
-    selectedKey: string | undefined
-    onSelectionChange: (key: string) => void
-}>({ selectedKey: undefined, onSelectionChange: () => {} })
-
-vi.mock('@gorgias/axiom', async (importOriginal) => {
-    const actual = (await importOriginal()) as typeof Axiom
-    return {
-        ...actual,
-        ButtonGroup: ({
-            children,
-            selectedKey,
-            onSelectionChange,
-        }: {
-            children: React.ReactNode
-            selectedKey?: string
-            onSelectionChange?: (key: string) => void
-        }) => (
-            <ButtonGroupContext.Provider
-                value={{
-                    selectedKey,
-                    onSelectionChange: onSelectionChange ?? (() => {}),
-                }}
-            >
-                <div role="group">{children}</div>
-            </ButtonGroupContext.Provider>
-        ),
-        ButtonGroupItem: ({
-            children,
-            id,
-        }: {
-            children: React.ReactNode
-            id?: string
-        }) => {
-            const { selectedKey, onSelectionChange } =
-                useContext(ButtonGroupContext)
-            return (
-                <button
-                    role="radio"
-                    aria-checked={id === selectedKey}
-                    onClick={() =>
-                        id &&
-                        act(() => {
-                            onSelectionChange(id)
-                        })
-                    }
-                >
-                    {children}
-                </button>
-            )
-        },
-    }
-})
 
 const ARTICLE_RECOMMENDATION_TABLE_CHART_ID = 'article_recommendation_table'
 
