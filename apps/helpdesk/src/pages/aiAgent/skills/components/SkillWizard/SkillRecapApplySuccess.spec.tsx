@@ -4,7 +4,20 @@ import { MemoryRouter, Route, Switch, useLocation } from 'react-router-dom'
 
 import { ThemeProvider } from 'core/theme'
 
+import doneAnimation from 'assets/img/ai-agent/skill_wizrad_done.json'
+
 import { SkillRecapApplySuccess } from './SkillRecapApplySuccess'
+
+jest.mock('lottie-react', () => ({
+    __esModule: true,
+    default: jest.fn(({ animationData, ...props }) => (
+        <div
+            data-testid="lottie-animation"
+            data-animation-data={JSON.stringify(animationData)}
+            {...props}
+        />
+    )),
+}))
 
 const SHOP_NAME = 'ekster'
 const SUCCESS_PATH = `/app/ai-agent/shopify/${SHOP_NAME}/skills/wizard/success`
@@ -106,5 +119,18 @@ describe('SkillRecapApplySuccess', () => {
 
         // Outer Switch is unmounted so neither route content remains
         expect(screen.queryByText('Skills landing')).not.toBeInTheDocument()
+    })
+
+    it('renders the done animation hidden from assistive technology', () => {
+        renderSuccess({ liveSkillsCount: 1 })
+
+        const animation = screen.getByTestId('lottie-animation')
+
+        expect(animation).toBeInTheDocument()
+        expect(animation).toHaveAttribute('aria-hidden', 'true')
+        expect(animation).toHaveAttribute(
+            'data-animation-data',
+            JSON.stringify(doneAnimation),
+        )
     })
 })

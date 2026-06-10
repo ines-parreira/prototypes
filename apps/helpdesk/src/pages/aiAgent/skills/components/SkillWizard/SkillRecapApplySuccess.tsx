@@ -1,9 +1,12 @@
 import { useEffect } from 'react'
+import Lottie from 'lottie-react'
 import { Duration } from '@gorgias/toolkit'
 
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Heading, Text } from '@gorgias/axiom'
+
+import doneAnimation from 'assets/img/ai-agent/skill_wizrad_done.json'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
@@ -33,19 +36,22 @@ export const SkillRecapApplySuccess = ({ liveSkillsCount }: Props) => {
             gap="sm"
             height="100%"
         >
-            <Box
-                w={115}
-                h={115}
-                aria-hidden="true"
-                style={{ backgroundColor: '#d9d9d9' }}
-            />
+            <Box w={115} h={115}>
+                <Lottie
+                    animationData={doneAnimation}
+                    loop={true}
+                    autoplay={true}
+                    aria-hidden="true"
+                    aria-label="Skills applied successfully"
+                />
+            </Box>
             <Box flexDirection="column" gap="xs" alignItems="center">
                 <Heading size="lg">
                     {liveSkillsCount} {skillNoun} live
                 </Heading>
                 <Text>
-                    Your AI Agent will now follow your instructions based on
-                    customer intent.
+                    Your AI Agent will now follow your skills based on customer
+                    intent.
                 </Text>
                 <Text size="sm" color="content-neutral-secondary">
                     Taking you to skills...

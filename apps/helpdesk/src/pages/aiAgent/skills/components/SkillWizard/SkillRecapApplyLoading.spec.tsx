@@ -3,7 +3,20 @@ import { screen } from '@testing-library/react'
 
 import { ThemeProvider } from 'core/theme'
 
+import loadingAnimation from 'assets/img/ai-agent/skill_wizard_loading.json'
+
 import { SkillRecapApplyLoading } from './SkillRecapApplyLoading'
+
+jest.mock('lottie-react', () => ({
+    __esModule: true,
+    default: jest.fn(({ animationData, ...props }) => (
+        <div
+            data-testid="lottie-animation"
+            data-animation-data={JSON.stringify(animationData)}
+            {...props}
+        />
+    )),
+}))
 
 const renderLoading = (message: string) =>
     render(
@@ -46,5 +59,18 @@ describe('SkillRecapApplyLoading', () => {
         expect(
             screen.queryByText('Enabling your skills...'),
         ).not.toBeInTheDocument()
+    })
+
+    it('renders the loading animation hidden from assistive technology', () => {
+        renderLoading('Enabling your skills...')
+
+        const animation = screen.getByTestId('lottie-animation')
+
+        expect(animation).toBeInTheDocument()
+        expect(animation).toHaveAttribute('aria-hidden', 'true')
+        expect(animation).toHaveAttribute(
+            'data-animation-data',
+            JSON.stringify(loadingAnimation),
+        )
     })
 })
