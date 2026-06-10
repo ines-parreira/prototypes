@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { ConfigurableGraph } from '@repo/reporting'
 
 import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
+import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { firstResponseTimeTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/firstResponseTime'
 import { messagesPerTicketTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/messagesPerTicket'
@@ -49,6 +50,7 @@ export const PerformanceOverviewConfigurableLineGraph = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
@@ -62,6 +64,11 @@ export const PerformanceOverviewConfigurableLineGraph = ({
             ),
         [cleanStatsFilters, userTimezone, granularity],
     )
+
+    const { savePreferences } = useSaveCustomDashboardPreference({
+        dashboard,
+        configId: customDashboardChartSchema?.config_id ?? '',
+    })
 
     const actionMenu =
         chartId && chartConfig ? (
@@ -77,6 +84,8 @@ export const PerformanceOverviewConfigurableLineGraph = ({
             metrics={metrics}
             analyticsChartId={chartId ?? ''}
             actionMenu={actionMenu}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSelect={savePreferences}
         />
     )
 }

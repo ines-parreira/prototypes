@@ -395,8 +395,10 @@ describe('useDownloadDashboardData', () => {
                     type: DashboardChildType.Chart,
                     config_id: configurableChartId,
                     metadata: {
-                        savedMeasure: 'automationRate',
-                        savedDimension: 'channel',
+                        preferences: {
+                            measures: ['automationRate'],
+                            dimensions: ['channel'],
+                        },
                     },
                 },
             ],

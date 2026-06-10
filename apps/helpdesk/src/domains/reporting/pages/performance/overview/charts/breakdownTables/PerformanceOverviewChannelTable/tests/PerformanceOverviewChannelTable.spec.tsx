@@ -1,6 +1,12 @@
 import { assumeMock, render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { PerformanceOverviewChannelTable } from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewChannelTable'
 import type { PerformanceOverviewEntityMetrics } from 'domains/reporting/pages/performance/overview/config/breakdownTableMetrics'
 import { useDownloadPerformanceOverviewChannelData } from 'domains/reporting/pages/performance/overview/hooks/channelBreakdown/useDownloadPerformanceOverviewChannelData'
@@ -13,6 +19,8 @@ jest.mock(
 jest.mock(
     'domains/reporting/pages/performance/overview/hooks/channelBreakdown/useDownloadPerformanceOverviewChannelData',
 )
+
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
 
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
@@ -42,8 +50,14 @@ const mockUsePerformanceOverviewChannelMetrics = assumeMock(
 const mockUseDownloadPerformanceOverviewChannelData = assumeMock(
     useDownloadPerformanceOverviewChannelData,
 )
+const mockUseCustomDashboardTableColumns = assumeMock(
+    useCustomDashboardTableColumns,
+)
 
 beforeEach(() => {
+    mockUseCustomDashboardTableColumns.mockReturnValue({
+        onSaveColumns: undefined,
+    })
     mockUseDownloadPerformanceOverviewChannelData.mockReturnValue({
         files: {},
         fileName: '',
@@ -220,5 +234,64 @@ describe('PerformanceOverviewChannelTable', () => {
         expect(
             screen.queryByRole('button', { name: /download/i }),
         ).not.toBeInTheDocument()
+    })
+
+    it('passes customDashboardChartSchema to useCustomDashboardTableColumns when provided', () => {
+        const customDashboardChartSchema: DashboardChartSchema = {
+            type: DashboardChildType.Chart,
+            config_id: 'performance-overview-channel-table',
+        }
+
+        mockUsePerformanceOverviewChannelMetrics.mockReturnValue({
+            data: [emailRow, chatRow],
+            loadingStates: defaultLoadingStates,
+            isLoading: false,
+            isError: false,
+        })
+
+        render(
+            <PerformanceOverviewChannelTable
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
+
+        expect(mockUseCustomDashboardTableColumns).toHaveBeenCalledWith(
+            expect.objectContaining({ customDashboardChartSchema }),
+        )
+    })
+
+    it('passes dashboard to useCustomDashboardTableColumns and renders the table label', () => {
+        const dashboard: DashboardSchema = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        mockUsePerformanceOverviewChannelMetrics.mockReturnValue({
+            data: [emailRow, chatRow],
+            loadingStates: defaultLoadingStates,
+            isLoading: false,
+            isError: false,
+        })
+
+        render(
+            <PerformanceOverviewChannelTable
+                dashboard={dashboard}
+                chartConfig={{ label: 'Channels' }}
+                customDashboardChartSchema={{
+                    type: DashboardChildType.Chart,
+                    config_id: 'performance-overview-channel-table',
+                }}
+            />,
+        )
+
+        expect(mockUseCustomDashboardTableColumns).toHaveBeenCalledWith(
+            expect.objectContaining({ dashboard }),
+        )
+        expect(
+            screen.getByText('Performance breakdown by Channels'),
+        ).toBeInTheDocument()
     })
 })

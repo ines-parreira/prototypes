@@ -2,8 +2,12 @@ import { useMemo } from 'react'
 
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import { FLOWS_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
 import {
     DownloadFlowsButton,
@@ -16,7 +20,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const FlowsTable = ({
@@ -24,11 +28,15 @@ export const FlowsTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const { data = [], loadingStates, displayNames } = useFlowsMetrics()
     const exportCsvAction = useDownloadFlowsAction()
     const withMenu = withChartMenu && chartId
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
 
     const nameColumns = useMemo(
         () => [{ accessor: 'entity', label: 'Flows', displayNames }],
@@ -53,8 +61,9 @@ export const FlowsTable = ({
                 ) : undefined
             }
             chartId={chartId}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

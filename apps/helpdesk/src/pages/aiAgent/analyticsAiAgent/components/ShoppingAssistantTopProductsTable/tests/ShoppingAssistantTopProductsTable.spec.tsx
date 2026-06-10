@@ -1,8 +1,11 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import type { ShoppingAssistantTopProductRow } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 
@@ -28,6 +31,7 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics',
 )
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
 
 const mockReportingMetricBreakdownTable = assumeMock(
     ReportingMetricBreakdownTable,
@@ -35,6 +39,10 @@ const mockReportingMetricBreakdownTable = assumeMock(
 const mockUseShoppingAssistantTopProductsMetrics = assumeMock(
     useShoppingAssistantTopProductsMetrics,
 )
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultFlatData: ShoppingAssistantTopProductRow[] = [
     {
@@ -84,7 +92,8 @@ const getLastCallProps = () =>
         getRowKey: (row: ShoppingAssistantTopProductRow) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: {
             accessor: string
@@ -104,6 +113,9 @@ describe('ShoppingAssistantTopProductsTable', () => {
         mockReportingMetricBreakdownTable.mockImplementation(
             ({ DownloadButton }) => <div>{DownloadButton}</div>,
         )
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
     })
 
     it('passes flat data to ReportingMetricBreakdownTable', () => {
@@ -251,15 +263,6 @@ describe('ShoppingAssistantTopProductsTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
-            defaultMockReturn,
-        )
-        render(<ShoppingAssistantTopProductsTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
             defaultMockReturn,
@@ -271,5 +274,45 @@ describe('ShoppingAssistantTopProductsTable', () => {
         )
 
         expect(getLastCallProps().name).toBe('Top Products')
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        const schema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <ShoppingAssistantTopProductsTable
+                customDashboardChartSchema={schema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(schema)
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <ShoppingAssistantTopProductsTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

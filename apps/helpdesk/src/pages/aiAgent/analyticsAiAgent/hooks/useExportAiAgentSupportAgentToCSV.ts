@@ -3,12 +3,12 @@ import { useCallback, useMemo } from 'react'
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
+import { buildDashboardSchemaFromLayout } from 'domains/reporting/utils/buildDashboardSchemaFromLayout'
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { saveZippedFiles } from 'utils/file'
 
@@ -26,7 +26,7 @@ export const useExportAiAgentSupportAgentToCSV = () => {
     })
 
     const supportAgentDashboard = useMemo(
-        () => buildCustomDashboard(REPORT_NAME, layoutConfig),
+        () => buildDashboardSchemaFromLayout(layoutConfig, REPORT_NAME),
         [layoutConfig],
     )
 

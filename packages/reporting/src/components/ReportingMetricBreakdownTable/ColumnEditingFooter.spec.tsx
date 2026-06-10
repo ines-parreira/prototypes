@@ -4,15 +4,22 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { ColumnEditingFooter } from './ColumnEditingFooter'
 
-const SAVED_COLUMNS = ['name', 'automationRate']
-const VISIBLE_COLUMNS = ['name', 'automationRate', 'handovers']
+const SAVED_COLUMNS = [
+    { column_id: 'name', visible: true },
+    { column_id: 'automationRate', visible: true },
+]
+const COLUMNS = [
+    { column_id: 'name', visible: true },
+    { column_id: 'automationRate', visible: true },
+    { column_id: 'handovers', visible: true },
+]
 
 function renderFooter(
     overrides: Partial<React.ComponentProps<typeof ColumnEditingFooter>> = {},
 ) {
     const props = {
         setIsOpen: vi.fn(),
-        visibleColumns: VISIBLE_COLUMNS,
+        columns: COLUMNS,
         setVisibleColumns: vi.fn(),
         savedColumns: SAVED_COLUMNS,
         setSavedColumns: vi.fn(),
@@ -38,13 +45,15 @@ describe('ColumnEditingFooter', () => {
     describe('Cancel', () => {
         it('closes the panel and resets visible columns to saved columns', async () => {
             const user = userEvent.setup()
-            const { setIsOpen, setVisibleColumns, savedColumns } =
-                renderFooter()
+            const { setIsOpen, setVisibleColumns } = renderFooter()
 
             await user.click(screen.getByRole('button', { name: /cancel/i }))
 
             expect(setIsOpen).toHaveBeenCalledWith(false)
-            expect(setVisibleColumns).toHaveBeenCalledWith(savedColumns)
+            expect(setVisibleColumns).toHaveBeenCalledWith([
+                'name',
+                'automationRate',
+            ])
         })
 
         it('does not save or call onSaveVisibleColumns', async () => {
@@ -56,27 +65,48 @@ describe('ColumnEditingFooter', () => {
             expect(setSavedColumns).not.toHaveBeenCalled()
             expect(onSaveVisibleColumns).not.toHaveBeenCalled()
         })
+
+        it('resets only visible columns when saved state has hidden columns', async () => {
+            const user = userEvent.setup()
+            const savedWithHidden = [
+                { column_id: 'name', visible: true },
+                { column_id: 'automationRate', visible: false },
+            ]
+            const { setVisibleColumns } = renderFooter({
+                savedColumns: savedWithHidden,
+            })
+
+            await user.click(screen.getByRole('button', { name: /cancel/i }))
+
+            expect(setVisibleColumns).toHaveBeenCalledWith(['name'])
+        })
     })
 
     describe('Save', () => {
-        it('closes the panel and persists the visible columns', async () => {
+        it('closes the panel and persists all columns including hidden ones', async () => {
             const user = userEvent.setup()
-            const { setIsOpen, setSavedColumns, visibleColumns } =
-                renderFooter()
+            const columnsWithHidden = [
+                { column_id: 'name', visible: true },
+                { column_id: 'automationRate', visible: false },
+                { column_id: 'handovers', visible: true },
+            ]
+            const { setIsOpen, setSavedColumns } = renderFooter({
+                columns: columnsWithHidden,
+            })
 
             await user.click(screen.getByRole('button', { name: /save/i }))
 
             expect(setIsOpen).toHaveBeenCalledWith(false)
-            expect(setSavedColumns).toHaveBeenCalledWith(visibleColumns)
+            expect(setSavedColumns).toHaveBeenCalledWith(columnsWithHidden)
         })
 
-        it('calls onSaveVisibleColumns with the current visible columns', async () => {
+        it('calls onSaveVisibleColumns with all columns in order', async () => {
             const user = userEvent.setup()
-            const { onSaveVisibleColumns, visibleColumns } = renderFooter()
+            const { onSaveVisibleColumns } = renderFooter()
 
             await user.click(screen.getByRole('button', { name: /save/i }))
 
-            expect(onSaveVisibleColumns).toHaveBeenCalledWith(visibleColumns)
+            expect(onSaveVisibleColumns).toHaveBeenCalledWith(COLUMNS)
         })
 
         it('does not throw when onSaveVisibleColumns is not provided', async () => {

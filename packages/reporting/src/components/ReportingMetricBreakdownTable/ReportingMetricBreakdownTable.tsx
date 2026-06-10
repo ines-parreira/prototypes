@@ -9,6 +9,7 @@ import {
     DataTableColumnEditing,
     Text,
 } from '@gorgias/axiom'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
 import css from './ReportingMetricBreakdownTable.less'
 
@@ -26,6 +27,14 @@ import type {
 export type { MetricColumnConfig, MetricLoadingStates, NameColumnConfig }
 export { buildMetricColumnDefs }
 
+type ChartSchemaWithPreferences = {
+    metadata?: {
+        preferences?: {
+            columns?: ColumnConfig[] | null
+        }
+    }
+}
+
 type Props<TData> = {
     actionMenu?: ReactNode
     data: TData[]
@@ -34,9 +43,10 @@ type Props<TData> = {
     DownloadButton?: ReactNode
     nameColumns: NameColumnConfig[]
     chartId?: string
-    isCustomDashboard?: boolean
     name?: string
     enableSearch?: boolean
+    customDashboardChartSchema?: ChartSchemaWithPreferences
+    onSaveColumns?: (columns: ColumnConfig[]) => void
 }
 
 export function ReportingMetricBreakdownTable<TData>({
@@ -47,10 +57,12 @@ export function ReportingMetricBreakdownTable<TData>({
     DownloadButton,
     nameColumns,
     chartId,
-    isCustomDashboard,
     name,
     enableSearch,
+    customDashboardChartSchema,
+    onSaveColumns,
 }: Props<TData>) {
+    const isCustomDashboard = !!customDashboardChartSchema
     const columns = useMemo(
         () => [
             ...nameColumns.map((col) => buildNameColDef<TData>(col)),
@@ -74,59 +86,85 @@ export function ReportingMetricBreakdownTable<TData>({
     const savedItem = context?.layoutConfig.sections
         .flatMap((s) => s.items)
         .find((item) => item.chartId === chartId)
-    const defaultVisibleColumns = savedItem?.visibleColumns ?? undefined
+    const schemaColumns =
+        customDashboardChartSchema?.metadata?.preferences?.columns
+    const defaultVisibleColumns = useMemo(
+        () =>
+            (schemaColumns
+                ? schemaColumns
+                      .filter((c) => c.visible !== false)
+                      .map((c) => c.column_id)
+                : undefined) ??
+            savedItem?.visibleColumns ??
+            undefined,
+        [schemaColumns, savedItem?.visibleColumns],
+    )
     const isLoaded = context !== null ? context.isLoaded : true
     const tabId = context?.tabId
 
     const onSaveVisibleColumns = useCallback(
-        (visibleColumns: string[]) => {
-            saveVisibleColumns(chartId ?? '', visibleColumns)
+        (cols: ColumnConfig[]) => {
+            saveVisibleColumns(
+                chartId ?? '',
+                cols.filter((c) => c.visible).map((c) => c.column_id),
+            )
+            onSaveColumns?.(cols)
         },
-        [chartId, saveVisibleColumns],
+        [chartId, saveVisibleColumns, onSaveColumns],
     )
 
-    const [savedColumns, setSavedColumns] = useState<string[]>(() => {
-        if (defaultVisibleColumns === undefined) {
-            return [
-                ...nameColumnLabels,
-                ...metricColumns.map((col) => col.accessorKey),
-            ]
-        }
-        return [
-            ...nameColumnLabels,
-            ...defaultVisibleColumns.filter(
-                (col) => !nameColumnLabels.includes(col),
-            ),
-        ]
+    const [savedColumns, setSavedColumns] = useState<ColumnConfig[]>(() => {
+        const initial = schemaColumns
+            ? schemaColumns.filter(
+                  (c) => !nameColumnLabels.includes(c.column_id),
+              )
+            : defaultVisibleColumns
+                  ?.filter((id) => !nameColumnLabels.includes(id))
+                  .map((id) => ({ column_id: id, visible: true as const }))
+        return (
+            initial ??
+            metricColumns.map((col) => ({
+                column_id: col.accessorKey,
+                visible: true as const,
+            }))
+        )
     })
-    // make sure we correctly re-render once the saved columns are loaded on refresh
     const [tableKey, setTableKey] = useState(`loading-preferences`)
 
     const handleSetSavedColumns = useCallback(
-        (columns: string[]) =>
-            setSavedColumns([
-                ...nameColumnLabels,
-                ...columns.filter((col) => !nameColumnLabels.includes(col)),
-            ]),
+        (cols: ColumnConfig[]) =>
+            setSavedColumns(
+                cols.filter((c) => !nameColumnLabels.includes(c.column_id)),
+            ),
         [nameColumnLabels],
     )
 
     useEffect(() => {
         if (isLoaded && defaultVisibleColumns !== undefined) {
-            handleSetSavedColumns(defaultVisibleColumns)
+            handleSetSavedColumns(
+                schemaColumns ??
+                    defaultVisibleColumns.map((id) => ({
+                        column_id: id,
+                        visible: true as const,
+                    })),
+            )
             setTableKey('loaded-preferences')
         }
-    }, [isLoaded, defaultVisibleColumns, handleSetSavedColumns])
+    }, [isLoaded, defaultVisibleColumns, schemaColumns, handleSetSavedColumns])
 
     const renderFooter = useCallback(
         ({
             setIsOpen,
             visibleColumns,
+            orderedColumns,
             setVisibleColumns,
         }: DataTableColumnEditingRenderProps) => (
             <ColumnEditingFooter
                 setIsOpen={setIsOpen}
-                visibleColumns={visibleColumns}
+                columns={orderedColumns.map((column_id) => ({
+                    column_id,
+                    visible: visibleColumns.includes(column_id),
+                }))}
                 setVisibleColumns={setVisibleColumns}
                 savedColumns={savedColumns}
                 setSavedColumns={handleSetSavedColumns}
@@ -179,7 +217,12 @@ export function ReportingMetricBreakdownTable<TData>({
                 }
                 columnEditing={{
                     enable: true,
-                    defaultVisibleColumns: savedColumns,
+                    defaultVisibleColumns: [
+                        ...nameColumnLabels,
+                        ...savedColumns
+                            .filter((c) => c.visible)
+                            .map((c) => c.column_id),
+                    ],
                     persist: false,
                 }}
                 pagination={{

@@ -1,7 +1,10 @@
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import { ArticleRecommendationTable } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/ArticleRecommendationTable'
 import { ARTICLE_RECOMMENDATION_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
 import type { ArticleRecommendationRow } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
@@ -36,9 +39,15 @@ jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics',
 )
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
 const mockUseArticleRecommendationMetrics = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics',
 ).useArticleRecommendationMetrics as jest.Mock
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultLoadingStates = {
     successRate: false,
@@ -91,7 +100,8 @@ const getLastCallProps = () =>
         getRowKey: (row: ArticleRecommendationRow) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: {
             accessor: string
@@ -102,6 +112,12 @@ const getLastCallProps = () =>
     }
 
 describe('ArticleRecommendationTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -226,19 +242,6 @@ describe('ArticleRecommendationTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseArticleRecommendationMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-            displayNames: defaultDisplayNames,
-            isLoading: false,
-            isError: false,
-        })
-        render(<ArticleRecommendationTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUseArticleRecommendationMetrics.mockReturnValue({
             data: defaultData,
@@ -262,5 +265,41 @@ describe('ArticleRecommendationTable', () => {
         expect(
             screen.getByText('Download Article Recommendation'),
         ).toBeInTheDocument()
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        const customDashboardChartSchema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <ArticleRecommendationTable
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(
+            customDashboardChartSchema,
+        )
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <ArticleRecommendationTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

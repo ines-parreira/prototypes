@@ -6,9 +6,11 @@ import { screen } from '@testing-library/react'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type {
     DashboardChartProps,
+    DashboardChartSchema,
     DashboardSchema,
     ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 
 jest.mock(
@@ -97,9 +99,29 @@ describe('<DashboardComponent />', () => {
             {
                 chartConfig: { chartComponent: chartComponentMock },
                 chartId: chart,
-                isCustomDashboard: undefined,
                 withChartMenu: false,
             },
+            {},
+        )
+    })
+
+    it('should pass schema to the chart component when provided', () => {
+        const schema: DashboardChartSchema = {
+            type: DashboardChildType.Chart,
+            config_id: chart,
+        }
+
+        render(
+            <DashboardComponent
+                chart={chart}
+                config={config}
+                dashboard={dashboard}
+                customDashboardChartSchema={schema}
+            />,
+        )
+
+        expect(chartComponentMock).toHaveBeenCalledWith(
+            expect.objectContaining({ customDashboardChartSchema: schema }),
             {},
         )
     })
@@ -120,7 +142,6 @@ describe('<DashboardComponent />', () => {
             {
                 chartId: chart,
                 dashboard,
-                isCustomDashboard: undefined,
                 withChartMenu: true,
                 chartConfig: { chartComponent: chartComponentMock },
             },

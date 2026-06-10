@@ -3,9 +3,9 @@ import { act } from '@testing-library/react'
 
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
+import { buildDashboardSchemaFromLayout } from 'domains/reporting/utils/buildDashboardSchemaFromLayout'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
-import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import * as fileUtils from 'utils/file'
 
@@ -15,7 +15,7 @@ jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useGetManagedDashboardsLayoutConfig: jest.fn(),
 }))
-jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
+jest.mock('domains/reporting/utils/buildDashboardSchemaFromLayout')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -26,7 +26,9 @@ const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
-const mockedBuildCustomDashboard = jest.mocked(buildCustomDashboard)
+const mockedBuildDashboardSchemaFromLayout = jest.mocked(
+    buildDashboardSchemaFromLayout,
+)
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
 const mockPeriod = {
@@ -49,7 +51,7 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             isLoading: false,
         })
 
-        mockedBuildCustomDashboard.mockReturnValue({
+        mockedBuildDashboardSchemaFromLayout.mockReturnValue({
             id: -1,
             name: 'analytics-overview',
             analytics_filter_id: null,
@@ -110,12 +112,12 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         )
     })
 
-    it('should call buildCustomDashboard with the name and layout', () => {
+    it('should call buildDashboardSchemaFromLayout with the layout and name', () => {
         renderHook(() => useExportAnalyticsOverviewToCSV())
 
-        expect(mockedBuildCustomDashboard).toHaveBeenCalledWith(
-            'analytics-overview',
+        expect(mockedBuildDashboardSchemaFromLayout).toHaveBeenCalledWith(
             expect.any(Object),
+            'analytics-overview',
         )
     })
 

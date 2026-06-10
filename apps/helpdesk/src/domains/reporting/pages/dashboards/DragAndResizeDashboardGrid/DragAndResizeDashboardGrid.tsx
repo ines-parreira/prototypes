@@ -90,7 +90,7 @@ const renderCharts = (
                     <div className={css.chartCardArea}>
                         <div className="drag-handle" aria-hidden="true" />
                         <DragAndResizeChart
-                            schema={chart}
+                            customDashboardChartSchema={chart}
                             dashboard={dashboard}
                         />
                     </div>
@@ -235,6 +235,7 @@ export const DragAndResizeDashboardGrid = ({
                         return {
                             ...child,
                             metadata: {
+                                ...child.metadata,
                                 layout: savedLayout,
                             },
                         }

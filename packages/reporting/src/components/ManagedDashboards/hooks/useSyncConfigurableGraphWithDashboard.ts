@@ -5,8 +5,18 @@ import { useSaveConfigurableGraphSelection } from './useSaveConfigurableGraphSel
 
 type Selection = { measure: string; dimension: string }
 
+export type ChartSchemaWithGraphPreferences = {
+    metadata?: {
+        preferences?: {
+            measures?: string[] | null
+            dimensions?: string[] | null
+        }
+    }
+}
+
 type Params = {
     analyticsChartId?: string
+    customDashboardChartSchema?: ChartSchemaWithGraphPreferences
     initialMeasure?: string
     initialDimension?: string
     onSelect?: (selection: Selection) => void
@@ -33,6 +43,7 @@ type Result = {
  */
 export function useSyncConfigurableGraphWithDashboard({
     analyticsChartId,
+    customDashboardChartSchema,
     initialMeasure,
     initialDimension,
     onSelect: callerOnSelect,
@@ -63,10 +74,16 @@ export function useSyncConfigurableGraphWithDashboard({
         [isActive, saveSelection, callerOnSelect],
     )
 
+    const schemaPreferences = customDashboardChartSchema?.metadata?.preferences
+    const isCustomDashboard = customDashboardChartSchema !== undefined
     return {
         remountKey: `${analyticsChartId ?? ''}-${dashboardContext?.isLoaded ?? false}`,
-        initialMeasure: savedItem?.measures?.[0] ?? initialMeasure,
-        initialDimension: savedItem?.dimensions?.[0] ?? initialDimension,
+        initialMeasure: isCustomDashboard
+            ? (schemaPreferences?.measures?.[0] ?? initialMeasure)
+            : (savedItem?.measures?.[0] ?? initialMeasure),
+        initialDimension: isCustomDashboard
+            ? (schemaPreferences?.dimensions?.[0] ?? initialDimension)
+            : (savedItem?.dimensions?.[0] ?? initialDimension),
         onSelect,
     }
 }

@@ -38,6 +38,7 @@ import {
     getGroupChartsIntoRows,
     getNumberOfSelections,
     getReportsConfigSearchResult,
+    updateChartPreferencesInDashboard,
 } from 'domains/reporting/pages/dashboards/utils'
 import {
     SatisfactionChart,
@@ -318,6 +319,61 @@ describe('dashboardFromApi', () => {
             type: DashboardChildType.Chart,
             config_id: 'chart_undefined_metadata',
             metadata: {},
+        })
+    })
+
+    it('should preserve preferences metadata from API chart', () => {
+        const preferences = {
+            measures: ['automationRate'],
+            dimensions: ['channel'],
+        }
+
+        const chartWithPreferences: AnalyticsCustomReportChartSchema = {
+            config_id: 'chart_with_preferences',
+            metadata: { preferences },
+            type: AnalyticsCustomReportRowSchemaChildrenItemType.Chart,
+        }
+
+        const apiReport = {
+            account_id: 0,
+            analytics_filter_id: 0,
+            children: [chartWithPreferences],
+            created_by: 0,
+            created_datetime: '2025-01-01T00:00:00.000Z',
+            deleted_datetime: null,
+            id: 0,
+            name: 'some name',
+            emoji: null,
+            type: AnalyticsCustomReportType.Custom,
+            updated_by: 0,
+            updated_datetime: '2025-01-01T00:00:00.000Z',
+        }
+
+        const result = dashboardFromApi(apiReport)
+
+        expect(result?.children[0]).toEqual({
+            type: DashboardChildType.Chart,
+            config_id: 'chart_with_preferences',
+            metadata: { preferences },
+        })
+    })
+
+    it('should preserve both layout and preferences metadata from API chart', () => {
+        const layout = { x: 0, y: 0, w: 6, h: 9 }
+        const preferences = { measures: ['measure1'], dimensions: ['dim1'] }
+
+        const chartWithBoth: AnalyticsCustomReportChartSchema = {
+            config_id: 'chart_with_both',
+            metadata: { layout, preferences },
+            type: AnalyticsCustomReportRowSchemaChildrenItemType.Chart,
+        }
+
+        const result = dashboardChartChildFromApi(chartWithBoth)
+
+        expect(result).toEqual({
+            type: DashboardChildType.Chart,
+            config_id: 'chart_with_both',
+            metadata: { layout, preferences },
         })
     })
 })
@@ -759,6 +815,11 @@ describe('getChildrenOfTypeChart', () => {
     })
 })
 
+const createError = (error: any) =>
+    new AxiosError(undefined, undefined, undefined, undefined, {
+        data: { error },
+    } as any)
+
 describe('getErrorMessage(error, defaultMessage)', () => {
     it('should return string', () => {
         const actual = getErrorMessage(null)
@@ -876,120 +937,6 @@ describe('createDashboardPayload', () => {
 
         expect(actual).toEqual(expected)
     })
-})
-
-const createError = (error: any) =>
-    new AxiosError(undefined, undefined, undefined, undefined, {
-        data: { error },
-    } as any)
-
-describe('getErrorMessage(error, defaultMessage)', () => {
-    it('should return string', () => {
-        const actual = getErrorMessage(null)
-
-        expect(typeof actual).toBe('string')
-    })
-
-    it('should return `defaultMessage` if given error is not formatted correctly', () => {
-        const defaultMessage = 'Oops! Something went wrong.'
-
-        const actual = getErrorMessage(null, defaultMessage)
-
-        expect(actual).toBe(defaultMessage)
-    })
-
-    it('should return error message if `error` is an instance of `Error`', () => {
-        const error = new Error('Not Found.')
-
-        const actual = getErrorMessage(error)
-
-        expect(actual).toBe(error.message)
-    })
-
-    it('should construct simple error message', () => {
-        const msg = 'Bad Request.'
-        const error = createError({ msg })
-
-        const actual = getErrorMessage(error)
-
-        expect(actual).toBe(msg)
-    })
-
-    it('should construct error message from error data', () => {
-        const msg = 'Bad Request.'
-        const nameError = 'Name is missing.'
-        const emojiErrors = ['Inappropriate emoji.']
-
-        const error = createError({
-            msg,
-            data: { name: nameError, emoji: emojiErrors },
-        })
-
-        const actual = getErrorMessage(error)
-
-        expect(actual).toBe(msg + ' ' + nameError + ' ' + emojiErrors.join(' '))
-    })
-})
-
-describe('createDashboardPayload', () => {
-    it('should create a dashboard with the correct payload', () => {
-        const dashboard: DashboardInput = {
-            name: 'Test Dashboard',
-            emoji: '🖖',
-            analytics_filter_id: 123,
-            children: [
-                {
-                    type: DashboardChildType.Row,
-                    children: [
-                        {
-                            type: DashboardChildType.Chart,
-                            config_id: 'config_id',
-                        },
-                    ],
-                },
-            ],
-        }
-
-        const expected = {
-            name: 'Test Dashboard',
-            emoji: '🖖',
-            analytics_filter_id: 123,
-            type: 'custom',
-            children: [
-                {
-                    type: DashboardChildType.Row,
-                    metadata: {},
-                    children: [
-                        {
-                            type: DashboardChildType.Chart,
-                            config_id: 'config_id',
-                            metadata: {},
-                        },
-                    ],
-                },
-            ],
-        }
-
-        const actual = createDashboardPayload(dashboard)
-
-        expect(actual).toEqual(expected)
-    })
-
-    it('should create an empty dashboard with the correct payload', () => {
-        const dashboard = { name: 'Test Dashboard' }
-
-        const expected = {
-            name: 'Test Dashboard',
-            emoji: null,
-            analytics_filter_id: null,
-            type: 'custom',
-            children: [],
-        }
-
-        const actual = createDashboardPayload(dashboard)
-
-        expect(actual).toEqual(expected)
-    })
 
     it('should preserve layout metadata in children', () => {
         const dashboard: DashboardInput = {
@@ -1044,6 +991,160 @@ describe('createDashboardPayload', () => {
             config_id: 'chart_without_layout',
             metadata: {},
         })
+    })
+
+    it('should preserve preferences metadata in chart', () => {
+        const preferences = {
+            measures: ['automationRate'],
+            dimensions: ['channel'],
+        }
+
+        const dashboard: DashboardInput = {
+            name: 'Dashboard with preferences',
+            children: [
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: 'chart_with_preferences',
+                    metadata: { preferences },
+                },
+            ],
+        }
+
+        const result = createDashboardPayload(dashboard)
+
+        expect(result.children[0]).toEqual({
+            type: 'chart',
+            config_id: 'chart_with_preferences',
+            metadata: { preferences },
+        })
+    })
+})
+
+describe('updateChartPreferencesInDashboard', () => {
+    const baseDashboard: DashboardSchema = {
+        id: 1,
+        name: 'Test Dashboard',
+        analytics_filter_id: null,
+        emoji: null,
+        children: [
+            {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-1',
+            },
+            {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-2',
+                metadata: {
+                    preferences: { measures: ['old-measure'] },
+                },
+            },
+        ],
+    }
+
+    it('should update preferences on the matching chart', () => {
+        const result = updateChartPreferencesInDashboard(
+            baseDashboard,
+            'chart-1',
+            {
+                measure: 'automationRate',
+                dimension: 'channel',
+            },
+        )
+
+        expect(
+            result.children.find((c) => (c as any).config_id === 'chart-1'),
+        ).toMatchObject({
+            metadata: {
+                preferences: {
+                    measures: ['automationRate'],
+                    dimensions: ['channel'],
+                },
+            },
+        })
+    })
+
+    it('should not modify other charts', () => {
+        const result = updateChartPreferencesInDashboard(
+            baseDashboard,
+            'chart-1',
+            {
+                measure: 'new-measure',
+            },
+        )
+
+        expect(
+            result.children.find((c) => (c as any).config_id === 'chart-2'),
+        ).toMatchObject({
+            metadata: {
+                preferences: { measures: ['old-measure'] },
+            },
+        })
+    })
+
+    it('should merge new preferences with existing ones', () => {
+        const result = updateChartPreferencesInDashboard(
+            baseDashboard,
+            'chart-2',
+            {
+                dimension: 'new-dimension',
+            },
+        )
+
+        expect(
+            result.children.find((c) => (c as any).config_id === 'chart-2'),
+        ).toMatchObject({
+            metadata: {
+                preferences: {
+                    measures: ['old-measure'],
+                    dimensions: ['new-dimension'],
+                },
+            },
+        })
+    })
+
+    it('should update charts nested inside rows', () => {
+        const dashboard: DashboardSchema = {
+            ...baseDashboard,
+            children: [
+                {
+                    type: DashboardChildType.Row,
+                    children: [
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'nested-chart',
+                        },
+                    ],
+                },
+            ],
+        }
+
+        const result = updateChartPreferencesInDashboard(
+            dashboard,
+            'nested-chart',
+            {
+                measure: 'measure-x',
+            },
+        )
+
+        const row = result.children[0] as DashboardRowSchema
+        expect(row.children[0]).toMatchObject({
+            metadata: {
+                preferences: { measures: ['measure-x'] },
+            },
+        })
+    })
+
+    it('should return a new dashboard object without mutating the original', () => {
+        const result = updateChartPreferencesInDashboard(
+            baseDashboard,
+            'chart-1',
+            {
+                measure: 'new-measure',
+            },
+        )
+
+        expect(result).not.toBe(baseDashboard)
+        expect(baseDashboard.children[0]).not.toHaveProperty('metadata')
     })
 })
 

@@ -73,9 +73,11 @@ describe('AnalyticsCustomDashboard', () => {
             </div>
         ))
 
-        DragAndResizeChartMock.mockImplementation(({ schema }) => (
-            <div>Chart: {schema.config_id}</div>
-        ))
+        DragAndResizeChartMock.mockImplementation(
+            ({ customDashboardChartSchema }) => (
+                <div>Chart: {customDashboardChartSchema.config_id}</div>
+            ),
+        )
 
         useFiltersFromDashboardMock.mockReturnValue({
             persistentFilters: mockPersistentFilters,
@@ -141,7 +143,7 @@ describe('AnalyticsCustomDashboard', () => {
 
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
-                schema: {
+                customDashboardChartSchema: {
                     type: DashboardChildType.Chart,
                     config_id: 'customer_satisfaction_trend_card',
                 },
@@ -181,7 +183,7 @@ describe('AnalyticsCustomDashboard', () => {
         expect(DragAndResizeChartMock).toHaveBeenCalledTimes(2)
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                schema: expect.objectContaining({
+                customDashboardChartSchema: expect.objectContaining({
                     config_id: 'chart1',
                 }),
             }),
@@ -189,7 +191,7 @@ describe('AnalyticsCustomDashboard', () => {
         )
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                schema: expect.objectContaining({
+                customDashboardChartSchema: expect.objectContaining({
                     config_id: 'chart2',
                 }),
             }),
@@ -246,7 +248,7 @@ describe('AnalyticsCustomDashboard', () => {
 
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                schema: expect.objectContaining({
+                customDashboardChartSchema: expect.objectContaining({
                     config_id: 'nested_chart',
                 }),
             }),

@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { ConfigurableGraph } from '@repo/reporting'
 
 import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
+import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -48,6 +49,7 @@ export const PerformanceOverviewConfigurableBarGraph = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
@@ -60,6 +62,11 @@ export const PerformanceOverviewConfigurableBarGraph = ({
             ),
         [cleanStatsFilters, userTimezone],
     )
+
+    const { savePreferences } = useSaveCustomDashboardPreference({
+        dashboard,
+        configId: customDashboardChartSchema?.config_id ?? '',
+    })
 
     const actionMenu =
         chartId && chartConfig ? (
@@ -75,6 +82,8 @@ export const PerformanceOverviewConfigurableBarGraph = ({
             metrics={metrics}
             analyticsChartId={chartId ?? ''}
             actionMenu={actionMenu}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSelect={savePreferences}
         />
     )
 }

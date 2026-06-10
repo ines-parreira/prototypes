@@ -117,11 +117,16 @@ jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
 
 describe('DragAndResizeDashboardGrid', () => {
     beforeEach(() => {
-        DragAndResizeChartMock.mockImplementation(({ schema }) => (
-            <article role="img" aria-label={`Chart ${schema.config_id}`}>
-                <h3>Chart: {schema.config_id}</h3>
-            </article>
-        ))
+        DragAndResizeChartMock.mockImplementation(
+            ({ customDashboardChartSchema }) => (
+                <article
+                    role="img"
+                    aria-label={`Chart ${customDashboardChartSchema.config_id}`}
+                >
+                    <h3>Chart: {customDashboardChartSchema.config_id}</h3>
+                </article>
+            ),
+        )
     })
 
     beforeEach(() => {
@@ -220,14 +225,14 @@ describe('DragAndResizeDashboardGrid', () => {
 
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
-                schema: chart1,
+                customDashboardChartSchema: chart1,
                 dashboard,
             },
             {},
         )
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
-                schema: chart2,
+                customDashboardChartSchema: chart2,
                 dashboard,
             },
             {},
@@ -292,14 +297,14 @@ describe('DragAndResizeDashboardGrid', () => {
 
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
-                schema: chart1,
+                customDashboardChartSchema: chart1,
                 dashboard,
             },
             {},
         )
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
-                schema: chart2,
+                customDashboardChartSchema: chart2,
                 dashboard,
             },
             {},
@@ -679,6 +684,59 @@ describe('DragAndResizeDashboardGrid', () => {
                 successMessage: 'Dashboard layout saved',
                 errorMessage: 'Failed to save dashboard layout',
             })
+        })
+
+        it('should preserve existing chart preferences in metadata when updating layout on drag stop', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const savedPreferences = {
+                columns: [
+                    { column_id: 'col_a', visible: true },
+                    { column_id: 'col_b', visible: false },
+                ],
+            }
+            const chart1: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-1',
+                metadata: { preferences: savedPreferences },
+            }
+            const dashboard = createMockDashboard([chart1])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            if (capturedOnDragStop) {
+                capturedOnDragStop([{ i: 'chart-1', x: 2, y: 1, w: 2, h: 9 }])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dashboard: expect.objectContaining({
+                        children: [
+                            expect.objectContaining({
+                                config_id: 'chart-1',
+                                metadata: {
+                                    preferences: savedPreferences,
+                                    layout: { x: 2, y: 1, w: 2, h: 9 },
+                                },
+                            }),
+                        ],
+                    }),
+                }),
+            )
         })
 
         it('should preserve chart without matching layout metadata', () => {

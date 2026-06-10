@@ -10,9 +10,9 @@ import {
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { saveZippedFiles } from 'utils/file'
 
+import { buildDashboardSchemaFromLayout } from 'domains/reporting/utils/buildDashboardSchemaFromLayout'
 import { AnalyticsOverviewReportConfig } from '../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../config/defaultLayoutConfig'
-import { buildCustomDashboard } from '../utils/buildCustomDashboard'
 
 const REPORT_NAME = 'analytics-overview'
 
@@ -26,7 +26,7 @@ export const useExportAnalyticsOverviewToCSV = () => {
     })
 
     const analyticsOverviewDashboard = useMemo(
-        () => buildCustomDashboard(REPORT_NAME, layoutConfig),
+        () => buildDashboardSchemaFromLayout(layoutConfig, REPORT_NAME),
         [layoutConfig],
     )
 

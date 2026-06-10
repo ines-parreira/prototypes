@@ -5,6 +5,7 @@ import type {
 } from '@repo/reporting'
 
 import type { Tag } from '@gorgias/helpdesk-queries'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
 import type { User } from 'config/types/user'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
@@ -95,13 +96,22 @@ export type ChartLayoutMetadata = {
     h: number
 }
 
+export type ChartPreferences = {
+    measure?: string | null
+    dimension?: string | null
+    columns?: ColumnConfig[] | null
+}
+
 export type DashboardChartSchema = {
     type: DashboardChildType.Chart
     config_id: string
     metadata?: {
         layout?: ChartLayoutMetadata
-        savedMeasure?: string | null
-        savedDimension?: string | null
+        preferences?: {
+            measures?: string[] | null
+            dimensions?: string[] | null
+            columns?: ColumnConfig[] | null
+        }
     }
 }
 
@@ -211,6 +221,7 @@ export interface DashboardChartProps {
     dashboard?: DashboardSchema
     chartConfig?: ChartConfig
     additionalProps?: any
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export type ChartConfig = {

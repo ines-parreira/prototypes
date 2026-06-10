@@ -1,7 +1,11 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import {
     ORDER_MANAGEMENT_COLUMNS,
     ORDER_MANAGEMENT_NAME_COLUMNS,
@@ -17,7 +21,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const OrderManagementTable = ({
@@ -25,11 +29,15 @@ export const OrderManagementTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const { data = [], loadingStates } = useOrderManagementMetrics()
     const exportCsvAction = useDownloadOrderManagementAction()
     const withMenu = withChartMenu && chartId
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
 
     return (
         <ReportingMetricBreakdownTable
@@ -51,8 +59,9 @@ export const OrderManagementTable = ({
                 ) : undefined
             }
             chartId={chartId}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

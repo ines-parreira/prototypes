@@ -1,7 +1,10 @@
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import { AllAgentsPerformanceByIntentTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByIntentTable/AllAgentsPerformanceByIntentTable'
 import { ALL_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByIntentTable/columns'
 import type { AllAgentsPerformanceByIntentEntityMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByIntentMetrics'
@@ -36,9 +39,15 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
 const mockUseAllAgentsPerformanceByIntentMetrics = jest.requireMock(
     'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByIntentMetrics',
 ).useAllAgentsPerformanceByIntentMetrics as jest.Mock
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultLoadingStates = {
     automatedInteractions: false,
@@ -95,12 +104,19 @@ const getLastCallProps = () =>
         getRowKey: (row: AllAgentsPerformanceByIntentEntityMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: { accessor: string; label: string }[]
     }
 
 describe('AllAgentsPerformanceByIntentTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -206,16 +222,6 @@ describe('AllAgentsPerformanceByIntentTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
-        render(<AllAgentsPerformanceByIntentTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
             data: defaultData,
@@ -228,5 +234,47 @@ describe('AllAgentsPerformanceByIntentTable', () => {
         )
 
         expect(getLastCallProps().name).toBe('Intent')
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const schema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <AllAgentsPerformanceByIntentTable
+                customDashboardChartSchema={schema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(schema)
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <AllAgentsPerformanceByIntentTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

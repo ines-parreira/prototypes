@@ -54,8 +54,10 @@ describe('buildDashboardSchemaFromLayout', () => {
                         type: DashboardChildType.Chart,
                         config_id: 'avg-csat',
                         metadata: {
-                            savedMeasure: 'csat-measure',
-                            savedDimension: 'csat-dimension',
+                            preferences: {
+                                measures: ['csat-measure'],
+                                dimensions: ['csat-dimension'],
+                            },
                         },
                     },
                 ],
@@ -126,7 +128,7 @@ describe('buildDashboardSchemaFromLayout', () => {
         ])
     })
 
-    it('should use the first measure and dimension when multiple are provided', () => {
+    it('should store all measures and dimensions as arrays', () => {
         const layout: DashboardLayoutConfig = {
             sections: [
                 {
@@ -150,12 +152,14 @@ describe('buildDashboardSchemaFromLayout', () => {
         const firstChart = (result.children[0] as DashboardSectionSchema)
             .children[0] as DashboardChartSchema
         expect(firstChart.metadata).toEqual({
-            savedMeasure: 'first-measure',
-            savedDimension: 'first-dimension',
+            preferences: {
+                measures: ['first-measure', 'second-measure'],
+                dimensions: ['first-dimension', 'second-dimension'],
+            },
         })
     })
 
-    it('should produce undefined metadata fields when measures and dimensions are absent', () => {
+    it('should produce empty metadata when measures and dimensions are absent', () => {
         const layout: DashboardLayoutConfig = {
             sections: [
                 {
@@ -176,9 +180,6 @@ describe('buildDashboardSchemaFromLayout', () => {
 
         const firstChart = (result.children[0] as DashboardSectionSchema)
             .children[0] as DashboardChartSchema
-        expect(firstChart.metadata).toEqual({
-            savedMeasure: undefined,
-            savedDimension: undefined,
-        })
+        expect(firstChart.metadata).toEqual({})
     })
 })

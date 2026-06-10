@@ -1,7 +1,11 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import {
     SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS,
     SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS,
@@ -17,7 +21,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const SupportAgentsPerformanceByIntentTable = ({
@@ -25,11 +29,15 @@ export const SupportAgentsPerformanceByIntentTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const { data = [], loadingStates } =
         useSupportAgentsPerformanceByIntentMetrics()
     const exportCsvAction = useDownloadSupportAgentsPerformanceByIntentAction()
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
     const withMenu = withChartMenu && chartId
 
     return (
@@ -54,8 +62,9 @@ export const SupportAgentsPerformanceByIntentTable = ({
                 ) : undefined
             }
             chartId={chartId}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

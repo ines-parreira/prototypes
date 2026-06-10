@@ -236,6 +236,78 @@ describe('useSyncConfigurableGraphWithDashboard', () => {
         })
     })
 
+    describe('schema preferences (custom dashboard)', () => {
+        const schemaWithPreferences = {
+            metadata: {
+                preferences: {
+                    measures: ['schema_measure'],
+                    dimensions: ['schema_dimension'],
+                },
+            },
+        }
+
+        it('uses schema preferences as initial values when no context is present', () => {
+            const { result } = renderHook(
+                () =>
+                    useSyncConfigurableGraphWithDashboard({
+                        analyticsChartId: CHART_ID,
+                        customDashboardChartSchema: schemaWithPreferences,
+                        initialMeasure: 'caller_measure',
+                        initialDimension: 'caller_dimension',
+                    }),
+                { wrapper: makeWrapper() },
+            )
+
+            expect(result.current.initialMeasure).toBe('schema_measure')
+            expect(result.current.initialDimension).toBe('schema_dimension')
+        })
+
+        it('schema preferences take priority over managed dashboard savedItem', () => {
+            mockedUseManagedDashboardContext.mockReturnValue(
+                contextWithSavedItem,
+            )
+
+            const { result } = renderHook(
+                () =>
+                    useSyncConfigurableGraphWithDashboard({
+                        analyticsChartId: CHART_ID,
+                        customDashboardChartSchema: schemaWithPreferences,
+                    }),
+                { wrapper: makeWrapper() },
+            )
+
+            expect(result.current.initialMeasure).toBe('schema_measure')
+            expect(result.current.initialDimension).toBe('schema_dimension')
+        })
+
+        it('falls through to initialMeasure (not savedItem) when schema preferences are null', () => {
+            mockedUseManagedDashboardContext.mockReturnValue(
+                contextWithSavedItem,
+            )
+
+            const { result } = renderHook(
+                () =>
+                    useSyncConfigurableGraphWithDashboard({
+                        analyticsChartId: CHART_ID,
+                        customDashboardChartSchema: {
+                            metadata: {
+                                preferences: {
+                                    measures: null,
+                                    dimensions: null,
+                                },
+                            },
+                        },
+                        initialMeasure: 'caller_measure',
+                        initialDimension: 'caller_dimension',
+                    }),
+                { wrapper: makeWrapper() },
+            )
+
+            expect(result.current.initialMeasure).toBe('caller_measure')
+            expect(result.current.initialDimension).toBe('caller_dimension')
+        })
+    })
+
     describe('when context has no saved item for the chartId', () => {
         it('falls back to caller-provided initial values', () => {
             mockedUseManagedDashboardContext.mockReturnValue({

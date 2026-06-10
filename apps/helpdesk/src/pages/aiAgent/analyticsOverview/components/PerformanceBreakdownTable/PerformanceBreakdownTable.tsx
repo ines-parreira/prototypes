@@ -1,7 +1,11 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import {
     PERFORMANCE_BREAKDOWN_COLUMNS,
     PERFORMANCE_BREAKDOWN_NAME_COLUMNS,
@@ -17,7 +21,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const PerformanceBreakdownTable = ({
@@ -25,11 +29,15 @@ export const PerformanceBreakdownTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeature()
     const exportCsvAction = useDownloadPerformanceBreakdownAction()
     const withMenu = withChartMenu && chartId
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
 
     return (
         <ReportingMetricBreakdownTable
@@ -51,8 +59,9 @@ export const PerformanceBreakdownTable = ({
             }
             chartId={chartId}
             nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

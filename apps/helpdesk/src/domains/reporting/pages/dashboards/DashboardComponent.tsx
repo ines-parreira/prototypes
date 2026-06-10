@@ -1,6 +1,7 @@
 import { createElement, memo } from 'react'
 
 import type {
+    DashboardChartSchema,
     DashboardSchema,
     ReportConfig,
 } from 'domains/reporting/pages/dashboards/types'
@@ -11,7 +12,7 @@ type Props<T extends string> = {
     config: ReportConfig<T>
     dashboard?: DashboardSchema
     withChartMenu?: boolean
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const DashboardComponent = memo(
@@ -20,7 +21,7 @@ export const DashboardComponent = memo(
         dashboard,
         config,
         withChartMenu = true,
-        isCustomDashboard,
+        customDashboardChartSchema,
     }: Props<T>) => {
         const { isChartRestrictedToCurrentUser } = useReportChartRestrictions()
 
@@ -32,7 +33,7 @@ export const DashboardComponent = memo(
             chartConfig: config.charts[chart],
             chartId: chart,
             withChartMenu,
-            isCustomDashboard,
+            customDashboardChartSchema,
             ...(withChartMenu ? { dashboard } : {}),
         }
         return createElement(config.charts[chart].chartComponent, props)

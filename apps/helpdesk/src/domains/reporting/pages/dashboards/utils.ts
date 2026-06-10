@@ -20,6 +20,7 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import type {
     ChartConfig,
     ChartLayoutMetadata,
+    ChartPreferences,
     DashboardChartSchema,
     DashboardChild,
     DashboardInput,
@@ -35,23 +36,18 @@ import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 
 const fromApiChart = (
     chart: AnalyticsCustomReportChartSchema,
-): DashboardChartSchema => {
-    if (chart.metadata?.layout) {
-        return {
-            config_id: chart.config_id,
-            type: DashboardChildType.Chart,
-            metadata: {
-                layout: chart.metadata.layout as ChartLayoutMetadata,
-            },
-        }
-    }
-
-    return {
-        config_id: chart.config_id,
-        type: DashboardChildType.Chart,
-        metadata: {},
-    }
-}
+): DashboardChartSchema => ({
+    config_id: chart.config_id,
+    type: DashboardChildType.Chart,
+    metadata: {
+        ...(chart.metadata?.layout
+            ? { layout: chart.metadata.layout as ChartLayoutMetadata }
+            : {}),
+        ...(chart.metadata?.preferences
+            ? { preferences: chart.metadata.preferences as ChartPreferences }
+            : {}),
+    },
+})
 
 const fromApiRow = (
     row: AnalyticsCustomReportRowSchema,
@@ -215,6 +211,54 @@ export const flattenCharts = (
     })
 }
 
+export const updateChartPreferencesInDashboard = (
+    dashboard: DashboardSchema,
+    configId: string,
+    preferences: ChartPreferences,
+): DashboardSchema => {
+    const updateChild = (child: DashboardChild): DashboardChild => {
+        if (child.type === DashboardChildType.Chart) {
+            return child.config_id === configId
+                ? {
+                      ...child,
+                      metadata: {
+                          ...child.metadata,
+                          preferences: {
+                              ...child.metadata?.preferences,
+                              ...(preferences.dimension != null && {
+                                  dimensions: [preferences.dimension],
+                              }),
+                              ...(preferences.measure != null && {
+                                  measures: [preferences.measure],
+                              }),
+                              columns:
+                                  preferences.columns ??
+                                  child.metadata?.preferences?.columns ??
+                                  undefined,
+                          },
+                      },
+                  }
+                : child
+        }
+        if (child.type === DashboardChildType.Row) {
+            return {
+                ...child,
+                children: child.children.map(
+                    updateChild,
+                ) as DashboardChartSchema[],
+            }
+        }
+        return {
+            ...child,
+            children: child.children.map(updateChild) as (
+                | DashboardRowSchema
+                | DashboardChartSchema
+            )[],
+        }
+    }
+    return { ...dashboard, children: dashboard.children.map(updateChild) }
+}
+
 export const getGroupChartsIntoRows = (
     charts: string[],
     existingChildren?: DashboardChild[],
@@ -261,7 +305,14 @@ const createChildrenWithMetadata = (
                 return {
                     type: AnalyticsCustomReportChartSchemaType.Chart,
                     config_id: child.config_id,
-                    metadata: child.metadata || {},
+                    metadata: {
+                        ...(child.metadata?.layout
+                            ? { layout: child.metadata.layout }
+                            : {}),
+                        ...(child.metadata?.preferences
+                            ? { preferences: child.metadata.preferences }
+                            : {}),
+                    },
                 } as AnalyticsCustomReportChartSchema
 
             case DashboardChildType.Row:

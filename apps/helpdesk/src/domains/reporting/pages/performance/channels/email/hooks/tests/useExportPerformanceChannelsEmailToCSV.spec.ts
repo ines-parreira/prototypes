@@ -86,6 +86,40 @@ describe('useExportPerformanceChannelsEmailToCSV', () => {
         )
     })
 
+    it('maps layout item measures and dimensions into metadata.preferences in the dashboard passed to useDashboardData', () => {
+        mockedUseGetManagedDashboardsLayoutConfig.mockReturnValue({
+            layoutConfig: {
+                sections: [
+                    {
+                        id: 'graphs',
+                        type: 'graph',
+                        items: [
+                            {
+                                chartId: 'configurable_bar',
+                                gridSize: 6,
+                                visibility: true,
+                                measures: ['handoverRate'],
+                                dimensions: ['channel'],
+                            },
+                        ],
+                    },
+                ],
+            } as any,
+            isLoading: false,
+        })
+
+        renderHook(() => useExportPerformanceChannelsEmailToCSV())
+
+        const [dashboard] = mockedUseDashboardData.mock.calls[0]
+        const chart = (dashboard as any).children[0].children[0]
+        expect(chart.metadata).toEqual({
+            preferences: {
+                measures: ['handoverRate'],
+                dimensions: ['channel'],
+            },
+        })
+    })
+
     it('zips the dashboard files with a performance-channels-email filename', async () => {
         const { result } = renderHook(() =>
             useExportPerformanceChannelsEmailToCSV(),

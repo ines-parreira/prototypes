@@ -23,10 +23,19 @@ export const buildDashboardSchemaFromLayout = <TChart extends string>(
             .map((item) => ({
                 type: DashboardChildType.Chart,
                 config_id: item.chartId,
-                metadata: {
-                    savedMeasure: item.measures?.[0],
-                    savedDimension: item.dimensions?.[0],
-                },
+                metadata:
+                    item.measures || item.dimensions
+                        ? {
+                              preferences: {
+                                  ...(item.measures
+                                      ? { measures: item.measures }
+                                      : {}),
+                                  ...(item.dimensions
+                                      ? { dimensions: item.dimensions }
+                                      : {}),
+                              },
+                          }
+                        : {},
             })),
     })),
 })

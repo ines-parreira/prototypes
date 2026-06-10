@@ -1,26 +1,42 @@
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
+import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useStatsMetricBreakdownPerDimension } from 'domains/reporting/hooks/useStatsMetricBreakdownPerDimension'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type {
     ChartConfig,
+    DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import {
+    ChartType,
+    DashboardChildType,
+} from 'domains/reporting/pages/dashboards/types'
 import { PerformanceOverviewConfigurableBarGraph } from 'domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableBarGraph/PerformanceOverviewConfigurableBarGraph'
 
+jest.mock('domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useStatsMetricBreakdownPerDimension')
-jest.mock('@repo/reporting', () => ({
-    ...jest.requireActual('@repo/reporting'),
-    useDashboardContext: jest.fn().mockReturnValue(null),
-}))
+jest.mock('@repo/reporting', () => {
+    const actual = jest.requireActual('@repo/reporting')
+    return {
+        ...actual,
+        ConfigurableGraph: jest.fn(actual.ConfigurableGraph),
+        useDashboardContext: jest.fn().mockReturnValue(null),
+    }
+})
+
+const ConfigurableGraphMock = jest.requireMock('@repo/reporting')
+    .ConfigurableGraph as jest.Mock
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 
+const useSaveCustomDashboardPreferenceMock = assumeMock(
+    useSaveCustomDashboardPreference,
+)
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 const useStatsMetricBreakdownPerDimensionMock = assumeMock(
     useStatsMetricBreakdownPerDimension,
@@ -40,6 +56,11 @@ const dashboard: DashboardSchema = {
     analytics_filter_id: null,
     children: [],
     emoji: null,
+}
+
+const schema: DashboardChartSchema = {
+    type: DashboardChildType.Chart,
+    config_id: 'performance-overview-configurable-bar-graph',
 }
 
 describe('PerformanceOverviewConfigurableBarGraph', () => {
@@ -80,6 +101,10 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
         )
 
     beforeEach(() => {
+        useSaveCustomDashboardPreferenceMock.mockReturnValue({
+            savePreferences: jest.fn(),
+        })
+
         useStatsFiltersMock.mockReturnValue({
             cleanStatsFilters: {
                 period: {
@@ -201,6 +226,40 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
                 screen.queryByText('ChartsActionMenu'),
             ).not.toBeInTheDocument()
             expect(ChartsActionMenuMock).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('save preferences', () => {
+        it('passes savePreferences as onSelect to ConfigurableGraph', () => {
+            const savePreferences = jest.fn()
+            useSaveCustomDashboardPreferenceMock.mockReturnValue({
+                savePreferences,
+            })
+
+            render(
+                <PerformanceOverviewConfigurableBarGraph chartId="performance-overview-configurable-bar-graph" />,
+            )
+
+            expect(ConfigurableGraphMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onSelect: savePreferences,
+                }),
+                {},
+            )
+        })
+
+        it('passes customDashboardChartSchema to ConfigurableGraph when provided', () => {
+            render(
+                <PerformanceOverviewConfigurableBarGraph
+                    chartId="performance-overview-configurable-bar-graph"
+                    customDashboardChartSchema={schema}
+                />,
+            )
+
+            expect(ConfigurableGraphMock).toHaveBeenCalledWith(
+                expect.objectContaining({ customDashboardChartSchema: schema }),
+                {},
+            )
         })
     })
 })

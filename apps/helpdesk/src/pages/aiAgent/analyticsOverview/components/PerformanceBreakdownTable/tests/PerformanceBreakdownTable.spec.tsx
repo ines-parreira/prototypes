@@ -1,7 +1,10 @@
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import { PERFORMANCE_BREAKDOWN_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
 import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
@@ -36,9 +39,15 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
 const mockUsePerformanceMetricsPerFeature = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature',
 ).usePerformanceMetricsPerFeature as jest.Mock
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultLoadingStates = {
     automationRate: false,
@@ -88,12 +97,19 @@ const getLastCallProps = () =>
         getRowKey: (row: FeatureMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: { accessor: string; label: string }[]
     }
 
 describe('PerformanceBreakdownTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -208,16 +224,6 @@ describe('PerformanceBreakdownTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUsePerformanceMetricsPerFeature.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
-        render(<PerformanceBreakdownTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUsePerformanceMetricsPerFeature.mockReturnValue({
             data: defaultData,
@@ -226,5 +232,49 @@ describe('PerformanceBreakdownTable', () => {
         render(<PerformanceBreakdownTable chartConfig={{ label: 'Feature' }} />)
 
         expect(getLastCallProps().name).toBe('Feature')
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        mockUsePerformanceMetricsPerFeature.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const customDashboardChartSchema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <PerformanceBreakdownTable
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(
+            customDashboardChartSchema,
+        )
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        mockUsePerformanceMetricsPerFeature.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <PerformanceBreakdownTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

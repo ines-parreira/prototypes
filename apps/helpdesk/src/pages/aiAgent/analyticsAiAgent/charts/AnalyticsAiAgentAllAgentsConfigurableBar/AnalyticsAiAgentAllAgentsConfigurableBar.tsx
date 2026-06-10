@@ -9,6 +9,7 @@ import { dynamicTotalSalesAmountQueryFactoryV2 } from 'domains/reporting/models/
 import { dynamicAllAgentsAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type {
     ChartConfig,
+    DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { AiAgentConfigurableGraphWrapper as ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper'
@@ -23,6 +24,7 @@ type Props = {
     chartId?: string
     dashboard?: DashboardSchema
     chartConfig?: ChartConfig
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
@@ -82,6 +84,7 @@ export const AnalyticsAiAgentAllAgentsConfigurableBar = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: Props) => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
@@ -106,6 +109,7 @@ export const AnalyticsAiAgentAllAgentsConfigurableBar = ({
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}
+            customDashboardChartSchema={customDashboardChartSchema}
         />
     )
 }

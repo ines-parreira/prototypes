@@ -2,6 +2,12 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 
 import type { User } from 'config/types/user'
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { PerformanceOverviewAgentTable } from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewAgentTable'
 import type { PerformanceOverviewEntityMetrics } from 'domains/reporting/pages/performance/overview/config/breakdownTableMetrics'
 import { useDownloadPerformanceOverviewAgentData } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/useDownloadPerformanceOverviewAgentData'
@@ -20,6 +26,12 @@ jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice', () => ({
     ),
     getFilteredAgents: jest.fn(() => []),
 }))
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
+const mockUseCustomDashboardTableColumns = assumeMock(
+    useCustomDashboardTableColumns,
+)
+
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
     () => ({
@@ -94,6 +106,9 @@ const MOCK_AGENTS: User[] = [
 ]
 
 beforeEach(() => {
+    mockUseCustomDashboardTableColumns.mockReturnValue({
+        onSaveColumns: undefined,
+    })
     mockUseDownloadPerformanceOverviewAgentData.mockReturnValue({
         files: {},
         fileName: '',
@@ -234,5 +249,64 @@ describe('PerformanceOverviewAgentTable', () => {
         expect(
             screen.queryByRole('button', { name: /download/i }),
         ).not.toBeInTheDocument()
+    })
+
+    it('passes customDashboardChartSchema to useCustomDashboardTableColumns when provided', () => {
+        const customDashboardChartSchema: DashboardChartSchema = {
+            type: DashboardChildType.Chart,
+            config_id: 'performance-overview-agent-table',
+        }
+
+        mockUsePerformanceOverviewAgentMetrics.mockReturnValue({
+            data: [aliceRow],
+            loadingStates: defaultLoadingStates,
+            isLoading: false,
+            isError: false,
+        })
+
+        render(
+            <PerformanceOverviewAgentTable
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
+
+        expect(mockUseCustomDashboardTableColumns).toHaveBeenCalledWith(
+            expect.objectContaining({ customDashboardChartSchema }),
+        )
+    })
+
+    it('passes dashboard to useCustomDashboardTableColumns and renders the table label', () => {
+        const dashboard: DashboardSchema = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        mockUsePerformanceOverviewAgentMetrics.mockReturnValue({
+            data: [aliceRow],
+            loadingStates: defaultLoadingStates,
+            isLoading: false,
+            isError: false,
+        })
+
+        render(
+            <PerformanceOverviewAgentTable
+                dashboard={dashboard}
+                chartConfig={{ label: 'Agents' } as any}
+                customDashboardChartSchema={{
+                    type: DashboardChildType.Chart,
+                    config_id: 'performance-overview-agent-table',
+                }}
+            />,
+        )
+
+        expect(mockUseCustomDashboardTableColumns).toHaveBeenCalledWith(
+            expect.objectContaining({ dashboard }),
+        )
+        expect(
+            screen.getByText('Performance breakdown by Agents'),
+        ).toBeInTheDocument()
     })
 })

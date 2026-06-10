@@ -2,10 +2,12 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 import { useDashboardContext } from '../../contexts/DashboardContext'
 import type { DashboardContextValue } from '../../contexts/DashboardContext'
 import { useSaveTableColumnVisibility } from '../ManagedDashboards/hooks/useSaveTableColumnVisibility'
 import { ChartType } from '../ManagedDashboards/types'
+
 import type {
     MetricColumnConfig,
     MetricLoadingStates,
@@ -268,8 +270,8 @@ describe('ReportingMetricBreakdownTable', () => {
         })
     })
 
-    describe('isCustomDashboard', () => {
-        it('renders "Performance breakdown by {name}" label when isCustomDashboard and name are provided', () => {
+    describe('customDashboardChartSchema', () => {
+        it('renders "Performance breakdown by {name}" label when customDashboardChartSchema and name are provided', () => {
             render(
                 <ReportingMetricBreakdownTable
                     data={sampleData}
@@ -277,7 +279,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    isCustomDashboard
+                    customDashboardChartSchema={{}}
                     name="Channel"
                 />,
             )
@@ -287,7 +289,7 @@ describe('ReportingMetricBreakdownTable', () => {
             ).toBeInTheDocument()
         })
 
-        it('does not render the label when isCustomDashboard is false', () => {
+        it('does not render the label when customDashboardChartSchema is not provided', () => {
             render(
                 <ReportingMetricBreakdownTable
                     data={sampleData}
@@ -312,7 +314,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    isCustomDashboard
+                    customDashboardChartSchema={{}}
                 />,
             )
 
@@ -321,7 +323,7 @@ describe('ReportingMetricBreakdownTable', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('renders the actionMenu in the header when isCustomDashboard and name are provided', () => {
+        it('renders the actionMenu in the header when customDashboardChartSchema and name are provided', () => {
             render(
                 <ReportingMetricBreakdownTable
                     data={sampleData}
@@ -330,7 +332,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     DownloadButton={null}
                     nameColumns={nameColumns}
                     actionMenu={<button>Remove from dashboard</button>}
-                    isCustomDashboard
+                    customDashboardChartSchema={{}}
                     name="Channel"
                 />,
             )
@@ -340,7 +342,7 @@ describe('ReportingMetricBreakdownTable', () => {
             ).toBeInTheDocument()
         })
 
-        it('renders actionMenu even when isCustomDashboard is true but name is absent', () => {
+        it('renders actionMenu even when customDashboardChartSchema is provided but name is absent', () => {
             render(
                 <ReportingMetricBreakdownTable
                     data={sampleData}
@@ -349,7 +351,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     DownloadButton={null}
                     nameColumns={nameColumns}
                     actionMenu={<button>Remove from dashboard</button>}
-                    isCustomDashboard
+                    customDashboardChartSchema={{}}
                 />,
             )
 
@@ -432,6 +434,240 @@ describe('ReportingMetricBreakdownTable', () => {
 
             expect(screen.queryByText('AI Agent')).not.toBeInTheDocument()
             expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        })
+
+        it('initializes visible columns from schema preferences', async () => {
+            const user = userEvent.setup()
+            const twoMetricColumns: MetricColumnConfig[] = [
+                { ...metricColumns[0] },
+                {
+                    accessorKey: 'value2',
+                    label: 'Value 2',
+                    tooltipTitle: 'Value 2',
+                    tooltipCaption: 'The second value.',
+                    metricFormat: 'decimal',
+                    loadingStateKeys: ['automatedInteractions'],
+                },
+            ]
+
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={twoMetricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    customDashboardChartSchema={{
+                        metadata: {
+                            preferences: {
+                                columns: [
+                                    { column_id: 'value', visible: true },
+                                ],
+                            },
+                        },
+                    }}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            expect(mockSaveVisibleColumns).toHaveBeenCalledWith(CHART_ID, [
+                'value',
+            ])
+        })
+
+        it('preserves column order from schema preferences when saving via onSaveColumns', async () => {
+            const user = userEvent.setup()
+            const onSaveColumns = vi.fn()
+            const twoMetricColumns: MetricColumnConfig[] = [
+                { ...metricColumns[0] },
+                {
+                    accessorKey: 'value2',
+                    label: 'Value 2',
+                    tooltipTitle: 'Value 2',
+                    tooltipCaption: 'The second value.',
+                    metricFormat: 'decimal',
+                    loadingStateKeys: ['automatedInteractions'],
+                },
+            ]
+
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={twoMetricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    onSaveColumns={onSaveColumns}
+                    customDashboardChartSchema={{
+                        metadata: {
+                            preferences: {
+                                columns: [
+                                    { column_id: 'value2', visible: true },
+                                    { column_id: 'value', visible: true },
+                                ],
+                            },
+                        },
+                    }}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            const savedColumns: ColumnConfig[] = onSaveColumns.mock.calls[0][0]
+            const visibleSavedColumns = savedColumns
+                .filter((c) => c.visible)
+                .map((c) => c.column_id)
+            expect(visibleSavedColumns).toEqual(['value2', 'value'])
+        })
+
+        it('passes hidden columns with visible: false to onSaveColumns', async () => {
+            const user = userEvent.setup()
+            const onSaveColumns = vi.fn()
+            const twoMetricColumns: MetricColumnConfig[] = [
+                { ...metricColumns[0] },
+                {
+                    accessorKey: 'value2',
+                    label: 'Value 2',
+                    tooltipTitle: 'Value 2',
+                    tooltipCaption: 'The second value.',
+                    metricFormat: 'decimal',
+                    loadingStateKeys: ['automatedInteractions'],
+                },
+            ]
+
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={twoMetricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    onSaveColumns={onSaveColumns}
+                    customDashboardChartSchema={{
+                        metadata: {
+                            preferences: {
+                                columns: [
+                                    { column_id: 'value', visible: true },
+                                    { column_id: 'value2', visible: false },
+                                ],
+                            },
+                        },
+                    }}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            const saved: ColumnConfig[] = onSaveColumns.mock.calls[0][0]
+            expect(saved.find((c) => c.column_id === 'value2')).toEqual({
+                column_id: 'value2',
+                visible: false,
+            })
+        })
+
+        it('excludes columns with visible: false from schema preferences', async () => {
+            const user = userEvent.setup()
+            const twoMetricColumns: MetricColumnConfig[] = [
+                { ...metricColumns[0] },
+                {
+                    accessorKey: 'value2',
+                    label: 'Value 2',
+                    tooltipTitle: 'Value 2',
+                    tooltipCaption: 'The second value.',
+                    metricFormat: 'decimal',
+                    loadingStateKeys: ['automatedInteractions'],
+                },
+            ]
+
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={twoMetricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    customDashboardChartSchema={{
+                        metadata: {
+                            preferences: {
+                                columns: [
+                                    { column_id: 'value', visible: true },
+                                    { column_id: 'value2', visible: false },
+                                ],
+                            },
+                        },
+                    }}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            expect(mockSaveVisibleColumns).toHaveBeenCalledWith(CHART_ID, [
+                'value',
+            ])
+        })
+
+        it('schema preferences take priority over managed dashboard savedItem columns', async () => {
+            const user = userEvent.setup()
+            const twoMetricColumns: MetricColumnConfig[] = [
+                { ...metricColumns[0] },
+                {
+                    accessorKey: 'value2',
+                    label: 'Value 2',
+                    tooltipTitle: 'Value 2',
+                    tooltipCaption: 'The second value.',
+                    metricFormat: 'decimal',
+                    loadingStateKeys: ['automatedInteractions'],
+                },
+            ]
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSavedColumns(['value2']),
+            )
+
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={twoMetricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    customDashboardChartSchema={{
+                        metadata: {
+                            preferences: {
+                                columns: [
+                                    { column_id: 'value', visible: true },
+                                ],
+                            },
+                        },
+                    }}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            expect(mockSaveVisibleColumns).toHaveBeenCalledWith(CHART_ID, [
+                'value',
+            ])
         })
 
         it('applies saved column visibility after the context finishes loading', async () => {

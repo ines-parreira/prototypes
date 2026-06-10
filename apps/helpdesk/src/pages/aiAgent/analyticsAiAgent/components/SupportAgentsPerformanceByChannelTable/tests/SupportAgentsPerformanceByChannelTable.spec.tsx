@@ -1,7 +1,10 @@
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import { SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/columns'
 import { SupportAgentsPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/SupportAgentsPerformanceByChannelTable'
 import type { SupportAgentsPerformanceByChannelEntityMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics'
@@ -37,9 +40,15 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
 const mockUseSupportAgentsPerformanceByChannelMetrics = jest.requireMock(
     'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics',
 ).useSupportAgentsPerformanceByChannelMetrics as jest.Mock
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultLoadingStates = {
     automatedInteractions: false,
@@ -91,7 +100,8 @@ const getLastCallProps = () =>
         ) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: {
             accessor: string
@@ -101,6 +111,12 @@ const getLastCallProps = () =>
     }
 
 describe('SupportAgentsPerformanceByChannelTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -209,16 +225,6 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
-        render(<SupportAgentsPerformanceByChannelTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
             data: defaultData,
@@ -231,5 +237,47 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
         )
 
         expect(getLastCallProps().name).toBe('Channel')
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const schema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <SupportAgentsPerformanceByChannelTable
+                customDashboardChartSchema={schema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(schema)
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <SupportAgentsPerformanceByChannelTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

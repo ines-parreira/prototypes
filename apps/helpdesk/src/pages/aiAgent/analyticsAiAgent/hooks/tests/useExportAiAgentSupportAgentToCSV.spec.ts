@@ -4,9 +4,9 @@ import { act } from '@testing-library/react'
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { buildDashboardSchemaFromLayout } from 'domains/reporting/utils/buildDashboardSchemaFromLayout'
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import { useExportAiAgentSupportAgentToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentSupportAgentToCSV'
-import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import * as fileUtils from 'utils/file'
 
@@ -16,7 +16,7 @@ jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useGetManagedDashboardsLayoutConfig: jest.fn(),
 }))
-jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
+jest.mock('domains/reporting/utils/buildDashboardSchemaFromLayout')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -27,7 +27,9 @@ const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
-const mockedBuildCustomDashboard = jest.mocked(buildCustomDashboard)
+const mockedBuildDashboardSchemaFromLayout = jest.mocked(
+    buildDashboardSchemaFromLayout,
+)
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
 const mockPeriod = {
@@ -44,7 +46,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             isLoading: false,
         })
 
-        mockedBuildCustomDashboard.mockReturnValue({
+        mockedBuildDashboardSchemaFromLayout.mockReturnValue({
             id: 0,
             name: 'ai-agent-support-agent',
             analytics_filter_id: 0,
@@ -103,11 +105,11 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         )
     })
 
-    it('should call buildCustomDashboard with the name and layout', () => {
+    it('should call buildDashboardSchemaFromLayout with the layout and name', () => {
         renderHook(() => useExportAiAgentSupportAgentToCSV())
-        expect(mockedBuildCustomDashboard).toHaveBeenCalledWith(
-            'ai-agent-support-agent',
+        expect(mockedBuildDashboardSchemaFromLayout).toHaveBeenCalledWith(
             expect.any(Object),
+            'ai-agent-support-agent',
         )
     })
 

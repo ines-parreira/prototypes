@@ -9,6 +9,7 @@ import {
 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import type {
     ChartConfig,
+    DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { AiAgentConfigurableGraphWrapper as ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper'
@@ -23,6 +24,7 @@ type Props = {
     chartId?: string
     dashboard?: DashboardSchema
     chartConfig?: ChartConfig
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const SHOPPING_ASSISTANT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
@@ -83,6 +85,7 @@ export const AnalyticsShoppingAssistantConfigurableBar = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: Props) => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
@@ -104,6 +107,7 @@ export const AnalyticsShoppingAssistantConfigurableBar = ({
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}
+            customDashboardChartSchema={customDashboardChartSchema}
         />
     )
 }

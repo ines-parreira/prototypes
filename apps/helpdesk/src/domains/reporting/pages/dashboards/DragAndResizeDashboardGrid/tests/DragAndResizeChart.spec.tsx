@@ -40,12 +40,16 @@ describe('DragAndResizeChart', () => {
     })
 
     it('renders nothing if there is no config for element', () => {
-        const schema: DashboardChartSchema = {
+        const customDashboardChartSchema: DashboardChartSchema = {
             type: DashboardChildType.Chart,
             config_id: 'randomString',
         }
 
-        const { container } = render(<DragAndResizeChart schema={schema} />)
+        const { container } = render(
+            <DragAndResizeChart
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
 
         expect(container).toBeEmptyDOMElement()
     })
@@ -53,12 +57,16 @@ describe('DragAndResizeChart', () => {
     it('renders nothing if chart is restricted', () => {
         useIsChartRestrictedMock.mockReturnValue(true)
 
-        const schema: DashboardChartSchema = {
+        const customDashboardChartSchema: DashboardChartSchema = {
             type: DashboardChildType.Chart,
             config_id: OverviewChart.CustomerSatisfactionTrendCard,
         }
 
-        const { container } = render(<DragAndResizeChart schema={schema} />)
+        const { container } = render(
+            <DragAndResizeChart
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
 
         expect(container).toBeEmptyDOMElement()
     })
@@ -66,37 +74,45 @@ describe('DragAndResizeChart', () => {
     it('renders nothing when useMigratedChartId returns null', () => {
         useMigratedChartIdMock.mockReturnValue(null)
 
-        const schema: DashboardChartSchema = {
+        const customDashboardChartSchema: DashboardChartSchema = {
             type: DashboardChildType.Chart,
             config_id: AutomateOverviewChart.AutomationRateKPIChart,
         }
 
-        const { container } = render(<DragAndResizeChart schema={schema} />)
+        const { container } = render(
+            <DragAndResizeChart
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
 
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should render dashboard component with appropriate config', () => {
-        const schema: DashboardChartSchema = {
+        const customDashboardChartSchema: DashboardChartSchema = {
             type: DashboardChildType.Chart,
             config_id: OverviewChart.CustomerSatisfactionTrendCard,
         }
 
-        render(<DragAndResizeChart schema={schema} />)
+        render(
+            <DragAndResizeChart
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
 
         expect(DashboardComponentMock).toHaveBeenCalledWith(
             {
-                chart: schema.config_id,
+                chart: customDashboardChartSchema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
                 dashboard: undefined,
-                isCustomDashboard: true,
+                customDashboardChartSchema,
             },
             {},
         )
     })
 
     it('should render dashboard component with dashboard prop when provided', () => {
-        const schema: DashboardChartSchema = {
+        const customDashboardChartSchema: DashboardChartSchema = {
             type: DashboardChildType.Chart,
             config_id: OverviewChart.CustomerSatisfactionTrendCard,
         }
@@ -109,14 +125,19 @@ describe('DragAndResizeChart', () => {
             emoji: null,
         }
 
-        render(<DragAndResizeChart schema={schema} dashboard={mockDashboard} />)
+        render(
+            <DragAndResizeChart
+                customDashboardChartSchema={customDashboardChartSchema}
+                dashboard={mockDashboard}
+            />,
+        )
 
         expect(DashboardComponentMock).toHaveBeenCalledWith(
             {
-                chart: schema.config_id,
+                chart: customDashboardChartSchema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
                 dashboard: mockDashboard,
-                isCustomDashboard: true,
+                customDashboardChartSchema,
             },
             {},
         )
@@ -127,19 +148,23 @@ describe('DragAndResizeChart', () => {
             AnalyticsOverviewChart.AutomationRateCard,
         )
 
-        const schema: DashboardChartSchema = {
+        const customDashboardChartSchema: DashboardChartSchema = {
             type: DashboardChildType.Chart,
             config_id: AutomateOverviewChart.AutomationRateKPIChart,
         }
 
-        render(<DragAndResizeChart schema={schema} />)
+        render(
+            <DragAndResizeChart
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
 
         expect(DashboardComponentMock).toHaveBeenCalledWith(
             {
                 chart: AnalyticsOverviewChart.AutomationRateCard,
                 config: AnalyticsOverviewReportConfig,
                 dashboard: undefined,
-                isCustomDashboard: true,
+                customDashboardChartSchema,
             },
             {},
         )

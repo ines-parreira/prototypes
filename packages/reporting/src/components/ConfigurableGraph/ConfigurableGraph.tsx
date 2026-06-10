@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { MetricTrend } from '../../types'
 import { formatMetricValue } from '../../utils/helpers'
 import { ChartCard } from '../ChartCard'
+import type { ChartSchemaWithGraphPreferences } from '../ManagedDashboards/hooks/useSyncConfigurableGraphWithDashboard'
 import { useSyncConfigurableGraphWithDashboard } from '../ManagedDashboards/hooks/useSyncConfigurableGraphWithDashboard'
 import { ConfigurableGraphContent } from './components/ConfigurableGraphContent'
 import { MetricGroupingSelect } from './components/MetricGroupingSelect'
@@ -25,6 +26,7 @@ type Props = {
     actionMenu?: ReactNode
     initialMeasure?: string
     initialDimension?: string
+    customDashboardChartSchema?: ChartSchemaWithGraphPreferences
     /**
      * When provided AND a managed-dashboard context is present, the chart
      * syncs its selected measure/dimension with that context: it reads the
@@ -44,11 +46,13 @@ export function ConfigurableGraph({
     actionMenu,
     initialMeasure: callerInitialMeasure,
     initialDimension: callerInitialDimension,
+    customDashboardChartSchema,
     analyticsChartId,
 }: Props) {
     const { remountKey, initialMeasure, initialDimension, onSelect } =
         useSyncConfigurableGraphWithDashboard({
             analyticsChartId,
+            customDashboardChartSchema,
             initialMeasure: callerInitialMeasure,
             initialDimension: callerInitialDimension,
             onSelect: callerOnSelect,

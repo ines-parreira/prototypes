@@ -1,7 +1,10 @@
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import { AiAgentSalesPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentSalesPerformanceByChannelTable/AiAgentSalesPerformanceByChannelTable'
 import { AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentSalesPerformanceByChannelTable/columns'
 import type { AiAgentSalesPerformanceByChannelEntityMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics'
@@ -37,6 +40,12 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
+
 const mockUseAiAgentSalesPerformanceByChannelMetrics = jest.requireMock(
     'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics',
 ).useAiAgentSalesPerformanceByChannelMetrics as jest.Mock
@@ -71,16 +80,7 @@ const defaultData: AiAgentSalesPerformanceByChannelEntityMetrics[] = [
     },
 ]
 
-const renderComponent = (
-    data = defaultData,
-    loadingStates = defaultLoadingStates,
-) => {
-    mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
-        data,
-        loadingStates,
-    })
-    return render(<AiAgentSalesPerformanceByChannelTable />)
-}
+const renderComponent = () => render(<AiAgentSalesPerformanceByChannelTable />)
 
 const getLastCallProps = () =>
     mockReportingMetricBreakdownTable.mock.calls[
@@ -94,16 +94,27 @@ const getLastCallProps = () =>
         ) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
         name?: string
         nameColumns: {
             accessor: string
             label: string
             formatName?: (value: string) => string
         }[]
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
     }
 
 describe('AiAgentSalesPerformanceByChannelTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -150,10 +161,6 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
     })
 
     it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
-        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
         render(
             <AiAgentSalesPerformanceByChannelTable
                 chartId="ai_agent_sales_performance_by_channel_table"
@@ -171,10 +178,6 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
     })
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
-        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
         render(
             <AiAgentSalesPerformanceByChannelTable
                 chartId="ai_agent_sales_performance_by_channel_table"
@@ -186,10 +189,6 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
     })
 
     it('passes dashboard prop to ChartsActionMenu when provided', () => {
-        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
         const dashboard = {
             id: 1,
             name: 'My Dashboard',
@@ -212,21 +211,7 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
-        render(<AiAgentSalesPerformanceByChannelTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
-        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
         render(
             <AiAgentSalesPerformanceByChannelTable
                 chartConfig={{ label: 'Channel' }}
@@ -234,5 +219,39 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
         )
 
         expect(getLastCallProps().name).toBe('Channel')
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        const schema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <AiAgentSalesPerformanceByChannelTable
+                customDashboardChartSchema={schema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(schema)
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <AiAgentSalesPerformanceByChannelTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

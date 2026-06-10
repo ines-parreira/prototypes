@@ -3,8 +3,12 @@ import { useMemo } from 'react'
 import type { NameColumnConfig } from '@repo/reporting'
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import { PERFORMANCE_OVERVIEW_AGENT_COLUMNS } from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewAgentTable/columns'
 import { useDownloadPerformanceOverviewAgentData } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/useDownloadPerformanceOverviewAgentData'
 import { usePerformanceOverviewAgentMetrics } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/usePerformanceOverviewAgentMetrics'
@@ -23,7 +27,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const PerformanceOverviewAgentTable = ({
@@ -31,7 +35,7 @@ export const PerformanceOverviewAgentTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const { data, loadingStates } = usePerformanceOverviewAgentMetrics()
     const agents = useAppSelector(getFilteredAgents)
@@ -41,6 +45,10 @@ export const PerformanceOverviewAgentTable = ({
         segmentEventName: SEGMENT_EVENT_NAME,
     })
     const withMenu = withChartMenu && chartId
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
 
     const nameColumns = useMemo<NameColumnConfig[]>(
         () => [
@@ -87,7 +95,8 @@ export const PerformanceOverviewAgentTable = ({
             chartId={chartId}
             enableSearch
             name={chartConfig?.label}
-            isCustomDashboard={isCustomDashboard}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

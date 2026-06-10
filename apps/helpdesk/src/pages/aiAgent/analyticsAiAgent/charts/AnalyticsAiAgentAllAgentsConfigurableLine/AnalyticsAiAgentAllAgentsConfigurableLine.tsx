@@ -8,6 +8,7 @@ import { dynamicTotalSalesAmountTimeseriesQueryFactoryV2 } from 'domains/reporti
 import { dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type {
     ChartConfig,
+    DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { AiAgentConfigurableGraphWrapper as ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper'
@@ -22,6 +23,7 @@ type Props = {
     chartId?: string
     dashboard?: DashboardSchema
     chartConfig?: ChartConfig
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
@@ -77,6 +79,7 @@ export const AnalyticsAiAgentAllAgentsConfigurableLine = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: Props) => {
     const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
@@ -108,6 +111,7 @@ export const AnalyticsAiAgentAllAgentsConfigurableLine = ({
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}
+            customDashboardChartSchema={customDashboardChartSchema}
         />
     )
 }

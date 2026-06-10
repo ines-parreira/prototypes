@@ -1,17 +1,18 @@
 import { Box, Button } from '@gorgias/axiom'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
 type Props = {
     setIsOpen: (isOpen: boolean) => void
-    visibleColumns: string[]
+    columns: ColumnConfig[]
     setVisibleColumns: (columns: string[]) => void
-    savedColumns: string[]
-    setSavedColumns: (columns: string[]) => void
-    onSaveVisibleColumns?: (columns: string[]) => void
+    savedColumns: ColumnConfig[]
+    setSavedColumns: (columns: ColumnConfig[]) => void
+    onSaveVisibleColumns?: (columns: ColumnConfig[]) => void
 }
 
 export function ColumnEditingFooter({
     setIsOpen,
-    visibleColumns,
+    columns,
     setVisibleColumns,
     savedColumns,
     setSavedColumns,
@@ -23,7 +24,11 @@ export function ColumnEditingFooter({
                 variant="tertiary"
                 onClick={() => {
                     setIsOpen(false)
-                    setVisibleColumns(savedColumns)
+                    setVisibleColumns(
+                        savedColumns
+                            .filter((c) => c.visible)
+                            .map((c) => c.column_id),
+                    )
                 }}
             >
                 Cancel
@@ -32,8 +37,8 @@ export function ColumnEditingFooter({
                 variant="primary"
                 onClick={() => {
                     setIsOpen(false)
-                    setSavedColumns(visibleColumns)
-                    onSaveVisibleColumns?.(visibleColumns)
+                    setSavedColumns(columns)
+                    onSaveVisibleColumns?.(columns)
                 }}
             >
                 Save

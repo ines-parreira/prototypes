@@ -3,7 +3,10 @@ import type { ReactNode } from 'react'
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import {
     ENTITY_DISPLAY_NAMES,
     ORDER_MANAGEMENT_COLUMNS,
@@ -55,9 +58,15 @@ jest.mock(
 
 jest.mock('pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics')
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
 const mockUseOrderManagementMetrics = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics',
 ).useOrderManagementMetrics as jest.Mock
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultLoadingStates = {
     automationRate: false,
@@ -104,7 +113,8 @@ const getLastCallProps = () =>
         getRowKey: (row: OrderManagementEntityMetrics) => string
         DownloadButton: ReactNode
         actionMenu?: ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: {
             accessor: string
@@ -115,6 +125,12 @@ const getLastCallProps = () =>
     }
 
 describe('OrderManagementTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -253,16 +269,6 @@ describe('OrderManagementTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseOrderManagementMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-        })
-        render(<OrderManagementTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUseOrderManagementMetrics.mockReturnValue({
             data: defaultData,
@@ -271,5 +277,49 @@ describe('OrderManagementTable', () => {
         render(<OrderManagementTable chartConfig={{ label: 'Order type' }} />)
 
         expect(getLastCallProps().name).toBe('Order type')
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const customDashboardChartSchema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <OrderManagementTable
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(
+            customDashboardChartSchema,
+        )
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <OrderManagementTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

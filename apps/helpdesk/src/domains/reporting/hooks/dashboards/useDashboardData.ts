@@ -194,8 +194,10 @@ const makeReduceReport =
                 ) {
                     acc.configurableCharts.push({
                         fetch: producer.fetch,
-                        savedMeasure: child.metadata?.savedMeasure,
-                        savedDimension: child.metadata?.savedDimension,
+                        savedMeasure:
+                            child.metadata?.preferences?.measures?.[0],
+                        savedDimension:
+                            child.metadata?.preferences?.dimensions?.[0],
                         chartId: child.config_id,
                         isAiAgentChart,
                     })

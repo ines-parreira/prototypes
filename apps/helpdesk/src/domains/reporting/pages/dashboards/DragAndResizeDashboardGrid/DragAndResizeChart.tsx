@@ -8,15 +8,17 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 
 type DashboardChartProps = {
-    schema: DashboardChartSchema
+    customDashboardChartSchema: DashboardChartSchema
     dashboard?: DashboardSchema
 }
 
 export const DragAndResizeChart = ({
-    schema,
+    customDashboardChartSchema,
     dashboard,
 }: DashboardChartProps) => {
-    const effectiveChartId = useMigratedChartId(schema.config_id)
+    const effectiveChartId = useMigratedChartId(
+        customDashboardChartSchema.config_id,
+    )
     const { reportConfig, chartConfig } = getComponentConfig(
         effectiveChartId ?? '',
     )
@@ -36,7 +38,7 @@ export const DragAndResizeChart = ({
             chart={effectiveChartId}
             config={reportConfig}
             dashboard={dashboard}
-            isCustomDashboard
+            customDashboardChartSchema={customDashboardChartSchema}
         />
     )
 }

@@ -1,7 +1,10 @@
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import type { ColumnConfig } from '@gorgias/helpdesk-types'
 
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import type { DashboardChartSchema } from 'domains/reporting/pages/dashboards/types'
 import { FLOWS_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
 import { FlowsTable } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/FlowsTable'
 import type { FlowsEntityMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
@@ -32,9 +35,15 @@ jest.mock(
 
 jest.mock('pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics')
 
+jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
+
 const mockUseFlowsMetrics = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics',
 ).useFlowsMetrics as jest.Mock
+
+const mockUseCustomDashboardTableColumns = jest.requireMock(
+    'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns',
+).useCustomDashboardTableColumns as jest.Mock
 
 const defaultLoadingStates: MetricLoadingStates = {
     automationRate: false,
@@ -87,7 +96,8 @@ const getLastCallProps = () =>
         getRowKey: (row: FlowsEntityMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
-        isCustomDashboard?: boolean
+        customDashboardChartSchema?: unknown
+        onSaveColumns?: (columns: ColumnConfig[]) => void
         name?: string
         nameColumns: {
             accessor: string
@@ -97,6 +107,12 @@ const getLastCallProps = () =>
     }
 
 describe('FlowsTable', () => {
+    beforeEach(() => {
+        mockUseCustomDashboardTableColumns.mockReturnValue({
+            onSaveColumns: undefined,
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -185,17 +201,6 @@ describe('FlowsTable', () => {
         ).toBe(dashboard)
     })
 
-    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
-        mockUseFlowsMetrics.mockReturnValue({
-            data: defaultData,
-            loadingStates: defaultLoadingStates,
-            displayNames: defaultDisplayNames,
-        })
-        render(<FlowsTable isCustomDashboard />)
-
-        expect(getLastCallProps().isCustomDashboard).toBe(true)
-    })
-
     it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
         mockUseFlowsMetrics.mockReturnValue({
             data: defaultData,
@@ -211,5 +216,41 @@ describe('FlowsTable', () => {
         renderComponent()
 
         expect(screen.getByText('Download Flows')).toBeInTheDocument()
+    })
+
+    it('passes customDashboardChartSchema to ReportingMetricBreakdownTable', () => {
+        const customDashboardChartSchema: DashboardChartSchema = {
+            config_id: 'chart-1',
+            type: DashboardChildType.Chart,
+        }
+
+        render(
+            <FlowsTable
+                customDashboardChartSchema={customDashboardChartSchema}
+            />,
+        )
+
+        expect(getLastCallProps().customDashboardChartSchema).toBe(
+            customDashboardChartSchema,
+        )
+    })
+
+    it('passes onSaveColumns from useCustomDashboardTableColumns to ReportingMetricBreakdownTable', () => {
+        const onSaveColumns = jest.fn()
+        mockUseCustomDashboardTableColumns.mockReturnValue({ onSaveColumns })
+
+        render(
+            <FlowsTable
+                dashboard={{
+                    id: 1,
+                    name: 'My Dashboard',
+                    children: [],
+                    emoji: null,
+                    analytics_filter_id: null,
+                }}
+            />,
+        )
+
+        expect(getLastCallProps().onSaveColumns).toBe(onSaveColumns)
     })
 })

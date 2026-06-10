@@ -2,8 +2,12 @@ import { useMemo } from 'react'
 
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import { ARTICLE_RECOMMENDATION_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
 import {
     DownloadArticleRecommendationButton,
@@ -16,7 +20,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const ArticleRecommendationTable = ({
@@ -24,7 +28,7 @@ export const ArticleRecommendationTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const {
         data = [],
@@ -33,6 +37,10 @@ export const ArticleRecommendationTable = ({
     } = useArticleRecommendationMetrics()
     const exportCsvAction = useDownloadArticleRecommendationAction()
     const withMenu = withChartMenu && chartId
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
 
     const nameColumns = useMemo(
         () => [
@@ -66,8 +74,9 @@ export const ArticleRecommendationTable = ({
                 ) : undefined
             }
             chartId={chartId}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

@@ -1,7 +1,11 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 import {
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS,
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS,
@@ -17,7 +21,7 @@ type Props = {
     withChartMenu?: boolean
     dashboard?: DashboardSchema
     chartConfig?: { label: string }
-    isCustomDashboard?: boolean
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
@@ -25,12 +29,16 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
+    customDashboardChartSchema,
 }: Props) => {
     const { data = [], loadingStates } =
         useShoppingAssistantPerformanceByEngagementFeatureMetrics()
     const exportCsvAction =
         useDownloadShoppingAssistantPerformanceByEngagementFeatureAction()
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
     const withMenu = withChartMenu && chartId
 
     return (
@@ -59,8 +67,9 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
                 ) : undefined
             }
             chartId={chartId}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }

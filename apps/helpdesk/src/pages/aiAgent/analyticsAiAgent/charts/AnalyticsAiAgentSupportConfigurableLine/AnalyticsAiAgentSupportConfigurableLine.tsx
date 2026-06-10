@@ -4,6 +4,7 @@ import { supportAgentAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domai
 import { dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import type {
     ChartConfig,
+    DashboardChartSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { AiAgentConfigurableGraphWrapper as ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper'
@@ -18,6 +19,7 @@ type Props = {
     chartId?: string
     dashboard?: DashboardSchema
     chartConfig?: ChartConfig
+    customDashboardChartSchema?: DashboardChartSchema
 }
 
 export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
@@ -55,6 +57,7 @@ export const AnalyticsAiAgentSupportConfigurableLine = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: Props) => {
     const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
@@ -78,6 +81,7 @@ export const AnalyticsAiAgentSupportConfigurableLine = ({
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}
+            customDashboardChartSchema={customDashboardChartSchema}
         />
     )
 }

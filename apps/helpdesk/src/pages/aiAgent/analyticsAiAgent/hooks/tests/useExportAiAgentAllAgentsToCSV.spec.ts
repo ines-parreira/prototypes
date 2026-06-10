@@ -3,9 +3,9 @@ import { act } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { buildDashboardSchemaFromLayout } from 'domains/reporting/utils/buildDashboardSchemaFromLayout'
 import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { useExportAiAgentAllAgentsToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentAllAgentsToCSV'
-import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import * as fileUtils from 'utils/file'
 
@@ -13,7 +13,7 @@ import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
-jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
+jest.mock('domains/reporting/utils/buildDashboardSchemaFromLayout')
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useGetManagedDashboardsLayoutConfig: jest.fn(),
@@ -28,7 +28,9 @@ const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
-const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
+const mockedBuildDashboardSchemaFromLayout = jest.mocked(
+    buildDashboardSchemaFromLayout,
+)
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
 describe('useExportAiAgentAllAgentsToCSV', () => {
@@ -40,7 +42,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockedBuildKpiDashboard.mockReturnValue({
+        mockedBuildDashboardSchemaFromLayout.mockReturnValue({
             id: 0,
             name: 'ai-agent-all-agents',
             analytics_filter_id: 0,
@@ -128,11 +130,11 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         ).toBe(true)
     })
 
-    it('should call buildCustomDashboard with the name and layout', () => {
+    it('should call buildDashboardSchemaFromLayout with the layout and name', () => {
         renderHook(() => useExportAiAgentAllAgentsToCSV())
-        expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
-            'ai-agent-all-agents',
+        expect(mockedBuildDashboardSchemaFromLayout).toHaveBeenCalledWith(
             expect.any(Object),
+            'ai-agent-all-agents',
         )
     })
 
