@@ -34,6 +34,7 @@ import {
     useListServiceConnectionsByAppId,
     useListServiceConnectionStoresByConnectionIds,
     useTrashServiceConnection,
+    useUnassignServiceConnectionStore,
 } from 'models/integration/queries'
 import type {
     ServiceConnectionApiDTO,
@@ -251,6 +252,8 @@ function ConnectionRow({
     const editUrl = `/app/settings/integrations/app/${appId}/credentials/${connection.id}`
     const { mutateAsync: assignStore, isLoading: isAssigning } =
         useAssignServiceConnectionStore()
+    const { mutateAsync: unassignStore, isLoading: isUnassigning } =
+        useUnassignServiceConnectionStore()
     const { mutateAsync: trashConnection, isLoading: isTrashing } =
         useTrashServiceConnection(appId)
 
@@ -284,6 +287,14 @@ function ConnectionRow({
 
     async function handleTrash() {
         try {
+            await Promise.all(
+                assignedStores.map((store) =>
+                    unassignStore({
+                        connectionId: connection.id,
+                        storeId: store.store_id,
+                    }),
+                ),
+            )
             await trashConnection({ connectionId: connection.id })
             toast.success(`Deleted ${connection.name}.`)
             setIsDeletePopoverOpen(false)
@@ -489,7 +500,7 @@ function ConnectionRow({
                                 <Button
                                     variant="primary"
                                     intent="destructive"
-                                    isLoading={isTrashing}
+                                    isLoading={isTrashing || isUnassigning}
                                     onClick={handleTrash}
                                 >
                                     Delete

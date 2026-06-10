@@ -380,6 +380,80 @@ describe('AppActionsConnections', () => {
         ).toBeInTheDocument()
     })
 
+    it('unassigns every linked store before trashing a connection', async () => {
+        const unassignedStoreIds: number[] = []
+        let trashCalled = false
+        server.use(
+            http.delete(
+                `*/api/service-connections/${CONNECTION_2_ID}/stores/:storeId/`,
+                ({ params }) => {
+                    unassignedStoreIds.push(Number(params.storeId))
+                    return new HttpResponse(null, { status: 204 })
+                },
+            ),
+            http.put(
+                `*/api/service-connections/${CONNECTION_2_ID}/trash/`,
+                () => {
+                    trashCalled = true
+                    return HttpResponse.json({
+                        ...connections[1],
+                        trashed_datetime: '2026-05-02T00:00:00',
+                    })
+                },
+            ),
+        )
+
+        const { user } = renderComponent()
+
+        await user.click(
+            await screen.findByRole('button', {
+                name: 'Delete ShipMonk connection 2',
+            }),
+        )
+        await user.click(await screen.findByRole('button', { name: 'Delete' }))
+
+        expect(
+            await screen.findByRole('status', {
+                name: 'Deleted ShipMonk connection 2.',
+            }),
+        ).toBeInTheDocument()
+        expect(unassignedStoreIds.sort()).toEqual([2, 3])
+        expect(trashCalled).toBe(true)
+    })
+
+    it('aborts the trash and shows an error toast when unassigning a store fails', async () => {
+        let trashCalled = false
+        server.use(
+            http.delete(
+                `*/api/service-connections/${CONNECTION_2_ID}/stores/:storeId/`,
+                () => new HttpResponse(null, { status: 500 }),
+            ),
+            http.put(
+                `*/api/service-connections/${CONNECTION_2_ID}/trash/`,
+                () => {
+                    trashCalled = true
+                    return HttpResponse.json(connections[1])
+                },
+            ),
+        )
+
+        const { user } = renderComponent()
+
+        await user.click(
+            await screen.findByRole('button', {
+                name: 'Delete ShipMonk connection 2',
+            }),
+        )
+        await user.click(await screen.findByRole('button', { name: 'Delete' }))
+
+        expect(
+            await screen.findByRole('status', {
+                name: 'Failed to delete ShipMonk connection 2.',
+            }),
+        ).toBeInTheDocument()
+        expect(trashCalled).toBe(false)
+    })
+
     it('shows an error toast when the connections list fails to load', async () => {
         server.use(
             http.get(
