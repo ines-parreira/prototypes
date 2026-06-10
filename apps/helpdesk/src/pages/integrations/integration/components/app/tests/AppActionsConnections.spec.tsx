@@ -155,11 +155,8 @@ describe('AppActionsConnections', () => {
         renderComponent()
 
         expect(
-            await screen.findByText(
-                'Link each connection to a store to run its actions in AI Agent.',
-            ),
+            await screen.findByText('Showing 3 of 3 items'),
         ).toBeInTheDocument()
-        expect(screen.getByText('Showing 3 of 3 items')).toBeInTheDocument()
     })
 
     it('renders all three connections sorted by created_datetime descending', async () => {

@@ -1,8 +1,6 @@
 import type { FormEvent } from 'react'
 import { useEffect, useState } from 'react'
 
-import { sanitizeHtmlDefault } from '@repo/utils'
-
 import {
     Box,
     Button,
@@ -173,17 +171,9 @@ export const ConnectAppAuthModal = ({
                     aria-label={`Connect ${app.name}`}
                 >
                     <Box flexDirection="column" gap="md">
-                        {outboundAuth?.setup_description && (
-                            <Text color="content-neutral-secondary">
-                                <div
-                                    dangerouslySetInnerHTML={{
-                                        __html: sanitizeHtmlDefault(
-                                            outboundAuth.setup_description,
-                                        ),
-                                    }}
-                                />
-                            </Text>
-                        )}
+                        <Text color="content-neutral-secondary">
+                            {`Gorgias can access your data in ${app.name} and execute actions on your behalf – like fetching fulfillment information, or updating shipping addresses.`}
+                        </Text>
                         {renderInputs()}
                     </Box>
                 </form>

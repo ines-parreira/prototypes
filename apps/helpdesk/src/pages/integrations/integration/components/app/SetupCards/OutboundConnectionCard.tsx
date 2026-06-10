@@ -43,7 +43,8 @@ export default function OutboundConnectionCard({
     return (
         <SetupCard
             title={`Let Gorgias take action in ${appTitle}`}
-            description={`Gorgias can do things in ${appTitle} on your behalf — like fetching fulfillment information, or canceling orders.`}
+            description={`Gorgias can access data in ${appTitle} and execute actions on your behalf – like fetching fulfillment information, or updating shipping addresses.`}
+            descriptionColor="content-neutral-secondary"
             action={action}
         />
     )

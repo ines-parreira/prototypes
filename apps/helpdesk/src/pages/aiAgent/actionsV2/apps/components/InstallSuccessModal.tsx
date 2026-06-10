@@ -45,7 +45,13 @@ export const InstallSuccessModal = ({
             </OverlayContent>
             <OverlayFooter hideCancelButton>
                 <Box gap="sm" justifyContent="flex-end" width="100%">
-                    <Button variant="primary" autoFocus onClick={onViewActions}>
+                    <Button
+                        variant="primary"
+                        autoFocus
+                        trailingSlot="arrow-right"
+                        aria-label="View actions"
+                        onClick={onViewActions}
+                    >
                         View actions
                     </Button>
                 </Box>

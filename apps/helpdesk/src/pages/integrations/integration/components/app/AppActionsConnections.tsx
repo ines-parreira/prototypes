@@ -167,9 +167,6 @@ export default function AppActionsConnections({ appId }: Props) {
 
     return (
         <Box flexDirection="column" gap="md" padding="lg">
-            <Text color="content-neutral-secondary">
-                Link each connection to a store to run its actions in AI Agent.
-            </Text>
             <Text size="sm" color="content-neutral-secondary">
                 Showing {sortedConnections.length} of {sortedConnections.length}{' '}
                 items

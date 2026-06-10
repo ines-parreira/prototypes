@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { Box, Card, Heading, Text } from '@gorgias/axiom'
 
@@ -6,12 +6,14 @@ type SetupCardProps = {
     title: string
     description: string
     action: ReactNode
+    descriptionColor?: ComponentProps<typeof Text>['color']
 }
 
 export default function SetupCard({
     title,
     description,
     action,
+    descriptionColor,
 }: SetupCardProps) {
     return (
         <Card elevation="mid" p="md" w="100%" flexDirection="column" gap="xs">
@@ -24,7 +26,7 @@ export default function SetupCard({
                 <Heading size="sm">{title}</Heading>
                 <Box flexShrink={0}>{action}</Box>
             </Box>
-            <Text>{description}</Text>
+            <Text color={descriptionColor}>{description}</Text>
         </Card>
     )
 }

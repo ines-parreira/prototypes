@@ -45,6 +45,7 @@ export default function InboundConnectionCard({
         <SetupCard
             title={`Let ${appTitle} read your Gorgias data`}
             description={`${appTitle} can pull in your Gorgias tickets, users, reports, and views to use inside its own app.`}
+            descriptionColor="content-neutral-secondary"
             action={
                 <InboundAction
                     appId={appId}
@@ -202,7 +203,7 @@ function DisconnectAction({
                     </Text>
                     <Box justifyContent="flex-end" gap="sm">
                         <Button
-                            variant="secondary"
+                            variant="tertiary"
                             isDisabled={isLoading}
                             onClick={() => setModalOpen(false)}
                         >

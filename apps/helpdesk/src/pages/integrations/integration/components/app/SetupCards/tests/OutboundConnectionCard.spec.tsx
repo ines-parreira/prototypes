@@ -85,7 +85,7 @@ describe('<OutboundConnectionCard />', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Gorgias can do things in ShipMonk on your behalf/,
+                /Gorgias can access data in ShipMonk and execute actions on your behalf/,
             ),
         ).toBeInTheDocument()
 

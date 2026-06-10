@@ -127,7 +127,7 @@ describe('ConnectAppAuthModal', () => {
         ).toBeDisabled()
     })
 
-    it('renders setup_description when provided', () => {
+    it('renders the hardcoded description with the app name and ignores setup_description', () => {
         renderComponent({
             outboundAuth: {
                 ...apiKeyOutboundAuth,
@@ -136,8 +136,13 @@ describe('ConnectAppAuthModal', () => {
         })
 
         expect(
-            screen.getByText('Find your API key in Settings → API.'),
+            screen.getByText(
+                /Gorgias can access your data in ShipMonk and execute actions on your behalf/,
+            ),
         ).toBeInTheDocument()
+        expect(
+            screen.queryByText('Find your API key in Settings → API.'),
+        ).not.toBeInTheDocument()
     })
 
     it('disables the cancel button while submitting', () => {
