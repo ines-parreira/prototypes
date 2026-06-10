@@ -327,13 +327,13 @@ describe('AiAgentOverview', () => {
             expect(queryByText('Setup Mode Banner')).not.toBeInTheDocument()
         })
 
-        it('shows the setup mode banner when no trial opt-in is needed, even if configured', () => {
+        it('hides both banners once the trial has started (no opt-in needed)', () => {
             mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: false })
             mockIsStepCompleted([StepName.TRAIN, StepName.TEST])
 
-            const { getByText, queryByText } = renderComponent()
+            const { queryByText } = renderComponent()
 
-            expect(getByText('Setup Mode Banner')).toBeInTheDocument()
+            expect(queryByText('Setup Mode Banner')).not.toBeInTheDocument()
             expect(queryByText('Trial Opt In Banner')).not.toBeInTheDocument()
         })
     })

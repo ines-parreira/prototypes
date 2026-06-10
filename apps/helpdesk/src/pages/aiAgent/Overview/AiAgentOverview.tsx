@@ -176,14 +176,14 @@ export const AiAgentOverview = () => {
         shopType,
     })
 
-    // In V3 the trial opt-in is offered only once AI Agent has been configured:
-    // Train (5 guidances) and Test (a playground execution) both complete. Until
-    // then we keep the user in setup mode rather than inviting them to start the
-    // trial prematurely.
+    // Both setup banners are V3-only and shown only while the user still needs to
+    // opt into the trial (`needsOptIn`): once the trial has started, neither
+    // banner renders. The trial opt-in is offered only once AI Agent has been
+    // configured — Train (5 guidances) and Test (a playground execution) both
+    // complete; until then we keep the user in setup mode rather than inviting
+    // them to start the trial prematurely.
     const isAiAgentConfigured =
         isStepCompleted(StepName.TRAIN) && isStepCompleted(StepName.TEST)
-
-    const showTrialOptInBanner = needsOptIn && isAiAgentConfigured
 
     const { storeActivations, isFetchLoading } = useStoreActivations({
         storeName: shopName,
@@ -280,15 +280,16 @@ export const AiAgentOverview = () => {
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>
-            {showTrialOptInBanner ? (
-                <TrialOptInBanner
-                    shopName={shopName}
-                    storeActivations={storeActivations}
-                    isStoreActivationsLoading={isFetchLoading}
-                />
-            ) : (
-                <SetupModeBanner />
-            )}
+            {needsOptIn &&
+                (isAiAgentConfigured ? (
+                    <TrialOptInBanner
+                        shopName={shopName}
+                        storeActivations={storeActivations}
+                        isStoreActivationsLoading={isFetchLoading}
+                    />
+                ) : (
+                    <SetupModeBanner />
+                ))}
             {hasSkillsAccess && (
                 <GoToSkillsBanner
                     shopName={shopName}

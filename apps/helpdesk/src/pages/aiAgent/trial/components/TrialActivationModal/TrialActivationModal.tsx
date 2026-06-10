@@ -65,18 +65,15 @@ export const TrialActivationModal = ({
     )
 
     const [isTermsManuallyChecked, setTermsManuallyChecked] = useState(false)
-    const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const isTermsChecked = hasAnyOptedInTrial || isTermsManuallyChecked
     const isTermsDisabled = hasAnyOptedInTrial
-    const hasCheckboxError = !isTermsChecked && hasAttemptedSubmit
     const isStartTrialPending = isLoading || isSubmitting
 
     useEffect(() => {
         if (!isOpen) {
             setTermsManuallyChecked(false)
-            setHasAttemptedSubmit(false)
             setIsSubmitting(false)
         }
     }, [isOpen])
@@ -85,10 +82,6 @@ export const TrialActivationModal = ({
     const description = DESCRIPTION_BY_TRIAL_TYPE[trialType]
 
     const handleConfirm = useCallback(() => {
-        if (!isTermsChecked) {
-            setHasAttemptedSubmit(true)
-            return
-        }
         if (isSubmitting) return
         setIsSubmitting(true)
         onConfirm(isTermsChecked)
@@ -124,7 +117,6 @@ export const TrialActivationModal = ({
                                     isChecked={isTermsChecked}
                                     onChange={setTermsManuallyChecked}
                                     isDisabled={isTermsDisabled}
-                                    hasError={hasCheckboxError}
                                 />
                             </>
                         ) : (
@@ -141,7 +133,8 @@ export const TrialActivationModal = ({
                             isDisabled={
                                 isStartTrialPending ||
                                 isConfirmDisabled ||
-                                !hasUpgradePlan
+                                !hasUpgradePlan ||
+                                !isTermsChecked
                             }
                             isLoading={isStartTrialPending}
                         >
@@ -231,29 +224,21 @@ type TermsSectionProps = {
     isChecked: boolean
     onChange: (checked: boolean) => void
     isDisabled: boolean
-    hasError: boolean
 }
 
 const TermsSection = ({
     isChecked,
     onChange,
     isDisabled,
-    hasError,
 }: TermsSectionProps) => (
     <Box gap="xs" alignItems="flex-start">
         <CheckBoxField
             value={isChecked}
             onChange={onChange}
             isDisabled={isDisabled}
-            isInvalid={hasError}
             aria-label="I agree to the updated pricing terms"
         />
-        <Text
-            size="xs"
-            color={
-                hasError ? 'content-error-default' : 'content-neutral-secondary'
-            }
-        >
+        <Text size="sm" color="content-neutral-secondary">
             I agree to the updated pricing, which will apply after the 14-day
             trial ends, as outlined in{' '}
             <Link

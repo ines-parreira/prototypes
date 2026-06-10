@@ -301,7 +301,7 @@ export const PaywallPreview = () => {
                     </ButtonGroupItem>
                 </ButtonGroup>
             </Box>
-            <Box maxWidth={640}>
+            <Box width="100%" maxWidth={640} height={544}>
                 {preview === PREVIEW_OPTION.Support ? (
                     <video
                         autoPlay
@@ -311,7 +311,8 @@ export const PaywallPreview = () => {
                         src={SUPPORT_VIDEO_SRC}
                         style={{
                             width: '100%',
-                            height: 'auto',
+                            height: '100%',
+                            objectFit: 'contain',
                             display: 'block',
                         }}
                     />
@@ -320,6 +321,9 @@ export const PaywallPreview = () => {
                         src={SalesStrategyImage}
                         alt="Sales preview"
                         fallback="Sales preview"
+                        fit="contain"
+                        width="100%"
+                        height="100%"
                     />
                 )}
             </Box>

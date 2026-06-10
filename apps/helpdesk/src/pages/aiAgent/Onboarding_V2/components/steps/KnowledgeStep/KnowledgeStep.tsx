@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { getMomentUtcISOString } from '@repo/utils'
@@ -75,6 +77,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
     const queryClient = useQueryClient()
+    const [isCompletingSetup, setIsCompletingSetup] = useState(false)
 
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -102,6 +105,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
     const onNextClick = async () => {
         if (data && 'id' in data) {
+            setIsCompletingSetup(true)
             doUpdateOnboardingMutation(
                 {
                     id: data.id,
@@ -114,43 +118,66 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 },
                 {
                     onSuccess: async () => {
-                        void queryClient.invalidateQueries({
-                            queryKey: storeConfigurationKeys.all(),
-                        })
+                        try {
+                            // Await the refetch so the AI Agent route resolves
+                            // to the Overview directly. Navigating while the
+                            // store configuration is still revalidating lets the
+                            // guard read stale "not onboarded" state and flash
+                            // the paywall for a moment before the Overview loads.
+                            await queryClient.invalidateQueries({
+                                queryKey: storeConfigurationKeys.all(),
+                            })
 
-                        if (
-                            trialAccess.trialType ===
-                                TrialType.ShoppingAssistant &&
-                            shoppingAssistantTrialOptin
-                        ) {
-                            if (!isAiAgentOnboardingV3Enabled) {
-                                await startShoppingAssistantTrial([shopName])
+                            if (
+                                trialAccess.trialType ===
+                                    TrialType.ShoppingAssistant &&
+                                shoppingAssistantTrialOptin
+                            ) {
+                                if (!isAiAgentOnboardingV3Enabled) {
+                                    await startShoppingAssistantTrial([
+                                        shopName,
+                                    ])
+                                }
+                                removeShoppingAssistantTrialOptin()
                             }
-                            removeShoppingAssistantTrialOptin()
-                        }
 
-                        logEvent(SegmentEvent.AiAgentOnboardingCompleted, {
-                            onboardingFlow: 'wizard',
-                            totalSteps,
-                            shopName,
-                        })
+                            logEvent(SegmentEvent.AiAgentOnboardingCompleted, {
+                                onboardingFlow: 'wizard',
+                                totalSteps,
+                                shopName,
+                            })
 
-                        // V3 is setup-only: land on the overview with a
-                        // success toast. V2 keeps the post-wizard "go live"
-                        // ThankYouModal, opened via the `from=onboarding` query
-                        // param, so a V3 rollback restores the old flow.
-                        if (isAiAgentOnboardingV3Enabled) {
-                            history.push({
-                                pathname: nextPath,
-                                search: `?shopName=${encodeURIComponent(shopName)}`,
-                                state: { aiAgentSetupComplete: true },
-                            })
-                        } else {
-                            history.push({
-                                pathname: nextPath,
-                                search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
-                            })
+                            // V3 is setup-only: land on the overview with a
+                            // success toast. V2 keeps the post-wizard "go live"
+                            // ThankYouModal, opened via the `from=onboarding`
+                            // query param, so a V3 rollback restores the old
+                            // flow.
+                            if (isAiAgentOnboardingV3Enabled) {
+                                history.push({
+                                    pathname: nextPath,
+                                    search: `?shopName=${encodeURIComponent(shopName)}`,
+                                    state: { aiAgentSetupComplete: true },
+                                })
+                            } else {
+                                history.push({
+                                    pathname: nextPath,
+                                    search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
+                                })
+                            }
+                        } catch {
+                            // The onboarding update already succeeded, so the
+                            // mutation's onError won't fire if the post-success
+                            // work (refetch / trial start) rejects. Clear the
+                            // loading state here so the CTA recovers and the
+                            // user can retry instead of being stuck.
+                            setIsCompletingSetup(false)
+                            toast.error(
+                                'Something went wrong finishing setup. Please try again.',
+                            )
                         }
+                    },
+                    onError: () => {
+                        setIsCompletingSetup(false)
                     },
                 },
             )
@@ -170,7 +197,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 totalSteps={totalSteps}
                 onNextClick={onNextClick}
                 onBackClick={onBackClick}
-                isLoading={isUpdatingOnboarding}
+                isLoading={isUpdatingOnboarding || isCompletingSetup}
             >
                 <StepHeader
                     title="AI Agent is syncing your knowledge sources"
