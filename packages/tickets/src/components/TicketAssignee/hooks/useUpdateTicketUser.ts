@@ -47,14 +47,26 @@ export function useUpdateTicketUser(ticketId: number) {
     const updateTicketUser = useCallback(
         async (user: UpdateTicketAssigneeUser | null) => {
             try {
-                await mutateAsyncUpdateTicket({
+                const response = await mutateAsyncUpdateTicket({
                     id: ticketId,
                     data: {
                         assignee_user: user ? { id: user.id } : null,
                     },
                 })
+                const assigneeUser =
+                    response.data.assignee_user ?? (user as TicketUser | null)
+                queryClient.setQueryData<HttpResponse<Ticket> | undefined>(
+                    queryKey,
+                    {
+                        ...response,
+                        data: {
+                            ...response.data,
+                            assignee_user: assigneeUser,
+                        },
+                    },
+                )
                 patchTicketInViewListCache(queryClient, ticketId, {
-                    assignee_user: user as TicketUser | null,
+                    assignee_user: assigneeUser,
                 })
                 await queryClient.invalidateQueries({
                     queryKey,

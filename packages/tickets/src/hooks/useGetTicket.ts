@@ -6,6 +6,46 @@ type UseGetTicketPrimitiveParams<TData, TError> = Parameters<
     typeof useGetTicketPrimitive<TData, TError>
 >
 
+type TicketResponseWithUpdatedDatetime = {
+    data?: {
+        updated_datetime?: string | null
+    }
+}
+
+function getUpdatedDatetimeMs(data: unknown) {
+    const updatedDatetime = (data as TicketResponseWithUpdatedDatetime | null)
+        ?.data?.updated_datetime
+
+    if (typeof updatedDatetime !== 'string') {
+        return null
+    }
+
+    const updatedDatetimeMs = Date.parse(updatedDatetime)
+    return Number.isNaN(updatedDatetimeMs) ? null : updatedDatetimeMs
+}
+
+function preserveNewestTicketData<TData>(
+    oldData: TData | undefined,
+    newData: TData,
+): TData {
+    if (!oldData) {
+        return newData
+    }
+
+    const oldUpdatedDatetimeMs = getUpdatedDatetimeMs(oldData)
+    const newUpdatedDatetimeMs = getUpdatedDatetimeMs(newData)
+
+    if (
+        oldUpdatedDatetimeMs !== null &&
+        newUpdatedDatetimeMs !== null &&
+        newUpdatedDatetimeMs < oldUpdatedDatetimeMs
+    ) {
+        return oldData
+    }
+
+    return newData
+}
+
 export function useGetTicket<
     TData = GetTicketResult,
     TError = HttpError<unknown>,
@@ -18,6 +58,7 @@ export function useGetTicket<
         ...options,
         query: {
             staleTime: Duration.minutes(5),
+            structuralSharing: preserveNewestTicketData,
             ...options?.query,
         },
     }
