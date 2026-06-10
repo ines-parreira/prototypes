@@ -470,19 +470,23 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/actions/edit/:id`}
                             exact
-                            render={() =>
-                                isActionCentralizedLibraryFlagLoading ? (
+                            render={({ match }) => {
+                                const actionId = (
+                                    match.params as { id: string }
+                                ).id
+
+                                return isActionCentralizedLibraryFlagLoading ? (
                                     <AiAgentLayout
                                         isLoading
                                         shopName={shopName}
                                         title={SUPPORT_ACTIONS}
                                     />
                                 ) : isActionCentralizedLibraryEnabled ? (
-                                    <ActionDetailView />
+                                    <ActionDetailView key={actionId} />
                                 ) : (
-                                    <EditActionViewContainer />
+                                    <EditActionViewContainer key={actionId} />
                                 )
-                            }
+                            }}
                         />
                         <Route
                             path={`${path}/actions/templates`}

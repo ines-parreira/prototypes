@@ -205,6 +205,48 @@ jest.mock('pages/aiAgent/actions/ActionTemplatesView', () => () => (
     <div>ActionTemplatesView</div>
 ))
 
+jest.mock('pages/aiAgent/actions/EditActionViewContainer', () => {
+    const React = require('react')
+    const { useParams } = require('react-router-dom')
+
+    function MockEditActionViewContainer() {
+        const { id } = useParams() as { id: string }
+        const [mountedId] = React.useState(id)
+
+        return (
+            <div>
+                EditActionViewContainer current:{id} mounted:{mountedId}
+            </div>
+        )
+    }
+
+    return {
+        __esModule: true,
+        default: MockEditActionViewContainer,
+    }
+})
+
+jest.mock('pages/aiAgent/actionsV2/ActionDetailView', () => {
+    const React = require('react')
+    const { useParams } = require('react-router-dom')
+
+    function MockActionDetailView() {
+        const { id } = useParams() as { id: string }
+        const [mountedId] = React.useState(id)
+
+        return (
+            <div>
+                ActionDetailView current:{id} mounted:{mountedId}
+            </div>
+        )
+    }
+
+    return {
+        __esModule: true,
+        default: MockActionDetailView,
+    }
+})
+
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
@@ -948,6 +990,94 @@ describe('<Routes/>', () => {
             })
 
             expect(screen.getByText('ActionTemplatesView')).toBeInTheDocument()
+        })
+
+        it('should render the action edit loading state while the centralized library flag loads', () => {
+            mockUseFlagWithLoading.mockImplementation((key, defaultValue) => ({
+                value:
+                    key === FeatureFlagKey.ActionCentralizedLibrary
+                        ? false
+                        : defaultValue,
+                isLoading: key === FeatureFlagKey.ActionCentralizedLibrary,
+            }))
+
+            renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/actions/edit/action-1',
+                ],
+            })
+
+            expect(screen.getByText('Support Actions')).toBeInTheDocument()
+            expect(
+                screen.queryByText(/ActionDetailView current:/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/EditActionViewContainer current:/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should remount the action detail page when navigating between action ids', async () => {
+            mockUseFlagWithLoading.mockImplementation((key, defaultValue) => ({
+                value:
+                    key === FeatureFlagKey.ActionCentralizedLibrary
+                        ? 'MILESTONE-2'
+                        : defaultValue,
+                isLoading: false,
+            }))
+
+            const { history } = renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/actions/edit/action-1',
+                ],
+            })
+
+            expect(
+                screen.getByText(
+                    'ActionDetailView current:action-1 mounted:action-1',
+                ),
+            ).toBeInTheDocument()
+
+            act(() => {
+                history.push(
+                    '/app/ai-agent/shopify/test-shop/actions/edit/action-2',
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'ActionDetailView current:action-2 mounted:action-2',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should remount the legacy action edit page when navigating between action ids', async () => {
+            const { history } = renderRoutes(defaultState, {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/actions/edit/action-1',
+                ],
+            })
+
+            expect(
+                screen.getByText(
+                    'EditActionViewContainer current:action-1 mounted:action-1',
+                ),
+            ).toBeInTheDocument()
+
+            act(() => {
+                history.push(
+                    '/app/ai-agent/shopify/test-shop/actions/edit/action-2',
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'EditActionViewContainer current:action-2 mounted:action-2',
+                    ),
+                ).toBeInTheDocument()
+            })
         })
 
         it('should render skills page when KnowledgeIntentManagementSystem feature flag is enabled', () => {
