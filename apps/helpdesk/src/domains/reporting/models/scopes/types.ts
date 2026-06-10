@@ -243,6 +243,14 @@ export type MeasureName =
     | 'averageDecreaseInResolutionTime'
     | 'medianDecreaseInResolutionTime'
     | 'timesRecommended'
+    | 'inboundCallsCount'
+    | 'outboundCallsCount'
+    | 'inboundAnsweredCallsCount'
+    | 'inboundUnansweredCallsCount'
+    | 'inboundMissedCallsCount'
+    | 'inboundAbandonedCallsCount'
+    | 'inboundCancelledCallsCount'
+    | 'inboundCallbackRequestedCallsCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'

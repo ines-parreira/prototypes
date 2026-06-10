@@ -8,6 +8,7 @@ import {
 import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import {
+    channelsVoiceTotalCallsValueQueryFactoryV2,
     mapVoiceCallDirectionToScopeOrder,
     voiceCallsAchievedExposures,
     voiceCallsAchievedExposuresQueryFactoryV2,
@@ -296,6 +297,29 @@ describe('voiceCallsScope', () => {
                 metricName: METRIC_NAMES.VOICE_CALL_COUNT_TREND,
                 scope: MetricScope.VoiceCalls,
             })
+        })
+    })
+
+    describe('channelsVoiceTotalCallsValueQueryFactoryV2', () => {
+        it('builds the total calls value query for the channels voice dashboard', () => {
+            const result = channelsVoiceTotalCallsValueQueryFactoryV2(context)
+
+            expect(result).toMatchObject({
+                measures: ['voiceCallsCount'],
+                timezone: 'utc',
+                metricName:
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+
+        it('does not apply a call direction segment filter', () => {
+            const result = channelsVoiceTotalCallsValueQueryFactoryV2(context)
+
+            const callDirectionFilter = result.filters?.find(
+                (f: { member: string }) => f.member === 'callDirection',
+            )
+            expect(callDirectionFilter).toBeUndefined()
         })
     })
 

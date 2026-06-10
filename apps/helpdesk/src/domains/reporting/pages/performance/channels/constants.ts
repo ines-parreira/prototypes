@@ -14,3 +14,6 @@ export enum PerformanceChannelsQueryParams {
 
 export const PERFORMANCE_CHANNELS_EMAIL_TAB_NAME =
     PerformanceChannelsContent.Email
+
+export const PERFORMANCE_CHANNELS_VOICE_TAB_NAME =
+    PerformanceChannelsContent.Voice

@@ -9,30 +9,30 @@ import {
     PERFORMANCE_CHANNELS_DASHBOARD_ID,
     PerformanceChannelsQueryParams,
 } from 'domains/reporting/pages/performance/channels/constants'
-import { ChannelsEmailReportConfig } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
-import { DEFAULT_PERFORMANCE_CHANNELS_EMAIL_LAYOUT } from 'domains/reporting/pages/performance/channels/email/config/defaultLayoutConfig'
+import { ChannelsVoiceReportConfig } from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
+import { DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT } from 'domains/reporting/pages/performance/channels/voice/config/defaultLayoutConfig'
 import { buildDashboardSchemaFromLayout } from 'domains/reporting/utils/buildDashboardSchemaFromLayout'
 import { saveZippedFiles } from 'utils/file'
 
-const REPORT_NAME = 'performance-channels-email'
+const REPORT_NAME = 'performance-channels-voice'
 
-export const useExportPerformanceChannelsEmailToCSV = () => {
+export const useExportPerformanceChannelsVoiceToCSV = () => {
     const { cleanStatsFilters } = useStatsFilters()
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
         dashboardId: PERFORMANCE_CHANNELS_DASHBOARD_ID,
-        defaultLayoutConfig: DEFAULT_PERFORMANCE_CHANNELS_EMAIL_LAYOUT,
-        tabId: PerformanceChannelsQueryParams.Email,
+        defaultLayoutConfig: DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT,
+        tabId: PerformanceChannelsQueryParams.Voice,
     })
 
-    const channelsEmailDashboard = useMemo(
+    const channelsVoiceDashboard = useMemo(
         () => buildDashboardSchemaFromLayout(layoutConfig, REPORT_NAME),
         [layoutConfig],
     )
 
     const { files, isLoading } = useDashboardData(
-        channelsEmailDashboard,
-        ChannelsEmailReportConfig.charts,
+        channelsVoiceDashboard,
+        ChannelsVoiceReportConfig.charts,
     )
 
     const triggerDownload = useCallback(async () => {

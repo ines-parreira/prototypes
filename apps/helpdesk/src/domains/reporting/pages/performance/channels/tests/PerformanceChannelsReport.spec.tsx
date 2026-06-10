@@ -6,6 +6,7 @@ import { ThemeProvider } from 'core/theme'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { PerformanceChannelsReport } from 'domains/reporting/pages/performance/channels/PerformanceChannelsReport'
+import { currentAccountHasProduct } from 'state/billing/selectors'
 
 jest.mock('domains/reporting/hooks/useCleanStatsFilters', () => ({
     useCleanStatsFilters: jest.fn(),
@@ -31,8 +32,16 @@ jest.mock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => <div>DrillDownModal</div>,
 }))
+jest.mock('domains/reporting/pages/voice/VoicePaywall', () => () => (
+    <div>VoicePaywall</div>
+))
+jest.mock('state/billing/selectors', () => ({
+    ...jest.requireActual('state/billing/selectors'),
+    currentAccountHasProduct: jest.fn(() => () => false),
+}))
 
 const mockFiltersPanelWrapper = assumeMock(FiltersPanelWrapper)
+const mockCurrentAccountHasProduct = assumeMock(currentAccountHasProduct)
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -55,6 +64,11 @@ describe('PerformanceChannelsReport', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+        mockCurrentAccountHasProduct.mockReturnValue(
+            (() => false) as unknown as ReturnType<
+                typeof currentAccountHasProduct
+            >,
+        )
     })
 
     it('renders the report heading', () => {
@@ -108,26 +122,65 @@ describe('PerformanceChannelsReport', () => {
     describe('Voice tab', () => {
         const voiceRoute = '/app/stats/performance-channels?channels-tab=voice'
 
-        it('does not render the export button', () => {
-            renderComponent(voiceRoute)
-            expect(
-                screen.queryByText('DashboardExportButton'),
-            ).not.toBeInTheDocument()
+        const mockHasVoiceProduct = () =>
+            mockCurrentAccountHasProduct.mockReturnValue(
+                (() => true) as unknown as ReturnType<
+                    typeof currentAccountHasProduct
+                >,
+            )
+
+        describe('when the account has the Voice product', () => {
+            beforeEach(() => {
+                mockHasVoiceProduct()
+            })
+
+            it('renders the dashboard layout renderer', () => {
+                renderComponent(voiceRoute)
+                expect(
+                    screen.getByText('DashboardLayoutRenderer'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('VoicePaywall'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('renders the export button', () => {
+                renderComponent(voiceRoute)
+                expect(
+                    screen.getByText('DashboardExportButton'),
+                ).toBeInTheDocument()
+            })
+
+            it('renders the filters panel', () => {
+                renderComponent(voiceRoute)
+                expect(
+                    screen.getByText('FiltersPanelWrapper'),
+                ).toBeInTheDocument()
+            })
         })
 
-        it('does not render the filters panel', () => {
-            renderComponent(voiceRoute)
-            expect(
-                screen.queryByText('FiltersPanelWrapper'),
-            ).not.toBeInTheDocument()
-            expect(mockFiltersPanelWrapper).not.toHaveBeenCalled()
-        })
+        describe('when the account lacks the Voice product', () => {
+            it('renders the Voice paywall', () => {
+                renderComponent(voiceRoute)
+                expect(screen.getByText('VoicePaywall')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('DashboardLayoutRenderer'),
+                ).not.toBeInTheDocument()
+            })
 
-        it('does not render the dashboard layout renderer', () => {
-            renderComponent(voiceRoute)
-            expect(
-                screen.queryByText('DashboardLayoutRenderer'),
-            ).not.toBeInTheDocument()
+            it('does not render the export button', () => {
+                renderComponent(voiceRoute)
+                expect(
+                    screen.queryByText('DashboardExportButton'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render the filters panel', () => {
+                renderComponent(voiceRoute)
+                expect(
+                    screen.queryByText('FiltersPanelWrapper'),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

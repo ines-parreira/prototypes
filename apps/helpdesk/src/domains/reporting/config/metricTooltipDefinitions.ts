@@ -300,4 +300,9 @@ export const METRIC_TOOLTIPS = {
         caption:
             'Total number of messages sent by agents within the selected timeframe (excluding internal-notes).',
     },
+    voiceTotalCalls: {
+        title: 'Total calls',
+        caption:
+            'Total number of inbound and outbound calls during the selected period.',
+    },
 } as const satisfies Record<string, MetricTooltipConfig>

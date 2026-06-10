@@ -10,7 +10,10 @@ import {
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
-import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import {
+    createScopeFilters,
+    getValueQuery,
+} from 'domains/reporting/models/scopes/utils'
 import type {
     ApiStatsFilters,
     FilterKey,
@@ -27,6 +30,14 @@ const voiceCallsScope = defineScope({
         'slaAchievementRate',
         'voiceCallsCount',
         'achievedExposures',
+        'inboundCallsCount',
+        'outboundCallsCount',
+        'inboundAnsweredCallsCount',
+        'inboundUnansweredCallsCount',
+        'inboundMissedCallsCount',
+        'inboundAbandonedCallsCount',
+        'inboundCancelledCallsCount',
+        'inboundCallbackRequestedCallsCount',
     ],
     dimensions: [
         'agentId',
@@ -554,3 +565,14 @@ export const voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2 = (
         ),
     })
 }
+
+const channelsVoiceTotalCallsBaseQuery = () => ({
+    measures: ['voiceCallsCount'] as const,
+})
+
+export const { valueQueryFactory: channelsVoiceTotalCallsValueQueryFactoryV2 } =
+    getValueQuery(
+        voiceCallsScope,
+        channelsVoiceTotalCallsBaseQuery,
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE,
+    )

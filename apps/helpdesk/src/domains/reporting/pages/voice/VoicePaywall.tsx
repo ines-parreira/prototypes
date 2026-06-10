@@ -28,12 +28,18 @@ const {
     greyButtonUrl,
 } = paywallConfig
 
-export default function VoicePaywall() {
+type VoicePaywallProps = {
+    showPageHeader?: boolean
+}
+
+export default function VoicePaywall({
+    showPageHeader = true,
+}: VoicePaywallProps) {
     const integrationConfig = getIntegrationConfig(IntegrationType.Phone)
 
     return (
         <div className={css.container}>
-            <PageHeader title="Voice" />
+            {showPageHeader && <PageHeader title="Voice" />}
             <PaywallView>
                 <PaywallViewLeftContainer>
                     <PaywallViewHeader title={paywallTitle} />

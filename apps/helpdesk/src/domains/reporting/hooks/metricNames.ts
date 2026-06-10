@@ -773,6 +773,8 @@ export const METRIC_NAMES = {
         'voice-call-count-per-filtering-agent',
     VOICE_CALL_LIST: 'voice-call-list',
     VOICE_CALL_WITH_SLA_STATUS_LIST: 'voice-call-with-sla-status-list',
+    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE:
+        'performance-channels-voice-total-calls-value',
 
     // VoiceCallsSummary scope
     VOICE_CALL_SUMMARY: 'voice-call-summary',

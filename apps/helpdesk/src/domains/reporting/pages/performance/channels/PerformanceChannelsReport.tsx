@@ -13,13 +13,21 @@ import {
     CHANNELS_TAB_PARAM,
     PERFORMANCE_CHANNELS_DASHBOARD_ID,
     PERFORMANCE_CHANNELS_EMAIL_TAB_NAME,
+    PERFORMANCE_CHANNELS_VOICE_TAB_NAME,
     PerformanceChannelsContent,
     PerformanceChannelsQueryParams,
 } from 'domains/reporting/pages/performance/channels/constants'
 import { ChannelsEmailReportConfig } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
 import { DEFAULT_PERFORMANCE_CHANNELS_EMAIL_LAYOUT } from 'domains/reporting/pages/performance/channels/email/config/defaultLayoutConfig'
 import { useExportPerformanceChannelsEmailToCSV } from 'domains/reporting/pages/performance/channels/email/hooks/useExportPerformanceChannelsEmailToCSV'
+import { ChannelsVoiceReportConfig } from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
+import { DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT } from 'domains/reporting/pages/performance/channels/voice/config/defaultLayoutConfig'
+import { useExportPerformanceChannelsVoiceToCSV } from 'domains/reporting/pages/performance/channels/voice/hooks/useExportPerformanceChannelsVoiceToCSV'
+import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
+import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
+import { ProductType } from 'models/billing/types'
+import { currentAccountHasProduct } from 'state/billing/selectors'
 
 const HEADER_NAVBAR_ITEMS = [
     {
@@ -39,6 +47,11 @@ export const PerformanceChannelsReport = () => {
     const [channelsTab] = useSearchParam(CHANNELS_TAB_PARAM)
     const activeTab = channelsTab || PerformanceChannelsQueryParams.Email
     const isEmailTab = activeTab === PerformanceChannelsQueryParams.Email
+    const isVoiceTab = activeTab === PerformanceChannelsQueryParams.Voice
+
+    const hasVoiceProduct = useAppSelector<boolean>(
+        currentAccountHasProduct(ProductType.Voice),
+    )
 
     const renderDashboard = useMemo(() => {
         switch (activeTab) {
@@ -56,12 +69,30 @@ export const PerformanceChannelsReport = () => {
                     />
                 )
             case PerformanceChannelsQueryParams.Voice:
+                return hasVoiceProduct ? (
+                    <DashboardLayoutRenderer
+                        defaultLayoutConfig={
+                            DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT
+                        }
+                        reportConfig={ChannelsVoiceReportConfig}
+                        dashboardId={PERFORMANCE_CHANNELS_DASHBOARD_ID}
+                        tabId={PerformanceChannelsQueryParams.Voice}
+                        tabName={PERFORMANCE_CHANNELS_VOICE_TAB_NAME}
+                        DashboardComponent={DashboardComponent}
+                    />
+                ) : (
+                    <VoicePaywall showPageHeader={false} />
+                )
             default:
                 return null
         }
-    }, [activeTab])
+    }, [activeTab, hasVoiceProduct])
 
     const { persistentFilters, optionalFilters } = useMemo(() => {
+        const noFilters = {
+            persistentFilters: null,
+            optionalFilters: null,
+        }
         switch (activeTab) {
             case PerformanceChannelsQueryParams.Email:
                 return {
@@ -70,13 +101,20 @@ export const PerformanceChannelsReport = () => {
                     optionalFilters:
                         ChannelsEmailReportConfig.reportFilters.optional,
                 }
+            case PerformanceChannelsQueryParams.Voice:
+                return hasVoiceProduct
+                    ? {
+                          persistentFilters:
+                              ChannelsVoiceReportConfig.reportFilters
+                                  .persistent,
+                          optionalFilters:
+                              ChannelsVoiceReportConfig.reportFilters.optional,
+                      }
+                    : noFilters
             default:
-                return {
-                    persistentFilters: null,
-                    optionalFilters: null,
-                }
+                return noFilters
         }
-    }, [activeTab])
+    }, [activeTab, hasVoiceProduct])
 
     return (
         <AnalyticsPage
@@ -88,6 +126,12 @@ export const PerformanceChannelsReport = () => {
                         key={activeTab}
                         contentRef={contentRef}
                         useCsvExport={useExportPerformanceChannelsEmailToCSV}
+                    />
+                ) : isVoiceTab && hasVoiceProduct ? (
+                    <DashboardExportButton
+                        key={activeTab}
+                        contentRef={contentRef}
+                        useCsvExport={useExportPerformanceChannelsVoiceToCSV}
                     />
                 ) : (
                     <Box height="32px" />
