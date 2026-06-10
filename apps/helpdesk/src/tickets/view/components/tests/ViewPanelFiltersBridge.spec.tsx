@@ -301,6 +301,14 @@ describe('ViewPanelFiltersBridge', () => {
         )
     }
 
+    const expectHiddenPopoverTrigger = (container: HTMLElement) => {
+        const trigger = container.querySelector(
+            'button[aria-hidden="true"][tabindex="-1"]',
+        )
+
+        expect(trigger).toBeInstanceOf(HTMLButtonElement)
+    }
+
     beforeEach(() => {
         dispatchMock.mockReset()
         invalidateQueriesMock.mockClear()
@@ -1373,6 +1381,12 @@ describe('ViewPanelFiltersBridge', () => {
             screen.getByText('You are about to edit this view for all users.'),
         ).toBeInTheDocument()
         expect(submitViewMock).not.toHaveBeenCalled()
+    })
+
+    it('keeps the fake popover trigger outside accessibility and tab order', () => {
+        const { container } = renderComponent()
+
+        expectHiddenPopoverTrigger(container)
     })
 
     it('does not submit a public view update when the popover is canceled', async () => {

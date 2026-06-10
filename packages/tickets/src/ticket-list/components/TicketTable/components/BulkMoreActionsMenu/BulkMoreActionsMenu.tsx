@@ -18,6 +18,7 @@ import type { TicketPriority } from '@gorgias/helpdesk-queries'
 import { useBulkActionMenuState } from '../../../../hooks/useBulkActionMenuState'
 import { useIsTrashLikeView } from '../../../../hooks/useIsTrashLikeView'
 import { PrioritySubMenu } from '../../../TicketListActions/PrioritySubMenu'
+import css from './BulkMoreActionsMenu.less'
 
 type BulkMoreActionsMenuProps = {
     viewId: number
@@ -166,7 +167,7 @@ export function BulkMoreActionsMenu({
                         type="button"
                         tabIndex={-1}
                         aria-hidden="true"
-                        style={{ width: 0, height: 0, overflow: 'hidden' }}
+                        className={css.hiddenPopoverTrigger}
                     />
                 }
             >

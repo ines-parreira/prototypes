@@ -44,6 +44,14 @@ async function openMenu(user: ReturnType<typeof render>['user']) {
     })
 }
 
+function expectHiddenPopoverTrigger(container: HTMLElement) {
+    const trigger = container.querySelector(
+        'button[aria-hidden="true"][tabindex="-1"]',
+    )
+
+    expect(trigger).toBeInstanceOf(HTMLButtonElement)
+}
+
 describe('BulkMoreActionsMenu', () => {
     beforeEach(() => {
         mockMenuState.canUseRestrictedBulkActions = true
@@ -63,6 +71,12 @@ describe('BulkMoreActionsMenu', () => {
         expect(
             screen.getByRole('menuitem', { name: /^delete$/i }),
         ).toBeInTheDocument()
+    })
+
+    it('keeps the fake popover trigger outside accessibility and tab order', () => {
+        const { container } = render(<BulkMoreActionsMenu {...defaultProps} />)
+
+        expectHiddenPopoverTrigger(container)
     })
 
     it('calls onMarkAsRead when selected', async () => {

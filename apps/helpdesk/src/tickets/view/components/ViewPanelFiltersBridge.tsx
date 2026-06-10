@@ -665,11 +665,9 @@ export function ViewPanelFiltersBridge({
                                                         type="button"
                                                         tabIndex={-1}
                                                         aria-hidden="true"
-                                                        style={{
-                                                            width: 0,
-                                                            height: 0,
-                                                            overflow: 'hidden',
-                                                        }}
+                                                        className={
+                                                            css.hiddenPopoverTrigger
+                                                        }
                                                     />
                                                 }
                                             >
