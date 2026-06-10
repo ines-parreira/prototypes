@@ -92,12 +92,14 @@ const mockTrackstarOpen = jest.fn()
 let trackstarLinkCallbacks: {
     getLinkToken?: () => Promise<string>
     onSuccess?: (authCode: string) => void | Promise<void>
+    onClose?: () => void
 } = {}
 jest.mock('@trackstar/react-trackstar-link', () => ({
     useTrackstarLink: jest.fn(
         (params: {
             getLinkToken?: () => Promise<string>
             onSuccess?: (authCode: string) => void | Promise<void>
+            onClose?: () => void
         }) => {
             trackstarLinkCallbacks = params
             return { open: mockTrackstarOpen }
@@ -1051,6 +1053,9 @@ describe(`App`, () => {
             ).toBeInTheDocument()
 
             await trackstarLinkCallbacks.onSuccess?.('trackstar-auth-xyz')
+            // The connection request fires from onClose so the Trackstar widget
+            // closes before the store-mapping modal opens.
+            trackstarLinkCallbacks.onClose?.()
 
             await waitFor(() => {
                 expect(
@@ -1059,6 +1064,34 @@ describe(`App`, () => {
                     data: { auth_code: 'trackstar-auth-xyz' },
                 })
             })
+        })
+
+        it('does not create a Trackstar service connection when the widget closes without a successful authentication', async () => {
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                outbound_auth: trackstarOutboundAuth,
+            })
+            mockServer
+                .onGet('/api/service-connections/')
+                .reply(200, { data: [], meta: {} })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+
+            await screen.findAllByText(new RegExp(dummyAppData.name))
+
+            trackstarLinkCallbacks.onClose?.()
+
+            expect(mockCreateTrackstarServiceConnection).not.toHaveBeenCalled()
         })
 
         it('shows an error toast when the Trackstar service-connection request fails', async () => {
@@ -1088,6 +1121,9 @@ describe(`App`, () => {
 
             await screen.findAllByText(new RegExp(dummyAppData.name))
             await trackstarLinkCallbacks.onSuccess?.('trackstar-auth-xyz')
+            // The connection request fires from onClose so the Trackstar widget
+            // closes before any toast / store-mapping modal renders.
+            trackstarLinkCallbacks.onClose?.()
 
             const toast = await screen.findByRole('status', {
                 name: new RegExp(
@@ -1781,6 +1817,139 @@ describe(`App`, () => {
                 connectionId: '',
             })
             expect(token).toBe('fresh-token')
+        })
+
+        it('creates a Trackstar service connection from the PageHeader CTA when onClose fires after a successful authentication', async () => {
+            const user = userEvent.setup()
+            const connectionId = '01970000-0000-7000-8000-000000000666'
+            mockCreateTrackstarLink.mockResolvedValue({
+                data: { link_token: 'fresh-token' },
+            })
+            mockCreateTrackstarServiceConnection.mockResolvedValue({
+                data: { id: connectionId },
+            })
+
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                is_installed: true,
+                outbound_auth: trackstarOutboundAuth,
+            })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            mockServer.onGet('/api/service-connections/').reply(200, {
+                data: [
+                    {
+                        id: '01970000-0000-7000-8000-000000000555',
+                        name: 'existing trackstar conn',
+                        service: 'shipmonk',
+                        url: trackstarOutboundAuth.url,
+                        status: 'active',
+                        created_datetime: '2026-05-01T00:00:00',
+                        updated_datetime: null,
+                        trashed_datetime: null,
+                        created_by: 1,
+                        updated_by: null,
+                        trashed_by: null,
+                        external_id: null,
+                        vendor: 'trackstar',
+                    },
+                ],
+                meta: {},
+            })
+            mockServer
+                .onGet(
+                    '/api/service-connections/01970000-0000-7000-8000-000000000555/stores/',
+                )
+                .reply(200, { data: [], meta: {} })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [
+                    `/integrations/app/${appId}/${Tab.Credentials}`,
+                ],
+                storeState: store.getState() as object,
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'Add credentials' }),
+            )
+
+            await trackstarLinkCallbacks.onSuccess?.('pageheader-auth-xyz')
+            expect(mockCreateTrackstarServiceConnection).not.toHaveBeenCalled()
+
+            trackstarLinkCallbacks.onClose?.()
+
+            await waitFor(() => {
+                expect(
+                    mockCreateTrackstarServiceConnection,
+                ).toHaveBeenCalledWith({
+                    data: { auth_code: 'pageheader-auth-xyz' },
+                })
+            })
+        })
+
+        it('does not create a Trackstar service connection from the PageHeader CTA when the widget closes without a successful authentication', async () => {
+            const user = userEvent.setup()
+            mockCreateTrackstarLink.mockResolvedValue({
+                data: { link_token: 'fresh-token' },
+            })
+
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                is_installed: true,
+                outbound_auth: trackstarOutboundAuth,
+            })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            mockServer.onGet('/api/service-connections/').reply(200, {
+                data: [
+                    {
+                        id: '01970000-0000-7000-8000-000000000555',
+                        name: 'existing trackstar conn',
+                        service: 'shipmonk',
+                        url: trackstarOutboundAuth.url,
+                        status: 'active',
+                        created_datetime: '2026-05-01T00:00:00',
+                        updated_datetime: null,
+                        trashed_datetime: null,
+                        created_by: 1,
+                        updated_by: null,
+                        trashed_by: null,
+                        external_id: null,
+                        vendor: 'trackstar',
+                    },
+                ],
+                meta: {},
+            })
+            mockServer
+                .onGet(
+                    '/api/service-connections/01970000-0000-7000-8000-000000000555/stores/',
+                )
+                .reply(200, { data: [], meta: {} })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [
+                    `/integrations/app/${appId}/${Tab.Credentials}`,
+                ],
+                storeState: store.getState() as object,
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'Add credentials' }),
+            )
+
+            trackstarLinkCallbacks.onClose?.()
+
+            expect(mockCreateTrackstarServiceConnection).not.toHaveBeenCalled()
         })
     })
 })

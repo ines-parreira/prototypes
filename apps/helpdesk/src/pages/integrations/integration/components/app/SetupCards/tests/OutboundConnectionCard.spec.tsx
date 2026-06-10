@@ -10,6 +10,7 @@ const mockTrackstarOpen = jest.fn()
 let trackstarCallbacks: {
     getLinkToken?: () => Promise<string>
     onSuccess?: (authCode: string) => Promise<void> | void
+    onClose?: () => void
 } = {}
 
 jest.mock('@trackstar/react-trackstar-link', () => ({
@@ -17,6 +18,7 @@ jest.mock('@trackstar/react-trackstar-link', () => ({
         (params: {
             getLinkToken?: () => Promise<string>
             onSuccess?: (authCode: string) => Promise<void> | void
+            onClose?: () => void
         }) => {
             trackstarCallbacks = params
             return { open: mockTrackstarOpen }
@@ -107,7 +109,49 @@ describe('<OutboundConnectionCard />', () => {
         expect(mockTrackstarOpen).toHaveBeenCalledTimes(1)
 
         await trackstarCallbacks.onSuccess?.('auth-code-123')
+        // onAuthCode now fires from onClose so the Trackstar widget is fully
+        // torn down before the store-mapping modal opens.
+        expect(onTrackstarAuthCode).not.toHaveBeenCalled()
+
+        trackstarCallbacks.onClose?.()
         expect(onTrackstarAuthCode).toHaveBeenCalledWith('auth-code-123')
+    })
+
+    it('does not invoke onAuthCode when the trackstar widget closes without a successful authentication', () => {
+        const onTrackstarAuthCode = jest.fn()
+        render(
+            <OutboundConnectionCard
+                appTitle="ShipMonk"
+                outboundAuth={trackstarAuth}
+                isSubmitting={false}
+                onOpenAuthModal={jest.fn()}
+                onTrackstarAuthCode={onTrackstarAuthCode}
+            />,
+        )
+
+        trackstarCallbacks.onClose?.()
+
+        expect(onTrackstarAuthCode).not.toHaveBeenCalled()
+    })
+
+    it('clears the pending auth code so a subsequent onClose without onSuccess does not refire onAuthCode', async () => {
+        const onTrackstarAuthCode = jest.fn().mockResolvedValue(undefined)
+        render(
+            <OutboundConnectionCard
+                appTitle="ShipMonk"
+                outboundAuth={trackstarAuth}
+                isSubmitting={false}
+                onOpenAuthModal={jest.fn()}
+                onTrackstarAuthCode={onTrackstarAuthCode}
+            />,
+        )
+
+        await trackstarCallbacks.onSuccess?.('auth-code-123')
+        trackstarCallbacks.onClose?.()
+        expect(onTrackstarAuthCode).toHaveBeenCalledTimes(1)
+
+        trackstarCallbacks.onClose?.()
+        expect(onTrackstarAuthCode).toHaveBeenCalledTimes(1)
     })
 
     it('fetches a link token through the link endpoint when getLinkToken is invoked', async () => {

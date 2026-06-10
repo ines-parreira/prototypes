@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 
 import { Button } from '@gorgias/axiom'
@@ -59,10 +61,17 @@ function TrackstarConnectButton({
     onAuthCode,
 }: TrackstarConnectButtonProps) {
     const { mutateAsync: createLink } = useLinkTrackstar()
+    const pendingAuthCodeRef = useRef<string | null>(null)
     const { open } = useTrackstarLink({
         integrationAllowList: [integrationName],
-        onSuccess: async (authCode: string) => {
-            await onAuthCode(authCode)
+        onSuccess: (authCode: string) => {
+            pendingAuthCodeRef.current = authCode
+        },
+        onClose: () => {
+            const authCode = pendingAuthCodeRef.current
+            if (!authCode) return
+            pendingAuthCodeRef.current = null
+            void onAuthCode(authCode)
         },
         getLinkToken: async () => {
             const res = await createLink({ connectionId: '' })
