@@ -620,12 +620,38 @@ describe('TicketTimelineWidget', () => {
             mockUseFlag.mockReturnValue(false)
         })
 
-        it('renders a collapse toggle button for the tickets section', () => {
+        it('renders a collapse toggle button when there are multiple tickets', () => {
             renderComponent({ totalNumber: 3, openTicketsNumber: 2 })
 
             expect(
                 screen.getByRole('button', { name: 'Collapse Tickets' }),
             ).toBeInTheDocument()
+        })
+
+        it('does not render a toggle button when there is only 1 ticket', () => {
+            renderComponent({ totalNumber: 1 })
+
+            expect(
+                screen.queryByRole('button', { name: 'Collapse Tickets' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'Expand Tickets' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the body content when there is only 1 ticket', () => {
+            const tickets = [
+                createEnrichedTicket(
+                    createTicketCompact({ id: 1, subject: 'Only ticket' }),
+                ),
+            ]
+
+            renderComponent({ tickets, totalNumber: 1 })
+
+            expect(
+                screen.queryByRole('button', { name: /show all/i }),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Only ticket')).not.toBeInTheDocument()
         })
 
         it('collapses and re-expands the ticket list on toggle click', async () => {

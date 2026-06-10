@@ -34,36 +34,39 @@ export function TicketTimelineWidget({
     fetchLimit,
 }: TicketTimelineWidgetProps) {
     const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
-    const showToggle = hasNewOrdersSidebar
+    const showToggle = hasNewOrdersSidebar && totalNumber > 1
     const shouldDisplayTicketsList = totalNumber > 1 && !isLoading
     const [isExpanded, setIsExpanded] = useState(true)
     const toggle = useCallback(() => setIsExpanded((v) => !v), [])
 
-    const bodyContent = (!showToggle || isExpanded) && (
-        <>
-            {isLoading && <Skeleton count={3} />}
-            {shouldDisplayTicketsList && (
-                <Box flexDirection="column">
-                    <TicketsList
-                        enrichedTickets={tickets}
-                        onSelectTicket={onSelectTicket}
-                    />
-                    <Box>
-                        <Button
-                            onClick={onToggleTimeline}
-                            variant={
-                                hasNewOrdersSidebar ? 'secondary' : 'tertiary'
-                            }
-                            size="sm"
-                            trailingSlot="arrow-chevron-right"
-                        >
-                            Show all
-                        </Button>
+    const bodyContent = (isLoading || totalNumber > 1) &&
+        (!showToggle || isExpanded) && (
+            <>
+                {isLoading && <Skeleton count={3} />}
+                {shouldDisplayTicketsList && (
+                    <Box flexDirection="column">
+                        <TicketsList
+                            enrichedTickets={tickets}
+                            onSelectTicket={onSelectTicket}
+                        />
+                        <Box>
+                            <Button
+                                onClick={onToggleTimeline}
+                                variant={
+                                    hasNewOrdersSidebar
+                                        ? 'secondary'
+                                        : 'tertiary'
+                                }
+                                size="sm"
+                                trailingSlot="arrow-chevron-right"
+                            >
+                                Show all
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
-            )}
-        </>
-    )
+                )}
+            </>
+        )
 
     if (hasNewOrdersSidebar) {
         return (
@@ -75,8 +78,8 @@ export function TicketTimelineWidget({
                     customerName={customerName}
                     isLoading={isLoading}
                     fetchLimit={fetchLimit}
-                    isExpanded={isExpanded}
-                    onToggle={toggle}
+                    isExpanded={showToggle ? isExpanded : undefined}
+                    onToggle={showToggle ? toggle : undefined}
                     className={css.expandableHeader}
                 />
                 {bodyContent && (
