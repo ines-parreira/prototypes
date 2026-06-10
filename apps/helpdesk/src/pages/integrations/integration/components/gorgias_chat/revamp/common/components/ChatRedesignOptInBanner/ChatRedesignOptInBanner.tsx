@@ -181,34 +181,36 @@ export const ChatRedesignOptInBanner = ({
                             : `Preview and edit the refreshed settings and design before updating. Update now and switch back anytime before ${cutoffDateLabel}.`}
                     </Text>
                 </div>
-                {isPreviewing ? (
-                    <Box gap="xs">
-                        <Button
-                            size={ButtonSize.Sm}
-                            variant={ButtonVariant.Primary}
-                            onClick={openSwitchModal}
-                        >
-                            Switch to new chat
-                        </Button>
-                        <Button
-                            size={ButtonSize.Sm}
-                            variant={ButtonVariant.Secondary}
-                            onClick={handleLeavePreview}
-                        >
-                            Leave preview
-                        </Button>
-                    </Box>
-                ) : (
-                    <Box>
-                        <Button
-                            size={ButtonSize.Sm}
-                            variant={ButtonVariant.Primary}
-                            onClick={handlePreviewNewChat}
-                        >
-                            Preview new chat
-                        </Button>
-                    </Box>
-                )}
+                <div>
+                    {isPreviewing ? (
+                        <Box gap="xs">
+                            <Button
+                                size={ButtonSize.Sm}
+                                variant={ButtonVariant.Primary}
+                                onClick={openSwitchModal}
+                            >
+                                Switch to new chat
+                            </Button>
+                            <Button
+                                size={ButtonSize.Sm}
+                                variant={ButtonVariant.Secondary}
+                                onClick={handleLeavePreview}
+                            >
+                                Leave preview
+                            </Button>
+                        </Box>
+                    ) : (
+                        <Box>
+                            <Button
+                                size={ButtonSize.Sm}
+                                variant={ButtonVariant.Primary}
+                                onClick={handlePreviewNewChat}
+                            >
+                                Preview new chat
+                            </Button>
+                        </Box>
+                    )}
+                </div>
             </div>
             <ChatRedesignSwitchConfirmModal
                 isOpen={isModalOpen}
