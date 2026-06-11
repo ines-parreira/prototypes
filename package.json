@@ -47,7 +47,7 @@
         "platform:test:memory-analysis": "tsx scripts/test-memory-analysis/analyze.ts"
     },
     "devDependencies": {
-        "@gorgias/config": "0.7.0",
+        "@gorgias/config": "0.8.1",
         "@gorgias/static-analysis": "0.5.0",
         "@sentry/cli": "catalog:sentry",
         "@types/node": "24.12.2",
