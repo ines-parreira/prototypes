@@ -12,8 +12,13 @@
     }
 
     .wrapperExpanded {
-        padding: var(--spacing-sm, 12px) var(--spacing-md, 16px) 0;
-        margin-bottom: -4px;
+        // No vertical padding: the sidebar's md (16px) gap already provides
+        // the spacing above the button. Below, cancel that same md gap so the
+        // only spacing down to the footer divider is the footer's own md
+        // (16px) gap. Result: a symmetric 16px above and below, matching the
+        // avatar / settings / chat rhythm.
+        padding: 0 var(--spacing-md, 16px);
+        margin-bottom: calc(var(--spacing-md, 16px) * -1);
     }
 
     // Content-width anchor so the glow lines up with the trigger bounds
