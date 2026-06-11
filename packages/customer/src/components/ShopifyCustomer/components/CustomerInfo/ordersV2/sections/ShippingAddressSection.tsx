@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Box, Button, Text, toast } from '@gorgias/axiom'
 
+import { CopyableField } from '@repo/ecommerce/shopify/components'
+
 import type { Address } from '../../orders/addressUtils'
-import { getAddressParts } from '../../orders/addressUtils'
+import { getAddressParts, getAddressPartsV2 } from '../../orders/addressUtils'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 
 export type ShippingAddress = Address
@@ -43,6 +47,7 @@ export function ShippingAddressSection({
         ShippingAddress | undefined
     >(undefined)
     const { preferences } = useOrderFieldPreferences()
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
 
     const sectionPrefs = preferences.sections.shippingAddress
     if (sectionPrefs?.sectionVisible === false) return null
@@ -50,7 +55,9 @@ export function ShippingAddressSection({
     if (!shippingAddress) return null
 
     const displayedAddress = shippingAddressOverride ?? shippingAddress
-    const addressParts = getAddressParts(displayedAddress)
+    const addressParts = hasNewOrdersSidebar
+        ? getAddressPartsV2(displayedAddress)
+        : getAddressParts(displayedAddress)
 
     function handleCopyToClipboard() {
         navigator.clipboard.writeText(addressParts.join('\n'))
@@ -82,6 +89,7 @@ export function ShippingAddressSection({
                         icon="copy"
                         intent="regular"
                         variant="tertiary"
+                        size="sm"
                         onClick={handleCopyToClipboard}
                         aria-label="Copy to clipboard"
                     />
@@ -96,12 +104,14 @@ export function ShippingAddressSection({
                 </Box>
             </Box>
             {addressParts.map((part, index) => (
-                <React.Fragment key={index}>
-                    <Text key={index} size="md">
-                        {part}
-                    </Text>
-                    <br />
-                </React.Fragment>
+                <CopyableField
+                    key={index}
+                    value={part}
+                    ariaLabel="Copy"
+                    alignCenter
+                >
+                    <Text size="md">{part}</Text>
+                </CopyableField>
             ))}
             {renderEditShippingAddressModal &&
                 renderEditShippingAddressModal({

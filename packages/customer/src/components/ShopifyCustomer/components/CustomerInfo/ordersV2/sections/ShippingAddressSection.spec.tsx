@@ -3,6 +3,26 @@ import { screen } from '@testing-library/react'
 
 import { ShippingAddressSection } from './ShippingAddressSection'
 
+const { mockUseFlag, mockCopyToClipboard } = vi.hoisted(() => ({
+    mockUseFlag: vi.fn().mockReturnValue(false),
+    mockCopyToClipboard: vi.fn(),
+}))
+
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar',
+    },
+    useFlag: mockUseFlag,
+}))
+
+vi.mock('@repo/hooks', () => ({
+    useCopyToClipboard: () => [null, mockCopyToClipboard],
+}))
+
+vi.mock('@gorgias/toolkit-react', () => ({
+    useCopyToClipboard: () => [null, mockCopyToClipboard],
+}))
+
 const mockUseOrderFieldPreferences = vi.fn(() => ({
     preferences: { sections: {} },
     savePreferences: vi.fn(),
@@ -24,12 +44,21 @@ const mockAddress = {
 }
 
 describe('ShippingAddressSection (V2)', () => {
+    beforeAll(() => {
+        Object.defineProperty(navigator, 'clipboard', {
+            value: { writeText: vi.fn().mockResolvedValue(undefined) },
+            writable: true,
+            configurable: true,
+        })
+    })
+
     beforeEach(() => {
         vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
     })
 
     afterEach(() => {
         vi.restoreAllMocks()
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('renders nothing when section is hidden by preferences', () => {
@@ -143,5 +172,58 @@ describe('ShippingAddressSection (V2)', () => {
 
         expect(screen.getByText('456 Updated Ave,')).toBeInTheDocument()
         expect(screen.queryByText('123 Main St,')).not.toBeInTheDocument()
+    })
+
+    describe('when NewOrdersSidebar FF is enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation(
+                (key) => key === 'linear-HELP-6616-new-orders-sidebar',
+            )
+        })
+
+        it('renders address with zip on city line and country at the bottom', () => {
+            render(<ShippingAddressSection shippingAddress={mockAddress} />)
+
+            expect(screen.getByText('New York, NY, 10001')).toBeInTheDocument()
+            expect(screen.getByText('United States')).toBeInTheDocument()
+            expect(
+                screen.queryByText('United States 10001'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders a copy button for each address line', () => {
+            render(<ShippingAddressSection shippingAddress={mockAddress} />)
+
+            const copyButtons = screen.getAllByRole('button', { name: 'Copy' })
+            expect(copyButtons).toHaveLength(4)
+        })
+
+        it('copies an individual address line when its copy button is clicked', async () => {
+            mockCopyToClipboard.mockClear()
+            const { user } = render(
+                <ShippingAddressSection shippingAddress={mockAddress} />,
+            )
+
+            const [firstCopyButton] = screen.getAllByRole('button', {
+                name: 'Copy',
+            })
+            await user.click(firstCopyButton)
+
+            expect(mockCopyToClipboard).toHaveBeenCalledWith('John Doe')
+        })
+
+        it('copies the full address with the new format when the header copy button is clicked', async () => {
+            const { user } = render(
+                <ShippingAddressSection shippingAddress={mockAddress} />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /copy to clipboard/i }),
+            )
+
+            expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+                'John Doe\n123 Main St,\nNew York, NY, 10001\nUnited States',
+            )
+        })
     })
 })

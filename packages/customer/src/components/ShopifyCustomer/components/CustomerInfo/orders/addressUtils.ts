@@ -21,3 +21,17 @@ export function getAddressParts(address: Address): string[] {
         `${address.country ?? address.country_code ?? ''} ${address.zip ?? ''}`.trim(),
     ].filter(Boolean) as string[]
 }
+
+export function getAddressPartsV2(address: Address): string[] {
+    const cityLine = [address.city, address.province_code, address.zip]
+        .filter(Boolean)
+        .join(', ')
+
+    return [
+        address.name,
+        address.address1 ? `${address.address1},` : null,
+        address.address2 ? `${address.address2},` : null,
+        cityLine || null,
+        address.country ?? address.country_code ?? null,
+    ].filter(Boolean) as string[]
+}

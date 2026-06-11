@@ -1,9 +1,11 @@
-import React from 'react'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Box, Button, Text, toast } from '@gorgias/axiom'
 
+import { CopyableField } from '@repo/ecommerce/shopify/components'
+
 import type { Address } from '../../orders/addressUtils'
-import { getAddressParts } from '../../orders/addressUtils'
+import { getAddressParts, getAddressPartsV2 } from '../../orders/addressUtils'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 
 type Props = {
@@ -12,13 +14,16 @@ type Props = {
 
 export function BillingAddressSection({ billingAddress }: Props) {
     const { preferences } = useOrderFieldPreferences()
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
 
     const sectionPrefs = preferences.sections.billingAddress
     if (sectionPrefs?.sectionVisible === false) return null
 
     if (!billingAddress) return null
 
-    const addressParts = getAddressParts(billingAddress)
+    const addressParts = hasNewOrdersSidebar
+        ? getAddressPartsV2(billingAddress)
+        : getAddressParts(billingAddress)
 
     function handleCopyToClipboard() {
         navigator.clipboard.writeText(addressParts.join('\n'))
@@ -42,16 +47,21 @@ export function BillingAddressSection({ billingAddress }: Props) {
                         icon="copy"
                         intent="regular"
                         variant="tertiary"
+                        size="sm"
                         onClick={handleCopyToClipboard}
                         aria-label="Copy billing address to clipboard"
                     />
                 </Box>
             </Box>
             {addressParts.map((part, index) => (
-                <React.Fragment key={index}>
+                <CopyableField
+                    key={index}
+                    value={part}
+                    ariaLabel="Copy"
+                    alignCenter
+                >
                     <Text size="md">{part}</Text>
-                    <br />
-                </React.Fragment>
+                </CopyableField>
             ))}
         </Box>
     )

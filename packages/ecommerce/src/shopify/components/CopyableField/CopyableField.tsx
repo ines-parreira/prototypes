@@ -15,6 +15,7 @@ export type CopyableFieldProps = {
     ariaLabel?: string
     className?: string
     inline?: boolean
+    alignCenter?: boolean
 }
 
 function truncateStr(value: string, length: number): string {
@@ -29,6 +30,7 @@ export function CopyableField({
     ariaLabel = 'Copy to clipboard',
     className,
     inline,
+    alignCenter,
 }: CopyableFieldProps) {
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [, copyToClipboard] = useCopyToClipboard()
@@ -67,12 +69,19 @@ export function CopyableField({
         }
     }, [])
 
-    const wrapperClassName = [inline ? css.fieldInline : css.field, className]
+    const wrapperClassName = [
+        inline ? css.fieldInline : css.field,
+        !inline && alignCenter ? css.alignCenter : undefined,
+        className,
+    ]
         .filter(Boolean)
         .join(' ')
 
     const content = (
-        <div className={wrapperClassName}>
+        <div
+            className={wrapperClassName}
+            onClick={inline ? undefined : handleCopy}
+        >
             {children ?? shortenedValue}
             <Tooltip
                 isOpen={isTooltipOpen}
@@ -89,6 +98,7 @@ export function CopyableField({
                             icon="copy"
                             intent="regular"
                             variant="tertiary"
+                            size="sm"
                             onClick={handleCopy}
                             aria-label={ariaLabel}
                         />

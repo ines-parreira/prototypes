@@ -5,6 +5,11 @@ import { screen } from '@testing-library/react'
 import { OrderRow } from '../OrderRow'
 import { makeOrder, toV2Order } from './fixtures'
 
+vi.mock('@repo/feature-flags', async () => ({
+    ...(await vi.importActual('@repo/feature-flags')),
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 vi.mock('@repo/preferences', () => ({
     useUserDateTimePreferences: () => ({
         dateFormat: DateFormatType.en_US,

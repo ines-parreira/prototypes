@@ -2,6 +2,11 @@ import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
+
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: { NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar' },
+    useFlag: vi.fn().mockReturnValue(false),
+}))
 import { BillingAddressSection } from '../sections/BillingAddressSection'
 
 vi.mock('../../widget/useOrderFieldPreferences', () => ({

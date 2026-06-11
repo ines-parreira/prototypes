@@ -3,6 +3,11 @@ import { act, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
+
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: { NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar' },
+    useFlag: vi.fn().mockReturnValue(false),
+}))
 import type { ShippingAddress } from '../sections/ShippingAddressSection'
 import { ShippingAddressSection } from '../sections/ShippingAddressSection'
 
