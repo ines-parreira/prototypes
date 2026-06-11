@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import type { ComponentType, Dispatch, ReactNode, SetStateAction } from 'react'
 
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
@@ -95,6 +96,7 @@ type Props = {
     isEditingWidgets: boolean
     isOnNewLayout?: boolean
     customerId: number | null
+    ticketId: number
     currentUser: CurrentUser
     createOrder: ReturnType<typeof useCreateOrder>
     handleSyncProfile: () => void
@@ -113,6 +115,7 @@ export function TicketCustomerSections({
     isEditingWidgets,
     isOnNewLayout,
     customerId,
+    ticketId,
     currentUser,
     createOrder,
     handleSyncProfile,
@@ -126,6 +129,11 @@ export function TicketCustomerSections({
     const customerFilteredIntegrations = useCustomerFilteredIntegrations()
     const { activeTab, editingWidgetType } = useTicketInfobarNavigation()
     const isEditMode = editingWidgetType != null
+    const scrollRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        scrollRef.current?.scrollTo?.({ top: 0 })
+    }, [ticketId])
 
     const sectionsByTab = new Map<TicketInfobarTab, ReactNode>()
 
@@ -253,6 +261,7 @@ export function TicketCustomerSections({
 
     return (
         <div
+            ref={scrollRef}
             className={classNames(css.scrollableSections, {
                 [css.editMode]: isEditMode,
                 [css.newOrdersSidebar]: hasNewOrdersSidebar,

@@ -411,6 +411,7 @@ export const TicketInfobarContainer = ({
                     isEditingWidgets: !!isEditingWidgets,
                     isOnNewLayout,
                     customerId: ticket.customer?.id ?? null,
+                    ticketId,
                     currentUser: currentUserBasicInfo,
                     createOrder,
                     handleSyncProfile,
