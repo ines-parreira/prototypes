@@ -1,6 +1,12 @@
+import { mockListAnalyticsCustomReportsHandler } from '@gorgias/helpdesk-mocks'
+
 import { assumeMock, render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { setupServer } from 'msw/node'
 
+import { UserRole } from 'config/types/user'
 import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import type {
     DashboardChartSchema,
@@ -11,6 +17,7 @@ import { PerformanceOverviewChannelTable } from 'domains/reporting/pages/perform
 import type { PerformanceOverviewEntityMetrics } from 'domains/reporting/pages/performance/overview/config/breakdownTableMetrics'
 import { useDownloadPerformanceOverviewChannelData } from 'domains/reporting/pages/performance/overview/hooks/channelBreakdown/useDownloadPerformanceOverviewChannelData'
 import { usePerformanceOverviewChannelMetrics } from 'domains/reporting/pages/performance/overview/hooks/channelBreakdown/usePerformanceOverviewChannelMetrics'
+import { user } from 'fixtures/users'
 
 jest.mock(
     'domains/reporting/pages/performance/overview/hooks/channelBreakdown/usePerformanceOverviewChannelMetrics',
@@ -22,27 +29,27 @@ jest.mock(
 
 jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
 
-jest.mock(
-    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
-    () => ({
-        ChartsActionMenu: ({
-            chartName,
-            exportCsvAction,
-        }: {
-            chartName: string
-            exportCsvAction?: { onClick: () => void }
-        }) => (
-            <div>
-                <button type="button">{`${chartName} chart actions`}</button>
-                {exportCsvAction ? (
-                    <button type="button" onClick={exportCsvAction.onClick}>
-                        {`${chartName} export csv`}
-                    </button>
-                ) : null}
-            </div>
-        ),
-    }),
-)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(mockListAnalyticsCustomReportsHandler().handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const teamLeadState = {
+    currentUser: fromJS({ ...user, role: { name: UserRole.Agent } }),
+}
 
 const mockUsePerformanceOverviewChannelMetrics = assumeMock(
     usePerformanceOverviewChannelMetrics,
@@ -125,6 +132,7 @@ const renderTable = ({
             chartId={chartId}
             withChartMenu={withChartMenu}
         />,
+        { storeState: teamLeadState },
     )
 }
 
@@ -192,14 +200,14 @@ describe('PerformanceOverviewChannelTable', () => {
         expect(screen.getByRole('button', { name: /download/i })).toBeDisabled()
     })
 
-    it('renders the chart action menu when chartId and withChartMenu are provided', () => {
+    it('renders the chart action menu when chartId and withChartMenu are provided', async () => {
         renderTable({
             chartId: 'performance-overview-channel-table',
             withChartMenu: true,
         })
 
         expect(
-            screen.getByRole('button', { name: /channel chart actions/i }),
+            await screen.findByRole('button', { name: 'Chart actions' }),
         ).toBeInTheDocument()
     })
 
@@ -207,7 +215,7 @@ describe('PerformanceOverviewChannelTable', () => {
         renderTable({ withChartMenu: true })
 
         expect(
-            screen.queryByRole('button', { name: /channel chart actions/i }),
+            screen.queryByRole('button', { name: 'Chart actions' }),
         ).not.toBeInTheDocument()
     })
 
@@ -218,18 +226,23 @@ describe('PerformanceOverviewChannelTable', () => {
         })
 
         expect(
-            screen.queryByRole('button', { name: /channel chart actions/i }),
+            screen.queryByRole('button', { name: 'Chart actions' }),
         ).not.toBeInTheDocument()
     })
 
-    it('exposes CSV export from the chart action menu instead of the standalone download button', () => {
+    it('exposes CSV export from the chart action menu instead of the standalone download button', async () => {
+        const user = userEvent.setup()
         renderTable({
             chartId: 'performance-overview-channel-table',
             withChartMenu: true,
         })
 
+        await user.click(
+            await screen.findByRole('button', { name: 'Chart actions' }),
+        )
+
         expect(
-            screen.getByRole('button', { name: /channel export csv/i }),
+            await screen.findByRole('menuitem', { name: /export as csv/i }),
         ).toBeInTheDocument()
         expect(
             screen.queryByRole('button', { name: /download/i }),

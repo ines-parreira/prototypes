@@ -225,6 +225,14 @@ export interface DashboardChartProps {
     customDashboardChartSchema?: DashboardChartSchema
 }
 
+export type DashboardBreakdownTableProps = {
+    chartId?: string
+    withChartMenu?: boolean
+    dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    customDashboardChartSchema?: DashboardChartSchema
+}
+
 export type ChartConfig = {
     chartComponent: (props: DashboardChartProps) => React.JSX.Element
     label: string

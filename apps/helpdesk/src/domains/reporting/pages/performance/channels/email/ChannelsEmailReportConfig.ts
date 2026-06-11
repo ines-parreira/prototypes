@@ -17,6 +17,16 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import {
+    CHANNELS_EMAIL_AGENT_TABLE,
+    ChannelsEmailAgentTable,
+    fetchPerformanceChannelsEmailAgentAsConfigurableTable,
+} from 'domains/reporting/pages/performance/channels/email/charts/breakdownTables/ChannelsEmailAgentTable'
+import {
+    CHANNELS_EMAIL_SUB_CHANNEL_TABLE,
+    ChannelsEmailSubChannelTable,
+    fetchPerformanceChannelsEmailSubChannelAsConfigurableTable,
+} from 'domains/reporting/pages/performance/channels/email/charts/breakdownTables/ChannelsEmailSubChannelTable'
+import {
     CHANNELS_EMAIL_CHANNEL_BAR_METRICS,
     ChannelsEmailConfigurableBarGraph,
 } from 'domains/reporting/pages/performance/channels/email/charts/configurableGraphs/ChannelsEmailConfigurableBarGraph/ChannelsEmailConfigurableBarGraph'
@@ -54,6 +64,8 @@ export enum PerformanceChannelsEmailChart {
     MessagesSentCard = 'performance-channels-email-messages-sent-card',
     ConfigurableBarGraph = 'performance-channels-email-configurable-bar-graph',
     ConfigurableLineGraph = 'performance-channels-email-configurable-line-graph',
+    AgentTable = 'performance-channels-email-agent-table',
+    SubChannelTable = 'performance-channels-email-sub-channel-table',
 }
 
 export const ChannelsEmailReportConfig: ReportConfig<PerformanceChannelsEmailChart> =
@@ -246,6 +258,30 @@ export const ChannelsEmailReportConfig: ReportConfig<PerformanceChannelsEmailCha
                 ],
                 chartType: ChartType.Graph,
                 description: CHANNELS_EMAIL_LINE_CHART_DESCRIPTION,
+            },
+            [PerformanceChannelsEmailChart.AgentTable]: {
+                chartComponent: ChannelsEmailAgentTable,
+                label: CHANNELS_EMAIL_AGENT_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchPerformanceChannelsEmailAgentAsConfigurableTable,
+                    },
+                ],
+                description: CHANNELS_EMAIL_AGENT_TABLE.description,
+                chartType: ChartType.Table,
+            },
+            [PerformanceChannelsEmailChart.SubChannelTable]: {
+                chartComponent: ChannelsEmailSubChannelTable,
+                label: CHANNELS_EMAIL_SUB_CHANNEL_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchPerformanceChannelsEmailSubChannelAsConfigurableTable,
+                    },
+                ],
+                description: CHANNELS_EMAIL_SUB_CHANNEL_TABLE.description,
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

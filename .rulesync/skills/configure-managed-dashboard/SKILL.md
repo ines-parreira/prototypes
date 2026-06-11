@@ -530,15 +530,20 @@ Wires a metric **breakdown table** (one row per dimension value — agent, chann
 
 This mode reuses the shared per-dimension data machinery — **do not hand-roll fetching.** A table is five co-located pieces plus the usual `ReportConfig` + layout wiring:
 
-| Piece                                                         | Responsibility                                                                                                    |
-| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `config/breakdownTableMetrics.ts` (shared, one per dashboard) | metric-key union, `*_METRIC_FACTORIES` map, `*EntityMetrics` row type, row builder, `MetricColumnConfig[]`        |
-| `<Table>/columns.tsx`                                         | `NameColumnConfig[]` (the entity column) + table title/description + the metric columns export                    |
-| `hooks/<dim>Breakdown/use<Table>Metrics.ts`                   | assembles rows via `useEntityMetrics`; also exports a `fetch…Metrics` + `fetch…AsConfigurableTable` for CSV       |
-| `hooks/<dim>Breakdown/useDownload<Table>Data.ts`              | `useState`/`useEffect` wrapper around `fetch<Table>Metrics` → `{ files, fileName, isLoading }` (no shared cache)  |
-| `<Table>/<Table>.tsx`                                         | the custom-dashboard-aware component (hoists the download data, feeds both the action menu and the shared button) |
+| Piece                                                         | Responsibility                                                                                                   |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `config/breakdownTableMetrics.ts` (shared, one per dashboard) | metric-key union, `*_METRIC_FACTORIES` map, `*EntityMetrics` row type, row builder, `MetricColumnConfig[]`       |
+| `<Table>/columns.tsx`                                         | `NameColumnConfig[]` (the entity column) + table title/description + the metric columns export                   |
+| `hooks/<dim>Breakdown/use<Table>Metrics.ts`                   | assembles rows via `useEntityMetrics`; also exports a `fetch…Metrics` + `fetch…AsConfigurableTable` for CSV      |
+| `hooks/<dim>Breakdown/useDownload<Table>Data.ts`              | `useState`/`useEffect` wrapper around `fetch<Table>Metrics` → `{ files, fileName, isLoading }` (no shared cache) |
+| `<Table>/<Table>.tsx`                                         | the custom-dashboard-aware component (delegates the download/action-menu wiring to `useBreakdownTableActions`)   |
 
 Reference (channel breakdown, end to end): `pages/performance/overview/charts/breakdownTables/PerformanceOverviewChannelTable/` + `pages/performance/overview/config/breakdownTableMetrics.ts` + `hooks/channelBreakdown/`. The agent variant (`PerformanceOverviewAgentTable`) is the same shape with a per-agent name column and `enableSearch`.
+
+**Two shared hooks own the repeated wiring — use them, don't re-inline (both in `pages/performance/utils/`):**
+
+- **`useBreakdownTableActions`** (`useBreakdownTableActions.tsx`) — takes `{ chartId, withChartMenu, dashboard, chartName, segmentEventName, useDownloadData }` and returns `{ DownloadButton, actionMenu }`. It encapsulates the `withMenu = withChartMenu && chartId` gating, the single `useDownloadData()` call (preserving the "fetch once" invariant from D.5), `useDownloadTableAction`, and the conditional `DownloadTableButton` / `ChartsActionMenu` (with `exportCsvAction`). The per-table download hook is passed **as** `useDownloadData` and called once inside.
+- **`useAgentNameColumns`** (`useAgentNameColumns.ts`) — returns the memoized agent `NameColumnConfig[]` (name via `humanizeAgent`, avatar via `getAvatarProps`), reading `getFilteredAgents` internally. Every agent-style table uses it instead of re-declaring the column.
 
 ### D.1 — Confirm inputs
 
@@ -574,7 +579,7 @@ export const PERFORMANCE_OVERVIEW_CHANNEL_COLUMNS =
     PERFORMANCE_OVERVIEW_BREAKDOWN_METRIC_COLUMNS
 ```
 
-For an agent-style table the name column resolves a display name + avatar from the store (`humanizeAgent`, `getAvatarProps`) and is built with `useMemo` inside the component instead of being a static export — see `PerformanceOverviewAgentTable`.
+For an agent-style table the name column resolves a display name + avatar from the store. **Don't re-declare it** — call the shared `useAgentNameColumns()` hook (`pages/performance/utils/useAgentNameColumns.ts`) in the component and pass its result as `nameColumns`. It reads `getFilteredAgents` internally and memoizes the `humanizeAgent` + `getAvatarProps` column, so the agent `columns.tsx` only exports the table title/description + metric columns (no `NameColumnConfig`). See `PerformanceOverviewAgentTable`.
 
 ### D.4 — Data hook (`hooks/<dim>Breakdown/use<Table>Metrics.ts`)
 
@@ -631,72 +636,64 @@ const SEGMENT_EVENT_NAME =
 
 ### D.6 — Table component (`<Table>/<Table>.tsx`) — custom-dashboard-aware
 
-The component **must** carry the full custom-dashboard prop set and swap its standalone download button for an action-menu CSV export when it sits on a dashboard — otherwise the export is unreachable from a custom dashboard. It calls the download data hook **once** (D.5) and feeds that one result into both the action menu's `exportCsvAction` and the standalone `DownloadTableButton`:
+The component **must** carry the full custom-dashboard prop set and swap its standalone download button for an action-menu CSV export when it sits on a dashboard — otherwise the export is unreachable from a custom dashboard. It delegates that wiring to `useBreakdownTableActions`, which calls the download data hook **once** (D.5) and returns the gated `{ DownloadButton, actionMenu }`.
+
+The prop shape is the shared **`DashboardBreakdownTableProps`** type, exported from `domains/reporting/pages/dashboards/types.ts` — import it, don't redefine the shape inline. Column-edit persistence on custom dashboards comes from `useCustomDashboardTableColumns({ customDashboardChartSchema, dashboard })`; forward its `onSaveColumns` and the `customDashboardChartSchema` to the table (`ReportingMetricBreakdownTable` derives `isCustomDashboard` internally from `customDashboardChartSchema`):
 
 ```tsx
-type Props = {
-    chartId?: string
-    withChartMenu?: boolean
-    dashboard?: DashboardSchema
-    chartConfig?: { label: string }
-    isCustomDashboard?: boolean
-}
+import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
+import type { DashboardBreakdownTableProps } from 'domains/reporting/pages/dashboards/types'
+
+const SEGMENT_EVENT_NAME =
+    'performance-overview_channel-breakdown-table' as const
 
 export const PerformanceOverviewChannelTable = ({
     chartId,
     withChartMenu,
     dashboard,
     chartConfig,
-    isCustomDashboard,
-}: Props) => {
+    customDashboardChartSchema,
+}: DashboardBreakdownTableProps) => {
     const { data, loadingStates } = usePerformanceOverviewChannelMetrics()
-    const downloadData = useDownloadPerformanceOverviewChannelData()
-    const exportCsvAction = useDownloadTableAction({
-        ...downloadData,
+    const { DownloadButton, actionMenu } = useBreakdownTableActions({
+        chartId,
+        withChartMenu,
+        dashboard,
+        chartName: chartConfig?.label ?? 'Channel',
         segmentEventName: SEGMENT_EVENT_NAME,
+        useDownloadData: useDownloadPerformanceOverviewChannelData,
     })
-    const withMenu = withChartMenu && chartId
+    const { onSaveColumns } = useCustomDashboardTableColumns({
+        customDashboardChartSchema,
+        dashboard,
+    })
 
     return (
         <ReportingMetricBreakdownTable
             data={data}
             metricColumns={PERFORMANCE_OVERVIEW_CHANNEL_COLUMNS}
             loadingStates={loadingStates}
-            DownloadButton={
-                !withMenu ? (
-                    <DownloadTableButton
-                        {...downloadData}
-                        segmentEventName={SEGMENT_EVENT_NAME}
-                    />
-                ) : undefined
-            }
+            DownloadButton={DownloadButton}
             nameColumns={PERFORMANCE_OVERVIEW_CHANNEL_NAME_COLUMNS}
-            actionMenu={
-                withMenu ? (
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        chartName="Channel"
-                        dashboard={dashboard}
-                        exportCsvAction={exportCsvAction}
-                    />
-                ) : undefined
-            }
+            actionMenu={actionMenu}
             chartId={chartId}
-            isCustomDashboard={isCustomDashboard}
             name={chartConfig?.label}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSaveColumns={onSaveColumns}
         />
     )
 }
 ```
 
-Rules (each maps to a real bug if skipped):
+An agent-style table is identical except `nameColumns={useAgentNameColumns()}` (D.3) and `enableSearch`.
 
-- **Call `useDownload<Table>Data()` exactly once** and share `downloadData` between `useDownloadTableAction` and `DownloadTableButton`. Routing the action and the button through separate wrappers that each call the hook double-fetches the breakdown metrics (the hook has no shared cache — see D.5).
-- `const withMenu = withChartMenu && chartId`.
-- `DownloadButton={!withMenu ? <DownloadTableButton … /> : undefined}` — never render the standalone button alongside the action menu.
-- Action menu gets **both** `dashboard` and `exportCsvAction`, so CSV export is reachable from the menu on a custom dashboard.
-- Forward `chartId`, `isCustomDashboard`, and `name={chartConfig?.label}`. Entity tables that benefit from a search box (agents) also pass `enableSearch`.
-- These props all arrive from `DashboardComponent`, which passes `chartConfig`, `chartId`, `withChartMenu`, `isCustomDashboard`, and (only when `withChartMenu`) `dashboard`.
+Rules (each maps to a real bug if skipped — all enforced by `useBreakdownTableActions`, so the win is using the hook rather than re-inlining):
+
+- **Pass the per-table `useDownload<Table>Data` as the `useDownloadData` arg** so it's called exactly once inside the hook. Routing the action and the button through separate wrappers that each call the hook double-fetches the breakdown metrics (the hook has no shared cache — see D.5).
+- The hook applies `withMenu = withChartMenu && chartId`, never renders the standalone button alongside the action menu, and gives the action menu **both** `dashboard` and `exportCsvAction` so CSV export is reachable from a custom dashboard.
+- `chartName` is `chartConfig?.label ?? '<Entity>'` — the dashboard label when present, falling back to the entity name on the standalone managed page.
+- Forward `chartId`, `name={chartConfig?.label}`, `customDashboardChartSchema`, and `onSaveColumns`. Entity tables that benefit from a search box (agents) also pass `enableSearch`.
+- These props all arrive from `DashboardComponent`, which passes `chartConfig`, `chartId`, `withChartMenu`, `customDashboardChartSchema`, and (only when `withChartMenu`) `dashboard`.
 
 ### D.7 — Register the chart in `ReportConfig`
 
@@ -740,8 +737,10 @@ Add the table to a `ChartType.Table` section (create one with a `tableTitle` if 
 ### D.9 — Tests
 
 - **Metrics config / columns** are exercised through the component spec; no separate spec needed unless the row builder has non-trivial logic.
-- **`<Table>.spec.tsx`** — mock the metrics hook, the download-data hook, and `ChartsActionMenu` (render an extra button when `exportCsvAction` is passed). Assert: the entity name column + humanized names render; metric values format per column; the download button renders and is **disabled while the download-data hook reports `isLoading`** (drive this by overriding the download-data mock to `{ files: {}, fileName: '', isLoading: true }`); the action menu appears only when `chartId` + `withChartMenu`; and **in action-menu mode the CSV export is reachable through the menu while the standalone download button is _not_ rendered**. Use accessible queries, no `data-testid`. Reference: `PerformanceOverviewChannelTable/tests/`.
+- **`<Table>.spec.tsx`** — mock the metrics hook and the download-data hook. **Do not mock `ChartsActionMenu`** — render the real component. It always calls `useDashboardActions()` → `useListAnalyticsCustomReports()`, so set up an MSW server with `mockListAnalyticsCustomReportsHandler` from `@gorgias/helpdesk-mocks` (`server.listen({ onUnhandledRequest: 'error' })` in `beforeAll`, `server.use(...)` in `beforeEach`, `resetHandlers`/`close` after). The component also branches on `isTeamLead(currentUser)`, so render with a team-lead store: `storeState: { currentUser: fromJS({ ...user, role: { name: UserRole.Agent } }) }` (`user` from `fixtures/users`). Assert: the entity name column + humanized names render; metric values format per column; the download button renders and is **disabled while the download-data hook reports `isLoading`** (drive this by overriding the download-data mock to `{ files: {}, fileName: '', isLoading: true }`); the action menu appears only when `chartId` + `withChartMenu` (`findByRole('button', { name: 'Chart actions' })`, and `queryByRole` it absent otherwise); and **in action-menu mode the CSV export is reachable through the menu while the standalone download button is _not_ rendered** — open the menu with real `userEvent` and assert `findByRole('menuitem', { name: /export as csv/i })` plus no `button` named `/download/i`. Use accessible queries, no `data-testid`. Reference: `PerformanceOverviewChannelTable/tests/`.
 - There is **no** separate `Download<Table>Button.spec.tsx` — the standalone button is just the shared `DownloadTableButton`, and its loading/render behavior is covered by the table spec above.
+- Also add specs for the per-dimension **data hook** (`use<Table>Metrics.spec.ts`: entity-set derivation, sort order, all-null filtering, row building, `isLoading`/`isError`/`loadingStates` passthrough, plus the `fetch<Table>Metrics` CSV header/rows/sort and the `fetch…AsConfigurableTable` wrapper) and the **download data hook** (`useDownload<Table>Data.spec.ts`: initial `isLoading` true, resolves to files, forwards filters/timezone/agents, reports errors). Reference: `overview/hooks/{channel,agent}Breakdown/tests/`.
+- The shared hooks have their own specs in `pages/performance/utils/tests/` — `useAgentNameColumns.spec.tsx` (humanize + avatar + raw-id fallback) and `useBreakdownTableActions.spec.tsx` (gating: action-menu vs standalone button by `withChartMenu`/`chartId`, CSV export reachable via the menu, download button disabled while loading, `useDownloadData` called). When you only consume these hooks you don't re-test them per table; extend their specs only if you change the hooks.
 
 ### D.10 — Verify
 
@@ -1036,7 +1035,9 @@ From `domains/reporting/models/scopes/utils.ts`:
 | `apps/helpdesk/src/domains/reporting/pages/performance/utils/getPerformanceConfigurableBarGraphConfig.ts`                                                                      | Reference page-specific bar config (Mode C)                                                                                                                             |
 | `apps/helpdesk/src/domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableBarGraph/PerformanceOverviewConfigurableBarGraph.tsx` | Reference graph component (Mode C)                                                                                                                                      |
 | `apps/helpdesk/src/domains/reporting/pages/performance/overview/config/breakdownTableMetrics.ts`                                                                               | Shared metric config: factories map, row builder, columns (Mode D)                                                                                                      |
-| `apps/helpdesk/src/domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewChannelTable/`                                                       | Reference breakdown table (component + columns, hoists the download data once) (Mode D)                                                                                 |
+| `apps/helpdesk/src/domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewChannelTable/`                                                       | Reference breakdown table (component + columns; wiring via `useBreakdownTableActions`) (Mode D)                                                                         |
+| `apps/helpdesk/src/domains/reporting/pages/performance/utils/useBreakdownTableActions.tsx`                                                                                     | Shared hook → `{ DownloadButton, actionMenu }` (gating + single download fetch + CSV export) (Mode D)                                                                   |
+| `apps/helpdesk/src/domains/reporting/pages/performance/utils/useAgentNameColumns.ts`                                                                                           | Shared agent `NameColumnConfig[]` hook (humanize + avatar) (Mode D)                                                                                                     |
 | `apps/helpdesk/src/domains/reporting/pages/performance/overview/hooks/channelBreakdown/usePerformanceOverviewChannelMetrics.ts`                                                | Reference per-dimension data hook + CSV fetch (Mode D)                                                                                                                  |
 | `apps/helpdesk/src/domains/reporting/pages/performance/overview/hooks/channelBreakdown/useDownloadPerformanceOverviewChannelData.ts`                                           | Reference download-data hook (uncached `useState`/`useEffect`; call once) (Mode D)                                                                                      |
 | `apps/helpdesk/src/pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton.tsx`                                                                                  | Shared `useDownloadTableAction` / `DownloadTableButton` (Mode D)                                                                                                        |
@@ -1045,7 +1046,7 @@ From `domains/reporting/models/scopes/utils.ts`:
 | `apps/helpdesk/src/domains/reporting/pages/dashboards/tests/config.spec.ts`                                                                                                    | Reference lookup-helper tests (Mode E)                                                                                                                                  |
 | `apps/helpdesk/src/domains/reporting/hooks/dashboards/useRestrictedReportsConfig.ts`                                                                                           | Flag-gated picker visibility (Mode E)                                                                                                                                   |
 | `apps/helpdesk/src/domains/reporting/pages/dashboards/types.ts`                                                                                                                | `AvailableChartIds` union (Mode E)                                                                                                                                      |
-| `apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardComponent.tsx`                                                                                                  | Passes chart props (`chartConfig`, `withChartMenu`, `isCustomDashboard`, `dashboard`)                                                                                   |
+| `apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardComponent.tsx`                                                                                                  | Passes chart props (`chartConfig`, `withChartMenu`, `customDashboardChartSchema`, `dashboard`)                                                                          |
 
 ---
 

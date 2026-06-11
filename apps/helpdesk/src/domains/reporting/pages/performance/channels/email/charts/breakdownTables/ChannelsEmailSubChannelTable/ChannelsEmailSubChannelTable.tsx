@@ -3,31 +3,32 @@ import { ReportingMetricBreakdownTable } from '@repo/reporting'
 import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
 import type { DashboardBreakdownTableProps } from 'domains/reporting/pages/dashboards/types'
 import {
-    PERFORMANCE_OVERVIEW_CHANNEL_COLUMNS,
-    PERFORMANCE_OVERVIEW_CHANNEL_NAME_COLUMNS,
-} from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewChannelTable/columns'
-import { useDownloadPerformanceOverviewChannelData } from 'domains/reporting/pages/performance/overview/hooks/channelBreakdown/useDownloadPerformanceOverviewChannelData'
-import { usePerformanceOverviewChannelMetrics } from 'domains/reporting/pages/performance/overview/hooks/channelBreakdown/usePerformanceOverviewChannelMetrics'
+    CHANNELS_EMAIL_SUB_CHANNEL_COLUMNS,
+    CHANNELS_EMAIL_SUB_CHANNEL_NAME_COLUMNS,
+} from 'domains/reporting/pages/performance/channels/email/charts/breakdownTables/ChannelsEmailSubChannelTable/columns'
+import { useDownloadPerformanceChannelsEmailSubChannelData } from 'domains/reporting/pages/performance/channels/email/hooks/subChannelBreakdown/useDownloadPerformanceChannelsEmailSubChannelData'
+import { usePerformanceChannelsEmailSubChannelMetrics } from 'domains/reporting/pages/performance/channels/email/hooks/subChannelBreakdown/usePerformanceChannelsEmailSubChannelMetrics'
 import { useBreakdownTableActions } from 'domains/reporting/pages/performance/utils/useBreakdownTableActions'
 
 const SEGMENT_EVENT_NAME =
-    'performance-overview_channel-breakdown-table' as const
+    'performance-channels-email_sub-channel-breakdown-table' as const
 
-export const PerformanceOverviewChannelTable = ({
+export const ChannelsEmailSubChannelTable = ({
     chartId,
     withChartMenu,
     dashboard,
     chartConfig,
     customDashboardChartSchema,
 }: DashboardBreakdownTableProps) => {
-    const { data, loadingStates } = usePerformanceOverviewChannelMetrics()
+    const { data, loadingStates } =
+        usePerformanceChannelsEmailSubChannelMetrics()
     const { DownloadButton, actionMenu } = useBreakdownTableActions({
         chartId,
         withChartMenu,
         dashboard,
-        chartName: chartConfig?.label ?? 'Channel',
+        chartName: chartConfig?.label ?? 'Sub-channel',
         segmentEventName: SEGMENT_EVENT_NAME,
-        useDownloadData: useDownloadPerformanceOverviewChannelData,
+        useDownloadData: useDownloadPerformanceChannelsEmailSubChannelData,
     })
     const { onSaveColumns } = useCustomDashboardTableColumns({
         customDashboardChartSchema,
@@ -37,10 +38,10 @@ export const PerformanceOverviewChannelTable = ({
     return (
         <ReportingMetricBreakdownTable
             data={data}
-            metricColumns={PERFORMANCE_OVERVIEW_CHANNEL_COLUMNS}
+            metricColumns={CHANNELS_EMAIL_SUB_CHANNEL_COLUMNS}
             loadingStates={loadingStates}
             DownloadButton={DownloadButton}
-            nameColumns={PERFORMANCE_OVERVIEW_CHANNEL_NAME_COLUMNS}
+            nameColumns={CHANNELS_EMAIL_SUB_CHANNEL_NAME_COLUMNS}
             actionMenu={actionMenu}
             chartId={chartId}
             name={chartConfig?.label}

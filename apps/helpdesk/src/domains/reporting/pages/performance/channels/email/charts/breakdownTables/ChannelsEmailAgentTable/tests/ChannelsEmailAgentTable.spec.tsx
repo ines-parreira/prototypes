@@ -8,24 +8,18 @@ import { setupServer } from 'msw/node'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
-import { useCustomDashboardTableColumns } from 'domains/reporting/hooks/dashboards/useCustomDashboardTableColumns'
-import type {
-    DashboardChartSchema,
-    DashboardSchema,
-} from 'domains/reporting/pages/dashboards/types'
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
-import { PerformanceOverviewAgentTable } from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewAgentTable'
-import type { PerformanceOverviewEntityMetrics } from 'domains/reporting/pages/performance/overview/config/breakdownTableMetrics'
-import { useDownloadPerformanceOverviewAgentData } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/useDownloadPerformanceOverviewAgentData'
-import { usePerformanceOverviewAgentMetrics } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/usePerformanceOverviewAgentMetrics'
+import { ChannelsEmailAgentTable } from 'domains/reporting/pages/performance/channels/email/charts/breakdownTables/ChannelsEmailAgentTable'
+import type { ChannelsEmailEntityMetrics } from 'domains/reporting/pages/performance/channels/email/config/breakdownTableMetrics'
+import { useDownloadPerformanceChannelsEmailAgentData } from 'domains/reporting/pages/performance/channels/email/hooks/agentBreakdown/useDownloadPerformanceChannelsEmailAgentData'
+import { usePerformanceChannelsEmailAgentMetrics } from 'domains/reporting/pages/performance/channels/email/hooks/agentBreakdown/usePerformanceChannelsEmailAgentMetrics'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { user } from 'fixtures/users'
 
 jest.mock(
-    'domains/reporting/pages/performance/overview/hooks/agentBreakdown/usePerformanceOverviewAgentMetrics',
+    'domains/reporting/pages/performance/channels/email/hooks/agentBreakdown/usePerformanceChannelsEmailAgentMetrics',
 )
 jest.mock(
-    'domains/reporting/pages/performance/overview/hooks/agentBreakdown/useDownloadPerformanceOverviewAgentData',
+    'domains/reporting/pages/performance/channels/email/hooks/agentBreakdown/useDownloadPerformanceChannelsEmailAgentData',
 )
 jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice', () => ({
     ...jest.requireActual(
@@ -33,11 +27,6 @@ jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice', () => ({
     ),
     getFilteredAgents: jest.fn(() => []),
 }))
-jest.mock('domains/reporting/hooks/dashboards/useCustomDashboardTableColumns')
-
-const mockUseCustomDashboardTableColumns = assumeMock(
-    useCustomDashboardTableColumns,
-)
 
 const server = setupServer()
 
@@ -61,11 +50,11 @@ const teamLeadState = {
     currentUser: fromJS({ ...user, role: { name: UserRole.Agent } }),
 }
 
-const mockUsePerformanceOverviewAgentMetrics = assumeMock(
-    usePerformanceOverviewAgentMetrics,
+const mockUsePerformanceChannelsEmailAgentMetrics = assumeMock(
+    usePerformanceChannelsEmailAgentMetrics,
 )
-const mockUseDownloadPerformanceOverviewAgentData = assumeMock(
-    useDownloadPerformanceOverviewAgentData,
+const mockUseDownloadPerformanceChannelsEmailAgentData = assumeMock(
+    useDownloadPerformanceChannelsEmailAgentData,
 )
 const mockGetFilteredAgents = assumeMock(getFilteredAgents)
 
@@ -81,7 +70,7 @@ const defaultLoadingStates = {
     messagesSent: false,
 }
 
-const aliceRow: PerformanceOverviewEntityMetrics = {
+const aliceRow: ChannelsEmailEntityMetrics = {
     entity: '1',
     averageCsat: 4.5,
     resolutionTime: 3600,
@@ -94,7 +83,7 @@ const aliceRow: PerformanceOverviewEntityMetrics = {
     messagesSent: 8000,
 }
 
-const bobRow: PerformanceOverviewEntityMetrics = {
+const bobRow: ChannelsEmailEntityMetrics = {
     entity: '2',
     averageCsat: 4.7,
     resolutionTime: 1800,
@@ -113,10 +102,7 @@ const MOCK_AGENTS: User[] = [
 ]
 
 beforeEach(() => {
-    mockUseCustomDashboardTableColumns.mockReturnValue({
-        onSaveColumns: undefined,
-    })
-    mockUseDownloadPerformanceOverviewAgentData.mockReturnValue({
+    mockUseDownloadPerformanceChannelsEmailAgentData.mockReturnValue({
         files: {},
         fileName: '',
         isLoading: false,
@@ -130,19 +116,19 @@ const renderTable = ({
     chartId,
     withChartMenu,
 }: {
-    data?: PerformanceOverviewEntityMetrics[]
+    data?: ChannelsEmailEntityMetrics[]
     loadingStates?: typeof defaultLoadingStates
     chartId?: string
     withChartMenu?: boolean
 } = {}) => {
-    mockUsePerformanceOverviewAgentMetrics.mockReturnValue({
+    mockUsePerformanceChannelsEmailAgentMetrics.mockReturnValue({
         data,
         loadingStates,
         isLoading: false,
         isError: false,
     })
     return render(
-        <PerformanceOverviewAgentTable
+        <ChannelsEmailAgentTable
             chartId={chartId}
             withChartMenu={withChartMenu}
         />,
@@ -150,7 +136,7 @@ const renderTable = ({
     )
 }
 
-describe('PerformanceOverviewAgentTable', () => {
+describe('ChannelsEmailAgentTable', () => {
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -165,7 +151,7 @@ describe('PerformanceOverviewAgentTable', () => {
     })
 
     it('falls back to the raw id when an agent is missing from the store', () => {
-        const unknownAgentRow: PerformanceOverviewEntityMetrics = {
+        const unknownAgentRow: ChannelsEmailEntityMetrics = {
             ...aliceRow,
             entity: '999',
         }
@@ -204,7 +190,7 @@ describe('PerformanceOverviewAgentTable', () => {
     })
 
     it('disables the download button while the breakdown data is loading', () => {
-        mockUseDownloadPerformanceOverviewAgentData.mockReturnValue({
+        mockUseDownloadPerformanceChannelsEmailAgentData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: true,
@@ -217,7 +203,7 @@ describe('PerformanceOverviewAgentTable', () => {
 
     it('renders the chart action menu when chartId and withChartMenu are provided', async () => {
         renderTable({
-            chartId: 'performance-overview-agent-table',
+            chartId: 'performance-channels-email-agent-table',
             withChartMenu: true,
         })
 
@@ -236,7 +222,7 @@ describe('PerformanceOverviewAgentTable', () => {
 
     it('does not render the chart action menu when withChartMenu is false', () => {
         renderTable({
-            chartId: 'performance-overview-agent-table',
+            chartId: 'performance-channels-email-agent-table',
             withChartMenu: false,
         })
 
@@ -248,7 +234,7 @@ describe('PerformanceOverviewAgentTable', () => {
     it('exposes CSV export from the chart action menu instead of the standalone download button', async () => {
         const user = userEvent.setup()
         renderTable({
-            chartId: 'performance-overview-agent-table',
+            chartId: 'performance-channels-email-agent-table',
             withChartMenu: true,
         })
 
@@ -262,64 +248,5 @@ describe('PerformanceOverviewAgentTable', () => {
         expect(
             screen.queryByRole('button', { name: /download/i }),
         ).not.toBeInTheDocument()
-    })
-
-    it('passes customDashboardChartSchema to useCustomDashboardTableColumns when provided', () => {
-        const customDashboardChartSchema: DashboardChartSchema = {
-            type: DashboardChildType.Chart,
-            config_id: 'performance-overview-agent-table',
-        }
-
-        mockUsePerformanceOverviewAgentMetrics.mockReturnValue({
-            data: [aliceRow],
-            loadingStates: defaultLoadingStates,
-            isLoading: false,
-            isError: false,
-        })
-
-        render(
-            <PerformanceOverviewAgentTable
-                customDashboardChartSchema={customDashboardChartSchema}
-            />,
-        )
-
-        expect(mockUseCustomDashboardTableColumns).toHaveBeenCalledWith(
-            expect.objectContaining({ customDashboardChartSchema }),
-        )
-    })
-
-    it('passes dashboard to useCustomDashboardTableColumns and renders the table label', () => {
-        const dashboard: DashboardSchema = {
-            id: 1,
-            name: 'My Dashboard',
-            children: [],
-            emoji: null,
-            analytics_filter_id: null,
-        }
-
-        mockUsePerformanceOverviewAgentMetrics.mockReturnValue({
-            data: [aliceRow],
-            loadingStates: defaultLoadingStates,
-            isLoading: false,
-            isError: false,
-        })
-
-        render(
-            <PerformanceOverviewAgentTable
-                dashboard={dashboard}
-                chartConfig={{ label: 'Agents' } as any}
-                customDashboardChartSchema={{
-                    type: DashboardChildType.Chart,
-                    config_id: 'performance-overview-agent-table',
-                }}
-            />,
-        )
-
-        expect(mockUseCustomDashboardTableColumns).toHaveBeenCalledWith(
-            expect.objectContaining({ dashboard }),
-        )
-        expect(
-            screen.getByText('Performance breakdown by Agents'),
-        ).toBeInTheDocument()
     })
 })
