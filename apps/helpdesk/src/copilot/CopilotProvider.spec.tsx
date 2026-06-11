@@ -283,6 +283,7 @@ function buildCopilotMockReturn(
         abort: jest.fn(),
         agent: {} as ReturnType<typeof useCopilot>['agent'],
         agentKey: 'agent-key',
+        eventBus: {} as ReturnType<typeof useCopilot>['eventBus'],
         newThread: jest.fn(),
         sendPrompt: jest.fn(() => 'message-id'),
         switchThread: jest.fn(),
