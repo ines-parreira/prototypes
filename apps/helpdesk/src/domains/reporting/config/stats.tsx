@@ -14,9 +14,14 @@ import { Link } from 'react-router-dom'
 
 import { toImmutable } from 'common/utils'
 import css from 'domains/reporting/config/stats.less'
+import type { Props as KeyMetricCellProps } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCell'
 import { StatCurrentDate } from 'domains/reporting/pages/common/components/StatCurrentDate'
 import { TicketsClosedPerAgentViewLink } from 'domains/reporting/pages/common/TicketsClosedPerAgentViewLink'
 import { formatNumber } from 'domains/reporting/pages/common/utils'
+import {
+    AgentsOfflineKeyMetricCell,
+    AgentsOnlineKeyMetricCell,
+} from 'domains/reporting/pages/live/overview/AgentStatusKeyMetricCell'
 import { IntentName } from 'models/intent/types'
 import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
@@ -291,7 +296,7 @@ export type StatConfigMetric = {
     minValue?: number
     maxValue?: number
     variant?: string
-    component?: ReactNode
+    component?: ComponentType<KeyMetricCellProps>
 }
 
 export type StatConfig = {
@@ -332,113 +337,14 @@ export const stats = toImmutable<
         style: 'key-metrics',
         metrics: [
             {
-                api_resource_name: USERS_STATUSES,
+                name: 'agents-online',
                 label: 'Agents online',
-                formatData: (data: Map<any, List<any>>) => {
-                    if (!data.get('lines')) {
-                        return null
-                    }
-                    return formatNumber(
-                        data
-                            .get('lines')
-                            .filter(
-                                (value: List<any>) =>
-                                    value.getIn([1, 'value']) as boolean,
-                            )
-                            .count(),
-                    )
-                },
-                tooltip: (data?: Map<any, any>) => {
-                    if (!data || !data.get('lines')) {
-                        return null
-                    }
-                    const formattedData = (data.get('lines') as List<any>)
-                        .filter(
-                            (value: List<any>) =>
-                                value.getIn([1, 'value']) as boolean,
-                        )
-                        .toJS() as [
-                        {
-                            type: 'user'
-                            value: { id: number; name: string }
-                        },
-                        { type: 'bool'; value: boolean },
-                    ][]
-                    const dataLength = formattedData.length
-
-                    return (
-                        <div className={css.tooltipWrapper}>
-                            {formattedData.slice(0, 25).map((value, index) => {
-                                return (
-                                    <div
-                                        key={`${value[0].value.name}-${index}`}
-                                    >
-                                        {value[0].value.name}
-                                    </div>
-                                )
-                            })}
-                            {dataLength > 25 && (
-                                <Link to="/app/stats/live-agents">
-                                    +{dataLength - 25} more
-                                </Link>
-                            )}
-                        </div>
-                    )
-                },
+                component: AgentsOnlineKeyMetricCell,
             },
             {
-                api_resource_name: USERS_STATUSES,
+                name: 'agents-offline',
                 label: 'Agents offline',
-                formatData: (data: Map<'lines', List<any>>) => {
-                    if (!data.get('lines')) {
-                        return null
-                    }
-                    return formatNumber(
-                        data
-                            .get('lines')
-                            .filter(
-                                (value: List<any>) =>
-                                    !value.getIn([1, 'value']),
-                            )
-                            .count(),
-                    )
-                },
-                tooltip: (data?: Map<any, any>) => {
-                    if (!data || !data.get('lines')) {
-                        return null
-                    }
-                    const formattedData = (data.get('lines') as List<any>)
-                        .filter(
-                            (value: List<any>) => !value.getIn([1, 'value']),
-                        )
-                        .toJS() as [
-                        {
-                            type: 'user'
-                            value: { id: number; name: string }
-                        },
-                        { type: 'bool'; value: boolean },
-                    ][]
-                    const dataLength = formattedData.length
-
-                    return (
-                        <div className={css.tooltipWrapper}>
-                            {formattedData.slice(0, 25).map((value, index) => {
-                                return (
-                                    <div
-                                        key={`${value[0].value.name}-${index}`}
-                                    >
-                                        {value[0].value.name}
-                                    </div>
-                                )
-                            })}
-                            {dataLength > 25 && (
-                                <Link to="/app/stats/live-agents">
-                                    +{dataLength - 25} more
-                                </Link>
-                            )}
-                        </div>
-                    )
-                },
+                component: AgentsOfflineKeyMetricCell,
             },
             {
                 api_resource_name: OPEN_TICKETS_ASSIGNMENT_STATUSES,

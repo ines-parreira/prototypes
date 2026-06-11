@@ -48,13 +48,6 @@ function LiveOverview() {
         }
     }, [cleanStatsFilters, userTimezone])
 
-    const [usersStatuses, isFetchingUsersStatuses] =
-        useStatResource<OneDimensionalChart>({
-            statName: LIVE_OVERVIEW_STAT_NAME,
-            resourceName: USERS_STATUSES,
-            statsFilters: pageStatsFilters,
-        })
-
     const [
         openTicketsAssignmentStatuses,
         isFetchingOpenTicketsAssignmentStatuses,
@@ -65,17 +58,19 @@ function LiveOverview() {
     })
 
     const overviewResourceStats = useMemo(() => {
+        // "Agents online" and "Agents offline" render via realtime-backed cells
+        // (see AgentStatusKeyMetricCell) and ignore this resource data; the
+        // placeholders keep the open-ticket metrics aligned with their config
+        // index in MultiResourceKeyMetricStat.
+        const agentStatusPlaceholder = {
+            resourceName: USERS_STATUSES,
+            stat: null,
+            isFetching: false,
+        }
+
         return [
-            {
-                resourceName: USERS_STATUSES,
-                stat: usersStatuses,
-                isFetching: isFetchingUsersStatuses,
-            },
-            {
-                resourceName: USERS_STATUSES,
-                stat: usersStatuses,
-                isFetching: isFetchingUsersStatuses,
-            },
+            agentStatusPlaceholder,
+            agentStatusPlaceholder,
             {
                 resourceName: OPEN_TICKETS_ASSIGNMENT_STATUSES,
                 stat: openTicketsAssignmentStatuses,
@@ -87,12 +82,7 @@ function LiveOverview() {
                 isFetching: isFetchingOpenTicketsAssignmentStatuses,
             },
         ]
-    }, [
-        usersStatuses,
-        isFetchingUsersStatuses,
-        openTicketsAssignmentStatuses,
-        isFetchingOpenTicketsAssignmentStatuses,
-    ])
+    }, [openTicketsAssignmentStatuses, isFetchingOpenTicketsAssignmentStatuses])
 
     const [supportVolumePerHour, isFetchingSupportVolumePerHour] =
         useStatResource<TwoDimensionalChart>({
