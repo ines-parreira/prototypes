@@ -55,28 +55,39 @@ export function AgentStatusFormContent({
                     <Box flexDirection="column" gap="sm">
                         <FormField
                             name="statusName"
-                            field={TextField}
-                            label="Status"
-                            placeholder="Lunch break"
                             isRequired
-                            maxLength={VALIDATION.NAME_MAX_LENGTH}
+                            label="Status"
                             caption={nameCaption}
-                        />
+                        >
+                            {(field) => (
+                                <TextField
+                                    {...field}
+                                    placeholder="Lunch break"
+                                    maxLength={VALIDATION.NAME_MAX_LENGTH}
+                                />
+                            )}
+                        </FormField>
 
                         <FormField
                             name="description"
-                            field={TextField}
                             label="Description"
-                            placeholder="Use when agents take their lunch break"
-                            maxLength={VALIDATION.DESCRIPTION_MAX_LENGTH}
                             caption={descriptionCaption}
-                        />
+                        >
+                            {(field) => (
+                                <TextField
+                                    {...field}
+                                    placeholder="Use when agents take their lunch break"
+                                    maxLength={
+                                        VALIDATION.DESCRIPTION_MAX_LENGTH
+                                    }
+                                />
+                            )}
+                        </FormField>
 
                         <Box alignItems="flex-start" gap="md">
-                            <FormField
-                                name="durationOption"
-                                field={StatusDurationSelect}
-                            />
+                            <FormField name="durationOption">
+                                {(field) => <StatusDurationSelect {...field} />}
+                            </FormField>
 
                             {isCustom && (
                                 <Box
@@ -86,16 +97,22 @@ export function AgentStatusFormContent({
                                     alignItems="flex-start"
                                 >
                                     <Box flexGrow={0}>
-                                        <FormField
-                                            name="customDurationValue"
-                                            field={StatusDurationValueField}
-                                        />
+                                        <FormField name="customDurationValue">
+                                            {(field) => (
+                                                <StatusDurationValueField
+                                                    {...field}
+                                                />
+                                            )}
+                                        </FormField>
                                     </Box>
                                     <Box flex={1}>
-                                        <FormField
-                                            name="customDurationUnit"
-                                            field={StatusDurationUnitSelect}
-                                        />
+                                        <FormField name="customDurationUnit">
+                                            {(field) => (
+                                                <StatusDurationUnitSelect
+                                                    {...field}
+                                                />
+                                            )}
+                                        </FormField>
                                     </Box>
                                 </Box>
                             )}

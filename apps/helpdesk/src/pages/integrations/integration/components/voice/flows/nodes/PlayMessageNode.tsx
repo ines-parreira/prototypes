@@ -61,13 +61,17 @@ export function PlayMessageNode(props: NodeProps<PlayMessageNode>) {
                 </Banner>
             )}
             <div>
-                <FormField
-                    name={`steps.${id}.message`}
-                    field={VoiceMessageField}
-                    allowNone={false}
-                    customRecordingType={CustomRecordingType.GreetingMessage}
-                    label="Message type"
-                />
+                <FormField name={`steps.${id}.message`} label="Message type">
+                    {(field) => (
+                        <VoiceMessageField
+                            {...field}
+                            allowNone={false}
+                            customRecordingType={
+                                CustomRecordingType.GreetingMessage
+                            }
+                        />
+                    )}
+                </FormField>
             </div>
         </VoiceStepNode>
     )

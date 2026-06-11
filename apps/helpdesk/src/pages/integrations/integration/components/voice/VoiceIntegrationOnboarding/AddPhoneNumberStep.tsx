@@ -51,40 +51,46 @@ const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
                 <div className={css.header}>Add phone number</div>
                 <div>
                     <Label className={css.label}>Integration name</Label>
-                    <FormField
-                        name="name"
-                        id="name"
-                        field={EmojiTextInput}
-                        emoji={emoji ?? null}
-                        placeholder="Ex: Company Support Line"
-                        isRequired
-                        onEmojiChange={(emoji: string | null) =>
-                            setValue('meta.emoji', emoji, {
-                                shouldDirty: true,
-                            })
-                        }
-                    />
+                    <FormField name="name" isRequired>
+                        {(field) => (
+                            <EmojiTextInput
+                                {...field}
+                                id="name"
+                                emoji={emoji ?? null}
+                                placeholder="Ex: Company Support Line"
+                                onEmojiChange={(emoji: string | null) =>
+                                    setValue('meta.emoji', emoji, {
+                                        shouldDirty: true,
+                                    })
+                                }
+                            />
+                        )}
+                    </FormField>
                 </div>
                 <div>
                     <Label className={css.label}>Phone number</Label>
-                    <FormField
-                        field={PhoneNumberSelectField}
-                        name={'meta.phone_number_id'}
-                        integrationType={IntegrationType.Phone}
-                        inputTransform={(value) =>
-                            value ? phoneNumbers[value] : null
-                        }
-                        outputTransform={(phoneNumber) => phoneNumber?.id}
-                        isRequired
-                        onCreate={onCreateNewNumber}
-                    />
+                    <FormField name={'meta.phone_number_id'} isRequired>
+                        {(field) => (
+                            <PhoneNumberSelectField
+                                {...field}
+                                integrationType={IntegrationType.Phone}
+                                onCreate={onCreateNewNumber}
+                                value={
+                                    field.value
+                                        ? phoneNumbers[field.value]
+                                        : null
+                                }
+                                onChange={(phoneNumber) =>
+                                    field.onChange(phoneNumber?.id)
+                                }
+                            />
+                        )}
+                    </FormField>
                 </div>
                 <div>
-                    <FormField
-                        field={BusinessHoursSelectField}
-                        name="business_hours_id"
-                        isRequired
-                    />
+                    <FormField name="business_hours_id" isRequired>
+                        {(field) => <BusinessHoursSelectField {...field} />}
+                    </FormField>
                 </div>
             </div>
             <div className={css.buttons}>

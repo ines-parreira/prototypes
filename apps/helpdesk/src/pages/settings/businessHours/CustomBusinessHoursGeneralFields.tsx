@@ -18,21 +18,22 @@ export default function CustomBusinessHoursGeneralFields({
         <div
             className={classNames(css.container, { [css.column]: !horizontal })}
         >
-            <FormField
-                field={InputField}
-                className={css.field}
-                name="name"
-                label="Name"
-                isRequired
-            />
+            <FormField name="name" isRequired label="Name">
+                {(field) => <InputField {...field} className={css.field} />}
+            </FormField>
             <div className={css.field}>
                 <FormField
                     name="business_hours_config.timezone"
-                    label="Timezone"
-                    field={SelectDropdownField}
-                    options={getMomentTimezoneNames()}
                     isRequired
-                />
+                    label="Timezone"
+                >
+                    {(field) => (
+                        <SelectDropdownField
+                            {...field}
+                            options={getMomentTimezoneNames()}
+                        />
+                    )}
+                </FormField>
             </div>
         </div>
     )

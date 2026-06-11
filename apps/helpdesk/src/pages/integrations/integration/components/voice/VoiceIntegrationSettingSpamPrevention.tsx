@@ -6,11 +6,12 @@ function VoiceIntegrationSettingSpamPrevention() {
     return (
         <FormField
             name="meta.preferences.spam_prevention"
-            field={NewToggleField}
             label={
                 'Notify agents by indicating "Maybe spam" for incoming calls'
             }
-        />
+        >
+            {(field) => <NewToggleField {...field} />}
+        </FormField>
     )
 }
 

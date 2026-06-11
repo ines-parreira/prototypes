@@ -3,7 +3,10 @@ export { Form } from './components/Form/Form'
 export type { FormProps } from './components/Form/Form'
 
 export { FormField } from './components/FormField/FormField'
-export type { FormFieldProps } from './components/FormField/FormField'
+export type {
+    FormFieldProps,
+    FormFieldRenderProps,
+} from './components/FormField/FormField'
 
 export { FormSubmitButton } from './components/FormSubmitButton/FormSubmitButton'
 export type { FormSubmitButtonProps } from './components/FormSubmitButton/FormSubmitButton'

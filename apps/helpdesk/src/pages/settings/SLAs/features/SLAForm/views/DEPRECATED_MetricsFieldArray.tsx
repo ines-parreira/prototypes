@@ -111,25 +111,37 @@ export default function MetricsFieldArray() {
                             <div className={css.inputGroup}>
                                 <FormField
                                     name={`metrics.${index}.threshold`}
-                                    field={NumberInputField}
                                     isRequired
-                                    hasControls={false}
-                                    placeholder={
-                                        String(
-                                            tempThresholdValues[index] || '',
-                                        ) || '0'
-                                    }
-                                    min={1}
-                                    wrapperClassName={css.input}
-                                    allowEmptyString
                                     isDisabled={!toggleState[index]}
-                                />
+                                >
+                                    {(field) => (
+                                        <NumberInputField
+                                            {...field}
+                                            hasControls={false}
+                                            placeholder={
+                                                String(
+                                                    tempThresholdValues[
+                                                        index
+                                                    ] || '',
+                                                ) || '0'
+                                            }
+                                            min={1}
+                                            wrapperClassName={css.input}
+                                            allowEmptyString
+                                        />
+                                    )}
+                                </FormField>
                                 <FormField
                                     name={`metrics.${index}.unit`}
-                                    field={TimeUnitSelectBox}
-                                    className={css.input}
                                     isDisabled={!toggleState[index]}
-                                />
+                                >
+                                    {(field) => (
+                                        <TimeUnitSelectBox
+                                            {...field}
+                                            className={css.input}
+                                        />
+                                    )}
+                                </FormField>
                             </div>
                         </div>
                     )

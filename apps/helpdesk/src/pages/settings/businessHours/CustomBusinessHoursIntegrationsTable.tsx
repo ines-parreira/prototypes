@@ -224,13 +224,16 @@ export default function CustomBusinessHoursIntegrationsTable({
                                 <RowSkeleton key={key} />
                             ))
                         ) : (
-                            <FormField
-                                name={name}
-                                field={IntegrationRowsField}
-                                integrations={integrations}
-                                isError={isError}
-                                refetch={refetch}
-                            />
+                            <FormField name={name}>
+                                {(field) => (
+                                    <IntegrationRowsField
+                                        {...field}
+                                        integrations={integrations}
+                                        isError={isError}
+                                        refetch={refetch}
+                                    />
+                                )}
+                            </FormField>
                         )}
                     </TableBody>
                     {!isLoading && (
@@ -256,9 +259,10 @@ export default function CustomBusinessHoursIntegrationsTable({
                         </div>
                         <FormField
                             name="overrideConfirmation"
-                            field={CheckBoxField}
                             label="I confirm overwriting the existing schedules"
-                        />
+                        >
+                            {(field) => <CheckBoxField {...field} />}
+                        </FormField>
                     </Box>
                 </Banner>
             )}

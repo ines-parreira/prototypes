@@ -69,46 +69,58 @@ export function CustomerLookupActionsFieldItem({
             {fieldValueName && branchNameFieldName ? (
                 <>
                     <Box w={DROPDOWN_WIDTH} flexShrink={0}>
-                        <FormField
-                            field={MultiSelectField<Option>}
-                            placeholder="Select value"
-                            name={fieldValueName}
-                            items={stringFieldValueOptions.map((option) =>
-                                transformFieldValueOption(
-                                    option,
-                                    fieldValueOptions,
-                                ),
-                            )}
-                            outputTransform={(options: Option[]) =>
-                                options.map((option) => option.id)
-                            }
-                            inputTransform={(value: string | string[]) => {
-                                const arrValue =
-                                    typeof value === 'string' ? [value] : value
+                        <FormField name={fieldValueName}>
+                            {(field) => (
+                                <MultiSelectField<Option>
+                                    {...field}
+                                    placeholder="Select value"
+                                    items={stringFieldValueOptions.map(
+                                        (option) =>
+                                            transformFieldValueOption(
+                                                option,
+                                                fieldValueOptions,
+                                            ),
+                                    )}
+                                    value={(() => {
+                                        const value: string | string[] =
+                                            field.value
+                                        const arrValue =
+                                            typeof value === 'string'
+                                                ? [value]
+                                                : value
 
-                                return arrValue.map((option) =>
-                                    transformFieldValueOption(
-                                        option,
-                                        fieldValueOptions,
-                                    ),
-                                )
-                            }}
-                        >
-                            {(option: { id: string; name: string }) => (
-                                <MultiSelectItem
-                                    label={option.name}
-                                    isDisabled={
-                                        !availableOptions.includes(option.id)
+                                        return arrValue.map((option) =>
+                                            transformFieldValueOption(
+                                                option,
+                                                fieldValueOptions,
+                                            ),
+                                        )
+                                    })()}
+                                    onChange={(options: Option[]) =>
+                                        field.onChange(
+                                            options.map((option) => option.id),
+                                        )
                                     }
-                                />
+                                >
+                                    {(option: { id: string; name: string }) => (
+                                        <MultiSelectItem
+                                            label={option.name}
+                                            isDisabled={
+                                                !availableOptions.includes(
+                                                    option.id,
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </MultiSelectField>
                             )}
                         </FormField>
                     </Box>
-                    <FormField
-                        field={TextField}
-                        name={branchNameFieldName}
-                        placeholder="Branch name"
-                    />
+                    <FormField name={branchNameFieldName}>
+                        {(field) => (
+                            <TextField {...field} placeholder="Branch name" />
+                        )}
+                    </FormField>
                 </>
             ) : (
                 <>

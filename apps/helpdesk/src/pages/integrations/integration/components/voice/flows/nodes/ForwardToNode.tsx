@@ -85,9 +85,10 @@ export function ForwardToNode(props: ForwardToNodeProps) {
                     )}
                     <FormField
                         name={`steps.${id}.external_number`}
-                        field={PhoneSelectField}
-                        label={'Phone number'}
-                    />
+                        label="Phone number"
+                    >
+                        {(field) => <PhoneSelectField {...field} />}
+                    </FormField>
                 </div>
             </VoiceStepNode>
         </NodeWrapper>

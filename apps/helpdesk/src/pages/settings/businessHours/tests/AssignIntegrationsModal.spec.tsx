@@ -46,14 +46,15 @@ const renderWithForm = (
                 <FormField
                     name="assigned_integrations.assign_integrations"
                     label="Assigned integrations"
-                    field={InputField}
-                />
+                >
+                    {(field) => <InputField {...field} />}
+                </FormField>
                 <FormField
-                    type="checkbox"
-                    field={InputField}
                     name="overrideConfirmation"
                     label="Override confirmation"
-                />
+                >
+                    {(field) => <InputField {...field} type="checkbox" />}
+                </FormField>
                 <AssignIntegrationsModal isOpen={isOpen} onClose={onClose} />
             </Form>
         </CustomBusinessHoursContext.Provider>,

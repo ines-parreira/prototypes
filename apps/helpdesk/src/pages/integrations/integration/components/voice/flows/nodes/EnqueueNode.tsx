@@ -70,10 +70,17 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
             >
                 <FormField
                     name={`steps.${id}.conditional_routing`}
-                    field={ConditionalRoutingCheckBoxField}
-                    onConditionalRoutingChange={handleConditionalRoutingChange}
                     label={'Skip queue when it’s too busy'}
-                />
+                >
+                    {(field) => (
+                        <ConditionalRoutingCheckBoxField
+                            {...field}
+                            onConditionalRoutingChange={
+                                handleConditionalRoutingChange
+                            }
+                        />
+                    )}
+                </FormField>
             </VoiceNodeFormSection>
 
             <VoiceNodeFormSection
@@ -83,40 +90,52 @@ export function EnqueueNode(props: NodeProps<EnqueueNode>) {
             >
                 <FormField
                     name={`steps.${id}.callback_requests.enabled`}
-                    field={CheckBoxField}
                     label={'Allow callers to request callbacks'}
-                />
+                >
+                    {(field) => <CheckBoxField {...field} />}
+                </FormField>
                 {step?.callback_requests?.enabled && (
                     <StaticVerticalStepper>
                         <StaticVerticalStep stepDescription="First, inform callers about callbacks:">
                             <FormField
                                 name={`steps.${id}.callback_requests.prompt_message`}
-                                field={VoiceMessageField}
-                                allowNone={false}
-                                customRecordingType={
-                                    CustomRecordingType.CallbackRequests
-                                }
-                            />
+                            >
+                                {(field) => (
+                                    <VoiceMessageField
+                                        {...field}
+                                        allowNone={false}
+                                        customRecordingType={
+                                            CustomRecordingType.CallbackRequests
+                                        }
+                                    />
+                                )}
+                            </FormField>
                         </StaticVerticalStep>
                         <StaticVerticalStep stepDescription="Then, confirm their request:">
                             <div className={css.formSection}>
                                 <div>
                                     <FormField
                                         name={`steps.${id}.callback_requests.confirmation_message`}
-                                        field={VoiceMessageField}
-                                        allowNone
-                                        customRecordingType={
-                                            CustomRecordingType.CallbackRequests
-                                        }
-                                    />
+                                    >
+                                        {(field) => (
+                                            <VoiceMessageField
+                                                {...field}
+                                                allowNone
+                                                customRecordingType={
+                                                    CustomRecordingType.CallbackRequests
+                                                }
+                                            />
+                                        )}
+                                    </FormField>
                                 </div>
                                 <FormField
                                     name={`steps.${id}.callback_requests.allow_to_leave_voicemail`}
-                                    field={CheckBoxField}
                                     label={
                                         'Allow callers to leave a voicemail after callback requests'
                                     }
-                                />
+                                >
+                                    {(field) => <CheckBoxField {...field} />}
+                                </FormField>
                             </div>
                         </StaticVerticalStep>
                     </StaticVerticalStepper>

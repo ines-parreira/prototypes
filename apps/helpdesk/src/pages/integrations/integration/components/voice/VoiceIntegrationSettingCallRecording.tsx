@@ -30,10 +30,11 @@ function VoiceIntegrationSettingCallRecording({
         <>
             <div className={css.section}>
                 <FormField
-                    field={NewToggleField}
                     name="meta.preferences.record_inbound_calls"
                     label="Inbound calls"
-                />
+                >
+                    {(field) => <NewToggleField {...field} />}
+                </FormField>
                 {isRecordingInboundCalls && (
                     <CallRecordingNotificationBanner>
                         {`We recommend you include the call recording notification in your welcome message, which you can configure in the integration's `}
@@ -50,28 +51,34 @@ function VoiceIntegrationSettingCallRecording({
             </div>
             <div className={css.container}>
                 <FormField
-                    field={NewToggleField}
                     name="meta.preferences.record_outbound_calls"
                     label="Outbound calls"
-                />
+                >
+                    {(field) => <NewToggleField {...field} />}
+                </FormField>
 
                 {isRecordingOutboundCalls && (
                     <FormField
-                        field={VoiceMessageField}
-                        label={'Call recording notification'}
                         name="meta.recording_notification"
-                        allowNone
-                        maxRecordingDuration={
-                            RECORDING_NOTIFICATION_MAX_DURATION
-                        }
-                        customRecordingType={
-                            CustomRecordingType.CallRecordingNotification
-                        }
+                        label={'Call recording notification'}
                         caption="Gorgias is not responsible for ensuring compliance with applicable privacy laws. It is your responsibility to implement privacy policies."
-                        noneValueAlertBanner={
-                            <CallRecordingNotificationBanner>{`No call recording message is currently selected for outbound calls. To help ensure compliance, we recommend adding a notification to inform callers that calls are being recorded.`}</CallRecordingNotificationBanner>
-                        }
-                    />
+                    >
+                        {(field) => (
+                            <VoiceMessageField
+                                {...field}
+                                allowNone
+                                maxRecordingDuration={
+                                    RECORDING_NOTIFICATION_MAX_DURATION
+                                }
+                                customRecordingType={
+                                    CustomRecordingType.CallRecordingNotification
+                                }
+                                noneValueAlertBanner={
+                                    <CallRecordingNotificationBanner>{`No call recording message is currently selected for outbound calls. To help ensure compliance, we recommend adding a notification to inform callers that calls are being recorded.`}</CallRecordingNotificationBanner>
+                                }
+                            />
+                        )}
+                    </FormField>
                 )}
             </div>
         </>

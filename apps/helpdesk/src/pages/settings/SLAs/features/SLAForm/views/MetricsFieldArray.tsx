@@ -98,22 +98,33 @@ export function MetricsFieldArray() {
                             <Box gap="sm">
                                 <FormField
                                     name={`metrics.${index}.threshold`}
-                                    field={NumberInputField}
                                     isRequired
-                                    hasControls={false}
-                                    placeholder={
-                                        String(
-                                            tempThresholdValues[index] || '',
-                                        ) || '0'
-                                    }
-                                    min={1}
-                                    wrapperClassName={css.input}
-                                    allowEmptyString
-                                    outputTransform={(value) =>
-                                        value === undefined ? '' : value
-                                    }
                                     isDisabled={!toggleState[index]}
-                                />
+                                >
+                                    {(field) => (
+                                        <NumberInputField
+                                            {...field}
+                                            hasControls={false}
+                                            placeholder={
+                                                String(
+                                                    tempThresholdValues[
+                                                        index
+                                                    ] || '',
+                                                ) || '0'
+                                            }
+                                            min={1}
+                                            wrapperClassName={css.input}
+                                            allowEmptyString
+                                            onChange={(value) =>
+                                                field.onChange(
+                                                    value === undefined
+                                                        ? ''
+                                                        : value,
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </FormField>
                                 <TimeUnitSelectField
                                     name={`metrics.${index}.unit`}
                                     isDisabled={!toggleState[index]}

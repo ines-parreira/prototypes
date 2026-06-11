@@ -53,13 +53,14 @@ export function SLAFormView({
                         validator={validator}
                     >
                         <Box flexDirection="column" gap="lg">
-                            <FormField
-                                field={TextField}
-                                name="name"
-                                label="SLA name"
-                                placeholder="e.g. Chat SLA"
-                                isRequired
-                            />
+                            <FormField name="name" isRequired label="SLA name">
+                                {(field) => (
+                                    <TextField
+                                        {...field}
+                                        placeholder="e.g. Chat SLA"
+                                    />
+                                )}
+                            </FormField>
 
                             <ChannelSelectBox />
 

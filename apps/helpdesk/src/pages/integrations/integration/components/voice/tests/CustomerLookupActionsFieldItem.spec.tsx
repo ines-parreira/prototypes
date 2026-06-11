@@ -123,6 +123,33 @@ describe('CustomerLookupActionsFieldItem', () => {
         expect(screen.getByText('No')).toBeInTheDocument()
     })
 
+    it('should update the selected field value when an option is picked', async () => {
+        const user = userEvent.setup()
+        renderComponent(
+            { ...defaultProps, fieldValueOptions: ['option1', 'option2'] },
+            {
+                stepName: {
+                    branch_options: [
+                        { field_value: [], branch_name: '', next_step_id: '1' },
+                    ],
+                },
+            },
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: /arrow-chevron-down/ }),
+        )
+
+        const option = await screen.findByRole('option', { name: 'option1' })
+        await user.click(option)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', { name: 'option1' }),
+            ).toHaveAttribute('aria-selected', 'true')
+        })
+    })
+
     it('should also work with string field values', () => {
         renderComponent(
             { ...defaultProps, fieldValueOptions: ['option1', 'option2'] },

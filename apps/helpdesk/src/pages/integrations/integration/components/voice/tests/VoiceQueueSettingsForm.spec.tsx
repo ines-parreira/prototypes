@@ -68,41 +68,42 @@ const wrapper = (props: {
     >
         {props.children}
         <div>Form Content</div>
-        <FormField label="Name" name="name" field={InputField} />
-        <FormField label="Ring Time" name="ring_time" field={InputField} />
-        <FormField label="Wait Time" name="wait_time" field={InputField} />
-        <FormField label="Capacity" name="capacity" field={InputField} />
+        <FormField name="name" label="Name">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="ring_time" label="Ring Time">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="wait_time" label="Wait Time">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="capacity" label="Capacity">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="wrap_up_time" label="Wrap Up Time">
+            {(field) => <InputField {...field} />}
+        </FormField>
         <FormField
-            label="Wrap Up Time"
-            name="wrap_up_time"
-            field={InputField}
-        />
-        <FormField
-            label="Is Wrap Up Time Enabled"
             name="is_wrap_up_time_enabled"
-            field={InputField}
-        />
-        <FormField label="Wait Music" name="wait_music" field={InputField} />
-        <FormField
-            label="Distribution Mode"
-            name="distribution_mode"
-            field={InputField}
-        />
-        <FormField
-            label="Linked Targets"
-            name="linked_targets"
-            field={InputField}
-        />
-        <FormField
-            label="Priority Weight"
-            name="priority_weight"
-            field={InputField}
-        />
-        <FormField
-            label="Target Scope"
-            name="target_scope"
-            field={InputField}
-        />
+            label="Is Wrap Up Time Enabled"
+        >
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="wait_music" label="Wait Music">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="distribution_mode" label="Distribution Mode">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="linked_targets" label="Linked Targets">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="priority_weight" label="Priority Weight">
+            {(field) => <InputField {...field} />}
+        </FormField>
+        <FormField name="target_scope" label="Target Scope">
+            {(field) => <InputField {...field} />}
+        </FormField>
         <button type="submit">Submit</button>
     </VoiceQueueSettingsForm>
 )

@@ -1,108 +1,121 @@
 import React from 'react'
 
-import { FormField, useWatch } from '@repo/forms'
-import { assumeMock, render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { Form } from '@repo/forms'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { ExpressionOperator } from '@gorgias/helpdesk-types'
 
-import type { CustomField } from 'custom-fields/types'
+import {
+    ticketDropdownFieldDefinition,
+    ticketInputFieldDefinition,
+    ticketNumberFieldDefinition,
+} from 'fixtures/customField'
 
 import { ExpressionRow } from '../ExpressionRow'
-import { FieldField } from '../FieldField'
-import { OperatorField } from '../OperatorField'
-import { ValueField } from '../ValueField'
 
-jest.mock(
-    '@repo/forms',
-    () =>
-        ({
-            ...jest.requireActual('@repo/forms'),
-            useWatch: jest.fn(),
-            FormField: jest.fn(() => <div />),
-        }) as Record<string, unknown>,
-)
-jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
-    useCustomFieldDefinitions: jest.fn(),
-}))
+const customFieldDefinitions = [
+    ticketInputFieldDefinition,
+    ticketNumberFieldDefinition,
+    ticketDropdownFieldDefinition,
+]
 
-const useWatchMock = assumeMock(useWatch)
+type RenderOptions = {
+    index?: number
+    field?: number
+    operator?: ExpressionOperator
+    onRemove?: (index?: number) => void
+}
+
+const renderExpressionRow = ({
+    index = 1,
+    field = ticketInputFieldDefinition.id,
+    operator = ExpressionOperator.Is,
+    onRemove = jest.fn(),
+}: RenderOptions = {}) => {
+    const result = render(
+        <Form
+            onValidSubmit={jest.fn()}
+            defaultValues={{
+                expression: {
+                    [index]: { field, operator, values: null },
+                },
+            }}
+        >
+            <ExpressionRow
+                index={index}
+                customFieldDefinitions={customFieldDefinitions}
+                onRemove={onRemove}
+            />
+        </Form>,
+    )
+
+    return { ...result, onRemove }
+}
 
 describe('ExpressionRow', () => {
-    const definitions = [{ id: 1 }, { id: 2 }] as CustomField[]
-
-    beforeEach(() => {
-        useWatchMock.mockReturnValue([1, ExpressionOperator.Is])
-    })
-
-    const defaultProps = {
-        index: 1,
-        customFieldDefinitions: definitions,
-        onRemove: jest.fn(),
-    }
-
-    it('should call `watch` with correct params', () => {
-        render(<ExpressionRow {...defaultProps} />)
-        expect(useWatchMock).toHaveBeenCalledTimes(1)
-        expect(useWatchMock).toHaveBeenCalledWith({
-            name: ['expression.1.field', 'expression.1.operator'],
-        })
-    })
-
     it("should render Pills, and 'And' when index is greater than 0", () => {
-        const { rerender } = render(<ExpressionRow {...defaultProps} />)
+        const { rerender } = renderExpressionRow({ index: 1 })
 
         expect(screen.getByText('Ticket Field')).toBeInTheDocument()
         expect(screen.getByText('And')).toBeInTheDocument()
 
-        rerender(<ExpressionRow {...defaultProps} index={0} />)
+        rerender(
+            <Form
+                onValidSubmit={jest.fn()}
+                defaultValues={{
+                    expression: {
+                        0: {
+                            field: ticketInputFieldDefinition.id,
+                            operator: ExpressionOperator.Is,
+                            values: null,
+                        },
+                    },
+                }}
+            >
+                <ExpressionRow
+                    index={0}
+                    customFieldDefinitions={customFieldDefinitions}
+                    onRemove={jest.fn()}
+                />
+            </Form>,
+        )
 
+        expect(screen.getByText('Ticket Field')).toBeInTheDocument()
         expect(screen.queryByText('And')).toBeNull()
     })
 
-    it('should call FormField with correct props', () => {
-        render(<ExpressionRow {...defaultProps} />)
+    it('should render an enabled value field for the picked text field definition', () => {
+        renderExpressionRow({ field: ticketInputFieldDefinition.id })
 
-        expect(FormField).toHaveBeenCalledTimes(3)
-        expect(FormField).toHaveBeenNthCalledWith(
-            1,
-            {
-                name: 'expression.1.field',
-                index: 1,
-                field: FieldField,
-                customFieldDefinitions: definitions,
-            },
-            {},
-        )
-        expect(FormField).toHaveBeenNthCalledWith(
-            2,
-            {
-                name: 'expression.1.operator',
-                field: OperatorField,
-                pickedDefinition: defaultProps.customFieldDefinitions[0],
-                index: 1,
-            },
-            {},
-        )
-        expect(FormField).toHaveBeenNthCalledWith(
-            3,
-            {
-                name: 'expression.1.values',
-                index: 1,
-                field: ValueField,
-                pickedDefinition: defaultProps.customFieldDefinitions[0],
-                isRequired: true,
-                isDisabled: false,
-            },
-            {},
-        )
+        const valueInput = screen.getByPlaceholderText('Enter field value')
+        expect(valueInput).toBeInTheDocument()
+        expect(valueInput).not.toBeDisabled()
     })
 
-    it('should call `onRemove` when clicking "close"', () => {
-        render(<ExpressionRow {...defaultProps} />)
+    it('should render a disabled value select when no field is picked', () => {
+        renderExpressionRow({ field: 0 })
 
-        const closeIcon = screen.getByText('close')
-        fireEvent.click(closeIcon)
-        expect(defaultProps.onRemove).toHaveBeenCalledWith(defaultProps.index)
+        expect(screen.queryByPlaceholderText('Enter field value')).toBeNull()
+        expect(screen.getByText('Select field value(s)')).toBeInTheDocument()
+    })
+
+    it('should disable the value field when the operator is "is not empty"', () => {
+        renderExpressionRow({
+            field: ticketInputFieldDefinition.id,
+            operator: ExpressionOperator.IsNotEmpty,
+        })
+
+        expect(screen.getByPlaceholderText('Enter field value')).toBeDisabled()
+    })
+
+    it('should call `onRemove` with the row index when clicking "close"', async () => {
+        const user = userEvent.setup()
+        const { onRemove } = renderExpressionRow({ index: 1 })
+
+        await user.click(screen.getByRole('button', { name: 'close' }))
+
+        expect(onRemove).toHaveBeenCalledWith(1)
     })
 })

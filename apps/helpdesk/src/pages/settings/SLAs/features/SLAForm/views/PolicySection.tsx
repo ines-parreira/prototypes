@@ -41,18 +41,18 @@ export function PolicySection() {
                 {!isVoiceChannelSelected && (
                     <FormField
                         name="business_hours_only"
-                        field={ToggleField}
                         label="Pause SLA timer outside of business hours"
-                    />
+                    >
+                        {(field) => <ToggleField {...field} />}
+                    </FormField>
                 )}
                 <FormField
                     name="active"
-                    field={ToggleField}
                     label="Enable SLA"
-                    caption={
-                        'When enabled new tickets that fit this criteria will trigger this SLA.'
-                    }
-                />
+                    caption="When enabled new tickets that fit this criteria will trigger this SLA."
+                >
+                    {(field) => <ToggleField {...field} />}
+                </FormField>
             </Box>
         </>
     )

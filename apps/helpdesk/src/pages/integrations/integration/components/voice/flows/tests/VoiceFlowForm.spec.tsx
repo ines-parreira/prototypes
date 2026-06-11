@@ -105,24 +105,20 @@ const wrapper = ({
     <VoiceFlowForm integration={integration}>
         {children}
         <div>Flow Form Content</div>
+        <FormField name="first_step_id" label="First Step ID">
+            {(field) => <InputField {...field} data-testid="first-step-id" />}
+        </FormField>
         <FormField
-            label="First Step ID"
-            name="first_step_id"
-            field={InputField}
-            data-testid="first-step-id"
-        />
-        <FormField
-            label="Play Message Content"
             name="steps.play-message.message.text_to_speech_content"
-            data-testid="play-message-content"
-            field={InputField}
-        />
-        <FormField
-            label="Steps"
-            name="steps"
-            data-testid="steps-field"
-            field={InputField}
-        />
+            label="Play Message Content"
+        >
+            {(field) => (
+                <InputField {...field} data-testid="play-message-content" />
+            )}
+        </FormField>
+        <FormField name="steps" label="Steps">
+            {(field) => <InputField {...field} data-testid="steps-field" />}
+        </FormField>
     </VoiceFlowForm>
 )
 

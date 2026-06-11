@@ -68,23 +68,23 @@ export default function SLAFormView({
                         validator={validator}
                     >
                         <FormSection>
-                            <FormField
-                                field={InputField}
-                                name="name"
-                                label="SLA name"
-                                isRequired
-                                className={settingsCss.mb48}
-                            />
+                            <FormField name="name" isRequired label="SLA name">
+                                {(field) => (
+                                    <InputField
+                                        {...field}
+                                        className={settingsCss.mb48}
+                                    />
+                                )}
+                            </FormField>
                         </FormSection>
                         <FormSection
                             title="Conditions"
                             description="All conditions should be met in order for this
                                 SLA to trigger."
                         >
-                            <FormField
-                                name="target_channels"
-                                field={ChannelSelectBox}
-                            />
+                            <FormField name="target_channels">
+                                {(field) => <ChannelSelectBox {...field} />}
+                            </FormField>
                         </FormSection>
                         <FormSection
                             title="Policy"
@@ -93,25 +93,29 @@ export default function SLAFormView({
                                 team(s)."
                         >
                             <MetricsFieldArray />
-                            <FormField
-                                name="business_hours_only"
-                                field={ToggleInputField}
-                                className={settingsCss.mb48}
-                            >
-                                Pause SLA timer outside of business hours
+                            <FormField name="business_hours_only">
+                                {(field) => (
+                                    <ToggleInputField
+                                        {...field}
+                                        className={settingsCss.mb48}
+                                    >
+                                        Pause SLA timer outside of business
+                                        hours
+                                    </ToggleInputField>
+                                )}
                             </FormField>
                             <FormField
                                 name="active"
-                                field={ToggleInputField}
-                                caption={
-                                    <span>
-                                        When enabled new tickets that fit this
-                                        criteria will trigger this SLA.
-                                    </span>
-                                }
-                                className={settingsCss.mb48}
+                                caption="When enabled new tickets that fit this criteria will trigger this SLA."
                             >
-                                Enable SLA
+                                {(field) => (
+                                    <ToggleInputField
+                                        {...field}
+                                        className={settingsCss.mb48}
+                                    >
+                                        Enable SLA
+                                    </ToggleInputField>
+                                )}
                             </FormField>
                         </FormSection>
                         <div className={css.buttonGroup}>

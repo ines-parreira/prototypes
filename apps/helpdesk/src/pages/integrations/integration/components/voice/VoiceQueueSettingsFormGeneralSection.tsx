@@ -12,35 +12,46 @@ const PRIORITY_WEIGHT_MIN = 1
 export default function VoiceQueueSettingsFormGeneralSection() {
     return (
         <div className={css.container}>
+            <FormField name="name" isRequired label="Queue name">
+                {(field) => <InputField {...field} />}
+            </FormField>
             <FormField
-                field={InputField}
-                label="Queue name"
-                name="name"
-                isRequired
-            />
-            <FormField
-                field={InputField}
-                label="Queue capacity"
-                type="number"
                 name="capacity"
+                label="Queue capacity"
                 caption="Once the limit is reached, calls are sent to voicemail."
-                outputTransform={(value) =>
-                    value === '' ? null : Number(value)
-                }
-                min={1}
-            />
+            >
+                {(field) => (
+                    <InputField
+                        {...field}
+                        type="number"
+                        onChange={(value) =>
+                            field.onChange(value === '' ? null : Number(value))
+                        }
+                        min={1}
+                    />
+                )}
+            </FormField>
             <FormField
                 name="priority_weight"
                 caption="When enabled, calls in this queue are handled before those in other non-priority queues."
-                field={ToggleField}
-                inputTransform={(value) =>
-                    value === PRIORITY_WEIGHT_MAX ? false : true
-                }
-                outputTransform={(value) =>
-                    value ? PRIORITY_WEIGHT_MIN : PRIORITY_WEIGHT_MAX
-                }
                 label="Priority queue"
-            />
+            >
+                {(field) => (
+                    <ToggleField
+                        {...field}
+                        value={
+                            field.value === PRIORITY_WEIGHT_MAX ? false : true
+                        }
+                        onChange={(value) =>
+                            field.onChange(
+                                value
+                                    ? PRIORITY_WEIGHT_MIN
+                                    : PRIORITY_WEIGHT_MAX,
+                            )
+                        }
+                    />
+                )}
+            </FormField>
         </div>
     )
 }

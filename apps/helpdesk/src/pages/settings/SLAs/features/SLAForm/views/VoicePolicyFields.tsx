@@ -9,28 +9,33 @@ const METRICS_FIELD_NAME = 'metrics.0'
 export function VoicePolicyFields() {
     return (
         <Box gap="sm" alignItems="flex-end">
+            <FormField name={`target`} isRequired label="Target">
+                {(field) => (
+                    <NumberField
+                        {...field}
+                        minValue={0}
+                        maxValue={100}
+                        trailingSlot="percent"
+                        value={
+                            field.value === undefined
+                                ? field.value
+                                : field.value * 100
+                        }
+                        onChange={(value) =>
+                            field.onChange(
+                                value === undefined ? value : value / 100,
+                            )
+                        }
+                    />
+                )}
+            </FormField>
             <FormField
-                field={NumberField}
-                name={`target`}
-                minValue={0}
-                maxValue={100}
-                isRequired
-                label="Target"
-                trailingSlot="percent"
-                inputTransform={(value) =>
-                    value === undefined ? value : value * 100
-                }
-                outputTransform={(value) =>
-                    value === undefined ? value : value / 100
-                }
-            />
-            <FormField
-                field={NumberField}
                 name={`${METRICS_FIELD_NAME}.threshold`}
                 isRequired
                 label="Threshold"
-                trailingSlot={''}
-            />
+            >
+                {(field) => <NumberField {...field} trailingSlot={''} />}
+            </FormField>
             <Box flexShrink="0">
                 <TimeUnitSelectField name={`${METRICS_FIELD_NAME}.unit`} />
             </Box>

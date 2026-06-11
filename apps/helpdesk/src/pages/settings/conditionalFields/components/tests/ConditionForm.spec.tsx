@@ -1,50 +1,38 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { history } from '@repo/routing'
-import { assumeMock, getLastMockCall, render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
+import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import { DEFAULT_EXPRESSION_RULE } from '../../constants'
 import useSaveCondition from '../../hooks/useSaveCondition'
 import ConditionForm from '../ConditionForm'
 import { DeletionPopover } from '../DeletionPopover'
 import { ExpressionField } from '../ExpressionField'
 import ThenField from '../ThenField'
 
-jest.mock('@repo/forms', () => ({
-    Form: jest.fn(({ children }) => <form>{children}</form>),
-    FormField: jest.fn(() => <div />),
-    FormSubmitButton: jest.fn(() => <button />),
-    createFormValidator: jest.fn(),
-}))
-jest.mock('pages/common/forms/ToggleInputField', () =>
-    jest.fn(() => <input type="checkbox" />),
-)
 jest.mock('../../hooks/useSaveCondition', () => jest.fn())
 jest.mock('../DeletionPopover', () => ({
     DeletionPopover: jest.fn(),
 }))
 jest.mock('../ExpressionField', () => ({
-    ExpressionField: jest.fn(() => <div />),
+    ExpressionField: jest.fn(() => <div>Expression field</div>),
 }))
+jest.mock('../ThenField', () => jest.fn(() => <div>Then field</div>))
 jest.spyOn(history, 'push')
 
 const DeletionPopoverMock = assumeMock(DeletionPopover)
 const useSaveConditionMock = assumeMock(useSaveCondition)
-const FormMock = assumeMock(Form)
-const FormFieldMock = assumeMock(FormField)
 
 describe('ConditionForm', () => {
     const onDisplayConfirmationMock = jest.fn()
     const onSubmitMock = jest.fn()
-    const isSubmitting = false
 
     beforeEach(() => {
         DeletionPopoverMock.mockImplementation(
@@ -60,152 +48,165 @@ describe('ConditionForm', () => {
         )
         useSaveConditionMock.mockReturnValue({
             onSubmit: onSubmitMock,
-            isSubmitting,
+            isSubmitting: false,
         })
     })
 
-    const defaultProps = {
-        condition: {
-            id: 1,
-            name: 'Test Condition',
-            description: null,
-            deactivated_datetime: null,
-        } as CustomFieldCondition,
+    const condition: CustomFieldCondition = {
+        ...customFieldCondition,
+        id: 1,
+        name: 'Test Condition',
+        deactivated_datetime: null,
+        requirements: [{ field_id: 1, type: ExpressionFieldType.Required }],
     }
 
-    it('should call Form with proper props', () => {
-        const { rerender } = render(<ConditionForm {...defaultProps} />)
-        expect(FormMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                children: expect.any(Array),
-                defaultValues: expect.objectContaining({
-                    name: '',
-                    description: '',
-                    object_type: 'Ticket',
-                    deactivated_datetime: null,
-                    requirements: [],
-                    expression: [DEFAULT_EXPRESSION_RULE],
-                }),
-                values: expect.objectContaining({
-                    name: 'Test Condition',
-                    description: '',
-                    deactivated_datetime: null,
-                }),
-            }),
-            {},
-        )
+    it('should render the condition name and description fields', () => {
+        render(<ConditionForm />)
 
-        rerender(<ConditionForm />)
-        expect(FormMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                values: undefined,
-            }),
-            {},
-        )
+        expect(screen.getByText('Condition name')).toBeInTheDocument()
+        expect(
+            screen.getByPlaceholderText(
+                'Provide a name for condition. E.g: Contact Reason Conditions',
+            ),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Condition description')).toBeInTheDocument()
+        expect(
+            screen.getByPlaceholderText(
+                'Describe how the condition works. E.g: Display when contact reason includes quality and shipping',
+            ),
+        ).toBeInTheDocument()
     })
 
-    it('should call FormField with correct props', () => {
+    it('should render the requirements and expression fields', () => {
         render(<ConditionForm />)
-        expect(FormFieldMock).toHaveBeenNthCalledWith(
-            1,
-            expect.objectContaining({
-                name: 'name',
-                label: 'Condition name',
-                isRequired: true,
-                placeholder:
-                    'Provide a name for condition. E.g: Contact Reason Conditions',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenNthCalledWith(
-            2,
-            expect.objectContaining({
-                name: 'description',
-                placeholder:
-                    'Describe how the condition works. E.g: Display when contact reason includes quality and shipping',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenNthCalledWith(
-            3,
-            expect.objectContaining({
-                field: ThenField,
-                name: 'requirements',
-                isRequired: true,
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenNthCalledWith(
-            4,
-            expect.objectContaining({
-                field: ToggleInputField,
-                name: 'deactivated_datetime',
-                inputTransform: expect.any(Function),
-                outputTransform: expect.any(Function),
-            }),
-            {},
-        )
 
-        expect(
-            FormFieldMock.mock.calls[3][0].inputTransform?.(null),
-        ).toBeTruthy()
-        expect(
-            FormFieldMock.mock.calls[3][0].inputTransform?.('test'),
-        ).toBeFalsy()
-        expect(
-            FormFieldMock.mock.calls[3][0].outputTransform?.(true),
-        ).toBeNull()
-        expect(
-            typeof FormFieldMock.mock.calls[3][0].outputTransform?.(false),
-        ).toBe('string')
-    })
-
-    it('should call ExpressionField', () => {
-        render(<ConditionForm />)
         expect(ExpressionField).toHaveBeenCalled()
+        expect(ThenField).toHaveBeenCalled()
+        expect(screen.getByText('Then field')).toBeInTheDocument()
     })
 
-    it('should call onSubmit of valid submit and pass it form data', () => {
+    it('should populate the name field with the existing condition value', () => {
+        render(<ConditionForm condition={condition} />)
+
+        expect(screen.getByDisplayValue('Test Condition')).toBeInTheDocument()
+    })
+
+    describe('Enable condition toggle', () => {
+        it('should render as enabled when the condition is active', () => {
+            render(<ConditionForm condition={condition} />)
+
+            expect(screen.getByRole('switch')).toBeChecked()
+        })
+
+        it('should render as disabled when the condition is deactivated', () => {
+            render(
+                <ConditionForm
+                    condition={{
+                        ...condition,
+                        deactivated_datetime: '2024-01-01T00:00:00.000Z',
+                    }}
+                />,
+            )
+
+            expect(screen.getByRole('switch')).not.toBeChecked()
+        })
+
+        it('should submit a deactivation date when an active condition is disabled', async () => {
+            const user = userEvent.setup()
+            render(<ConditionForm condition={condition} />)
+
+            await user.click(screen.getByRole('switch'))
+            await user.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            await waitFor(() => {
+                expect(onSubmitMock).toHaveBeenCalled()
+            })
+            expect(onSubmitMock.mock.calls[0][0].deactivated_datetime).toEqual(
+                expect.any(String),
+            )
+        })
+
+        it('should submit a null deactivation date when a deactivated condition is enabled', async () => {
+            const user = userEvent.setup()
+            render(
+                <ConditionForm
+                    condition={{
+                        ...condition,
+                        deactivated_datetime: '2024-01-01T00:00:00.000Z',
+                    }}
+                />,
+            )
+
+            await user.click(screen.getByRole('switch'))
+            await user.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
+
+            await waitFor(() => {
+                expect(onSubmitMock).toHaveBeenCalled()
+            })
+            expect(
+                onSubmitMock.mock.calls[0][0].deactivated_datetime,
+            ).toBeNull()
+        })
+    })
+
+    it('should call onSubmit with the form data on valid submit', async () => {
+        const user = userEvent.setup()
+        render(<ConditionForm condition={condition} />)
+
+        const nameInput = screen.getByDisplayValue('Test Condition')
+        await user.clear(nameInput)
+        await user.type(nameInput, 'Updated Condition')
+        await user.click(screen.getByRole('button', { name: 'Save Changes' }))
+
+        await waitFor(() => {
+            expect(onSubmitMock).toHaveBeenCalledWith(
+                expect.objectContaining({ name: 'Updated Condition' }),
+            )
+        })
+    })
+
+    it('should render the submit button', () => {
         render(<ConditionForm />)
-        const data = { hey: 'there' }
-        getLastMockCall(FormMock)[0].onValidSubmit(data)
 
-        expect(onSubmitMock).toHaveBeenCalledWith(data)
+        expect(
+            screen.getByRole('button', { name: 'Save Changes' }),
+        ).toBeInTheDocument()
     })
 
-    it('should call FormSubmitButton with correct props', () => {
-        render(<ConditionForm />)
-        expect(FormSubmitButton).toHaveBeenCalledWith(
-            expect.objectContaining({
-                isLoading: isSubmitting,
-            }),
-            {},
-        )
-    })
+    it('should navigate to the conditions route when cancel button is clicked', async () => {
+        const user = userEvent.setup()
+        render(<ConditionForm condition={condition} />)
 
-    it('should navigate to the conditions route when cancel button is clicked', () => {
-        render(<ConditionForm {...defaultProps} />)
-        fireEvent.click(screen.getByText('Cancel'))
+        await user.click(screen.getByRole('button', { name: 'Cancel' }))
 
         expect(history.push).toHaveBeenCalledWith(
             `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
         )
     })
 
-    it('should render the DeletionPopover when condition is provided', () => {
-        render(<ConditionForm {...defaultProps} />)
+    it('should render the DeletionPopover when a condition is provided', () => {
+        render(<ConditionForm condition={condition} />)
+
         expect(DeletionPopoverMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                condition: defaultProps.condition,
+                condition,
                 redirect: true,
             }),
             {},
         )
     })
 
-    it('should call onDisplayConfirmation when delete button is clicked', () => {
-        render(<ConditionForm {...defaultProps} />)
-        fireEvent.click(screen.getByText('Delete Condition'))
+    it('should call onDisplayConfirmation when the delete button is clicked', async () => {
+        const user = userEvent.setup()
+        render(<ConditionForm condition={condition} />)
+
+        await user.click(
+            screen.getByRole('button', { name: /Delete Condition/i }),
+        )
 
         expect(onDisplayConfirmationMock).toHaveBeenCalled()
     })

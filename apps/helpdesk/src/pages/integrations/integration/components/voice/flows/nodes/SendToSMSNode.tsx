@@ -116,17 +116,20 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
                             be deflected to:
                         </div>
                     </div>
-                    <FormField
-                        name={`steps.${id}.sms_integration_id`}
-                        field={SmsIntegrationSelect}
-                        options={smsIntegrations.map((integration) => ({
-                            label: getIntegrationName(
-                                integration,
-                                phoneNumbers,
-                            ),
-                            value: integration.id,
-                        }))}
-                    />
+                    <FormField name={`steps.${id}.sms_integration_id`}>
+                        {(field) => (
+                            <SmsIntegrationSelect
+                                {...field}
+                                options={smsIntegrations.map((integration) => ({
+                                    label: getIntegrationName(
+                                        integration,
+                                        phoneNumbers,
+                                    ),
+                                    value: integration.id,
+                                }))}
+                            />
+                        )}
+                    </FormField>
                 </div>
 
                 <div className={css.formSection}>
@@ -140,14 +143,17 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
                         </div>
                     </div>
                     <div>
-                        <FormField
-                            name={`steps.${id}.confirmation_message`}
-                            field={VoiceMessageField}
-                            allowNone={false}
-                            customRecordingType={
-                                CustomRecordingType.GreetingMessage
-                            }
-                        />
+                        <FormField name={`steps.${id}.confirmation_message`}>
+                            {(field) => (
+                                <VoiceMessageField
+                                    {...field}
+                                    allowNone={false}
+                                    customRecordingType={
+                                        CustomRecordingType.GreetingMessage
+                                    }
+                                />
+                            )}
+                        </FormField>
                     </div>
                 </div>
 
@@ -163,10 +169,15 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
 
                     <FormField
                         name={`steps.${id}.sms_content`}
-                        field={TextArea}
                         label="SMS message"
-                        placeholder="Hello! Thank you for choosing our messaging service. How can I help you?"
-                    />
+                    >
+                        {(field) => (
+                            <TextArea
+                                {...field}
+                                placeholder="Hello! Thank you for choosing our messaging service. How can I help you?"
+                            />
+                        )}
+                    </FormField>
                 </div>
             </div>
         </VoiceStepNode>

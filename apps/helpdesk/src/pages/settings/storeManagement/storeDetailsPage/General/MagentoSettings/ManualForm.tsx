@@ -49,12 +49,11 @@ export default function ManualForm({
         >
             {formFields.map(({ label, name }) => (
                 <div key={name} className={css.manualFormField}>
-                    <FormField
-                        field={InputField}
-                        label={label}
-                        name={name}
-                        placeholder={placeholder}
-                    />
+                    <FormField name={name} label={label}>
+                        {(field) => (
+                            <InputField {...field} placeholder={placeholder} />
+                        )}
+                    </FormField>
                 </div>
             ))}
         </BaseForm>

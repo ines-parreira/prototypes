@@ -85,18 +85,29 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
             <div className={css.formWithSeparator}>
                 <FormField
                     name={`steps.${data.id}.custom_field_id`}
-                    field={FieldNameSelectField<CustomField>}
-                    stepId={data.id}
-                    isDisabled={isLoading || customFields?.length === 0}
-                    placeholder={customFields?.length ? 'Select' : 'No fields'}
                     label="Customer fields retrieved"
-                    items={customFields ?? []}
-                    outputTransform={(field) => field.id}
-                    inputTransform={(fieldId: number) =>
-                        customFields?.find((field) => field.id === fieldId)
-                    }
+                    isDisabled={isLoading || customFields?.length === 0}
                 >
-                    {(option: CustomField) => <ListItem label={option.label} />}
+                    {(field) => (
+                        <FieldNameSelectField<CustomField>
+                            {...field}
+                            stepId={data.id}
+                            placeholder={
+                                customFields?.length ? 'Select' : 'No fields'
+                            }
+                            items={customFields ?? []}
+                            value={customFields?.find(
+                                (customField) => customField.id === field.value,
+                            )}
+                            onChange={(selectedField) =>
+                                field.onChange(selectedField?.id)
+                            }
+                        >
+                            {(option: CustomField) => (
+                                <ListItem label={option.label} />
+                            )}
+                        </FieldNameSelectField>
+                    )}
                 </FormField>
                 <CustomerLookupActionsFieldArray
                     stepName={`steps.${data.id}`}

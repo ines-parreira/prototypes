@@ -98,41 +98,46 @@ export function ChannelSelectBox() {
                 </Tooltip>
             </Box>
             <FormField
-                field={ChannelSelectField}
-                isSearchable
-                isRequired
-                placeholder="Select"
-                caption="Choose the channels this SLA should apply to. Voice cannot be combined with other channels."
                 name={FIELD_NAME}
-                items={options}
-                maxHeight={300}
-                onChannelChange={handleChannelChange}
-                outputTransform={(options: Option[]) =>
-                    options.map((option) => option.id)
-                }
-                inputTransform={(value: string | string[]) =>
-                    options.filter((option) => value.includes(option.id))
-                }
+                isRequired
+                caption="Choose the channels this SLA should apply to. Voice cannot be combined with other channels."
             >
-                {(option: { id: string; name: string }) =>
-                    option.id === PHONE_CHANNEL_SLUG ? (
-                        <MultiSelectItem
-                            label={option.name}
-                            textValue={option.name}
-                            isDisabled={isVoiceChannelDisabled}
-                            caption={
-                                hasExistingVoicePolicy
-                                    ? 'A Voice SLA has already been created.'
-                                    : `Voice uses a different SLA policy and cannot be combined with other channels.`
-                            }
-                        />
-                    ) : (
-                        <MultiSelectItem
-                            label={option.name}
-                            isDisabled={isVoiceChannelSelected}
-                        />
-                    )
-                }
+                {(field) => (
+                    <ChannelSelectField
+                        {...field}
+                        isSearchable
+                        placeholder="Select"
+                        items={options}
+                        maxHeight={300}
+                        onChannelChange={handleChannelChange}
+                        value={options.filter((option) =>
+                            field.value.includes(option.id),
+                        )}
+                        onChange={(options: Option[]) =>
+                            field.onChange(options.map((option) => option.id))
+                        }
+                    >
+                        {(option: { id: string; name: string }) =>
+                            option.id === PHONE_CHANNEL_SLUG ? (
+                                <MultiSelectItem
+                                    label={option.name}
+                                    textValue={option.name}
+                                    isDisabled={isVoiceChannelDisabled}
+                                    caption={
+                                        hasExistingVoicePolicy
+                                            ? 'A Voice SLA has already been created.'
+                                            : `Voice uses a different SLA policy and cannot be combined with other channels.`
+                                    }
+                                />
+                            ) : (
+                                <MultiSelectItem
+                                    label={option.name}
+                                    isDisabled={isVoiceChannelSelected}
+                                />
+                            )
+                        }
+                    </ChannelSelectField>
+                )}
             </FormField>
         </Box>
     )

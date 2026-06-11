@@ -97,32 +97,39 @@ export default function TimeScheduleRow({
     return (
         <div className={css.container}>
             <div className={css.selectField}>
-                <FormField
-                    name={`${namePrefix}.days`}
-                    field={SelectDropdownField<string>}
-                    options={daysOptions.map((option) => option.label)}
-                    outputTransform={(option) =>
-                        daysFieldOutputTransform(option)
-                    }
-                    inputTransform={(option) => {
-                        return daysFieldInputTransform(option, toTime, fromTime)
-                    }}
-                    root={root}
-                />
+                <FormField name={`${namePrefix}.days`}>
+                    {(field) => (
+                        <SelectDropdownField<string>
+                            {...field}
+                            options={daysOptions.map((option) => option.label)}
+                            root={root}
+                            value={daysFieldInputTransform(
+                                field.value,
+                                toTime,
+                                fromTime,
+                            )}
+                            onChange={(option) =>
+                                field.onChange(daysFieldOutputTransform(option))
+                            }
+                        />
+                    )}
+                </FormField>
             </div>
 
             <div className={cn(css.timeInputs, { [css.hidden]: isAlwaysOn })}>
                 <FormField
-                    isDisabled={isAlwaysOn}
                     name={`${namePrefix}.from_time`}
-                    field={TimeInputField}
-                />
+                    isDisabled={isAlwaysOn}
+                >
+                    {(field) => <TimeInputField {...field} />}
+                </FormField>
                 <div>to</div>
                 <FormField
-                    isDisabled={isAlwaysOn}
                     name={`${namePrefix}.to_time`}
-                    field={TimeInputField}
-                />
+                    isDisabled={isAlwaysOn}
+                >
+                    {(field) => <TimeInputField {...field} />}
+                </FormField>
             </div>
 
             {isRemovable && (

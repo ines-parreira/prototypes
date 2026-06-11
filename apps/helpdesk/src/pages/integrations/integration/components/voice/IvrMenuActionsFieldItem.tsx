@@ -30,13 +30,15 @@ export function IvrMenuActionFieldItem({
     return (
         <Box gap="xs" width="100%">
             <Button intent="secondary">{value?.input_digit}</Button>
-            <FormField
-                field={InputField}
-                key={fieldName}
-                className={css.branchName}
-                name={`${name}.${index}.branch_name`}
-                placeholder="Branch name"
-            />
+            <FormField key={fieldName} name={`${name}.${index}.branch_name`}>
+                {(field) => (
+                    <InputField
+                        {...field}
+                        className={css.branchName}
+                        placeholder="Branch name"
+                    />
+                )}
+            </FormField>
             {isRemovable && (
                 <IconButton
                     icon="close"

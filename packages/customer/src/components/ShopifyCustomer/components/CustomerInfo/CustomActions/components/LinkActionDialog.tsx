@@ -44,26 +44,32 @@ export function LinkActionDialog(props: Props) {
             <OverlayContent>
                 <FormProvider {...methods}>
                     <Box flexDirection="column" gap="sm" width="100%">
-                        <FormField
-                            name="label"
-                            field={TextField}
-                            label="Title"
-                            placeholder="Link title"
-                            isRequired
-                        />
+                        <FormField name="label" isRequired label="Title">
+                            {(field) => (
+                                <TextField
+                                    {...field}
+                                    placeholder="Link title"
+                                />
+                            )}
+                        </FormField>
                         <div onBlur={handleUrlBlur}>
                             <FormField
                                 name="url"
-                                field={TextField}
-                                label="URL"
-                                placeholder="https://example.com"
                                 isRequired
+                                label="URL"
                                 validation={{
                                     validate: (value: string) =>
                                         isValidLinkUrl(value) ||
                                         'Enter a valid URL',
                                 }}
-                            />
+                            >
+                                {(field) => (
+                                    <TextField
+                                        {...field}
+                                        placeholder="https://example.com"
+                                    />
+                                )}
+                            </FormField>
                         </div>
                     </Box>
                 </FormProvider>

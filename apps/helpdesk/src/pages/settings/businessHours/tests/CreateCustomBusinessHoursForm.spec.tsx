@@ -49,11 +49,9 @@ describe('CreateCustomBusinessHoursForm', () => {
 
     it('should pre-populate the form with the default values', () => {
         renderComponent(
-            <FormField
-                name="business_hours_config.timezone"
-                label="Timezone"
-                field={InputField}
-            />,
+            <FormField name="business_hours_config.timezone" label="Timezone">
+                {(field) => <InputField {...field} />}
+            </FormField>,
             undefined,
             {
                 currentAccount: fromJS({
@@ -82,8 +80,9 @@ describe('CreateCustomBusinessHoursForm', () => {
                 <FormField
                     name="overrideConfirmation"
                     label="Override confirmation"
-                    field={InputField}
-                />
+                >
+                    {(field) => <InputField {...field} />}
+                </FormField>
                 <button type="submit">Submit</button>
             </div>,
             {
@@ -107,9 +106,12 @@ describe('CreateCustomBusinessHoursForm', () => {
                 <FormField
                     name="overrideConfirmation"
                     label="Override confirmation"
-                    field={InputField}
-                />
-                <FormField name="name" label="Name" field={InputField} />
+                >
+                    {(field) => <InputField {...field} />}
+                </FormField>
+                <FormField name="name" label="Name">
+                    {(field) => <InputField {...field} />}
+                </FormField>
                 <button type="submit">Submit</button>
             </div>,
             {

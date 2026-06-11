@@ -65,9 +65,10 @@ const renderHookWithMocks = (
                         <FormField
                             key={step.id}
                             name={`steps.${step.id}.conditional_routing`}
-                            field={CheckBoxField}
                             label="Conditional routing"
-                        />
+                        >
+                            {(field) => <CheckBoxField {...field} />}
+                        </FormField>
                     ))}
                 <FormSubmitButton>Submit</FormSubmitButton>
             </Form>

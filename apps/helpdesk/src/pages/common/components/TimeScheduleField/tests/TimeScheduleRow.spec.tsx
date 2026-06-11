@@ -112,11 +112,9 @@ describe('TimeScheduleRow', () => {
                 }}
             >
                 <TimeScheduleRow {...props} />
-                <FormField
-                    name="someField"
-                    type="checkbox"
-                    field={InputField}
-                />
+                <FormField name="someField">
+                    {(field) => <InputField {...field} type="checkbox" />}
+                </FormField>
             </Form>,
         )
 
@@ -175,11 +173,9 @@ describe('TimeScheduleRow', () => {
                 }}
             >
                 <TimeScheduleRow {...props} />
-                <FormField
-                    name="someField"
-                    type="checkbox"
-                    field={InputField}
-                />
+                <FormField name="someField">
+                    {(field) => <InputField {...field} type="checkbox" />}
+                </FormField>
             </Form>,
         )
 

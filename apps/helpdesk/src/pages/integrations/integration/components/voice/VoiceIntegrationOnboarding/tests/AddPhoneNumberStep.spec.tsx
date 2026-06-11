@@ -1,12 +1,8 @@
-import { FormField } from '@repo/forms'
+import { Form } from '@repo/forms'
 import { assumeMock, render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useFormContext } from 'react-hook-form'
 
-import { PhoneFunction } from '@gorgias/helpdesk-queries'
-
-import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 
@@ -17,176 +13,198 @@ jest.mock('pages/common/components/wizard/hooks/useNavigateWizardSteps')
 jest.mock('../VoiceIntegrationOnboardingCancelButton', () => () => (
     <button>Cancel</button>
 ))
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('@repo/forms')
-jest.mock('react-hook-form')
 
-const useAppSelectorMock = useAppSelector as jest.Mock
-const FormFieldMock = assumeMock(FormField)
+jest.mock('pages/phoneNumbers/PhoneNumberSelectField', () => ({
+    __esModule: true,
+    default: ({
+        value,
+        onChange,
+        onCreate,
+    }: {
+        value: { id: number | string } | null
+        onChange: (value: { id: number } | null) => void
+        onCreate?: (phoneNumber: { id: string }) => void
+    }) => (
+        <div>
+            <div>Phone number select{value ? `: ${value.id}` : ''}</div>
+            <button type="button" onClick={() => onChange({ id: 2 })}>
+                Change phone number
+            </button>
+            {onCreate && (
+                <button onClick={() => onCreate({ id: '123' })}>
+                    Create Number
+                </button>
+            )}
+        </div>
+    ),
+}))
 
-const watchMock = jest.fn()
-const setValueMock = jest.fn()
-const mockUseFormContextReturnValue = {
-    watch: watchMock,
-    setValue: setValueMock,
-    formState: {
-        isValid: true,
-    },
-} as unknown as ReturnType<typeof useFormContext>
+jest.mock('pages/settings/businessHours/BusinessHoursSelectField', () => ({
+    __esModule: true,
+    default: () => <div>Business hours select</div>,
+}))
 
-const useFormContextMock = assumeMock(useFormContext)
+const useSearchMock = assumeMock(useSearch)
+const useNavigateWizardStepsMock = assumeMock(useNavigateWizardSteps)
 
 describe('AddPhoneNumberStep', () => {
     const mockGoToNextStep = jest.fn()
     const mockGoToPreviousStep = jest.fn()
     const onCreateNewNumberMock = jest.fn()
-    const useNavigateWizardStepsMock = assumeMock(useNavigateWizardSteps)
-    const useSearchMock = assumeMock(useSearch)
 
     beforeEach(() => {
         useNavigateWizardStepsMock.mockReturnValue({
             goToNextStep: mockGoToNextStep,
             goToPreviousStep: mockGoToPreviousStep,
         })
-        FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
-        watchMock.mockReturnValue([null, PhoneFunction.Standard] as any)
-        useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
         useSearchMock.mockReturnValue({ phoneNumberId: undefined })
     })
 
-    const renderComponent = () =>
-        render(<AddPhoneNumberStep onCreateNewNumber={onCreateNewNumberMock} />)
+    const renderComponent = ({
+        defaultValues = {},
+        newPhoneNumbers = {},
+        mode,
+    }: {
+        defaultValues?: Record<string, unknown>
+        newPhoneNumbers?: Record<string, { id: number }>
+        mode?: 'onChange' | 'onSubmit'
+    } = {}) =>
+        render(
+            <Form
+                mode={mode}
+                defaultValues={{
+                    name: 'Acme Phone',
+                    business_hours_id: null,
+                    meta: { emoji: '☎️', phone_number_id: null },
+                    ...defaultValues,
+                }}
+                onValidSubmit={jest.fn()}
+            >
+                <AddPhoneNumberStep onCreateNewNumber={onCreateNewNumberMock} />
+            </Form>,
+            {
+                storeState: {
+                    entities: { newPhoneNumbers },
+                },
+            },
+        )
 
-    it('should render', () => {
-        watchMock.mockReturnValue(['☎️', PhoneFunction.Standard] as any)
-
+    it('should render the step with its fields and actions', () => {
         renderComponent()
 
         expect(screen.getByText('Add phone number')).toBeInTheDocument()
         expect(screen.getByText('Integration name')).toBeInTheDocument()
         expect(screen.getByText('Phone number')).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()
-        expect(screen.getByText('Next')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument()
 
-        expect(FormFieldMock).toHaveBeenCalledTimes(3)
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({ name: 'name', isRequired: true }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'meta.phone_number_id',
-                isRequired: true,
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({ name: 'business_hours_id' }),
-            {},
-        )
+        expect(
+            screen.getByPlaceholderText('Ex: Company Support Line'),
+        ).toHaveValue('Acme Phone')
+        expect(screen.getByText('Phone number select')).toBeInTheDocument()
+        expect(screen.getByText('Business hours select')).toBeInTheDocument()
     })
 
-    it('should select the phone number', () => {
+    it('should select the phone number from the search param', async () => {
         useSearchMock.mockReturnValue({ phoneNumberId: '123' })
-        useAppSelectorMock.mockReturnValue({ 123: { id: 'returnedId' } })
 
-        FormFieldMock.mockImplementation(
-            ({ inputTransform, outputTransform, name }: any) => {
-                if (!!inputTransform && !!outputTransform) {
-                    return (
-                        <div>
-                            <span>{outputTransform(inputTransform(123))}</span>
-                        </div>
-                    )
-                }
-                return <>{name}</>
-            },
-        )
+        renderComponent({ newPhoneNumbers: { 123: { id: 123 } } })
 
-        renderComponent()
-
-        expect(screen.getByText('returnedId')).toBeInTheDocument()
-
-        expect(mockUseFormContextReturnValue.setValue).toHaveBeenCalledWith(
-            'meta.phone_number_id',
-            123,
+        await waitFor(() =>
+            expect(
+                screen.getByText('Phone number select: 123'),
+            ).toBeInTheDocument(),
         )
     })
 
-    it('should work without selected phone number', () => {
-        useAppSelectorMock.mockReturnValue({ 123: { id: 'returnedId' } })
+    it('should work without a selected phone number', () => {
+        renderComponent({ newPhoneNumbers: { 123: { id: 123 } } })
 
-        FormFieldMock.mockImplementation(
-            ({ inputTransform, outputTransform, name }: any) => {
-                if (!!inputTransform && !!outputTransform) {
-                    return (
-                        <div>
-                            <span>{outputTransform(inputTransform(null))}</span>
-                        </div>
-                    )
-                }
-                return <>{name}</>
-            },
+        expect(screen.getByText('Phone number select')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Phone number select: 123'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should resolve the selected phone number on change', async () => {
+        const user = userEvent.setup()
+
+        renderComponent({ newPhoneNumbers: { 2: { id: 2 } } })
+
+        await user.click(
+            screen.getByRole('button', { name: /change phone number/i }),
         )
 
-        renderComponent()
-
-        expect(screen.queryByText('returnedId')).toBeNull()
-        expect(mockUseFormContextReturnValue.setValue).not.toHaveBeenCalled()
+        await waitFor(() =>
+            expect(
+                screen.getByText('Phone number select: 2'),
+            ).toBeInTheDocument(),
+        )
     })
 
     it('should call goToNextStep when Next button is clicked', async () => {
+        const user = userEvent.setup()
         useSearchMock.mockReturnValue({ phoneNumberId: '123' })
 
-        renderComponent()
+        renderComponent({
+            mode: 'onChange',
+            defaultValues: {
+                name: 'Acme Phone',
+                business_hours_id: 1,
+                meta: { emoji: '☎️', phone_number_id: 123 },
+            },
+            newPhoneNumbers: { 123: { id: 123 } },
+        })
 
         const nextButton = screen.getByRole('button', { name: /Next/i })
-        await act(() => userEvent.click(nextButton))
+        await waitFor(() =>
+            expect(nextButton).not.toHaveAttribute('aria-disabled', 'true'),
+        )
+
+        await user.click(nextButton)
 
         await waitFor(() => expect(mockGoToNextStep).toHaveBeenCalled())
     })
 
     it('should call onCreateNewNumber when a new phone number is created', async () => {
-        FormFieldMock.mockImplementation(({ onCreate, name }: any) => {
-            if (!!onCreate) {
-                return (
-                    <button onClick={() => onCreate({ id: '123' })}>
-                        Create Number
-                    </button>
-                )
-            }
-            return <>{name}</>
-        })
+        const user = userEvent.setup()
 
         renderComponent()
 
-        const createButton = screen.getByRole('button', {
-            name: /Create Number/i,
-        })
-        await act(() => userEvent.click(createButton))
+        await user.click(screen.getByRole('button', { name: /Create Number/i }))
+
         await waitFor(() =>
             expect(onCreateNewNumberMock).toHaveBeenCalledWith({ id: '123' }),
         )
     })
 
-    it('should render business hours field', () => {
+    it('should render the business hours field', () => {
         renderComponent()
 
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({ name: 'business_hours_id' }),
-            {},
-        )
+        expect(screen.getByText('Business hours select')).toBeInTheDocument()
     })
 
-    it('should have aria-disabled when form is invalid', () => {
-        useFormContextMock.mockReturnValue({
-            ...mockUseFormContextReturnValue,
-            formState: { isValid: false },
-        } as any)
+    it('should have aria-disabled when form is invalid', async () => {
+        const user = userEvent.setup()
+        renderComponent({
+            defaultValues: {
+                name: '',
+                business_hours_id: null,
+                meta: { emoji: '☎️', phone_number_id: null },
+            },
+            mode: 'onChange',
+        })
 
-        renderComponent()
+        const nameInput = screen.getByPlaceholderText(
+            'Ex: Company Support Line',
+        )
+        await user.click(nameInput)
+        await user.tab()
 
-        const nextButton = screen.getByRole('button', { name: /Next/i })
-        expect(nextButton).toHaveAttribute('aria-disabled', 'true')
+        await waitFor(() =>
+            expect(
+                screen.getByRole('button', { name: /Next/i }),
+            ).toHaveAttribute('aria-disabled', 'true'),
+        )
     })
 })

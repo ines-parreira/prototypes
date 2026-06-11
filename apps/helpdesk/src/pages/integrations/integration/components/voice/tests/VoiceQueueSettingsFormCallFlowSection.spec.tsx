@@ -1,112 +1,110 @@
-import { FormField, useFormContext } from '@repo/forms'
-import * as forms from '@repo/forms'
-import { assumeMock, render } from '@repo/testing'
-import type { RenderResult } from '@testing-library/react'
-import { screen } from '@testing-library/react'
+import { Form, FormSubmitButton } from '@repo/forms'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/helpdesk-types'
 
+import { useListTeams } from 'models/team/queries'
+
+import { NO_TEAM_SELECTED_LABEL } from '../VoiceIntegrationPreferencesTeamSelect'
 import VoiceQueueSettingsFormCallFlowSection from '../VoiceQueueSettingsFormCallFlowSection'
-
-const formFieldSpy = jest.spyOn(forms, 'FormField')
-
-jest.mock('@repo/forms')
-const FormFieldMock = assumeMock(FormField)
+import { DEFAULT_QUEUE_VALUES } from './../constants'
 
 jest.mock('models/team/queries', () => ({
     useListTeams: jest.fn(),
 }))
 
-const watchMock = jest.fn()
-const setValueMock = jest.fn()
-const unregisterMock = jest.fn()
-const mockUseFormContextReturnValue = {
-    watch: watchMock,
-    setValue: setValueMock,
-    unregister: unregisterMock,
-} as unknown as ReturnType<typeof useFormContext>
+const getNumberInputByName = (name: string): HTMLElement => {
+    const input = screen
+        .getAllByRole('spinbutton')
+        .find((el) => el.getAttribute('name') === name)
 
-jest.mock('react-hook-form')
-const useFormContextMock = assumeMock(useFormContext)
+    if (!input) {
+        throw new Error(`No number input found with name "${name}"`)
+    }
+
+    return input
+}
+
+const mockTeams = [
+    { id: 1, name: 'Team 1', members: [] },
+    { id: 2, name: 'Team 2', members: [{}, {}] },
+]
 
 describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
-    const renderComponent = (props: any = {}): RenderResult => {
-        return render(<VoiceQueueSettingsFormCallFlowSection {...props} />)
+    const renderComponent = ({
+        defaultValues = {},
+        onValidSubmit = jest.fn(),
+    }: {
+        defaultValues?: Record<string, unknown>
+        onValidSubmit?: jest.Mock
+    } = {}) => {
+        const user = userEvent.setup()
+
+        render(
+            <Form
+                defaultValues={{
+                    ...DEFAULT_QUEUE_VALUES,
+                    name: 'My Queue',
+                    ...defaultValues,
+                }}
+                onValidSubmit={onValidSubmit}
+            >
+                <VoiceQueueSettingsFormCallFlowSection />
+                <FormSubmitButton>Submit</FormSubmitButton>
+            </Form>,
+        )
+
+        return { user, onValidSubmit }
     }
 
     beforeEach(() => {
-        FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
-        watchMock.mockReturnValue([[], 5, 5, false] as any)
-        useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
+        ;(useListTeams as jest.Mock).mockReturnValue({
+            data: { data: { data: mockTeams } },
+            isLoading: false,
+            error: null,
+        })
     })
 
     it('should display all fields', () => {
-        watchMock.mockReturnValue([[], 5, 5, true] as any)
-        renderComponent()
+        renderComponent({ defaultValues: { is_wrap_up_time_enabled: true } })
 
         expect(screen.getByText('Distribution mode')).toBeInTheDocument()
         expect(screen.getByText('Ring time per agent')).toBeInTheDocument()
         expect(
             screen.getByText('Customize how calls are routed'),
         ).toBeInTheDocument()
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'distribution_mode',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'linked_targets',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'ring_time',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'wait_time',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'wait_music',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'is_wrap_up_time_enabled',
-            }),
-            {},
-        )
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'wrap_up_time',
-            }),
-            {},
-        )
+        expect(screen.getByText('Round-robin ringing')).toBeInTheDocument()
+        expect(screen.getByText('Broadcast ringing')).toBeInTheDocument()
+        expect(screen.getByText('Enable wrap-up time')).toBeInTheDocument()
+        expect(screen.getByText('Wrap-up time')).toBeInTheDocument()
+        expect(screen.getByText('Wait time')).toBeInTheDocument()
+        expect(screen.getByText('Wait and hold music')).toBeInTheDocument()
     })
 
     it.each`
-        linked_targets | expectedTargetScope
-        ${[]}          | ${VoiceQueueTargetScope.AllAgents}
-        ${['1']}       | ${VoiceQueueTargetScope.Specific}
+        linked_targets                     | expectedTargetScope
+        ${[]}                              | ${VoiceQueueTargetScope.AllAgents}
+        ${[{ team_id: 1, user_id: null }]} | ${VoiceQueueTargetScope.Specific}
     `(
-        'should set target_scope to $expectedTargetScope when linked_targets is $linked_targets',
-        ({ linked_targets, expectedTargetScope }) => {
-            watchMock.mockReturnValue([linked_targets, 5, 5, false] as any)
-            renderComponent()
+        'should submit target_scope of $expectedTargetScope when linked_targets is $linked_targets',
+        async ({ linked_targets, expectedTargetScope }) => {
+            const { user, onValidSubmit } = renderComponent({
+                defaultValues: { linked_targets },
+            })
 
-            expect(setValueMock).toHaveBeenCalledWith(
-                'target_scope',
-                expectedTargetScope,
-            )
+            await user.clear(getNumberInputByName('wait_time'))
+            await user.type(getNumberInputByName('wait_time'), '200')
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        target_scope: expectedTargetScope,
+                    }),
+                    expect.anything(),
+                )
+            })
         },
     )
 
@@ -118,8 +116,7 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     `(
         'should display maximum number of agents as $expectedAgents when ring_time is $ring_time and wait_time is $wait_time',
         ({ ring_time, wait_time, expectedAgents }) => {
-            watchMock.mockReturnValue([[], ring_time, wait_time, false] as any)
-            renderComponent()
+            renderComponent({ defaultValues: { ring_time, wait_time } })
 
             expect(screen.getByText(expectedAgents)).toBeInTheDocument()
         },
@@ -135,72 +132,123 @@ describe('<VoiceQueueSettingsFormCallFlowSection />', () => {
     })
 
     describe('Linked targets field', () => {
-        it('should transform output correctly', () => {
-            renderComponent()
+        it('should render the team select with no team selected by default', () => {
+            renderComponent({ defaultValues: { linked_targets: [] } })
 
-            const linkedTargetsField = getFormFieldCallByName('linked_targets')
-            expect(linkedTargetsField?.[0]?.outputTransform?.(null)).toEqual([])
-            expect(linkedTargetsField?.[0]?.outputTransform?.(1)).toEqual([
-                { team_id: 1, user_id: null },
-            ])
+            expect(screen.getByText(NO_TEAM_SELECTED_LABEL)).toBeInTheDocument()
+        })
+
+        it('should render the selected team when linked_targets has a team', () => {
+            renderComponent({
+                defaultValues: {
+                    linked_targets: [{ team_id: 2, user_id: null }],
+                },
+            })
+
+            expect(screen.getByText('Team 2')).toBeInTheDocument()
+        })
+
+        it('should submit linked_targets with the selected team', async () => {
+            const { user, onValidSubmit } = renderComponent({
+                defaultValues: { linked_targets: [] },
+            })
+
+            await user.click(screen.getByText(NO_TEAM_SELECTED_LABEL))
+            await user.click(screen.getByText('Team 1'))
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        linked_targets: [{ team_id: 1, user_id: null }],
+                    }),
+                    expect.anything(),
+                )
+            })
         })
     })
 
     describe('Ring time field', () => {
-        it('should transform output correctly', () => {
-            renderComponent()
+        it('should submit a numeric ring_time when a value is entered', async () => {
+            const { user, onValidSubmit } = renderComponent()
 
-            const ringTimeField = getFormFieldCallByName('ring_time')
-            expect(ringTimeField?.[0]?.outputTransform?.('5')).toBe(5)
+            await user.clear(getNumberInputByName('ring_time'))
+            await user.type(getNumberInputByName('ring_time'), '42')
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
 
-            expect(ringTimeField?.[0]?.outputTransform?.('')).toBe('')
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ ring_time: 42 }),
+                    expect.anything(),
+                )
+            })
         })
     })
 
     describe('Wait time field', () => {
-        it('should transform output correctly', () => {
-            renderComponent()
+        it('should submit a numeric wait_time when a value is entered', async () => {
+            const { user, onValidSubmit } = renderComponent()
 
-            const waitTimeField = getFormFieldCallByName('wait_time')
-            expect(waitTimeField?.[0]?.outputTransform?.('12')).toBe(12)
+            await user.clear(getNumberInputByName('wait_time'))
+            await user.type(getNumberInputByName('wait_time'), '300')
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
 
-            expect(waitTimeField?.[0]?.outputTransform?.('')).toBe('')
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ wait_time: 300 }),
+                    expect.anything(),
+                )
+            })
         })
     })
 
     describe('Wrap up time feature', () => {
-        it('should not display wrap-up time field when is_wrap_up_time_enabled is false', () => {
-            watchMock.mockReturnValue([[], 5, 5, false] as any)
-            renderComponent()
+        it('should not display the wrap-up time field when is_wrap_up_time_enabled is false', () => {
+            renderComponent({
+                defaultValues: { is_wrap_up_time_enabled: false },
+            })
 
-            expect(FormFieldMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'wrap_up_time',
-                }),
-            )
+            expect(screen.queryByText('Wrap-up time')).not.toBeInTheDocument()
         })
 
-        it('should display wrap-up time fields with correct properties', () => {
-            watchMock.mockReturnValue([[], 5, 5, true] as any)
-            renderComponent()
+        it('should display the wrap-up time field when is_wrap_up_time_enabled is true', () => {
+            renderComponent({
+                defaultValues: { is_wrap_up_time_enabled: true },
+            })
 
-            const wrapUpTimeField = getFormFieldCallByName('wrap_up_time')
-            expect(wrapUpTimeField).toBeDefined()
-            expect(wrapUpTimeField?.[0]).toEqual(
-                expect.objectContaining({
-                    name: 'wrap_up_time',
-                    label: 'Wrap-up time',
-                    type: 'number',
-                    caption:
-                        'Set a time between 10 and 600 seconds (10 minutes).',
-                }),
+            expect(screen.getByText('Wrap-up time')).toBeInTheDocument()
+            expect(getNumberInputByName('wrap_up_time')).toBeInTheDocument()
+        })
+
+        it('should reveal the wrap-up time field when the toggle is enabled', async () => {
+            const { user } = renderComponent({
+                defaultValues: { is_wrap_up_time_enabled: false },
+            })
+
+            expect(screen.queryByText('Wrap-up time')).not.toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('switch', { name: /Enable wrap-up time/i }),
             )
 
-            expect(wrapUpTimeField?.[0]?.outputTransform?.('')).toBe(null)
-            expect(wrapUpTimeField?.[0]?.outputTransform?.('30')).toBe(30)
+            expect(await screen.findByText('Wrap-up time')).toBeInTheDocument()
+        })
+
+        it('should submit a numeric wrap_up_time when a value is entered', async () => {
+            const { user, onValidSubmit } = renderComponent({
+                defaultValues: { is_wrap_up_time_enabled: true },
+            })
+
+            await user.clear(screen.getByLabelText('Wrap-up time'))
+            await user.type(screen.getByLabelText('Wrap-up time'), '45')
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ wrap_up_time: 45 }),
+                    expect.anything(),
+                )
+            })
         })
     })
 })
-
-const getFormFieldCallByName = (name: string) =>
-    formFieldSpy.mock.calls.find((call) => call[0].name === name)

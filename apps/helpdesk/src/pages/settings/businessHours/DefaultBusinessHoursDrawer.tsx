@@ -83,12 +83,17 @@ export const DefaultBusinessHoursDrawer = ({
                         <div>
                             <FormField
                                 name="data.timezone"
-                                label="Timezone"
-                                field={SelectDropdownField}
-                                options={getMomentTimezoneNames()}
                                 isRequired
-                                root={ref?.current ?? undefined}
-                            />
+                                label="Timezone"
+                            >
+                                {(field) => (
+                                    <SelectDropdownField
+                                        {...field}
+                                        options={getMomentTimezoneNames()}
+                                        root={ref?.current ?? undefined}
+                                    />
+                                )}
+                            </FormField>
                         </div>
                         <div className={css.schedule}>
                             <Label isRequired>Schedule</Label>

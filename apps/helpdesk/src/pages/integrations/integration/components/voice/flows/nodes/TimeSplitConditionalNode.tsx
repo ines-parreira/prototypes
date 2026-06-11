@@ -125,51 +125,58 @@ export function TimeSplitConditionalNode(props: TimeSplitConditionalNodeProps) {
             <div className={css.tightDrawerForm}>
                 {is24_7 && <Banner type="warning">{alwaysOnWarning}</Banner>}
 
-                <FormField
-                    name={`steps.${id}.rule_type`}
-                    field={RadioButtonField}
-                    inputTransform={(value) => {
-                        if (!value) {
-                            return TimeSplitConditionalRuleType.BusinessHours
-                        }
-                        return value
-                    }}
-                    options={[
-                        {
-                            value: TimeSplitConditionalRuleType.BusinessHours,
-                            label: 'Business hours',
-                            caption: (
-                                <div>
-                                    Your business hours are currently set as{' '}
-                                    {businessHoursName}: {businessHoursSchedule}
-                                    . You can view or adjust these settings in{' '}
-                                    <Link
-                                        to={BUSINESS_HOURS_BASE_URL}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Business Hours
-                                    </Link>
-                                    .
-                                </div>
-                            ),
-                        },
-                        {
-                            value: TimeSplitConditionalRuleType.CustomHours,
-                            label: 'Custom hours',
-                        },
-                    ]}
-                />
+                <FormField name={`steps.${id}.rule_type`}>
+                    {(field) => (
+                        <RadioButtonField
+                            {...field}
+                            value={
+                                field.value ||
+                                TimeSplitConditionalRuleType.BusinessHours
+                            }
+                            options={[
+                                {
+                                    value: TimeSplitConditionalRuleType.BusinessHours,
+                                    label: 'Business hours',
+                                    caption: (
+                                        <div>
+                                            Your business hours are currently
+                                            set as {businessHoursName}:{' '}
+                                            {businessHoursSchedule}. You can
+                                            view or adjust these settings in{' '}
+                                            <Link
+                                                to={BUSINESS_HOURS_BASE_URL}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Business Hours
+                                            </Link>
+                                            .
+                                        </div>
+                                    ),
+                                },
+                                {
+                                    value: TimeSplitConditionalRuleType.CustomHours,
+                                    label: 'Custom hours',
+                                },
+                            ]}
+                        />
+                    )}
+                </FormField>
                 {isCustomHours && (
                     <>
                         <div>
                             <FormField
                                 name={`steps.${id}.custom_hours.timezone`}
                                 label="Timezone"
-                                field={SelectDropdownField}
-                                options={getMomentTimezoneNames()}
-                                root={ref.current ?? undefined}
-                            />
+                            >
+                                {(field) => (
+                                    <SelectDropdownField
+                                        {...field}
+                                        options={getMomentTimezoneNames()}
+                                        root={ref.current ?? undefined}
+                                    />
+                                )}
+                            </FormField>
                         </div>
                         <PrefilledTimeScheduleField
                             name={`steps.${id}.custom_hours.business_hours`}

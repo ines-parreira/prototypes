@@ -73,6 +73,31 @@ describe('ValueField', () => {
         )
     })
 
+    it('uses a noop onChange for the disabled placeholder select', () => {
+        render(<ValueField {...defaultProps} pickedDefinition={undefined} />)
+
+        expect(
+            getLastMockCall(SelectFieldMock)[0].onChange?.('x'),
+        ).toBeUndefined()
+        expect(defaultProps.onChange).not.toHaveBeenCalled()
+    })
+
+    it('should default isDisabled to false when the prop is omitted', () => {
+        render(
+            <ValueField
+                index={1}
+                pickedDefinition={ticketInputFieldDefinition}
+                value={['value']}
+                onChange={jest.fn()}
+            />,
+        )
+
+        expect(TextInputMock).toHaveBeenCalledWith(
+            expect.objectContaining({ isDisabled: false }),
+            {},
+        )
+    })
+
     describe('Text input', () => {
         it('should render a text input if the field is a text input', () => {
             render(

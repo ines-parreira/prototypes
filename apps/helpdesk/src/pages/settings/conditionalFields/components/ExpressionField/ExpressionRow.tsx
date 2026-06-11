@@ -36,30 +36,41 @@ export const ExpressionRow = function ExpressionRow({
             {index > 0 && <Pill color="light">And</Pill>}
             <Pill>Ticket Field</Pill>
             <span className={css.fieldSource}>
-                <FormField
-                    name={`expression.${index}.field`}
-                    field={FieldField}
-                    index={index}
-                    customFieldDefinitions={customFieldDefinitions}
-                />
+                <FormField name={`expression.${index}.field`}>
+                    {(formField) => (
+                        <FieldField
+                            {...formField}
+                            index={index}
+                            customFieldDefinitions={customFieldDefinitions}
+                        />
+                    )}
+                </FormField>
             </span>
             <span className={css.operatorContainer}>
-                <FormField
-                    name={`expression.${index}.operator`}
-                    field={OperatorField}
-                    pickedDefinition={pickedDefinition}
-                    index={index}
-                />
+                <FormField name={`expression.${index}.operator`}>
+                    {(formField) => (
+                        <OperatorField
+                            {...formField}
+                            pickedDefinition={pickedDefinition}
+                            index={index}
+                        />
+                    )}
+                </FormField>
             </span>
             <span className={css.valueContainer}>
                 <FormField
                     name={`expression.${index}.values`}
-                    field={ValueField}
-                    pickedDefinition={pickedDefinition}
-                    index={index}
                     isRequired={operator !== ExpressionOperator.IsNotEmpty}
                     isDisabled={operator === ExpressionOperator.IsNotEmpty}
-                />
+                >
+                    {(formField) => (
+                        <ValueField
+                            {...formField}
+                            pickedDefinition={pickedDefinition}
+                            index={index}
+                        />
+                    )}
+                </FormField>
             </span>
 
             <IconButton

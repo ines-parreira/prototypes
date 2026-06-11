@@ -57,10 +57,9 @@ function RoutingTemplateRadioFieldSet() {
                         'Route calls to a queue inside business hours and to voicemail outside business hours.',
                     value: BASIC_TEMPLATE,
                     body: (
-                        <FormField
-                            field={VoiceQueueSelectField}
-                            name="meta.queue_id"
-                        />
+                        <FormField name="meta.queue_id">
+                            {(field) => <VoiceQueueSelectField {...field} />}
+                        </FormField>
                     ),
                 },
                 {

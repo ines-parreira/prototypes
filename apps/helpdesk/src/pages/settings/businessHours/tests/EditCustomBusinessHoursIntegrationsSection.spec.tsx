@@ -15,8 +15,9 @@ jest.mock('../AssignIntegrationsModal', () => (props: any) => (
         <FormField
             name="temporary_assigned_integrations"
             label="Temporary assigned integrations"
-            field={InputField}
-        />
+        >
+            {(field) => <InputField {...field} />}
+        </FormField>
         <button onClick={props.onClose}>Close</button>
     </Modal>
 ))

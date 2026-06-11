@@ -47,12 +47,13 @@ export default function VoiceIntegrationIVRPreferencesForm({
                 <h2>Routing options</h2>
                 <FormField
                     name="meta.preferences.voicemail_outside_business_hours"
-                    field={CheckBoxField}
                     label="Send calls to voicemail outside business hours"
                     caption="If a customer calls outside of
                                                     business hours, they will be
                                                     immediately forwarded to voicemail."
-                />
+                >
+                    {(field) => <CheckBoxField {...field} />}
+                </FormField>
             </div>
 
             <div>

@@ -38,4 +38,21 @@ describe('TimeUnitSelectField', () => {
             ).toBe('Days')
         })
     })
+
+    it('should render no selection when the value matches no time unit', () => {
+        render(
+            <Form
+                onValidSubmit={jest.fn()}
+                defaultValues={{
+                    testUnit: undefined,
+                }}
+            >
+                <TimeUnitSelectField name="testUnit" />
+            </Form>,
+        )
+
+        expect((screen.getByRole('textbox') as HTMLSelectElement).value).toBe(
+            '',
+        )
+    })
 })

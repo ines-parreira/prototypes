@@ -77,29 +77,34 @@ const UpdatePaymentTerms = () => {
                         mode="onChange"
                         onValidSubmit={onSubmit}
                     >
-                        <FormField<
-                            ComponentProps<
-                                typeof SelectInputFormField<{ value: number }>
-                            >
-                        >
-                            label="Payment Terms"
-                            isRequired
+                        <FormField
                             name="payment_terms"
-                            field={SelectInputFormField}
-                            inputTransform={(value: number) => ({ value })}
-                            outputTransform={(option) => option.value}
+                            isRequired
+                            label="Payment Terms"
                             isDisabled={
                                 paymentTermsQueryResult?.isLoading ||
                                 useUpdatePaymentTerms.isLoading
                             }
-                            options={ALLOWED_PAYMENT_TERMS.map((value) => ({
-                                value,
-                            }))}
-                            optionMapper={(option) => ({
-                                value: option.value.toString(),
-                                subtext: `${option.value} days`,
-                            })}
-                        />
+                        >
+                            {(field) => (
+                                <SelectInputFormField<{ value: number }>
+                                    {...field}
+                                    options={ALLOWED_PAYMENT_TERMS.map(
+                                        (value) => ({
+                                            value,
+                                        }),
+                                    )}
+                                    optionMapper={(option) => ({
+                                        value: option.value.toString(),
+                                        subtext: `${option.value} days`,
+                                    })}
+                                    value={{ value: field.value }}
+                                    onChange={(option) =>
+                                        field.onChange(option.value)
+                                    }
+                                />
+                            )}
+                        </FormField>
 
                         <div>
                             <Button

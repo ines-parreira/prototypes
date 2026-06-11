@@ -121,28 +121,34 @@ export function RouteToNode(
                     title="Step 1: Where should this call go?"
                     description="Select the destination you want your callers to be routed to:"
                 >
-                    <FormField
-                        id={id}
-                        name={`steps.${id}.step_type`}
-                        field={RouteToStepTypeField}
-                        options={[
-                            {
-                                label: 'Queue',
-                                value: VoiceFlowNodeType.Enqueue,
-                            },
-                            {
-                                label: 'Voice integration',
-                                value: VoiceFlowNodeType.RouteToInternalNumber,
-                            },
-                        ]}
-                    />
+                    <FormField name={`steps.${id}.step_type`}>
+                        {(field) => (
+                            <RouteToStepTypeField
+                                {...field}
+                                id={id}
+                                options={[
+                                    {
+                                        label: 'Queue',
+                                        value: VoiceFlowNodeType.Enqueue,
+                                    },
+                                    {
+                                        label: 'Voice integration',
+                                        value: VoiceFlowNodeType.RouteToInternalNumber,
+                                    },
+                                ]}
+                            />
+                        )}
+                    </FormField>
                     {isQueueOptionSelected && (
                         <>
-                            <FormField
-                                field={VoiceQueueSelectField}
-                                name={`steps.${id}.queue_id`}
-                                withLabel={false}
-                            />
+                            <FormField name={`steps.${id}.queue_id`}>
+                                {(field) => (
+                                    <VoiceQueueSelectField
+                                        {...field}
+                                        withLabel={false}
+                                    />
+                                )}
+                            </FormField>
                             {step?.queue_id && (
                                 <VoiceQueueSummary queue_id={step.queue_id} />
                             )}
@@ -150,13 +156,16 @@ export function RouteToNode(
                     )}
                     {isVoiceIntegrationOptionSelected && (
                         <Box mt="xs" flexDirection="column" gap="xxs">
-                            <FormField
-                                name={`steps.${id}.integration_id`}
-                                field={VoiceIntegrationSelectField}
-                                hiddenIntegrations={[
-                                    Number(integrationIdParam),
-                                ]}
-                            />
+                            <FormField name={`steps.${id}.integration_id`}>
+                                {(field) => (
+                                    <VoiceIntegrationSelectField
+                                        {...field}
+                                        hiddenIntegrations={[
+                                            Number(integrationIdParam),
+                                        ]}
+                                    />
+                                )}
+                            </FormField>
                             <VoiceIntegrationSelectCaption
                                 integration={integration}
                             />

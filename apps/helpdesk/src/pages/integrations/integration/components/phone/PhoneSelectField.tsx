@@ -20,7 +20,7 @@ import css from './PhoneSelectField.less'
 type Props = {
     value?: string
     onChange: (value: string) => void
-    label: string
+    label?: string
 }
 
 export default function PhoneSelectField({ value, onChange, label }: Props) {
@@ -59,7 +59,7 @@ export default function PhoneSelectField({ value, onChange, label }: Props) {
     return (
         <>
             <div ref={inputRef} className={css.inputWrapper}>
-                <Label>{label}</Label>
+                {label && <Label>{label}</Label>}
                 {isSearchTypeCustomer || selectedCustomer ? (
                     <TextInput
                         ref={textInputRef}

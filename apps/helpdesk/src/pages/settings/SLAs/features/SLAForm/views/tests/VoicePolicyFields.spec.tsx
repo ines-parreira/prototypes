@@ -58,6 +58,29 @@ describe('<VoicePolicyFields />', () => {
             expect(targetInput).toHaveValue('85')
         })
 
+        it('should render empty when target is undefined (inputTransform)', () => {
+            render(
+                <Form
+                    defaultValues={{
+                        target: undefined,
+                        metrics: [
+                            {
+                                threshold: 60,
+                                unit: SLAPolicyMetricUnit.Second,
+                            },
+                        ],
+                    }}
+                    onValidSubmit={jest.fn()}
+                >
+                    <VoicePolicyFields />
+                </Form>,
+            )
+
+            expect(
+                screen.getByRole('textbox', { name: /target/i }),
+            ).toHaveValue('')
+        })
+
         it('should submit decimal value correctly (outputTransform)', async () => {
             const user = userEvent.setup()
             const handleSubmit = jest.fn()

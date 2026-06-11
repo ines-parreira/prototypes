@@ -63,21 +63,24 @@ export default function EditConditionForm({ condition }: ConditionFormProps) {
             onValidSubmit={handleFormSubmit}
         >
             <div className={settingsCss.contentWrapper}>
-                <FormField
-                    field={InputField}
-                    className={css.mbS}
-                    name="name"
-                    label="Condition name"
-                    isRequired
-                    placeholder="Provide a name for condition. E.g: Contact Reason Conditions"
-                />
-                <FormField
-                    field={InputField}
-                    className={css.mbS}
-                    name="description"
-                    label="Condition description"
-                    placeholder="Describe how the condition works. E.g: Display when contact reason includes quality and shipping"
-                />
+                <FormField name="name" isRequired label="Condition name">
+                    {(field) => (
+                        <InputField
+                            {...field}
+                            className={css.mbS}
+                            placeholder="Provide a name for condition. E.g: Contact Reason Conditions"
+                        />
+                    )}
+                </FormField>
+                <FormField name="description" label="Condition description">
+                    {(field) => (
+                        <InputField
+                            {...field}
+                            className={css.mbS}
+                            placeholder="Describe how the condition works. E.g: Display when contact reason includes quality and shipping"
+                        />
+                    )}
+                </FormField>
             </div>
             <fieldset className={css.fieldset}>
                 <legend className={css.legend}>Condition requirements</legend>
@@ -92,18 +95,25 @@ export default function EditConditionForm({ condition }: ConditionFormProps) {
                 <Label className={css.mbS}>
                     Then display the following fields...
                 </Label>
-                <FormField name="requirements" field={ThenField} isRequired />
+                <FormField name="requirements" isRequired>
+                    {(field) => <ThenField {...field} />}
+                </FormField>
             </fieldset>
-            <FormField
-                className={css.mbS}
-                field={ToggleInputField}
-                name="deactivated_datetime"
-                inputTransform={(value: string | null) => !value}
-                outputTransform={(value) =>
-                    !value ? new Date().toISOString() : null
-                }
-            >
-                Enable Condition
+            <FormField name="deactivated_datetime">
+                {(field) => (
+                    <ToggleInputField
+                        {...field}
+                        className={css.mbS}
+                        value={!field.value}
+                        onChange={(value) =>
+                            field.onChange(
+                                !value ? new Date().toISOString() : null,
+                            )
+                        }
+                    >
+                        Enable Condition
+                    </ToggleInputField>
+                )}
             </FormField>
             <div className={css.formFooter}>
                 <span>

@@ -102,11 +102,18 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                 )}
                 <FormField
                     name={`steps.${id}.message`}
-                    field={VoiceMessageField}
-                    allowNone={false}
-                    customRecordingType={CustomRecordingType.GreetingMessage}
                     label="Greeting message"
-                />
+                >
+                    {(field) => (
+                        <VoiceMessageField
+                            {...field}
+                            allowNone={false}
+                            customRecordingType={
+                                CustomRecordingType.GreetingMessage
+                            }
+                        />
+                    )}
+                </FormField>
                 <Label>Menu options</Label>
                 <IvrMenuActionsFieldArray
                     name={`steps.${id}.branch_options`}

@@ -22,7 +22,7 @@ type ValueFieldProps = {
     pickedDefinition?: CustomField
     value: CustomFieldConditionExpression['values']
     onChange: (value: CustomFieldConditionExpression['values']) => void
-    isDisabled: boolean
+    isDisabled?: boolean
     index: number
     error?: string
 }
@@ -31,7 +31,7 @@ export const ValueField = forwardRef(function ValueField(
     {
         pickedDefinition,
         value,
-        isDisabled,
+        isDisabled = false,
         onChange,
         index,
         error,

@@ -15,17 +15,19 @@ export default function TimeUnitSelectField({
     isDisabled,
 }: TimeUnitSelectFieldProps) {
     return (
-        <FormField
-            field={SelectField<TimeUnitOption>}
-            placeholder="Select time unit"
-            name={name}
-            items={timeUnits}
-            isDisabled={isDisabled}
-            inputTransform={(id) => timeUnits.find((unit) => unit.id === id)}
-            outputTransform={(value) => value.id}
-        >
-            {(option: TimeUnitOption) => (
-                <ListItem id={option.id} label={option.label} />
+        <FormField name={name} isDisabled={isDisabled}>
+            {(field) => (
+                <SelectField<TimeUnitOption>
+                    {...field}
+                    placeholder="Select time unit"
+                    items={timeUnits}
+                    value={timeUnits.find((unit) => unit.id === field.value)}
+                    onChange={(value) => field.onChange(value?.id)}
+                >
+                    {(option: TimeUnitOption) => (
+                        <ListItem id={option.id} label={option.label} />
+                    )}
+                </SelectField>
             )}
         </FormField>
     )

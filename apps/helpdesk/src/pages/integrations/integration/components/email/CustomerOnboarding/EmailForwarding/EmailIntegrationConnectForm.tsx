@@ -60,43 +60,53 @@ export default function EmailIntegrationConnectForm(props: Props) {
                 >
                     <FormRow>
                         <FormField
-                            field={InputField}
                             name="meta.address"
+                            isRequired
                             label="Email"
                             caption="Please add a work email. We don't recommend using a personal email address (@gmail.com, @outlook.com)."
-                            isRequired
-                            placeholder="support@yourcompany.com"
                             isDisabled={!!integration}
-                            outputTransform={(value) => {
-                                props.handleEmailChange(value)
-                                return value
-                            }}
                             validation={{
                                 validate: (value: string) =>
                                     isEmail(value) ||
                                     'Email format must include @ and a domain, e.g. example@domain.com',
                             }}
-                        />
+                        >
+                            {(field) => (
+                                <InputField
+                                    {...field}
+                                    placeholder="support@yourcompany.com"
+                                    onChange={(value) => {
+                                        props.handleEmailChange(value)
+                                        field.onChange(value)
+                                    }}
+                                />
+                            )}
+                        </FormField>
                     </FormRow>
                     <FormRow>
                         <FormField
-                            field={InputField}
                             name="name"
+                            isRequired
                             label="Email display name"
                             caption="The display name will appear in emails sent to customers. It must not include @, ;, <, >, [ ]."
-                            placeholder="Your Company Support"
-                            isRequired
-                            outputTransform={(value) => {
-                                props.handleDisplayChange(value)
-                                return value
-                            }}
                             validation={{
                                 validate: (value: string) =>
                                     (!!value &&
                                         /^[^@,;<>\[\]]*$/g.test(value)) ||
                                     'The name that customers will see when they receive emails from you. Cannot contain these characters: @,;<>[]',
                             }}
-                        />
+                        >
+                            {(field) => (
+                                <InputField
+                                    {...field}
+                                    placeholder="Your Company Support"
+                                    onChange={(value) => {
+                                        props.handleDisplayChange(value)
+                                        field.onChange(value)
+                                    }}
+                                />
+                            )}
+                        </FormField>
                     </FormRow>
                 </FormSection>
                 <div className={css.divider} />

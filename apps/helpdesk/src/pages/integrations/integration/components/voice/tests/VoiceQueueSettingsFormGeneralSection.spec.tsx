@@ -1,19 +1,36 @@
-import { Form } from '@repo/forms'
-import * as forms from '@repo/forms'
-import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { Form, FormSubmitButton } from '@repo/forms'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import VoiceQueueSettingsFormGeneralSection from '../VoiceQueueSettingsFormGeneralSection'
 
-const formFieldSpy = jest.spyOn(forms, 'FormField')
-
 describe('VoiceQueueSettingsFormGeneralSection', () => {
-    const renderComponent = () =>
+    const renderComponent = ({
+        defaultValues = {},
+        onValidSubmit = jest.fn(),
+    }: {
+        defaultValues?: Record<string, unknown>
+        onValidSubmit?: jest.Mock
+    } = {}) => {
+        const user = userEvent.setup()
+
         render(
-            <Form onValidSubmit={jest.fn()}>
+            <Form
+                defaultValues={{
+                    name: 'My Queue',
+                    capacity: 100,
+                    priority_weight: 100,
+                    ...defaultValues,
+                }}
+                onValidSubmit={onValidSubmit}
+            >
                 <VoiceQueueSettingsFormGeneralSection />
+                <FormSubmitButton>Submit</FormSubmitButton>
             </Form>,
         )
+
+        return { user, onValidSubmit }
+    }
 
     it('should render the general section content', () => {
         renderComponent()
@@ -24,36 +41,81 @@ describe('VoiceQueueSettingsFormGeneralSection', () => {
     })
 
     describe('Queue capacity field', () => {
-        it('should transform output correctly', () => {
-            renderComponent()
+        it('should submit a numeric capacity when a value is entered', async () => {
+            const { user, onValidSubmit } = renderComponent()
 
-            const queueCapacityField = getFormFieldCallByName('capacity')
+            const capacityInput = screen.getByLabelText('Queue capacity')
+            await user.clear(capacityInput)
+            await user.type(capacityInput, '150')
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
 
-            expect(queueCapacityField?.[0]?.outputTransform?.('')).toBe(null)
-            expect(queueCapacityField?.[0]?.outputTransform?.('100')).toBe(100)
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ capacity: 150 }),
+                    expect.anything(),
+                )
+            })
+        })
+
+        it('should submit null capacity when the value is cleared', async () => {
+            const { user, onValidSubmit } = renderComponent()
+
+            const capacityInput = screen.getByLabelText('Queue capacity')
+            await user.clear(capacityInput)
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ capacity: null }),
+                    expect.anything(),
+                )
+            })
         })
     })
 
     describe('Priority weight field', () => {
-        it('should transform input correctly', () => {
-            renderComponent()
+        it('should render the priority toggle as off when priority_weight is the max value', () => {
+            renderComponent({ defaultValues: { priority_weight: 100 } })
 
-            const priorityWeightField =
-                getFormFieldCallByName('priority_weight')
-            expect(priorityWeightField?.[0]?.inputTransform?.(100)).toBe(false)
-            expect(priorityWeightField?.[0]?.inputTransform?.(1)).toBe(true)
+            expect(screen.getByRole('switch')).not.toBeChecked()
         })
 
-        it('should transform output correctly', () => {
-            renderComponent()
+        it('should render the priority toggle as on when priority_weight is not the max value', () => {
+            renderComponent({ defaultValues: { priority_weight: 1 } })
 
-            const priorityWeightField =
-                getFormFieldCallByName('priority_weight')
-            expect(priorityWeightField?.[0]?.outputTransform?.(true)).toBe(1)
-            expect(priorityWeightField?.[0]?.outputTransform?.(false)).toBe(100)
+            expect(screen.getByRole('switch')).toBeChecked()
+        })
+
+        it('should submit the min priority weight when the toggle is turned on', async () => {
+            const { user, onValidSubmit } = renderComponent({
+                defaultValues: { priority_weight: 100 },
+            })
+
+            await user.click(screen.getByRole('switch'))
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ priority_weight: 1 }),
+                    expect.anything(),
+                )
+            })
+        })
+
+        it('should submit the max priority weight when the toggle is turned off', async () => {
+            const { user, onValidSubmit } = renderComponent({
+                defaultValues: { priority_weight: 1 },
+            })
+
+            await user.click(screen.getByRole('switch'))
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() => {
+                expect(onValidSubmit).toHaveBeenCalledWith(
+                    expect.objectContaining({ priority_weight: 100 }),
+                    expect.anything(),
+                )
+            })
         })
     })
 })
-
-const getFormFieldCallByName = (name: string) =>
-    formFieldSpy.mock.calls.find((call) => call[0].name === name)

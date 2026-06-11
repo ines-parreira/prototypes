@@ -62,43 +62,54 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                     <div className={css.container}>
                         <div>
                             <Label className={css.label}>Ring to</Label>
-                            <FormField
-                                name="linked_targets"
-                                inputTransform={(value) =>
-                                    value?.length ? value[0].team_id : null
-                                }
-                                outputTransform={(value) =>
-                                    value === null
-                                        ? []
-                                        : [
-                                              {
-                                                  team_id: Number(value),
-                                                  user_id: null,
-                                              },
-                                          ]
-                                }
-                                field={VoiceIntegrationPreferencesTeamSelect}
-                            />
+                            <FormField name="linked_targets">
+                                {(field) => (
+                                    <VoiceIntegrationPreferencesTeamSelect
+                                        {...field}
+                                        value={
+                                            field.value?.length
+                                                ? field.value[0].team_id
+                                                : null
+                                        }
+                                        onChange={(value) =>
+                                            field.onChange(
+                                                value === null
+                                                    ? []
+                                                    : [
+                                                          {
+                                                              team_id:
+                                                                  Number(value),
+                                                              user_id: null,
+                                                          },
+                                                      ],
+                                            )
+                                        }
+                                    />
+                                )}
+                            </FormField>
                         </div>
 
-                        <FormField
-                            field={RadioButtonField}
-                            name="distribution_mode"
-                            options={[
-                                {
-                                    label: 'Round-robin ringing',
-                                    value: PhoneRingingBehaviour.RoundRobin,
-                                    caption:
-                                        'Calls ring agents one by one, starting with the longest idle.',
-                                },
-                                {
-                                    label: 'Broadcast ringing',
-                                    value: PhoneRingingBehaviour.Broadcast,
-                                    caption:
-                                        'Calls ring all available agents simultaneously. ',
-                                },
-                            ]}
-                        />
+                        <FormField name="distribution_mode">
+                            {(field) => (
+                                <RadioButtonField
+                                    {...field}
+                                    options={[
+                                        {
+                                            label: 'Round-robin ringing',
+                                            value: PhoneRingingBehaviour.RoundRobin,
+                                            caption:
+                                                'Calls ring agents one by one, starting with the longest idle.',
+                                        },
+                                        {
+                                            label: 'Broadcast ringing',
+                                            value: PhoneRingingBehaviour.Broadcast,
+                                            caption:
+                                                'Calls ring all available agents simultaneously. ',
+                                        },
+                                    ]}
+                                />
+                            )}
+                        </FormField>
                         <div>
                             <Label htmlFor="ring_time">
                                 <>
@@ -107,42 +118,63 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 </>
                             </Label>
                             <FormField
-                                field={TextField}
                                 name="ring_time"
-                                caption="Set a time between 10 and 600 seconds (10 minutes)."
                                 label=""
-                                suffix={
-                                    <Button intent="secondary">seconds</Button>
-                                }
-                                type="number"
-                                min={RING_TIME_MIN_VALUE}
-                                max={RING_TIME_MAX_VALUE}
-                                outputTransform={(value) =>
-                                    value === '' ? value : Number(value)
-                                }
-                            />
+                                caption="Set a time between 10 and 600 seconds (10 minutes)."
+                            >
+                                {(field) => (
+                                    <TextField
+                                        {...field}
+                                        suffix={
+                                            <Button intent="secondary">
+                                                seconds
+                                            </Button>
+                                        }
+                                        type="number"
+                                        min={RING_TIME_MIN_VALUE}
+                                        max={RING_TIME_MAX_VALUE}
+                                        onChange={(value) =>
+                                            field.onChange(
+                                                value === ''
+                                                    ? value
+                                                    : Number(value),
+                                            )
+                                        }
+                                    />
+                                )}
+                            </FormField>
                         </div>
                         <div className={css.wrapUpFields}>
                             <FormField
-                                field={ToggleField}
                                 name="is_wrap_up_time_enabled"
                                 label="Enable wrap-up time"
                                 caption="Wrap-up time gives agents a short period to finish their tasks before receiving their next incoming call. Applies only to calls longer than 20 seconds."
-                            />
+                            >
+                                {(field) => <ToggleField {...field} />}
+                            </FormField>
                             {is_wrap_up_time_enabled && (
                                 <FormField
-                                    field={TextField}
                                     name="wrap_up_time"
                                     label="Wrap-up time"
-                                    type="number"
                                     isDisabled={!is_wrap_up_time_enabled}
                                     caption="Set a time between 10 and 600 seconds (10 minutes)."
-                                    min={WRAP_UP_TIME_MIN_VALUE}
-                                    max={WRAP_UP_TIME_MAX_VALUE}
-                                    outputTransform={(value) =>
-                                        value === '' ? null : Number(value)
-                                    }
-                                />
+                                >
+                                    {(field) => (
+                                        <TextField
+                                            {...field}
+                                            type="number"
+                                            min={WRAP_UP_TIME_MIN_VALUE}
+                                            max={WRAP_UP_TIME_MAX_VALUE}
+                                            onChange={(value) =>
+                                                field.onChange(
+                                                    value === ''
+                                                        ? null
+                                                        : Number(value),
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </FormField>
                             )}
                         </div>
                         {!!ring_time &&
@@ -174,17 +206,26 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 <HintTooltip title="The maximum time in seconds we wait before sending the call to the next step in your routing." />
                             </Label>
                             <FormField
-                                field={TextField}
                                 name="wait_time"
                                 label=""
-                                type="number"
-                                min={WAIT_TIME_MIN_VALUE}
-                                max={WAIT_TIME_MAX_VALUE}
-                                outputTransform={(value) =>
-                                    value === '' ? value : Number(value)
-                                }
                                 caption="Set a time between 10 and 7200 seconds (2 hour)."
-                            />
+                            >
+                                {(field) => (
+                                    <TextField
+                                        {...field}
+                                        type="number"
+                                        min={WAIT_TIME_MIN_VALUE}
+                                        max={WAIT_TIME_MAX_VALUE}
+                                        onChange={(value) =>
+                                            field.onChange(
+                                                value === ''
+                                                    ? value
+                                                    : Number(value),
+                                            )
+                                        }
+                                    />
+                                )}
+                            </FormField>
                         </div>
                         <div>
                             <Label htmlFor="wait_music">
@@ -194,11 +235,11 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 The music callers will hear while they are
                                 waiting or on hold.
                             </p>
-                            <FormField
-                                field={WaitMusicField}
-                                name="wait_music"
-                                shouldUpload
-                            />
+                            <FormField name="wait_music">
+                                {(field) => (
+                                    <WaitMusicField {...field} shouldUpload />
+                                )}
+                            </FormField>
                         </div>
                     </div>
                 </VoiceSettingAccordionItem>

@@ -1,14 +1,13 @@
-import { FormField, FormSubmitButton } from '@repo/forms'
+import { Form, FormField } from '@repo/forms'
 import { assumeMock, render } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
-import { fireEvent, screen } from '@testing-library/react'
-import { useFormContext } from 'react-hook-form'
-import { BrowserRouter } from 'react-router-dom'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
 import { integrationsState } from 'fixtures/integrations'
-import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import type { PhoneIntegration } from 'models/integration/types'
 import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
@@ -19,7 +18,6 @@ import {
 import VoiceIntegrationSettingsForm from '../VoiceIntegrationSettingsForm'
 
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useAppSelector')
 
 jest.mock('state/notifications/actions')
 
@@ -30,39 +28,20 @@ const phoneIntegration = integrationsState.integrations.find(
 jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
 jest.mock('../useVoiceSettingsForm')
 
-const useAppSelectorMock = assumeMock(useAppSelector)
 const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 const useFormSubmitMock = assumeMock(useFormSubmit)
-
-jest.mock('react-hook-form')
-
-const useFormContextMock = assumeMock(useFormContext)
-
 const useDeleteVoiceIntegrationMock = assumeMock(useDeletePhoneIntegration)
 
-jest.mock('@repo/forms')
-const FormSubmitButtonMock = assumeMock(FormSubmitButton)
-const FormFieldMock = assumeMock(FormField)
-
-// eslint-disable-next-line no-unused-vars
-const mockUnsavedChangesPrompt = jest.fn((_args: any) => (
-    <div>UnsavedChangesPrompt</div>
-))
-
-// Mock the module
-jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
-    const { forwardRef } = jest.requireActual('react')
-
-    return {
-        __esModule: true,
-        default: forwardRef((props: any) =>
-            mockUnsavedChangesPrompt(props as any),
-        ),
-    }
-})
-
-jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
-    <button type="submit">{children}</button>
+jest.mock('../VoiceIntegrationSettingsFormGeneralSection', () => () => (
+    <FormField name="name" isRequired>
+        {(field) => (
+            <input
+                aria-label="Integration name"
+                value={field.value ?? ''}
+                onChange={(event) => field.onChange(event.target.value)}
+            />
+        )}
+    </FormField>
 ))
 jest.mock('../VoiceIntegrationSettingCallRecording', () => () => (
     <div>VoiceIntegrationSettingCallRecording</div>
@@ -73,6 +52,11 @@ jest.mock('../VoiceIntegrationSettingCallTranscription', () => () => (
 jest.mock('../VoiceIntegrationSettingSpamPrevention', () => () => (
     <div>VoiceIntegrationSettingSpamPrevention</div>
 ))
+jest.mock(
+    './../VoiceMessageTTS/TextToSpeechProvider',
+    () =>
+        ({ children }: { children: React.ReactNode }) => <>{children}</>,
+)
 jest.mock('@gorgias/realtime')
 
 describe('<VoiceIntegrationSettingsForm />', () => {
@@ -85,16 +69,6 @@ describe('<VoiceIntegrationSettingsForm />', () => {
             },
         },
     }
-    const methodsMock = {
-        register: jest.fn(),
-        handleSubmit: jest.fn(),
-        setValue: jest.fn(),
-        formState: {
-            isDirty: false,
-            isValid: true,
-        },
-        watch: jest.fn(),
-    } as unknown as ReturnType<typeof useFormContext>
 
     const useDeleteVoiceIntegrationReturnValue = {
         isDeleting: false,
@@ -103,28 +77,28 @@ describe('<VoiceIntegrationSettingsForm />', () => {
 
     const onSubmit = jest.fn()
 
-    const renderComponent = (props: any = {}): RenderResult =>
+    const renderComponent = (componentProps: {
+        integration: PhoneIntegration
+    }): RenderResult =>
         render(
-            <BrowserRouter>
-                <VoiceIntegrationSettingsForm {...props} />
-            </BrowserRouter>,
+            <Form
+                defaultValues={{ name: componentProps.integration.name }}
+                onValidSubmit={jest.fn()}
+            >
+                <VoiceIntegrationSettingsForm {...componentProps} />
+            </Form>,
         )
 
     beforeEach(() => {
-        FormFieldMock.mockReturnValue(<div>FormField</div>)
-        useAppSelectorMock.mockReturnValue({})
         usePhoneNumbersMock.mockReturnValue({
             phoneNumbers: {},
             getPhoneNumberById: jest.fn(),
             getCountryFromPhoneNumberId: jest.fn(() => 'US'),
         })
-        useFormContextMock.mockReturnValue(methodsMock)
         useDeleteVoiceIntegrationMock.mockReturnValue(
             useDeleteVoiceIntegrationReturnValue,
         )
         useFormSubmitMock.mockReturnValue({ onSubmit })
-
-        FormSubmitButtonMock.mockReturnValue(<div>FormSubmitButton</div>)
     })
 
     it('should render the new settings card layout', () => {
@@ -199,54 +173,36 @@ describe('<VoiceIntegrationSettingsForm />', () => {
     })
 
     describe('handle rendering', () => {
-        it('should display delete warning message and it should not contain text about "saved filters"', () => {
-            const { getByText, getByRole } = renderComponent(props)
+        it('should display delete warning message and it should not contain text about "saved filters"', async () => {
+            const user = userEvent.setup()
+            renderComponent(props)
 
-            fireEvent.click(
-                getByRole('button', { name: /Delete integration/i }),
+            await user.click(
+                screen.getByRole('button', { name: /Delete integration/i }),
             )
 
             expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
+                screen.getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
 
-        it('should pass correct props to Integration name field', () => {
-            // @ts-ignore
-            methodsMock.watch = jest.fn(() => 'emoji')
+        it('should render the integration name field with its current value', () => {
             renderComponent(props)
 
-            expect(FormFieldMock).toHaveBeenNthCalledWith(
-                1,
-                expect.objectContaining({
-                    name: 'name',
-                    emoji: 'emoji',
-                    field: expect.any(Function),
-                    placeholder: 'Ex: Company Support Line',
-                    isRequired: true,
-                }),
-                {},
+            expect(screen.getByLabelText('Integration name')).toHaveValue(
+                props.integration.name,
             )
         })
 
-        it('should not display UnsavedChangesPrompt when form is not dirty', () => {
-            methodsMock.formState.isDirty = false
-
+        it('should keep the edited value after typing into the name field', async () => {
+            const user = userEvent.setup()
             renderComponent(props)
 
-            expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
-                expect.objectContaining({ when: false }),
-            )
-        })
+            const nameInput = screen.getByLabelText('Integration name')
+            await user.clear(nameInput)
+            await user.type(nameInput, 'Updated name')
 
-        it('should display UnsavedChangesPrompt when form is dirty', () => {
-            methodsMock.formState.isDirty = true
-
-            renderComponent(props)
-
-            expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
-                expect.objectContaining({ when: true }),
-            )
+            expect(nameInput).toHaveValue('Updated name')
         })
     })
 })

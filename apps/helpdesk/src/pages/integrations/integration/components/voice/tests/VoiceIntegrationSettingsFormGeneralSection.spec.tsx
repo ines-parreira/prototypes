@@ -1,46 +1,78 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { Form } from '@repo/forms'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
-
-import useAppSelector from 'hooks/useAppSelector'
 
 import VoiceIntegrationSettingsFormGeneralSection from '../VoiceIntegrationSettingsFormGeneralSection'
 
 jest.mock('@repo/feature-flags')
 
-const mockFormFieldProps: Record<string, any> = {}
+jest.mock('pages/phoneNumbers/PhoneNumberSelectField', () => ({
+    __esModule: true,
+    default: ({
+        value,
+        onChange,
+    }: {
+        value: { id: number } | null
+        onChange: (value: { id: number } | null) => void
+    }) => (
+        <div>
+            <span>Phone number select{value ? `: ${value.id}` : ''}</span>
+            <button type="button" onClick={() => onChange({ id: 2 })}>
+                Change phone number
+            </button>
+        </div>
+    ),
+}))
 
-jest.mock('react-hook-form', () => ({
-    useFormContext: () => ({
-        setValue: jest.fn(),
-        watch: jest.fn(() => 'test-emoji'),
-    }),
+jest.mock('pages/settings/businessHours/BusinessHoursSelectField', () => ({
+    __esModule: true,
+    default: () => <div>Business hours select</div>,
 }))
-jest.mock('@repo/forms', () => ({
-    FormField: ({ field: Component, name, ...props }: any) => {
-        mockFormFieldProps[name] = { field: Component, name, ...props }
-        if (name === 'business_hours_id') {
-            return <div data-testid="business-hours-select">Business Hours</div>
-        }
-        if (name === 'meta.phone_number_id') {
-            return (
-                <div data-testid="phone-number-select">Phone Number Select</div>
-            )
-        }
-        return <Component {...props} />
-    },
+
+jest.mock('pages/common/forms/EmojiTextInput/EmojiTextInput', () => ({
+    __esModule: true,
+    default: ({
+        emoji,
+        value,
+        placeholder,
+        onChange,
+        onEmojiChange,
+    }: {
+        emoji: string | null
+        value: string
+        placeholder: string
+        onChange: (value: string) => void
+        onEmojiChange: (emoji: string | null) => void
+    }) => (
+        <div>
+            <span>Selected emoji: {emoji}</span>
+            <input
+                placeholder={placeholder}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+            />
+            <button type="button" onClick={() => onEmojiChange('🎉')}>
+                Change emoji
+            </button>
+        </div>
+    ),
 }))
-jest.mock('hooks/useAppSelector')
 
 const useFlagMock = assumeMock(useFlag)
-const useAppSelectorMock = assumeMock(useAppSelector)
 
 const mockPhoneNumber = {
     id: 1,
     phone_number_friendly: '+1 (555) 123-4567',
+}
+
+const mockOtherPhoneNumber = {
+    id: 2,
+    phone_number_friendly: '+1 (555) 987-6543',
 }
 
 const phoneIntegration: PhoneIntegration = {
@@ -53,11 +85,36 @@ const phoneIntegration: PhoneIntegration = {
     },
 } as PhoneIntegration
 
-describe('VoiceIntegrationSettingsFormGeneralSection', () => {
-    beforeEach(() => {
-        useAppSelectorMock.mockReturnValue(mockPhoneNumber)
-    })
+const renderComponent = () =>
+    render(
+        <Form
+            defaultValues={{
+                name: phoneIntegration.name,
+                business_hours_id: phoneIntegration.business_hours_id,
+                meta: {
+                    emoji: '🤠',
+                    phone_number_id: phoneIntegration.meta.phone_number_id,
+                },
+            }}
+            onValidSubmit={jest.fn()}
+        >
+            <VoiceIntegrationSettingsFormGeneralSection
+                integration={phoneIntegration}
+            />
+        </Form>,
+        {
+            storeState: {
+                entities: {
+                    newPhoneNumbers: {
+                        1: mockPhoneNumber,
+                        2: mockOtherPhoneNumber,
+                    },
+                },
+            },
+        },
+    )
 
+describe('VoiceIntegrationSettingsFormGeneralSection', () => {
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -68,18 +125,14 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        render(
-            <VoiceIntegrationSettingsFormGeneralSection
-                integration={phoneIntegration}
-            />,
-        )
+        renderComponent()
 
         expect(screen.getByText('Integration name')).toBeInTheDocument()
         expect(screen.getByText('Phone number')).toBeInTheDocument()
         expect(screen.getByText('Manage Phone Number')).toBeInTheDocument()
 
         expect(
-            screen.queryByTestId('business-hours-select'),
+            screen.queryByText('Business hours select'),
         ).not.toBeInTheDocument()
     })
 
@@ -89,65 +142,66 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
             return false
         })
 
-        render(
-            <VoiceIntegrationSettingsFormGeneralSection
-                integration={phoneIntegration}
-            />,
-        )
+        renderComponent()
 
         expect(screen.getByText('Integration name')).toBeInTheDocument()
         expect(screen.getByText('Phone number')).toBeInTheDocument()
         expect(screen.getByText('Manage Phone Number')).toBeInTheDocument()
 
-        expect(screen.getByTestId('business-hours-select')).toBeInTheDocument()
+        expect(screen.getByText('Business hours select')).toBeInTheDocument()
     })
 
-    it('should render editable phone number select field', () => {
-        render(
-            <VoiceIntegrationSettingsFormGeneralSection
-                integration={phoneIntegration}
-            />,
-        )
+    it('should render an editable integration name input with the current value', () => {
+        useFlagMock.mockReturnValue(false)
 
-        expect(screen.getByTestId('phone-number-select')).toBeInTheDocument()
+        renderComponent()
+
+        expect(
+            screen.getByPlaceholderText('Ex: Company Support Line'),
+        ).toHaveValue(phoneIntegration.name)
     })
 
-    it('should pass correct inputTransform and outputTransform to phone number field', () => {
-        const mockPhoneNumbers = {
-            1: mockPhoneNumber,
-            2: { id: 2, phone_number_friendly: '+1 (555) 987-6543' },
-        }
+    it('should resolve the selected phone number from the store', () => {
+        useFlagMock.mockReturnValue(false)
 
-        let callCount = 0
-        useAppSelectorMock.mockImplementation(() => {
-            callCount++
-            if (callCount === 1) {
-                return mockPhoneNumber
-            }
-            return mockPhoneNumbers
-        })
+        renderComponent()
 
-        render(
-            <VoiceIntegrationSettingsFormGeneralSection
-                integration={phoneIntegration}
-            />,
+        expect(
+            screen.getByText(`Phone number select: ${mockPhoneNumber.id}`),
+        ).toBeInTheDocument()
+    })
+
+    it('should update the integration emoji when changed', async () => {
+        const user = userEvent.setup()
+        useFlagMock.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(screen.getByText('Selected emoji: 🤠')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /change emoji/i }))
+
+        expect(
+            await screen.findByText('Selected emoji: 🎉'),
+        ).toBeInTheDocument()
+    })
+
+    it('should resolve the newly selected phone number on change', async () => {
+        const user = userEvent.setup()
+        useFlagMock.mockReturnValue(false)
+
+        renderComponent()
+
+        expect(
+            screen.getByText(`Phone number select: ${mockPhoneNumber.id}`),
+        ).toBeInTheDocument()
+
+        await user.click(
+            screen.getByRole('button', { name: /change phone number/i }),
         )
 
-        const phoneNumberFieldProps = mockFormFieldProps['meta.phone_number_id']
-        expect(phoneNumberFieldProps).toBeDefined()
-        expect(phoneNumberFieldProps.inputTransform).toBeDefined()
-        expect(phoneNumberFieldProps.outputTransform).toBeDefined()
-
-        expect(phoneNumberFieldProps.inputTransform(1)).toEqual(mockPhoneNumber)
-        expect(phoneNumberFieldProps.inputTransform(2)).toEqual(
-            mockPhoneNumbers[2],
-        )
-        expect(phoneNumberFieldProps.inputTransform(null)).toBeNull()
-
-        expect(phoneNumberFieldProps.outputTransform(mockPhoneNumber)).toBe(1)
-        expect(phoneNumberFieldProps.outputTransform(mockPhoneNumbers[2])).toBe(
-            2,
-        )
-        expect(phoneNumberFieldProps.outputTransform(null)).toBeUndefined()
+        expect(
+            screen.getByText(`Phone number select: ${mockOtherPhoneNumber.id}`),
+        ).toBeInTheDocument()
     })
 })

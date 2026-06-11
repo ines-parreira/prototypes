@@ -75,13 +75,14 @@ export function ButtonActionDialog(props: Props) {
             <OverlayContent>
                 <FormProvider {...methods}>
                     <Box flexDirection="column" gap="lg" width="100%">
-                        <FormField
-                            name="label"
-                            field={TextField}
-                            label="Button title"
-                            placeholder="Button label"
-                            isRequired
-                        />
+                        <FormField name="label" isRequired label="Button title">
+                            {(field) => (
+                                <TextField
+                                    {...field}
+                                    placeholder="Button label"
+                                />
+                            )}
+                        </FormField>
 
                         <Box
                             flexDirection="row"
@@ -92,15 +93,20 @@ export function ButtonActionDialog(props: Props) {
                             <Box flex={1}>
                                 <FormField
                                     name="action.url"
-                                    field={TextField}
                                     label="URL"
-                                    placeholder="https://api.example.com/endpoint"
                                     validation={{
                                         validate: (value: string) =>
                                             isValidActionUrl(value) ||
                                             'Enter a valid URL',
                                     }}
-                                />
+                                >
+                                    {(field) => (
+                                        <TextField
+                                            {...field}
+                                            placeholder="https://api.example.com/endpoint"
+                                        />
+                                    )}
+                                </FormField>
                             </Box>
                         </Box>
 

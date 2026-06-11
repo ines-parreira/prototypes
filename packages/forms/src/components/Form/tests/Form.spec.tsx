@@ -6,6 +6,7 @@ import _set from 'lodash/set'
 import { vi } from 'vitest'
 
 import type { FormErrors } from '../../../utils/validation'
+import type { FormFieldRenderProps } from '../../FormField/FormField'
 import { FormField } from '../../FormField/FormField'
 import { FormSubmitButton } from '../../FormSubmitButton/FormSubmitButton'
 import { Form } from '../Form'
@@ -19,11 +20,8 @@ const MockInputField = ({
     onChange,
     error,
     isRequired,
-}: {
+}: Partial<FormFieldRenderProps> & {
     label?: string
-    value?: string
-    onChange?: (value: string) => void
-    error?: string
     isRequired?: boolean
 }) => (
     <div>
@@ -42,6 +40,21 @@ const MockInputField = ({
     </div>
 )
 
+type MockFieldProps = {
+    name: string
+    label?: string
+    isRequired?: boolean
+    validation?: React.ComponentProps<typeof FormField>['validation']
+}
+
+const MockField = ({ name, label, isRequired, validation }: MockFieldProps) => (
+    <FormField name={name} isRequired={isRequired} validation={validation}>
+        {(field) => (
+            <MockInputField {...field} label={label} isRequired={isRequired} />
+        )}
+    </FormField>
+)
+
 describe('<Form />', () => {
     beforeEach(() => {
         vi.clearAllMocks()
@@ -51,16 +64,8 @@ describe('<Form />', () => {
         it('renders the field components', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="address"
-                        label="Address"
-                    />
+                    <MockField name="name" label="Name" />
+                    <MockField name="address" label="Address" />
                 </Form>,
             )
 
@@ -73,11 +78,7 @@ describe('<Form />', () => {
         it('allows passing default (initial) values', async () => {
             render(
                 <Form defaultValues={{ name: 'John' }} onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
+                    <MockField name="name" label="Name" />
                 </Form>,
             )
 
@@ -94,11 +95,7 @@ describe('<Form />', () => {
         it('updates values when fields change', async () => {
             render(
                 <Form defaultValues={{ name: 'John' }} onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
+                    <MockField name="name" label="Name" />
                 </Form>,
             )
 
@@ -118,16 +115,8 @@ describe('<Form />', () => {
         it('allows using dot notation for field names', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="address.street"
-                        label="Street"
-                    />
+                    <MockField name="name" label="Name" />
+                    <MockField name="address.street" label="Street" />
                 </Form>,
             )
 
@@ -153,21 +142,9 @@ describe('<Form />', () => {
         it('allows using dot notation as array indexes for field names', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="items.0.name"
-                        label="First item"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="items.1.name"
-                        label="Second item"
-                    />
+                    <MockField name="name" label="Name" />
+                    <MockField name="items.0.name" label="First item" />
+                    <MockField name="items.1.name" label="Second item" />
                 </Form>,
             )
 
@@ -198,12 +175,7 @@ describe('<Form />', () => {
         it('validates required fields', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                        isRequired
-                    />
+                    <MockField name="name" label="Name" isRequired />
                 </Form>,
             )
 
@@ -221,8 +193,7 @@ describe('<Form />', () => {
         it('allows customizing required field error message', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
+                    <MockField
                         name="name"
                         label="Name"
                         isRequired
@@ -242,8 +213,7 @@ describe('<Form />', () => {
         it('allows using custom per-field validation', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
+                    <MockField
                         name="name"
                         label="Name"
                         validation={{
@@ -285,11 +255,7 @@ describe('<Form />', () => {
                     errors={{ username: 'Username is already in use' }}
                     onValidSubmit={onSubmit}
                 >
-                    <FormField
-                        field={MockInputField}
-                        name="username"
-                        label="Username"
-                    />
+                    <MockField name="username" label="Username" />
                 </Form>,
             )
 
@@ -320,11 +286,7 @@ describe('<Form />', () => {
                     }}
                     onValidSubmit={onSubmit}
                 >
-                    <FormField
-                        field={MockInputField}
-                        name="username"
-                        label="Username"
-                    />
+                    <MockField name="username" label="Username" />
                 </Form>,
             )
 
@@ -391,26 +353,10 @@ describe('<Form />', () => {
 
             render(
                 <Form<Values> onValidSubmit={onSubmit} validator={validate}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="address.street"
-                        label="Street"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="items.0.name"
-                        label="First item"
-                    />
-                    <FormField
-                        field={MockInputField}
-                        name="items.1.name"
-                        label="Second item"
-                    />
+                    <MockField name="name" label="Name" />
+                    <MockField name="address.street" label="Street" />
+                    <MockField name="items.0.name" label="First item" />
+                    <MockField name="items.1.name" label="Second item" />
                 </Form>,
             )
 
@@ -436,11 +382,7 @@ describe('<Form />', () => {
         it('allows using a form submit button', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
+                    <MockField name="name" label="Name" />
                     <button type="submit">Save Changes</button>
                 </Form>,
             )
@@ -451,11 +393,7 @@ describe('<Form />', () => {
         it('tracks dirty state disabling it while unchanged', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
+                    <MockField name="name" label="Name" />
                     <FormSubmitButton />
                 </Form>,
             )
@@ -473,11 +411,7 @@ describe('<Form />', () => {
         it('tracks dirty state correctly based on default values', async () => {
             render(
                 <Form onValidSubmit={onSubmit} defaultValues={{ name: 'test' }}>
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
+                    <MockField name="name" label="Name" />
                     <FormSubmitButton />
                 </Form>,
             )
@@ -511,11 +445,7 @@ describe('<Form />', () => {
                     onValidSubmit={onSubmit}
                     defaultValues={{ name: 'initial' }}
                 >
-                    <FormField
-                        field={MockInputField}
-                        name="name"
-                        label="Name"
-                    />
+                    <MockField name="name" label="Name" />
                     <FormSubmitButton />
                 </Form>,
             )

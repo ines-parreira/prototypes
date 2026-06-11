@@ -56,23 +56,26 @@ export function SendToVoicemailNode(props: NodeProps<SendToVoicemailNode>) {
                 Once the caller leaves a voicemail, the call ends.
             </Banner>
             <div>
-                <FormField
-                    name={`steps.${id}.voicemail`}
-                    field={VoiceMessageField}
-                    customRecordingType={
-                        CustomRecordingType.VoicemailNotification
-                    }
-                    label="Message type"
-                />
+                <FormField name={`steps.${id}.voicemail`} label="Message type">
+                    {(field) => (
+                        <VoiceMessageField
+                            {...field}
+                            customRecordingType={
+                                CustomRecordingType.VoicemailNotification
+                            }
+                        />
+                    )}
+                </FormField>
             </div>
             <FormField
                 name={`steps.${id}.allow_to_leave_voicemail`}
-                field={CheckBoxField}
                 label="Allow caller to leave a voicemail"
                 caption={
                     'When selected, callers will hear the voicemail greeting and can leave a message.'
                 }
-            />
+            >
+                {(field) => <CheckBoxField {...field} />}
+            </FormField>
         </VoiceStepNode>
     )
 }

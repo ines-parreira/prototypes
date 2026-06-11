@@ -59,12 +59,14 @@ export function InformationForm({
                         <Label isRequired>Store admin URL</Label>
                         <InputGroup>
                             <GroupAddon>{`https://${storeURL}/`}</GroupAddon>
-                            <FormField
-                                name="adminURLSuffix"
-                                field={TextInput}
-                                placeholder="ex: admin_45f1c"
-                                isRequired
-                            />
+                            <FormField name="adminURLSuffix" isRequired>
+                                {(field) => (
+                                    <TextInput
+                                        {...field}
+                                        placeholder="ex: admin_45f1c"
+                                    />
+                                )}
+                            </FormField>
                         </InputGroup>
                     </div>
                 </div>

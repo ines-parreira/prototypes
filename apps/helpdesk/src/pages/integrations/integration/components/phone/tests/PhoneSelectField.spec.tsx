@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { UserSearchResult } from 'models/search/types'
 
@@ -74,6 +75,11 @@ describe('PhoneSelectField', () => {
             expect(screen.getByText('Phone Number')).toBeInTheDocument()
         })
 
+        it('should not render a label when none is provided', () => {
+            const { container } = renderComponent({ label: undefined })
+            expect(container.querySelector('label')).not.toBeInTheDocument()
+        })
+
         it('should pass initial value to the hook', () => {
             renderComponent({ value: '+15551234567' })
             expect(mockUsePhoneDeviceDialerInput).toHaveBeenCalledWith(
@@ -83,6 +89,41 @@ describe('PhoneSelectField', () => {
                     initialValue: '+15551234567',
                 }),
             )
+        })
+    })
+
+    describe('Selected customer', () => {
+        it('renders the selected customer name and clears the input', async () => {
+            const user = userEvent.setup()
+            mockUsePhoneDeviceDialerInput.mockReturnValue({
+                ...defaultHookReturn,
+                isSearchTypeCustomer: true,
+                selectedCustomer: mockCustomers[0],
+            })
+
+            renderComponent()
+
+            expect(screen.getByDisplayValue('John Doe')).toBeInTheDocument()
+
+            await user.click(screen.getByRole('button'))
+
+            expect(mockHandleChange).toHaveBeenCalledWith('')
+        })
+
+        it('falls back to the customer address when there is no name', () => {
+            const customerWithoutName = {
+                ...mockCustomers[0],
+                customer: { ...mockCustomers[0].customer, name: '' },
+            } as unknown as UserSearchResult
+            mockUsePhoneDeviceDialerInput.mockReturnValue({
+                ...defaultHookReturn,
+                isSearchTypeCustomer: true,
+                selectedCustomer: customerWithoutName,
+            })
+
+            renderComponent()
+
+            expect(screen.getByDisplayValue('+15551234567')).toBeInTheDocument()
         })
     })
 
