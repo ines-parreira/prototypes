@@ -17,6 +17,13 @@ const STATIC_CONTENT = {
     [JOURNEY_TYPES.WIN_BACK]: 'Shopper inactive',
 }
 
+const DELAY_TOOLTIP: Partial<Record<JOURNEY_TYPES, string>> = {
+    [JOURNEY_TYPES.CART_ABANDONMENT]:
+        'Minutes to wait after the order event before messaging.',
+    [JOURNEY_TYPES.SESSION_ABANDONMENT]:
+        'Minutes to wait after the last page visited event before messaging.',
+}
+
 export const StaticTimingContent = ({
     journeyType = JOURNEY_TYPES.CART_ABANDONMENT,
     isV3Architecture,
@@ -88,7 +95,12 @@ export const StaticTimingContent = ({
                         </Text>
                         <span>
                             <Tooltip delay={0} trigger={<Icon name="info" />}>
-                                <TooltipContent title="Minutes to wait after the order event before messaging." />
+                                <TooltipContent
+                                    title={
+                                        DELAY_TOOLTIP[journeyType] ??
+                                        'Minutes to wait after the order event before messaging.'
+                                    }
+                                />
                             </Tooltip>
                         </span>
                     </Box>

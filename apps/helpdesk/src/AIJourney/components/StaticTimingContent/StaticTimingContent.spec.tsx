@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 
@@ -41,6 +42,25 @@ describe('<StaticTimingContent />', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('30 min')).toBeInTheDocument()
         })
+
+        it('should render the order event delay tooltip for cart abandonment', async () => {
+            render(
+                <StaticTimingContent
+                    journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                />,
+            )
+
+            const user = userEvent.setup()
+            await act(async () => {
+                await user.tab()
+            })
+
+            expect(
+                await screen.findByText(
+                    'Minutes to wait after the order event before messaging.',
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('Session Abandonment', () => {
@@ -66,6 +86,40 @@ describe('<StaticTimingContent />', () => {
                 screen.getByText('Delay before first message'),
             ).toBeInTheDocument()
             expect(screen.getByText('30 min')).toBeInTheDocument()
+        })
+
+        it('should render the last page visited event delay tooltip for session abandonment', async () => {
+            render(
+                <StaticTimingContent
+                    journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
+                />,
+            )
+
+            const user = userEvent.setup()
+            await act(async () => {
+                await user.tab()
+            })
+
+            expect(
+                await screen.findByText(
+                    'Minutes to wait after the last page visited event before messaging.',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Win Back', () => {
+        it('should render the order event delay tooltip for win back', async () => {
+            render(<StaticTimingContent journeyType={JOURNEY_TYPES.WIN_BACK} />)
+
+            const user = userEvent.setup()
+            await user.tab()
+
+            expect(
+                await screen.findByText(
+                    'Minutes to wait after the order event before messaging.',
+                ),
+            ).toBeInTheDocument()
         })
     })
 
