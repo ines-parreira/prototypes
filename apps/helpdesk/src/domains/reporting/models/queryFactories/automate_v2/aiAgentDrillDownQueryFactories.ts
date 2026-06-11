@@ -9,6 +9,11 @@ import {
     AiSalesAgentActivityDimension,
     AiSalesAgentActivityFilterMember,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
+import type { AiSalesAgentOrdersPerformanceCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersPerformance'
+import {
+    AiSalesAgentOrdersPerformanceDimension,
+    AiSalesAgentOrdersPerformanceFilterMember,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersPerformance'
 import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import {
     AIAgentAutomatedInteractionsV2Dimension,
@@ -474,4 +479,37 @@ export const supportAgentResolutionTimeDrillDownQueryFactory = (
             filters,
         ),
     ],
+})
+
+const ordersInfluencedDrillDownFiltersMembers: StatsFiltersMembers = {
+    periodStart: AiSalesAgentOrdersPerformanceFilterMember.PeriodStart,
+    periodEnd: AiSalesAgentOrdersPerformanceFilterMember.PeriodEnd,
+    channels: AiSalesAgentOrdersPerformanceFilterMember.Channel,
+    stores: AiSalesAgentOrdersPerformanceFilterMember.StoreIntegrationId,
+}
+
+export const shoppingAssistantOrdersInfluencedDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AiSalesAgentOrdersPerformanceCube> => ({
+    metricName:
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_DRILL_DOWN,
+    measures: [],
+    dimensions: [
+        AiSalesAgentOrdersPerformanceDimension.TicketId,
+        AiSalesAgentOrdersPerformanceDimension.OrderId,
+        AiSalesAgentOrdersPerformanceDimension.TotalAmount,
+    ],
+    filters: [
+        ...statsFiltersToReportingFilters(
+            ordersInfluencedDrillDownFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting
+        ? [[AiSalesAgentOrdersPerformanceDimension.TicketId, sorting]]
+        : [],
 })

@@ -77,6 +77,9 @@ export const extraEnrichmentFieldsPerMetric: Record<
         EnrichmentFields.CustomerName,
         EnrichmentFields.CustomerIntegrationDataByExternalId,
     ],
+    [AiAgentDrillDownMetricName.ShoppingAssistantOrdersInfluencedCard]: [
+        ...defaultEnrichmentFields,
+    ],
     [AiSalesAgentChart.AiSalesAgentTotalProductRecommendations]: [
         ...defaultEnrichmentFields,
         EnrichmentFields.ProductsTitles,

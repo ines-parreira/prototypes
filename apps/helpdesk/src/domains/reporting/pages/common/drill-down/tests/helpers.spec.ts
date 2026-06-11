@@ -39,6 +39,7 @@ import {
     allAgentsResolutionTimeDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
+    shoppingAssistantOrdersInfluencedDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
     supportAgentFRTDrillDownQueryFactory,
@@ -257,6 +258,9 @@ const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
 )
 const shoppingAssistantSuccessRateDrillDownQueryFactoryMock = assumeMock(
     shoppingAssistantSuccessRateDrillDownQueryFactory,
+)
+const shoppingAssistantOrdersInfluencedDrillDownQueryFactoryMock = assumeMock(
+    shoppingAssistantOrdersInfluencedDrillDownQueryFactory,
 )
 const allAgentsHandoverInteractionsDrillDownQueryFactoryMock = assumeMock(
     allAgentsHandoverInteractionsDrillDownQueryFactory,
@@ -1684,6 +1688,20 @@ describe('getDrillDownQuery', () => {
 
         expect(
             supportAgentSuccessRateDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should call shoppingAssistantOrdersInfluencedDrillDownQueryFactory for ShoppingAssistantOrdersInfluencedCard', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantOrdersInfluencedCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            shoppingAssistantOrdersInfluencedDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 

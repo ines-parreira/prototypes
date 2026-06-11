@@ -6,6 +6,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { AiSalesAgentOrdersPerformanceDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersPerformance'
 import {
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
@@ -316,6 +317,26 @@ describe('DrillDownFormatters', () => {
                 expect.objectContaining({
                     id: 'provider-order-1',
                     amount: 99,
+                }),
+            )
+        })
+
+        it('should populate order id and amount from AiSalesAgentOrdersPerformance dimensions', () => {
+            const row = {
+                [AiSalesAgentOrdersPerformanceDimension.OrderId]:
+                    'performance-order-1',
+                [AiSalesAgentOrdersPerformanceDimension.TotalAmount]: 75,
+            }
+
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+            })
+
+            expect(result.order).toEqual(
+                expect.objectContaining({
+                    id: 'performance-order-1',
+                    amount: 75,
                 }),
             )
         })

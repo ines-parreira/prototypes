@@ -2,6 +2,7 @@ import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAiAgentOrdersInfluencedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentOrdersInfluencedTrend'
 
@@ -19,6 +20,8 @@ export const AnalyticsAiAgentOrdersInfluencedCard = ({
         timeSeriesView: {
             queryFactory: dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2,
         },
+        drillDownMetricName:
+            AiAgentDrillDownMetricName.ShoppingAssistantOrdersInfluencedCard,
     })
 
     return <TrendCard {...trendCardProps} />

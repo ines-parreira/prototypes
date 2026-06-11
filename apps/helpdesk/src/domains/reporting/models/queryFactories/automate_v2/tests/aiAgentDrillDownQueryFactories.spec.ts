@@ -8,6 +8,10 @@ import {
     AiSalesAgentActivityFilterMember,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentActivity'
 import {
+    AiSalesAgentOrdersPerformanceDimension,
+    AiSalesAgentOrdersPerformanceFilterMember,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersPerformance'
+import {
     AIAgentAutomatedInteractionsV2Dimension,
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
@@ -38,6 +42,7 @@ import {
     allAgentsResolutionTimeDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
+    shoppingAssistantOrdersInfluencedDrillDownQueryFactory,
     shoppingAssistantProductRecommendationsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
@@ -990,6 +995,70 @@ describe('shoppingAssistantProductRecommendationsDrillDownQueryFactory', () => {
                     [
                         AiSalesAgentActivityDimension.TicketId,
                         OrderDirection.Desc,
+                    ],
+                ],
+            }),
+        )
+    })
+})
+
+describe('shoppingAssistantOrdersInfluencedDrillDownQueryFactory', () => {
+    it('should build a query with correct structure', () => {
+        expect(
+            shoppingAssistantOrdersInfluencedDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_DRILL_DOWN,
+            measures: [],
+            dimensions: [
+                AiSalesAgentOrdersPerformanceDimension.TicketId,
+                AiSalesAgentOrdersPerformanceDimension.OrderId,
+                AiSalesAgentOrdersPerformanceDimension.TotalAmount,
+            ],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersPerformanceFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: AiSalesAgentOrdersPerformanceFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+                {
+                    member: AiSalesAgentOrdersPerformanceFilterMember.StoreIntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['122'],
+                },
+                {
+                    member: AiSalesAgentOrdersPerformanceFilterMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['chat'],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        expect(
+            shoppingAssistantOrdersInfluencedDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Asc,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                order: [
+                    [
+                        AiSalesAgentOrdersPerformanceDimension.TicketId,
+                        OrderDirection.Asc,
                     ],
                 ],
             }),

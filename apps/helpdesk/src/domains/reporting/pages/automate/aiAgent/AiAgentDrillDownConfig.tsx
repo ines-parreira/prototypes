@@ -67,6 +67,10 @@ export const AiAgentDrillDownConfig: DomainConfig<AiAgentDrillDownMetrics> = {
                 showMetric: false,
                 domain: Domain.AiAgent,
             },
+        [AiAgentDrillDownMetricName.ShoppingAssistantOrdersInfluencedCard]: {
+            showMetric: false,
+            domain: Domain.AiAgent,
+        },
         [AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard]: {
             showMetric: false,
             domain: Domain.AiAgent,

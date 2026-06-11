@@ -395,6 +395,8 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-times-recommended-drilldown',
     AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS_DRILL_DOWN:
         'ai-agent-shopping-assistant-product-recommendations-drill-down',
+    AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_DRILL_DOWN:
+        'ai-agent-shopping-assistant-orders-influenced-drill-down',
     AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED:
         'ai-agent-shopping-assistant-discount-codes-offered',
     AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_DISCOUNT_AMOUNT:

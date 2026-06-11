@@ -272,6 +272,8 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 1029,
                 prevValue: 1000,
             },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantOrdersInfluencedCard,
             timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {

@@ -35,6 +35,7 @@ import {
     allAgentsResolutionTimeDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
+    shoppingAssistantOrdersInfluencedDrillDownQueryFactory,
     shoppingAssistantProductRecommendationsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
@@ -463,6 +464,8 @@ export const getDrillDownQuery = (
             return shoppingAssistantHandoverInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.ShoppingAssistantProductRecommendationsCard:
             return shoppingAssistantProductRecommendationsDrillDownQueryFactory as any
+        case AiAgentDrillDownMetricName.ShoppingAssistantOrdersInfluencedCard:
+            return shoppingAssistantOrdersInfluencedDrillDownQueryFactory as any
         case AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard:
             return supportAgentHandoverInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsFRTCard:

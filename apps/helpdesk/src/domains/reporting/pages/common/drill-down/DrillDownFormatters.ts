@@ -14,6 +14,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { AiSalesAgentOrdersPerformanceDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersPerformance'
 import { AIAgentCSATDimension } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
 import type { TicketSLAPolicyDrilldownItem } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { TicketInsightsTaskMeasure } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
@@ -233,9 +234,11 @@ const formatTicketDrillDownRowDataInternal = (
         order: {
             id:
                 row[AiSalesAgentOrdersDimension.OrderId] ??
+                row[AiSalesAgentOrdersPerformanceDimension.OrderId] ??
                 row[AIJourneyOrdersAsProviderDimension.OrderId],
             amount:
                 row[AiSalesAgentOrdersMeasure.Gmv] ??
+                row[AiSalesAgentOrdersPerformanceDimension.TotalAmount] ??
                 row[AIJourneyOrdersAsProviderMeasure.Gmv],
             customer: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
         },
