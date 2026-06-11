@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
 import css from 'pages/common/components/SearchBar/SearchBar.less'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 export type SearchBarProps = {
     value?: string

@@ -7,8 +7,8 @@ import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/us
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import {
     formatTimeSeriesData,
     SHORT_FORMAT,
@@ -88,4 +88,4 @@ const ArticleViewsGraph = ({ chartId, dashboard }: DashboardChartProps) => {
     )
 }
 
-export default ArticleViewsGraph
+export { ArticleViewsGraph }

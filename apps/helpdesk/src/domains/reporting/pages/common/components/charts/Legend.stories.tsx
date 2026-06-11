@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
 
-import Legend from 'domains/reporting/pages/common/components/charts/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/charts/Legend'
 
 const storyConfig: Meta = {
     title: 'Stats/Legend',

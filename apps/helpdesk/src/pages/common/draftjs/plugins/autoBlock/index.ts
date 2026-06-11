@@ -239,4 +239,4 @@ const createAutoBlockPlugin = (): Plugin => {
     }
 }
 
-export default createAutoBlockPlugin
+export { createAutoBlockPlugin }

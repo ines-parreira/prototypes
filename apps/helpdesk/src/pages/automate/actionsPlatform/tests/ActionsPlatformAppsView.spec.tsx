@@ -8,8 +8,8 @@ import { useLocation } from 'react-router-dom'
 import { IntegrationType } from 'models/integration/constants'
 import type { RootState } from 'state/types'
 
-import ActionsPlatformAppsView from '../ActionsPlatformAppsView'
-import useApps from '../hooks/useApps'
+import { ActionsPlatformAppsView } from '../ActionsPlatformAppsView'
+import { useApps } from '../hooks/useApps'
 
 const storeState = {
     integrations: fromJS({

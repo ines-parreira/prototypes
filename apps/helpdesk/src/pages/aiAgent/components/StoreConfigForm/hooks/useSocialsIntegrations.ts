@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getFacebookIntegrations } from 'state/integrations/selectors'
 
 import type { SocialsIntegration } from '../types'

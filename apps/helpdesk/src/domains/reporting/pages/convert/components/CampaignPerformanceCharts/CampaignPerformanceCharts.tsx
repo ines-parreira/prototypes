@@ -1,7 +1,7 @@
 import { useGridSize } from '@gorgias/toolkit-react'
 
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
@@ -72,4 +72,4 @@ const CampaignPerformanceCharts = () => {
     )
 }
 
-export default CampaignPerformanceCharts
+export { CampaignPerformanceCharts }

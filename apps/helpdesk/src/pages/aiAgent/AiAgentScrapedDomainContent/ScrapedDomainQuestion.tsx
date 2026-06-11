@@ -11,7 +11,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
+import { ControlledCollapsibleDetails } from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
 import { IngestedResourceStatus } from './constant'
 
@@ -138,4 +138,4 @@ const ScrapedDomainQuestion = ({
     )
 }
 
-export default ScrapedDomainQuestion
+export { ScrapedDomainQuestion }

@@ -67,4 +67,4 @@ const ConvertOnboardingStep = ({
     )
 }
 
-export default ConvertOnboardingStep
+export { ConvertOnboardingStep }

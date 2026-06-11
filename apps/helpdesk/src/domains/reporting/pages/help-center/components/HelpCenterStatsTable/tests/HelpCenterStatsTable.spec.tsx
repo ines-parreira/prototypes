@@ -8,7 +8,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import HelpCenterStatsTable, {
+import {
+    HelpCenterStatsTable,
     TableCellType,
 } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 

@@ -40,7 +40,7 @@ const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
-    default: () => <div>NotificationsButton</div>,
+    NotificationsButton: () => <div>NotificationsButton</div>,
 }))
 
 jest.mock('../../ShoppingAssistant/ShoppingAssistantPromoCard', () => ({

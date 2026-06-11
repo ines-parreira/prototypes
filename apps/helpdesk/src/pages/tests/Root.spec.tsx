@@ -10,7 +10,7 @@ import type { Store } from 'redux'
 import type { RootState } from 'state/types'
 import type { GorgiasInitialState } from 'types'
 
-import Root from '../Root'
+import { Root } from '../Root'
 
 jest.mock('@repo/api-resources', () => ({
     QueryClientProvider: ({ children }: { children?: ReactNode }) => (
@@ -62,7 +62,7 @@ jest.mock('main/app', () => ({
         </div>
     ),
 }))
-jest.mock('routes', () => () => <div>RoutesWrapper</div>)
+jest.mock('routes', () => ({ RoutesWrapper: () => <div>RoutesWrapper</div> }))
 jest.mock('@repo/activity-tracker', () => ({ createUserContext: jest.fn() }))
 jest.mock('pages/common/components/UsersRealtimeUpdates', () => ({
     UsersRealtimeUpdates: () => <div>UsersRealtimeUpdates</div>,

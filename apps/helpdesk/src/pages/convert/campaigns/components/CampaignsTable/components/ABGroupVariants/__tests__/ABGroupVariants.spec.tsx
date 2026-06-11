@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { variants as variantFixture } from 'fixtures/abGroup'
 
-import ABGroupVariants from '../ABGroupVariants'
+import { ABGroupVariants } from '../ABGroupVariants'
 
 describe('<ABGroupVariants />', () => {
     it('renders', () => {

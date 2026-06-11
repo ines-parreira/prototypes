@@ -1,4 +1,4 @@
-export default function PrivateBody() {
+export function PrivateBody() {
     return (
         <div className="m-3">
             <p>

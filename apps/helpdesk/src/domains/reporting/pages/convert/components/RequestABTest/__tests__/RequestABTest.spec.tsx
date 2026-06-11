@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import type * as ReactRouterDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 
-import RequestABTest from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest'
+import { RequestABTest } from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest'
 import { useCanRequestABTest } from 'domains/reporting/pages/convert/hooks/stats/useCanRequestABTest'
 import { abTest } from 'fixtures/abTest'
 import { account } from 'fixtures/account'

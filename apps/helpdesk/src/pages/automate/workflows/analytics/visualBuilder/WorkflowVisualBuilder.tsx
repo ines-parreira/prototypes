@@ -22,7 +22,7 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { useSearchParam } from 'hooks/useSearchParam'
-import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
+import { FitViewIcon } from 'pages/automate/common/components/FitViewIcon'
 
 import { TestFlowEditor } from '../../editor/visualBuilder/editors/TestFlowEditor'
 import { withVisualBuilderContext } from '../../hooks/useVisualBuilder'
@@ -33,10 +33,10 @@ import type {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
-import CustomEdge from './CustomEdge'
-import AnalyticsNode from './nodes/AnalyticsNode'
-import ChannelTriggerNode from './nodes/ChannelTriggerNode'
-import EndNode from './nodes/EndNode'
+import { CustomEdge } from './CustomEdge'
+import { AnalyticsNodeWrapper as AnalyticsNode } from './nodes/AnalyticsNode'
+import { TriggerButtonNodeWrapper as ChannelTriggerNode } from './nodes/ChannelTriggerNode'
+import { EndNodeWrapper as EndNode } from './nodes/EndNode'
 
 import css from './WorkflowVisualBuilder.less'
 
@@ -213,6 +213,8 @@ function withProviders<T extends object>(Component: React.FC<T>): React.FC<T> {
     )
 }
 
-export default withProviders(
+const DefaultExportWorkflowVisualBuilder = withProviders(
     withVisualBuilderContext(WorkflowVisualBuilderWrapped),
 )
+
+export { DefaultExportWorkflowVisualBuilder }

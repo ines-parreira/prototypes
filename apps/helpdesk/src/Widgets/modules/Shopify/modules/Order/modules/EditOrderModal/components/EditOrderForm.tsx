@@ -6,9 +6,9 @@ import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 import { Col, Container, FormText, Row } from 'reactstrap'
 
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
-import OrderTotals from './OrderTotals'
+import { OrderTotals } from './OrderTotals'
 
 type OwnProps = {
     currencyCode: string
@@ -83,5 +83,3 @@ export function EditOrderForm({
         </Container>
     )
 }
-
-export default EditOrderForm

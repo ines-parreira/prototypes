@@ -9,14 +9,14 @@ import { useLocation } from 'react-router-dom'
 import { ADMIN_ROLE } from 'config/user'
 import { ProductType } from 'models/billing/types'
 
-import Item from '../Item'
+import { Item } from '../Item'
 
 jest.mock('@repo/logging')
 jest.mock(
     'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView',
     () => ({
         __esModule: true,
-        default: jest.fn(),
+        useScrollActiveItemIntoView: jest.fn(),
     }),
 )
 jest.mock('react-router-dom', () => ({

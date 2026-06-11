@@ -10,7 +10,7 @@ import type {
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { fetchIntegrations } from 'state/integrations/actions'
 

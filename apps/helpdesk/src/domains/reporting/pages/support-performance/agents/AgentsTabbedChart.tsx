@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import type { TabsProps } from '@gorgias/axiom'
 import { Box, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AgentAvailabilityCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityCardExtra'
 import { AgentAvailabilityTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableWithDefaultState'

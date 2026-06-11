@@ -1,8 +1,6 @@
 import type { Variable } from 'tickets/common/config'
 
-export default function createMetafieldVariable(
-    value: string,
-): Variable | undefined {
+export function createMetafieldVariable(value: string): Variable | undefined {
     const match = value?.match(/\.metafields\.([a-zA-Z0-9_]+)\.value}}$/)
     if (!match) return undefined
     let category = 'Metafield'

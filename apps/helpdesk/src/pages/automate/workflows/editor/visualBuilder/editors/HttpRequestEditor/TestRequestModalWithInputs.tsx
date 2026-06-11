@@ -1,9 +1,9 @@
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Modal from 'pages/common/components/modal/Modal'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
-import TestRequestInputs from './TestRequestInputs'
-import TestRequestResult from './TestRequestResult'
+import { TestRequestInputs } from './TestRequestInputs'
+import { TestRequestResult } from './TestRequestResult'
 
 type Props = {
     isLoading: boolean
@@ -78,4 +78,4 @@ const TestRequestModalWithInputs = ({
     )
 }
 
-export default TestRequestModalWithInputs
+export { TestRequestModalWithInputs }

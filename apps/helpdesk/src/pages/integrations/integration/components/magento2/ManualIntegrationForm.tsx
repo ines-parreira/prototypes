@@ -8,16 +8,16 @@ import { Form } from 'reactstrap'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'
-import Caption from 'pages/common/forms/Caption/Caption'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputField from 'pages/common/forms/input/InputField'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
-import IntegrationActionButtons from './IntegrationActionButtons'
+import { IntegrationActionButtons } from './IntegrationActionButtons'
 import {
     STORE_ADMIN_URL_INPUT_ID,
     StoreAdminNewUrlInput,
@@ -222,4 +222,4 @@ const ManualIntegrationForm = ({
     )
 }
 
-export default ManualIntegrationForm
+export { ManualIntegrationForm }

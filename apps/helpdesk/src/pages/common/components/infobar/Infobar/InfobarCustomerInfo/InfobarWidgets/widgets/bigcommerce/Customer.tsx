@@ -6,7 +6,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { BigCommerceCustomer } from 'models/integration/types'
 import { BigCommerceActionType } from 'models/integration/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -14,13 +14,13 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
+import { ExpandAllButton } from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import { StaticField } from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
-import ActionButtonsGroup from '../ActionButtonsGroup'
+import { ActionButtonsGroup } from '../ActionButtonsGroup'
 import type { InfobarAction } from '../types'
-import OrderModal from './AddOrderModal/OrderModal'
+import { OrderModalRenderWrapper as OrderModal } from './AddOrderModal/OrderModal'
 
 export const customerCustomization: CardCustomization = {
     AfterTitle,

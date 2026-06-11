@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
-import CustomCardLink from '../CustomCardLink'
+import { CustomCardLink } from '../CustomCardLink'
 
 describe('<CustomCardLink />', () => {
     const props = {

@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ProviderItem from '../ProviderItem'
+import { ProviderItem } from '../ProviderItem'
 
 describe('ProviderItem', () => {
     const mockOnDelete = jest.fn()

@@ -2,7 +2,8 @@ import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IdentifierCategoryKey } from 'models/rule/types'
-import getMetafieldOperators, {
+import {
+    getMetafieldOperators,
     METAFIELD_TYPES_SUPPORTED_IN_RULES,
 } from 'pages/common/components/ViewTable/Filters/utils/getMetafieldOperators'
 import type { Field } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/types'

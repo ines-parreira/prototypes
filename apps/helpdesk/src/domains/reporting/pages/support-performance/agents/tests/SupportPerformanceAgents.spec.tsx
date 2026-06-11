@@ -12,7 +12,7 @@ import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTa
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
@@ -20,8 +20,9 @@ import { TableColumnsOrder } from 'domains/reporting/pages/support-performance/a
 import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { DownloadAgentsAvailabilityButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsAvailabilityButton'
 import { DownloadAgentsPerformanceDataButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsPerformanceDataButton'
-import SupportPerformanceAgentsReport, {
+import {
     AGENTS_PAGE_TITLE,
+    SupportPerformanceAgentsReport,
 } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport'
 import { AGENTS_OPTIONAL_FILTERS } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import { TopClosedTicketsPerformers } from 'domains/reporting/pages/support-performance/agents/TopClosedTicketsPerformers'
@@ -58,11 +59,15 @@ const AgentAvailabilityTableMock = assumeMock(
 )
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
-        return props.optionalFilters?.map((optionalFilter) => (
-            <div key={optionalFilter}>{optionalFilter}</div>
-        ))
-    },
+    () => ({
+        FiltersPanelWrapper: (
+            props: ComponentProps<typeof FiltersPanelWrapper>,
+        ) => {
+            return props.optionalFilters?.map((optionalFilter) => (
+                <div key={optionalFilter}>{optionalFilter}</div>
+            ))
+        },
+    }),
 )
 jest.mock(
     'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra.tsx',

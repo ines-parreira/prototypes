@@ -3,9 +3,9 @@ import { fromJS } from 'immutable'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useAgentsViewing from '../useAgentsViewing'
+import { useAgentsViewing } from '../useAgentsViewing'
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock

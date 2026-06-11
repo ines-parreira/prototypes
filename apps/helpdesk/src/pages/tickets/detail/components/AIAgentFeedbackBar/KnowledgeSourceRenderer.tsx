@@ -6,8 +6,8 @@ import cn from 'classnames'
 import type { IconSize } from '@gorgias/axiom'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import KnowledgeSourceIcon from './KnowledgeSourceIcon'
-import KnowledgeSourcePopover from './KnowledgeSourcePopover'
+import { KnowledgeSourceIcon } from './KnowledgeSourceIcon'
+import { DefaultExportKnowledgeSourcePopover as KnowledgeSourcePopover } from './KnowledgeSourcePopover'
 import type { AiAgentKnowledgeResourceTypeEnum } from './types'
 import { mapToKnowledgeSourceType } from './utils'
 
@@ -120,4 +120,4 @@ const KnowledgeSourceRenderer = ({
     )
 }
 
-export default KnowledgeSourceRenderer
+export { KnowledgeSourceRenderer }

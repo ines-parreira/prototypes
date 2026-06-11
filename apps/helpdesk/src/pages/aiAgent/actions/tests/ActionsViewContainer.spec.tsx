@@ -15,11 +15,13 @@ import {
 } from 'models/workflows/queries'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 
-import ActionsViewContainer from '../ActionsViewContainer'
+import { ActionsViewContainer } from '../ActionsViewContainer'
 import { actionConfigurationFixture } from '../hooks/tests/actions.fixtures'
 
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-jest.mock('../components/ActionsList', () => () => <div>ActionsList</div>)
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
+jest.mock('../components/ActionsList', () => ({
+    ActionsList: () => <div>ActionsList</div>,
+}))
 jest.mock('pages/AppContext')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')

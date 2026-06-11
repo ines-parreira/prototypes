@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { State } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

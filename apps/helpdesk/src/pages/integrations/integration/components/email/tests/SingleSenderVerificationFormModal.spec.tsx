@@ -3,8 +3,8 @@ import type { ComponentProps } from 'react'
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 
-import SingleSenderVerificationFormModal from '../EmailMigration/SingleSenderVerificationFormModal'
-import type VerificationForm from '../EmailOutboundVerification/VerificationForm/VerificationForm'
+import { SingleSenderVerificationFormModal } from '../EmailMigration/SingleSenderVerificationFormModal'
+import type { VerificationForm } from '../EmailOutboundVerification/VerificationForm/VerificationForm'
 import { FORM_ID } from '../EmailOutboundVerification/VerificationForm/VerificationForm'
 
 jest.mock(
@@ -16,7 +16,9 @@ jest.mock(
         return {
             ...actual,
             __esModule: true,
-            default: (props: ComponentProps<typeof VerificationForm>) => (
+            VerificationForm: (
+                props: ComponentProps<typeof VerificationForm>,
+            ) => (
                 <div data-testid="verification-form">
                     <button
                         data-testid="submit-button"

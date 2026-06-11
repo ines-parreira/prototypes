@@ -1,5 +1,5 @@
 import type { ZendeskIntegrationMeta } from '../../../../models/integration/types'
-import Alert, { AlertType } from '../../../common/components/Alert/Alert'
+import { Alert, AlertType } from '../../../common/components/Alert/Alert'
 import { ImportStatus } from './types'
 
 interface ImportStatusAlertProps {
@@ -42,4 +42,4 @@ const ImportStatusAlert = ({ integrationMeta }: ImportStatusAlertProps) => {
     )
 }
 
-export default ImportStatusAlert
+export { ImportStatusAlert }

@@ -13,7 +13,7 @@ import { JourneyProvider } from 'AIJourney/providers'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { ThemeProvider } from 'core/theme'
 import { account } from 'fixtures/account'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import { AiJourneyNavbar } from './Navbar'

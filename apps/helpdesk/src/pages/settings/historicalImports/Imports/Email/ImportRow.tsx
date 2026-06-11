@@ -1,5 +1,5 @@
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import type { ImportItem } from '../types'
 import { COLUMN_WIDTHS } from './constants'

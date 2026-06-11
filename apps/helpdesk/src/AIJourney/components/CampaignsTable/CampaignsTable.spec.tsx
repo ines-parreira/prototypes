@@ -12,7 +12,7 @@ import {
     LOADING_TABLE_METRICS,
 } from '../../hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import type { TableRow } from '../../pages/Campaigns/Campaigns'
-import CampaignsTable from './CampaignsTable'
+import { CampaignsTable } from './CampaignsTable'
 import { actionColumns, columns, dateColumns, metricColumns } from './Columns'
 
 const useParamsMock = jest.mocked(useParams)

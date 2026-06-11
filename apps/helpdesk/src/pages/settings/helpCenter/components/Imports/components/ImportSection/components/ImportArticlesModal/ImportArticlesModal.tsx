@@ -10,13 +10,13 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import Loader from 'pages/common/components/Loader/Loader'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -26,8 +26,8 @@ import type {
     FetchedProvidersState,
     ImportArticlesModalState,
 } from '../../types'
-import DropAreas from './components/DropAreas'
-import FileSelectedArea from './components/FileSelectedArea'
+import { DropAreas } from './components/DropAreas'
+import { FileSelectedArea } from './components/FileSelectedArea'
 import {
     buildCsvColumnMatchingUrl,
     fileIsTooBig,
@@ -216,4 +216,4 @@ const ImportArticlesModal: React.FC<Props> = ({
     )
 }
 
-export default ImportArticlesModal
+export { ImportArticlesModal }

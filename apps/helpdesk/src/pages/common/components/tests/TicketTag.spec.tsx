@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TicketTag from '../TicketTag'
+import { TicketTag } from '../TicketTag'
 
 describe('<TicketTag />', () => {
     it('should render the tag', () => {

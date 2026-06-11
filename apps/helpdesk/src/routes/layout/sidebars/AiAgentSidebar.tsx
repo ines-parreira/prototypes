@@ -2,7 +2,7 @@ import { useSidebar } from '@repo/navigation'
 
 import { Box } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ActionDrivenNavigation } from 'pages/aiAgent/components/AiAgentNavbar/ActionDrivenNavigation'
 import { ShoppingAssistantPromoCard } from 'pages/aiAgent/components/ShoppingAssistant/ShoppingAssistantPromoCard'
 import { PostOnboardingUserNudges } from 'pages/aiAgent/Overview/components/PostOnboardingUserNudges/PostOnboardingUserNudges'

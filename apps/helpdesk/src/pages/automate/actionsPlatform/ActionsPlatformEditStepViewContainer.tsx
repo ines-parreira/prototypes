@@ -2,7 +2,7 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 
-import ActionsPlatformEditStepView from './ActionsPlatformEditStepView'
+import { ActionsPlatformEditStepView } from './ActionsPlatformEditStepView'
 
 const ActionsPlatformEditStepViewContainer = () => {
     const { id } = useParams<{
@@ -22,4 +22,4 @@ const ActionsPlatformEditStepViewContainer = () => {
     return <ActionsPlatformEditStepView template={template} />
 }
 
-export default ActionsPlatformEditStepViewContainer
+export { ActionsPlatformEditStepViewContainer }

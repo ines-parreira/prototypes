@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 
 import type { FormState } from '../../infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/useCustomerSyncForm'
 import { getDefaultStore } from '../helpers'
-import ShopifyStoreSelect from '../ShopifyStoreSelect'
+import { ShopifyStoreSelect } from '../ShopifyStoreSelect'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useListCustomerIntegrationsWithChannelDefault: jest.fn(),

@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
 import { THEME_NAME } from 'core/theme'
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import { Launcher } from 'gorgias-design-system/Launcher/Launcher'
 import type { GorgiasChatPosition } from 'models/integration/types'
 import {
     GorgiasChatLauncherType,
@@ -130,4 +130,4 @@ const CustomizedChatLauncher: React.FC<Props> = ({
     )
 }
 
-export default CustomizedChatLauncher
+export { CustomizedChatLauncher }

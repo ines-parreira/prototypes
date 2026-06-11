@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAgentCostsSettings } from 'state/currentAccount/selectors'
 

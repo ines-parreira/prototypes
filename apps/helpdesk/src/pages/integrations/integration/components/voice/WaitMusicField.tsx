@@ -14,11 +14,11 @@ import {
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import type { LocalWaitMusicPreferences } from 'models/integration/types'
-import RadioButton from 'pages/common/components/RadioButton'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
 
-import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
-import VoiceRecordingInput from './VoiceRecordingInput'
-import WaitMusicLibrarySelect from './WaitMusicLibrarySelect'
+import { useVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
+import { VoiceRecordingInput } from './VoiceRecordingInput'
+import { WaitMusicLibrarySelect } from './WaitMusicLibrarySelect'
 
 import css from './WaitMusicField.less'
 
@@ -208,4 +208,4 @@ const WaitMusicRadioButton = ({
     )
 }
 
-export default WaitMusicField
+export { WaitMusicField }

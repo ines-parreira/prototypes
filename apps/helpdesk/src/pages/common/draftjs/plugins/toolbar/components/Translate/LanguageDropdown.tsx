@@ -3,11 +3,11 @@ import { useRef } from 'react'
 
 import { Separator } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
 
 import css from './Translate.less'
 
@@ -22,7 +22,7 @@ interface LanguageDropdownProps {
     onLanguageSelect: (code: string) => void
 }
 
-export default function LanguageDropdown({
+export function LanguageDropdown({
     isOpen,
     searchTerm,
     detectedLanguage,

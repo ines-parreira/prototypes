@@ -4,7 +4,7 @@ import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import ReactStar from 'react-rating-stars-component'
 
 import { DEFAULT_SIZE, STAR_COLORS } from '../constants'
-import StartRating from '../StarRating'
+import { StarRating as StartRating } from '../StarRating'
 
 jest.mock('react-rating-stars-component', () => {
     return jest.fn(() => <div data-testid="mocked-react-stars"></div>)

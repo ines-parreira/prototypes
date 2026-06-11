@@ -19,7 +19,7 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useAiAgentOnboardingNotification } from '../useAiAgentOnboardingNotification'
-import useMeetAiAgentNotifications from '../useMeetAiAgentNotification'
+import { useMeetAiAgentNotifications } from '../useMeetAiAgentNotification'
 import { useStoreConfiguration } from '../useStoreConfiguration'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

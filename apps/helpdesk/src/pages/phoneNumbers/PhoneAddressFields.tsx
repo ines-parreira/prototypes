@@ -6,17 +6,14 @@ import { PhoneCountry, phoneCountryConfig } from 'business/twilio'
 import { AddressType } from 'models/integration/types'
 import type { AddressInformation } from 'models/phoneNumber/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 type Props = {
     value: Partial<AddressInformation>
     onChange: (value: Partial<AddressInformation>) => void
 }
 
-export default function PhoneAddressFields({
-    value,
-    onChange,
-}: Props): JSX.Element {
+export function PhoneAddressFields({ value, onChange }: Props): JSX.Element {
     const isDisabled = value.country === PhoneCountry.FR
 
     const handleChange = useCallback(

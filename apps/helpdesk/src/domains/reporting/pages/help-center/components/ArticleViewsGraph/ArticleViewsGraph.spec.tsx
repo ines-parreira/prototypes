@@ -7,7 +7,8 @@ import { useArticleViewTimeSeries } from 'domains/reporting/hooks/help-center/us
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { TimeSeriesResult } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import ArticleViewsGraph, {
+import {
+    ArticleViewsGraph,
     renderXTickLabel,
 } from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 

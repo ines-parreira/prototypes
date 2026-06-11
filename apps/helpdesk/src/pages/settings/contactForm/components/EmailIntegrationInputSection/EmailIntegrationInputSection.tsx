@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { ContactFormIntegration } from 'models/contactForm/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
@@ -63,4 +63,4 @@ const EmailIntegrationInputSection = ({
     )
 }
 
-export default EmailIntegrationInputSection
+export { EmailIntegrationInputSection }

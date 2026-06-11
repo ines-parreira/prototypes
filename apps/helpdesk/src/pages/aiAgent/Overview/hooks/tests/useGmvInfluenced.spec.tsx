@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,

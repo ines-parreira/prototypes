@@ -6,8 +6,8 @@ import { isMacOs, sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { ShortcutIcon } from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import css from 'pages/common/components/Spotlight/SpotlightRow.less'
 
 type SpotlightRowProps = {
@@ -129,4 +129,4 @@ const SpotlightRow = ({
     )
 }
 
-export default SpotlightRow
+export { SpotlightRow }

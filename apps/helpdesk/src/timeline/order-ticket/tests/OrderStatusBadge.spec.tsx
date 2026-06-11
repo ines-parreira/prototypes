@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { FinancialStatus } from 'constants/integrations/types/shopify'
 
-import OrderStatusBadge from '../OrderStatusBadge'
+import { OrderStatusBadge } from '../OrderStatusBadge'
 
 describe('OrderStatusBadge', () => {
     it('renders "paid" status with light-warning badge', () => {

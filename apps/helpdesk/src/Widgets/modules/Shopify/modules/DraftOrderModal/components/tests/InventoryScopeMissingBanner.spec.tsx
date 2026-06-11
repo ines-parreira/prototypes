@@ -2,7 +2,7 @@ import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import { InventoryScopeMissingBanner } from '../InventoryScopeMissingBanner'

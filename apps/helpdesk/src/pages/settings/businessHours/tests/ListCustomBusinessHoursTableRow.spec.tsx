@@ -6,11 +6,11 @@ import { act } from 'react-dom/test-utils'
 
 import { mockListBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
-import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
+import { useDeleteCustomBusinessHours } from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { IntegrationType } from 'models/integration/constants'
 
-import LinkedIntegrationsList from '../LinkedIntegrationsList'
-import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
+import { LinkedIntegrationsList } from '../LinkedIntegrationsList'
+import { ListCustomBusinessHoursTableRow } from '../ListCustomBusinessHoursTableRow'
 
 jest.mock('hooks/businessHours/useDeleteCustomBusinessHours')
 jest.mock('state/notifications/actions')

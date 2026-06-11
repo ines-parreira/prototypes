@@ -2,7 +2,7 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 
-import ActionsPlatformEditUseCaseTemplateView from './ActionsPlatformEditUseCaseTemplateView'
+import { ActionsPlatformEditUseCaseTemplateView } from './ActionsPlatformEditUseCaseTemplateView'
 
 const ActionsPlatformEditUseCaseTemplateViewContainer = () => {
     const { id } = useParams<{
@@ -22,4 +22,4 @@ const ActionsPlatformEditUseCaseTemplateViewContainer = () => {
     return <ActionsPlatformEditUseCaseTemplateView template={template} />
 }
 
-export default ActionsPlatformEditUseCaseTemplateViewContainer
+export { ActionsPlatformEditUseCaseTemplateViewContainer }

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React, { forwardRef } from 'react'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
 type ToggleInputFieldProps = {
     value: boolean
@@ -29,4 +29,4 @@ const ToggleInputField = forwardRef<HTMLDivElement, ToggleInputFieldProps>(
     },
 )
 
-export default ToggleInputField
+export { ToggleInputField }

@@ -8,10 +8,10 @@ import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-querie
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
 import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'
-import NewToggleField from 'pages/common/forms/NewToggleField'
+import { DefaultExportNewToggleField as NewToggleField } from 'pages/common/forms/NewToggleField'
 
 import { CALL_RECORDING_NOTIFICATION_LEARN_MORE_URL } from './constants'
-import VoiceMessageField from './VoiceMessageField'
+import { VoiceMessageField } from './VoiceMessageField'
 
 import css from './VoiceIntegrationSettingCallRecording.less'
 
@@ -85,7 +85,7 @@ function VoiceIntegrationSettingCallRecording({
     )
 }
 
-export default VoiceIntegrationSettingCallRecording
+export { VoiceIntegrationSettingCallRecording }
 
 const CallRecordingNotificationBanner = ({
     children,

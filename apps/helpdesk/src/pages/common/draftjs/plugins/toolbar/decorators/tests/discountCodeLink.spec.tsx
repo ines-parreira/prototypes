@@ -6,7 +6,7 @@ import { ContentState } from 'draft-js'
 import { convertFromHTML } from 'utils/editor'
 
 import type { DecoratorComponentProps } from '../../../types'
-import discountCodeLink from '../discountCodeLink'
+import { discountCodeLink } from '../discountCodeLink'
 
 describe('discountCodeLink decorator', () => {
     describe('strategy', () => {

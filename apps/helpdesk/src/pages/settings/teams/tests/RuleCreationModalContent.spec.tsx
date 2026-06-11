@@ -16,7 +16,7 @@ import { createRule } from 'models/rule/resources'
 import type { TagsState } from 'state/entities/tags/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import RuleCreationModalContent from '../RuleCreationModalContent'
+import { RuleCreationModalContent } from '../RuleCreationModalContent'
 
 jest.mock('models/rule/resources', () => ({
     createRule: jest.fn(() => () => Promise.resolve({})),

@@ -1,1 +1,1 @@
-export { default } from './components/Smile'
+export { SmileWidget } from './components/Smile'

@@ -214,7 +214,7 @@ jest.mock(
     'pages/aiAgent/trial/components/TrialOptOutModal/TrialOptOutModal',
     () => ({
         __esModule: true,
-        default: (props: any) =>
+        TrialOptOutModal: (props: any) =>
             props.isOpen ? (
                 <div data-testid="trial-opt-out-modal">
                     TrialOptOutModal - {props.isOpen ? 'open' : 'closed'}
@@ -239,7 +239,7 @@ jest.mock(
     'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal',
     () => ({
         __esModule: true,
-        default: (props: any) => (
+        TrialFinishSetupModal: (props: any) => (
             <div data-testid="trial-finish-setup-modal">
                 TrialFinishSetupModal - {props.title}
             </div>

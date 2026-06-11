@@ -6,7 +6,7 @@ import type { SelectionState } from 'draft-js'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
-import MentionSuggestions from 'pages/common/draftjs/plugins/mentions/MentionSuggestions'
+import { MentionSuggestions } from 'pages/common/draftjs/plugins/mentions/MentionSuggestions'
 
 const mentionablePerson = {
     name: 'Matthew Russell',

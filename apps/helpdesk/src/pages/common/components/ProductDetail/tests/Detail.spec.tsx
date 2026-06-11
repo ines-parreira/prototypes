@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Detail from 'pages/common/components/ProductDetail'
+import { Detail } from 'pages/common/components/ProductDetail'
 
 import { dummyProduct, infoCardBannerText } from './fixtures'
 

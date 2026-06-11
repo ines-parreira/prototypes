@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ActionEventsNumberedPagination from '../ActionEventsNumberedPagination'
+import { ActionEventsNumberedPagination } from '../ActionEventsNumberedPagination'
 
 describe('<ActionEventsNumberedPagination />', () => {
     it('should render component', () => {

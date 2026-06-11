@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import CreditShopifyBillingIntegration from '../CreditShopifyBillingIntegration'
+import { CreditShopifyBillingIntegration } from '../CreditShopifyBillingIntegration'
 
 const mockedServer = new MockAdapter(client)
 

@@ -1,9 +1,9 @@
 import type { CustomField } from 'custom-fields/types'
 import type { Schemas } from 'types'
 
-import getCustomFieldOperators from './getCustomFieldOperators'
+import { getCustomFieldOperators } from './getCustomFieldOperators'
 
-export default function getDefaultCustomFieldOperator(
+export function getDefaultCustomFieldOperator(
     schemas: Schemas,
     customField?: CustomField,
 ) {

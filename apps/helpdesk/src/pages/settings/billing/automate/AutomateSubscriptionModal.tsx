@@ -29,15 +29,15 @@ import { ChangeType } from '@gorgias/helpdesk-types'
 import { useAppNode } from 'appNode'
 import { UserRole } from 'config/types/user'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import { getSubscriptionQuery } from 'models/billing/queries'
 import type { AutomatePlan, Plan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 import { hasSeparateInvoiceCadence, isEnterprise } from 'models/billing/utils'
 import { ConfirmChangesModal } from 'pages/settings/new_billing/components/ConfirmChangesModal'
-import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
+import { ContactSupportModal } from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import type { ContactSupportModalProps } from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useIsPaymentMethodMissing } from 'pages/settings/new_billing/hooks/useIsPaymentMethodMissing'
@@ -67,9 +67,9 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { NotificationStatus } from 'state/notifications/types'
 import { hasRole } from 'utils'
 
-import AutomateModalStep from './AutomateModalStep'
+import { AutomateModalStep } from './AutomateModalStep'
 import { buildAutomateProductsToSubmit } from './buildAutomateProductsToSubmit'
-import ROICalculatorModalStep from './ROICalculatorModalStep'
+import { ROICalculatorModalStep } from './ROICalculatorModalStep'
 
 import css from './AutomateSubscriptionModal.less'
 
@@ -615,4 +615,4 @@ const AutomateSubscriptionModalContent = ({
     )
 }
 
-export default AutomateSubscriptionModal
+export { AutomateSubscriptionModal }

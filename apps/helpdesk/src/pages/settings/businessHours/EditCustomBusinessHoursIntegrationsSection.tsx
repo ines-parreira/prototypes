@@ -5,13 +5,13 @@ import { useFormContext } from 'react-hook-form'
 
 import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
-import AssignIntegrationsModal from './AssignIntegrationsModal'
+import { AssignIntegrationsModal } from './AssignIntegrationsModal'
 import type { EditCustomBusinessHoursFormValues } from './types'
 import { getIntegrationsChangeSummary } from './utils'
 
 import css from './EditCustomBusinessHoursIntegrationsSection.less'
 
-export default function EditCustomBusinessHoursIntegrationsSection() {
+export function EditCustomBusinessHoursIntegrationsSection() {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const { watch, setValue } =
         useFormContext<EditCustomBusinessHoursFormValues>()

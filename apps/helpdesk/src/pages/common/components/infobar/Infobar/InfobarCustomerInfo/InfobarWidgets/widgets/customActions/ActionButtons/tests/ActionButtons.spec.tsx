@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
 
-import ActionButtons from '../ActionButtons'
+import { DefaultExportActionButtons as ActionButtons } from '../ActionButtons'
 
 const mockStore = configureMockStore([thunk])
 

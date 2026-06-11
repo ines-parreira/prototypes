@@ -15,7 +15,7 @@ type Props = {
     executionId?: string
 }
 
-export default function SuggestionHeader({
+export function SuggestionHeader({
     innerRef,
     state,
     onChevronToggle,

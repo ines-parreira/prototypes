@@ -11,12 +11,12 @@ import {
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import type { RootState } from 'state/types'
 
-import ActionsPlatformCreateStepView from '../ActionsPlatformCreateStepView'
-import useApps from '../hooks/useApps'
-import useCreateActionTemplate from '../hooks/useCreateActionTemplate'
-import useTouchActionStepGraph from '../hooks/useTouchActionStepGraph'
+import { ActionsPlatformCreateStepView } from '../ActionsPlatformCreateStepView'
+import { useApps } from '../hooks/useApps'
+import { useCreateActionTemplate } from '../hooks/useCreateActionTemplate'
+import { useTouchActionStepGraph } from '../hooks/useTouchActionStepGraph'
 // Import and mock the validation hooks
-import useValidateActionStepGraph from '../hooks/useValidateActionStepGraph'
+import { useValidateActionStepGraph } from '../hooks/useValidateActionStepGraph'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')

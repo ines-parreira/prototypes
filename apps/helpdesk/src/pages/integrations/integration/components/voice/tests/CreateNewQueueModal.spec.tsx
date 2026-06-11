@@ -4,30 +4,38 @@ import { screen, waitFor } from '@testing-library/react'
 import { createVoiceQueues } from '@gorgias/helpdesk-client'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import CreateNewQueueModal from '../CreateNewQueueModal'
+import { CreateNewQueueModal } from '../CreateNewQueueModal'
 
 jest.mock('@gorgias/helpdesk-client')
 const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
-jest.mock('../CreateEditQueueModalFormContent', () => () => (
-    <div data-testid="modal-form-content">CreateEditQueueModalFormContent</div>
-))
+jest.mock('../CreateEditQueueModalFormContent', () => ({
+    CreateEditQueueModalFormContent: () => (
+        <div data-testid="modal-form-content">
+            CreateEditQueueModalFormContent
+        </div>
+    ),
+}))
 
-jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
-    <button type="submit">{children}</button>
-))
+jest.mock('../VoiceFormSubmitButton', () => ({
+    VoiceFormSubmitButton: ({ children }: any) => (
+        <button type="submit">{children}</button>
+    ),
+}))
 
-jest.mock('../VoiceQueueSettingsForm', () => ({ children, onSubmit }: any) => (
-    <form
-        data-testid="settings-form"
-        onSubmit={(e) => {
-            e.preventDefault()
-            onSubmit({ name: 'Test Queue', id: 123 })
-        }}
-    >
-        {children}
-    </form>
-))
+jest.mock('../VoiceQueueSettingsForm', () => ({
+    VoiceQueueSettingsForm: ({ children, onSubmit }: any) => (
+        <form
+            data-testid="settings-form"
+            onSubmit={(e) => {
+                e.preventDefault()
+                onSubmit({ name: 'Test Queue', id: 123 })
+            }}
+        >
+            {children}
+        </form>
+    ),
+}))
 
 describe('CreateNewQueueModal', () => {
     const mockOnClose = jest.fn()

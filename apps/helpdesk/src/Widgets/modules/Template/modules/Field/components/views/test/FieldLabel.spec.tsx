@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FieldLabel from '../FieldLabel'
+import { FieldLabel } from '../FieldLabel'
 
 describe('<FieldLabel/>', () => {
     it('should add the `fieldLabel` class while preserving provided one', () => {

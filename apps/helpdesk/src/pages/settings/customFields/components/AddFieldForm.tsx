@@ -10,9 +10,9 @@ import type {
 } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import FieldForm from './FieldForm'
+import { FieldForm } from './FieldForm'
 
-export default function AddFieldForm({
+export function AddFieldForm({
     objectType,
 }: {
     objectType: CustomFieldObjectTypes

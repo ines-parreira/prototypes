@@ -6,11 +6,11 @@ import classnames from 'classnames'
 import { Button } from '@gorgias/axiom'
 
 import type { UploadType } from 'common/types'
-import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
+import { ButtonPopover as Popover } from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import type { ActionInjectedProps } from 'pages/common/draftjs/plugins/toolbar/types'
 import { addImage } from 'pages/common/draftjs/plugins/utils'
-import FileField from 'pages/common/forms/FileField'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { FileFieldContainer as FileField } from 'pages/common/forms/FileField'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getMaxAttachmentSize } from 'utils/file'
 
 import css from './AddImage.less'
@@ -27,7 +27,7 @@ type State = {
     isOpen: boolean
 }
 
-export default class AddImage extends Component<Props, State> {
+export class AddImage extends Component<Props, State> {
     state: State = {
         url: '',
         mode: 'upload',

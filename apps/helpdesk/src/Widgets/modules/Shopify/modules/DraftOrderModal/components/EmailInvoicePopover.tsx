@@ -39,7 +39,7 @@ type State = {
     customMessage: string
 }
 
-export default class EmailInvoicePopover extends Component<Props, State> {
+export class EmailInvoicePopover extends Component<Props, State> {
     static defaultProps: Pick<Props, 'placement'> = {
         placement: 'bottom',
     }

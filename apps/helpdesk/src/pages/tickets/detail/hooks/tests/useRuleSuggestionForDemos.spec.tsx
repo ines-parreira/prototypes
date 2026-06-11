@@ -13,7 +13,7 @@ import { HELPDESK_PRODUCT_ID, proMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { AccountSettingType } from 'state/currentAccount/types'
 
-import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
+import { useRuleSuggestionForDemos } from '../useRuleSuggestionForDemos'
 
 const mockStore = configureMockStore([thunk])
 const store = {

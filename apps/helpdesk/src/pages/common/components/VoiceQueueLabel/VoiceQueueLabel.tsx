@@ -34,4 +34,4 @@ function VoiceQueueLabel({ queueId, queueName }: Props) {
     return <>{queue.name}</>
 }
 
-export default VoiceQueueLabel
+export { VoiceQueueLabel }

@@ -5,7 +5,7 @@ import type { ObjectType, UpdateCustomField } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateCustomField } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'

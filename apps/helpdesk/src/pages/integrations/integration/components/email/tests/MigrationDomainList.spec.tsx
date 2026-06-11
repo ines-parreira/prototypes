@@ -12,52 +12,44 @@ import {
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 import { OutboundVerificationType } from 'models/integration/types'
 
-import type DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
-import MigrationDomainList from '../EmailMigration/MigrationDomainList'
-import type SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
+import type { DomainVerificationAccordionItem } from '../EmailMigration/DomainVerificationAccordionItem'
+import { MigrationDomainList } from '../EmailMigration/MigrationDomainList'
+import type { SingleSenderVerificationAccordionItem } from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
 const useLocalStorageSpy = jest.spyOn(
     hooksImports,
     'useLocalStorage',
 ) as jest.Mock
 
-jest.mock(
-    '../EmailMigration/DomainVerificationAccordionItem',
-    () =>
-        ({
-            verification,
-            onVerificationMethodSwitch,
-        }: ComponentProps<typeof DomainVerificationAccordionItem>) => (
-            <div data-testid="domain-accordion">
-                <button
-                    onClick={() =>
-                        onVerificationMethodSwitch(verification.name)
-                    }
-                >
-                    verify
-                </button>
-            </div>
-        ),
-)
+jest.mock('../EmailMigration/DomainVerificationAccordionItem', () => ({
+    DomainVerificationAccordionItem: ({
+        verification,
+        onVerificationMethodSwitch,
+    }: ComponentProps<typeof DomainVerificationAccordionItem>) => (
+        <div data-testid="domain-accordion">
+            <button
+                onClick={() => onVerificationMethodSwitch(verification.name)}
+            >
+                verify
+            </button>
+        </div>
+    ),
+}))
 
-jest.mock(
-    '../EmailMigration/SingleSenderVerificationAccordionItem',
-    () =>
-        ({
-            verification,
-            onVerificationMethodSwitch,
-        }: ComponentProps<typeof SingleSenderVerificationAccordionItem>) => (
-            <div data-testid="single-sender-accordion">
-                <button
-                    onClick={() =>
-                        onVerificationMethodSwitch(verification.name)
-                    }
-                >
-                    verify
-                </button>
-            </div>
-        ),
-)
+jest.mock('../EmailMigration/SingleSenderVerificationAccordionItem', () => ({
+    SingleSenderVerificationAccordionItem: ({
+        verification,
+        onVerificationMethodSwitch,
+    }: ComponentProps<typeof SingleSenderVerificationAccordionItem>) => (
+        <div data-testid="single-sender-accordion">
+            <button
+                onClick={() => onVerificationMethodSwitch(verification.name)}
+            >
+                verify
+            </button>
+        </div>
+    ),
+}))
 
 describe('MigrationDomainList', () => {
     const renderComponent = (domains: EmailMigrationOutboundVerification[]) =>

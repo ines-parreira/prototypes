@@ -14,14 +14,14 @@ import {
     mapBusyAgentStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
-import AgentCard from 'pages/common/components/AgentCard/AgentCard'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { AgentCard } from 'pages/common/components/AgentCard/AgentCard'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 type Props = {
     agent: LiveCallQueueAgent
 }
 
-export default function LiveVoiceAgentRow({ agent }: Props) {
+export function LiveVoiceAgentRow({ agent }: Props) {
     const cardProps = getCardProps(agent)
     const isCustomUnavailabilityEnabled =
         useCustomAgentUnavailableStatusesFlag()

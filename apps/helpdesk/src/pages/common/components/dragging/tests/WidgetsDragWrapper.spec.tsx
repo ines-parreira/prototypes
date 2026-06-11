@@ -3,11 +3,11 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { drop } from 'state/widgets/actions'
 
-import ReactSortable, { isSortableEvent } from '../ReactSortable'
-import DragWrapper from '../WidgetsDragWrapper'
+import { isSortableEvent, ReactSortable } from '../ReactSortable'
+import { DragWrapper } from '../WidgetsDragWrapper'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/widgets/actions', () => ({
@@ -18,7 +18,7 @@ jest.mock('state/widgets/actions', () => ({
 }))
 jest.mock('../ReactSortable', () => ({
     __esModule: true,
-    default: jest.fn(),
+    ReactSortable: jest.fn(),
     isSortableEvent: jest.fn(),
 }))
 

@@ -18,4 +18,4 @@ const auditLogEventsReducer = createReducer<AuditLogEventsState>(
         }),
 )
 
-export default auditLogEventsReducer
+export { auditLogEventsReducer }

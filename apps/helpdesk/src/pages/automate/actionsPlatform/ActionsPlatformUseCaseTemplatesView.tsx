@@ -5,16 +5,16 @@ import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import useOrderBy from 'hooks/useOrderBy'
-import AutomateListView from 'pages/automate/common/components/AutomateListView'
+import { useOrderBy } from 'hooks/useOrderBy'
+import { AutomateListView } from 'pages/automate/common/components/AutomateListView'
 
-import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
-import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'
-import ActionsPlatformUseCaseTemplatesTableRow from './components/ActionsPlatformUseCaseTemplatesTableRow'
-import useApps from './hooks/useApps'
-import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
-import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
-import useUseCaseTemplates from './hooks/useUseCaseTemplates'
+import { ActionsPlatformTemplatesFilters } from './components/ActionsPlatformTemplatesFilters'
+import { ActionsPlatformTemplatesTable } from './components/ActionsPlatformTemplatesTable'
+import { ActionsPlatformUseCaseTemplatesTableRow } from './components/ActionsPlatformUseCaseTemplatesTableRow'
+import { useApps } from './hooks/useApps'
+import { useDeleteActionTemplate } from './hooks/useDeleteActionTemplate'
+import { useGetAppFromTemplateApp } from './hooks/useGetAppFromTemplateApp'
+import { useUseCaseTemplates } from './hooks/useUseCaseTemplates'
 import type { App } from './types'
 
 import css from './ActionsPlatformTemplatesView.less'
@@ -152,4 +152,4 @@ const ActionsPlatformUseCaseTemplatesView = () => {
     )
 }
 
-export default ActionsPlatformUseCaseTemplatesView
+export { ActionsPlatformUseCaseTemplatesView }

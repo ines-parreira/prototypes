@@ -5,10 +5,10 @@ import {
     AiSalesAgentChartConfig,
     AiSalesAgentMetricConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import AiSalesAgentTrendCard from 'domains/reporting/pages/automate/aiSalesAgent/charts/AiSalesAgentTrendCard'
-import GmvInfluencedOverTimeChart from 'domains/reporting/pages/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
-import SuccessRateTrendCard from 'domains/reporting/pages/automate/aiSalesAgent/charts/SuccessRateTrendCard'
-import TopProductRecommendationTable from 'domains/reporting/pages/automate/aiSalesAgent/charts/TopProductRecommendationTable'
+import { AiSalesAgentTrendCard } from 'domains/reporting/pages/automate/aiSalesAgent/charts/AiSalesAgentTrendCard'
+import { GmvInfluencedOverTimeChart } from 'domains/reporting/pages/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
+import { SuccessRateTrendCard } from 'domains/reporting/pages/automate/aiSalesAgent/charts/SuccessRateTrendCard'
+import { TopProductRecommendationTable } from 'domains/reporting/pages/automate/aiSalesAgent/charts/TopProductRecommendationTable'
 import { fetchTopProductRecommendationsReportData } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'

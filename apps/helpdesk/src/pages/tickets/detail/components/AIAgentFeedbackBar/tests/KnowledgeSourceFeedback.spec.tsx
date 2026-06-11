@@ -4,7 +4,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
-import KnowledgeSourceFeedback from '../KnowledgeSourceFeedback'
+import { KnowledgeSourceFeedback } from '../KnowledgeSourceFeedback'
 import type { KnowledgeResource } from '../types'
 
 const defaultResource = {

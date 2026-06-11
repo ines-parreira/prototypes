@@ -6,10 +6,10 @@ import { fromJS } from 'immutable'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { ViewField } from 'models/view/types'
-import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
+import { FilterDropdownSearch } from 'pages/common/components/ViewTable/FilterDropdownSearch'
 import { fieldPath, resolveLiteral } from 'utils'
 
-import FilterDropdownItems from './FilterDropdownItems'
+import { FilterDropdownItems } from './FilterDropdownItems'
 
 type Props = {
     viewConfig: Map<any, any>
@@ -20,7 +20,7 @@ type Props = {
     menuContainer?: HTMLElement
 }
 
-export default function FilterDropdown({
+export function FilterDropdown({
     field,
     viewConfig,
     menu: Menu = DropdownMenu,

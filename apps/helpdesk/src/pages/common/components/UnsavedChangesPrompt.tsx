@@ -4,8 +4,8 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 import { Prompt } from 'react-router-dom'
 
 import type { UnsavedChangesModalProps } from './UnsavedChangesModal'
-import UnsavedChangesModal from './UnsavedChangesModal'
-import useUnsavedChangesPrompt from './useUnsavedChangesPrompt'
+import { UnsavedChangesModal } from './UnsavedChangesModal'
+import { useUnsavedChangesPrompt } from './useUnsavedChangesPrompt'
 
 type UnsavedChangesPromptProps = {
     onDiscard?: () => void
@@ -120,4 +120,4 @@ const UnsavedChangesPrompt = forwardRef<
     },
 )
 
-export default UnsavedChangesPrompt
+export { UnsavedChangesPrompt }

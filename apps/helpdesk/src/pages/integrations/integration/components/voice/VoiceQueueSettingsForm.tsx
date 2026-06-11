@@ -12,7 +12,7 @@ import {
     validateUpdateVoiceQueue,
 } from '@gorgias/helpdesk-validators'
 
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import { DEFAULT_QUEUE_VALUES } from './constants'
 import {
@@ -20,7 +20,7 @@ import {
     queueSettingsCustomValidation,
 } from './utils'
 
-export default function VoiceQueueSettingsForm<
+export function VoiceQueueSettingsForm<
     T extends UpdateVoiceQueue | CreateVoiceQueue,
 >({
     children,

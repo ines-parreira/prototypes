@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import PhoneBarCallerDetailsContainer from '../PhoneBarCallerDetailsContainer'
+import { PhoneBarCallerDetailsContainer } from '../PhoneBarCallerDetailsContainer'
 
 describe('<PhoneBarCallerDetailsContainer/>', () => {
     it('should render children', () => {

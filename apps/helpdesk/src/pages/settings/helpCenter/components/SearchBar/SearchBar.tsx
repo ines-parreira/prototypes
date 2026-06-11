@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 import React from 'react'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import css from 'pages/settings/helpCenter/components/SearchBar/SearchBar.less'
 import { useSearchContext } from 'pages/settings/helpCenter/providers/SearchContext'
 

@@ -68,4 +68,4 @@ const useSplitLLMPromptTriggerInputs = (
     }, [inputs, nodes])
 }
 
-export default useSplitLLMPromptTriggerInputs
+export { useSplitLLMPromptTriggerInputs }

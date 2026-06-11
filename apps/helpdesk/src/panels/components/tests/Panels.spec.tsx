@@ -6,32 +6,28 @@ import { fireEvent } from '@testing-library/react'
 
 import { usePanels, useScreenSize } from '../../hooks'
 import type { Config } from '../../types'
-import Panel from '../Panel'
-import Panels from '../Panels'
+import { Panel } from '../Panel'
+import { Panels } from '../Panels'
 
 jest.mock('../../hooks', () => ({
     usePanels: jest.fn(),
     useScreenSize: jest.fn(),
 }))
-jest.mock(
-    '../Handle',
-    () =>
-        ({
-            onResizeStart,
-        }: {
-            onResizeStart: (ev: ReactMouseEvent) => void
-        }) => <div onMouseDown={onResizeStart}>Handle</div>,
-)
-jest.mock(
-    '../Panel',
-    () =>
-        ({ children, width }: { children: ReactNode; width: number }) => (
-            <div>
-                <p>Panel width: {width}</p>
-                {children}
-            </div>
-        ),
-)
+jest.mock('../Handle', () => ({
+    Handle: ({
+        onResizeStart,
+    }: {
+        onResizeStart: (ev: ReactMouseEvent) => void
+    }) => <div onMouseDown={onResizeStart}>Handle</div>,
+}))
+jest.mock('../Panel', () => ({
+    Panel: ({ children, width }: { children: ReactNode; width: number }) => (
+        <div>
+            <p>Panel width: {width}</p>
+            {children}
+        </div>
+    ),
+}))
 
 const usePanelsMock = usePanels as jest.Mock
 const useScreenSizeMock = useScreenSize as jest.Mock

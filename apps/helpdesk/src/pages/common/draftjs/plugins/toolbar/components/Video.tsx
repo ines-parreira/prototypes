@@ -75,4 +75,4 @@ class Video extends Component<Props> {
     }
 }
 
-export default Video
+export { Video }

@@ -11,10 +11,10 @@ import { SearchType } from '@gorgias/helpdesk-types'
 
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useSearch from '../useSearch'
+import { useSearch } from '../useSearch'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)

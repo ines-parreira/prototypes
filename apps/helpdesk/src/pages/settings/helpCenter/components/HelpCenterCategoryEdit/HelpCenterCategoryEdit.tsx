@@ -23,8 +23,8 @@ import {
     TextField,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Category,
     CreateCategoryDto,
@@ -36,7 +36,7 @@ import type {
 } from 'models/helpCenter/types'
 import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { Drawer } from 'pages/common/components/Drawer'
-import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
+import { AutoPopulateInput } from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -69,7 +69,7 @@ import { ArticleLanguageSelect } from '../articles/ArticleLanguageSelect'
 import { CloseModal } from '../articles/CloseModal'
 import { ConfirmationModal } from '../ConfirmationModal'
 import { SearchEnginePreview } from '../SearchEnginePreview'
-import SelectCustomerVisibility from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import { SelectCustomerVisibility } from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import { CategoryImageEdit } from './components/CategoryImageEdit/CategoryImageEdit'
 import { eligibleParentCategories, isOneOfParentsUnlisted } from './utils'
 

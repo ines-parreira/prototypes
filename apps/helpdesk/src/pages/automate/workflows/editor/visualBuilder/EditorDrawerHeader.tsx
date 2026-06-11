@@ -48,4 +48,4 @@ const EditorDrawerHeader = ({
     )
 }
 
-export default EditorDrawerHeader
+export { EditorDrawerHeader }

@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PrefillMacroAlert from '../PrefillMacroAlert'
+import { PrefillMacroAlert } from '../PrefillMacroAlert'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

@@ -4,19 +4,18 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useSearch } from 'hooks/useSearch'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 
-import AddPhoneNumberStep from '../AddPhoneNumberStep'
+import { AddPhoneNumberStep } from '../AddPhoneNumberStep'
 
 jest.mock('hooks/useSearch')
 jest.mock('pages/common/components/wizard/hooks/useNavigateWizardSteps')
-jest.mock('../VoiceIntegrationOnboardingCancelButton', () => () => (
-    <button>Cancel</button>
-))
+jest.mock('../VoiceIntegrationOnboardingCancelButton', () => ({
+    VoiceIntegrationOnboardingCancelButton: () => <button>Cancel</button>,
+}))
 
 jest.mock('pages/phoneNumbers/PhoneNumberSelectField', () => ({
-    __esModule: true,
-    default: ({
+    PhoneNumberSelectField: ({
         value,
         onChange,
         onCreate,
@@ -40,8 +39,7 @@ jest.mock('pages/phoneNumbers/PhoneNumberSelectField', () => ({
 }))
 
 jest.mock('pages/settings/businessHours/BusinessHoursSelectField', () => ({
-    __esModule: true,
-    default: () => <div>Business hours select</div>,
+    BusinessHoursSelectField: () => <div>Business hours select</div>,
 }))
 
 const useSearchMock = assumeMock(useSearch)

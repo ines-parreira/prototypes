@@ -27,7 +27,7 @@ import { channels } from 'fixtures/channels'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import { getChannels, toChannel } from 'services/channels'
 import type { RootState } from 'state/types'
-import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
+import { getChannelFromSourceType } from 'tickets/common/utils/getChannelFromSourceType'
 
 const mockedChannels = channels
 const clearFilterIcon = 'close'
@@ -37,11 +37,13 @@ const mockedGetChannels = assumeMock(getChannels)
 const mockedToChannels = assumeMock(toChannel)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('config/views.tsx', () => ({
     __esModule: true,
-    default: () => null,
+    views: () => null,
 }))
 
 jest.mock('@repo/logging', () => ({

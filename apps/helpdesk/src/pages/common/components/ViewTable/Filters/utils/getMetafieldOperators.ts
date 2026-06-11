@@ -60,7 +60,7 @@ const DATE_OPERATORS = {
     lteTimedelta: { label: 'more than' },
 }
 
-export default function getMetafieldOperators(metafieldType?: MetafieldType) {
+export function getMetafieldOperators(metafieldType?: MetafieldType) {
     switch (metafieldType) {
         case 'single_line_text_field':
         case 'multi_line_text_field':

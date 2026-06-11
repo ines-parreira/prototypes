@@ -22,7 +22,7 @@ import {
 } from 'fixtures/plans'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import VoiceOrSmsChangeReviewAlert from '../VoiceOrSmsChangeReviewAlert'
+import { VoiceOrSmsChangeReviewAlert } from '../VoiceOrSmsChangeReviewAlert'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,

@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import MetricTip from 'domains/reporting/pages/support-performance/components/MetricTip'
+import { MetricTip } from 'domains/reporting/pages/support-performance/components/MetricTip'
 
 describe('<MetricTip />', () => {
     it('should render the metric tip', () => {

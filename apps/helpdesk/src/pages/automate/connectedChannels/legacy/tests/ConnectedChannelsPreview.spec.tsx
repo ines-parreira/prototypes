@@ -12,13 +12,13 @@ import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
+import { ConnectedChannelsPreview } from '../ConnectedChannelsPreview'
 
 jest.mock(
     'pages/automate/common/components/preview/SelfServicePreview',
     () => ({
         __esModule: true,
-        default: () => <div>SelfServicePreview</div>,
+        SelfServicePreview: () => <div>SelfServicePreview</div>,
     }),
 )
 

@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import scrollIntoView from 'scroll-into-view-if-needed'
 
-import useScrollActiveItemIntoView from '../useScrollActiveItemIntoView'
+import { useScrollActiveItemIntoView } from '../useScrollActiveItemIntoView'
 
 const mockScrollIntoView = jest.fn()
 

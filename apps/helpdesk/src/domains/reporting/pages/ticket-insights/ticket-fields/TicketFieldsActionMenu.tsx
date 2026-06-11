@@ -16,7 +16,7 @@ import {
     ActionMenuSeparator,
 } from 'domains/reporting/pages/common/components/ActionMenu'
 import { useCustomFieldsReportData } from 'domains/reporting/services/ticketFieldsReportingService'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 export const TICKET_FIELDS_LABEL = 'Set Ticket Field Results'
 export const TICKET_FIELDS_ALL_STATUSES_LABEL =

@@ -18,18 +18,19 @@ import type { RootState } from 'state/types'
 import { RulesList } from '../RulesList'
 
 jest.mock('../../../../../state/entities/rules/actions')
-jest.mock('../components/RuleRow', () => () => (
-    <tr>
-        <td></td>
-        <td>name</td>
-        <td></td>
-        <td>last updated</td>
-    </tr>
-))
-jest.mock(
-    '../../../billing/automate/AutomateSubscriptionModal',
-    () => () => null,
-)
+jest.mock('../components/RuleRow', () => ({
+    RuleRow: () => (
+        <tr>
+            <td></td>
+            <td>name</td>
+            <td></td>
+            <td>last updated</td>
+        </tr>
+    ),
+}))
+jest.mock('../../../billing/automate/AutomateSubscriptionModal', () => ({
+    AutomateSubscriptionModal: () => null,
+}))
 
 const createRuleFixtures = (length: number) => {
     return Array.from({ length }, (_, i) => ({

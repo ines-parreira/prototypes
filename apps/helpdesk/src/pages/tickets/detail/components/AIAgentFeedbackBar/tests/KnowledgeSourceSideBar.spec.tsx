@@ -3,11 +3,11 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import { getArticleFixture } from 'pages/aiAgent/fixtures/article.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
-import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
+import { KnowledgeSourceSideBar } from '../KnowledgeSourceSideBar'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
 const useFlagMock = useFlag as jest.Mock

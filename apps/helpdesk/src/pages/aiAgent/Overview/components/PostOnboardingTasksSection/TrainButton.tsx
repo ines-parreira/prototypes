@@ -2,10 +2,10 @@ import { useRef } from 'react'
 
 import _noop from 'lodash/noop'
 
-import DropdownButton from 'pages/common/components/button/DropdownButton'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { DefaultExportDropdownButton as DropdownButton } from 'pages/common/components/button/DropdownButton'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { UncontrolledDropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 import css from './TrainSection.less'
 

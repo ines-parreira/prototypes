@@ -10,7 +10,7 @@ import { useSatisfiedOrBreachedTicketsTimeSeries } from 'domains/reporting/hooks
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
+import { DefaultExportBarChart as BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import {
     AchievedAndBreachedTicketsChart,

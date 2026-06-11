@@ -7,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import type { Item } from 'components/Dropdown'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { TagDropdownMenu } from 'tags'
 
@@ -87,4 +87,4 @@ const TagDropdown = ({
     )
 }
 
-export default TagDropdown
+export { TagDropdown }

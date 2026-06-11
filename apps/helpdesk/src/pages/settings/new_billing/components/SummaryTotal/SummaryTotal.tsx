@@ -13,7 +13,7 @@ import { Box } from '@gorgias/axiom'
 
 import { BalanceDueRow } from '../BalanceDueRow'
 import { ExistingCreditsRow } from '../ExistingCreditsRow'
-import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
+import { SummaryTotalWithDiscounts } from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'
 
@@ -202,4 +202,4 @@ function usePriceSummary(
     }
 }
 
-export default SummaryTotal
+export { SummaryTotal }

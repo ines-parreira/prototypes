@@ -1,9 +1,9 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
-import InstallationStep from './components/InstallationStep'
-import InstallationTab from './components/InstallationTab'
+import { InstallationStep } from './components/InstallationStep'
+import { InstallationTab } from './components/InstallationTab'
 
 type Props = {
     applicationId?: string
@@ -55,4 +55,4 @@ const ManualInstallationGTMTab = ({
     )
 }
 
-export default ManualInstallationGTMTab
+export { ManualInstallationGTMTab }

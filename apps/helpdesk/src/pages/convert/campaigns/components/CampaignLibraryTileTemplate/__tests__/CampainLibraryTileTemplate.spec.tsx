@@ -3,7 +3,7 @@ import { render } from '@repo/testing'
 import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/types'
 
-import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'
+import { CampainLibraryTileTemplate } from '../CampaignLibraryTileTemplate'
 
 describe('CampaignLibraryTileTemplate', () => {
     const template: CampaignTemplate = {

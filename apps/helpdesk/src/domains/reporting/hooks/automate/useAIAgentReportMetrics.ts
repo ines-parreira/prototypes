@@ -25,7 +25,7 @@ import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/sta
 import { getSortedAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isAiAgentCustomField } from 'pages/aiAgent/util'
 import { createCsv } from 'utils/file'
 

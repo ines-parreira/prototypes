@@ -9,7 +9,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
-import GuidanceActionDropdown from './GuidanceActionDropdown'
+import { GuidanceActionDropdown } from './GuidanceActionDropdown'
 
 import css from './GuidanceActionDropdown.less'
 
@@ -90,4 +90,4 @@ const GuidanceActionPicker = ({
     )
 }
 
-export default GuidanceActionPicker
+export { GuidanceActionPicker }

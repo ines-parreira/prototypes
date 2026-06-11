@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import LandingBanner from '../LandingBanner'
+import { LandingBanner } from '../LandingBanner'
 
 describe('<LandingBanner />', () => {
     it('should display the banner', () => {

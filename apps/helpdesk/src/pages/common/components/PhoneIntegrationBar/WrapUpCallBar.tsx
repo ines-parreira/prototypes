@@ -2,15 +2,15 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Button, LegacyButton } from '@gorgias/axiom'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useWrapUpTime from 'pages/common/components/PhoneIntegrationBar/useWrapUpTime'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useWrapUpTime } from 'pages/common/components/PhoneIntegrationBar/useWrapUpTime'
 
-import ActiveWrapUpCallBar from './ActiveWrapUpCallBar'
-import PhoneBarInnerContent from './PhoneBarInnerContent/PhoneBarInnerContent'
-import PhoneInfobarWrapper from './PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneIntegrationName from './PhoneIntegrationName/PhoneIntegrationName'
+import { ActiveWrapUpCallBar } from './ActiveWrapUpCallBar'
+import { PhoneBarInnerContent } from './PhoneBarInnerContent/PhoneBarInnerContent'
+import { PhoneInfobarWrapper } from './PhoneInfobarWrapper/PhoneInfobarWrapper'
+import { DefaultExportPhoneIntegrationName as PhoneIntegrationName } from './PhoneIntegrationName/PhoneIntegrationName'
 
-export default function WrapUpCallBar() {
+export function WrapUpCallBar() {
     const { call } = useVoiceDevice()
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 

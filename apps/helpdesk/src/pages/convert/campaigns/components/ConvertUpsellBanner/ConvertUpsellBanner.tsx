@@ -42,4 +42,4 @@ const ConvertUpsellBanner = () => {
     )
 }
 
-export default ConvertUpsellBanner
+export { ConvertUpsellBanner }

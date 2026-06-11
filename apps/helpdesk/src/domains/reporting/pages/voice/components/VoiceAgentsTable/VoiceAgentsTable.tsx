@@ -10,8 +10,8 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { getTableCell } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
-import TeamAverageCallsCountCell from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell'
-import TeamAverageTalkTimeCell from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
+import { TeamAverageCallsCountCell } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell'
+import { TeamAverageTalkTimeCell } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
 import css from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTable.less'
 import {
     columns,
@@ -32,14 +32,14 @@ import {
     pageSet,
     voiceAgentsPerformance,
 } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import { STATS_ROUTES } from 'routes/constants'
 
 const getSortingQuery = (

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useHistory, useRouteMatch } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import { getCurrentUser } from 'state/currentUser/selectors'

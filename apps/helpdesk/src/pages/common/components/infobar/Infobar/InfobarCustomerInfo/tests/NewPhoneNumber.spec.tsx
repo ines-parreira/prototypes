@@ -13,31 +13,29 @@ import { toast } from '@gorgias/axiom'
 import { useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
-import NewPhoneNumber from '../NewPhoneNumber'
+import { NewPhoneNumber } from '../NewPhoneNumber'
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('@repo/customer/hooks')
 jest.mock('libphonenumber-js')
 
-jest.mock(
-    'pages/common/forms/PhoneNumberInput/PhoneNumberInput',
-    () =>
-        ({
-            onChange,
-            error,
-        }: {
-            onChange: (value: any) => void
-            error?: string
-        }) => (
-            <>
-                <input
-                    data-testid="phoneNumberInput"
-                    onChange={(evt) => onChange(evt.target.value)}
-                />
-                <div>{error}</div>
-            </>
-        ),
-)
+jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => ({
+    DefaultExportPhoneNumberInput: ({
+        onChange,
+        error,
+    }: {
+        onChange: (value: any) => void
+        error?: string
+    }) => (
+        <>
+            <input
+                data-testid="phoneNumberInput"
+                onChange={(evt) => onChange(evt.target.value)}
+            />
+            <div>{error}</div>
+        </>
+    ),
+}))
 
 const useGetCustomerMock = assumeMock(useGetCustomer)
 const updateCustomerMock = assumeMock(useUpdateCustomer)

@@ -9,7 +9,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function GenericCard({ children }: Props) {
+export function GenericCard({ children }: Props) {
     return (
         <Card className={css.genericCard}>
             <CardBody>{children}</CardBody>

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Errors, { ErrorsCollector, ErrorsContext } from '../Errors'
+import { Errors, ErrorsCollector, ErrorsContext } from '../Errors'
 
 describe('Errors component', () => {
     it('should return null if there is no errors', () => {

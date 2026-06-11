@@ -13,7 +13,7 @@ import { isGorgiasApiError } from 'models/api/types'
  * - Query invalidation
  * - Notifications
  */
-export default function useCreateCustomFieldCondition() {
+export function useCreateCustomFieldCondition() {
     const queryClient = useQueryClient()
 
     return useCreate({

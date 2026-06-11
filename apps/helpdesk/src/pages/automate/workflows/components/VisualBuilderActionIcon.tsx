@@ -21,7 +21,7 @@ type Props = {
         | 'app'
 }
 
-export default function VisualBuilderActionIcon({ nodeType }: Props) {
+export function VisualBuilderActionIcon({ nodeType }: Props) {
     return (
         <div
             className={css.visualBuilderActionIcon}

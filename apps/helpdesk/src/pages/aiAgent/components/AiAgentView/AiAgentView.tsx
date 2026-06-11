@@ -7,9 +7,9 @@ import { Container } from 'reactstrap'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import css from './AiAgentView.less'
 

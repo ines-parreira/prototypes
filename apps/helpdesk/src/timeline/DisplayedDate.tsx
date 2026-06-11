@@ -1,13 +1,10 @@
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 
 import { SORTABLE_KEY_TO_LABEL } from './constants'
 import type { SortOption, TimelineItem } from './types'
 
-export default function DisplayedDate(
-    sortOption: SortOption,
-    item: TimelineItem,
-) {
+export function DisplayedDate(sortOption: SortOption, item: TimelineItem) {
     const getTicketDateValue = (key: SortOption['key']): string | null => {
         switch (key) {
             case 'last_message_datetime':

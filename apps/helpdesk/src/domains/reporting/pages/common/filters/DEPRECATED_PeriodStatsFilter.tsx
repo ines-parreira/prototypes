@@ -7,11 +7,11 @@ import moment from 'moment-timezone'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
-import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
+import { DefaultExportPeriodPicker as PeriodPicker } from 'domains/reporting/pages/common/PeriodPicker'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 
 const MAX_SPAN = 90
 
@@ -28,7 +28,7 @@ type Props = {
  * @date 2024-06-26
  * @type feature-component
  */
-export default function DEPRECATED_PeriodStatsFilter({
+export function DEPRECATED_PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,
     variant = 'fill',

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import EditableTitle from './EditableTitle'
+import { DefaultExportEditableTitle as EditableTitle } from './EditableTitle'
 
 // Mock useTextWidth to avoid Canvas API issues in tests
 jest.mock('@gorgias/toolkit-react', () => ({

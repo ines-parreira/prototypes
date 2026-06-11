@@ -1,10 +1,10 @@
 import { renderHook } from '@repo/testing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useLegacyAlertBanners from '../useLegacyAlertBanners'
+import { useLegacyAlertBanners } from '../useLegacyAlertBanners'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 

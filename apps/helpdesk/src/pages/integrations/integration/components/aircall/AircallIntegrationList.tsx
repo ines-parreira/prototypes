@@ -3,17 +3,14 @@ import type { List, Map } from 'immutable'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import IntegrationList from '../IntegrationList'
-import AircallIntegrationListItem from './AircallIntegrationListItem'
+import { DefaultExportIntegrationList as IntegrationList } from '../IntegrationList'
+import { AircallIntegrationListItem } from './AircallIntegrationListItem'
 
 type Props = {
     integrations: List<Map<any, any>>
     loading: Map<any, any>
 }
-export default function AircallIntegrationList({
-    integrations,
-    loading,
-}: Props) {
+export function AircallIntegrationList({ integrations, loading }: Props) {
     const longTypeDescription = (
         <span>
             Aircall is a phone app that helps you set up a call center in

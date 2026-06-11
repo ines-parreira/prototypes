@@ -16,7 +16,7 @@ import { Flow, FlowProvider } from 'core/ui/flows'
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowNode } from '../../types'
 import { createIvrOptionNode } from '../../utils'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { IvrMenuNode } from '../IvrMenuNode'
 
 const mockUpdateNodes = jest.fn()
@@ -28,7 +28,11 @@ jest.mock(
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceMessageTTS/VoiceMessageTTSPreviewFields',
-    () => () => <div>VoiceMessageTTSPreviewFields</div>,
+    () => ({
+        VoiceMessageTTSPreviewFields: () => (
+            <div>VoiceMessageTTSPreviewFields</div>
+        ),
+    }),
 )
 
 const matchesOriginal = HTMLElement.prototype.matches

@@ -21,7 +21,7 @@ import { useTicketsClosedPerHour } from 'domains/reporting/hooks/useTicketsClose
 import { useTicketsRepliedPerHour } from 'domains/reporting/hooks/useTicketsRepliedPerHour'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 jest.mock('domains/reporting/hooks/metrics')
 const useCustomerSatisfactionMetricMock = assumeMock(

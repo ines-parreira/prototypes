@@ -7,7 +7,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Route, Router } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import type { State } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { KNOWLEDGE_ALERT_KIND } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'

@@ -19,4 +19,4 @@ const useOrderDates = (locale: string) => {
     )
 }
 
-export default useOrderDates
+export { useOrderDates }

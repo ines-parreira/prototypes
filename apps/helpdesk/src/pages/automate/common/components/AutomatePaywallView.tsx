@@ -7,17 +7,17 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import LinkButton from 'pages/common/components/button/LinkButton'
-import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import PageHeader from 'pages/common/components/PageHeader'
-import PaywallView from 'pages/common/components/PaywallView/PaywallView'
-import PaywallViewActionButtons from 'pages/common/components/PaywallView/PaywallViewActionButtons'
-import PaywallViewChecklist from 'pages/common/components/PaywallView/PaywallViewChecklist'
-import PaywallViewChecklistItem from 'pages/common/components/PaywallView/PaywallViewChecklistItem'
-import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHeader'
-import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
-import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { HeroImageCarousel } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { PaywallView } from 'pages/common/components/PaywallView/PaywallView'
+import { PaywallViewActionButtons } from 'pages/common/components/PaywallView/PaywallViewActionButtons'
+import { PaywallViewChecklist } from 'pages/common/components/PaywallView/PaywallViewChecklist'
+import { PaywallViewChecklistItem } from 'pages/common/components/PaywallView/PaywallViewChecklistItem'
+import { PaywallViewHeader } from 'pages/common/components/PaywallView/PaywallViewHeader'
+import { PaywallViewLeftContainer } from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
+import { PaywallViewRightContainer } from 'pages/common/components/PaywallView/PaywallViewRightContainer'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import { usePaywallConfig } from '../hooks/usePaywallConfig'
 import { AutomateFeatures } from '../types'
@@ -152,4 +152,4 @@ const AutomatePaywallView = ({
         </div>
     )
 }
-export default AutomatePaywallView
+export { AutomatePaywallView }

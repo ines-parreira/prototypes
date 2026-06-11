@@ -15,10 +15,10 @@ import {
 } from 'models/ticket/tests/mocks'
 import type { TicketMessage } from 'models/ticket/types'
 import { MessageMetadataType } from 'models/ticket/types'
-import type Avatar from 'pages/common/components/Avatar/Avatar'
+import type { Avatar } from 'pages/common/components/Avatar/Avatar'
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 
-import Container from '../Container'
+import { DefaultExportContainer as Container } from '../Container'
 
 const customer = fromJS({
     integrations: {
@@ -44,20 +44,18 @@ jest.mock('@repo/feature-flags', () => ({
     withFeatureFlags: (Component: React.ComponentType<any>) => Component,
 }))
 
-jest.mock(
-    'pages/common/components/Avatar/Avatar',
-    () =>
-        ({ badgeColor }: ComponentProps<typeof Avatar>) => (
-            <div>
-                Avatar
-                <div>badgeColor: {badgeColor}</div>
-            </div>
-        ),
-)
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    Avatar: ({ badgeColor }: ComponentProps<typeof Avatar>) => (
+        <div>
+            Avatar
+            <div>badgeColor: {badgeColor}</div>
+        </div>
+    ),
+}))
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Footer', () => () => (
-    <div>Footer</div>
-))
+jest.mock('pages/tickets/detail/components/TicketMessages/Footer', () => ({
+    Footer: () => <div>Footer</div>,
+}))
 
 jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({
     MessageHeader: jest.fn(() => <div>MessageHeader</div>),
@@ -65,7 +63,11 @@ jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner',
-    () => jest.fn(() => <div>SimplifiedAIAgentBanner</div>),
+    () => ({
+        SimplifiedAIAgentBanner: jest.fn(() => (
+            <div>SimplifiedAIAgentBanner</div>
+        )),
+    }),
 )
 
 jest.mock(

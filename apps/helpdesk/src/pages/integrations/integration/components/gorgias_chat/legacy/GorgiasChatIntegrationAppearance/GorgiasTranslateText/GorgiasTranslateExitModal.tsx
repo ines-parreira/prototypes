@@ -79,4 +79,4 @@ const GorgiasTranslateExitModal = ({
     )
 }
 
-export default GorgiasTranslateExitModal
+export { GorgiasTranslateExitModal }

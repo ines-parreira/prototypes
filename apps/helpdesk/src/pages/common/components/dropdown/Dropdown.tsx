@@ -289,4 +289,4 @@ const Dropdown = forwardRef(
     },
 )
 
-export default Dropdown
+export { Dropdown }

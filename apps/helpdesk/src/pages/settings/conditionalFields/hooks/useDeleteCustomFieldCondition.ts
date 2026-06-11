@@ -14,7 +14,7 @@ import {
  * - Query invalidation
  * - Notifications
  */
-export default function useDeleteCustomFieldCondition() {
+export function useDeleteCustomFieldCondition() {
     const queryClient = useQueryClient()
 
     return useDelete({

@@ -6,9 +6,9 @@ import { List } from 'immutable'
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import Expression from './expression/Expression'
-import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
-import Statement from './statements/Statement'
+import { Expression } from './expression/Expression'
+import { AddActionOrIfStatement } from './operations/AddActionOrIfStatement'
+import { DefaultExportStatement as Statement } from './statements/Statement'
 
 type Props = {
     rule: Map<any, any>
@@ -16,7 +16,7 @@ type Props = {
     body: Array<ComponentProps<typeof Statement>>
 }
 
-export default function Program({ actions, body, rule }: Props) {
+export function Program({ actions, body, rule }: Props) {
     return (
         <RuleContext.Provider value={{ Expression, Statement }}>
             <div className="Program-wrapper">

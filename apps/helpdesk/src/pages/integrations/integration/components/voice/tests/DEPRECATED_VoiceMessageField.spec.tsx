@@ -12,10 +12,10 @@ import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import DEPRECATED_VoiceMessageField from '../DEPRECATED_VoiceMessageField'
+import { DEPRECATED_VoiceMessageField } from '../DEPRECATED_VoiceMessageField'
 
 jest.mock('@gorgias/helpdesk-queries')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 
 const useUploadCustomVoiceRecordingMock = assumeMock(
     useUploadCustomVoiceRecording,

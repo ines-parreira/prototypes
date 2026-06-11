@@ -1,33 +1,35 @@
 import { render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
-import MacroEditLanguage from '../MacroEditLanguage'
+import { MacroEditLanguage } from '../MacroEditLanguage'
 
 // Mock SelectField component
 jest.mock('pages/common/forms/SelectField/SelectField', () => {
-    return function MockSelectField({
-        value,
-        onChange,
-        options,
-        placeholder,
-    }: any) {
-        return (
-            <select
-                data-testid="select-field"
-                value={value === null ? 'null' : value}
-                onChange={(e) => onChange(e.target.value)}
-                aria-label={placeholder}
-            >
-                <option value="null">- No language -</option>
-                {options.map((option: any) => (
-                    <option key={option.value} value={option.value}>
-                        {typeof option.label === 'string'
-                            ? option.label
-                            : option.value}
-                    </option>
-                ))}
-            </select>
-        )
+    return {
+        SelectField: function MockSelectField({
+            value,
+            onChange,
+            options,
+            placeholder,
+        }: any) {
+            return (
+                <select
+                    data-testid="select-field"
+                    value={value === null ? 'null' : value}
+                    onChange={(e) => onChange(e.target.value)}
+                    aria-label={placeholder}
+                >
+                    <option value="null">- No language -</option>
+                    {options.map((option: any) => (
+                        <option key={option.value} value={option.value}>
+                            {typeof option.label === 'string'
+                                ? option.label
+                                : option.value}
+                        </option>
+                    ))}
+                </select>
+            )
+        },
     }
 })
 

@@ -40,7 +40,7 @@ type Props = {
  * @date 2026-03-11
  * @type ui-kit-migration
  */
-export default function ConfirmationPopover({
+export function ConfirmationPopover({
     buttonProps,
     cancelButtonProps,
     children,

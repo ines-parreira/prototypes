@@ -31,18 +31,24 @@ import { billingState } from 'fixtures/billing'
 import { shopifyProductResult } from 'fixtures/shopify'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useAllIntegrations from 'hooks/useAllIntegrations'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useAllIntegrations } from 'hooks/useAllIntegrations'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
-import Routes from 'routes/Routes'
+import { Routes } from 'routes/Routes'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState } from 'state/billing/reducers'
 import type { RootState } from 'state/types'
 
-jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
+jest.mock('routes/settings', () => ({
+    SettingRoutes: () => <div>SettingsRoutes</div>,
+}))
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    PanelHeader: ({ title }: { title: string }) => <div>{title}</div>,
+}))
 jest.mock('@repo/logging')
 const logPageMock = assumeMock(logPageChange)
 
@@ -58,45 +64,51 @@ jest.mock('hooks/useIsAccountDeactivated', () => ({
 
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 
-jest.mock(
-    'pages/LegacyPage',
-    () =>
-        ({
-            content: Content,
-            children,
-        }: {
-            content?: ComponentType<any>
-            children?: ReactNode
-        }) =>
-            Content ? <Content /> : children,
-)
-jest.mock('pages/PanelLayout', () => () => <div>PanelLayout</div>)
-jest.mock('pages/settings/yourProfile/YourProfileContainer', () => () => (
-    <div>YourProfileContainer</div>
-))
-jest.mock(
-    'pages/automate/actionsPlatform/ActionsPlatformAppsView',
-    () => () => <div>ActionsPlatformAppsView</div>,
-)
-jest.mock(
-    'pages/automate/actionsPlatform/ActionsPlatformStepsView',
-    () => () => <div>ActionsPlatformStepsView</div>,
-)
-jest.mock(
-    'pages/convert/onboarding/components/ConvertOnboardingView',
-    () => () => <div>ConvertOnboardingView</div>,
-)
+jest.mock('pages/LegacyPage', () => ({
+    DefaultExportLegacyPage: ({
+        content: Content,
+        children,
+    }: {
+        content?: ComponentType<any>
+        children?: ReactNode
+    }) => (Content ? <Content /> : children),
+}))
+jest.mock('pages/PanelLayout', () => ({
+    DefaultExportPanelLayout: () => <div>PanelLayout</div>,
+}))
+jest.mock('pages/settings/yourProfile/YourProfileContainer', () => ({
+    YourProfileContainer: () => <div>YourProfileContainer</div>,
+}))
+jest.mock('pages/automate/actionsPlatform/ActionsPlatformAppsView', () => ({
+    ActionsPlatformAppsView: () => <div>ActionsPlatformAppsView</div>,
+}))
+jest.mock('pages/automate/actionsPlatform/ActionsPlatformStepsView', () => ({
+    ActionsPlatformStepsView: () => <div>ActionsPlatformStepsView</div>,
+}))
+jest.mock('pages/convert/onboarding/components/ConvertOnboardingView', () => ({
+    ConvertOnboardingView: () => <div>ConvertOnboardingView</div>,
+}))
 jest.mock(
     'pages/convert/common/components/ConvertNavbar/ConvertNavbar',
-    () => () => <div>ConvertNavbar</div>,
+    () => ({
+        ConvertNavbar: () => <div>ConvertNavbar</div>,
+    }),
 )
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView',
-    () => () => <div>ActionsPlatformCreateAppFormView</div>,
+    () => ({
+        ActionsPlatformCreateAppFormView: () => (
+            <div>ActionsPlatformCreateAppFormView</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView',
-    () => () => <div>ActionsPlatformEditAppFormView</div>,
+    () => ({
+        ActionsPlatformEditAppFormView: () => (
+            <div>ActionsPlatformEditAppFormView</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/aiAgent/providers/AiAgentAccountConfigurationProvider',
@@ -111,25 +123,27 @@ jest.mock(
         ),
     }),
 )
-jest.mock(
-    'pages/aiAgent/providers/AiAgentStoreConfigurationProvider',
-    () =>
-        ({ children }: PropsWithChildren<any>) => (
-            <>
-                <div>AiAgentStoreConfigurationProvider</div>
-                <>{children}</>
-            </>
-        ),
-)
-jest.mock('pages/aiAgent/AiAgentMainViewContainer', () => () => (
-    <div>AiAgentMainViewContainer</div>
-))
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationProvider', () => ({
+    AiAgentStoreConfigurationProvider: ({
+        children,
+    }: PropsWithChildren<any>) => (
+        <>
+            <div>AiAgentStoreConfigurationProvider</div>
+            <>{children}</>
+        </>
+    ),
+}))
+jest.mock('pages/aiAgent/AiAgentMainViewContainer', () => ({
+    AiAgentMainViewContainer: () => <div>AiAgentMainViewContainer</div>,
+}))
 jest.mock('pages/aiAgent/Overview/AiAgentOverview', () => ({
     AiAgentOverview: () => <div>AiAgentOverview</div>,
 }))
-jest.mock('pages/aiAgent/AiAgentConfigurationContainer', () => () => (
-    <div>AiAgentConfigurationContainer</div>
-))
+jest.mock('pages/aiAgent/AiAgentConfigurationContainer', () => ({
+    AiAgentConfigurationContainer: () => (
+        <div>AiAgentConfigurationContainer</div>
+    ),
+}))
 jest.mock(
     'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer',
     () => ({
@@ -152,19 +166,35 @@ jest.mock('pages/aiAgent/insights/OptimizeContainer/OptimizeContainer', () => ({
 }))
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer',
-    () => () => <div>AiAgentScrapedDomainProductsContainer</div>,
+    () => ({
+        AiAgentScrapedDomainProductsContainer: () => (
+            <div>AiAgentScrapedDomainProductsContainer</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer',
-    () => () => <div>AiAgentScrapedDomainQuestionsContainer</div>,
+    () => ({
+        AiAgentScrapedDomainQuestionsContainer: () => (
+            <div>AiAgentScrapedDomainQuestionsContainer</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer',
-    () => () => <div>AiAgentUrlSourcesArticleContainer</div>,
+    () => ({
+        AiAgentUrlSourcesArticleContainer: () => (
+            <div>AiAgentUrlSourcesArticleContainer</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer',
-    () => () => <div>AiAgentExternalDocumentsArticleContainer</div>,
+    () => ({
+        AiAgentExternalDocumentsArticleContainer: () => (
+            <div>AiAgentExternalDocumentsArticleContainer</div>
+        ),
+    }),
 )
 
 jest.mock('pages/aiAgent/KnowledgeHub/KnowledgeHubContainer', () => ({
@@ -185,9 +215,9 @@ jest.mock(
 jest.mock('domains/reporting/routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 
 jest.mock('pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect', () => ({
     AiAgentRedirect: () => <div>AiAgentRedirect</div>,
@@ -197,9 +227,9 @@ jest.mock('pages/aiAgent/AiAgentCustomerEngagement', () => ({
     AiAgentCustomerEngagement: () => <div>AiAgentCustomerEngagement</div>,
 }))
 
-jest.mock('pages/aiAgent/actions/ActionTemplatesView', () => () => (
-    <div>ActionTemplatesView</div>
-))
+jest.mock('pages/aiAgent/actions/ActionTemplatesView', () => ({
+    ActionTemplatesView: () => <div>ActionTemplatesView</div>,
+}))
 
 jest.mock('pages/aiAgent/actions/EditActionViewContainer', () => {
     const React = require('react')
@@ -218,7 +248,7 @@ jest.mock('pages/aiAgent/actions/EditActionViewContainer', () => {
 
     return {
         __esModule: true,
-        default: MockEditActionViewContainer,
+        EditActionViewContainer: MockEditActionViewContainer,
     }
 })
 
@@ -239,7 +269,7 @@ jest.mock('pages/aiAgent/actionsV2/ActionDetailView', () => {
 
     return {
         __esModule: true,
-        default: MockActionDetailView,
+        ActionDetailView: MockActionDetailView,
     }
 })
 
@@ -268,7 +298,7 @@ jest.mock(
 
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAllIntegrations: jest.fn(),
 }))
 
 jest.mock('@gorgias/helpdesk-client', () => ({
@@ -420,8 +450,9 @@ jest.mock('AIJourney/pages/Analytics/Analytics', () => ({
 }))
 
 jest.mock('domains/reporting/pages/DefaultStatsFilters', () => ({
-    __esModule: true,
-    default: ({ children }: PropsWithChildren<any>) => <>{children}</>,
+    DefaultStatsFilters: ({ children }: PropsWithChildren<any>) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
@@ -472,7 +503,7 @@ describe('<Routes/>', () => {
         })
 
         jest.mocked(
-            require('hooks/useAllIntegrations').default,
+            require('hooks/useAllIntegrations').useAllIntegrations,
         ).mockReturnValue({
             integrations: [
                 {

@@ -8,8 +8,8 @@ import ReactPlayer from 'react-player'
 import * as utils from 'utils'
 
 import * as draftjsPluginsUtils from '../../../utils'
-import ToolbarProvider from '../../ToolbarProvider'
-import AddVideo from '../AddVideo'
+import { ToolbarProvider } from '../../ToolbarProvider'
+import { AddVideo } from '../AddVideo'
 
 const minProps = {
     getEditorState: jest.fn(),

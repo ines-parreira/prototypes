@@ -7,8 +7,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useCategoriesOptions from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/hooks/useCategoriesOptions'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { useCategoriesOptions } from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/hooks/useCategoriesOptions'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { AILibraryArticleItemsFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -18,12 +18,14 @@ import { EditionManagerContextProvider } from 'pages/settings/helpCenter/provide
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AIArticlesLibraryArticleEditor from '../AIArticlesLibraryArticleEditor'
+import { ArticleEditor as AIArticlesLibraryArticleEditor } from '../AIArticlesLibraryArticleEditor'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
 ;(useHelpCenterIdParam as jest.Mock).mockReturnValue(

@@ -6,7 +6,7 @@ import {
     useGetEmail,
     useGetEmailIntegrationsWithStoreName,
 } from 'hooks/email/useGetEmail'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useListStoreMappings } from 'models/storeMapping/queries'
 
 jest.mock('hooks/useAppSelector')

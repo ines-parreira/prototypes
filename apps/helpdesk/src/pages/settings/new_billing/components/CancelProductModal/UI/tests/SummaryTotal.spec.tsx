@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { Cadence } from 'models/billing/types'
 
-import SummaryTotal from '../SummaryTotal'
+import { SummaryTotal } from '../SummaryTotal'
 
 describe('SummaryTotal', () => {
     it.each(Object.values(Cadence))(

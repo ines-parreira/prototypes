@@ -11,7 +11,7 @@ import type { InputProps } from 'reactstrap/lib/Input'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'pages/common/forms/DEPRECATED_InputField.less'
-import Errors from 'pages/common/forms/Errors'
+import { Errors } from 'pages/common/forms/Errors'
 import { defined } from 'utils'
 
 export type InputFieldProps<T = any> = {
@@ -27,7 +27,7 @@ export type InputFieldState = Record<string, unknown>
  * @date 2026-01-13
  * @type ui-kit-migration
  */
-export default class InputField<
+export class InputField<
     T extends InputFieldProps = InputFieldProps,
     U extends InputFieldState = InputFieldState,
 > extends Component<T, U> {

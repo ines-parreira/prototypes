@@ -27,7 +27,7 @@ import type {
     DrilldownLevel,
 } from './types'
 import { getShortLabel, isConditionDisabled, isSameCondition } from './types'
-import useConditionsData from './useConditionsData'
+import { useConditionsData } from './useConditionsData'
 
 import css from './ConditionsSelectBox.less'
 

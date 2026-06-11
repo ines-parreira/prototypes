@@ -2,9 +2,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField, CustomFieldValue } from 'custom-fields/types'
-import useListTags from 'tags/useListTags'
+import { useListTags } from 'tags/useListTags'
 
-import useConditionsData from '../useConditionsData'
+import { useConditionsData } from '../useConditionsData'
 
 jest.mock('tags/useListTags')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')

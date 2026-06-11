@@ -22,7 +22,7 @@ export const initialState: RefundOrderState = fromJS({
     refund: {},
 })
 
-export default function reducer(
+export function reducer(
     state: RefundOrderState = initialState,
     action: GorgiasAction,
 ): RefundOrderState {

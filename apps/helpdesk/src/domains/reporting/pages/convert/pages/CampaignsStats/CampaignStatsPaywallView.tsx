@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { withCanduPaywall } from 'pages/common/components/Paywall/CanduPaywall'
-import ConvertPaywallView from 'pages/convert/common/components/ConvertPaywallView'
+import { ConvertPaywallView } from 'pages/convert/common/components/ConvertPaywallView'
 import { ConvertFeatures } from 'pages/convert/common/components/ConvertPaywallView/constants'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import type { ConvertRouteParams } from 'pages/convert/common/types'
@@ -30,7 +30,9 @@ const CampaignStatsPaywallView = () => {
     )
 }
 
-export default withCanduPaywall({
+const DefaultExportCampaignStatsPaywallView = withCanduPaywall({
     title: TITLE,
     canduId: 'campaign-stats-paywall',
 })(CampaignStatsPaywallView)
+
+export { DefaultExportCampaignStatsPaywallView }

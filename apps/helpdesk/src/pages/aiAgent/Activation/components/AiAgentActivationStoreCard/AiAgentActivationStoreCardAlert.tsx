@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
-import Alert from 'pages/common/components/Alert/Alert'
+import { Alert } from 'pages/common/components/Alert/Alert'
 
 import css from './AiAgentActivationStoreCard.less'
 

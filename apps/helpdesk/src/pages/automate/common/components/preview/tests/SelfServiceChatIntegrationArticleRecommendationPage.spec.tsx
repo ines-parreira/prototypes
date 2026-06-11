@@ -15,7 +15,7 @@ import {
 } from 'models/integration/types'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 
-import SelfServiceChatIntegrationArticleRecommendationPage from '../SelfServiceChatIntegrationArticleRecommendationPage'
+import { SelfServiceChatIntegrationArticleRecommendationPage } from '../SelfServiceChatIntegrationArticleRecommendationPage'
 
 const mockIntegration: GorgiasChatIntegration = {
     name: 'integration',

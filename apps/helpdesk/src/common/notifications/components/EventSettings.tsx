@@ -3,14 +3,14 @@ import React, { Fragment, useMemo } from 'react'
 import { useAreFlagsLoading } from '@repo/feature-flags'
 
 import { useAutomateNotificationSettingsVisibility } from 'automate/notifications/hooks/useAutomateNotificationSettingsVisibility'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import type { SoundValue } from 'services/NotificationSounds'
 
 import { categories, notifications } from '../data'
 import type { CategoryConfig, Settings } from '../types'
-import EventSettingsRow from './EventSettingsRow'
-import EventSettingsTableHead from './EventSettingsTableHead'
+import { EventSettingsRow } from './EventSettingsRow'
+import { EventSettingsTableHead } from './EventSettingsTableHead'
 
 import css from './EventSettings.less'
 
@@ -29,7 +29,7 @@ type ResolvedCategory = {
     notificationTypes: string[]
 }
 
-export default function EventSettings({
+export function EventSettings({
     settings,
     onChangeChannel,
     onChangeSound,

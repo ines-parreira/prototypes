@@ -10,7 +10,7 @@ type Props = {
     datetime: string
 }
 
-export default function RelativeTime({ datetime }: Props) {
+export function RelativeTime({ datetime }: Props) {
     useNow(Duration.seconds(10))
     const m = useMemo(() => moment(new Date(datetime)), [datetime])
 

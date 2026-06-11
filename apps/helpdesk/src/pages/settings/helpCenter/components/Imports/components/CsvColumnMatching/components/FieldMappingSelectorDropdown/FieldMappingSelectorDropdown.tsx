@@ -21,7 +21,7 @@ export interface Props {
     onClick: (optionKey: string) => void
 }
 
-export default function FieldMappingSelectorDropdown({
+export function FieldMappingSelectorDropdown({
     className,
     onClick,
     options,

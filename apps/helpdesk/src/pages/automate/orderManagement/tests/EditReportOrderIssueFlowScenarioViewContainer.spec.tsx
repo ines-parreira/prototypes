@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import { EditReportOrderIssueFlowScenarioViewContainer } from '../EditReportOrderIssueFlowScenarioViewContainer'
@@ -15,7 +15,7 @@ jest.mock(
     '../legacy/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer',
     () => ({
         __esModule: true,
-        default: () => (
+        EditReportOrderIssueFlowScenarioViewContainer: () => (
             <div>LegacyEditReportOrderIssueFlowScenarioViewContainer</div>
         ),
     }),

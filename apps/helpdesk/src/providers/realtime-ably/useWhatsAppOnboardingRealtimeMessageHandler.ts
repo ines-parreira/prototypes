@@ -7,7 +7,7 @@ import { isRecord } from '@repo/utils'
 import { toast } from '@gorgias/axiom'
 import type { UseChannelProps } from '@gorgias/realtime'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'

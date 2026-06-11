@@ -2,10 +2,10 @@ import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 
-import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
+import { VoiceDeviceProvider } from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import { initialState } from 'state/twilio/voiceDevice'
 
-import useVoiceDevice from '../useVoiceDevice'
+import { useVoiceDevice } from '../useVoiceDevice'
 
 describe('useVoiceDevice', () => {
     it('should return the context value from VoiceDeviceProvider', () => {

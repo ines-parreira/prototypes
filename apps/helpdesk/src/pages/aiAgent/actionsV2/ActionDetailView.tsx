@@ -16,12 +16,12 @@ import {
 } from '@gorgias/axiom'
 
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
-import GuidanceReferenceProvider from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
+import { GuidanceReferenceProvider } from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import ActionEventsContent from 'pages/aiAgent/actions/ActionEventsContent'
+import { ActionEventsContent } from 'pages/aiAgent/actions/ActionEventsContent'
 
 import { ActionConfigTab } from './components/ActionConfigTab'
 import { ActionDetailHeader } from './components/ActionDetailHeader'
@@ -139,4 +139,4 @@ const ActionDetailView = () => {
     )
 }
 
-export default ActionDetailView
+export { ActionDetailView }

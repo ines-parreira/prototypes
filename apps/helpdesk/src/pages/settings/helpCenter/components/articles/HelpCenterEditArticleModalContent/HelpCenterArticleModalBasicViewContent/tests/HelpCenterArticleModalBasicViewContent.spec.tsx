@@ -1,8 +1,8 @@
 import { render } from '@repo/testing'
 
-import HelpCenterEditModalFooter from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
-import HelpCenterEditModalHeader from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader'
-import HelpCenterEditor from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
+import { HelpCenterEditModalFooter } from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
+import { HelpCenterEditModalHeader } from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader'
+import { HelpCenterEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -10,7 +10,7 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import type { RootState } from 'state/types'
 
-import HelpCenterArticleModalBasicViewContent from '../HelpCenterArticleModalBasicViewContent'
+import { HelpCenterArticleModalBasicViewContent } from '../HelpCenterArticleModalBasicViewContent'
 
 const mockUseScreenSize = jest.fn()
 const mockUseAbilityChecker = jest.fn()
@@ -34,7 +34,7 @@ jest.mock('pages/settings/helpCenter/providers/EditionManagerContext', () => ({
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
     __esModule: true,
-    default: () => mockUseCurrentHelpCenter(),
+    useCurrentHelpCenter: () => mockUseCurrentHelpCenter(),
 }))
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({

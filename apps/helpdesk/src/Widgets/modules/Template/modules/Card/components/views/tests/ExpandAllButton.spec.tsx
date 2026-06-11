@@ -9,7 +9,7 @@ import {
     TARGET_CLOSED_MARKER,
 } from 'Widgets/modules/Template/config/template'
 
-import ExpandAllButton, { EXPAND_TITLE, FOLD_TITLE } from '../ExpandAllButton'
+import { EXPAND_TITLE, ExpandAllButton, FOLD_TITLE } from '../ExpandAllButton'
 
 const onClickMock = jest.fn()
 

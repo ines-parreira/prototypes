@@ -7,7 +7,7 @@ import _debounce from 'lodash/debounce'
 import type { ReceiverValue } from 'state/ticket/utils'
 import { isEmail } from 'utils'
 
-import MultiSelectAsyncField from './MultiSelectAsyncField'
+import { MultiSelectAsyncField } from './MultiSelectAsyncField'
 
 jest.mock('lodash/debounce', () =>
     jest.fn((fn: (...args: any[]) => void) => fn),

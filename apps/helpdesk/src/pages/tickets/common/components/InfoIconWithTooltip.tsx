@@ -5,7 +5,7 @@ import type { Placement } from '@floating-ui/react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
+import { StatsHelpIcon } from 'domains/reporting/pages/common/components/StatsHelpIcon'
 
 import css from './InfoIconWithTooltip.less'
 
@@ -32,4 +32,4 @@ const InfoIconWithTooltip: React.FC<Props> = ({
     )
 }
 
-export default InfoIconWithTooltip
+export { InfoIconWithTooltip }

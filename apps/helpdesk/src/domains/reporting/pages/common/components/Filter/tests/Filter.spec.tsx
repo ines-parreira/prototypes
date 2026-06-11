@@ -8,7 +8,8 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-import Filter, {
+import {
+    Filter,
     getWarningTooltip,
 } from 'domains/reporting/pages/common/components/Filter/Filter'
 import { NON_EXISTENT_VALUES_WARNING_MESSAGE } from 'domains/reporting/pages/common/filters/utils'

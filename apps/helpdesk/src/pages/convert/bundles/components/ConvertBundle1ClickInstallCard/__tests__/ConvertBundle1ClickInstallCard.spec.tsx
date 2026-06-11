@@ -16,7 +16,7 @@ import {
 } from 'models/convert/bundle/types'
 import { IntegrationType } from 'models/integration/constants'
 
-import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
+import { ConvertBundle1ClickInstallCard } from '../ConvertBundle1ClickInstallCard'
 
 const mockStore = configureMockStore([thunk])
 

@@ -8,8 +8,8 @@ import { FormGroup, FormText, Label } from 'reactstrap'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { HTTPForm } from 'models/integration/types'
-import Select from 'pages/common/components/ast/widget/ReactSelect'
-import JsonField from 'pages/common/forms/JsonField'
+import { Select } from 'pages/common/components/ast/widget/ReactSelect'
+import { JsonField } from 'pages/common/forms/JsonField'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import { CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM } from './constants'
@@ -23,7 +23,7 @@ type State = {
     cachedForm: HTTPForm
 }
 
-export default class JSONBody extends Component<Props, State> {
+export class JSONBody extends Component<Props, State> {
     presetOptions = [
         { label: 'JSON template', value: DEFAULT_FORM },
         {

@@ -2,7 +2,7 @@ import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TopProductsCard from './TopProductsCard'
+import { TopProductsCard } from './TopProductsCard'
 
 import './TopProductsCard.less'
 

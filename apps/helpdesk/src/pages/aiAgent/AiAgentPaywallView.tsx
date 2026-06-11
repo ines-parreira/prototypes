@@ -15,10 +15,10 @@ import ShoppingAssistantLightMode from 'assets/img/ai-agent/shopping-assistant-l
 import { useTheme } from 'core/theme'
 import { usePaywallConfig } from 'pages/aiAgent/hooks/usePaywallConfig'
 import type { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import LinkButton from 'pages/common/components/button/LinkButton'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
 import { Separator } from 'pages/common/components/Separator/Separator'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import css from './AiAgentPaywallView.less'
 

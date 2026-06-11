@@ -2,11 +2,11 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
 import type { ChannelChange, ChannelWithMetadata } from '../../../types'
-import ChannelsFilter from '../ChannelsFilter/ChannelsFilter'
-import ChannelsList from '../ChannelsList/ChannelsList'
-import determineChannelLabels from '../helpers/determineChannelLabels'
+import { ChannelsFilter } from '../ChannelsFilter/ChannelsFilter'
+import { ChannelsList } from '../ChannelsList/ChannelsList'
+import { determineChannelLabels } from '../helpers/determineChannelLabels'
 import { trackChannelChanges } from '../hooks/trackChannelChanges'
-import DrawerHeader from './DrawerHeader'
+import { DrawerHeader } from './DrawerHeader'
 
 import css from './ChannelsDrawer.less'
 
@@ -15,7 +15,7 @@ interface ChannelsDrawerContentProps {
     setChanges: Dispatch<SetStateAction<ChannelChange[]>>
 }
 
-export default function DrawerContent({
+export function DrawerContent({
     activeChannel,
     setChanges,
 }: ChannelsDrawerContentProps) {

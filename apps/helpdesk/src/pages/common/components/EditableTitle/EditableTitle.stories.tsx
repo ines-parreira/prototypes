@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
-import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
+import { DefaultExportEditableTitle as EditableTitle } from 'pages/common/components/EditableTitle/EditableTitle'
 
 const storyConfig: Meta = {
     component: EditableTitle,

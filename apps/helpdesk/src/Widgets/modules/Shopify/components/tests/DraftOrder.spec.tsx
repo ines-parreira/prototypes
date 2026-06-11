@@ -14,7 +14,9 @@ import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { draftOrderCustomization } from '../DraftOrder'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

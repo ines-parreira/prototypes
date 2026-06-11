@@ -56,4 +56,9 @@ const BaseEdgeButton = (
     )
 }
 
-export default forwardRef<HTMLDivElement, BaseEdgeButtonProps>(BaseEdgeButton)
+const DefaultExportBaseEdgeButton = forwardRef<
+    HTMLDivElement,
+    BaseEdgeButtonProps
+>(BaseEdgeButton)
+
+export { DefaultExportBaseEdgeButton }

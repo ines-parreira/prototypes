@@ -2,7 +2,7 @@ import { useLocation } from 'react-router'
 
 import type { ShopifyIntegration } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 

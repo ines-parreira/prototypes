@@ -5,7 +5,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
-import ReplyButtonItem from './ReplyButtonItem'
+import { ReplyButtonItem } from './ReplyButtonItem'
 
 import css from './ReplyButtonList.less'
 
@@ -25,7 +25,7 @@ type ReplyButtonListProps = {
     onBlur?: (event_id: string) => void
 }
 
-export default function ReplyButtonList({
+export function ReplyButtonList({
     nodeId,
     choices,
     onReorderChoices,

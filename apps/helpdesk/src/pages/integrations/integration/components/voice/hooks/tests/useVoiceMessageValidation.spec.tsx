@@ -24,7 +24,7 @@ import type {
 import type { RootState } from 'state/types'
 
 import * as utils from '../../utils'
-import useVoiceMessageValidation from '../useVoiceMessageValidation'
+import { useVoiceMessageValidation } from '../useVoiceMessageValidation'
 
 const mockStore = configureMockStore<RootState>([thunk])({} as RootState)
 const getAudioFileDurationSpy = jest.spyOn(utils, 'getAudioFileDuration')

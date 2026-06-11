@@ -6,7 +6,7 @@ import {
     macrosFetched,
     macroUpdated,
 } from '../actions'
-import reducer from '../reducer'
+import { macrosReducer as reducer } from '../reducer'
 
 describe('macros reducer', () => {
     describe('createMacro action', () => {

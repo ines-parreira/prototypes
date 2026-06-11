@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
@@ -11,7 +11,7 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import UpdateShippingAddressEditor from '../UpdateShippingAddressEditor'
+import { UpdateShippingAddressEditor } from '../UpdateShippingAddressEditor'
 
 describe('<UpdateShippingAddressEditor />', () => {
     it('should dispatch SET_TOUCHED', () => {

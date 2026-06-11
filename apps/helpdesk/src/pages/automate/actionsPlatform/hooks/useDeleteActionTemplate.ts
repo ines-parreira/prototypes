@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     useDeleteWorkflowConfigurationTemplate,
     workflowsConfigurationTemplateDefinitionKeys,
@@ -32,4 +32,4 @@ const useDeleteActionTemplate = () => {
     return { isLoading, deleteActionTemplate: mutateAsync }
 }
 
-export default useDeleteActionTemplate
+export { useDeleteActionTemplate }

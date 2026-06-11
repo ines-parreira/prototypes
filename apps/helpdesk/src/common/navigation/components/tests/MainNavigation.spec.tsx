@@ -9,14 +9,14 @@ import { StaticRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
 
-import MainNavigation, { ActiveContent } from '../MainNavigation'
+import { ActiveContent, MainNavigation } from '../MainNavigation'
 
 jest.mock(
     '@repo/logging',
@@ -27,10 +27,12 @@ jest.mock(
         }) as typeof import('@repo/logging'),
 )
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)

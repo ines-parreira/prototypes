@@ -11,7 +11,7 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import CustomFieldInput from '../CustomFieldInput'
+import { CustomFieldInput } from '../CustomFieldInput'
 
 const store = configureMockStore()()
 

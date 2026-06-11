@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DropdownButton from '../DropdownButton'
+import { DefaultExportDropdownButton as DropdownButton } from '../DropdownButton'
 
 describe('<DropdownButton />', () => {
     it('should render a button with dropdown', () => {

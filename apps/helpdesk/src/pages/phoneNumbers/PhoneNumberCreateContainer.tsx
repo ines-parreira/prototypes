@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import PhoneNumberCreateForm from 'pages/phoneNumbers/PhoneNumberCreateForm'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { PhoneNumberCreateForm } from 'pages/phoneNumbers/PhoneNumberCreateForm'
 import css from 'pages/settings/settings.less'
 
 export function PhoneNumberCreateContainer() {
@@ -26,5 +26,3 @@ export function PhoneNumberCreateContainer() {
         </div>
     )
 }
-
-export default PhoneNumberCreateContainer

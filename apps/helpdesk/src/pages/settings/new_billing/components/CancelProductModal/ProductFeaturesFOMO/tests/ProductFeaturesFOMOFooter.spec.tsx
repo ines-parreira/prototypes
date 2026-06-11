@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ProductFeaturesFOMOFooter from '../ProductFeaturesFOMOFooter'
+import { ProductFeaturesFOMOFooter } from '../ProductFeaturesFOMOFooter'
 
 describe('ProductFeaturesFOMOFooter', () => {
     const onCloseMock = jest.fn()

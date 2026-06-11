@@ -46,4 +46,4 @@ const AutonomousCell = ({ action }: Props) => {
     )
 }
 
-export default AutonomousCell
+export { AutonomousCell }

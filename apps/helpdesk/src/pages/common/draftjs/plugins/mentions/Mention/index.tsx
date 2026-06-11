@@ -30,7 +30,7 @@ const MentionText = ({
     )
 }
 
-export default function Mention({
+export function Mention({
     children,
     contentState,
     decoratedText,

@@ -31,9 +31,9 @@ import type { SupportedCategories } from '../../types'
 import { getCategoryLabel } from '../../utils/getCategoryLabel'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { useFilteredMetafields } from '../hooks/useFilteredMetafields'
-import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
+import { MaxFieldsImportedBanner } from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
 import { getCheckboxColumn, staticColumns } from './Columns'
-import EmptyMetafieldsImportState from './EmptyMetafieldsImportState'
+import { EmptyMetafieldsImportState } from './EmptyMetafieldsImportState'
 
 import styles from './MetafieldsImportList.less'
 
@@ -47,7 +47,7 @@ type MetafieldsImportListProps = {
     importedFields?: Field[]
 }
 
-export default function MetafieldsImportList({
+export function MetafieldsImportList({
     category,
     selectedMetafields,
     onSelectionChange,

@@ -1,7 +1,7 @@
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import type { TooltipData } from 'domains/reporting/pages/types'
 import { OrderDirection } from 'models/api/types'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
 
 type AgentsHeaderCellContentProps = {
     width?: number | string

@@ -6,7 +6,7 @@ type VoiceQueueSelectProps = {
     onAddClick: () => void
 }
 
-export default function VoiceQueueSelectFieldEmpty({
+export function VoiceQueueSelectFieldEmpty({
     onAddClick,
 }: VoiceQueueSelectProps) {
     return (

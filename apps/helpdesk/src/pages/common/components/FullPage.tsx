@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import type { RouteComponentProps } from 'react-router-dom'
 import { Col, Container, Row } from 'reactstrap'
 
-import withRouter from 'pages/common/utils/withRouter'
+import { withRouter } from 'pages/common/utils/withRouter'
 import appCss from 'pages/pageLayout.less'
 
 import css from './FullPage.less'
@@ -38,4 +38,6 @@ function FullPage({ children, noContainerWidthLimit }: Props) {
     )
 }
 
-export default withRouter(FullPage)
+const DefaultExportFullPage = withRouter(FullPage)
+
+export { DefaultExportFullPage }

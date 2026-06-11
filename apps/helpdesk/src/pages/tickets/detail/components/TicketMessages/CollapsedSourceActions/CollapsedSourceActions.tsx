@@ -5,12 +5,12 @@ import classnames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import type { TicketMessage } from 'models/ticket/types'
-import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
-import IntentsFeedback from 'pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback'
+import { DefaultExportPrivateReplyModal as PrivateReplyModal } from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
+import { IntentsFeedback } from 'pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback'
 
-import HideAction from './CollapsedActions/HideAction'
-import IntentsAction from './CollapsedActions/IntentsAction'
-import PrivateReplyAction from './CollapsedActions/PrivateReplyAction'
+import { HideAction } from './CollapsedActions/HideAction'
+import { IntentsAction } from './CollapsedActions/IntentsAction'
+import { PrivateReplyAction } from './CollapsedActions/PrivateReplyAction'
 
 import css from './CollapsedSourceActions.less'
 
@@ -186,4 +186,4 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
     )
 }
 
-export default CollapsedSourceActions
+export { CollapsedSourceActions }

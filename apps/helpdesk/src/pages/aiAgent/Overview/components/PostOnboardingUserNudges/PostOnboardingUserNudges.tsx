@@ -14,7 +14,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { extractShopTypeFromUrl } from 'pages/aiAgent/components/ShoppingAssistant/utils/extractShopTypeFromUrl'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getCurrentUser } from 'state/currentUser/selectors'

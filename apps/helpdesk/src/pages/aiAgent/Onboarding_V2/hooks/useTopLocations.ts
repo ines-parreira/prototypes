@@ -15,7 +15,7 @@ import {
 import { AISalesAgentTotalNumberOfOrderQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import type { TopElement } from 'pages/aiAgent/Onboarding_V2/components/TopElementsCard/types'
 import { getTimezone } from 'state/currentUser/selectors'

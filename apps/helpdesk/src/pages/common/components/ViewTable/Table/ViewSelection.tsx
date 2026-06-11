@@ -1,7 +1,7 @@
 import { useViewCount } from '@repo/views'
 
 import { getConfigByType } from 'config/views'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import css from 'pages/common/components/ViewTable/Table.less'
 import { getActiveView, isDirty as getIsDirty } from 'state/views/selectors'
 
@@ -80,4 +80,4 @@ const ViewSelection = ({
     )
 }
 
-export default ViewSelection
+export { ViewSelection }

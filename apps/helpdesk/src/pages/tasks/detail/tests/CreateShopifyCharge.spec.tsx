@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import CreateShopifyCharge from '../CreateShopifyCharge'
+import { CreateShopifyCharge } from '../CreateShopifyCharge'
 
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => Promise.resolve()),

@@ -8,8 +8,8 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
-import type Modal from 'pages/common/components/modal/Modal'
-import type ModalHeader from 'pages/common/components/modal/ModalHeader'
+import type { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import type { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 const customer = {
     id: 7,
@@ -18,61 +18,79 @@ const customer = {
 } as TicketCustomer
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({ isOpen, onClose, children }: ComponentProps<typeof Modal>) =>
-        isOpen ? (
-            <div role="dialog">
-                <button type="button" onClick={onClose}>
-                    Close modal
-                </button>
-                {children}
-            </div>
-        ) : null
+    return {
+        DefaultExportModal: ({
+            isOpen,
+            onClose,
+            children,
+        }: ComponentProps<typeof Modal>) =>
+            isOpen ? (
+                <div role="dialog">
+                    <button type="button" onClick={onClose}>
+                        Close modal
+                    </button>
+                    {children}
+                </div>
+            ) : null,
+    }
 })
 
 jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return ({ title }: ComponentProps<typeof ModalHeader>) => <h2>{title}</h2>
+    return {
+        ModalHeader: ({ title }: ComponentProps<typeof ModalHeader>) => (
+            <h2>{title}</h2>
+        ),
+    }
 })
 
 jest.mock('pages/customers/common/components/CustomerForm', () => {
-    return ({ onSuccess }: { onSuccess?: () => void }) => (
-        <button
-            type="button"
-            onClick={() => {
-                onSuccess?.()
-            }}
-        >
-            Save customer
-        </button>
-    )
+    return {
+        DefaultExportCustomerForm: ({
+            onSuccess,
+        }: {
+            onSuccess?: () => void
+        }) => (
+            <button
+                type="button"
+                onClick={() => {
+                    onSuccess?.()
+                }}
+            >
+                Save customer
+            </button>
+        ),
+    }
 })
 
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm',
     () => {
-        return ({
-            setIsCustomerSyncFormOpen,
-        }: {
-            setIsCustomerSyncFormOpen: (isOpen: boolean) => void
-        }) => (
-            <div role="dialog" aria-label="Sync customer">
-                <button
-                    type="button"
-                    onClick={() => {
-                        setIsCustomerSyncFormOpen(true)
-                    }}
-                >
-                    Keep sync form open
-                </button>
-                <button
-                    type="button"
-                    onClick={() => {
-                        setIsCustomerSyncFormOpen(false)
-                    }}
-                >
-                    Close sync form
-                </button>
-            </div>
-        )
+        return {
+            CustomerSyncForm: ({
+                setIsCustomerSyncFormOpen,
+            }: {
+                setIsCustomerSyncFormOpen: (isOpen: boolean) => void
+            }) => (
+                <div role="dialog" aria-label="Sync customer">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setIsCustomerSyncFormOpen(true)
+                        }}
+                    >
+                        Keep sync form open
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setIsCustomerSyncFormOpen(false)
+                        }}
+                    >
+                        Close sync form
+                    </button>
+                </div>
+            ),
+        }
     },
 )
 

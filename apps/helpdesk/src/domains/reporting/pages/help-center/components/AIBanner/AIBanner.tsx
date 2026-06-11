@@ -52,4 +52,4 @@ const AIBanner = ({ helpCenterId, className, from }: AIBannerProps) => {
     )
 }
 
-export default AIBanner
+export { AIBanner }

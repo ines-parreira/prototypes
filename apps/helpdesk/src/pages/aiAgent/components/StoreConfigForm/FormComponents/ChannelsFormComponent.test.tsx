@@ -16,7 +16,7 @@ jest.mock('../hooks/useSmsPhoneNumbers', () => ({
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
-    default: () => [],
+    useSelfServiceChatChannels: () => [],
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({

@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import css from './MigrationBaseModal.less'
 
@@ -27,4 +27,4 @@ const MigrationBaseModal: React.FC<Props> = ({
     )
 }
 
-export default MigrationBaseModal
+export { MigrationBaseModal }

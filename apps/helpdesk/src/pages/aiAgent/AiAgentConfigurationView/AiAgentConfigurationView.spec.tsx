@@ -17,7 +17,9 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { AiAgentConfigurationView } from './AiAgentConfigurationView'
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 jest.mock('models/api/types', () => ({
     isGorgiasApiError: jest.fn(),
 }))
@@ -47,9 +49,11 @@ jest.mock('pages/aiAgent/components/StoreConfigForm/StoreConfigForm', () => ({
 }))
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    AiAgentFormChangesProvider: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div>{children}</div>,
 }))
 const mockUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(

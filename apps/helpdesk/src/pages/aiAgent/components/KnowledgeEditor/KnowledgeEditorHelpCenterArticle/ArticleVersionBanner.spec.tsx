@@ -17,7 +17,7 @@ jest.mock('@repo/utils', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn((fn: () => unknown) => fn()),
+    useAppSelector: jest.fn((fn: () => unknown) => fn()),
 }))
 
 jest.mock('state/currentUser/selectors', () => ({

@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import { account } from 'fixtures/account'
 import { firstResponseTime } from 'fixtures/stats'
 import { user } from 'fixtures/users'

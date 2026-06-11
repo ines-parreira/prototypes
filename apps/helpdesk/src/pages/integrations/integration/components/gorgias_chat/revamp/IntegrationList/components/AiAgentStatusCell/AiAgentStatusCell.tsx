@@ -14,7 +14,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

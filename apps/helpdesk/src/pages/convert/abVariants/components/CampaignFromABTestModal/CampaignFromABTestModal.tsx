@@ -5,13 +5,13 @@ import { history } from '@repo/routing'
 
 import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CampaignCreatePayload } from 'models/convert/campaign/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import RadioButton from 'pages/common/components/RadioButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
 import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
@@ -156,4 +156,4 @@ const CampaignFromABTestModal: React.FC<Props> = (props) => {
     )
 }
 
-export default CampaignFromABTestModal
+export { CampaignFromABTestModal }

@@ -9,7 +9,7 @@ import { CampaignTableValueFormat } from 'domains/reporting/pages/convert/types/
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
 import { campaign } from 'fixtures/campaign'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'

@@ -5,20 +5,17 @@ import { Col, Container } from 'reactstrap'
 import type { EmailIntegration } from 'models/integration/types'
 import settingsCss from 'pages/settings/settings.less'
 
-import DEPRECATED_EmailDomainVerification from '../EmailDomainVerification/DEPRECATED_EmailDomainVerification'
-import BackButton from './BackButton'
-import EmailVerification from './EmailVerification'
-import SingleSenderVerification from './SingleSenderVerification/SingleSenderVerification'
+import { DEPRECATED_EmailDomainVerification } from '../EmailDomainVerification/DEPRECATED_EmailDomainVerification'
+import { BackButton } from './BackButton'
+import { EmailVerification } from './EmailVerification'
+import { SingleSenderVerification } from './SingleSenderVerification/SingleSenderVerification'
 
 type Props = {
     integration: EmailIntegration
     loading: Record<string, boolean>
 }
 
-export default function EmailOutboundVerification({
-    loading,
-    integration,
-}: Props) {
+export function EmailOutboundVerification({ loading, integration }: Props) {
     const baseURL = `/app/settings/channels/email/${integration.id}/outbound-verification`
 
     return (

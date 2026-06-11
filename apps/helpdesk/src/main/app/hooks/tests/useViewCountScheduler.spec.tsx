@@ -8,11 +8,11 @@ import {
     ViewCountSchedulerVersion,
 } from '@repo/views'
 
-import socketManager from 'services/socketManager/socketManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { useIsSocketConnected } from 'services/socketManager/useIsSocketConnected'
 
-import useViewCountScheduler from '../useViewCountScheduler'
+import { useViewCountScheduler } from '../useViewCountScheduler'
 
 var mockScheduler: {
     start: jest.Mock
@@ -36,7 +36,9 @@ jest.mock('@repo/views', () => ({
 }))
 
 jest.mock('services/socketManager/socketManager', () => ({
-    send: jest.fn(),
+    socketManager: {
+        send: jest.fn(),
+    },
 }))
 
 jest.mock('services/socketManager/useIsSocketConnected', () => ({

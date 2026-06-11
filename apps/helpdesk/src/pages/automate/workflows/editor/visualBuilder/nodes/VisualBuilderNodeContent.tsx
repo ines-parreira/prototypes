@@ -19,4 +19,4 @@ const VisualBuilderNodeContent = ({ placeholder, children }: Props) => {
     )
 }
 
-export default VisualBuilderNodeContent
+export { VisualBuilderNodeContent }

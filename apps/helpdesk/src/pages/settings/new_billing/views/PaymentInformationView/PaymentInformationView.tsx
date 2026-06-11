@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import {
     getCadenceName,
@@ -11,7 +11,7 @@ import {
 } from 'models/billing/utils'
 import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
+import { useProductCancellations } from 'pages/settings/new_billing/hooks/useProductCancellations'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import { BPOPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BPOPartnerSection'
 import { ConsultingAgencyPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/ConsultingAgencyPartnerSection'
@@ -25,7 +25,7 @@ import {
 import { TicketPurpose } from 'state/billing/types'
 import { shouldPayWithShopify as getShouldPayWithShopify } from 'state/currentAccount/selectors'
 
-import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
+import { NavigateToChangeBillingFrequency } from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
 
 import css from './PaymentInformationView.less'
 
@@ -106,4 +106,4 @@ const PaymentInformationView = ({
     )
 }
 
-export default PaymentInformationView
+export { PaymentInformationView }

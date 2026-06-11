@@ -7,14 +7,15 @@ import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectInputBox, {
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -342,4 +343,4 @@ const PageEmbedmentForm = ({
     )
 }
 
-export default PageEmbedmentForm
+export { PageEmbedmentForm }

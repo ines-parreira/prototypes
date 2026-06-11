@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ReusableLLMPromptCallNodeStatusLabel from '../ReusableLLMPromptCallNodeStatusLabel'
+import { ReusableLLMPromptCallNodeStatusLabel } from '../ReusableLLMPromptCallNodeStatusLabel'
 
 describe('ReusableLLMPromptCallNodeStatusLabel', () => {
     it('shows both authentication and values required message', () => {

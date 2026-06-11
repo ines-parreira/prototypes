@@ -4,7 +4,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-export default function CreateCustomActionButton() {
+export function CreateCustomActionButton() {
     const { shopName } = useParams<{
         shopName: string
     }>()

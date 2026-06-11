@@ -4,13 +4,13 @@ import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
 
 import { Box, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DownloadTicketsSLAsData } from 'domains/reporting/pages/sla/components/DownloadTicketsSLAsData'
 import { DownloadVoiceCallsSLAsData } from 'domains/reporting/pages/sla/components/DownloadVoiceCallsSLAsData'
 import { SLA_PAGE_TITLE } from 'domains/reporting/pages/sla/constants'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
 import { VoiceServiceLevelAgreements } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreements'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 

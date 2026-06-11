@@ -22,8 +22,8 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
 import { useGetMessageAiReasoning } from 'models/knowledgeService/queries'
 import type { TicketMessage } from 'models/ticket/types'
@@ -63,7 +63,7 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon',
     () => ({
         __esModule: true,
-        default: ({ type, badgeIconClassname }: any) => (
+        KnowledgeSourceIcon: ({ type, badgeIconClassname }: any) => (
             <span
                 data-testid={`knowledge-source-icon-${type}`}
                 className={badgeIconClassname}
@@ -77,7 +77,7 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover',
     () => ({
         __esModule: true,
-        default: ({
+        DefaultExportKnowledgeSourcePopover: ({
             children,
             knowledgeResourceType,
             title,
@@ -106,7 +106,7 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer',
     () => ({
         __esModule: true,
-        default: ({
+        KnowledgeSourceRenderer: ({
             resourceType,
             iconClassName,
             title,

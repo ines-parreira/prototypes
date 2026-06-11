@@ -1,6 +1,6 @@
 import { FormField } from '@repo/forms'
 
-import NewToggleField from 'pages/common/forms/NewToggleField'
+import { DefaultExportNewToggleField as NewToggleField } from 'pages/common/forms/NewToggleField'
 
 function VoiceIntegrationSettingSpamPrevention() {
     return (
@@ -15,4 +15,4 @@ function VoiceIntegrationSettingSpamPrevention() {
     )
 }
 
-export default VoiceIntegrationSettingSpamPrevention
+export { VoiceIntegrationSettingSpamPrevention }

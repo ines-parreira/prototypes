@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Category } from 'models/helpCenter/types'
 import type { Paths } from 'rest_api/help_center_api/client.generated'
 import { getCategories } from 'state/entities/helpCenter/categories'
 
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useCategoriesActions } from './useCategoriesActions'
 
 type HelpCenterCategoriesHook = {

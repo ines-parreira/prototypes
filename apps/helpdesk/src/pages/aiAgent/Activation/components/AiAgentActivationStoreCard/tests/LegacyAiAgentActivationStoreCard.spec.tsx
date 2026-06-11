@@ -12,7 +12,7 @@ import { AlertType } from 'pages/common/components/Alert/Alert'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: () => [
+    useAppSelector: () => [
         {
             id: 1,
             meta: {
@@ -42,7 +42,7 @@ jest.mock('pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds', () => ({
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
-    default: () => [
+    useSelfServiceChatChannels: () => [
         {
             value: {
                 id: 1,

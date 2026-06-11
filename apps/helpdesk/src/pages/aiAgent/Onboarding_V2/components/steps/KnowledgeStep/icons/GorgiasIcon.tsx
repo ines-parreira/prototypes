@@ -17,4 +17,4 @@ const GorgiasIcon: React.FC<{ size?: string; fill?: string }> = ({
     )
 }
 
-export default GorgiasIcon
+export { GorgiasIcon }

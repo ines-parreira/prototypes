@@ -5,8 +5,8 @@ import type { AxiosResponse } from 'axios'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     aiAgentFeedbackKeys,
     useDeleteAIAgentTicketMessagesFeedback,

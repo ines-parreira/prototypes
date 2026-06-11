@@ -15,9 +15,9 @@ import {
     PAST_7_DAYS,
 } from 'domains/reporting/pages/constants'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 
 const SHOW_DATE_RANGE = 'Show Date Range'
 

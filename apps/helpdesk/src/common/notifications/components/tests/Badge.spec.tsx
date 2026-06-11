@@ -3,10 +3,10 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useCount from '../../hooks/useCount'
-import Badge from '../Badge'
+import { useCount } from '../../hooks/useCount'
+import { Badge } from '../Badge'
 
-jest.mock('../../hooks/useCount', () => jest.fn())
+jest.mock('../../hooks/useCount', () => ({ useCount: jest.fn() }))
 const useCountMock = assumeMock(useCount)
 
 describe('Badge', () => {

@@ -13,4 +13,4 @@ function CardHeaderIcon({ src, alt }: CardHeaderIconProps) {
     )
 }
 
-export default CardHeaderIcon
+export { CardHeaderIcon }

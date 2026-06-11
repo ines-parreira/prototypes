@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TimedeltaPicker from './TimedeltaPicker'
+import { TimedeltaPicker } from './TimedeltaPicker'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/TimedeltaPicker',

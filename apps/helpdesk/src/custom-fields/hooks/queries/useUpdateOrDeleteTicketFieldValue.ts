@@ -12,7 +12,7 @@ import {
 import { createOnErrorHandler } from 'custom-fields/helpers/createOnErrorHandler'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import type { CustomFieldPrediction } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { updateCustomFieldPrediction } from 'state/ticket/actions'
 
 type UpdateOrDeleteMutationOptions = NonNullable<

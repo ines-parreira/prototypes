@@ -1,7 +1,7 @@
-import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
-import SettingsContent from 'pages/settings/SettingsContent'
+import { useWhatsAppMigration } from 'hooks/useWhatsAppMigration'
+import { SettingsContent } from 'pages/settings/SettingsContent'
 
-export default function WhatsAppMigrationVerificationForm(): JSX.Element | null {
+export function WhatsAppMigrationVerificationForm(): JSX.Element | null {
     const migration = useWhatsAppMigration()
 
     return (

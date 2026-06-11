@@ -4,7 +4,7 @@ import { forwardRef } from 'react'
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
 import {
     isDropdownInput,
@@ -12,9 +12,9 @@ import {
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
 import type { CustomField } from 'custom-fields/types'
-import Caption from 'pages/common/forms/Caption/Caption'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import { CustomDropdownInput } from './CustomDropdownInput'
 

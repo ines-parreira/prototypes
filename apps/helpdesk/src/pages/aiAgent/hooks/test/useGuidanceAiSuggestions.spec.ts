@@ -3,7 +3,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAIGeneratedGuidances } from 'models/aiAgent/queries'
 import { IntegrationType } from 'models/integration/constants'
 import type { StoreState } from 'state/types'

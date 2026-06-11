@@ -15,23 +15,23 @@ import {
 } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketCountPerIntent'
 import { LoadingSkeleton } from 'domains/reporting/pages/common/components/IntentCard'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import { L3IntentCard } from 'domains/reporting/pages/voice-of-customer/components/L3IntentCard'
 import css from 'domains/reporting/pages/voice-of-customer/side-panel/InsightsTab/InsightsTab.less'
 import { formatDateRange } from 'domains/reporting/pages/voice-of-customer/utils'
 import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { getSidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
     useGetCustomTicketsFieldsDefinitionData,
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Dropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { UncontrolledDropdown as Dropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 export const NUMBER_PLACEHOLDER_ITEMS = 3
 

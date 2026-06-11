@@ -19,7 +19,7 @@ import type { CampaignsPerformanceDataset } from 'domains/reporting/pages/conver
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { CampaignTableValueFormat } from 'domains/reporting/pages/convert/types/enums/CampaignTableValueFormat.enum'
 import { DATE_TIME_FORMAT } from 'domains/reporting/services/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import { getTimezone } from 'state/currentUser/selectors'

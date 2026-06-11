@@ -5,9 +5,9 @@ import classNames from 'classnames'
 
 import analyticsTableCss from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { OrderDirection } from 'models/api/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 const useIsHorizontalScrolled = () => {
     const [isScrolled, setIsScrolled] = useState(false)

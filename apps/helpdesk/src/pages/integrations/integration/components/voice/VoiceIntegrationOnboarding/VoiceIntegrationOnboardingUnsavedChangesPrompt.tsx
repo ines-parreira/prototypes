@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 
 import { VoiceIntegrationOnboardingStep } from './constants'
@@ -10,7 +10,7 @@ type VoiceIntegrationOnboardingUnsavedChangesPromptProps = {
     hasNewPhoneNumber: boolean
 }
 
-export default function VoiceIntegrationOnboardingUnsavedChangesPrompt({
+export function VoiceIntegrationOnboardingUnsavedChangesPrompt({
     hasNewPhoneNumber,
 }: VoiceIntegrationOnboardingUnsavedChangesPromptProps) {
     const { onSubmit } = useOnboardingForm()

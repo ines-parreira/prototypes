@@ -4,43 +4,43 @@ import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import type Modal from 'pages/common/components/modal/Modal'
+import type { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
 import { GorgiasChatIntegrationLanguagesTableRowActions } from '../GorgiasChatIntegrationLanguagesTableRowActions'
 import type { LanguageItemRow } from '../types'
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({ children, isOpen, onClose }: ComponentProps<typeof Modal>) => (
-        <div>
-            {isOpen ? children : null}
-            <div onClick={onClose}>Close</div>
-        </div>
-    )
+    return {
+        DefaultExportModal: ({
+            children,
+            isOpen,
+            onClose,
+        }: ComponentProps<typeof Modal>) => (
+            <div>
+                {isOpen ? children : null}
+                <div onClick={onClose}>Close</div>
+            </div>
+        ),
+    }
 })
 
-jest.mock(
-    'pages/common/components/modal/ModalBody',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <div>{children}</div>
-        },
-)
+jest.mock('pages/common/components/modal/ModalBody', () => ({
+    DefaultExportModalBody: ({ children }: { children?: ReactNode }) => {
+        return <div>{children}</div>
+    },
+}))
 
-jest.mock(
-    'pages/common/components/modal/ModalHeader',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <div>{children}</div>
-        },
-)
+jest.mock('pages/common/components/modal/ModalHeader', () => ({
+    ModalHeader: ({ children }: { children?: ReactNode }) => {
+        return <div>{children}</div>
+    },
+}))
 
-jest.mock(
-    'pages/common/components/modal/ModalActionsFooter',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <div>{children}</div>
-        },
-)
+jest.mock('pages/common/components/modal/ModalActionsFooter', () => ({
+    ModalActionsFooter: ({ children }: { children?: ReactNode }) => {
+        return <div>{children}</div>
+    },
+}))
 
 describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
     it('renders actions if show actions is enabled', () => {

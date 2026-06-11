@@ -11,10 +11,11 @@ jest.mock('providers/OutboundTranslationProvider', () => ({
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider',
-    () =>
-        jest.fn(({ children }) => (
+    () => ({
+        WhatsAppEditorProvider: jest.fn(({ children }) => (
             <div data-testid="whatsapp-editor-provider">{children}</div>
         )),
+    }),
 )
 
 jest.mock(

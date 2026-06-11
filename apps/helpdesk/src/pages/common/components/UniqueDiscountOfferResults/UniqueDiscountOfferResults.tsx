@@ -20,9 +20,9 @@ import {
     DISCOUNTS_PER_PAGE,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import IconButton from 'pages/common/components/button/IconButton'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { UniqueDiscountOfferCreateModal } from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
 import { DeleteUniqueDiscountOfferModal } from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
 import { useListDiscountOffers } from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
@@ -41,7 +41,7 @@ type OwnProps = {
     onResetStoreChoice?: () => void
 }
 
-export default function UniqueDiscountCodeResults({
+export function UniqueDiscountCodeResults({
     integration,
     canAddUniqueDiscountOffer,
     onResetStoreChoice,

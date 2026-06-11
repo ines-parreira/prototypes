@@ -9,11 +9,11 @@ import { Router } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import WorkflowEditorViewContainer from '../WorkflowEditorViewContainer'
+import { WorkflowEditorViewContainer } from '../WorkflowEditorViewContainer'
 
 const mockStore = configureStore([])
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
@@ -44,7 +44,7 @@ jest.mock('@repo/logging', () => ({
 
 jest.mock('../WorkflowEditorView', () => ({
     __esModule: true,
-    default: () => (
+    DefaultExportWorkflowEditorView: () => (
         <div data-testid="workflow-editor-view">WorkflowEditorView</div>
     ),
 }))

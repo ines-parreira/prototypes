@@ -3,15 +3,15 @@ import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 
 import { ticket as defaultTicket } from 'fixtures/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
-import useMacrosSearch from '../useMacrosSearch'
+import { useMacrosSearch } from '../useMacrosSearch'
 
 jest.mock('models/macro/resources', () => ({
     fetchMacros: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('@tanstack/react-query', () => ({

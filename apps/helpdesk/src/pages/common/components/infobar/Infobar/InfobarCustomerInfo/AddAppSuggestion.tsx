@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-export default function AddAppSuggestion() {
+export function AddAppSuggestion() {
     return (
         <div className="no-result-container mt-5">
             <div

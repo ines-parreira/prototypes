@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import { useGetShopifyPages } from 'pages/settings/contactForm/queries'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'

@@ -12,7 +12,7 @@ import {
  * - Optimistic update
  * - Query invalidation
  */
-export default function useUpdateCustomFieldCondition() {
+export function useUpdateCustomFieldCondition() {
     const queryClient = useQueryClient()
 
     return useUpdate({

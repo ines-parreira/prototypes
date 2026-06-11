@@ -20,7 +20,7 @@ type Props = {
     useSourceMetafields?: boolean
 }
 
-export default function WrappedOrderMetafields({
+export function WrappedOrderMetafields({
     integrationId,
     orderId,
     metafields,

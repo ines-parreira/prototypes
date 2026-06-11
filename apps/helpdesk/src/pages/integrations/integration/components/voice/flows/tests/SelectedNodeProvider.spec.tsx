@@ -4,7 +4,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { useVoiceFlowContext } from '../VoiceFlowContext'
-import VoiceFlowProvider from '../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../VoiceFlowProvider'
 
 describe('SelectedNodeProvider', () => {
     it('provides default context values', () => {

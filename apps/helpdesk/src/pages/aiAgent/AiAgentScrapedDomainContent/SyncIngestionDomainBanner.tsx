@@ -107,4 +107,4 @@ const SyncIngestionDomainBanner = ({
     return <IngestionDomainBanner />
 }
 
-export default SyncIngestionDomainBanner
+export { SyncIngestionDomainBanner }

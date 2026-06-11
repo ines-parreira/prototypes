@@ -7,7 +7,7 @@ import type { MacroAction } from 'models/macroAction/types'
 import { MacroActionType } from 'models/macroAction/types'
 import type { Team } from 'models/team/types'
 
-import TicketReplyActionHelpdeskV2 from '../AIAgentDraftMessageHelpdeskV2/TicketReplyActionHelpdeskV2/TicketReplyActionHelpdeskV2'
+import { TicketReplyActionHelpdeskV2 } from '../AIAgentDraftMessageHelpdeskV2/TicketReplyActionHelpdeskV2/TicketReplyActionHelpdeskV2'
 
 function renderAction(action: MacroAction) {
     return render(<TicketReplyActionHelpdeskV2 action={action} />)

@@ -5,7 +5,7 @@ import moment from 'moment'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
 
 const storyConfig: Meta = {

@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import ArrowLink from '../ArrowLink'
+import { ArrowLink } from '../ArrowLink'
 
 describe('ArrowLink component', () => {
     it('should render with a to attribute', () => {

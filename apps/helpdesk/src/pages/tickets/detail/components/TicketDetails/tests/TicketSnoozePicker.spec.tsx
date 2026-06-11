@@ -5,22 +5,21 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import type DatePicker from 'pages/common/forms/DatePicker'
-import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
+import type { DatePicker } from 'pages/common/forms/DatePicker'
+import { TicketSnoozePicker } from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
 
 const errorSpy = jest.spyOn(global.console, 'error')
 const mockStore = configureMockStore([thunk])()
 
-jest.mock(
-    'pages/common/forms/DatePicker',
-    () => (props: React.ComponentProps<typeof DatePicker>) => (
+jest.mock('pages/common/forms/DatePicker', () => ({
+    DatePicker: (props: React.ComponentProps<typeof DatePicker>) => (
         <div className="DatePicker">
             {Object.entries(props).map(
                 ([key, value]) => `${key}: ${JSON.stringify(value)}`,
             )}
         </div>
     ),
-)
+}))
 
 describe('<TicketSnoozePicker/>', () => {
     const minProps = {

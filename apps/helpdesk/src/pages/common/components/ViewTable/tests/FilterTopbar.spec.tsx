@@ -17,7 +17,7 @@ import { view as viewFixture } from 'fixtures/views'
 import { JobType } from 'models/job/types'
 import type { View } from 'models/view/types'
 import { EntityType, ViewCategory } from 'models/view/types'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import { FilterTopbar } from 'pages/common/components/ViewTable/FilterTopbar'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -119,12 +119,12 @@ const createJobMock: jest.SpyInstance = createJob as jest.MockedFunction<
 >
 
 jest.mock('../Filters/ViewFilters', () => {
-    return () => <div>ViewFilters</div>
+    return { ViewFilters: () => <div>ViewFilters</div> }
 })
 
-jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
-    <button>View Sharing Button</button>
-))
+jest.mock('../../ViewSharing/ViewSharingButton', () => ({
+    DefaultExportViewSharingButton: () => <button>View Sharing Button</button>,
+}))
 
 const globalDataNow = jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

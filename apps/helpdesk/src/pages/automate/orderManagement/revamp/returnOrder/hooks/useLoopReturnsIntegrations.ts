@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { HttpIntegration } from 'models/integration/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'

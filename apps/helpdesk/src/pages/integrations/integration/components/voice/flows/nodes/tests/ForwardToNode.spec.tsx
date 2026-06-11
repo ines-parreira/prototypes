@@ -20,7 +20,7 @@ import type {
 
 import { FlowProvider } from 'core/ui/flows'
 
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { ForwardToNode } from '../ForwardToNode'
 
 const defaultHandler = mockListPhoneNumbersHandler(async () =>

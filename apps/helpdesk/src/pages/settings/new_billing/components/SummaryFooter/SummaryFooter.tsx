@@ -265,4 +265,4 @@ const SummaryFooter = ({
     )
 }
 
-export default SummaryFooter
+export { SummaryFooter }

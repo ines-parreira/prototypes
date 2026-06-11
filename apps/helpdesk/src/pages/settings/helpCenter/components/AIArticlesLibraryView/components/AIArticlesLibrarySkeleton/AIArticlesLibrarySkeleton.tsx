@@ -52,4 +52,4 @@ const LibrarySkeleton = () => {
     )
 }
 
-export default LibrarySkeleton
+export { LibrarySkeleton }

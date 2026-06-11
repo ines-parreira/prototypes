@@ -12,37 +12,35 @@ import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMe
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AIAgentTicketFeedback from '../AIAgentTicketFeedback'
+import { AIAgentTicketFeedback } from '../AIAgentTicketFeedback'
 import { TicketEventEnum } from '../types'
 import { messageFeedback } from './fixtures'
 
 jest.mock('state/ticket/selectors')
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('pages/tickets/detail/hooks/useAIAgentMessageEvents')
-jest.mock(
-    '../TicketEvent',
-    () =>
-        ({
-            children,
-            isFirst,
-            isLast,
-            eventType,
-        }: {
-            children: React.ReactNode
-            isFirst: boolean
-            isLast: boolean
-            eventType: TicketEventEnum
-        }) => (
-            <div
-                data-testid="ticket-event"
-                data-is-first={isFirst}
-                data-is-last={isLast}
-                data-event-type={eventType}
-            >
-                {children}
-            </div>
-        ),
-)
+jest.mock('../TicketEvent', () => ({
+    TicketEvent: ({
+        children,
+        isFirst,
+        isLast,
+        eventType,
+    }: {
+        children: React.ReactNode
+        isFirst: boolean
+        isLast: boolean
+        eventType: TicketEventEnum
+    }) => (
+        <div
+            data-testid="ticket-event"
+            data-is-first={isFirst}
+            data-is-last={isLast}
+            data-event-type={eventType}
+        >
+            {children}
+        </div>
+    ),
+}))
 
 const getAIAgentMessagesMock = assumeMock(getAIAgentMessages)
 const useAIAgentMessageEventsMock = assumeMock(useAIAgentMessageEvents)

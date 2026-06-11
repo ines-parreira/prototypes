@@ -5,7 +5,7 @@ import * as currentUserConstants from 'state/currentUser/constants'
 import type { StoreAction } from 'state/types'
 
 import * as constants from '../constants'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 
 describe('agents reducers', () => {
     it('initial state', () => {

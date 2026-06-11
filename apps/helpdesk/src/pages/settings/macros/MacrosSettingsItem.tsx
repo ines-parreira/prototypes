@@ -11,12 +11,12 @@ import type { Macro } from '@gorgias/helpdesk-queries'
 import { ISO639English } from 'constants/languages'
 import { MacroActionName } from 'models/macroAction/types'
 import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { BodyCellContent } from 'pages/common/components/table/cells/BodyCellContent'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import { MacrosSettingsItemTag } from './MacrosSettingsItemTag'
-import MoreActions from './MoreActions'
+import { MoreActions } from './MoreActions'
 
 import css from './MacrosSettingsItem.less'
 

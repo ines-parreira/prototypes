@@ -3,14 +3,15 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import classNames from 'classnames'
 
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import ChannelIcon from '../ChannelIcon'
+import { ChannelIcon } from '../ChannelIcon'
 
 import css from './SelfServicePreviewChannelSelect.less'
 
@@ -115,4 +116,4 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
     )
 }
 
-export default SelfServicePreviewChannelSelect
+export { SelfServicePreviewChannelSelect }

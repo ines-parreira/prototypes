@@ -12,7 +12,7 @@ import { user } from 'fixtures/users'
 import type { Account } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PhoneEventDetails from '../PhoneEventDetails'
+import { PhoneEventDetails } from '../PhoneEventDetails'
 
 describe('<PhoneEventDetails/>', () => {
     let store: MockStoreEnhanced

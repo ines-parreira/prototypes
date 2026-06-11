@@ -1,6 +1,6 @@
 import { BASIC_OPERATORS } from 'config'
 
-import getMetafieldOperators from '../getMetafieldOperators'
+import { getMetafieldOperators } from '../getMetafieldOperators'
 
 describe('getMetafieldOperators', () => {
     describe('text-based metafield types', () => {

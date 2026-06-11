@@ -12,7 +12,7 @@ import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
-import VoiceMessageField from '../../VoiceMessageField'
+import { VoiceMessageField } from '../../VoiceMessageField'
 import type { PlayMessageNode } from '../types'
 import { VoiceStepNode } from './VoiceStepNode'
 

@@ -5,7 +5,7 @@ import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 
 import type { ChannelWithMetadata } from '../../../types'
-import DrawerContent from '../ChannelsDrawer/DrawerContent'
+import { DrawerContent } from '../ChannelsDrawer/DrawerContent'
 
 describe('ChannelsDrawerContent', () => {
     const mockActiveChannel: ChannelWithMetadata = {

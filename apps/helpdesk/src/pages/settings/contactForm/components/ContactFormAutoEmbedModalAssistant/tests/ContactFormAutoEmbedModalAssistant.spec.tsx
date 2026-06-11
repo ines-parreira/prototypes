@@ -12,11 +12,13 @@ import { useCreatePageEmbedment } from 'pages/settings/contactForm/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { MODAL_LABELS } from '../constants'
-import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+import { ContactFormAutoEmbedModalAssistant } from '../ContactFormAutoEmbedModalAssistant'
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 jest.mock('pages/settings/contactForm/queries')
 const mockCreatePageEmbedment = jest.fn()

@@ -22,4 +22,8 @@ function DashboardGrid(
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(DashboardGrid)
+const DefaultExportDashboardGrid = forwardRef<HTMLDivElement, Props>(
+    DashboardGrid,
+)
+
+export { DefaultExportDashboardGrid }

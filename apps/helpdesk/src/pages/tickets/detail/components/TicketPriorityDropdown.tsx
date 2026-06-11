@@ -5,9 +5,9 @@ import _capitalize from 'lodash/capitalize'
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { PriorityIcon } from 'pages/tickets/common/components/PriorityIcon'
 
 import css from './TicketPriorityDropdown.less'
@@ -93,4 +93,4 @@ const TicketPriorityDropdown = ({
     )
 }
 
-export default TicketPriorityDropdown
+export { TicketPriorityDropdown }

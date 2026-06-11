@@ -2,13 +2,14 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { IvrForwardCall, PhoneIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
@@ -98,4 +99,4 @@ const IvrPhoneNumberSelectField = ({ value, onChange }: Props): JSX.Element => {
     )
 }
 
-export default IvrPhoneNumberSelectField
+export { IvrPhoneNumberSelectField }

@@ -8,7 +8,7 @@ import { useAutomateNotificationSettingsVisibility } from 'automate/notification
 
 import { categories, notifications } from '../../data'
 import type { Settings } from '../../types'
-import EventSettings from '../EventSettings'
+import { EventSettings } from '../EventSettings'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -22,20 +22,18 @@ const useAutomateNotificationSettingsVisibilityMock = jest.mocked(
     useAutomateNotificationSettingsVisibility,
 )
 
-jest.mock(
-    '../SoundSelect',
-    () =>
-        ({ onChange }: { onChange: (sound: string) => void }) => (
-            <select
-                onChange={(e) => {
-                    onChange(e.target.value)
-                }}
-            >
-                <option value="sound 1">sound 1</option>
-                <option value="sound 2">sound 2</option>
-            </select>
-        ),
-)
+jest.mock('../SoundSelect', () => ({
+    SoundSelect: ({ onChange }: { onChange: (sound: string) => void }) => (
+        <select
+            onChange={(e) => {
+                onChange(e.target.value)
+            }}
+        >
+            <option value="sound 1">sound 1</option>
+            <option value="sound 2">sound 2</option>
+        </select>
+    ),
+}))
 
 jest.mock('../../data', () => ({
     ...jest.requireActual<typeof import('../../data')>('../../data'),

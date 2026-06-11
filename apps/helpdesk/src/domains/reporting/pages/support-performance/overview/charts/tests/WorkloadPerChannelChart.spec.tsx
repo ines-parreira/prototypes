@@ -13,7 +13,7 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import GaugeChart from 'domains/reporting/pages/common/components/charts/GaugeChart'
+import { GaugeChart } from 'domains/reporting/pages/common/components/charts/GaugeChart'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { WorkloadPerChannelChart } from 'domains/reporting/pages/support-performance/overview/charts/WorkloadPerChannelChart'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'

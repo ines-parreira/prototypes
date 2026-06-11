@@ -10,9 +10,9 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import type { TicketMessage } from 'models/ticket/types'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
-import FailedWorkflowMessage from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage'
+import { FailedWorkflowMessage } from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage'
 import { getFailedWorkflowData } from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage.util'
-import Body from 'pages/tickets/detail/components/TicketMessages/Body'
+import { Body } from 'pages/tickets/detail/components/TicketMessages/Body'
 import css from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.less'
 
 export type SimplifiedAIAgentBannerProps = {
@@ -142,4 +142,4 @@ const SimplifiedAIAgentBanner = ({
     )
 }
 
-export default SimplifiedAIAgentBanner
+export { SimplifiedAIAgentBanner }

@@ -14,9 +14,9 @@ import {
 import type { ListVoiceQueues200 } from '@gorgias/helpdesk-queries'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 
-import QueueCallTransferDropdownContent from '../QueueCallTransferDropdownContent'
+import { QueueCallTransferDropdownContent } from '../QueueCallTransferDropdownContent'
 
 const server = setupServer()
 const queryClient = new QueryClient({

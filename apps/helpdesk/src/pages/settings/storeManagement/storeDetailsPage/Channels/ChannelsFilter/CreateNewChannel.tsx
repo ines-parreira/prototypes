@@ -46,9 +46,7 @@ const CHANNEL_CONFIG: Record<ChannelTypes, { path: string; label: string }> = {
     },
 }
 
-export default function CreateNewChannel({
-    activeChannel,
-}: CreateNewChannelProps) {
+export function CreateNewChannel({ activeChannel }: CreateNewChannelProps) {
     if (!activeChannel) return null
 
     const { type } = activeChannel

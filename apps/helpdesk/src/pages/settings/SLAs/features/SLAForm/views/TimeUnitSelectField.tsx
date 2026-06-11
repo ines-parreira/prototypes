@@ -10,7 +10,7 @@ type TimeUnitSelectFieldProps = {
     isDisabled?: boolean
 }
 
-export default function TimeUnitSelectField({
+export function TimeUnitSelectField({
     name,
     isDisabled,
 }: TimeUnitSelectFieldProps) {

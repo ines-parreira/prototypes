@@ -1,4 +1,4 @@
-import clamp from '../clamp'
+import { clamp } from '../clamp'
 
 describe('clamp', () => {
     it('should throw an error if max is smaller than min', () => {

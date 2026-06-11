@@ -104,4 +104,4 @@ const HttpRequestLogsView = ({
     )
 }
 
-export default HttpRequestLogsView
+export { HttpRequestLogsView }

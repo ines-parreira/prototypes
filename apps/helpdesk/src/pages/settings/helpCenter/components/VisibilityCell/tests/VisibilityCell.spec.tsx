@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import type { VisibilityStatus } from 'models/helpCenter/types'
 
-import VisibilityCell from '../VisibilityCell'
+import { VisibilityCell } from '../VisibilityCell'
 
 describe('<VisibilityCell />', () => {
     it('should match snapshot', () => {

@@ -5,10 +5,7 @@ type Props = {
     isAllowed: boolean
 }
 
-export default function ViewSharingButtonTooltip({
-    isSystem,
-    isAllowed,
-}: Props) {
+export function ViewSharingButtonTooltip({ isSystem, isAllowed }: Props) {
     if (isSystem) {
         return (
             <UncontrolledTooltip target="view-sharing-button" placement="left">

@@ -5,15 +5,15 @@ import cn from 'classnames'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 
-import useCount from '../hooks/useCount'
-import Feed from './Feed'
+import { useCount } from '../hooks/useCount'
+import { Feed } from './Feed'
 
 import css from './Button.less'
 
-export default function NotificationsButton() {
+export function NotificationsButton() {
     const count = useCount()
 
     const buttonRef = useRef<HTMLButtonElement>(null)

@@ -4,7 +4,7 @@ import moment from 'moment/moment'
 import { AiAgentScope } from 'models/aiAgent/types'
 import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
 import { ShopifyPermissionsDataFixture } from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { useFetchActionsData } from '../useFetchActionsData'
 import { useFetchAiAgentPlaygroundExecutionsData } from '../useFetchAiAgentPlaygroundExecutionsData'
@@ -98,9 +98,9 @@ jest.mock('../useTicketViewData', () => ({
 }))
 const useTicketViewDataMock = assumeMock(useTicketViewData)
 
-jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () =>
-    jest.fn(),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    useSelfServiceChatChannels: jest.fn(),
+}))
 const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
 
 // Will implements better testing after extracting the list of tasks from the ruleEngine

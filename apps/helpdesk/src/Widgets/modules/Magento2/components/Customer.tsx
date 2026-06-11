@@ -4,7 +4,7 @@ import type { ContextType, ReactNode } from 'react'
 import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/magento.svg'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/'
 import { ExpandAllButton } from 'Widgets/modules/Template/modules/Card/'

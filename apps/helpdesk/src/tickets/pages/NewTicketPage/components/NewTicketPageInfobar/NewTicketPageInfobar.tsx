@@ -10,12 +10,12 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 import type { Customer } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType as ModelIntegrationType } from 'models/integration/constants'
 import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
-import CustomIntegrationsTabContent from 'pages/tickets/detail/CustomIntegrationsTabContent'
-import IntegrationTabContent from 'pages/tickets/detail/IntegrationTabContent'
+import { CustomIntegrationsTabContent } from 'pages/tickets/detail/CustomIntegrationsTabContent'
+import { IntegrationTabContent } from 'pages/tickets/detail/IntegrationTabContent'
 import {
     InfobarLayoutContainer,
     InfobarLayoutContent,
@@ -23,19 +23,19 @@ import {
 import { useCustomerFilteredIntegrations } from 'pages/tickets/detail/TicketCustomerSections/useCustomerFilteredIntegrations'
 import { useTicketInfobarSectionFlags } from 'pages/tickets/detail/TicketCustomerSections/useTicketInfobarSectionFlags'
 import { TimelineSidePanel } from 'pages/tickets/detail/TimelineSidePanel'
-import WooCommerceTabContent from 'pages/tickets/detail/WooCommerceTabContent'
+import { WooCommerceTabContent } from 'pages/tickets/detail/WooCommerceTabContent'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import * as widgetActions from 'state/widgets/actions'
 import {
     getSourcesWithCustomer,
     getWidgetsState,
 } from 'state/widgets/selectors'
-import BigCommerceWidget from 'Widgets/modules/BigCommerce'
-import Magento2Widget from 'Widgets/modules/Magento2'
-import RechargeWidget from 'Widgets/modules/Recharge'
-import SmileWidget from 'Widgets/modules/Smile'
+import { BigCommerceWidget } from 'Widgets/modules/BigCommerce'
+import { Magento2Widget } from 'Widgets/modules/Magento2'
+import { RechargeWidget } from 'Widgets/modules/Recharge'
+import { SmileWidget } from 'Widgets/modules/Smile'
 import type { WidgetProps } from 'Widgets/modules/Widget'
-import YotpoWidget from 'Widgets/modules/Yotpo'
+import { YotpoWidget } from 'Widgets/modules/Yotpo'
 
 import { NewTicketPageInfobarCustomerTab } from './NewTicketPageInfobarCustomerTab'
 import { NewTicketPageInfobarShopifyTab } from './NewTicketPageInfobarShopifyTab'

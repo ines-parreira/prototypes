@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { ModalContext } from '../../Modal'
-import ModalHeader from '../../ModalHeader'
+import { ModalHeader } from '../../ModalHeader'
 
 describe('<ModalHeader/>', () => {
     it('should not render close button if `isClosable` is false', () => {

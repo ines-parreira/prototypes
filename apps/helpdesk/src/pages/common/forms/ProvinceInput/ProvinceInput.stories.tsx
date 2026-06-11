@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import ProvinceInput from './ProvinceInput'
+import { ProvinceInput } from './ProvinceInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/ProvinceInput',

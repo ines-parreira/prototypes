@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'

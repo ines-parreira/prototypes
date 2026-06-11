@@ -11,13 +11,13 @@ import type {
 import { Icon } from 'AlertBanners/components/Icon'
 import { AlertBannerTypes } from 'AlertBanners/types'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import StoreDisplayName from 'pages/common/components/StoreDisplayName'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { StoreDisplayName } from 'pages/common/components/StoreDisplayName'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
-import BusinessHoursDisplay from './BusinessHoursDisplay'
+import { BusinessHoursDisplay } from './BusinessHoursDisplay'
 import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
-import CustomBusinessHoursIntegrationCell from './CustomBusinessHoursIntegrationCell'
+import { CustomBusinessHoursIntegrationCell } from './CustomBusinessHoursIntegrationCell'
 
 import css from './CustomBusinessHoursIntegrationsTable.less'
 
@@ -41,7 +41,7 @@ type IntegrationTypeKey = keyof typeof integrationsToAdresses
 const isValidIntegrationType = (type: string): type is IntegrationTypeKey =>
     type in integrationsToAdresses
 
-export default function IntegrationRowsField({
+export function IntegrationRowsField({
     integrations,
     onChange,
     value,

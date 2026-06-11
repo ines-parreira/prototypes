@@ -5,7 +5,7 @@ import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 import type { Integration } from 'models/integration/types'
 
 import type { ChannelWithMetadata } from '../../../types'
-import determineChannelLink from '../helpers/determineChannelLink'
+import { determineChannelLink } from '../helpers/determineChannelLink'
 import {
     shouldShowDeleteButton,
     shouldShowEditButton,
@@ -19,7 +19,7 @@ interface ChannelItemProps {
     onDelete: (id: number) => void
 }
 
-export default function ChannelItem({
+export function ChannelItem({
     channel,
     activeChannel,
     onDelete,

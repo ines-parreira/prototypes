@@ -1,6 +1,6 @@
 import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
-import isPrivateAsset from '../isPrivateAsset'
+import { isPrivateAsset } from '../isPrivateAsset'
 
 jest.mock('@repo/utils', () => {
     const actual = jest.requireActual('@repo/utils')

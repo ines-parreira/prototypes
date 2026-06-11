@@ -15,4 +15,4 @@ const ruleRecipesReducer = createReducer<RuleRecipesState>(
         }),
 )
 
-export default ruleRecipesReducer
+export { ruleRecipesReducer }

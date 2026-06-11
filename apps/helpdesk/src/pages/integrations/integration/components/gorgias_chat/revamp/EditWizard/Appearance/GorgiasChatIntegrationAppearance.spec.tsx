@@ -5,7 +5,7 @@ import { act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatPosition,
@@ -156,7 +156,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
-        default: () => null,
+        SaveChangesPrompt: () => null,
     }),
 )
 

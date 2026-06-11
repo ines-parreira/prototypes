@@ -3,8 +3,8 @@ import React, { useEffect } from 'react'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import {
     DEPRECATED_getActiveCustomer,
     getActiveCustomerId,
@@ -58,4 +58,8 @@ const connector = connect((state: RootState) => ({
     sources: getSources(state),
 }))
 
-export default connector(CustomerInfobarContainer)
+const DefaultExportCustomerInfobarContainer = connector(
+    CustomerInfobarContainer,
+)
+
+export { DefaultExportCustomerInfobarContainer }

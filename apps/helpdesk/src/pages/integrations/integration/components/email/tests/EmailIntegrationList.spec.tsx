@@ -5,14 +5,14 @@ import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
 import { basicMonthlyHelpdeskPlan, customHelpdeskPlan } from 'fixtures/plans'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import { useListStoreMappings } from 'models/storeMapping/queries'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
-import EmailIntegrationList from '../EmailIntegrationList'
-import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
+import { EmailIntegrationList } from '../EmailIntegrationList'
+import { EmailIntegrationListVerificationStatus } from '../EmailIntegrationListVerificationStatus'
 import {
     canIntegrationDomainBeVerified,
     isBaseEmailIntegration,

@@ -9,7 +9,7 @@ import {
     StepCardActionMenuItem,
 } from 'core/ui/flows'
 import { Drawer } from 'pages/common/components/Drawer'
-import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
+import { LearnMoreLink } from 'pages/common/components/LearnMore/LearnMoreLink'
 
 import { useVoiceFlow } from '../useVoiceFlow'
 import { useDeleteNode } from '../utils/useDeleteNode'

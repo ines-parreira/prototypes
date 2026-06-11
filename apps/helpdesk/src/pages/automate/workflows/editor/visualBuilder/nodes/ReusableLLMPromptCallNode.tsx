@@ -6,13 +6,13 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {
     getActionsAppFromTemplateApp,
     getGraphAppFromTemplateApp,
 } from 'pages/automate/actionsPlatform/utils'
-import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
+import { ReusableLLMPromptCallNodeStatusLabel } from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
@@ -22,10 +22,10 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import EdgeBlock from '../components/EdgeBlock'
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import ReusableLLMPromptCallNodeLabel from './ReusableLLMPromptCallNodeLabel'
-import VisualBuilderNode from './VisualBuilderNode'
+import { EdgeBlock } from '../components/EdgeBlock'
+import { NodeDeleteIcon } from '../components/NodeDeleteIcon'
+import { ReusableLLMPromptCallNodeLabel } from './ReusableLLMPromptCallNodeLabel'
+import { VisualBuilderNode } from './VisualBuilderNode'
 
 type Props = VisualBuilderNodeProps & {
     configurationId: string
@@ -129,7 +129,7 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
     )
 })
 
-export default function ReusableLLMPromptCallNodeWrapper(
+export function ReusableLLMPromptCallNodeWrapper(
     node: NodeProps<ReusableLLMPromptCallNodeType>,
 ) {
     const { visualBuilderGraph } = useVisualBuilderContext()

@@ -1,1 +1,1 @@
-export { default } from './VariantActions'
+export { VariantActions } from './VariantActions'

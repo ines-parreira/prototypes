@@ -1,4 +1,4 @@
-import mockedVirtuoso from 'tests/mockedVirtuoso'
+import { mockedVirtuoso } from 'tests/mockedVirtuoso'
 
 import type { ComponentProps, ReactPortal } from 'react'
 import type React from 'react'
@@ -25,7 +25,7 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { voiceCall } from 'fixtures/voiceCalls'
 import type { RecentItems } from 'hooks/useRecentItems/constants'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { useRecentItems } from 'hooks/useRecentItems/useRecentItems'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { SearchEngine } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
@@ -35,14 +35,15 @@ import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-import type SpotlightCallRow from 'pages/common/components/Spotlight/SpotlightCallRow'
-import type SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
-import SpotlightModal, {
+import type { SpotlightCallRow } from 'pages/common/components/Spotlight/SpotlightCallRow'
+import type { SpotlightCustomerRow } from 'pages/common/components/Spotlight/SpotlightCustomerRow'
+import {
     CUSTOMERS_ADVANCED_SEARCH_PATH,
     FEDERATED_SEARCH_TAB_LABEL,
+    SpotlightModal,
     TICKETS_ADVANCED_SEARCH_PATH,
 } from 'pages/common/components/Spotlight/SpotlightModal'
-import type SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import type { SpotlightTicketRow } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import * as billingSelectors from 'state/billing/selectors'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
@@ -70,38 +71,38 @@ jest.mock('@repo/routing', () => ({
         listen: jest.fn(),
     },
 }))
-jest.mock('pages/common/components/SkeletonLoader', () => () => (
-    <div>SkeletonLoader</div>
-))
+jest.mock('pages/common/components/SkeletonLoader', () => ({
+    SkeletonLoader: () => <div>SkeletonLoader</div>,
+}))
 
-jest.mock(
-    'pages/common/components/Spotlight/SpotlightTicketRow',
-    () =>
-        ({ onClick }: ComponentProps<typeof SpotlightTicketRow>) => (
-            <div onClick={onClick} data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}>
-                MockedSpotlightTicketRow
-            </div>
-        ),
-)
+jest.mock('pages/common/components/Spotlight/SpotlightTicketRow', () => ({
+    SpotlightTicketRow: ({
+        onClick,
+    }: ComponentProps<typeof SpotlightTicketRow>) => (
+        <div onClick={onClick} data-testid={TICKET_SPOTLIGHT_ROW_TEST_ID}>
+            MockedSpotlightTicketRow
+        </div>
+    ),
+}))
 
-jest.mock(
-    'pages/common/components/Spotlight/SpotlightCustomerRow',
-    () =>
-        ({ onClick }: ComponentProps<typeof SpotlightCustomerRow>) => (
-            <div onClick={onClick} data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}>
-                MockedSpotlightCustomerRow
-            </div>
-        ),
-)
-jest.mock(
-    'pages/common/components/Spotlight/SpotlightCallRow',
-    () =>
-        ({ onClick }: ComponentProps<typeof SpotlightCallRow>) => (
-            <div onClick={onClick} data-testid={CALL_SPOTLIGHT_ROW_TEST_ID}>
-                MockedSpotlightCallRow
-            </div>
-        ),
-)
+jest.mock('pages/common/components/Spotlight/SpotlightCustomerRow', () => ({
+    SpotlightCustomerRow: ({
+        onClick,
+    }: ComponentProps<typeof SpotlightCustomerRow>) => (
+        <div onClick={onClick} data-testid={CUSTOMER_SPOTLIGHT_ROW_TEST_ID}>
+            MockedSpotlightCustomerRow
+        </div>
+    ),
+}))
+jest.mock('pages/common/components/Spotlight/SpotlightCallRow', () => ({
+    SpotlightCallRow: ({
+        onClick,
+    }: ComponentProps<typeof SpotlightCallRow>) => (
+        <div onClick={onClick} data-testid={CALL_SPOTLIGHT_ROW_TEST_ID}>
+            MockedSpotlightCallRow
+        </div>
+    ),
+}))
 
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
     (element) => element as ReactPortal,
@@ -125,7 +126,9 @@ jest.mock('@repo/logging')
 const mockUseSearchRankScenario = assumeMock(useSearchRankScenario)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const mockStore = configureMockStore([thunk])
 

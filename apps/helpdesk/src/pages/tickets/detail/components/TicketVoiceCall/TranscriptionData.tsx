@@ -10,9 +10,9 @@ import type {
 import { useGetVoiceCallRecordingTranscription } from '@gorgias/helpdesk-queries'
 
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
-import TranscriptionReply from './TranscriptionReply'
+import { TranscriptionReply } from './TranscriptionReply'
 
 import css from './TranscriptionData.less'
 
@@ -22,10 +22,7 @@ type Props = {
 }
 const DEFAULT_REPLY_COUNT = 7
 
-export default function TranscriptionData({
-    recordingId,
-    recordingType,
-}: Props) {
+export function TranscriptionData({ recordingId, recordingType }: Props) {
     const [showMore, setShowMore] = useState(true)
     const [speakerMapping, setSpeakerMapping] = useState<
         Record<string, VoiceCallRecordingTranscriptionSpeakersItem>

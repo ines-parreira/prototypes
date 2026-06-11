@@ -1,5 +1,5 @@
-import TemplateListView from 'pages/settings/SLAs/features/SLATemplateList/views/TemplateListView'
+import { TemplateListView } from 'pages/settings/SLAs/features/SLATemplateList/views/TemplateListView'
 
-export default function SLATemplateListController() {
+export function SLATemplateListController() {
     return <TemplateListView />
 }

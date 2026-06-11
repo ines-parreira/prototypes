@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
 
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -61,4 +62,4 @@ const MethodSelect = ({ value, onChange, isDisabled }: Props) => {
     )
 }
 
-export default MethodSelect
+export { MethodSelect }

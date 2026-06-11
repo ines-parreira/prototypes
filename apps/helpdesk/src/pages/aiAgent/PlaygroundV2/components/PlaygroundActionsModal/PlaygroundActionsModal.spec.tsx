@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
 
-import PlaygroundActionsModal from './PlaygroundActionsModal'
+import { PlaygroundActionsModal } from './PlaygroundActionsModal'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     useSessionStorage: jest.fn((key, defaultValue) => {

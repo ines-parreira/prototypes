@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { CustomEdge } from 'core/ui/flows/components/CustomEdge'
 
-import AddStepMenuContent from './AddStepMenuContent'
+import { AddStepMenuContent } from './AddStepMenuContent'
 import { useVoiceFlow } from './useVoiceFlow'
 import { canAddNewStepOnEdge } from './utils'
 

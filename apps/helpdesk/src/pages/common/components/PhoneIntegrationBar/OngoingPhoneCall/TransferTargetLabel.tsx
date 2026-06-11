@@ -1,5 +1,5 @@
-import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
-import VoiceCallCustomerLabel from '../../VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { VoiceCallAgentLabel } from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallCustomerLabel } from '../../VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import type { TransferTarget } from './types'
 import { TransferType } from './types'
 

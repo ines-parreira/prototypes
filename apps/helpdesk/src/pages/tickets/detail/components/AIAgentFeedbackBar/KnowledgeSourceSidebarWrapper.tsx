@@ -2,17 +2,17 @@ import { useMemo } from 'react'
 
 import { useFeedbackTracking } from '@repo/ai-agent'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { AppContextProvider } from 'pages/AppContext'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import KnowledgeSourceSideBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar'
+import { KnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar'
 import { UnsavedChangesModalProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 import { useGetAllRelatedResourceData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -148,4 +148,4 @@ const KnowledgeSourceSidebarWrapper = () => {
     )
 }
 
-export default KnowledgeSourceSidebarWrapper
+export { KnowledgeSourceSidebarWrapper }

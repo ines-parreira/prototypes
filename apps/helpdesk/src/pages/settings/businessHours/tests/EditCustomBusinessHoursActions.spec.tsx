@@ -5,10 +5,10 @@ import { userEvent } from '@testing-library/user-event'
 
 import { mockBusinessHoursDetails } from '@gorgias/helpdesk-mocks'
 
-import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
+import { useDeleteCustomBusinessHours } from 'hooks/businessHours/useDeleteCustomBusinessHours'
 
 import { BUSINESS_HOURS_BASE_URL } from '../constants'
-import EditCustomBusinessHoursActions from '../EditCustomBusinessHoursActions'
+import { EditCustomBusinessHoursActions } from '../EditCustomBusinessHoursActions'
 
 jest.mock('hooks/businessHours/useDeleteCustomBusinessHours')
 const useDeleteCustomBusinessHoursMock = jest.mocked(

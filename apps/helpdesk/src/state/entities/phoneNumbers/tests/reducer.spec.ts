@@ -6,7 +6,7 @@ import {
     phoneNumberFetched,
     phoneNumbersFetched,
 } from '../actions'
-import reducer from '../reducer'
+import { phoneNumbersReducer as reducer } from '../reducer'
 
 describe('phoneNumbers reducer', () => {
     describe('createPhoneNumber action', () => {

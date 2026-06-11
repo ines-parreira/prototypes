@@ -3,7 +3,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
 
-import useOrderDates from './hooks/useOrderDates'
+import { useOrderDates } from './hooks/useOrderDates'
 
 import css from './SelfServiceHelpCenterReturnPortalPage.less'
 
@@ -39,4 +39,4 @@ const SelfServiceHelpCenterReturnPortalPage = ({ helpCenter }: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterReturnPortalPage
+export { SelfServiceHelpCenterReturnPortalPage }

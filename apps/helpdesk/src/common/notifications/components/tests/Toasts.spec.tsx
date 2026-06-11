@@ -6,9 +6,9 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useToasts from '../../hooks/useToasts'
+import { useToasts } from '../../hooks/useToasts'
 import type { Notification } from '../../types'
-import Toasts from '../Toasts'
+import { Toasts } from '../Toasts'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -29,7 +29,7 @@ jest.mock('@knocklabs/react', () => ({
     KnockProvider: ({ children }: { children: ReactNode }) => children,
 }))
 
-jest.mock('../../hooks/useToasts', () => jest.fn())
+jest.mock('../../hooks/useToasts', () => ({ useToasts: jest.fn() }))
 
 jest.mock('../../data', () => ({
     notifications: {

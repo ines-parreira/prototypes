@@ -5,9 +5,9 @@ import _debounce from 'lodash/debounce'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useProductsFromShopifyIntegration } from 'models/integration/queries'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { useIntegrationContext } from '../../containers/IntegrationProvider'

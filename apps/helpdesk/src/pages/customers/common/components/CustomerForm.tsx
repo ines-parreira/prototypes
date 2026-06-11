@@ -16,10 +16,10 @@ import { bindActionCreators } from 'redux'
 
 import { Button } from '@gorgias/axiom'
 
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import InputField from 'pages/common/forms/input/InputField'
-import TextArea from 'pages/common/forms/TextArea'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import { submitCustomer } from 'state/customers/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -27,7 +27,7 @@ import type {
     CustomerChannelContact,
     CustomerChannelContactType,
 } from './CustomerChannelFieldArray'
-import CustomerChannelFieldArray from './CustomerChannelFieldArray'
+import { CustomerChannelFieldArray } from './CustomerChannelFieldArray'
 
 import css from './CustomerForm.less'
 
@@ -341,4 +341,6 @@ const mapDispatchToProps = (dispatch: StoreDispatch) => {
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
-export default connector(CustomerForm)
+const DefaultExportCustomerForm = connector(CustomerForm)
+
+export { DefaultExportCustomerForm }

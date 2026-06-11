@@ -9,73 +9,94 @@ import type {
 } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
-import SlashCommandSuggestions from '../SlashCommandSuggestions'
+import { SlashCommandSuggestions } from '../SlashCommandSuggestions'
 
 jest.mock('pages/common/draftjs/plugins/guidanceActions/utils', () => ({
     encodeAction: (action: GuidanceAction) => `$$$${action.value}$$$`,
 }))
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => {
-    return function MockDropdown({ children, isOpen, onToggle }: any) {
-        return (
-            <div data-mock="dropdown" data-open={isOpen}>
-                {isOpen && children}
-                <button
-                    aria-label="close dropdown"
-                    onClick={() => onToggle(false)}
-                >
-                    Close
-                </button>
-            </div>
-        )
+    return {
+        Dropdown: function MockDropdown({ children, isOpen, onToggle }: any) {
+            return (
+                <div data-mock="dropdown" data-open={isOpen}>
+                    {isOpen && children}
+                    <button
+                        aria-label="close dropdown"
+                        onClick={() => onToggle(false)}
+                    >
+                        Close
+                    </button>
+                </div>
+            )
+        },
     }
 })
 
 jest.mock('pages/common/components/dropdown/DropdownHeader', () => {
-    return function MockDropdownHeader({ children }: any) {
-        return <div data-mock="header">{children}</div>
+    return {
+        DefaultExportDropdownHeader: function MockDropdownHeader({
+            children,
+        }: any) {
+            return <div data-mock="header">{children}</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => {
-    return function MockDropdownBody({ children }: any) {
-        return <div data-mock="body">{children}</div>
+    return {
+        DefaultExportDropdownBody: function MockDropdownBody({
+            children,
+        }: any) {
+            return <div data-mock="body">{children}</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/dropdown/DropdownItem', () => {
     const { forwardRef } = jest.requireActual('react')
-    return forwardRef(({ children, onClick, option }: any, ref: any) => (
-        <div
-            role="option"
-            onClick={onClick}
-            aria-label={option.label}
-            ref={ref}
-        >
-            {children}
-        </div>
-    ))
+    return {
+        DefaultExportDropdownItem: forwardRef(
+            ({ children, onClick, option }: any, ref: any) => (
+                <div
+                    role="option"
+                    onClick={onClick}
+                    aria-label={option.label}
+                    ref={ref}
+                >
+                    {children}
+                </div>
+            ),
+        ),
+    }
 })
 
 jest.mock('pages/common/components/button/ButtonIconLabel', () => {
-    return function MockButtonIconLabel({ children, icon }: any) {
-        return <span data-icon={icon}>{children}</span>
+    return {
+        DefaultExportButtonIconLabel: function MockButtonIconLabel({
+            children,
+            icon,
+        }: any) {
+            return <span data-icon={icon}>{children}</span>
+        },
     }
 })
 
 jest.mock('pages/common/components/Search', () => {
-    return function MockSearch(props: any) {
-        return (
-            <input
-                role="searchbox"
-                placeholder={props.placeholder}
-                value={props.value}
-                onChange={(e: any) => props.onChange(e.target.value)}
-                onKeyDown={(e: any) => props.onKeyDown?.(e)}
-                onFocus={() => props.onFocus?.()}
-                onBlur={() => props.onBlur?.()}
-            />
-        )
+    return {
+        DefaultExportSearch: function MockSearch(props: any) {
+            return (
+                <input
+                    role="searchbox"
+                    placeholder={props.placeholder}
+                    value={props.value}
+                    onChange={(e: any) => props.onChange(e.target.value)}
+                    onKeyDown={(e: any) => props.onKeyDown?.(e)}
+                    onFocus={() => props.onFocus?.()}
+                    onBlur={() => props.onBlur?.()}
+                />
+            )
+        },
     }
 })
 

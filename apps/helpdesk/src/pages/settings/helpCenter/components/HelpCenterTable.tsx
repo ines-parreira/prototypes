@@ -11,17 +11,17 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { HelpCenter, Locale } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import { LanguageTagList } from 'pages/common/components/LanguageTagList'
-import Loader from 'pages/common/components/Loader/Loader'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
-import IconButton from '../../../common/components/button/IconButton'
-import StoreName from './StoreName'
+import { IconButton } from '../../../common/components/button/IconButton'
+import { StoreName } from './StoreName'
 
 import css from './HelpCenterTable.less'
 
@@ -194,5 +194,3 @@ export const HelpCenterTable: React.FC<Props> = ({
         </TableWrapper>
     )
 }
-
-export default HelpCenterTable

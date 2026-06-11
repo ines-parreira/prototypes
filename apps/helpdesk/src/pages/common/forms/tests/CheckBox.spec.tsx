@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import CheckBox from '../CheckBox'
+import { DefaultExportCheckBox as CheckBox } from '../CheckBox'
 
 describe('<CheckBox />', () => {
     const minProps: Omit<ComponentProps<typeof CheckBox>, 'children'> = {

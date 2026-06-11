@@ -12,8 +12,8 @@ import {
 } from 'reactstrap'
 
 import type { Team } from 'models/team/types'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { getHumanAgents } from 'state/agents/selectors'
 import type { RootState } from 'state/types'
@@ -140,4 +140,6 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(AddMemberContainer)
+const DefaultExportAddMember = connector(AddMemberContainer)
+
+export { DefaultExportAddMember }

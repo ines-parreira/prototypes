@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { accountConfigurationKeys } from 'models/aiAgent/queries'
 import { apiClient } from 'models/aiAgent/resources/configuration'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

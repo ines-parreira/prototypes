@@ -3,7 +3,7 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { StepperProgressHeader } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/StepperProgressHeader'
 import { STEP_LABELS } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/constants'
-import useLogWizardEvent from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/hooks/useLogWizardEvent'
+import { useLogWizardEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/hooks/useLogWizardEvent'
 
 import css from './GorgiasChatCreationWizardStep.less'
 

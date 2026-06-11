@@ -6,7 +6,7 @@ import type { RuleRecipe } from 'models/ruleRecipe/types'
 import type { ManagedRule, Rule } from 'state/rules/types'
 import { RuleType } from 'state/rules/types'
 
-import RuleRecipeCard from './components/RuleRecipeCard'
+import { RuleRecipeCard } from './components/RuleRecipeCard'
 import { RuleTemplateRecipeSlugs } from './constants'
 
 import css from './RuleLibrary.less'
@@ -88,5 +88,3 @@ export function RuleLibrary({
         </div>
     )
 }
-
-export default RuleLibrary

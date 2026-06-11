@@ -33,7 +33,7 @@ export type Props = {
     metafield: MetafieldWithName
 }
 
-export default function Metafield({ metafield }: Props) {
+export function Metafield({ metafield }: Props) {
     const label = metafield.name || startCase(metafield.key || '')
 
     const renderField = (content: ReactNode) => (

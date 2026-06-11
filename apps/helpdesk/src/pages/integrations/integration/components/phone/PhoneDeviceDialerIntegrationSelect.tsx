@@ -6,11 +6,11 @@ import {
 } from '@gorgias/axiom'
 
 import type { PhoneIntegration } from 'models/integration/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
-import usePhoneNumbers from './usePhoneNumbers'
+import { usePhoneNumbers } from './usePhoneNumbers'
 
 import css from './PhoneDevice.less'
 
@@ -20,7 +20,7 @@ type Props = {
     options: PhoneIntegration[]
 }
 
-export default function PhoneDeviceDialerIntegrationSelect({
+export function PhoneDeviceDialerIntegrationSelect({
     value,
     onChange,
     options,

@@ -5,9 +5,9 @@ import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { FlowProvider } from 'core/ui/flows'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
-import TextToSpeechProvider from '../VoiceMessageTTS/TextToSpeechProvider'
+import { TextToSpeechProvider } from '../VoiceMessageTTS/TextToSpeechProvider'
 import { VoiceFlow } from './VoiceFlow'
 
 import css from './VoiceFlowPreview.less'
@@ -72,4 +72,4 @@ function VoiceFlowPreview({
         </FlowProvider>
     )
 }
-export default VoiceFlowPreview
+export { VoiceFlowPreview }

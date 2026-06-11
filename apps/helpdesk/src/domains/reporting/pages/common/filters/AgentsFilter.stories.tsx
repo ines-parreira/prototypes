@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import AgentsFilter from 'domains/reporting/pages/common/filters/AgentsFilter'
+import { AgentsFilter } from 'domains/reporting/pages/common/filters/AgentsFilter'
 import { extendedAgents } from 'domains/reporting/pages/common/filters/tests/fixtures/agents'
 import { extendedTeams } from 'domains/reporting/pages/common/filters/tests/fixtures/teams'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'

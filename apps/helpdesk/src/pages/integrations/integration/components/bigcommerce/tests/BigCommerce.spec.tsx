@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import BigCommerce from '../BigCommerce'
+import { BigCommerce } from '../BigCommerce'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

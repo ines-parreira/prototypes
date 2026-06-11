@@ -15,7 +15,7 @@ import {
     mockUserAvailability,
 } from '@gorgias/helpdesk-mocks'
 
-import LiveAgentsDataTable from 'domains/reporting/pages/live/agents/dataTable/LiveAgentsDataTable'
+import { DefaultExportLiveAgentsDataTable as LiveAgentsDataTable } from 'domains/reporting/pages/live/agents/dataTable/LiveAgentsDataTable'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { userPerformanceOverview } from 'fixtures/stats'
 import type { RootState } from 'state/types'

@@ -11,21 +11,52 @@ import thunk from 'redux-thunk'
 import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { createTag } from 'models/tag/resources'
-import type MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import type SelectField from 'pages/common/forms/SelectField/SelectField'
+import type { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import type { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { RootState } from 'state/types'
 
-import TagsSelect from '../TagsSelect'
+import { TagsSelectContainer as TagsSelect } from '../TagsSelect'
 
 const mockStore = configureMockStore([thunk])
 
 jest.mock(
     'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField',
     () => {
-        return (props: ComponentProps<typeof MultiSelectOptionsField>) => {
+        return {
+            MultiSelectOptionsField: (
+                props: ComponentProps<typeof MultiSelectOptionsField>,
+            ) => {
+                return (
+                    <div>
+                        MultiSelectField Mock
+                        {JSON.stringify(
+                            props,
+                            (key, value: unknown) => {
+                                return typeof value !== 'function'
+                                    ? value
+                                    : undefined
+                            },
+                            2,
+                        )}
+                        <input
+                            data-testid="on-change-input"
+                            onChange={(event) => {
+                                props.onChange(JSON.parse(event.target.value))
+                            }}
+                        />
+                    </div>
+                )
+            },
+        }
+    },
+)
+
+jest.mock('../../../../forms/SelectField/SelectField', () => {
+    return {
+        SelectField: (props: ComponentProps<typeof SelectField>) => {
             return (
                 <div>
-                    MultiSelectField Mock
+                    SelectField Mock
                     {JSON.stringify(
                         props,
                         (key, value: unknown) => {
@@ -43,30 +74,7 @@ jest.mock(
                     />
                 </div>
             )
-        }
-    },
-)
-
-jest.mock('../../../../forms/SelectField/SelectField', () => {
-    return (props: ComponentProps<typeof SelectField>) => {
-        return (
-            <div>
-                SelectField Mock
-                {JSON.stringify(
-                    props,
-                    (key, value: unknown) => {
-                        return typeof value !== 'function' ? value : undefined
-                    },
-                    2,
-                )}
-                <input
-                    data-testid="on-change-input"
-                    onChange={(event) => {
-                        props.onChange(JSON.parse(event.target.value))
-                    }}
-                />
-            </div>
-        )
+        },
     }
 })
 

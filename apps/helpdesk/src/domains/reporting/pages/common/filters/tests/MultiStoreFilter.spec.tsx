@@ -18,7 +18,8 @@ import {
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
-import MultiStoreFilter, {
+import {
+    MultiStoreFilter,
     MultiStoreFilterWithSavedState,
     MultiStoreFilterWithState,
 } from 'domains/reporting/pages/common/filters/MultiStoreFilter'

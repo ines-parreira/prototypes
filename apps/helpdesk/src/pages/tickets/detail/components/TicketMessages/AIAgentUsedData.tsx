@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import classNames from 'classnames'
 
 import shopifyLogo from 'assets/img/ai-agent/ai-agent-shopify.svg'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 
 import {
@@ -182,4 +182,4 @@ const AIAgentUsedData = ({ messageId }: Props) => {
     )
 }
 
-export default AIAgentUsedData
+export { AIAgentUsedData }

@@ -4,14 +4,14 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import type { ContentBlock, ContentState, EditorState } from 'draft-js'
 
-import createGuidanceVariablesPlugin from '../index'
+import { createGuidanceVariablesPlugin } from '../index'
 import { attachGuidanceVariableEntities } from '../utils'
 
 // Mock the GuidanceVariableTag component
 jest.mock('../GuidanceVariableTag', () => {
     return {
         __esModule: true,
-        default: function MockGuidanceVariableTag(props: any) {
+        GuidanceVariableTag: function MockGuidanceVariableTag(props: any) {
             return (
                 <div
                     data-testid="guidance-variable-tag"

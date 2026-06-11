@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import NoChannelsAlert from '../NoChannelAlert'
+import { NoChannelsAlert } from '../NoChannelAlert'
 import { ChannelConfig } from '../utils'
 
 describe('NoChannelsAlert Component', () => {

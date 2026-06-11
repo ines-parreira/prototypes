@@ -20,13 +20,13 @@ import {
 } from 'models/team/resources'
 import type { FetchTeamMembersOptions, Member, Team } from 'models/team/types'
 import { TeamSortableProperties } from 'models/team/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import CheckBox from 'pages/common/forms/CheckBox'
-import withRouter from 'pages/common/utils/withRouter'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { withRouter } from 'pages/common/utils/withRouter'
 import settingsCss from 'pages/settings/settings.less'
 import css from 'pages/settings/teams/List.less'
 import membersCss from 'pages/settings/teams/members/List.less'
@@ -38,8 +38,8 @@ import {
 } from 'state/teams/actions'
 import type { RootState } from 'state/types'
 
-import AddMember from './AddMember'
-import Row from './Row'
+import { DefaultExportAddMember as AddMember } from './AddMember'
+import { Row } from './Row'
 
 type Props = ConnectedProps<typeof connector> &
     RouteComponentProps<{ id: string }>
@@ -414,4 +414,6 @@ const connector = connect(
     },
 )
 
-export default withRouter(connector(MembersListContainer))
+const DefaultExportList = withRouter(connector(MembersListContainer))
+
+export { DefaultExportList }

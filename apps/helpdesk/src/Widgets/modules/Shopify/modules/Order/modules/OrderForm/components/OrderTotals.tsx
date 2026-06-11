@@ -15,8 +15,8 @@ import {
     getTotalCartDiscountAmount,
     getTotalTax,
 } from 'business/shopify/refund'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { AmountInput } from 'Widgets/modules/Shopify/modules/AmountInput'
 
 import css from './OrderTotals.less'
 
@@ -35,7 +35,7 @@ type State = {
     shipping: number
 }
 
-export default class OrderTotals extends PureComponent<Props, State> {
+export class OrderTotals extends PureComponent<Props, State> {
     state = {
         shipping: Number(this.props.payload.getIn(['shipping', 'amount'])),
     }

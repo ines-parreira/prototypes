@@ -17,5 +17,3 @@ export const getEvent = (eventData: eventMaker): integrationEvent => {
 
     return event || emptyEvent
 }
-
-export default getEvent

@@ -70,4 +70,4 @@ export const logNotificationEvent = (
     void logNotificationEventWithLD(...args)
 }
 
-export default notificationTrackerInstance
+export { notificationTrackerInstance }

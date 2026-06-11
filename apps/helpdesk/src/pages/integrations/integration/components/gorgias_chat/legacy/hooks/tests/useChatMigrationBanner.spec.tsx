@@ -14,8 +14,8 @@ import type { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
-import useChatMigrationBanner from '../useChatMigrationBanner'
-import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
+import { useChatMigrationBanner } from '../useChatMigrationBanner'
+import { useThemeAppExtensionInstallation } from '../useThemeAppExtensionInstallation'
 
 const defaultState = {
     integrations: fromJS({
@@ -42,7 +42,7 @@ jest.mock('state/integrations/selectors', () => ({
 
 jest.mock('../useThemeAppExtensionInstallation', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useThemeAppExtensionInstallation: jest.fn(),
 }))
 
 const mockUseFlag = useFlag as jest.Mock

@@ -6,7 +6,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'

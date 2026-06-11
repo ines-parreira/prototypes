@@ -19,10 +19,10 @@ import type {
     CustomFieldObjectTypes,
     CustomFieldValue,
 } from 'custom-fields/types'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import DropdownCSVImport from './DropdownCSVImport'
-import DropdownInputRow from './DropdownInputRow'
+import { DropdownCSVImport } from './DropdownCSVImport'
+import { DefaultExportDropdownInputRow as DropdownInputRow } from './DropdownInputRow'
 
 import css from './DropdownInput.less'
 
@@ -252,4 +252,6 @@ export function DropdownInput({
     )
 }
 
-export default memo(DropdownInput)
+const DefaultExportDropdownInput = memo(DropdownInput)
+
+export { DefaultExportDropdownInput }

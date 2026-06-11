@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import { Text, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'

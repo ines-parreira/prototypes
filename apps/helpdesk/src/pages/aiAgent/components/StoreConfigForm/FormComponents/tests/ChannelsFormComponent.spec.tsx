@@ -6,15 +6,15 @@ import { fireEvent, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { ChannelsFormComponent } from '../ChannelsFormComponent'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
@@ -35,7 +35,7 @@ jest.mock('state/integrations/selectors', () => ({
 
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useSelfServiceChatChannels: jest.fn(),
 }))
 
 jest.mock(

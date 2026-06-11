@@ -1,3 +1,3 @@
-import socketManager from './socketManager'
+import { socketManager } from './socketManager'
 
-export default socketManager
+export { socketManager }

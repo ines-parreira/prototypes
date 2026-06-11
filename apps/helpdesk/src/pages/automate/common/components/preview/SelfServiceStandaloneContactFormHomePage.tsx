@@ -3,15 +3,15 @@ import React, { useEffect, useRef } from 'react'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import ContactFormPreview from 'pages/settings/contactForm/components/ContactFormPreview'
+import { ContactFormPreview } from 'pages/settings/contactForm/components/ContactFormPreview'
 
 import cancelIcon from '../../../../../assets/img/self-service/cancel.svg'
 import reportIssueIcon from '../../../../../assets/img/self-service/report-issue.svg'
 import returnIcon from '../../../../../assets/img/self-service/return.svg'
 import trackIcon from '../../../../../assets/img/self-service/track.svg'
 import { HELP_CENTER_TEXTS } from '../../../../../config/helpCenter'
-import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
-import OrderManagementFlowItemPreview from './OrderManagementFlowItemPreview'
+import { useWorkflowsEntrypoints } from './hooks/useWorkflowsEntrypoints'
+import { OrderManagementFlowItemPreview } from './OrderManagementFlowItemPreview'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceStandaloneContactFormHomePage.less'
@@ -149,4 +149,4 @@ const SelfServiceStandaloneContactFormHomePage = ({
     )
 }
 
-export default SelfServiceStandaloneContactFormHomePage
+export { SelfServiceStandaloneContactFormHomePage }

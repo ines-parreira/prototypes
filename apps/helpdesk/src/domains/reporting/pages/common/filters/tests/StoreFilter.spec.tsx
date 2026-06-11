@@ -31,7 +31,9 @@ import type { RootState } from 'state/types'
 const mockedDispatch = jest.fn()
 const mockedRemove = jest.fn()
 
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)

@@ -5,7 +5,7 @@ import type { FieldErrors, UseFormSetValue } from 'react-hook-form'
 
 import { LegacyBanner as Banner, LegacyLabel as Label } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import type { SelectInputBoxContextState } from 'pages/common/forms/input/SelectInputBox'
 import { HandoverHelpdeskDropdown } from 'pages/standalone/components/HandoverHelpdeskDropdown'
 import css from 'pages/standalone/components/HandoverWebhookFields.less'
@@ -99,4 +99,4 @@ const HandoverWebhookFields: React.FC<HandoverWebhookFieldsProps> = ({
     )
 }
 
-export default HandoverWebhookFields
+export { HandoverWebhookFields }

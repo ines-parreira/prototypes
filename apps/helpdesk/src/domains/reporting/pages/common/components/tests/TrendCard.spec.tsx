@@ -30,8 +30,9 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import TrendBadge, {
+import {
     DEFAULT_BADGE_TEXT,
+    TrendBadge,
 } from 'domains/reporting/pages/common/components/TrendBadge'
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
 import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'

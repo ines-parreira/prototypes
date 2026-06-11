@@ -5,7 +5,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function VoiceFormSubmitButton({ children }: Props) {
+export function VoiceFormSubmitButton({ children }: Props) {
     const { isDirty, isValid } = useFormState()
     return (
         <FormSubmitButton isDisabled={!isValid || !isDirty}>

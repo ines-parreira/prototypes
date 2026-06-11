@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import CancellationReasonsFooter from '../CancellationReasonsFooter'
+import { CancellationReasonsFooter } from '../CancellationReasonsFooter'
 
 describe('CancellationReasonsFooter', () => {
     const onCloseMock = jest.fn()

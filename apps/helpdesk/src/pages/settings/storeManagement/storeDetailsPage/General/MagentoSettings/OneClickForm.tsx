@@ -36,4 +36,4 @@ const OneClickIntegrationForm = ({
     )
 }
 
-export default OneClickIntegrationForm
+export { OneClickIntegrationForm }

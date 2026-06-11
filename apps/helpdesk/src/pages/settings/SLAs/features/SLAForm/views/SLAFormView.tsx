@@ -6,9 +6,9 @@ import { history } from '@repo/routing'
 
 import { Box, LegacyButton as Button, TextField } from '@gorgias/axiom'
 
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
+import { PageHeader } from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 import { DeleteModal } from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'
 import { PolicySection } from 'pages/settings/SLAs/features/SLAForm/views/PolicySection'
 

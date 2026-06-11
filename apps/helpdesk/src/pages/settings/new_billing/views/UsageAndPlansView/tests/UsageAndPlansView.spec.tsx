@@ -49,10 +49,10 @@ import { getCadenceName, isOtherCadenceUpgrade } from 'models/billing/utils'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import ProductCard from 'pages/settings/new_billing/components/ProductCard'
+import { ProductCard } from 'pages/settings/new_billing/components/ProductCard'
 import type { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
-import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
-import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
+import { useProductCancellations } from 'pages/settings/new_billing/hooks/useProductCancellations'
+import { UsageAndPlansView } from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { TicketPurpose } from 'state/billing/types'
 
 jest.mock('@repo/feature-flags')
@@ -64,18 +64,20 @@ jest.mock('@repo/logging', () => ({
     SegmentEvent: jest.requireActual('@repo/logging').SegmentEvent,
 }))
 
-jest.mock('pages/settings/new_billing/components/ProductCard', () =>
-    jest.fn((props: ProductCardProps) => {
+jest.mock('pages/settings/new_billing/components/ProductCard', () => ({
+    ProductCard: jest.fn((props: ProductCardProps) => {
         const dataTestId = `product-card--${props.type}`
         return <div data-testid={dataTestId}></div>
     }),
-)
+}))
 
 jest.mock(
     '../../../components/BillingScheduledUpdates/BillingScheduledUpdates',
     () => ({
         __esModule: true,
-        default: () => <div data-testid="billing-scheduled-downgrades" />,
+        BillingScheduledUpdates: () => (
+            <div data-testid="billing-scheduled-downgrades" />
+        ),
     }),
 )
 

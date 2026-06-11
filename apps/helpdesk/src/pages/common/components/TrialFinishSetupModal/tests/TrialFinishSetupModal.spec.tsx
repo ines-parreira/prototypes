@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { TrialFinishSetupFeature } from '../TrialFinishSetupModal'
-import TrialFinishSetupModal from '../TrialFinishSetupModal'
+import { TrialFinishSetupModal } from '../TrialFinishSetupModal'
 
 jest.mock('assets/img/icons/check.svg', () => 'check.svg')
 jest.mock('assets/img/icons/bolt.svg', () => 'bolt.svg')

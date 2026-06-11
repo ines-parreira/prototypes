@@ -13,7 +13,7 @@ import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'domains/reporting/pages/voice/constants/voiceAgents'
-import VoiceAgents from 'domains/reporting/pages/voice/pages/VoiceAgents'
+import { DefaultExportVoiceAgents as VoiceAgents } from 'domains/reporting/pages/voice/pages/VoiceAgents'
 import { VOICE_AGENTS_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { initialState as agentPerformanceInitialState } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'
 import { account } from 'fixtures/account'
@@ -38,9 +38,9 @@ jest.mock(
     }),
 )
 
-jest.mock('domains/reporting/pages/voice/VoicePaywall', () => () => (
-    <div>VoicePaywall</div>
-))
+jest.mock('domains/reporting/pages/voice/VoicePaywall', () => ({
+    VoicePaywall: () => <div>VoicePaywall</div>,
+}))
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

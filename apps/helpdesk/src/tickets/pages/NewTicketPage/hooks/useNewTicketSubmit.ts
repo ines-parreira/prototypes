@@ -20,8 +20,8 @@ import type {
 } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { DRAFT_TICKET_STORE } from 'hooks/useTicketDraft'
 import type { Ticket as TicketModel } from 'models/ticket/types'
 import { updateMessageText } from 'pages/tickets/detail/components/ReplyArea/TicketReplyEditor'

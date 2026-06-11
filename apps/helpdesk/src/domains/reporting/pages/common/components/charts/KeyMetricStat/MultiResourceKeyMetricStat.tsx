@@ -7,7 +7,7 @@ import type {
     OneDimensionalChart,
     Stat,
 } from 'domains/reporting/models/stat/types'
-import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
+import { KeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
 
 type Props = {
     resourceStats: {
@@ -19,10 +19,7 @@ type Props = {
 }
 
 // todo: Merge this component with KeyMetricStat during the refactoring KeyMetricStat
-export default function MultiResourceKeyMetricStat({
-    resourceStats,
-    config,
-}: Props) {
+export function MultiResourceKeyMetricStat({ resourceStats, config }: Props) {
     const data = useMemo(() => {
         const data = resourceStats.map(({ stat }) => stat?.data.data || {})
         return fromJS(data) as List<any>

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import MetricTip from 'domains/reporting/pages/support-performance/components/MetricTip'
+import { MetricTip } from 'domains/reporting/pages/support-performance/components/MetricTip'
 
 export const SATISFACTION_SURVEYS_SETTINGS_PATH =
     '/app/settings/satisfaction-surveys'

@@ -7,8 +7,8 @@ import { Button } from 'reactstrap'
 
 import * as viewsConfig from 'config/views'
 import { OBJECT_PATHS, OBJECT_TYPES } from 'custom-fields/constants'
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import QAScoreSelect from 'pages/common/components/ViewTable/Filters/QAScoreSelect'
+import { CustomFieldSelect } from 'pages/common/components/ast/widget/CustomFieldSelect'
+import { QAScoreSelect } from 'pages/common/components/ViewTable/Filters/QAScoreSelect'
 import { getQaScoreDimensionFromObjectPath } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
 import { humanizeString } from 'utils'
 
@@ -22,7 +22,7 @@ type Props = {
     menuContainer?: HTMLElement
 }
 
-export default function Left({
+export function Left({
     objectPath,
     view,
     onCustomFieldChange,

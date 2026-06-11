@@ -1,1 +1,1 @@
-export { default } from './ConvertOnboardingStep'
+export { ConvertOnboardingStep } from './ConvertOnboardingStep'

@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ContactFormAutomationSettings } from 'models/contactForm/types'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {
@@ -127,4 +127,4 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
     }
 }
 
-export default useContactFormsAutomationSettings
+export { useContactFormsAutomationSettings }

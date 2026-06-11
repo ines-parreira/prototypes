@@ -2,8 +2,8 @@ import { renderHook } from '@repo/testing'
 
 import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 
-import Provider from '../ThemeProvider'
-import useTheme from '../useTheme'
+import { ThemeProvider as Provider } from '../ThemeProvider'
+import { useTheme } from '../useTheme'
 
 jest.unmock('core/theme/useTheme.ts')
 

@@ -2,11 +2,11 @@ import { useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import ImpersonationBanner from '../ImpersonationBanner'
+import { ImpersonationBanner } from '../ImpersonationBanner'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),

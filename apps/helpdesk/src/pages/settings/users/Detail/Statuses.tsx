@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import type { User } from 'config/types/user'
-import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
+import { TwoFactorAuthenticationDisableModal } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 
 import { OwnershipModal } from './OwnershipModal'
 

@@ -3,10 +3,11 @@ import React, { useMemo } from 'react'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import useGetConvertStatus, {
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import {
     BundleOnboardingStatus,
+    useGetConvertStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { getIntegrationById } from 'state/integrations/selectors'
@@ -78,5 +79,3 @@ export const ConvertSetupBanner = ({
         </div>
     )
 }
-
-export default ConvertSetupBanner

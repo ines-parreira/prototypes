@@ -9,9 +9,9 @@ import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
+import { useUpdateCustomFieldConditions } from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
 
-import ConditionalFields, { MAX_CONDITIONS } from '../ConditionalFields'
+import { ConditionalFields, MAX_CONDITIONS } from '../ConditionalFields'
 
 jest.mock(
     '@repo/logging',
@@ -21,16 +21,10 @@ jest.mock(
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            Link: jest.fn(
-                ({ children }: { children?: React.ReactNode }) => children,
-            ),
-        }) as Record<string, unknown>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    Link: jest.fn(({ children }: { children?: React.ReactNode }) => children),
+}))
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 jest.mock(
     'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions',

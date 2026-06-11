@@ -9,7 +9,7 @@ import type { HelpdeskThemeName } from './types'
 
 const themeValues = [...Object.values(THEME_NAME), 'system']
 
-export default function useActualTheme() {
+export function useActualTheme() {
     const [theme, setTheme] = useLocalStorage<HelpdeskThemeName>(
         'theme',
         THEME_NAME.Light,

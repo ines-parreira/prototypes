@@ -1,4 +1,4 @@
-import toInitialStoreState from './toInitialStoreState'
+import { toInitialStoreState } from './toInitialStoreState'
 
 describe('toInitialStoreState', () => {
     const minimalState = {

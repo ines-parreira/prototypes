@@ -12,7 +12,7 @@ const MessageQuoteContext = createContext<MessageContextState>({
     toggleQuote: _noop,
 })
 
-export default MessageQuoteContext
+export { MessageQuoteContext }
 
 export const useMessageQuote = () => {
     const context = useContext(MessageQuoteContext)

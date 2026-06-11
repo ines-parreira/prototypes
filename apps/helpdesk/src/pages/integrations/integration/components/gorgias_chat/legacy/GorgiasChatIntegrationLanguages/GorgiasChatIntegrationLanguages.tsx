@@ -5,9 +5,9 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import type { LANGUAGE } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
 import type { Option as DropdownOption } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
-import DropdownButtonWithSearch from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
-import PageHeader from 'pages/common/components/PageHeader'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { DropdownButtonWithSearch } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 
 import { GorgiasChatIntegrationLanguagesTable } from './components/GorgiasChatIntegrationLanguagesTable'
@@ -83,4 +83,4 @@ const GorgiasChatIntegrationLanguages = ({
     )
 }
 
-export default GorgiasChatIntegrationLanguages
+export { GorgiasChatIntegrationLanguages }

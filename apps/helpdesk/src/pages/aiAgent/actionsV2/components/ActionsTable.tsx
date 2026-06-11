@@ -1,17 +1,17 @@
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { Box, Text } from '@gorgias/axiom'
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { ACTION_LIBRARY_APP_COLUMN_WIDTH } from '../constants'
 import type { ServiceConnectionStatuses } from '../hooks/useServiceConnectionStatuses'
-import ActionsTableRow from './ActionsTableRow'
-import ActionsTableSkeleton from './ActionsTableSkeleton'
+import { ActionsTableRow } from './ActionsTableRow'
+import { ActionsTableSkeleton } from './ActionsTableSkeleton'
 
 export type SortColumn = 'app' | 'name' | 'status'
 
@@ -139,4 +139,4 @@ const ActionsTable = ({
     )
 }
 
-export default ActionsTable
+export { ActionsTable }

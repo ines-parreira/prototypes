@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { disconnectApp } from 'models/integration/resources'
-import InboundConnectionCard from 'pages/integrations/integration/components/app/SetupCards/InboundConnectionCard'
+import { InboundConnectionCard } from 'pages/integrations/integration/components/app/SetupCards/InboundConnectionCard'
 
 jest.mock('models/integration/resources', () => ({
     ...jest.requireActual('models/integration/resources'),

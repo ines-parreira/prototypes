@@ -7,8 +7,8 @@ import type { TicketDetails } from 'domains/reporting/pages/common/drill-down/Dr
 import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTicketDetailsCell.less'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TicketIcon, { NullTicketIcon } from 'pages/common/components/TicketIcon'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { NullTicketIcon, TicketIcon } from 'pages/common/components/TicketIcon'
 
 const TICKET_LABEL = 'Ticket'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
@@ -14,7 +14,7 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import CancelSubscriptionEditor from '../CancelSubscriptionEditor'
+import { CancelSubscriptionEditor } from '../CancelSubscriptionEditor'
 
 describe('<CancelSubscriptionEditor />', () => {
     it('should dispatch SET_TOUCHED', () => {

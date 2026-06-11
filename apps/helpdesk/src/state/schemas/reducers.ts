@@ -4,8 +4,6 @@ import type { SchemasState } from './types'
 
 const initialState: SchemasState = fromJS({})
 
-export default function reducer(
-    state: SchemasState = initialState,
-): SchemasState {
+export function reducer(state: SchemasState = initialState): SchemasState {
     return state
 }

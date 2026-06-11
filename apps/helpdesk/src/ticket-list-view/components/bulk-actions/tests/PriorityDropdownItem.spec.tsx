@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import PriorityDropdownItem from '../PriorityDropdownItem'
+import { PriorityDropdownItem } from '../PriorityDropdownItem'
 
 describe('<PriorityDropdownItem />', () => {
     const minProps = {

@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { noop } from 'lodash'
 
 import { migrationProviders } from '../../fixtures/migration-providers'
-import ProviderSelectModal from './ProviderSelectModal'
+import { ProviderSelectModal } from './ProviderSelectModal'
 
 const providerToSelect = migrationProviders[0]
 

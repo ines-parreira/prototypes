@@ -11,19 +11,20 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import AIAgentFeedbackBar, {
+import {
+    AIAgentFeedbackBar,
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
     ticketFeedbackSummary,
 } from '../AIAgentFeedbackBar'
 import { TRIAL_MESSAGE_TAG } from '../constants'
 import { messageFeedback } from './fixtures'
 
-jest.mock('../AIAgentMessageFeedback', () => () => (
-    <div data-testid="message-feedback"></div>
-))
-jest.mock('../AIAgentTicketFeedback', () => () => (
-    <div data-testid="ticket-feedback"></div>
-))
+jest.mock('../AIAgentMessageFeedback', () => ({
+    AIAgentMessageFeedback: () => <div data-testid="message-feedback"></div>,
+}))
+jest.mock('../AIAgentTicketFeedback', () => ({
+    AIAgentTicketFeedback: () => <div data-testid="ticket-feedback"></div>,
+}))
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')

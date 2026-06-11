@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { CLOSED_MANY_HELP_CENTERS_ALERT_KEY } from '../constants'

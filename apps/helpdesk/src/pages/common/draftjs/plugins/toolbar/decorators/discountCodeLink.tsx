@@ -41,4 +41,4 @@ const discountCodeLink = (): Decorator => ({
     },
 })
 
-export default discountCodeLink
+export { discountCodeLink }

@@ -10,7 +10,7 @@ import {
     useAllResourcesMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import {
     getNextSyncDate,

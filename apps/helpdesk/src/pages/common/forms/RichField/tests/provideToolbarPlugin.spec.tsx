@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import provideToolbarPlugin from '../provideToolbarPlugin'
+import { provideToolbarPlugin } from '../provideToolbarPlugin'
 import type { InjectedProps, RequiredProps } from '../provideToolbarPlugin'
 
 function TestComponent(props: RequiredProps & InjectedProps) {

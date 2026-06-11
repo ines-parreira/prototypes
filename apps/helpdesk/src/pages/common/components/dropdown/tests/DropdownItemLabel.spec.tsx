@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DropdownItemLabel from '../DropdownItemLabel'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from '../DropdownItemLabel'
 
 describe('<DropdownItemLabel />', () => {
     it('should render', () => {

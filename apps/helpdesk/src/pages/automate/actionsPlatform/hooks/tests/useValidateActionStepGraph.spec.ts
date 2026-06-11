@@ -5,7 +5,7 @@ import {
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 
-import useValidateActionStepGraph from '../useValidateActionStepGraph'
+import { useValidateActionStepGraph } from '../useValidateActionStepGraph'
 
 describe('useValidateActionStepGraph()', () => {
     it('should validate action step graph', () => {

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
-import VoiceCallAgentLabel from './VoiceCallAgentLabel'
+import { VoiceCallAgentLabel } from './VoiceCallAgentLabel'
 
 const useAgentDetailsSpy = jest.spyOn(voiceCallHooks, 'useAgentDetails')
 

@@ -4,13 +4,13 @@ import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 
-import WhatsAppMessageTemplateSearch from '../WhatsAppMessageTemplateSearch'
+import { WhatsAppMessageTemplateSearch } from '../WhatsAppMessageTemplateSearch'
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
-    () => jest.fn(),
+    () => ({ useWhatsAppEditor: jest.fn() }),
 )
 const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
 const useWhatsAppEditorMockSetters = {
@@ -20,14 +20,9 @@ const useWhatsAppEditorMockSetters = {
 jest.useFakeTimers()
 jest.mock(
     'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown',
-    () =>
-        ({
-            __esModule: true,
-            ...jest.requireActual(
-                'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown',
-            ),
-            default: () => <div>TemplateTypeFilterDropdown</div>,
-        }) as Record<string, any>,
+    () => ({
+        TemplateTypeFilterDropdown: () => <div>TemplateTypeFilterDropdown</div>,
+    }),
 )
 describe('WhatsAppMessageTemplateSearch', () => {
     const renderComponent = () => render(<WhatsAppMessageTemplateSearch />)

@@ -1,7 +1,7 @@
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 
-import PhoneDeviceDialer from './PhoneDeviceDialer'
+import { PhoneDeviceDialer } from './PhoneDeviceDialer'
 
 import css from './PhoneDevice.less'
 
@@ -11,7 +11,7 @@ type Props = {
     target: React.RefObject<HTMLElement | null>
 }
 
-export default function PhoneDevice({ isOpen, setIsOpen, target }: Props) {
+export function PhoneDevice({ isOpen, setIsOpen, target }: Props) {
     return (
         <Dropdown
             isOpen={isOpen}

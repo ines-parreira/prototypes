@@ -1,8 +1,8 @@
 import type { Expression } from 'estree'
 
-import resolvePunctuators from './resolvePunctuators'
+import { resolvePunctuators } from './resolvePunctuators'
 
-export default function resolveObjectPath(node: Expression): string {
+export function resolveObjectPath(node: Expression): string {
     switch (node.type) {
         case 'MemberExpression':
             return `${resolveObjectPath(

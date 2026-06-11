@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 
 import { mockQueryClient } from '../../../../../tests/reactQueryTestingUtils'
 import { mockStore } from '../../../../../utils/testing'
-import ShopifyCustomerProfileSync from '../ShopifyCustomerProfileSync'
+import { ShopifyCustomerProfileSync } from '../ShopifyCustomerProfileSync'
 
 const queryClient = mockQueryClient()
 

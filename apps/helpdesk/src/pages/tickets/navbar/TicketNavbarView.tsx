@@ -5,16 +5,16 @@ import { useDrag } from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import type { SectionsState } from 'state/entities/sections/types'
 import type { ViewsState } from 'state/entities/views/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
 
-import TicketNavbarViewLink from './TicketNavbarViewLink'
+import { DefaultExportTicketNavbarViewLink as TicketNavbarViewLink } from './TicketNavbarViewLink'
 
 import css from './TicketNavbarView.less'
 

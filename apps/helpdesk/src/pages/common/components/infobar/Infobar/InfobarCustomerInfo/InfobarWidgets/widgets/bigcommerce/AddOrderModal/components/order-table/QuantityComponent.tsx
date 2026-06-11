@@ -1,7 +1,7 @@
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './OrderLineItemRow.less'
 

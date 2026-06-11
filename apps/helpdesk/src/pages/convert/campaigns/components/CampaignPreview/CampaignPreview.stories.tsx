@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 
-import CampaignPreview from './CampaignPreview'
+import { CampaignPreview } from './CampaignPreview'
 
 const storyConfig: Meta = {
     title: 'Convert/Chat Campaigns/Preview',

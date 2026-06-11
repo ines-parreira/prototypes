@@ -34,8 +34,9 @@ import type { IntegrationContextType } from 'providers/infobar/IntegrationContex
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import * as integrationHelpers from 'state/integrations/helpers'
 
-import RefundOrderModalRenderWrapper, {
+import {
     RefundOrderModal,
+    RefundOrderModalRenderWrapper,
 } from '../RefundOrderModal'
 import * as utils from '../utils'
 

@@ -2,7 +2,7 @@ import { appQueryClient } from '@repo/api-resources'
 
 import { SearchTicketsOrderBy } from '@gorgias/helpdesk-queries'
 
-import TicketUpdatesManager from '../TicketUpdatesManager'
+import { TicketUpdatesManager } from '../TicketUpdatesManager'
 
 let mockFetchQuery: jest.SpyInstance
 
@@ -16,14 +16,14 @@ afterEach(() => {
     jest.restoreAllMocks()
 })
 
-jest.mock('../utils/transformApiTicketPartial', () =>
-    jest.fn((ticket) => ({
+jest.mock('../utils/transformApiTicketPartial', () => ({
+    transformApiTicketPartial: jest.fn((ticket) => ({
         ...ticket,
         id: ticket.id,
         updated_datetime: ticket.updated_datetime,
         cursor: ticket.cursor,
     })),
-)
+}))
 
 describe('TicketUpdatesManager', () => {
     let manager: TicketUpdatesManager

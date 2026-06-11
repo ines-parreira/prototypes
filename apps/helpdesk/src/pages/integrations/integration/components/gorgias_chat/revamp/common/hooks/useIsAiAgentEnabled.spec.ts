@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'

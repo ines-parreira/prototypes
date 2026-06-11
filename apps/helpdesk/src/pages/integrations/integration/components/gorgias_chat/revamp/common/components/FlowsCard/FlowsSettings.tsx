@@ -7,7 +7,7 @@ import { Box, Button, Menu, MenuItem } from '@gorgias/axiom'
 
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import type { Components } from 'rest_api/workflows_api/client.generated'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 

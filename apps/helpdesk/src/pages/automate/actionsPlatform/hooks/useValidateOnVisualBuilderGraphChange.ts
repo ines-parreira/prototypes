@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import type { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import useIsVisualBuilderGraphChanged from './useIsVisualBuilderGraphChanged'
+import { useIsVisualBuilderGraphChanged } from './useIsVisualBuilderGraphChanged'
 
 type Props = {
     graph: VisualBuilderGraph
@@ -56,4 +56,4 @@ const useValidateOnVisualBuilderGraphChange = ({
     }, [handleValidate, graph, isGraphChanged, dispatch])
 }
 
-export default useValidateOnVisualBuilderGraphChange
+export { useValidateOnVisualBuilderGraphChange }

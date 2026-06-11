@@ -6,10 +6,10 @@ import { useHistory } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 import { PreviewChannelButton } from '../../../../settings/common/PreviewChannelButton/PreviewChannelButton'
-import SelfServicePreviewChannelSelect from './SelfServicePreviewChannelSelect'
+import { SelfServicePreviewChannelSelect } from './SelfServicePreviewChannelSelect'
 
 import css from './SelfServicePreviewContainer.less'
 
@@ -85,4 +85,4 @@ const SelfServicePreviewContainer = <T extends SelfServiceChannel>({
     )
 }
 
-export default SelfServicePreviewContainer
+export { SelfServicePreviewContainer }

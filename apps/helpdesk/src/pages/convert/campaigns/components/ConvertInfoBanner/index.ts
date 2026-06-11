@@ -1,1 +1,1 @@
-export { default } from './ConvertInfoBanner'
+export { ConvertInfoBanner } from './ConvertInfoBanner'

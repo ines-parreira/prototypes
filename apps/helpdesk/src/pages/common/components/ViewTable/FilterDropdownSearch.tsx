@@ -5,8 +5,8 @@ import type { List, Map } from 'immutable'
 import { DropdownItem } from 'reactstrap'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import useCancellableRequest from 'hooks/useCancellableRequest'
-import Search from 'pages/common/components/Search'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 import { fieldEnumSearch } from 'state/views/actions'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
     onSearchError: () => void
 }
 
-export default function FilterDropdownSearch({
+export function FilterDropdownSearch({
     field,
     onSearchStart,
     onSearchError,

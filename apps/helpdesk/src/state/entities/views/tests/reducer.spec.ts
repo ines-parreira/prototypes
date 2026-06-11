@@ -1,6 +1,6 @@
 import { view } from '../../../../fixtures/views'
 import { viewCreated, viewDeleted, viewsFetched, viewUpdated } from '../actions'
-import reducer from '../reducer'
+import { viewsReducer as reducer } from '../reducer'
 
 describe('views reducer', () => {
     describe('viewsFetched action', () => {

@@ -31,8 +31,8 @@ import type { ViewField } from '@gorgias/helpdesk-types'
 
 import * as viewsConfig from 'config/views'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { JobType } from 'models/job/types'
 import type { View } from 'models/view/types'
 import {
@@ -41,11 +41,11 @@ import {
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
-import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
+import { DefaultExportViewSharingButton as ViewSharingButton } from 'pages/common/components/ViewSharing/ViewSharingButton'
 import { AddFilterDropdown } from 'pages/common/components/ViewTable/AddFilterDropdown'
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import { EmojiSelect } from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import { getDefaultCustomFieldOperator } from 'pages/common/components/ViewTable/Filters/utils'
-import ViewFilters from 'pages/common/components/ViewTable/Filters/ViewFilters'
+import { ViewFilters } from 'pages/common/components/ViewTable/Filters/ViewFilters'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'

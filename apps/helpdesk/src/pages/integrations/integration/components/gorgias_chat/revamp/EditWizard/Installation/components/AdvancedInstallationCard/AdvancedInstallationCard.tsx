@@ -14,7 +14,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import AdvancedInstallationSidePanel from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/AdvancedInstallationCard/AdvancedInstallationSidePanel'
+import { AdvancedInstallationSidePanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/AdvancedInstallationCard/AdvancedInstallationSidePanel'
 
 import css from './AdvancedInstallationCard.less'
 
@@ -66,4 +66,4 @@ const AdvancedInstallationCard = ({ integration }: Props) => {
     )
 }
 
-export default AdvancedInstallationCard
+export { AdvancedInstallationCard }

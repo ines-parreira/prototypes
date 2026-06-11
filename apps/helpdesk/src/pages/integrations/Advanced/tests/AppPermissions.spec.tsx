@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import type { AppOAuthPermission } from 'config/oauthPermissions'
 import { oauthPermissions } from 'config/oauthPermissions'
-import AppPermissions from 'pages/integrations/Advanced/AppPermissions'
+import { AppPermissions } from 'pages/integrations/Advanced/AppPermissions'
 
 describe(`AppErrorRow`, () => {
     it('should render', () => {

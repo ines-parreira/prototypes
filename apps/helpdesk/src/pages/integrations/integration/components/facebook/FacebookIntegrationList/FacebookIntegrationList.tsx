@@ -1,12 +1,12 @@
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import FacebookLoginButton from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookLoginButton'
-import IntegrationList from 'pages/integrations/integration/components/IntegrationList'
+import { FacebookLoginButton } from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookLoginButton'
+import { DefaultExportIntegrationList as IntegrationList } from 'pages/integrations/integration/components/IntegrationList'
 import { getFacebookIntegrations } from 'state/integrations/selectors'
 
-import FacebookPageRow from './FacebookPageRow'
+import { FacebookPageRow } from './FacebookPageRow'
 
 type Props = {
     loading: Map<any, any>
@@ -39,4 +39,4 @@ This integration creates tickets when customers post on your Facebook page or se
     )
 }
 
-export default FacebookIntegrationList
+export { FacebookIntegrationList }

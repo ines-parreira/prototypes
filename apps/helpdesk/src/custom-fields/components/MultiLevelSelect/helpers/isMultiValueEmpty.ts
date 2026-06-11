@@ -1,9 +1,7 @@
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import type { CustomFieldValue } from 'custom-fields/types'
 
-export default function isMultiValueEmpty(
-    values: Array<CustomFieldValue> | undefined,
-) {
+export function isMultiValueEmpty(values: Array<CustomFieldValue> | undefined) {
     return (
         !Array.isArray(values) ||
         values.length === 0 ||

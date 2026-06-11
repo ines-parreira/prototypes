@@ -12,7 +12,7 @@ import {
     canIntegrationDomainBeVerified,
     isGenericEmailIntegration,
 } from '../../helpers'
-import EmailIntegrationUpdateLayout from '../EmailIntegrationUpdateLayout'
+import { EmailIntegrationUpdateLayout } from '../EmailIntegrationUpdateLayout'
 
 jest.mock('../../helpers')
 

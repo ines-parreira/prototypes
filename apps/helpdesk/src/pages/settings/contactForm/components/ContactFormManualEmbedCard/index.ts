@@ -1,1 +1,1 @@
-export { default } from './ContactFormManualEmbedCard'
+export { ContactFormManualEmbedCard } from './ContactFormManualEmbedCard'

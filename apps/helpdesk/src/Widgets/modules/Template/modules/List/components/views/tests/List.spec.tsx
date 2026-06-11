@@ -6,7 +6,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { compare } from 'utils'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
-import List from '../List'
+import { List } from '../List'
 
 describe('List', () => {
     const defaultProps = {

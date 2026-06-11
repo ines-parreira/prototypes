@@ -17,15 +17,15 @@ import { VoiceMessageType } from '@gorgias/helpdesk-types'
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import type { VoiceMessage } from 'models/integration/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import Caption from 'pages/common/forms/Caption/Caption'
-import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportSelectInputBox as SelectInputBox } from 'pages/common/forms/input/SelectInputBox'
 
-import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
-import TextToSpeechRecordingInput from './TextToSpeechRecordingInput'
-import VoiceMessageTTSPreviewFields from './VoiceMessageTTS/VoiceMessageTTSPreviewFields'
-import VoiceRecordingInput from './VoiceRecordingInput'
+import { useVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
+import { TextToSpeechRecordingInput } from './TextToSpeechRecordingInput'
+import { VoiceMessageTTSPreviewFields } from './VoiceMessageTTS/VoiceMessageTTSPreviewFields'
+import { VoiceRecordingInput } from './VoiceRecordingInput'
 
 import css from './VoiceMessageField.less'
 
@@ -218,4 +218,4 @@ const VoiceMessageField = ({
     )
 }
 
-export default VoiceMessageField
+export { VoiceMessageField }

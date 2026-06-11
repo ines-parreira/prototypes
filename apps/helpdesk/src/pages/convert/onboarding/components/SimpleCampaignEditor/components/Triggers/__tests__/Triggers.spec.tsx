@@ -7,7 +7,7 @@ import { CampaignTriggerDeviceTypeValueEnum } from 'pages/convert/campaigns/type
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { createTrigger } from 'pages/convert/campaigns/utils/createTrigger'
 
-import Triggers from '../Triggers'
+import { Triggers } from '../Triggers'
 
 describe('<Triggers>', () => {
     it('renders', () => {

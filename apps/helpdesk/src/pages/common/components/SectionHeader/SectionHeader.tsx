@@ -7,7 +7,7 @@ type Props = {
     description?: string
 }
 
-export default function SectionHeader({ title, description }: Props) {
+export function SectionHeader({ title, description }: Props) {
     return (
         <div className={css.container}>
             <Label>{title}</Label>

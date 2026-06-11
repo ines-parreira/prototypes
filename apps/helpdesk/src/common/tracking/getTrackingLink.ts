@@ -5,7 +5,7 @@ import {
 } from './constants'
 
 /** Compute the tracking URL based on the tracking number and the shipping provider. **/
-export default function getTrackingLink(
+export function getTrackingLink(
     trackingNumber: string,
     provider: string,
 ): string | null {

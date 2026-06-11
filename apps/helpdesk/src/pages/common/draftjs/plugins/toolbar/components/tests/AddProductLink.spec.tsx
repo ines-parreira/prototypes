@@ -10,8 +10,8 @@ import thunk from 'redux-thunk'
 import { integrationsStateWithShopify } from 'fixtures/integrations'
 
 import * as ToolbarContext from '../../ToolbarContext'
-import ToolbarProvider from '../../ToolbarProvider'
-import AddProductLink from '../AddProductLink'
+import { ToolbarProvider } from '../../ToolbarProvider'
+import { AddProductLink } from '../AddProductLink'
 
 const minProps = {
     getEditorState: jest.fn(),

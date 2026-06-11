@@ -12,9 +12,9 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('pages/tickets/detail/components/TicketSummary', () => () => (
-    <div>TicketSummarySection</div>
-))
+jest.mock('pages/tickets/detail/components/TicketSummary', () => ({
+    TicketSummarySection: () => <div>TicketSummarySection</div>,
+}))
 
 describe('TicketSummary', () => {
     beforeEach(() => {

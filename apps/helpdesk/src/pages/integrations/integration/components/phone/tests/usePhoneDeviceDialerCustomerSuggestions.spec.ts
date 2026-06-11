@@ -5,7 +5,7 @@ import { useSearch } from '@gorgias/helpdesk-queries'
 
 import * as searchTypes from 'models/search/types'
 
-import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
+import { usePhoneDeviceDialerCustomerSuggestions } from '../usePhoneDeviceDialerCustomerSuggestions'
 
 jest.mock(
     'lodash',

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { useLocation } from 'react-router-dom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
-import AiAgentStoreConfigurationContext from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { AiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import {
     CreateAnActionBody,
@@ -27,8 +27,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     }),
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
-    __esModule: true,
-    default: jest.fn(() => []),
+    useSelfServiceChatChannels: jest.fn(() => []),
 }))
 jest.mock(
     'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',

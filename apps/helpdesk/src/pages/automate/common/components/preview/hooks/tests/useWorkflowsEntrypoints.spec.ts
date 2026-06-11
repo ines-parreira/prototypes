@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 
 import { useSelfServicePreviewContext } from '../../SelfServicePreviewContext'
-import useWorkflowsEntrypoints from '../useWorkflowsEntrypoints'
+import { useWorkflowsEntrypoints } from '../useWorkflowsEntrypoints'
 
 // Mock the dependencies
 jest.mock('models/workflows/queries', () => ({

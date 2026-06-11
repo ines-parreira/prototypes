@@ -24,9 +24,9 @@ import {
 import { ulid } from 'ulidx'
 
 import { formatPrice } from 'business/shopify/number'
-import CheckBox from 'pages/common/forms/CheckBox'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { AmountInput } from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './AddCustomItemPopover.less'
@@ -50,7 +50,7 @@ type State = {
     requiresShipping: boolean
 }
 
-export default class AddCustomItemPopover extends PureComponent<Props, State> {
+export class AddCustomItemPopover extends PureComponent<Props, State> {
     static defaultProps: Pick<Props, 'placement' | 'className'> = {
         placement: 'bottom',
         className: null,

@@ -39,4 +39,6 @@ const ModalBody = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(ModalBody)
+const DefaultExportModalBody = forwardRef<HTMLDivElement, Props>(ModalBody)
+
+export { DefaultExportModalBody }

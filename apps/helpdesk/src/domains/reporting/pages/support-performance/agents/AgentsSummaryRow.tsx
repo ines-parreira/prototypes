@@ -15,8 +15,8 @@ import {
     AgentsTableColumn,
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 export const aggregateRowConfig = {
     [AgentsTableRow.Average]: {

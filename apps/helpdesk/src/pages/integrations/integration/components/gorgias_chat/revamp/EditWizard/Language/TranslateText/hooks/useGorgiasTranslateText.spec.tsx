@@ -3,7 +3,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { LanguageChat } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as IntegrationsActions from 'state/integrations/actions'
 
 import { multiLanguageInitialTextsEmptyData } from '../utils/translateTextHelpers'
@@ -35,7 +35,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsAutomateSubscriber',
     () => ({
         __esModule: true,
-        default: jest.fn(() => false),
+        useIsAutomateSubscriber: jest.fn(() => false),
     }),
 )
 
@@ -43,7 +43,7 @@ jest.mock(
     'pages/integrations/integration/hooks/useIntegrationPageViewLogEvent',
     () => ({
         __esModule: true,
-        default: jest.fn(),
+        useIntegrationPageViewLogEvent: jest.fn(),
     }),
 )
 

@@ -8,8 +8,8 @@ import { useMeasure } from '@gorgias/toolkit-react'
 
 import type { MacroAction } from 'models/macroAction/types'
 import type { TicketMessage } from 'models/ticket/types'
-import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
-import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
+import { DefaultExportTicketReplyAction as TicketReplyAction } from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
+import { AIAgentUsedData } from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
 
 import type { SuggestionStates } from './InTicketSuggestion'
 
@@ -28,7 +28,7 @@ type Props = {
 
 export const PREVIEW_HEIGHT = 110
 
-export default function SuggestionBody({
+export function SuggestionBody({
     text,
     actions,
     ticketId,

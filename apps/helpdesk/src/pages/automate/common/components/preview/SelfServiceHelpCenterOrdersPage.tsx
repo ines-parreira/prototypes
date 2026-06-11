@@ -6,10 +6,10 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
 
-import MousePointer from './components/MousePointer'
+import { MousePointer } from './components/MousePointer'
 import { LINE_ITEMS } from './constants'
-import useOrderDates from './hooks/useOrderDates'
-import useOrdersPagePreview, { PreviewStep } from './hooks/useOrdersPagePreview'
+import { useOrderDates } from './hooks/useOrderDates'
+import { PreviewStep, useOrdersPagePreview } from './hooks/useOrdersPagePreview'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterOrdersPage.less'
@@ -147,4 +147,4 @@ const SelfServiceHelpCenterOrdersPage = ({ helpCenter }: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterOrdersPage
+export { SelfServiceHelpCenterOrdersPage }

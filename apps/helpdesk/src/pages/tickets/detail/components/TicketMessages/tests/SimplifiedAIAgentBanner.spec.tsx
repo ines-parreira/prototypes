@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
@@ -18,11 +18,11 @@ import {
 import type { TicketMessage } from 'models/ticket/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import SimplifiedAIAgentBanner from '../SimplifiedAIAgentBanner'
+import { SimplifiedAIAgentBanner } from '../SimplifiedAIAgentBanner'
 
-jest.mock('../AiAgentFailedWorkflowMessage', () => () => (
-    <div data-testid="failed-workflow-message" />
-))
+jest.mock('../AiAgentFailedWorkflowMessage', () => ({
+    FailedWorkflowMessage: () => <div data-testid="failed-workflow-message" />,
+}))
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),

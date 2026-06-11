@@ -9,16 +9,16 @@ import {
     useGetAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-queries'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceCall } from 'models/voiceCall/types'
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import type {
     ServerMessage,
     VoiceCallWrapUpTimeStartedEvent,
 } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
 
-export default function useWrapUpTime() {
+export function useWrapUpTime() {
     const { call } = useVoiceDevice()
     const [wrapUpState, setWrapUpState] = useState<{
         wrapUpEndTimestamp: string | null

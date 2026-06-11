@@ -26,7 +26,7 @@ import type {
     TicketNavbarDragObject,
     TicketNavbarDropDirection,
 } from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import type { RootState } from 'state/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
@@ -303,4 +303,6 @@ const connector = connect((state: RootState) => ({
     views: state.entities.views,
 }))
 
-export default connector(TicketNavbarSectionContainer)
+const DefaultExportTicketNavbarSection = connector(TicketNavbarSectionContainer)
+
+export { DefaultExportTicketNavbarSection }

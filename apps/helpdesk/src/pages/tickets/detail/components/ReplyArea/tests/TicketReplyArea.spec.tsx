@@ -16,8 +16,8 @@ import { macros } from 'fixtures/macro'
 import type { InTicketSuggestionState } from 'state/entities/rules/types'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
-import type TicketMacrosSearch from '../TicketMacrosSearch'
-import TicketReply from '../TicketReply'
+import type { TicketMacrosSearch } from '../TicketMacrosSearch'
+import { TicketReply } from '../TicketReply'
 import { TicketReplyArea } from '../TicketReplyArea'
 
 const mockedStore = configureMockStore([thunk])
@@ -26,9 +26,9 @@ type Props = {
     richAreaRef: (value: any) => void
 }
 
-jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
-    <div>MacroFilters</div>
-))
+jest.mock('pages/common/components/MacroFilters/MacroFilters', () => ({
+    MacroFilters: () => <div>MacroFilters</div>,
+}))
 
 jest.mock('../TicketReply', () => {
     const { Component } = jest.requireActual('react')
@@ -52,42 +52,38 @@ jest.mock('../TicketReply', () => {
         getCapturedOnKeyDown: () => capturedOnKeyDown,
     }
 
-    return TicketReplyMock
+    return { TicketReply: TicketReplyMock }
 })
 
 type TicketMacrosMockProps = {
     onClearMacro: () => void
 }
 
-jest.mock(
-    '../TicketMacros',
-    () =>
-        ({ onClearMacro }: TicketMacrosMockProps) => (
-            <div>
-                TicketMacros mock
-                <button className="clear-macro" onClick={onClearMacro}>
-                    clear mocks
-                </button>
-            </div>
-        ),
-)
+jest.mock('../TicketMacros', () => ({
+    TicketMacros: ({ onClearMacro }: TicketMacrosMockProps) => (
+        <div>
+            TicketMacros mock
+            <button className="clear-macro" onClick={onClearMacro}>
+                clear mocks
+            </button>
+        </div>
+    ),
+}))
 
-jest.mock(
-    '../TicketMacrosSearch',
-    () =>
-        ({
-            showMacros,
-            handleSearchKeyDown,
-            setFocus,
-        }: ComponentProps<typeof TicketMacrosSearch>) => (
-            <input
-                data-testid="ticket-macro-search"
-                onKeyDown={handleSearchKeyDown}
-                onFocus={() => showMacros()}
-                ref={(el: HTMLInputElement | null) => el && setFocus?.(el)}
-            />
-        ),
-)
+jest.mock('../TicketMacrosSearch', () => ({
+    TicketMacrosSearch: ({
+        showMacros,
+        handleSearchKeyDown,
+        setFocus,
+    }: ComponentProps<typeof TicketMacrosSearch>) => (
+        <input
+            data-testid="ticket-macro-search"
+            onKeyDown={handleSearchKeyDown}
+            onFocus={() => showMacros()}
+            ref={(el: HTMLInputElement | null) => el && setFocus?.(el)}
+        />
+    ),
+}))
 
 jest.mock('@repo/utils', () => {
     const actual = jest.requireActual('@repo/utils')

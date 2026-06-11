@@ -11,7 +11,7 @@ import {
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
+import { KnowledgeSourceRenderer } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import type {
     AiAgentKnowledgeResourceTypeEnum,
     KnowledgeResource,
@@ -231,4 +231,4 @@ const ThumbButton = ({
     )
 }
 
-export default KnowledgeSourceFeedback
+export { KnowledgeSourceFeedback }

@@ -7,7 +7,7 @@ import { debounce } from 'lodash'
 import type { UserSearchResult } from 'models/search/types'
 import type { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
-import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'
+import { usePhoneDeviceDialerCustomerSuggestions } from './usePhoneDeviceDialerCustomerSuggestions'
 
 type UsePhoneDeviceDialerInputArgs = {
     value?: { phoneNumber: string; customer?: UserSearchResult }
@@ -17,7 +17,7 @@ type UsePhoneDeviceDialerInputArgs = {
     initialValue?: string
 }
 
-export default function usePhoneDeviceDialerInput({
+export function usePhoneDeviceDialerInput({
     value,
     onValueChange,
     onCustomerEnter,

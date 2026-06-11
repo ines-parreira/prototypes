@@ -6,8 +6,8 @@ import { Col, Row } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import InputField from 'pages/common/forms/input/InputField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { MAX_HEADER_LENGTH } from '../../../../../config'
 import { hasUnicodeChars } from '../../../../../utils'
@@ -18,7 +18,7 @@ type Props = {
     updateDict: (list: List<any>) => void
 }
 
-export default class ParametersEditor extends Component<Props> {
+export class ParametersEditor extends Component<Props> {
     addRow = () => {
         this.props.updateDict(
             this.props.list.push(

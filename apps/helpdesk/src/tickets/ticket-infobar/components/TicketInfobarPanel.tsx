@@ -1,6 +1,6 @@
 import { Panel } from '@repo/layout'
 
-import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
+import { DefaultExportTicketInfobarContainer as TicketInfobarContainer } from 'pages/tickets/detail/TicketInfobarContainer'
 
 const panelConfig = {
     defaultSize: 340,
@@ -8,7 +8,7 @@ const panelConfig = {
     maxSize: 0.33,
 }
 
-export default function TicketInfobarPanel() {
+export function TicketInfobarPanel() {
     return (
         <Panel name="infobar" config={panelConfig}>
             <TicketInfobarContainer isOnNewLayout />

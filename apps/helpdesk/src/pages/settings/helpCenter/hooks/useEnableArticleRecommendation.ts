@@ -1,6 +1,6 @@
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { fetchSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'

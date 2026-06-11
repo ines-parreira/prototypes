@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'

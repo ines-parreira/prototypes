@@ -10,9 +10,9 @@ import type {
     OnChangeAction,
     Parameter as ParameterType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import Parameter from './Parameter'
+import { DefaultExportParameter as Parameter } from './Parameter'
 import { checkDuplicates } from './validators'
 
 import css from './Parameters.less'
@@ -96,4 +96,6 @@ function Parameters({ addLabel = 'Parameter', value, path, onChange }: Props) {
     )
 }
 
-export default memo(Parameters)
+const DefaultExportParameters = memo(Parameters)
+
+export { DefaultExportParameters }

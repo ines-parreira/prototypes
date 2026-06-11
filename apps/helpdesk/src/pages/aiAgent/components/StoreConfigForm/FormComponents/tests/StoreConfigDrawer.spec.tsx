@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react'
 
 import { StoreConfigDrawer } from '../StoreConfigDrawer'
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loading...</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loading...</div>,
+}))
 
 describe('StoreConfigDrawer', () => {
     const defaultProps = {

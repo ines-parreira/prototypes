@@ -9,7 +9,7 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useExhaustEndpoint } from './useExhaustEndpoint'
 
-export default function useAllIntegrations(
+export function useAllIntegrations(
     type?: IntegrationType,
     options?: UseInfiniteQueryOptions<any>,
 ) {

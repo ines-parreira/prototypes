@@ -1,8 +1,8 @@
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { InstallationCodeSnippet } from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 
-import InstallationStep from './components/InstallationStep'
-import InstallationTab from './components/InstallationTab'
+import { InstallationStep } from './components/InstallationStep'
+import { InstallationTab } from './components/InstallationTab'
 
 type Props = {
     code?: string
@@ -36,4 +36,4 @@ const ManualInstallationShopifyWebsiteTab = ({ code, alertMessage }: Props) => {
     )
 }
 
-export default ManualInstallationShopifyWebsiteTab
+export { ManualInstallationShopifyWebsiteTab }

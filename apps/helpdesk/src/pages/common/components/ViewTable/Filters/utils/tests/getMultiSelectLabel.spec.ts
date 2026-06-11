@@ -1,4 +1,4 @@
-import getMultiSelectLabel from '../getMultiSelectLabel'
+import { getMultiSelectLabel } from '../getMultiSelectLabel'
 
 describe('getMultiSelectLabel', () => {
     it.each([

@@ -13,7 +13,7 @@ import {
 } from '@gorgias/helpdesk-client'
 
 import { integrationsState } from 'fixtures/integrations'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     DEFAULT_CALLBACK_REQUESTS,
     DEFAULT_GREETING_MESSAGE,

@@ -7,16 +7,20 @@ import { MemoryRouter } from 'react-router-dom'
 import { IntegrationType } from 'models/integration/types'
 import { Tab } from 'pages/integrations/integration/types'
 
-import GorgiasChatIntegrationHeader from '../GorgiasChatIntegrationHeader'
-import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
+import { GorgiasChatIntegrationHeader } from '../GorgiasChatIntegrationHeader'
+import { useChatMigrationBanner } from '../hooks/useChatMigrationBanner'
 
 jest.mock('../hooks/useChatMigrationBanner')
-jest.mock('../GorgiasChatIntegrationNavigation', () => () => null)
-jest.mock('../GorgiasChatShopifyCheckoutChatBanner', () => () => null)
+jest.mock('../GorgiasChatIntegrationNavigation', () => ({
+    GorgiasChatIntegrationNavigation: () => null,
+}))
+jest.mock('../GorgiasChatShopifyCheckoutChatBanner', () => ({
+    GorgiasChatShopifyCheckoutBanner: () => null,
+}))
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn((selector) => {
+    useAppSelector: jest.fn((selector) => {
         if (selector.name === 'getChatInstallationStatus') {
             return { installed: true }
         }

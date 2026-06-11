@@ -16,10 +16,7 @@ type Props = {
     notification: Notification<TicketPayload>
 } & ContentProps
 
-export default function UserMentionedNotification({
-    notification,
-    ...props
-}: Props) {
+export function UserMentionedNotification({ notification, ...props }: Props) {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { sender, ticket } = notification.payload
 

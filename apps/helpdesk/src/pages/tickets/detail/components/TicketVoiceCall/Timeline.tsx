@@ -7,7 +7,7 @@ type TimelineProps = {
     useFullWidth?: boolean
 }
 
-export default function Timeline({ children, useFullWidth }: TimelineProps) {
+export function Timeline({ children, useFullWidth }: TimelineProps) {
     return (
         <div
             className={classNames(css.container, {

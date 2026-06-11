@@ -4,7 +4,7 @@ import { useRef } from 'react'
 
 import classNames from 'classnames'
 
-import FileSelectedArea from 'pages/settings/helpCenter/components/Imports/components/ImportSection/components/ImportArticlesModal/components/FileSelectedArea'
+import { FileSelectedArea } from 'pages/settings/helpCenter/components/Imports/components/ImportSection/components/ImportArticlesModal/components/FileSelectedArea'
 
 import css from './DropdownCSVImportDropZone.less'
 
@@ -76,5 +76,3 @@ export const DropdownCSVImportDropZone = ({ file, setFile }: Props) => {
         </>
     )
 }
-
-export default DropdownCSVImportDropZone

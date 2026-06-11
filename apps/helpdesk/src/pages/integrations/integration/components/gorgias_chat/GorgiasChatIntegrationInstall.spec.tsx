@@ -15,7 +15,11 @@ jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall',
-    () => () => <div data-testid="legacy-install" />,
+    () => ({
+        GorgiasChatIntegrationInstall: () => (
+            <div data-testid="legacy-install" />
+        ),
+    }),
 )
 
 jest.mock(

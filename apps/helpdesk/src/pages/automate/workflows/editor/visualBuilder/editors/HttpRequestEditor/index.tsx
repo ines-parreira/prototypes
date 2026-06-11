@@ -11,9 +11,9 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     extractVariablesFromNode,
@@ -26,30 +26,30 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
-import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
-import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
-import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
-import BodyContentTypeSelect from './BodyContentTypeSelect'
-import FormUrlencoded from './FormUrlencoded'
-import Headers from './Headers'
-import MethodSelect from './MethodSelect'
-import Outputs from './Outputs'
-import TestRequestModal from './TestRequestModal'
-import TestRequestModalWithInputs from './TestRequestModalWithInputs'
-import useSendTestRequest from './useSendTestRequest'
-import Variables from './Variables'
+import { TextareaWithVariables } from '../../components/variables/TextareaWithVariables'
+import { DefaultExportTextInputWithVariables as TextInputWithVariables } from '../../components/variables/TextInputWithVariables'
+import { NodeEditorDrawerHeader } from '../../NodeEditorDrawerHeader'
+import { BodyContentTypeSelect } from './BodyContentTypeSelect'
+import { FormUrlencoded } from './FormUrlencoded'
+import { Headers } from './Headers'
+import { MethodSelect } from './MethodSelect'
+import { Outputs } from './Outputs'
+import { TestRequestModal } from './TestRequestModal'
+import { TestRequestModalWithInputs } from './TestRequestModalWithInputs'
+import { useSendTestRequest } from './useSendTestRequest'
+import { Variables } from './Variables'
 
 import css from '../NodeEditor.less'
 
 const nameTextLimit = 100
 
-export default function HttpRequestEditor({
+export function HttpRequestEditor({
     nodeInEdition,
 }: {
     nodeInEdition: HttpRequestNodeType

@@ -11,9 +11,9 @@ import {
 
 import type { HelpCenterArticleItem } from 'models/helpCenter/types'
 import { ArticleTemplateType } from 'models/helpCenter/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import IconButton from 'pages/common/components/button/IconButton'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import { ARTICLE_TEMPLATE_CATEGORIES } from '../../../CategoriesView/components/ArticleTemplateCard/constants'
 import { AnimatedFadeInOut } from '../AnimatedFadeInOut/AnimatedFadeInOut'
@@ -188,4 +188,4 @@ const ArticleSection: React.FC<Props> = ({
     )
 }
 
-export default ArticleSection
+export { ArticleSection }

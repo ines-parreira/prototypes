@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import VoiceCallFilter from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
+import { VoiceCallFilter } from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 

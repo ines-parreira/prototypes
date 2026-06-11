@@ -21,13 +21,13 @@ import type { Event } from 'models/event/types'
 import type { AuditLogEventsState } from 'state/entities/auditLogEvents/types'
 import type { RootState } from 'state/types'
 
-import UserAuditList from '../UserAuditList'
+import { UserAuditList } from '../UserAuditList'
 
 global.Math.random = () => 0.8
 jest.mock('models/event/resources')
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 jest.mock('models/event/types', () => {
     const types: Record<string, unknown> =
         jest.requireActual('models/event/types')

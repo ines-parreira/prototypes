@@ -16,7 +16,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { RuleRecipeTag } from 'models/ruleRecipe/types'
 import { ManagedRulesSlugs } from 'state/rules/types'
 
-import RuleLibrary from '../RuleLibrary'
+import { RuleLibrary } from '../RuleLibrary'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 

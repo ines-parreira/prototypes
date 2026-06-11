@@ -3,23 +3,23 @@ import { Duration } from '@gorgias/toolkit'
 import { useKey } from '@gorgias/toolkit-react'
 
 import { TicketChannel } from 'business/types/ticket'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceHelpCenterChannels } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import { useSelfServiceStandaloneContactFormChannels } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { Drawer } from 'pages/common/components/Drawer'
 
-import EditorDrawerHeader from '../EditorDrawerHeader'
-import ChatChannels from './channels/ChatChannels'
-import ContactFormChannels from './channels/ContactFormChannels'
-import HelpCenterChannels from './channels/HelpCenterChannels'
-import ChannelsLink from './helper/ChannelLink'
-import NoChannelsAlert from './helper/NoChannelAlert'
+import { EditorDrawerHeader } from '../EditorDrawerHeader'
+import { ChatChannels } from './channels/ChatChannels'
+import { ContactFormChannels } from './channels/ContactFormChannels'
+import { HelpCenterChannels } from './channels/HelpCenterChannels'
+import { ChannelsLink } from './helper/ChannelLink'
+import { NoChannelsAlert } from './helper/NoChannelAlert'
 
 import nodeEditorCss from '../NodeEditorDrawer.less'
 import css from './WorkflowsPublisher.less'
 
-export default function WorkflowsPublisher() {
+export function WorkflowsPublisher() {
     const {
         setFlowPublishingInChannels,
         isFlowPublishingInChannels,

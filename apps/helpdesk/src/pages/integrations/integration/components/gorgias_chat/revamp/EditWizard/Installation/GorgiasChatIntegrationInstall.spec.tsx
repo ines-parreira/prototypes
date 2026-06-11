@@ -23,26 +23,32 @@ jest.mock(
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/InstallationCard',
-    () => (props: any) => {
-        mockInstallationCard(props)
-        return null
-    },
+    () => ({
+        InstallationCard: (props: any) => {
+            mockInstallationCard(props)
+            return null
+        },
+    }),
 )
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/AdvancedInstallationCard/AdvancedInstallationCard',
-    () => (props: any) => {
-        mockAdvancedInstallationCard(props)
-        return null
-    },
+    () => ({
+        AdvancedInstallationCard: (props: any) => {
+            mockAdvancedInstallationCard(props)
+            return null
+        },
+    }),
 )
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/DeleteCard/DeleteCard',
-    () => (props: any) => {
-        mockDeleteCard(props)
-        return null
-    },
+    () => ({
+        DeleteCard: (props: any) => {
+            mockDeleteCard(props)
+            return null
+        },
+    }),
 )
 
 describe('GorgiasChatIntegrationInstallRevamp', () => {

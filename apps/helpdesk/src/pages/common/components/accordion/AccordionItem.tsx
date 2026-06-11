@@ -6,7 +6,7 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { useAccordionContext } from './AccordionContext'
 import type { AccordionItemContextType } from './AccordionItemContext'
-import AccordionItemContext from './AccordionItemContext'
+import { AccordionItemContext } from './AccordionItemContext'
 
 import css from './AccordionItem.less'
 
@@ -76,4 +76,4 @@ const AccordionItem = ({
     )
 }
 
-export default AccordionItem
+export { AccordionItem }

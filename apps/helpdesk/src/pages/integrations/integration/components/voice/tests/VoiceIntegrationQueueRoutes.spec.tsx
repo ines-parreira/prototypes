@@ -2,21 +2,21 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from '../constants'
-import VoiceIntegrationQueueRoutes from '../VoiceIntegrationQueueRoutes'
+import { VoiceIntegrationQueueRoutes } from '../VoiceIntegrationQueueRoutes'
 
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceQueueCreatePage',
-    () => () => <div>VoiceQueueCreatePage</div>,
+    () => ({ VoiceQueueCreatePage: () => <div>VoiceQueueCreatePage</div> }),
 )
 
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceQueueEditPage',
-    () => () => <div>VoiceQueueEditPage</div>,
+    () => ({ VoiceQueueEditPage: () => <div>VoiceQueueEditPage</div> }),
 )
 
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceQueueListPage',
-    () => () => <div>VoiceQueueListPage</div>,
+    () => ({ VoiceQueueListPage: () => <div>VoiceQueueListPage</div> }),
 )
 
 describe('VoiceIntegrationQueueRoutes', () => {

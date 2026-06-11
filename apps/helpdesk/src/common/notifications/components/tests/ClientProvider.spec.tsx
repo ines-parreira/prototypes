@@ -3,9 +3,9 @@ import React, { useContext } from 'react'
 import { useKnockFeed } from '@knocklabs/react'
 import { render } from '@repo/testing'
 
-import Client from '../../Client'
-import Context from '../../Context'
-import ClientProvider from '../ClientProvider'
+import { Client } from '../../Client'
+import { DefaultExportContext as Context } from '../../Context'
+import { ClientProvider } from '../ClientProvider'
 
 jest.mock('@knocklabs/react', () => ({
     useKnockFeed: jest.fn(),

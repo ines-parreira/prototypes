@@ -86,4 +86,4 @@ function List<I extends unknown[]>({
     )
 }
 
-export default List
+export { List }

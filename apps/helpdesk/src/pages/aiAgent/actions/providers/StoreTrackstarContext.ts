@@ -21,4 +21,4 @@ const StoreTrackstarContext = createContext<StoreTrackstarContextType>({
 
 export const useStoreTrackstarContext = () => useContext(StoreTrackstarContext)
 
-export default StoreTrackstarContext
+export { StoreTrackstarContext }

@@ -114,7 +114,7 @@ const connector = connect(
     },
 )
 
-export default function withViewSearchUrlSync<P extends Props>(
+export function withViewSearchUrlSync<P extends Props>(
     WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>,
 ): ComponentType<P> {
     return connector(

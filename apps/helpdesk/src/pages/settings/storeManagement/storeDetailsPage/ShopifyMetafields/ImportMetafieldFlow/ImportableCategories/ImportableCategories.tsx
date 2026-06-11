@@ -16,7 +16,7 @@ type ImportableCategoriesProps = {
     onImport: () => void
 }
 
-export default function ImportableCategories({
+export function ImportableCategories({
     categories,
     onCategorySelect,
     onImport,

@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
@@ -28,7 +28,9 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('@repo/tickets/feature-flags')
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn((selector) => selector()),
+}))
 jest.mock('state/widgets/selectors', () => ({
     ...jest.requireActual('state/widgets/selectors'),
     getContext: jest.fn(),

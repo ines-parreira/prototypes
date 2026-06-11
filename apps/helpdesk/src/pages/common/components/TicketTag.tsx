@@ -30,4 +30,4 @@ const TicketTag = ({ text, className, decoration, title, ...props }: Props) => {
     )
 }
 
-export default TicketTag
+export { TicketTag }

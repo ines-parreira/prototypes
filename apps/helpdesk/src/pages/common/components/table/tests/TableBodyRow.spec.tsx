@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import TableBodyRow from '../TableBodyRow'
+import { DefaultExportTableBodyRow as TableBodyRow } from '../TableBodyRow'
 
 describe('<TableBodyRow/>', () => {
     const mockOnClick = jest.fn()

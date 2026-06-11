@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TextArea from '../TextArea'
+import { DefaultExportTextArea as TextArea } from '../TextArea'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 jest.mock('@gorgias/toolkit-react', () => ({

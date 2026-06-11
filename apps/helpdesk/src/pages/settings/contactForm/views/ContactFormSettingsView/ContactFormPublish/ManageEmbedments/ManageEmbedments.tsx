@@ -8,21 +8,21 @@ import { Link, useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ContactFormPageEmbedment } from 'models/contactForm/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
 import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import ContactFormAutoEmbedModalAssistant from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { ContactFormAutoEmbedModalAssistant } from 'pages/settings/contactForm/components/ContactFormAutoEmbedModalAssistant'
 import {
     CONTACT_FORM_EMBEDMENTS_LIMIT,
     CONTACT_FORM_PUBLISH_PATH,
@@ -37,7 +37,7 @@ import {
     useUpdatePageEmbedment,
 } from 'pages/settings/contactForm/queries'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import { PendingChangesModal } from 'pages/settings/helpCenter/components/PendingChangesModal'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -453,4 +453,4 @@ const ManageEmbedments = ({
     )
 }
 
-export default ManageEmbedments
+export { ManageEmbedments }

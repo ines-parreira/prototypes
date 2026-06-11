@@ -33,7 +33,11 @@ const newStoreConfig = {
 }
 jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
-    () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
+    () => ({
+        AiShoppingAssistantExpireBanner: () => (
+            <div>AI-Shopping-Assistant-Expire-Banner</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow',

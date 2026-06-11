@@ -5,8 +5,9 @@ import {
     fetchSurveysSentTrend,
     useSurveysSentTrend,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useSurveysSentTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { surveysSentQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/surveysSentQueryFactory'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

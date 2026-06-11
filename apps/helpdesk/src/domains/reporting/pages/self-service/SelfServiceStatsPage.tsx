@@ -17,16 +17,16 @@ import {
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
-import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { DefaultExportTableStat as TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
-import AIBanner from 'domains/reporting/pages/help-center/components/AIBanner'
+import { AIBanner } from 'domains/reporting/pages/help-center/components/AIBanner'
 import {
     AUTOMATION_SELF_SERVICE_STAT_NAME,
     HELP_URL,
@@ -37,22 +37,22 @@ import {
 import { DEPRECATED_SelfServiceStatsPageFilters } from 'domains/reporting/pages/self-service/DEPRECATED_SelfServiceStatsPageFilters'
 import { SelfServiceFeaturePreview } from 'domains/reporting/pages/self-service/SelfServiceFeaturePreview'
 import css from 'domains/reporting/pages/self-service/SelfServiceStatsPage.less'
-import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
+import { SelfServiceStatsPagePaywallCustomCta } from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import HeaderTitle from 'pages/common/components/HeaderTitle'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
+import { withStoreIntegration as withEcommerceIntegration } from 'pages/automate/common/utils/withStoreIntegrations'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { HeaderTitle } from 'pages/common/components/HeaderTitle'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import { AccountFeature } from 'state/currentAccount/types'
@@ -543,4 +543,4 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     return <SelfServiceStatsPageWithPaywall />
 }
 
-export default SelfServiceStatsPageWithPaywall
+export { SelfServiceStatsPageWithPaywall }

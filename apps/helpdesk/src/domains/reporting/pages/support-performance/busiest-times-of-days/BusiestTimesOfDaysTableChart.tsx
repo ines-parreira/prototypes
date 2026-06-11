@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import Legend from 'domains/reporting/pages/common/components/Legend'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { Legend } from 'domains/reporting/pages/common/components/Legend'
 import { TableHeatmapSwitch } from 'domains/reporting/pages/common/components/Table/TableHeatmapSwitch'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import css from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
@@ -12,7 +12,7 @@ import {
     getMetricQuery,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
 import { getSelectedMetric } from 'domains/reporting/state/ui/stats/busiestTimesSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest times of the week'
 const TICKETS_CREATED_TOOLTIP = 'Tickets created per hour per day of the week'

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import type { HelpCenterTableCell } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
-import HelpCenterStatsTable, {
+import {
+    HelpCenterStatsTable,
     TableCellType,
 } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 

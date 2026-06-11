@@ -6,7 +6,7 @@ import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import type { Config } from '../types'
 import { computeDefaultWidths, createConfig, mutatePanels } from '../utils'
-import useScreenSize from './useScreenSize'
+import { useScreenSize } from './useScreenSize'
 
 type Coord = {
     x: number
@@ -18,7 +18,7 @@ type UsePanelsReturn = {
     resizeStartHandlers: ((ev: ReactMouseEvent) => void)[]
 }
 
-export default function usePanels(config: Config): UsePanelsReturn {
+export function usePanels(config: Config): UsePanelsReturn {
     const previousConfig = usePrevious(config)
     const [screenWidth] = useScreenSize()
     const [dragHandle, setDragHandle] = useState<number | null>(null)

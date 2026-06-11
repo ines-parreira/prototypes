@@ -1,4 +1,4 @@
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 type ContactFormMailtoReplacementSectionItemProps = {
     value: string
@@ -27,4 +27,4 @@ const ContactFormMailtoReplacementSectionItem = ({
     )
 }
 
-export default ContactFormMailtoReplacementSectionItem
+export { ContactFormMailtoReplacementSectionItem }

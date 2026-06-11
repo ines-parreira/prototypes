@@ -2,12 +2,12 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import Badge from 'gorgias-design-system/Badge/Badge'
-import Button from 'gorgias-design-system/Buttons/Button'
+import { Badge } from 'gorgias-design-system/Badge/Badge'
+import { Button } from 'gorgias-design-system/Buttons/Button'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { LinkIcon } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/icon-utils'
 
-import useOrderDates from './hooks/useOrderDates'
+import { useOrderDates } from './hooks/useOrderDates'
 
 import css from './SelfServiceChatIntegrationReturnPortalPage.less'
 
@@ -55,4 +55,4 @@ const SelfServiceChatIntegrationReturnPortalPage = ({ integration }: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationReturnPortalPage
+export { SelfServiceChatIntegrationReturnPortalPage }

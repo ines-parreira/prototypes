@@ -8,13 +8,13 @@ import type { EmailDomain } from '@gorgias/helpdesk-queries'
 import { EmailProvider } from 'models/integration/constants'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 import { EmailMigrationOutboundVerificationStatus } from 'models/integration/types'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
 
-import RecordsTable from '../EmailDomainVerification/components/RecordsTable'
-import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
-import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
+import { RecordsTable } from '../EmailDomainVerification/components/RecordsTable'
+import { EmailVerificationStatusLabel } from '../EmailVerificationStatusLabel'
+import { useCreateDomainVerification } from '../hooks/useCreateDomainVerification'
 import { computeDomainVerificationStatus } from './utils'
 
 import css from './MigrationDomainList.less'
@@ -26,7 +26,7 @@ type Props = {
     isSingleSenderEnabled: boolean
 }
 
-export default function DomainVerificationAccordionItem({
+export function DomainVerificationAccordionItem({
     verification,
     onVerificationMethodSwitch,
     refreshMigrationData,

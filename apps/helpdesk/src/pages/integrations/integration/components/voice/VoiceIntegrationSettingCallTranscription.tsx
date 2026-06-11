@@ -4,7 +4,7 @@ import { FormField } from '@repo/forms'
 
 import { LegacyBanner as Banner } from '@gorgias/axiom'
 
-import NewToggleField from 'pages/common/forms/NewToggleField'
+import { DefaultExportNewToggleField as NewToggleField } from 'pages/common/forms/NewToggleField'
 
 function VoiceIntegrationSettingCallTranscription() {
     const [isBannerVisible, setIsBannerVisible] = useState(true)
@@ -44,4 +44,4 @@ function VoiceIntegrationSettingCallTranscription() {
     )
 }
 
-export default VoiceIntegrationSettingCallTranscription
+export { VoiceIntegrationSettingCallTranscription }

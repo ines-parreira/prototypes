@@ -6,15 +6,15 @@ import { useMeasure } from '@gorgias/toolkit-react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useTheme } from 'core/theme'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { MacroAction } from 'models/macroAction/types'
 import type { TicketMessage } from 'models/ticket/types'
 import { setInTicketSuggestionState } from 'state/ticket/actions'
 
-import InTicketSuggestionContainer from './InTicketSuggestionContainer'
-import SuggestionBody from './SuggestionBody'
-import SuggestionHeader from './SuggestionHeader'
+import { InTicketSuggestionContainer } from './InTicketSuggestionContainer'
+import { SuggestionBody } from './SuggestionBody'
+import { SuggestionHeader } from './SuggestionHeader'
 
 import css from './InTicketSuggestion.less'
 
@@ -34,7 +34,7 @@ type Props = {
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
 
-export default function InTicketSuggestion({
+export function InTicketSuggestion({
     ticketId,
     isCollapsed,
     text,

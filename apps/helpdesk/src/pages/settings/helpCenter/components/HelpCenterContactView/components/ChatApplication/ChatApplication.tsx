@@ -10,13 +10,13 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import { GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ChatContactInfoDto } from 'models/helpCenter/types'
 import { useApplications } from 'models/integration/queries'
 import { IntegrationType } from 'models/integration/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import settingsCss from 'pages/settings/settings.less'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -24,8 +24,8 @@ import { DEPRECATED_getIntegrationsByTypes } from 'state/integrations/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { MAX_DESCRIPTION_LENGTH } from '../../constants'
-import ContactCard from '../ContactCard'
-import ChatCardAvatars from './ChatCardAvatars'
+import { ContactCard } from '../ContactCard'
+import { ChatCardAvatars } from './ChatCardAvatars'
 import {
     convertDaysToName,
     formatBusinessHoursByLocale,
@@ -351,4 +351,4 @@ const ChatApplication = () => {
     )
 }
 
-export default ChatApplication
+export { ChatApplication }

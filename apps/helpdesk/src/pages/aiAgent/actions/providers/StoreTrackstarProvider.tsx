@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { useListTrackstar } from '@gorgias/workflows-queries'
 
 import type { StoreTrackstarContextType } from './StoreTrackstarContext'
-import StoreTrackstarContext from './StoreTrackstarContext'
+import { StoreTrackstarContext } from './StoreTrackstarContext'
 
 type Props = {
     storeName: string
@@ -46,4 +46,4 @@ const StoreTrackstarProvider = ({ storeName, storeType, children }: Props) => {
     )
 }
 
-export default StoreTrackstarProvider
+export { StoreTrackstarProvider }

@@ -6,8 +6,8 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import WorkflowTemplatesView from '../WorkflowTemplatesView'
-import WorkflowTemplatesViewContainer from '../WorkflowTemplatesViewContainer'
+import { WorkflowTemplatesView } from '../WorkflowTemplatesView'
+import { WorkflowTemplatesViewContainer } from '../WorkflowTemplatesViewContainer'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
@@ -18,9 +18,11 @@ jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
 jest.mock('settings/automate/hooks/useAutomateBaseURL', () => ({
     useAutomateBaseURL: jest.fn(),
 }))
-jest.mock('../WorkflowTemplatesView', () =>
-    jest.fn(() => <div data-testid="workflow-templates-view" />),
-)
+jest.mock('../WorkflowTemplatesView', () => ({
+    WorkflowTemplatesView: jest.fn(() => (
+        <div data-testid="workflow-templates-view" />
+    )),
+}))
 
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 const useIsAutomateSettingsMock = assumeMock(useIsAutomateSettings)

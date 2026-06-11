@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import MultiSelectField from '../../../forms/MultiSelectField'
+import { MultiSelectField } from '../../../forms/MultiSelectField'
 import type { Option } from '../../../forms/MultiSelectOptionsField/types'
 
 type OwnProps = {
@@ -64,5 +64,3 @@ export const IntentsSentimentsSelect = ({
         </>
     )
 }
-
-export default IntentsSentimentsSelect

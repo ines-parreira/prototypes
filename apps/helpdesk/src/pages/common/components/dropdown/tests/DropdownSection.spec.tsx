@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { DropdownContext } from '../Dropdown'
-import DropdownSection from '../DropdownSection'
+import { DefaultExportDropdownSection as DropdownSection } from '../DropdownSection'
 
 const MockedComponent = (
     props: ComponentProps<typeof DropdownSection>,

@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 import { convertBundle } from 'fixtures/convertBundle'
 import { useListBundles } from 'models/convert/bundle/queries'
 
-import GorgiasChatIntegrationManualInstallationCard from '../../GorgiasChatIntegrationManualInstallationCard'
+import { GorgiasChatIntegrationManualInstallationCard } from '../../GorgiasChatIntegrationManualInstallationCard'
 
 jest.mock('models/convert/bundle/queries')
 assumeMock(useListBundles).mockReturnValue({

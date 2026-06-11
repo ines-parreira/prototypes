@@ -7,7 +7,7 @@ import { Box, Button, Icon, Skeleton, Text } from '@gorgias/axiom'
 
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
-import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
+import { SaveChangesPrompt } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
 
 import { OrderManagementFlowHeader } from '../../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
 import { useReportOrderIssueFlow } from './hooks/useReportOrderIssueFlow'

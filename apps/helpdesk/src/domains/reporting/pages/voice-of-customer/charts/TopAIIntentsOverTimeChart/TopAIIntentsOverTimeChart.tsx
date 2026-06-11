@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { TopAIIntentsOverTimeGraph } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsOverTimeChart/TopAIIntentsOverTimeGraph'
 import {
     ProductInsightsChart,

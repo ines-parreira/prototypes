@@ -6,7 +6,7 @@ import { ViewType } from '../../../models/view/types'
 import type { RootState } from '../../types'
 import * as types from '../constants'
 import { SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY } from '../constants'
-import reducers, { initialState } from '../reducers'
+import { initialState, reducer as reducers } from '../reducers'
 import * as selectors from '../selectors'
 import * as utils from '../utils'
 

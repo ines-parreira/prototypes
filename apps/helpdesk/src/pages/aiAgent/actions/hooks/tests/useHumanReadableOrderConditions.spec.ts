@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useHumanReadableOrderConditions from '../useHumanReadableOrderConditions'
+import { useHumanReadableOrderConditions } from '../useHumanReadableOrderConditions'
 
 describe('useHumanReadableOrderConditions()', () => {
     it('should handle string variable options', () => {

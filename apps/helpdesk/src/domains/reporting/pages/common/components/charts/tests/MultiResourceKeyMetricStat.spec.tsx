@@ -4,15 +4,17 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import type KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
-import MultiResourceKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
+import type { KeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
+import { MultiResourceKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import { totalMessagesSent } from 'fixtures/stats'
 
 jest.mock(
     'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat',
-    () => (props: ComponentProps<typeof KeyMetricStat>) => {
-        return JSON.stringify(props, null, 2)
-    },
+    () => ({
+        KeyMetricStat: (props: ComponentProps<typeof KeyMetricStat>) => {
+            return JSON.stringify(props, null, 2)
+        },
+    }),
 )
 
 describe('MultiResourceKeyMetricStat', () => {

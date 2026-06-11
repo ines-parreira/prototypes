@@ -2,10 +2,10 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import GuidanceReferenceContext from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
+import { GuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
-import ActionsTableRow from '../ActionsTableRow'
+import { ActionsTableRow } from '../ActionsTableRow'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({
@@ -35,18 +35,18 @@ jest.mock('models/workflows/queries', () => ({
 }))
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
-    default: () => ({ apps: [] }),
+    useApps: () => ({ apps: [] }),
 }))
 jest.mock(
     'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp',
     () => ({
         __esModule: true,
-        default: () => () => undefined,
+        useGetAppFromTemplateApp: () => () => undefined,
     }),
 )
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction', () => ({
     __esModule: true,
-    default: () => ({ mutate: jest.fn(), isLoading: false }),
+    useDeleteAction: () => ({ mutate: jest.fn(), isLoading: false }),
 }))
 
 const action = {

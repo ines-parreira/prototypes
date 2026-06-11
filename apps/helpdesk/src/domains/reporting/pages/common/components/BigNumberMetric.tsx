@@ -20,7 +20,7 @@ type Props = {
  * @date 2025-09-15
  * @type reporting-ui-kit
  */
-export default function BigNumberMetric({
+export function BigNumberMetric({
     children,
     className,
     isLoading = false,

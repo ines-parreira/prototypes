@@ -12,31 +12,31 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
-import useTouchActionGraph from 'pages/aiAgent/actions/hooks/useTouchActionGraph'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import useValidateActionGraph from 'pages/aiAgent/actions/hooks/useValidateActionGraph'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useThreeplIntegrations } from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
+import { useTouchActionGraph } from 'pages/aiAgent/actions/hooks/useTouchActionGraph'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useValidateActionGraph } from 'pages/aiAgent/actions/hooks/useValidateActionGraph'
 import { useGuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
-import GuidanceReferenceProvider from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
-import StoreAppsProvider from 'pages/aiAgent/actions/providers/StoreAppsProvider'
-import StoreTrackstarProvider from 'pages/aiAgent/actions/providers/StoreTrackstarProvider'
+import { GuidanceReferenceProvider } from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
+import { StoreAppsProvider } from 'pages/aiAgent/actions/providers/StoreAppsProvider'
+import { StoreTrackstarProvider } from 'pages/aiAgent/actions/providers/StoreTrackstarProvider'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { ConditionBuilder } from 'pages/aiAgent/actionsV2/sidePanel/actionForm/ConditionBuilder'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
-import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
-import ActionsPlatformTemplateSteps from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
-import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
-import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformTemplateConfirmation } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
+import { ActionsPlatformTemplateInstructions } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
+import { ActionsPlatformTemplateSteps } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
+import { ActionsPlatformTemplateVisualBuilderView } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
+import { useValidateOnVisualBuilderGraphChange } from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
     useVisualBuilder,
     VisualBuilderContext,

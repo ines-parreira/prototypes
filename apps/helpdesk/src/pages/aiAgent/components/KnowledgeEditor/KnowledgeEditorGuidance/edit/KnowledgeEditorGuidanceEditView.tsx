@@ -2,7 +2,7 @@ import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/Guidance
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import type { GuidanceVariableGroup } from '../../../GuidanceEditor/variables.types'
 

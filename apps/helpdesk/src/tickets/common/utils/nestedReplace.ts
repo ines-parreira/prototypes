@@ -2,9 +2,9 @@ import type { Map } from 'immutable'
 
 import type { notify as notifyAction } from 'state/notifications/actions'
 
-import replaceVariables from './replaceVariables'
+import { replaceVariables } from './replaceVariables'
 
-export default function nestedReplace(
+export function nestedReplace(
     obj: unknown,
     ticketState: Map<any, any>,
     currentUserState: Map<any, any>,

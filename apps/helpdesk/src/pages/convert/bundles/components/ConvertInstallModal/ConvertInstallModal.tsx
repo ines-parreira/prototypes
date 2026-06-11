@@ -12,13 +12,13 @@ import {
     BundleStatus,
 } from 'models/convert/bundle/types'
 import { IntegrationType } from 'models/integration/constants'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
+import { BundleManualInstallationCard } from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
-import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
+import { useIsManualInstallationMethodRequired } from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import { useThemeAppExtensionInstallation } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
 type Props = {
     isOpen: boolean
@@ -208,4 +208,4 @@ const ConvertInstallModal = ({
     )
 }
 
-export default ConvertInstallModal
+export { ConvertInstallModal }

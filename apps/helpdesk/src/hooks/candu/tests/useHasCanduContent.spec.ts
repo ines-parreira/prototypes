@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useHasCanduContent from '../useHasCanduContent'
+import { useHasCanduContent } from '../useHasCanduContent'
 
 describe('useHasCanduContent', () => {
     it('should return false if Candu does not have content', () => {

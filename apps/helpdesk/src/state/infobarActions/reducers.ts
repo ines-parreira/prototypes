@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 
 import { IntegrationType } from '../../models/integration/types'
-import shopifyReducer from './shopify/reducers'
+import { DefaultExportReducers as shopifyReducer } from './shopify/reducers'
 
-export default combineReducers({
+const DefaultExportReducers = combineReducers({
     [IntegrationType.Shopify]: shopifyReducer,
 })
+
+export { DefaultExportReducers }

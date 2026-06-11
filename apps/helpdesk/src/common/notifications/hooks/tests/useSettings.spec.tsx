@@ -2,12 +2,12 @@ import { useKnockClient } from '@knocklabs/react'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { submitSetting } from 'state/currentUser/actions'
 
 import { categories, notifications } from '../../data'
-import useSettings from '../useSettings'
+import { useSettings } from '../useSettings'
 
 jest.mock('@knocklabs/react', () => ({
     useKnockClient: jest.fn(),

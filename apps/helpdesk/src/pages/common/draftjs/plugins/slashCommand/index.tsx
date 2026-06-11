@@ -10,7 +10,7 @@ import type {
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
-import SlashCommandSuggestions from './SlashCommandSuggestions'
+import { SlashCommandSuggestions } from './SlashCommandSuggestions'
 import type { SlashCommandItem } from './types'
 
 type Options = {
@@ -104,7 +104,7 @@ function getSlashSearchText(
     }
 }
 
-export default function createSlashCommandPlugin(options: Options) {
+export function createSlashCommandPlugin(options: Options) {
     const store = createStore()
     let getEditorState: (() => EditorState) | null = null
     let setEditorState: ((state: EditorState) => void) | null = null

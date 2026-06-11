@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node'
 
 import { mockListBusinessHoursIntegrationsHandler } from '@gorgias/helpdesk-mocks'
 
-import LinkedIntegrationsList from '../LinkedIntegrationsList'
+import { LinkedIntegrationsList } from '../LinkedIntegrationsList'
 
 const server = setupServer()
 

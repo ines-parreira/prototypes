@@ -8,7 +8,7 @@ import type {
 } from 'models/integration/types'
 
 import { computeLineItemErrorKey } from '../../utils'
-import OrderLineItemRow from './OrderLineItemRow'
+import { OrderLineItemRow } from './OrderLineItemRow'
 import { getOrderLineItemInfo } from './utils'
 
 import css from './OrderTable.less'
@@ -41,7 +41,7 @@ type Props = {
     setDiscounts: (value: Map<string, number>) => void
 }
 
-export default function OrderTable({
+export function OrderTable({
     lineItems = [],
     products = new Map(),
     lineItemsWithErrors = new Map(),

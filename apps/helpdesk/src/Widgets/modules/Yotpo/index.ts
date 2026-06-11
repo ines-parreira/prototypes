@@ -1,1 +1,1 @@
-export { default } from './components/Yotpo'
+export { YotpoWidget } from './components/Yotpo'

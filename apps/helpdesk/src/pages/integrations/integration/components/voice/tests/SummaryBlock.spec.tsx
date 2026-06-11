@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import SummaryBlock from '../SummaryBlock'
+import { SummaryBlock } from '../SummaryBlock'
 
 describe('SummaryBlock', () => {
     const summaryData = {

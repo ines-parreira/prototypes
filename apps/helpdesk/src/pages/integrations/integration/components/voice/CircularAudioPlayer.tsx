@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import CircularProgressBar from './CircularProgressBar'
+import { CircularProgressBar } from './CircularProgressBar'
 
 import css from './CircularAudioPlayer.less'
 
@@ -90,4 +90,4 @@ const CircularAudioPlayer = ({
     )
 }
 
-export default CircularAudioPlayer
+export { CircularAudioPlayer }

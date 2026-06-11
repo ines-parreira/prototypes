@@ -9,7 +9,7 @@ import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/Cam
 import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
-import ProductRecommendationScenarioPicker from '../ProductRecommendationScenarioPicker'
+import { ProductRecommendationScenarioPicker } from '../ProductRecommendationScenarioPicker'
 
 jest.mock('pages/convert/campaigns/hooks/useCampaignDetailsContext')
 const useCampaignDetailsContextMock = assumeMock(useCampaignDetailsContext)

@@ -43,7 +43,7 @@ jest.mock(
     'pages/integrations/integration/components/phone/PhoneDevice',
     () => ({
         __esModule: true,
-        default: () => null,
+        PhoneDevice: () => null,
     }),
 )
 

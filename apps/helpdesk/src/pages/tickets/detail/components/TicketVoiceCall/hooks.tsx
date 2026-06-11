@@ -4,7 +4,7 @@ import { Duration } from '@gorgias/toolkit'
 import type { getCustomer } from '@gorgias/helpdesk-client'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAgent } from 'models/agents/queries'
 import type { Customer } from 'models/customer/types'
 import { getTicketCustomer } from 'state/ticket/selectors'

@@ -3,8 +3,8 @@ import {
     toggleCommentHighlightsCsatSentiment,
 } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 
 export const COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE = {
@@ -12,7 +12,7 @@ export const COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE = {
     NEGATIVE: { LABEL: 'Negative', VALUE: CsatSentiment.Negative },
 }
 
-export default function CommentHighlightsToggle() {
+export function CommentHighlightsToggle() {
     const commentHighlightsCsatSentiment = useAppSelector(
         getCommentHighlightsCsatSentiment,
     )

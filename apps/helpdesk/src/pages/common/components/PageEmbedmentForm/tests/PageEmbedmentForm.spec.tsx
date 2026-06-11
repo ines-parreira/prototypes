@@ -6,7 +6,7 @@ import { act, fireEvent, screen } from '@testing-library/react'
 import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
 
 import type { PageEmbedmentFormProps } from '../PageEmbedmentForm'
-import PageEmbedmentForm from '../PageEmbedmentForm'
+import { PageEmbedmentForm } from '../PageEmbedmentForm'
 import { DEFAULT_VALUES } from '../usePageEmbedmentForm'
 
 const baseProps: PageEmbedmentFormProps = {

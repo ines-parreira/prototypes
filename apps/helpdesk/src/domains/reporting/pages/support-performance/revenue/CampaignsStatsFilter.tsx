@@ -2,10 +2,10 @@ import type { ComponentProps } from 'react'
 import { useCallback } from 'react'
 
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
 import { useGetCampaignsForStore } from 'domains/reporting/pages/convert/hooks/useGetCampaignsForStore'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 type Props = {
     value: LegacyStatsFilters['campaigns']
@@ -17,7 +17,7 @@ export const campaignsStatsFilterLabels = {
     singular: 'campaign',
 }
 
-export default function CampaignsStatsFilter({
+export function CampaignsStatsFilter({
     value = [],
     selectedIntegrations,
 }: Props) {

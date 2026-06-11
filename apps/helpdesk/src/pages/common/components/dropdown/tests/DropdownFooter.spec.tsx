@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DropdownFooter from '../DropdownFooter'
+import { DefaultExportDropdownFooter as DropdownFooter } from '../DropdownFooter'
 
 describe('<DropdownFooter />', () => {
     it('should render', () => {

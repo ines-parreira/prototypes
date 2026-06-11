@@ -8,10 +8,10 @@ import _set from 'lodash/set'
 import { INTEGRATION_TYPE_WITH_VARIABLES } from 'config/integrations'
 import type { notify as notifyAction } from 'state/notifications/actions'
 
-import renderObject from './renderObject'
-import replaceIntegrationVariables from './replaceIntegrationVariables'
+import { renderObject } from './renderObject'
+import { replaceIntegrationVariables } from './replaceIntegrationVariables'
 
-export default function replaceVariables(
+export function replaceVariables(
     argument: string,
     ticket: Map<any, any> | null,
     currentUser: Map<any, any>,

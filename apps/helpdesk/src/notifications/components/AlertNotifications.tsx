@@ -3,13 +3,13 @@ import React, { useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import NotificationsSystem, { dismissNotification } from 'reapop'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { NotificationIcon } from 'pages/common/components/NotificationIcon'
 import { createNotificationsTheme } from 'pages/common/components/Notifications'
 
-import useAlertNotifications from '../hooks/useAlertNotifications'
+import { useAlertNotifications } from '../hooks/useAlertNotifications'
 
-export default function Notifications() {
+export function Notifications() {
     const dispatch = useAppDispatch()
     const alertNotifications = useAlertNotifications()
 

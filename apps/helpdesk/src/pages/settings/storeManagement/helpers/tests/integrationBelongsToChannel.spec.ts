@@ -2,7 +2,7 @@ import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
 import type { ChannelTypes } from '../../types'
-import integrationBelongsToChannel from '../integrationBelongsToChannel'
+import { integrationBelongsToChannel } from '../integrationBelongsToChannel'
 
 describe('integrationBelongsToChannel', () => {
     const createIntegration = (type: IntegrationType, rest = {}): Integration =>

@@ -15,7 +15,7 @@ import {
 } from 'state/ticket/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import DropdownField from '../DropdownField'
+import { DropdownField } from '../DropdownField'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 

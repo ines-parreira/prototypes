@@ -107,4 +107,4 @@ const WorkflowItem = ({
     )
 }
 
-export default WorkflowItem
+export { WorkflowItem }

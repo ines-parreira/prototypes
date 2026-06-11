@@ -15,20 +15,20 @@ import { FORM_CONTENT_TYPE } from 'config'
 import type { CustomFieldValue } from 'custom-fields/types'
 import { getIconFromActionType } from 'models/macroAction/helpers'
 import { MacroActionName } from 'models/macroAction/types'
-import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import Caption from 'pages/common/forms/Caption/Caption'
-import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/input/InputField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import AddInternalNoteAction from 'pages/tickets/common/macros/components/actions/AddInternalNoteAction'
-import AddTagsAction from 'pages/tickets/common/macros/components/actions/AddTagsAction'
-import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
-import SetAssigneeAction from 'pages/tickets/common/macros/components/actions/SetAssigneeAction'
-import SetPriorityAction from 'pages/tickets/common/macros/components/actions/SetPriorityAction'
-import SetStatusAction from 'pages/tickets/common/macros/components/actions/SetStatusAction'
-import SnoozeTicketAction from 'pages/tickets/common/macros/components/actions/SnoozeTicketAction'
+import { CustomFieldIdInput } from 'pages/common/components/ast/widget/CustomFieldIdInput'
+import { CustomFieldSelect } from 'pages/common/components/ast/widget/CustomFieldSelect'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { AddInternalNoteAction } from 'pages/tickets/common/macros/components/actions/AddInternalNoteAction'
+import { AddTagsAction } from 'pages/tickets/common/macros/components/actions/AddTagsAction'
+import { ResponseAction } from 'pages/tickets/common/macros/components/actions/ResponseAction'
+import { SetAssigneeAction } from 'pages/tickets/common/macros/components/actions/SetAssigneeAction'
+import { SetPriorityAction } from 'pages/tickets/common/macros/components/actions/SetPriorityAction'
+import { SetStatusAction } from 'pages/tickets/common/macros/components/actions/SetStatusAction'
+import { SnoozeTicketAction } from 'pages/tickets/common/macros/components/actions/SnoozeTicketAction'
 import { updateActionArgsOnApplied } from 'state/ticket/actions'
 import { getActionTemplate } from 'utils'
 
@@ -607,4 +607,8 @@ const connector = connect(null, {
     updateActionArgsOnApplied,
 })
 
-export default connector(withAppNode(TicketReplyActionContainer))
+const DefaultExportTicketReplyAction = connector(
+    withAppNode(TicketReplyActionContainer),
+)
+
+export { DefaultExportTicketReplyAction }

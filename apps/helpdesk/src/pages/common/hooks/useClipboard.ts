@@ -3,7 +3,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import Clipboard from 'clipboard'
 
-export default function useClipboard(selector: string) {
+export function useClipboard(selector: string) {
     const [isCopied, setIsCopied] = useState(false)
 
     useEffect(() => {

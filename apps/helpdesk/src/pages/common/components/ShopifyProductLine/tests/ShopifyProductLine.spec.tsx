@@ -16,9 +16,10 @@ import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 
 import { PRODUCTS_PER_PAGE } from '../../../../../constants/integration'
 import { shopifyProductResult } from '../../../../../fixtures/shopify'
-import ShopifyProductLine, {
+import {
     generateVariantName,
     getVariantOptionDisplayValue,
+    ShopifyProductLine,
 } from '../ShopifyProductLine'
 
 import css from '../ShopifyProductLine.less'

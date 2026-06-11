@@ -7,17 +7,17 @@ import { useAsyncFn, useCallbackRef } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
-import PhoneNumbersList from './PhoneNumbersList'
+import { PhoneNumbersList } from './PhoneNumbersList'
 
 export function PhoneNumbersListContainer() {
     const dispatch = useAppDispatch()
@@ -73,5 +73,3 @@ export function PhoneNumbersListContainer() {
         </div>
     )
 }
-
-export default PhoneNumbersListContainer

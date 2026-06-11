@@ -5,7 +5,7 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { fetchPerformanceOverviewAgentMetrics } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/usePerformanceOverviewAgentMetrics'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const useDownloadPerformanceOverviewAgentData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()

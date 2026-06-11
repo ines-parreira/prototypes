@@ -201,4 +201,4 @@ const Conversation: React.FC<
     )
 }
 
-export default Conversation
+export { Conversation }

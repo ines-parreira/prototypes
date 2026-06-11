@@ -10,7 +10,7 @@ import { Dropdown } from 'reactstrap'
 import { getTicketViewField } from 'config/views'
 import { ViewField } from 'models/view/types'
 
-import FilterDropdownItems from '../FilterDropdownItems'
+import { FilterDropdownItems } from '../FilterDropdownItems'
 
 jest.mock('pages/common/utils/labels', () => ({
     RenderLabel: ({ value }: { value: Map<any, any> }) => {

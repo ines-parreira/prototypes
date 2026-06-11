@@ -6,7 +6,7 @@ import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
 import type { ChannelWithMetadata } from '../../../../types'
-import ChannelsList from '../ChannelsList'
+import { ChannelsList } from '../ChannelsList'
 
 const mockChannels = [
     {

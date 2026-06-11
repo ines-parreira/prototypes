@@ -6,8 +6,8 @@ import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useC
 import { ticketNumberFieldDefinition } from 'fixtures/customField'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import AddFieldForm from '../AddFieldForm'
-import FieldForm from '../FieldForm'
+import { AddFieldForm } from '../AddFieldForm'
+import { FieldForm } from '../FieldForm'
 
 jest.mock('custom-fields/hooks/queries/useCreateCustomFieldDefinition')
 
@@ -18,7 +18,9 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock('../FieldForm', () => jest.fn(() => <div>FieldForm</div>))
+jest.mock('../FieldForm', () => ({
+    FieldForm: jest.fn(() => <div>FieldForm</div>),
+}))
 
 const useCreateCustomFieldDefinitionMock = assumeMock(
     useCreateCustomFieldDefinition,

@@ -3,8 +3,8 @@ import { Skeleton } from '@gorgias/axiom'
 import { useListRecordings } from 'models/voiceCall/queries'
 import type { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 
-import VoiceCallAudio from './VoiceCallAudio'
-import VoiceCallTranscription from './VoiceCallTranscription'
+import { VoiceCallAudio } from './VoiceCallAudio'
+import { VoiceCallTranscription } from './VoiceCallTranscription'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -13,7 +13,7 @@ type Props = {
     type: VoiceCallRecordingType
 }
 
-export default function TicketVoiceCallAudios({ type, voiceCall }: Props) {
+export function TicketVoiceCallAudios({ type, voiceCall }: Props) {
     const { data, isLoading, error } = useListRecordings(
         { call_id: voiceCall.id },
         { staleTime: Infinity },

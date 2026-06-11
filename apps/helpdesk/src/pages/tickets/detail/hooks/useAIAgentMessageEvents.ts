@@ -1,7 +1,7 @@
 import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
 import type { Action, TicketMessage } from 'models/ticket/types'
 import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'

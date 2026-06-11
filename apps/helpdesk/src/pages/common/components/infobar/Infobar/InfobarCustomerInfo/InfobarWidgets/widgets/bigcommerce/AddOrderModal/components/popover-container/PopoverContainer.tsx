@@ -3,8 +3,8 @@ import type React from 'react'
 
 import type { Placement } from '@floating-ui/react'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 
 import css from './PopoverContainer.less'
 

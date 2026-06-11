@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import CountryInput from './CountryInput'
+import { CountryInput } from './CountryInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/CountryInput',

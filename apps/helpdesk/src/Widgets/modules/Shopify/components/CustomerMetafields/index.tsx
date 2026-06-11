@@ -1,1 +1,1 @@
-export { default as WrappedCustomerMetafields } from './WrappedCustomerMetafields'
+export { WrappedCustomerMetafields } from './WrappedCustomerMetafields'

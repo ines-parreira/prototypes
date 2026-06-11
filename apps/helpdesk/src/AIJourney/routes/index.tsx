@@ -21,9 +21,9 @@ import {
 import type { StepComponentProps } from 'AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import { JourneyProvider } from 'AIJourney/providers'
-import LegacyPage from 'pages/LegacyPage'
+import { DefaultExportLegacyPage as LegacyPage } from 'pages/LegacyPage'
 
-import DefaultStatsFilters from '../../domains/reporting/pages/DefaultStatsFilters'
+import { DefaultStatsFilters } from '../../domains/reporting/pages/DefaultStatsFilters'
 import { RedirectToShop } from './RedirectToShop'
 
 function AiJourneyBaseRoutes() {

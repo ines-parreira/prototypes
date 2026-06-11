@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Step from '../Step'
+import { Step } from '../Step'
 
 describe('Step', () => {
     it('renders given children', () => {

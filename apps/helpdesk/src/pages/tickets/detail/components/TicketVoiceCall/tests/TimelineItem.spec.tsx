@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TimelineItem from '../TimelineItem'
+import { TimelineItem } from '../TimelineItem'
 
 describe('TimelineItem', () => {
     it('renders children', () => {

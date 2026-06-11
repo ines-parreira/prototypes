@@ -29,7 +29,9 @@ jest.mock('@repo/logging')
 jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 jest.mock('state/ticket/actions', () => ({
     applyMacro: jest.fn(),
     applyMacroAction: jest.fn(),

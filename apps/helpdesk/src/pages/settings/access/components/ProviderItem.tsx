@@ -49,4 +49,4 @@ const ProviderItem = ({
     )
 }
 
-export default ProviderItem
+export { ProviderItem }

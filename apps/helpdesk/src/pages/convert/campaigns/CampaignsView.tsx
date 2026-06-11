@@ -13,21 +13,22 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import type {
     CampaignCreatePayload,
     CampaignListOptions as CampaignListOptionsParams,
 } from 'models/convert/campaign/types'
 import { IntegrationType } from 'models/integration/constants'
-import PageHeader from 'pages/common/components/PageHeader'
-import NavigatedSuccessModal, {
+import { PageHeader } from 'pages/common/components/PageHeader'
+import {
+    NavigatedSuccessModal,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertUpsellBanner from 'pages/convert/campaigns/components/ConvertUpsellBanner/ConvertUpsellBanner'
+import { ConvertUpsellBanner } from 'pages/convert/campaigns/components/ConvertUpsellBanner/ConvertUpsellBanner'
 import { useIsCampaignCreationAllowed } from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import { CampaignListOptions } from 'pages/convert/campaigns/providers/CampaignListOptions'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
@@ -38,8 +39,8 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { toJS } from 'utils'
 
-import ConvertLibraryBanner from './components/ConvertLibraryBanner'
-import CampaignsList from './containers/CampaignsList/CampaignsList'
+import { ConvertLibraryBanner } from './components/ConvertLibraryBanner'
+import { CampaignsList } from './containers/CampaignsList/CampaignsList'
 import { useCreateCampaign } from './hooks/useCreateCampaign'
 import { useDeleteCampaign } from './hooks/useDeleteCampaign'
 import { useUpdateCampaign } from './hooks/useUpdateCampaign'
@@ -298,5 +299,3 @@ export const CampaignsView = () => {
         </CampaignListOptions>
     )
 }
-
-export default CampaignsView

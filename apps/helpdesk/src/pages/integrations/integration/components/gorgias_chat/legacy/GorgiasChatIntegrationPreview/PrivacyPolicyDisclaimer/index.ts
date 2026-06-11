@@ -1,3 +1,3 @@
-import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
+import { PrivacyPolicyDisclaimer } from './PrivacyPolicyDisclaimer'
 
-export default PrivacyPolicyDisclaimer
+export { PrivacyPolicyDisclaimer }

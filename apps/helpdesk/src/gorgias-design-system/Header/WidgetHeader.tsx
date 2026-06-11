@@ -164,4 +164,4 @@ const WidgetHeader: React.FC<
     )
 }
 
-export default WidgetHeader
+export { WidgetHeader }

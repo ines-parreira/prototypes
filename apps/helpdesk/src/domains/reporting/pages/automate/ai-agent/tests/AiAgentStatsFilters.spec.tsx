@@ -5,22 +5,19 @@ import { screen } from '@testing-library/react'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
-import AiAgentStatsFilters from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
+import { AiAgentStatsFilters } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { setStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/statsSlice'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
-jest.mock(
-    'hooks/useAppSelector',
-    () =>
-        (fn: () => any): any =>
-            fn(),
-)
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => any): any => fn(),
+}))
 
 jest.mock('domains/reporting/state/stats/selectors')
 const getStatsFiltersWithLogicalOperatorsMock =
@@ -36,9 +33,9 @@ jest.mock('domains/reporting/state/stats/statsSlice', () => ({
     setStatsFiltersWithLogicalOperators: jest.fn(),
 }))
 
-jest.mock('pages/automate/common/components/AutomatePaywallView', () => () => (
-    <div>automate-paywall-view</div>
-))
+jest.mock('pages/automate/common/components/AutomatePaywallView', () => ({
+    AutomatePaywallView: () => <div>automate-paywall-view</div>,
+}))
 jest.mock(
     'domains/reporting/pages/automate/ai-agent/AiAgentStatsEmptyState',
     () => ({

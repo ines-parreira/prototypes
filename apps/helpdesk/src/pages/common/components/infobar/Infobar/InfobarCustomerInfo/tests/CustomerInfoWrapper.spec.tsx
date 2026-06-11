@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import CustomerInfoWrapper from '../CustomerInfoWrapper'
+import { CustomerInfoWrapper } from '../CustomerInfoWrapper'
 
 describe('CustomerInfoWrapper component', () => {
     it('should render child a and child b with the show more button because # of children is > 2', () => {

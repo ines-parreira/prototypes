@@ -19,7 +19,7 @@ type Props = {
     >
 }
 
-export default function VisualBuilderActionTag({ nodeType }: Props) {
+export function VisualBuilderActionTag({ nodeType }: Props) {
     return (
         <div
             className={classnames(css.visualBuilderActionTag)}

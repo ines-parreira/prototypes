@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 import { getRecommendedTriggerForScenario } from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
@@ -124,4 +124,4 @@ const ProductRecommendationModal = (props: Props) => {
     )
 }
 
-export default ProductRecommendationModal
+export { ProductRecommendationModal }

@@ -14,7 +14,8 @@ import {
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
-import StatsPage, {
+import {
+    StatsPage,
     StatsPageContent,
     StatsPageHeader,
     StatsPageWrapper,
@@ -27,7 +28,7 @@ import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsMo
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { useShowMetricOrigin } from 'domains/reporting/pages/dashboards/useShowMetricOrigin'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 

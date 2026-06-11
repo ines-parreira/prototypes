@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import HeaderTitle from 'pages/common/components/HeaderTitle'
+import { HeaderTitle } from 'pages/common/components/HeaderTitle'
 
 const storyConfig: Meta = {
     title: 'General/Layout/HeaderTitle',

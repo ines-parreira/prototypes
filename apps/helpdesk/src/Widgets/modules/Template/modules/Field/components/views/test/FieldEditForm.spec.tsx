@@ -9,8 +9,9 @@ import type { LeafType } from 'models/widget/types'
 
 import type { FieldEditFormData, HiddenFields } from '../../../types'
 import type { TypeOption } from '../FieldEditForm'
-import FieldEditForm, {
+import {
     CANCEL_BUTTON_TEXT,
+    FieldEditForm,
     SUBMIT_BUTTON_TEXT,
     TITLE_FIELD_LABEL,
     TYPE_FIELD_LABEL,

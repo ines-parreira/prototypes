@@ -29,4 +29,4 @@ const contactFormReducer = createReducer<ContactFormsState>(
             }),
 )
 
-export default contactFormReducer
+export { contactFormReducer }

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PartialDataAlert from 'domains/reporting/pages/help-center/components/PartialDataAlert/PartialDataAlert'
+import { PartialDataAlert } from 'domains/reporting/pages/help-center/components/PartialDataAlert/PartialDataAlert'
 
 const mockStore = configureMockStore([thunk])()
 

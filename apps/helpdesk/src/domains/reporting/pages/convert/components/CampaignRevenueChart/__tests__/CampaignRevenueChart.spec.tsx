@@ -2,8 +2,8 @@ import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import CampaignRevenueChart from 'domains/reporting/pages/convert/components/CampaignRevenueChart/CampaignRevenueChart'
-import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import { CampaignRevenueChart } from 'domains/reporting/pages/convert/components/CampaignRevenueChart/CampaignRevenueChart'
+import { useGetCampaignRevenueTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { campaign } from 'fixtures/campaign'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
@@ -20,7 +20,7 @@ jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
     () => ({
         __esModule: true,
-        default: () => {
+        DefaultExportLineChart: () => {
             return <div>LineChart</div>
         },
     }),

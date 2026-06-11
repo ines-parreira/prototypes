@@ -2,8 +2,8 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetChatsApplicationAutomationSettings } from 'models/automation/queries'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
@@ -11,7 +11,7 @@ import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsAp
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import useApplicationsAutomationSettings from '../useApplicationsAutomationSettings'
+import { useApplicationsAutomationSettings } from '../useApplicationsAutomationSettings'
 
 // Mock necessary hooks and modules
 jest.mock('hooks/useAppDispatch')

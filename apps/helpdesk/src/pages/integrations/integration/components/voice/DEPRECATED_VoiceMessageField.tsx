@@ -15,11 +15,11 @@ import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
-import RadioButton from 'pages/common/components/RadioButton'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
 
-import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
-import TextToSpeechRecordingInput from './TextToSpeechRecordingInput'
-import VoiceRecordingInput from './VoiceRecordingInput'
+import { useVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
+import { TextToSpeechRecordingInput } from './TextToSpeechRecordingInput'
+import { VoiceRecordingInput } from './VoiceRecordingInput'
 
 import css from './VoiceMessageField.less'
 
@@ -285,4 +285,4 @@ const CustomRecordingRadioButton = ({
     )
 }
 
-export default DEPRECATED_VoiceMessageField
+export { DEPRECATED_VoiceMessageField }

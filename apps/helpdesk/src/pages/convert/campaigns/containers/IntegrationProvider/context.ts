@@ -12,4 +12,4 @@ type IntegrationContextModel = {
 
 const IntegrationContext = createContext<IntegrationContextModel>({})
 
-export default IntegrationContext
+export { IntegrationContext }

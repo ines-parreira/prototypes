@@ -6,10 +6,10 @@ import { useParams } from 'react-router-dom'
 
 import { Box } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OnboardingData } from 'models/aiAgent/types'
 import { useGmvUsdOver30Days } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days'
-import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
+import { AiAgentChatConversation } from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
 import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import { ConversationLauncherSettings } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/components/ConversationLauncherSettings'
 import { ConversationStartersSettings } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/components/ConversationStartersSettings'
@@ -17,7 +17,7 @@ import { TriggerOnSearchSettings } from 'pages/aiAgent/Onboarding_V2/components/
 import { ENGAGEMENT_PREVIEW_MESSAGES } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/constants'
 import { EngagementStepConfirmationPopup } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/EngagementStepConfirmationPopup'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
-import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
+import { useCheckOnboardingCompleted } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
@@ -33,7 +33,7 @@ import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding_V2/settings'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreview } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 import css from './EngagementStep.less'

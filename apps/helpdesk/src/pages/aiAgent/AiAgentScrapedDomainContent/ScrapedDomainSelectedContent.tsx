@@ -11,21 +11,21 @@ import logoShopify from 'assets/img/integrations/shopify.svg'
 import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 import type { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
+import { ItemWithTooltip } from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import type { IngestedResourceStatus } from './constant'
 import { CONTENT_TYPE, MODAL_TRANSITION_DURATION_MS } from './constant'
-import IngestionProductView from './IngestionProductView'
-import IntegrationProductView from './IntegrationProductView'
-import ProductAdditionalInfoView from './ProductAdditionalInfoView'
-import ScrapedDomainQuestion from './ScrapedDomainQuestion'
-import ScrapedDomainSelectedModal from './ScrapedDomainSelectedModal'
+import { IngestionProductView } from './IngestionProductView'
+import { IntegrationProductView } from './IntegrationProductView'
+import { ProductAdditionalInfoView } from './ProductAdditionalInfoView'
+import { ScrapedDomainQuestion } from './ScrapedDomainQuestion'
+import { ScrapedDomainSelectedModal } from './ScrapedDomainSelectedModal'
 import type {
     BaseArticle,
     IngestedProduct,
@@ -364,4 +364,4 @@ const ScrapedDomainSelectedContent = (props: Props) => {
     )
 }
 
-export default ScrapedDomainSelectedContent
+export { ScrapedDomainSelectedContent }

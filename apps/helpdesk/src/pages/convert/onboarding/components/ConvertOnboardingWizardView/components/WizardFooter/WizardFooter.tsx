@@ -44,4 +44,4 @@ const WizardFooter = ({
     )
 }
 
-export default WizardFooter
+export { WizardFooter }

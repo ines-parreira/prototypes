@@ -3,12 +3,12 @@ import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
-import useGoToPreviousTicket from '../useGoToPreviousTicket'
-import useIsTicketNavigationAvailable from '../useIsTicketNavigationAvailable'
-import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
+import { useGoToPreviousTicket } from '../useGoToPreviousTicket'
+import { useIsTicketNavigationAvailable } from '../useIsTicketNavigationAvailable'
+import { usePrevNextTicketNavigation } from '../usePrevNextTicketNavigation'
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
@@ -20,7 +20,7 @@ jest.mock('react-router-dom', () => ({
 
 const useParamsMock = useParams as jest.Mock
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('../useIsTicketNavigationAvailable')

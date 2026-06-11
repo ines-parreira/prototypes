@@ -4,9 +4,9 @@ import { useCallback, useRef, useState } from 'react'
 import classnames from 'classnames'
 
 import { UploadType } from 'common/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { FileFieldContainer } from 'pages/common/forms/FileField'
-import FileField from 'pages/common/forms/FileField'
+import { FileFieldContainer as FileField } from 'pages/common/forms/FileField'
 import { getCurrentIntegration } from 'state/integrations/selectors'
 
 import css from './ImageField.less'
@@ -249,4 +249,4 @@ const ImageField = ({
     )
 }
 
-export default ImageField
+export { ImageField }

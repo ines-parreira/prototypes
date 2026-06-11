@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Accordion from 'pages/common/components/accordion/Accordion'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
 
 import { StatefulAccordion } from '../StatefulAccordion'
 

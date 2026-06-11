@@ -1,1 +1,1 @@
-export { default } from './RoutesWrapper'
+export { RoutesWrapper } from './RoutesWrapper'

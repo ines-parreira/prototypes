@@ -1,14 +1,14 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { handleUsageBanner } from 'state/notifications/actions'
 
 import { useUsageBanner } from '../useUsageBanner'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('state/notifications/actions', () => ({
     handleUsageBanner: jest.fn(),
 }))

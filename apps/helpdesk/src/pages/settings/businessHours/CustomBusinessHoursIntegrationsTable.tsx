@@ -17,20 +17,20 @@ import { useListIntegrationsForBusinessHours } from '@gorgias/helpdesk-queries'
 
 import type { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
-import ChannelFilter from 'pages/common/components/ChannelFilter/ChannelFilter'
-import Navigation from 'pages/common/components/Navigation/Navigation'
+import { ChannelFilter } from 'pages/common/components/ChannelFilter/ChannelFilter'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
-import IntegrationRowsField from './IntegrationRowsField'
-import StoreFilter from './StoreFilter'
+import { IntegrationRowsField } from './IntegrationRowsField'
+import { StoreFilter } from './StoreFilter'
 import type {
     BusinessHoursCreateFormValues,
     EditCustomBusinessHoursFormValues,
@@ -56,7 +56,7 @@ const BUSINESS_HOURS_CHANNEL_INTEGRATION_TYPES = [
     IntegrationType.App,
 ]
 
-export default function CustomBusinessHoursIntegrationsTable({
+export function CustomBusinessHoursIntegrationsTable({
     name = 'assigned_integrations.assign_integrations',
 }: Props) {
     const [cursor, setCursor] = useState<string>()

@@ -86,7 +86,7 @@ describe('AutomatedInteractionsGraphChart', () => {
     })
 
     it('should render ChartCard with grey area tooltip', () => {
-        const spy = jest.spyOn(ChartCard, 'default')
+        const spy = jest.spyOn(ChartCard, 'ChartCard')
         render(<AutomatedInteractionsGraphChart />)
 
         expect(spy).toHaveBeenCalledWith(

@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TopProductsCard from '../TopProductsCard'
+import { TopProductsCard } from '../TopProductsCard'
 
 const products = [
     {

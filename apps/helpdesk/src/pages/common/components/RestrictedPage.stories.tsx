@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { PageSection } from '../../../config/pages'
 import { UserRole } from '../../../config/types/user'
-import RestrictedPage from './RestrictedPage'
+import { RestrictedPage } from './RestrictedPage'
 
 const storyConfig: Meta = {
     title: 'Layout/RestrictedPage',

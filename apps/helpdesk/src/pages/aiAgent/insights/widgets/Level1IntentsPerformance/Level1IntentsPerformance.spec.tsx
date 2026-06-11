@@ -6,7 +6,7 @@ import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUse
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { MISSING_AI_AGENT_USER_ID } from 'domains/reporting/hooks/automate/utils'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
 import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
 

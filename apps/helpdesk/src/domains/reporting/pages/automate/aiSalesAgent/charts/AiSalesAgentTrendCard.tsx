@@ -21,4 +21,4 @@ const AiSalesAgentTrendCard = ({ chartId, dashboard }: DashboardChartProps) => {
     return <TrendCardComponent />
 }
 
-export default AiSalesAgentTrendCard
+export { AiSalesAgentTrendCard }

@@ -5,12 +5,13 @@ import { fromJS } from 'immutable'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketVia } from 'business/types/ticket'
-import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import { DefaultExportTicketAttachments as TicketAttachments } from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 
 import { MessageAttachments } from '../MessageAttachments'
 
-jest.mock('pages/tickets/detail/components/ReplyArea/TicketAttachments', () =>
-    jest.fn(() => null),
+jest.mock(
+    'pages/tickets/detail/components/ReplyArea/TicketAttachments',
+    () => ({ DefaultExportTicketAttachments: jest.fn(() => null) }),
 )
 
 const TicketAttachmentsMock = jest.mocked(TicketAttachments)

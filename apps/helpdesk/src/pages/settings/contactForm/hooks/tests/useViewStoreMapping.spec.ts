@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useViewStoreMapping from '../useViewStoreMapping'
+import { useViewStoreMapping } from '../useViewStoreMapping'
 
 jest.mock('@repo/feature-flags')
 jest.mock('models/storeMapping/queries')

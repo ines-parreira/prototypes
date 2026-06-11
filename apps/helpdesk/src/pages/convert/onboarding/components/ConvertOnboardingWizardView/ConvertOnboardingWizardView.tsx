@@ -3,14 +3,14 @@ import React, { useEffect, useMemo } from 'react'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
@@ -18,7 +18,7 @@ import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { toJS } from 'utils'
 
-import WizardLayout from './components/WizardLayout'
+import { WizardLayout } from './components/WizardLayout'
 import { OnboardingWizardSteps } from './constants'
 
 const ConvertOnboardingWizardView = () => {
@@ -95,4 +95,4 @@ const ConvertOnboardingWizardView = () => {
     )
 }
 
-export default ConvertOnboardingWizardView
+export { ConvertOnboardingWizardView }

@@ -24,14 +24,15 @@ import { useUpdateEffect } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { countries } from 'config/countries'
-import IconButton from 'pages/common/components/button/IconButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import Caption from 'pages/common/forms/Caption/Caption'
-import InputGroup, {
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import {
+    InputGroup,
     InputGroupContext,
 } from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import {
     buildInternationalNumber,
@@ -308,4 +309,8 @@ const PhoneNumberInput = (
     )
 }
 
-export default forwardRef<PhoneNumberInputHandle, Props>(PhoneNumberInput)
+const DefaultExportPhoneNumberInput = forwardRef<PhoneNumberInputHandle, Props>(
+    PhoneNumberInput,
+)
+
+export { DefaultExportPhoneNumberInput }

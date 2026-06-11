@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useViewTickets from '../useViewTickets'
+import { useViewTickets } from '../useViewTickets'
 
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock

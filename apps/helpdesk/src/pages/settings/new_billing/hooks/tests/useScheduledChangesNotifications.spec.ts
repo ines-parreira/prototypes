@@ -5,12 +5,12 @@ import {
     advancedMonthlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSubscription } from 'models/billing/queries'
-import useScheduledChangesNotifications from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
+import { useScheduledChangesNotifications } from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
 
 jest.mock('@repo/feature-flags')
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('models/billing/queries', () => ({
     useSubscription: jest.fn(),
 }))

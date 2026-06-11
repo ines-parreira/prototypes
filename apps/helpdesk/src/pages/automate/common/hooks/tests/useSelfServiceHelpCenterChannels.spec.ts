@@ -5,8 +5,8 @@ import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
 
 import type { SelfServiceHelpCenterChannel } from '../useSelfServiceHelpCenterChannels'
-import useSelfServiceHelpCenterChannels from '../useSelfServiceHelpCenterChannels'
-import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
+import { useSelfServiceHelpCenterChannels } from '../useSelfServiceHelpCenterChannels'
+import { useSelfServiceStoreIntegration } from '../useSelfServiceStoreIntegration'
 
 const mockHelpCenter = {
     created_datetime: '2023-12-21T13:01:16.097Z',

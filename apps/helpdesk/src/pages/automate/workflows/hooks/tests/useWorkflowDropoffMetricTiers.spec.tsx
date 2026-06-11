@@ -8,7 +8,7 @@ import {
     MID_TIERS_DROPOFF_BACKGROUND,
     MID_TIERS_DROPOFF_COLOR,
 } from '../../common/constants'
-import useWorkflowDropoffMetricTiers from '../useWorkflowDropoffMetricTiers'
+import { useWorkflowDropoffMetricTiers } from '../useWorkflowDropoffMetricTiers'
 
 describe('useWorkflowDropoffMetricTiers', () => {
     it('should return LOW TIER range when dropOffRates is empty', () => {

@@ -77,4 +77,4 @@ const useNotificationPayload = ({ level, objectType, ticketIds }: Props) => {
     }
 }
 
-export default useNotificationPayload
+export { useNotificationPayload }

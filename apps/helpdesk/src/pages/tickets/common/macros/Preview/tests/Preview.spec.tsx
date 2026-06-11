@@ -38,9 +38,9 @@ const mockGetSortedIntegrationActions = jest.requireMock(
     'pages/tickets/common/utils',
 ).getSortedIntegrationActions
 
-jest.mock('pages/common/forms/RichField/TicketRichField', () => () => (
-    <div>TicketRichField</div>
-))
+jest.mock('pages/common/forms/RichField/TicketRichField', () => ({
+    DefaultExportTicketRichField: () => <div>TicketRichField</div>,
+}))
 
 const renderComponent = (props: ComponentProps<typeof Preview>) =>
     render(<Preview {...props} />, {

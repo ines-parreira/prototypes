@@ -23,7 +23,11 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
-    () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
+    () => ({
+        AiShoppingAssistantExpireBanner: () => (
+            <div>AI-Shopping-Assistant-Expire-Banner</div>
+        ),
+    }),
 )
 const mockUpdateApplicationTexts = jest.fn().mockResolvedValue({})
 jest.mock('state/integrations/actions', () => {

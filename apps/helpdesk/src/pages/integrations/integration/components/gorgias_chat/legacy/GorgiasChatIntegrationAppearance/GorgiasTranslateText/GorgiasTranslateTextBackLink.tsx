@@ -20,4 +20,4 @@ const GorgiasTranslateTextBackLink = ({ onClick, url }: Props) => {
     )
 }
 
-export default GorgiasTranslateTextBackLink
+export { GorgiasTranslateTextBackLink }

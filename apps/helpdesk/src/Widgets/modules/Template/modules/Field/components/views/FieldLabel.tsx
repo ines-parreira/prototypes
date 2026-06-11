@@ -5,7 +5,7 @@ import cs from 'classnames'
 
 import css from './FieldLabel.less'
 
-export default function FieldLabel({
+export function FieldLabel({
     isDisabled = false,
     className,
     ...props

@@ -8,13 +8,13 @@ import { isMissedInboundVoiceCall } from 'models/voiceCall/utils'
 import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
 import { isLastItemInTicketAVoiceCall } from 'utils'
 
-import isAnswerableType from './isAnswerableType'
-import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
+import { isAnswerableType } from './isAnswerableType'
+import { lastNonSystemTypeMessage } from './lastNonSystemTypeMessage'
 
 /**
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
-export default function responseSourceType(
+export function responseSourceType(
     messages: Array<TicketMessage>,
     via: TicketVia,
     ticketId: number,

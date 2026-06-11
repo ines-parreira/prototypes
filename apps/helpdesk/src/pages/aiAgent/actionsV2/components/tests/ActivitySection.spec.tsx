@@ -8,7 +8,7 @@ import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import type { ActivityAlert } from '../../hooks/useActivityAlerts'
 import { useActivityAlerts } from '../../hooks/useActivityAlerts'
 import type { ServiceConnectionStatuses } from '../../hooks/useServiceConnectionStatuses'
-import ActivitySection from '../ActivitySection'
+import { ActivitySection } from '../ActivitySection'
 
 jest.mock('../../hooks/useActivityAlerts')
 

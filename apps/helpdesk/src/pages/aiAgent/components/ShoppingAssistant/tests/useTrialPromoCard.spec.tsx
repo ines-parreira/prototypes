@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { useEarlyAccessModalState } from 'pages/aiAgent/Activation/hooks/useEarlyAccessModalState'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -115,9 +115,10 @@ describe('useTrialPromoCard', () => {
         mockFeatureFlags(true, false, true)
         const mockDispatch = jest.fn()
 
-        jest.spyOn(require('hooks/useAppDispatch'), 'default').mockReturnValue(
-            mockDispatch,
-        )
+        jest.spyOn(
+            require('hooks/useAppDispatch'),
+            'useAppDispatch',
+        ).mockReturnValue(mockDispatch)
 
         mockUseAppSelector.mockImplementation((selector: any) => {
             if (selector === getCurrentAccountState) {

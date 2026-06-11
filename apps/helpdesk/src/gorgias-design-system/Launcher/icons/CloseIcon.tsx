@@ -17,4 +17,4 @@ const CloseIcon: React.FC<Props> = ({ color }) => (
     </svg>
 )
 
-export default CloseIcon
+export { CloseIcon }

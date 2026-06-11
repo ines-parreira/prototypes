@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
+import { TrackerCircle } from 'pages/common/components/ProgressTracker/TrackerCircle'
 
 import css from './ActivationProgress.less'
 

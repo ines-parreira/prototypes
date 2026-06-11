@@ -13,11 +13,13 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import { GorgiasChatIntegrationNavigation } from '../GorgiasChatIntegrationNavigation'
 
-jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
-    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-})
+jest.mock('../GorgiasChatIntegrationConnectedChannel', () => ({
+    GorgiasChatIntegrationConnectedChannel: () => {
+        return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+    },
+}))
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
@@ -30,7 +32,7 @@ jest.mock(
 jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
-    default: () => [
+    useStoreIntegrations: () => [
         {
             id: 1,
             type: 'shopType',
@@ -44,7 +46,7 @@ jest.mock(
     '../GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
     () => ({
         __esModule: true,
-        default: () => false,
+        useIsQuickRepliesEnabled: () => false,
     }),
 )
 const mockUseFlag = useFlag as jest.Mock

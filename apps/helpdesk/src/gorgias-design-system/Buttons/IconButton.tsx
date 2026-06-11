@@ -232,4 +232,4 @@ const IconButton: FC<HTMLAttributes<HTMLButtonElement> & IconButtonProps> = ({
     )
 }
 
-export default IconButton
+export { IconButton }

@@ -8,10 +8,10 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketMessage, TicketMessageIntent } from 'models/ticket/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { sendIntentFeedbackSuccess } from 'state/ticket/actions'
@@ -247,5 +247,3 @@ export const IntentsFeedback = ({
         <Loader inline minHeight={'0px'} size={'0.8em'} />
     )
 }
-
-export default IntentsFeedback

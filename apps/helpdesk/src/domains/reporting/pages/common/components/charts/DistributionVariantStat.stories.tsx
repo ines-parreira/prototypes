@@ -2,8 +2,9 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import DistributionVariantStat, {
+import {
     DistributionStatVariant,
+    DistributionVariantStat,
 } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 
 const storyConfig: Meta = {

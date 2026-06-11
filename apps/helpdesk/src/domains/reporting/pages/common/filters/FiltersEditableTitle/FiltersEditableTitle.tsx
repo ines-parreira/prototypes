@@ -6,8 +6,8 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import css from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle.less'
-import useAppSelector from 'hooks/useAppSelector'
-import InputField from 'pages/common/forms/input/InputField'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 

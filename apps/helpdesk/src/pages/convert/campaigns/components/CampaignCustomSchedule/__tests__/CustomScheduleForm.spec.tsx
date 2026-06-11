@@ -5,7 +5,7 @@ import { fireEvent } from '@testing-library/react'
 
 import { DAYS_OPTIONS } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 
-import CustomScheduleForm from '../CustomScheduleForm'
+import { CustomScheduleForm } from '../CustomScheduleForm'
 
 describe('<CustomScheduleForm />', () => {
     it('should render', () => {

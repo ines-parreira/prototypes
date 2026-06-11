@@ -24,12 +24,15 @@ import { CustomerChannels } from '../CustomerChannels'
 
 jest.mock(
     'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber',
-    () =>
-        ({ address }: { address: string }) => <div>{address}</div>,
+    () => ({
+        ClickablePhoneNumber: ({ address }: { address: string }) => (
+            <div>{address}</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber',
-    () => () => <div>Add phone number</div>,
+    () => ({ NewPhoneNumber: () => <div>Add phone number</div> }),
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 

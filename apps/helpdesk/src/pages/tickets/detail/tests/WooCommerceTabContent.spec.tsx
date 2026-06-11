@@ -5,11 +5,11 @@ import { fromJS } from 'immutable'
 import { WOOCOMMERCE_WIDGET_TYPE } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
 
-import WooCommerceTabContent from '../WooCommerceTabContent'
+import { WooCommerceTabContent } from '../WooCommerceTabContent'
 
 jest.mock('../WidgetEditionTools', () => ({
     __esModule: true,
-    default: () => <div>WidgetEditionTools</div>,
+    WidgetEditionTools: () => <div>WidgetEditionTools</div>,
 }))
 
 jest.mock('Widgets/contexts/WidgetContext', () => ({
@@ -18,7 +18,7 @@ jest.mock('Widgets/contexts/WidgetContext', () => ({
 
 jest.mock('Widgets/modules/WooCommerce', () => ({
     __esModule: true,
-    default: ({ source, template }: any) => (
+    WooCommerceWidget: ({ source, template }: any) => (
         <div>
             WooMock source={JSON.stringify(source)} templatePath=
             {template.templatePath}

@@ -11,7 +11,7 @@ type NavbarLinkProps = {
     to: string
 } & ComponentProps<typeof Link>
 
-export default function NavbarLink({ className, ...props }: NavbarLinkProps) {
+export function NavbarLink({ className, ...props }: NavbarLinkProps) {
     const { pathname: path } = useLocation()
 
     const current = useMemo(

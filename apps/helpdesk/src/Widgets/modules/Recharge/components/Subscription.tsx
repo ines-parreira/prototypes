@@ -14,10 +14,10 @@ import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
-import useAppSelector from 'hooks/useAppSelector'
-import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { ActionButtonsGroup } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { renderTemplate } from 'pages/common/utils/template'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

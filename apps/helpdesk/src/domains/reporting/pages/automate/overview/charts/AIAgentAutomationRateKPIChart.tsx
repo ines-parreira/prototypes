@@ -1,8 +1,8 @@
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import {

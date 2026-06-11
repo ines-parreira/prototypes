@@ -7,14 +7,14 @@ import { TicketList } from '@repo/tickets/ticket-list'
 import { fromJS } from 'immutable'
 import { useHistory, useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
-import useSyncSplitTicketViewHistoryState from 'split-ticket-view-toggle/hooks/useSyncSplitTicketViewHistoryState'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useSplitTicketView } from 'split-ticket-view-toggle/hooks/useSplitTicketView'
+import { useSyncSplitTicketViewHistoryState } from 'split-ticket-view-toggle/hooks/useSyncSplitTicketViewHistoryState'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewPlainJS } from 'state/views/selectors'
 import { TicketListView } from 'ticket-list-view'
-import ApplyMacro from 'ticket-list-view/components/bulk-actions/ApplyMacro'
+import { ApplyMacro } from 'ticket-list-view/components/bulk-actions/ApplyMacro'
 import { useViewId } from 'tickets/core/hooks'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
@@ -28,7 +28,7 @@ type Props = {
     registerOnToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
 }
 
-export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
+export function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const hasUIVisionMS4 = useHelpdeskV2MS4Flag()
     const { ticketId: urlTicketId } = useParams<{ ticketId?: string }>()
     const viewId = useViewId()

@@ -9,7 +9,7 @@ import { CustomNotifications } from '../constants'
 const stripHtmlTags = (message: string) =>
     message.replace(/<[^>]*>/g, '').trim()
 
-export default function useCreatePhoneNumberNotifications() {
+export function useCreatePhoneNumberNotifications() {
     const showCreatePhoneNumberErrorNotification = ({
         error,
     }: {

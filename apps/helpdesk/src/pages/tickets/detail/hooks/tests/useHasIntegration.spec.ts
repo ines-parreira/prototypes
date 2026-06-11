@@ -3,11 +3,11 @@ import { fromJS } from 'immutable'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useHasIntegration from '../useHasIntegration'
+import { useHasIntegration } from '../useHasIntegration'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Status, { StatusType } from './Status'
+import { Status, StatusType } from './Status'
 
 describe('Status Component', () => {
     it('should render the correct label', () => {

@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import type { RootState } from 'state/types'
 
-import MacroFilters from '../MacroFilters'
+import { MacroFilters } from '../MacroFilters'
 
 const mockStore = configureMockStore([thunk])
 

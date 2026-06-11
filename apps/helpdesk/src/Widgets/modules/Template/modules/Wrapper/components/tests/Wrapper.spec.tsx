@@ -21,8 +21,8 @@ import type { Widget, WidgetType } from 'state/widgets/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
 import type { FormData } from '../views/WrapperEditActions'
-import WrapperEditActions from '../views/WrapperEditActions'
-import Wrapper, { CUSTOMIZABLE_WIDGET_TYPES, useIntegration } from '../Wrapper'
+import { WrapperEditActions } from '../views/WrapperEditActions'
+import { CUSTOMIZABLE_WIDGET_TYPES, useIntegration, Wrapper } from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')
 
@@ -106,15 +106,17 @@ const woocommerceDataSource = {
 }
 
 const MOCK_EDIT_FORM_COLOR_ID = 'edit-form-color'
-jest.mock('../views/WrapperEditActions', () =>
-    jest.fn((props: ComponentProps<typeof WrapperEditActions>) => (
-        <div>
-            <span data-testid={MOCK_EDIT_FORM_COLOR_ID}>
-                {props.initialData?.color}
-            </span>
-        </div>
-    )),
-)
+jest.mock('../views/WrapperEditActions', () => ({
+    WrapperEditActions: jest.fn(
+        (props: ComponentProps<typeof WrapperEditActions>) => (
+            <div>
+                <span data-testid={MOCK_EDIT_FORM_COLOR_ID}>
+                    {props.initialData?.color}
+                </span>
+            </div>
+        ),
+    ),
+}))
 const WrapperEditActionsMock = assumeMock(WrapperEditActions)
 
 describe('Wrapper', () => {

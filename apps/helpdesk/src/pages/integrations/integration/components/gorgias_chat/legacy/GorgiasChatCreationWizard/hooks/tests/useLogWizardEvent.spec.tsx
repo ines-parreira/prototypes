@@ -5,10 +5,10 @@ import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 
-import useLogWizardEvent from '../useLogWizardEvent'
+import { useLogWizardEvent } from '../useLogWizardEvent'
 
 const defaultState = {
     currentAccount: fromJS({

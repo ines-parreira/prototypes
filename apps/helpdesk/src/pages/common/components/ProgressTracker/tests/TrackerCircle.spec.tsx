@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import { relativeLighten } from 'gorgias-design-system/utils'
 
-import TrackerCircle from '../TrackerCircle'
+import { TrackerCircle } from '../TrackerCircle'
 
 jest.mock('gorgias-design-system/utils', () => ({
     relativeLighten: jest.fn(),

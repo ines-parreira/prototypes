@@ -12,8 +12,8 @@ import {
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { setFieldVisibility } from 'state/views/actions'
 
 type Props = {
@@ -129,4 +129,4 @@ const ShowMoreFieldsDropdown = ({
     )
 }
 
-export default ShowMoreFieldsDropdown
+export { ShowMoreFieldsDropdown }

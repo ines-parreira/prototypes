@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { dummyAppDetail } from 'fixtures/apps'
-import Slides from 'pages/common/components/ProductDetail/Slides'
+import { Slides } from 'pages/common/components/ProductDetail/Slides'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ currentAccount: fromJS({ domain: '20-1 rpz' }) })

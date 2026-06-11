@@ -6,9 +6,9 @@ import _isEqual from 'lodash/isEqual'
 
 import { TAGS_LIMIT } from 'models/integration/constants'
 
-import Dropdown from './Dropdown'
+import { Dropdown } from './Dropdown'
 import type { DropdownMenuProps } from './dropdownMenuTypes'
-import OptionTag from './Tag'
+import { Tag as OptionTag } from './Tag'
 import type { Option } from './types'
 
 import css from './MultiSelectOptionsField.less'
@@ -46,7 +46,7 @@ type Props = {
  * @date 2026-01-06
  * @type ui-kit-migration
  */
-export default function MultiSelectOptionsField(props: Props) {
+export function MultiSelectOptionsField(props: Props) {
     const {
         allowCustomOptions = false,
         matchInput = false,

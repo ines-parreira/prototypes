@@ -23,7 +23,7 @@ import {
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     TicketDimension,
     TicketMeasure,
@@ -54,7 +54,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OrderDirection } from 'models/api/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import type { IntentMetrics } from 'pages/aiAgent/insights/IntentTableWidget/types'

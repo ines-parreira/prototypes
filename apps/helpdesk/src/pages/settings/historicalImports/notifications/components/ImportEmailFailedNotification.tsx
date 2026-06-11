@@ -87,4 +87,4 @@ const ImportEmailFailedNotification = ({
     )
 }
 
-export default ImportEmailFailedNotification
+export { ImportEmailFailedNotification }

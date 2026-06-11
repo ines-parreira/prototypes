@@ -13,7 +13,7 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardInstallationMethod,

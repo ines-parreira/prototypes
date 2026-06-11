@@ -40,4 +40,4 @@ const EdgeLabel = ({ children, onClick, isSelected, type }: Props) => {
     )
 }
 
-export default EdgeLabel
+export { EdgeLabel }

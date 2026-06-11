@@ -10,7 +10,7 @@ import {
 
 import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
 
-import SLAFormView from '../DEPRECATED_SLAFormView'
+import { SLAFormView } from '../DEPRECATED_SLAFormView'
 
 const mockOnSubmit = jest.fn()
 const mockValidator = jest.fn()

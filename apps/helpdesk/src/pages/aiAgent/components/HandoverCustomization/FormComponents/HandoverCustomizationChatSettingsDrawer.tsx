@@ -12,7 +12,7 @@ import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
 import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
-import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
+import { UnsavedChangesModal } from 'pages/common/components/UnsavedChangesModal'
 
 export type HandoverCustomizationChatSettingsDrawerContent =
     | 'offline'
@@ -220,4 +220,4 @@ const HandoverCustomizationChatSettingsDrawer = ({
     )
 }
 
-export default HandoverCustomizationChatSettingsDrawer
+export { HandoverCustomizationChatSettingsDrawer }

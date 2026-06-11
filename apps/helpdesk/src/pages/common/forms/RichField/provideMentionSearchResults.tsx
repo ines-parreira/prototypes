@@ -19,9 +19,7 @@ export type InjectedProps = {
     onMentionSearchChange: (mentionSearchChangeArgs: { value: string }) => void
 }
 
-export default function provideMentionSearchResults<
-    Props extends RequiredProps,
->(
+export function provideMentionSearchResults<Props extends RequiredProps>(
     WrappedComponent: ComponentType<Props & InjectedProps>,
 ): ComponentType<Props> {
     class Wrapper extends Component<Props, State> {

@@ -5,10 +5,10 @@ import classnames from 'classnames'
 
 import { useAppNode } from 'appNode'
 import type { MacrosProperties } from 'models/macro/types'
-import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
-import OnbordingMacroPopover from 'pages/tickets/common/macros/components/OnbordingMacroPopover'
+import { MacroFilters } from 'pages/common/components/MacroFilters/MacroFilters'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { OnbordingMacroPopover } from 'pages/tickets/common/macros/components/OnbordingMacroPopover'
 
 import css from './TicketMacrosSearch.less'
 
@@ -94,4 +94,4 @@ const TicketMacrosSearch = ({
     )
 }
 
-export default TicketMacrosSearch
+export { TicketMacrosSearch }

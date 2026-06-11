@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { PRODUCTS } from '../constants'
 import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
-import AiAgentScrapedDomainProductsView from './AiAgentScrapedDomainProductsView'
+import { AiAgentScrapedDomainProductsView } from './AiAgentScrapedDomainProductsView'
 
 import css from './AiAgentScrapedDomainProductsContainer.less'
 
@@ -38,4 +38,4 @@ const AiAgentScrapedDomainProductsContainer = () => {
     )
 }
 
-export default AiAgentScrapedDomainProductsContainer
+export { AiAgentScrapedDomainProductsContainer }

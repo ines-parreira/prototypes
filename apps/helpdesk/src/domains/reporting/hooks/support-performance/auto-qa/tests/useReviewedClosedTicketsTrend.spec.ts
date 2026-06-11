@@ -5,8 +5,9 @@ import {
     fetchReviewedClosedTicketsTrend,
     useReviewedClosedTicketsTrend,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { reviewedClosedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import { reviewedClosedTicketsQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'

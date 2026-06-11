@@ -4,7 +4,7 @@ import type { EmailMigrationSenderVerificationIntegration } from 'models/integra
 import { createVerification } from 'models/singleSenderVerification/resources'
 import type { SenderInformation } from 'models/singleSenderVerification/types'
 
-export default function useBulkCreateSingleSenderVerification() {
+export function useBulkCreateSingleSenderVerification() {
     const [isLoading, setIsLoading] = useState(false)
 
     const bulkCreateSingleSenderVerification = async (

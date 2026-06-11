@@ -20,7 +20,7 @@ import { updateSubscriptionsForPlans } from 'state/currentAccount/actions'
 import type { SubscriptionUpdateResponse } from 'state/currentAccount/actions'
 import type { RootState } from 'state/types'
 
-import AutomateSubscriptionModal from '../AutomateSubscriptionModal'
+import { AutomateSubscriptionModal } from '../AutomateSubscriptionModal'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {

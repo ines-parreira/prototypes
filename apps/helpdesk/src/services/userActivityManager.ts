@@ -6,7 +6,7 @@ import { store as reduxStore } from 'common/store'
 import { toggleActiveStatus } from 'state/currentUser/actions'
 import type { RootState } from 'state/types'
 
-import socketManager from './socketManager/socketManager'
+import { socketManager } from './socketManager/socketManager'
 import { SocketEventType } from './socketManager/types'
 
 class UserActivityManager {
@@ -58,4 +58,4 @@ class UserActivityManager {
 
 const userActivityManager = new UserActivityManager()
 
-export default userActivityManager
+export { userActivityManager }

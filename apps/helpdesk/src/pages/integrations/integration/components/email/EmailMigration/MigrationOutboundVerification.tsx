@@ -10,11 +10,11 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { fetchMigrationDomains } from 'models/integration/resources/email'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
-import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
+import { useMigrationBannerStatus } from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import { getMoment } from 'utils/date'
 
-import MigrationDomainList from './MigrationDomainList'
-import MigrationTutorialList from './MigrationTutorialList'
+import { MigrationDomainList } from './MigrationDomainList'
+import { MigrationTutorialList } from './MigrationTutorialList'
 
 import css from './MigrationOutboundVerification.less'
 
@@ -22,7 +22,7 @@ type Props = {
     onBackClick: () => void
 }
 
-export default function MigrationOutboundVerification({ onBackClick }: Props) {
+export function MigrationOutboundVerification({ onBackClick }: Props) {
     const history = useHistory()
     const [lastChecked, setLastChecked] = useState<string>()
     const lastCheckedInterval = useRef<ReturnType<typeof setInterval> | null>(

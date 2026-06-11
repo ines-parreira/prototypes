@@ -7,9 +7,9 @@ import { Router, Switch } from 'react-router-dom'
 import { TicketChannel } from 'business/types/ticket'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import SelfServiceChatIntegrationPreview from './SelfServiceChatIntegrationPreview'
-import SelfServiceHelpCenterPreview from './SelfServiceHelpCenterPreview'
-import SelfServiceStandaloneContactFormPreview from './SelfServiceStandaloneContactFormPreview'
+import { DefaultExportSelfServiceChatIntegrationPreview as SelfServiceChatIntegrationPreview } from './SelfServiceChatIntegrationPreview'
+import { DefaultExportSelfServiceHelpCenterPreview as SelfServiceHelpCenterPreview } from './SelfServiceHelpCenterPreview'
+import { DefaultExportSelfServiceStandaloneContactFormPreview as SelfServiceStandaloneContactFormPreview } from './SelfServiceStandaloneContactFormPreview'
 
 type Props = {
     channel: SelfServiceChannel
@@ -44,4 +44,4 @@ const SelfServicePreview = ({ channel, history }: Props) => {
     )
 }
 
-export default SelfServicePreview
+export { SelfServicePreview }

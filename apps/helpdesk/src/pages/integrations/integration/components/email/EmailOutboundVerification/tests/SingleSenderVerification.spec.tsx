@@ -16,7 +16,7 @@ import { VerificationStatus } from 'models/singleSenderVerification/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { Props } from '../SingleSenderVerification/SingleSenderVerification'
-import SingleSenderVerification from '../SingleSenderVerification/SingleSenderVerification'
+import { SingleSenderVerification } from '../SingleSenderVerification/SingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 

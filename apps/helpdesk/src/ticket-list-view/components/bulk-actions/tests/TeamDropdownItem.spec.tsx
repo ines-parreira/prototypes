@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Emoji } from 'emoji-mart'
 
-import TeamDropdownItem from '../TeamDropdownItem'
+import { TeamDropdownItem } from '../TeamDropdownItem'
 
 jest.mock('emoji-mart')
 const mockEmojiMart = assumeMock(Emoji)

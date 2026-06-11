@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import QuickSelectionOption from 'domains/reporting/pages/common/QuickSelectionOption'
+import { QuickSelectionOption } from 'domains/reporting/pages/common/QuickSelectionOption'
 
 describe('QuickSelectionOption', () => {
     const commonProps = {

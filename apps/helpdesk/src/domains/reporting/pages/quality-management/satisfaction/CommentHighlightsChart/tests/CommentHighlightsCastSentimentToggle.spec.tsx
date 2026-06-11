@@ -3,13 +3,14 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import CommentHighlightsToggle, {
+import {
     COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE,
+    CommentHighlightsToggle,
 } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
 import { QUALITY_MANAGEMENT_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { toggleCommentHighlightsCsatSentiment } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { RootState } from 'state/types'
 
 jest.mock('hooks/useAppDispatch')

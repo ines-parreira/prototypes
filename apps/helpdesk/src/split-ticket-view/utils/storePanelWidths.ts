@@ -50,4 +50,4 @@ const storePanelWidths = _debounce(
     PANELS_STORAGE_DEBOUNCE_TIME,
 )
 
-export default storePanelWidths
+export { storePanelWidths }

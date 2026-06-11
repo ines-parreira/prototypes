@@ -2,8 +2,9 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DistributionVariantStat, {
+import {
     DistributionStatVariant,
+    DistributionVariantStat,
 } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 
 describe('DistributionVariantStat', () => {

@@ -8,7 +8,7 @@ const panelConfig = {
     maxSize: 48,
 }
 
-export default function GlobalNavigationPanel() {
+export function GlobalNavigationPanel() {
     return (
         <Panel name="global-navigation" config={panelConfig}>
             <GlobalNavigation />

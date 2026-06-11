@@ -2,7 +2,7 @@ import { useContext } from 'react'
 
 import { DomainVerificationContext } from './DomainVerificationContext'
 
-export default function useDomainVerification() {
+export function useDomainVerification() {
     const context = useContext(DomainVerificationContext)
 
     if (context === null) {

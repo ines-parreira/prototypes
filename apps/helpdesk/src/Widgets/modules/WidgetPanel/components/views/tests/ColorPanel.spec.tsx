@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ColorPanel from '../ColorPanel'
+import { ColorPanel } from '../ColorPanel'
 
 describe('ColorPanel', () => {
     const defaultAccentColor = '#f00'

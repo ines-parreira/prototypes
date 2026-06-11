@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 import * as useAppSelector from 'hooks/useAppSelector'
 import { EmailMigrationStatus } from 'models/integration/types'
 
-import EmailMigrationBanner from '../EmailMigrationBanner'
+import { EmailMigrationBanner } from '../EmailMigrationBanner'
 import * as helpers from '../helpers'
 import * as migrationBannerHook from '../hooks/useMigrationBannerStatus'
 
@@ -15,14 +15,14 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const useLocationMock = useLocation as jest.Mock
-const appSelectorSpy = jest.spyOn(useAppSelector, 'default')
+const appSelectorSpy = jest.spyOn(useAppSelector, 'useAppSelector')
 const computeBannerSpy = jest.spyOn(
     helpers,
     'computeEmailMigrationStatusBanner',
 )
 
 const mockFetchMigrationStatus = jest.fn()
-jest.spyOn(migrationBannerHook, 'default').mockImplementation(
+jest.spyOn(migrationBannerHook, 'useMigrationBannerStatus').mockImplementation(
     () => mockFetchMigrationStatus,
 )
 

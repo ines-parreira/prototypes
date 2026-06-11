@@ -10,7 +10,7 @@ export const initialState: EditShippingAddressState = fromJS({
     addresses: [],
 })
 
-export default function reducer(
+export function reducer(
     state: EditShippingAddressState = initialState,
     action: GorgiasAction,
 ): EditShippingAddressState {

@@ -2,7 +2,7 @@ import { TicketChannel } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
 
 import type { TicketPayload } from '../../types'
-import mapTicketMessageCreatedType from '../mapTicketMessageCreatedType'
+import { mapTicketMessageCreatedType } from '../mapTicketMessageCreatedType'
 
 describe('mapTicketMessageCreatedType', () => {
     it('should map to a channel-specific type if available', () => {

@@ -48,4 +48,4 @@ const TicketStatus = ({
     )
 }
 
-export default TicketStatus
+export { TicketStatus }

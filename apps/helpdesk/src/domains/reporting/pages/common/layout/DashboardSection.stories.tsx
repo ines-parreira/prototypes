@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { TipsToggle } from 'pages/common/components/TipsToggle/TipsToggle'
 
 const storyConfig: Meta<typeof DashboardSection> = {
     title: 'Stats/DashboardSection',

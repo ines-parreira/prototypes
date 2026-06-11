@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import VoiceSettingAccordionItem from '../VoiceSettingAccordionItem'
+import { VoiceSettingAccordionItem } from '../VoiceSettingAccordionItem'
 
 describe('<VoiceSettingAccordionItem />', () => {
     const defaultProps = {

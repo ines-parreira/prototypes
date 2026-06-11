@@ -15,24 +15,25 @@ import type {
 import { isCustomer, isTicket } from 'models/search/types'
 import { ViewType } from 'models/view/types'
 import { isVoiceCall } from 'models/voiceCall/types'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { SkeletonLoader } from 'pages/common/components/SkeletonLoader'
 import {
     CALLS_LABEL,
     CUSTOMERS_LABEL,
     FEDERATED_SEARCH_GROUP_SIZE,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
+import { SpotlightCustomerRow } from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import css from 'pages/common/components/Spotlight/SpotlightModal.less'
-import SpotlightNoResults from 'pages/common/components/Spotlight/SpotlightNoResults'
-import SpotlightScrollArea, {
+import { SpotlightNoResults } from 'pages/common/components/Spotlight/SpotlightNoResults'
+import {
     GroupedSpotlightScrollArea,
+    DefaultExportSpotlightScrollArea as SpotlightScrollArea,
 } from 'pages/common/components/Spotlight/SpotlightScrollArea'
-import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import { SpotlightTicketRow } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import { Tabs } from 'pages/common/components/Spotlight/useSearch'
 
-import SpotlightCallRow from './SpotlightCallRow'
+import { SpotlightCallRow } from './SpotlightCallRow'
 
 export const RECENTLY_ACCESSED_LABEL = 'Recently accessed'
 export const MORE_RESULTS_LABEL = 'More results'

@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
-import RoutesWrapper from '../RoutesWrapper'
+import { RoutesWrapper } from '../RoutesWrapper'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -16,9 +16,9 @@ const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
 jest.mock('../PanelRoutes', () => ({
     __esModule: true,
     ...jest.requireActual('../PanelRoutes'),
-    default: () => <div>PanelRoutes</div>,
+    PanelRoutes: () => <div>PanelRoutes</div>,
 }))
-jest.mock('../Routes', () => () => <div>Routes</div>)
+jest.mock('../Routes', () => ({ Routes: () => <div>Routes</div> }))
 jest.mock('../layout/NavigationSidebar', () => ({
     NavigationSidebar: () => <div>Sidebar</div>,
 }))

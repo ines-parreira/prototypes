@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
-import TicketUpdatesManager from '../TicketUpdatesManager'
+import { TicketUpdatesManager } from '../TicketUpdatesManager'
 import type { TicketPartial } from '../types'
 
 type State = {
@@ -12,7 +12,7 @@ type State = {
     partials: TicketPartial[]
 }
 
-export default function useTicketPartials(
+export function useTicketPartials(
     viewId: number,
     sortOrder: SearchTicketsOrderBy,
 ) {

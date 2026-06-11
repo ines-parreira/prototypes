@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useUpdateArticleRecommendationPrediction from '../useUpdateArticleRecommendationPrediction'
+import { useUpdateArticleRecommendationPrediction } from '../useUpdateArticleRecommendationPrediction'
 
 const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,

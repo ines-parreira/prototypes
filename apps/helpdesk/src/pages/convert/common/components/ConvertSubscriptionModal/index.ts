@@ -1,1 +1,1 @@
-export { default } from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
+export { ConvertSubscriptionModal } from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'

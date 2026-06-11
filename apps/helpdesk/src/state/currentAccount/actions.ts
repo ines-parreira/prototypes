@@ -19,7 +19,7 @@ import type {
 import { getAccountSettings } from 'models/account/resources'
 import type { GorgiasApiError } from 'models/api/types'
 import { isGorgiasApiError } from 'models/api/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import type { ProductToPlanId, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {

@@ -5,18 +5,19 @@ import { userEvent } from '@testing-library/user-event'
 
 import type { Customer } from 'models/customer/types'
 import type { PickedCustomer } from 'models/search/types'
-import mockedVirtuoso from 'tests/mockedVirtuoso'
+import { mockedVirtuoso } from 'tests/mockedVirtuoso'
 
-import SpotlightScrollArea, {
+import {
     GroupedSpotlightScrollArea,
     MAX_HEIGHT,
+    DefaultExportSpotlightScrollArea as SpotlightScrollArea,
 } from '../SpotlightScrollArea'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
-jest.mock('pages/common/components/SkeletonLoader', () => () => (
-    <div>SkeletonLoader</div>
-))
+jest.mock('pages/common/components/SkeletonLoader', () => ({
+    SkeletonLoader: () => <div>SkeletonLoader</div>,
+}))
 
 describe('<SpotlightScrollArea/>', () => {
     const minProps: ComponentProps<typeof SpotlightScrollArea> = {

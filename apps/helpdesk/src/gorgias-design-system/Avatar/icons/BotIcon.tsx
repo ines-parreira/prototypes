@@ -29,4 +29,4 @@ const BotIcon = () => (
     </svg>
 )
 
-export default BotIcon
+export { BotIcon }

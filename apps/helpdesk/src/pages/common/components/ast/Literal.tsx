@@ -3,8 +3,8 @@ import type { List, Map } from 'immutable'
 import { UNARY_OPERATORS } from 'config'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import Errors from './Errors'
-import Widget from './Widget'
+import { Errors } from './Errors'
+import { Widget } from './Widget'
 
 type Props = {
     callee?: { name?: string }
@@ -52,4 +52,4 @@ const Literal = ({
     )
 }
 
-export default Literal
+export { Literal }

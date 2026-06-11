@@ -11,7 +11,7 @@ import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import SettingsNavbar from '../SettingsNavbar'
+import { SettingsNavbar } from '../SettingsNavbar'
 
 window.scrollTo = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -33,7 +33,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(() => [
+    useStoreIntegrations: jest.fn(() => [
         {
             id: 1,
             name: 'Integration 1',

@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 
-import NoIntegration from '../NoIntegration'
+import { NoIntegration } from '../NoIntegration'
 import { getConnectUrl } from './Utils'
 
 import css from './List.less'
@@ -81,4 +81,4 @@ function List({ integrations, loading }: Props) {
     )
 }
 
-export default List
+export { List }

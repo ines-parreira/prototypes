@@ -5,8 +5,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import css from './GorgiasChatIntegrationConnectedChannel.less'
 
@@ -57,4 +57,4 @@ const GorgiasChatIntegrationConnectedChannel = () => {
     return null
 }
 
-export default GorgiasChatIntegrationConnectedChannel
+export { GorgiasChatIntegrationConnectedChannel }

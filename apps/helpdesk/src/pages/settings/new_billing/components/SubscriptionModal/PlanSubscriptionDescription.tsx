@@ -18,11 +18,11 @@ import {
     getProductInfo,
     getProductLabel,
 } from 'models/billing/utils'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
-import CounterText from 'pages/settings/new_billing/components/CounterText'
+import { CounterText } from 'pages/settings/new_billing/components/CounterText'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
-import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
+import { SummaryFooter } from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 
@@ -276,4 +276,4 @@ const PlanSubscriptionDescription = ({
     )
 }
 
-export default PlanSubscriptionDescription
+export { PlanSubscriptionDescription }

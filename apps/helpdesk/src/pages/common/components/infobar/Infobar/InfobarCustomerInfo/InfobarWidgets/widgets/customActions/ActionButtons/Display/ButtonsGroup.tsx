@@ -9,7 +9,7 @@ import { MultiButton } from '@gorgias/axiom'
 
 import { ContentType } from 'models/api/types'
 import type { Source } from 'models/widget/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { mapTemplateParameters } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapTemplateParameters'
 import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
 import {
@@ -22,7 +22,7 @@ import type {
     Button as ButtonType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import Button from './Button'
+import { DefaultExportButton as Button } from './Button'
 
 import css from './ButtonsGroup.less'
 
@@ -82,7 +82,9 @@ function ButtonsGroup({ buttons, source }: Props) {
     )
 }
 
-export default memo(ButtonsGroup)
+const DefaultExportButtonsGroup = memo(ButtonsGroup)
+
+export { DefaultExportButtonsGroup }
 
 function TemplatedButton({
     button,

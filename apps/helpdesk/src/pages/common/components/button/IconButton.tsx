@@ -54,4 +54,4 @@ const BaseIconButton = (
  */
 const IconButton = forwardRef<HTMLButtonElement, Props>(BaseIconButton)
 
-export default IconButton
+export { IconButton }

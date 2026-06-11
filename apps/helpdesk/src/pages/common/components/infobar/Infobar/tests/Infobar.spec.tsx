@@ -17,12 +17,12 @@ import configureMockStore from 'redux-mock-store'
 import { agents } from 'fixtures/agents'
 import { mockSearchRank } from 'fixtures/searchRank'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
-import type InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import type { InfobarCustomerInfo } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
-import type InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
-import type Modal from 'pages/common/components/modal/Modal'
-import type ModalHeader from 'pages/common/components/modal/ModalHeader'
-import type Search from 'pages/common/components/Search'
+import type { DefaultExportInfobarLayout as InfobarLayout } from 'pages/common/components/infobar/InfobarLayout'
+import type { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import type { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import type { DefaultExportSearch as Search } from 'pages/common/components/Search'
 import {
     fetchPreviewCustomer,
     searchWithHighlights,
@@ -76,30 +76,32 @@ store.dispatch = jest.fn((param: () => unknown) =>
     typeof param === 'function' ? param() : param,
 )
 
-jest.mock(
-    'pages/common/components/Search.tsx',
-    () =>
-        ({ onChange, onKeyDown, ...other }: ComponentProps<typeof Search>) => {
-            const [value, setValue] = mockUseState('')
+jest.mock('pages/common/components/Search.tsx', () => ({
+    DefaultExportSearch: ({
+        onChange,
+        onKeyDown,
+        ...other
+    }: ComponentProps<typeof Search>) => {
+        const [value, setValue] = mockUseState('')
 
-            return (
-                <input
-                    data-testid="Search"
-                    {...other}
-                    onChange={(e) => {
-                        setValue(e.target.value)
-                        onChange && onChange(e.target.value)
-                    }}
-                    onKeyDown={(e) => onKeyDown && onKeyDown(e, value)}
-                />
-            )
-        },
-)
+        return (
+            <input
+                data-testid="Search"
+                {...other}
+                onChange={(e) => {
+                    setValue(e.target.value)
+                    onChange && onChange(e.target.value)
+                }}
+                onKeyDown={(e) => onKeyDown && onKeyDown(e, value)}
+            />
+        )
+    },
+}))
 
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx',
-    () =>
-        ({
+    () => ({
+        InfobarCustomerInfo: ({
             customer,
             onEditCustomer,
         }: ComponentProps<typeof InfobarCustomerInfo>) => (
@@ -119,42 +121,55 @@ jest.mock(
                 )}
             </div>
         ),
+    }),
 )
 
-jest.mock(
-    'pages/common/components/infobar/InfobarLayout',
-    () =>
-        ({ children }: ComponentProps<typeof InfobarLayout>) => (
-            <div data-testid="InfobarLayout">{children}</div>
-        ),
-)
+jest.mock('pages/common/components/infobar/InfobarLayout', () => ({
+    DefaultExportInfobarLayout: ({
+        children,
+    }: ComponentProps<typeof InfobarLayout>) => (
+        <div data-testid="InfobarLayout">{children}</div>
+    ),
+}))
 
 jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return ({ title }: ComponentProps<typeof ModalHeader>) => (
-        <header>
-            <h2>{title}</h2>
-        </header>
-    )
+    return {
+        ModalHeader: ({ title }: ComponentProps<typeof ModalHeader>) => (
+            <header>
+                <h2>{title}</h2>
+            </header>
+        ),
+    }
 })
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({ isOpen, onClose, children }: ComponentProps<typeof Modal>) =>
-        isOpen ? (
-            <div role="dialog" aria-modal="true">
-                <button onClick={onClose}>Close</button>
-                {children}
-            </div>
-        ) : null
+    return {
+        DefaultExportModal: ({
+            isOpen,
+            onClose,
+            children,
+        }: ComponentProps<typeof Modal>) =>
+            isOpen ? (
+                <div role="dialog" aria-modal="true">
+                    <button onClick={onClose}>Close</button>
+                    {children}
+                </div>
+            ) : null,
+    }
 })
 
 jest.mock('pages/customers/common/components/CustomerForm', () => {
-    return () => <div data-testid="CustomerForm">CustomerForm</div>
+    return {
+        DefaultExportCustomerForm: () => (
+            <div data-testid="CustomerForm">CustomerForm</div>
+        ),
+    }
 })
 
 jest.mock(
     'pages/common/components/MergeCustomers/MergeCustomersContainer',
-    () =>
-        ({
+    () => ({
+        DefaultExportMergeCustomersContainer: ({
             display,
             onClose,
             onSuccess,
@@ -172,6 +187,7 @@ jest.mock(
                     )}
                 </div>
             ) : null,
+    }),
 )
 
 jest.mock('pages/common/components/infobar/Infobar/InfobarSearchResultsList')
@@ -181,7 +197,7 @@ jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerActions',
     () => ({
         __esModule: true,
-        default: ({
+        InfobarCustomerActions: ({
             setCustomer,
             toggleMergeCustomerModal,
         }: {

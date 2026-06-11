@@ -17,7 +17,9 @@ jest.mock('@repo/logging', () => ({
         ConvertApplySuggestionClicked: 'ConvertApplySuggestionClicked',
     },
 }))
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('state/currentAccount/selectors', () => ({
     getCurrentAccountId: jest.fn().mockReturnValue(111),
 }))

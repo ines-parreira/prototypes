@@ -5,9 +5,9 @@ import _keyBy from 'lodash/keyBy'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 
-import useGetIsActionStepEnabled from './useGetIsActionStepEnabled'
+import { useGetIsActionStepEnabled } from './useGetIsActionStepEnabled'
 
 const useEnabledActionStepsByApp = (internalPlatformGrouping = false) => {
     const { apps } = useApps()
@@ -75,4 +75,4 @@ const useEnabledActionStepsByApp = (internalPlatformGrouping = false) => {
     ])
 }
 
-export default useEnabledActionStepsByApp
+export { useEnabledActionStepsByApp }

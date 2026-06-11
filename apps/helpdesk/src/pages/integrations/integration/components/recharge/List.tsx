@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
-import NoIntegration from '../NoIntegration'
+import { NoIntegration } from '../NoIntegration'
 
 import css from './List.less'
 
@@ -84,4 +84,4 @@ function List({ integrations, loading, redirectUri }: Props) {
     )
 }
 
-export default List
+export { List }

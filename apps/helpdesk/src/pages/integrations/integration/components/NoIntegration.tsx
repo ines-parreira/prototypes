@@ -1,4 +1,4 @@
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 const NoIntegration = ({ loading = false }: { loading?: boolean }) =>
     loading ? (
@@ -7,4 +7,4 @@ const NoIntegration = ({ loading = false }: { loading?: boolean }) =>
         <>You have no integration of this type at the moment.</>
     )
 
-export default NoIntegration
+export { NoIntegration }

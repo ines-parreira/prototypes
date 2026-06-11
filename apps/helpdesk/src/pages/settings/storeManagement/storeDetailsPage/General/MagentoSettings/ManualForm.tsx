@@ -1,7 +1,7 @@
 import { FormField } from '@repo/forms'
 
 import type { Magento2Integration } from 'models/integration/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { BaseForm } from './BaseForm'
 import { useManualForm } from './hooks/useManualForm'
@@ -24,7 +24,7 @@ const formFields = [
     { label: 'Access token secret', name: 'accessTokenSecret' },
 ]
 
-export default function ManualForm({
+export function ManualForm({
     integration,
     refetchStore,
     handleDelete,

@@ -1,8 +1,8 @@
 import classnames from 'classnames'
 
 import { HELP_CENTER_DEFAULT_LAYOUT } from '../../constants'
-import HelpCenterPreviewDefaultHomePage from './HelpCenterPreviewDefaultHomePage'
-import HelpCenterPreviewOnePagerHomePage from './HelpCenterPreviewOnePagerHomePage'
+import { HelpCenterPreviewDefaultHomePage } from './HelpCenterPreviewDefaultHomePage'
+import { HelpCenterPreviewOnePagerHomePage } from './HelpCenterPreviewOnePagerHomePage'
 
 import css from './HelpCenterPreviewHomePage.less'
 
@@ -47,4 +47,4 @@ const HelpCenterPreviewHomePage = ({
     )
 }
 
-export default HelpCenterPreviewHomePage
+export { HelpCenterPreviewHomePage }

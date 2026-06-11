@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { toast } from '@gorgias/axiom'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -26,12 +26,12 @@ jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
 
 jest.mock('./Imports/components/CsvColumnMatching/CsvColumnMatching', () => ({
     __esModule: true,
-    default: () => <div data-testid="csv-column-matching" />,
+    CsvColumnMatching: () => <div data-testid="csv-column-matching" />,
 }))
 
 jest.mock('../../../common/components/PageHeader', () => ({
     __esModule: true,
-    default: () => <div data-testid="page-header" />,
+    PageHeader: () => <div data-testid="page-header" />,
 }))
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture,

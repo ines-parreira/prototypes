@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import css from './SettingsPageContainer.less'
 
-export default function SettingsPageContainer({
+export function SettingsPageContainer({
     children,
     className,
 }: {

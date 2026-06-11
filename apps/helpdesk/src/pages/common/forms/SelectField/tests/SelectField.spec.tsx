@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import SelectField from '../SelectField'
+import { SelectField } from '../SelectField'
 
 // refs are not passed by enzyme to popper.js
 // this mock might not be needed anymore

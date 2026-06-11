@@ -24,4 +24,4 @@ const EmojiPicker = (props: Props) => (
     </div>
 )
 
-export default EmojiPicker
+export { EmojiPicker }

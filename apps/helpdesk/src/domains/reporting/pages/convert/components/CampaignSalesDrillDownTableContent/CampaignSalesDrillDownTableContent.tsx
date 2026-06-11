@@ -11,12 +11,12 @@ import css from 'domains/reporting/pages/convert/components/CampaignSalesDrillDo
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetCampaignSalesDrillDownData } from 'domains/reporting/pages/convert/hooks/useGetCampaignSalesDrillDownData'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 // should add up to table width from CSS
 const COLUMN_WIDTHS = {

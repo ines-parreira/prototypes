@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import * as client from 'models/integration/resources'
 
-import RequestApp from '../RequestApp'
+import { RequestApp } from '../RequestApp'
 
 describe('<RequestApp />', () => {
     beforeEach(() => {

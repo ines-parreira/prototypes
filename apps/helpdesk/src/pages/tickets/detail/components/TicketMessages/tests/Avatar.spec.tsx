@@ -5,7 +5,9 @@ import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { Avatar } from '../Avatar'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUserId: jest.fn(),

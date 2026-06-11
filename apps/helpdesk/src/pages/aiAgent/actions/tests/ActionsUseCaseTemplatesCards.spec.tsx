@@ -1,13 +1,13 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 
-import ActionsUseCaseTemplatesCards from '../components/ActionsUseCaseTemplatesCards'
+import { ActionsUseCaseTemplatesCards } from '../components/ActionsUseCaseTemplatesCards'
 
 jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
 jest.mock('../components/UseCaseTemplateModal', () => {
-    return () => null
+    return { UseCaseTemplateModal: () => null }
 })
 const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 describe('<ActionsUseCaseTemplatesCards />', () => {

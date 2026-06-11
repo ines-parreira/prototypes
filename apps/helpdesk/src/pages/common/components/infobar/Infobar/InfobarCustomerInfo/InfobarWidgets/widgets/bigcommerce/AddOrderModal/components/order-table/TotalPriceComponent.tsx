@@ -2,7 +2,7 @@ import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import { isBigCommerceCartLineItem } from '../../utils'
 

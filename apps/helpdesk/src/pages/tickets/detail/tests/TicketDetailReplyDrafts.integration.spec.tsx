@@ -30,15 +30,15 @@ import { UserRole } from 'config/types/user'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { ticket as ticketFixture } from 'fixtures/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
-import ticketReplyCache from 'state/newMessage/ticketReplyCache'
-import rootReducer from 'state/reducers'
+import { ticketReplyCache } from 'state/newMessage/ticketReplyCache'
+import { rootReducer } from 'state/reducers'
 import type { StoreState } from 'state/types'
 
-import TicketDetailContainer from '../TicketDetailContainer'
+import { DefaultExportTicketDetailContainer as TicketDetailContainer } from '../TicketDetailContainer'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -106,8 +106,10 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
-jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
-    setRecentItem: jest.fn(),
+jest.mock('hooks/useRecentItems/useRecentItems', () => ({
+    useRecentItems: () => ({
+        setRecentItem: jest.fn(),
+    }),
 }))
 
 jest.mock('models/voiceCall/queries', () => ({
@@ -117,18 +119,22 @@ jest.mock('models/voiceCall/queries', () => ({
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
-    () => jest.fn(() => ({ showWhatsAppTemplateEditor: false })),
+    () => ({
+        useWhatsAppEditor: jest.fn(() => ({
+            showWhatsAppTemplateEditor: false,
+        })),
+    }),
 )
 
-jest.mock('pages/tickets/detail/components/TicketBody', () => () => (
-    <div data-testid="ticket-body" />
-))
+jest.mock('pages/tickets/detail/components/TicketBody', () => ({
+    TicketBody: () => <div data-testid="ticket-body" />,
+}))
 
 jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/TicketHeaderWrapper',
     () => ({
         __esModule: true,
-        default: function TicketHeaderWrapperMock() {
+        TicketHeaderWrapper: function TicketHeaderWrapperMock() {
             const ticketId = useAppSelector((state) => state.ticket.get('id'))
 
             return <div data-testid={`ticket-page-${ticketId}`} />
@@ -164,7 +170,7 @@ jest.mock(
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper',
-    () => () => null,
+    () => ({ KnowledgeSourceSidebarWrapper: () => null }),
 )
 
 jest.mock(
@@ -176,21 +182,31 @@ jest.mock(
 
 jest.mock(
     'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket',
-    () => jest.fn(() => ({ goToTicket: jest.fn(), isEnabled: false })),
+    () => ({
+        useGoToNextTicket: jest.fn(() => ({
+            goToTicket: jest.fn(),
+            isEnabled: false,
+        })),
+    }),
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket',
-    () => jest.fn(() => ({ goToTicket: jest.fn(), isEnabled: false })),
+    () => ({
+        useGoToPreviousTicket: jest.fn(() => ({
+            goToTicket: jest.fn(),
+            isEnabled: false,
+        })),
+    }),
 )
 
-jest.mock('pages/tickets/detail/hooks/useTicketActivityTracking', () =>
-    jest.fn(),
-)
+jest.mock('pages/tickets/detail/hooks/useTicketActivityTracking', () => ({
+    useTicketActivityTracking: jest.fn(),
+}))
 
-jest.mock('pages/tickets/detail/hooks/useDraftTicketActivityTracking', () =>
-    jest.fn(),
-)
+jest.mock('pages/tickets/detail/hooks/useDraftTicketActivityTracking', () => ({
+    useDraftTicketActivityTracking: jest.fn(),
+}))
 
 jest.mock('pages/tickets/detail/hooks/useTicketFieldsCheck', () => ({
     useTicketFieldsCheck: jest.fn(() => ({
@@ -206,7 +222,7 @@ jest.mock('providers/OutboundTranslationProvider')
 jest.mock('providers/standalone-ai/StandaloneAiContext')
 jest.mock('services/socketManager/socketManager', () => ({
     __esModule: true,
-    default: {
+    socketManager: {
         join: jest.fn(),
         leave: jest.fn(),
         send: jest.fn(),

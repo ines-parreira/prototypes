@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 
-import StoreManagementTableRow from '../storeManagementTable/StoreManagementTableRow/StoreManagementTableRow'
+import { StoreManagementTableRow } from '../storeManagementTable/StoreManagementTableRow/StoreManagementTableRow'
 import type { StoreWithAssignedChannels } from '../types'
 
 jest.mock('react-router-dom', () => ({

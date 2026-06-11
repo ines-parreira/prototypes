@@ -19,11 +19,11 @@ import type {
 } from 'pages/automate/workflows/models/variables.types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
-import GuidanceActionPicker from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'
+import { GuidanceActionPicker } from 'pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import { insertText } from 'utils'
 
-import GuidanceVariablePicker from './components/GuidanceVariablePicker'
+import { GuidanceVariablePicker } from './components/GuidanceVariablePicker'
 import {
     AddDiscountCode,
     AddEmoji,
@@ -39,7 +39,7 @@ import {
     Translate,
     Underline,
 } from './components/index'
-import WorkflowVariablePicker from './components/WorkflowVariablePicker'
+import { WorkflowVariablePicker } from './components/WorkflowVariablePicker'
 import { isDisplayedAction } from './index'
 import { useToolbarContext } from './ToolbarContext'
 import type { ActionInjectedProps } from './types'
@@ -329,4 +329,4 @@ const Toolbar = ({
     )
 }
 
-export default Toolbar
+export { Toolbar }

@@ -12,7 +12,7 @@ import ReactPlayer from 'react-player'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import type { TicketMessage } from 'models/ticket/types'
-import Ellipsis from 'pages/common/components/Ellipsis'
+import { Ellipsis } from 'pages/common/components/Ellipsis'
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
 
 import css from './Content.less'
@@ -180,4 +180,4 @@ const Content = ({
     )
 }
 
-export default Content
+export { Content }

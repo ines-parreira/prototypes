@@ -19,4 +19,4 @@ function DefaultIntegrationBadge() {
     )
 }
 
-export default DefaultIntegrationBadge
+export { DefaultIntegrationBadge }

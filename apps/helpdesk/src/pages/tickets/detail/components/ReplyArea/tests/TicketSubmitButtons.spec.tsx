@@ -15,11 +15,11 @@ import { TicketStatus } from 'business/types/ticket'
 import { ACTION_TEMPLATES } from 'config'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { MacroActionName } from 'models/macroAction/types'
-import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import type { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 
-import TicketSubmitButtons from '../TicketSubmitButtons'
+import { TicketSubmitButtons } from '../TicketSubmitButtons'
 
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
@@ -51,19 +51,17 @@ jest.mock('@repo/tickets/feature-flags', () => ({
     useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
 }))
 
-jest.mock(
-    'pages/common/components/button/ConfirmButton',
-    () =>
-        ({
-            children,
-            id,
-            isDisabled,
-        }: Partial<ComponentProps<typeof ConfirmButton>>) => (
-            <button disabled={isDisabled} id={id}>
-                ConfirmButtonMock: {children}
-            </button>
-        ),
-)
+jest.mock('pages/common/components/button/ConfirmButton', () => ({
+    ConfirmButton: ({
+        children,
+        id,
+        isDisabled,
+    }: Partial<ComponentProps<typeof ConfirmButton>>) => (
+        <button disabled={isDisabled} id={id}>
+            ConfirmButtonMock: {children}
+        </button>
+    ),
+}))
 
 const mockStore = configureMockStore([thunk])
 const mockUseOutboundTranslationContext =

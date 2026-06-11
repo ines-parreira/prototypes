@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
@@ -123,4 +123,4 @@ const useHelpCentersAutomationSettings = (helpCenterIds: number[]) => {
     }
 }
 
-export default useHelpCentersAutomationSettings
+export { useHelpCentersAutomationSettings }

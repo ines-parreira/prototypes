@@ -9,10 +9,10 @@ import { Button } from '@gorgias/axiom'
 import gorgiasChatSSPaywall from 'assets/img/paywalls/screens/gorgias_chat_ssp_automate.png'
 import overviewStatsPaywall from 'assets/img/paywalls/screens/live-overview-statistic.png'
 import { testimonial as testimonialFixture } from 'fixtures/paywall'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
-import Paywall from './Paywall'
+import { Paywall } from './Paywall'
 
 const storyConfig: Meta = {
     title: 'Layout/Paywall',

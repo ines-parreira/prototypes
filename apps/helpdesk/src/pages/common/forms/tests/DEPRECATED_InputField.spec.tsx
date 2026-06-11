@@ -5,7 +5,7 @@ import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 
 describe('DEPRECATED_InputField', () => {
     const minProps: ComponentProps<typeof DEPRECATED_InputField> = {

@@ -54,4 +54,4 @@ const TicketEvent = ({ eventType, isFirst, isLast, children }: Props) => {
     )
 }
 
-export default TicketEvent
+export { TicketEvent }

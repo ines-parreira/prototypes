@@ -1,6 +1,6 @@
 import { Banner, Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { TrialActivationModal } from 'pages/aiAgent/trial/components/TrialActivationModal'

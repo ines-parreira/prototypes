@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import type { List, Map } from 'immutable'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
-import PeopleSearchInput from './PeopleSearchInput'
-import PeopleSearchResults from './PeopleSearchResults'
+import { PeopleSearchInput } from './PeopleSearchInput'
+import { PeopleSearchResults } from './PeopleSearchResults'
 
 import css from './UncontrolledPeopleSearchInput.less'
 
@@ -17,7 +17,7 @@ type Props = {
     onUserClick: (user: Map<any, any>) => void
 }
 
-export default function UncontrolledPeopleSearchInput({
+export function UncontrolledPeopleSearchInput({
     className,
     autoFocus,
     teams,

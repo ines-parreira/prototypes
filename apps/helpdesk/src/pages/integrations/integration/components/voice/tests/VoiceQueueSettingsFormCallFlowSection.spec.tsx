@@ -7,7 +7,7 @@ import { VoiceQueueTargetScope } from '@gorgias/helpdesk-types'
 import { useListTeams } from 'models/team/queries'
 
 import { NO_TEAM_SELECTED_LABEL } from '../VoiceIntegrationPreferencesTeamSelect'
-import VoiceQueueSettingsFormCallFlowSection from '../VoiceQueueSettingsFormCallFlowSection'
+import { VoiceQueueSettingsFormCallFlowSection } from '../VoiceQueueSettingsFormCallFlowSection'
 import { DEFAULT_QUEUE_VALUES } from './../constants'
 
 jest.mock('models/team/queries', () => ({

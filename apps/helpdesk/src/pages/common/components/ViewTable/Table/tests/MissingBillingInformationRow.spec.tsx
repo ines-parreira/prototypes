@@ -12,7 +12,7 @@ import { UserRole } from 'config/types/user'
 import { billingContact } from 'fixtures/resources'
 import { PaymentMethodType } from 'state/billing/types'
 
-import MissingBillingInformationRow from '../MissingBillingInformationRow'
+import { MissingBillingInformationRow } from '../MissingBillingInformationRow'
 
 jest.mock('@stripe/stripe-js')
 

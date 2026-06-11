@@ -61,17 +61,18 @@ import type { activeViewIdSet as activeViewIdSetAction } from 'state/ui/views/ac
 
 import { ViewCategories } from './constants'
 import { DefaultViews } from './DefaultViews'
-import DeleteSectionModal from './DeleteSectionModal'
+import { DeleteSectionModal } from './DeleteSectionModal'
 import { RecentChats } from './RecentChats'
-import SectionFormModal from './SectionFormModal'
+import { SectionFormModal } from './SectionFormModal'
 import type { TicketNavbarElement } from './TicketNavbarContent'
-import TicketNavbarContentBridge from './TicketNavbarContentBridge'
+import { TicketNavbarContentBridgeContainer as TicketNavbarContentBridge } from './TicketNavbarContentBridge'
 import type {
     TicketNavbarDragObject,
     TicketNavbarDropResult,
 } from './TicketNavbarDropTarget'
-import TicketNavbarDropTarget, {
+import {
     TicketNavbarDropDirection,
+    TicketNavbarDropTarget,
 } from './TicketNavbarDropTarget'
 import { useWayfindingTicketNavbarData } from './useWayfindingTicketNavbarData'
 

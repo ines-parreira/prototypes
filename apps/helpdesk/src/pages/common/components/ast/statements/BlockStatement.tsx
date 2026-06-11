@@ -1,5 +1,5 @@
 import type { BlockStatementProps } from '../types'
-import BlockStatementItem from './BlockStatementItem'
+import { BlockStatementItem } from './BlockStatementItem'
 
 const BlockStatement = ({
     body,
@@ -26,4 +26,4 @@ const BlockStatement = ({
     )
 }
 
-export default BlockStatement
+export { BlockStatement }

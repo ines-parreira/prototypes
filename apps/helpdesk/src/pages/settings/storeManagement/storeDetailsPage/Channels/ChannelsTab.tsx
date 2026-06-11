@@ -11,11 +11,11 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 import { useStoreManagementState } from '../../StoreManagementProvider'
-import ChannelsDrawer from './ChannelsDrawer/ChannelsDrawer'
-import useActiveChannel from './hooks/useActiveChannel'
+import { ChannelsDrawer } from './ChannelsDrawer/ChannelsDrawer'
+import { useActiveChannel } from './hooks/useActiveChannel'
 import { useChannels } from './hooks/useChannels'
 import { useNotifications } from './hooks/useNotifications'
 
@@ -25,7 +25,7 @@ interface ChannelsTabProps {
     storeId: string
 }
 
-export default function ChannelsTab({ storeId }: ChannelsTabProps) {
+export function ChannelsTab({ storeId }: ChannelsTabProps) {
     const channels = useChannels()
 
     const { refetchMapping } = useStoreManagementState()

@@ -12,7 +12,7 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 import { ChannelToggle } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle'
 import type { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { useFetchChatIntegrationsStatusData } from '../../hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import { decideChatWarning } from '../PostOnboardingTasksSection/utils'

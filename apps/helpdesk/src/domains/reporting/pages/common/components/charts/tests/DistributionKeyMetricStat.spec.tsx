@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import DistributionKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat'
+import { DistributionKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat'
 
 describe('DistributionKeyMetricStat', () => {
     it('should render a distribution chart', () => {

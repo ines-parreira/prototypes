@@ -7,14 +7,14 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import type { AgentMessage } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AgentMessages'
-import MessageContent from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
+import { MessageContent } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
-import useOrderDates from './hooks/useOrderDates'
+import { useOrderDates } from './hooks/useOrderDates'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationReportIssuePage.less'
@@ -197,4 +197,4 @@ const SelfServiceChatIntegrationReportIssuePage = ({ integration }: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationReportIssuePage
+export { SelfServiceChatIntegrationReportIssuePage }

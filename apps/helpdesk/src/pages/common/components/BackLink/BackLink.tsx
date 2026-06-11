@@ -22,4 +22,4 @@ const BackLink = ({ path, label }: BackLinkProps) => {
     )
 }
 
-export default BackLink
+export { BackLink }

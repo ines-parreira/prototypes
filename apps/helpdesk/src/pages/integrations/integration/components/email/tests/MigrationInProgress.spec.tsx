@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 
-import MigrationInProgress from '../EmailMigration/MigrationInProgress'
+import { MigrationInProgress } from '../EmailMigration/MigrationInProgress'
 import * as migrationUtils from '../EmailMigration/utils'
 
 const getInboundUnverifiedMigrationsSpy = jest.spyOn(
@@ -20,9 +20,11 @@ const migration = {
     integration: { meta: {} },
 } as unknown as EmailMigrationInboundVerification
 
-jest.mock('../EmailMigration/MigrationEmailForwarding', () => () => (
-    <div data-testid="migration-email-forwarding" />
-))
+jest.mock('../EmailMigration/MigrationEmailForwarding', () => ({
+    MigrationEmailForwarding: () => (
+        <div data-testid="migration-email-forwarding" />
+    ),
+}))
 
 describe('MigrationInProgress', () => {
     const mockServer = new MockAdapter(client)

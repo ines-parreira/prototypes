@@ -5,7 +5,7 @@ import _debounce from 'lodash/debounce'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import { getNameValidationError } from 'pages/settings/helpCenter/utils/validations'
@@ -98,4 +98,4 @@ const ContactFormNameInputSection = ({
     )
 }
 
-export default ContactFormNameInputSection
+export { ContactFormNameInputSection }

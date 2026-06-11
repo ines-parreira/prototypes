@@ -30,4 +30,4 @@ const useShopifyCheckoutChatInstallation = (integration: Map<any, any>) => {
     }
 }
 
-export default useShopifyCheckoutChatInstallation
+export { useShopifyCheckoutChatInstallation }

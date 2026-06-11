@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 
 import type { TicketCompact } from '../types'
 
-export default function useTicketIds(tickets: TicketCompact[]) {
+export function useTicketIds(tickets: TicketCompact[]) {
     const ticketIds = useRef<number[]>([])
 
     useEffect(() => {

@@ -4,7 +4,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import { getTextColorBasedOnBackground } from './color-utils'
-import ConversationTimestamp from './ConversationTimestamp'
+import { ConversationTimestamp } from './ConversationTimestamp'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -45,4 +45,4 @@ const CustomerInitialMessages = ({
     )
 }
 
-export default CustomerInitialMessages
+export { CustomerInitialMessages }

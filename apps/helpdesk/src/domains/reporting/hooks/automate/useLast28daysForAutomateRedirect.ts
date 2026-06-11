@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { last28DaysStatsFilters } from 'pages/automate/common/utils/last28DaysStatsFilters'
 

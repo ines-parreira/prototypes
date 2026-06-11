@@ -8,7 +8,7 @@ import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useV
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import VisualBuilderNode from './VisualBuilderNode'
+import { VisualBuilderNode } from './VisualBuilderNode'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -30,7 +30,7 @@ const ReusableLLMPromptTriggerNode = memo(
     },
 )
 
-export default function ReusableLLMPromptTriggerNodeWrapper(
+export function ReusableLLMPromptTriggerNodeWrapper(
     node: NodeProps<ReusableLLMPromptTriggerNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)

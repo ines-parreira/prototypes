@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import type { Map } from 'immutable'
 
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 type UseOrderManagementParams = {
     integration: Map<any, any>

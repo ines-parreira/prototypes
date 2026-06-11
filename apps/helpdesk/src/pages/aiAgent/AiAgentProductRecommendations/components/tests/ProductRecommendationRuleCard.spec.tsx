@@ -8,13 +8,13 @@ import { ProductRecommendationRuleCard } from '../ProductRecommendationRuleCard'
 
 jest.mock('../../hooks/usePaginatedProductsByIds', () => ({
     __esModule: true,
-    default: jest.fn(),
+    usePaginatedProductsByIds: jest.fn(),
 }))
 jest.mock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
     () => ({
         __esModule: true,
-        default: jest.fn(),
+        usePaginatedProductIntegration: jest.fn(),
     }),
 )
 jest.mock('../ItemDrawer', () => ({
@@ -62,10 +62,10 @@ jest.mock('../RecommendationRuleCard', () => ({
 }))
 const mockUsePaginatedProductsByIds = jest.requireMock(
     '../../hooks/usePaginatedProductsByIds',
-).default
+).usePaginatedProductsByIds
 const mockUsePaginatedProductIntegration = jest.requireMock(
     'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration',
-).default
+).usePaginatedProductIntegration
 const mockProducts: Product[] = [
     {
         id: 1,

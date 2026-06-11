@@ -4,7 +4,7 @@ import { UserRole } from 'config/types/user'
 import { AgentPerformanceHeatmapSwitch } from 'domains/reporting/pages/support-performance/agents/AgentPerformanceHeatmapSwitch'
 import { AgentsEditColumns } from 'domains/reporting/pages/support-performance/agents/AgentsEditColumns'
 import css from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra.less'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 

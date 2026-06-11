@@ -4,17 +4,17 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
-import AutomateOverviewContent from 'domains/reporting/pages/automate/overview/AutomateOverviewContent'
+import { AutomateOverviewContent } from 'domains/reporting/pages/automate/overview/AutomateOverviewContent'
 import {
     PAGE_TITLE_AUTOMATE_PAYWALL,
     PAGE_TITLE_OVERVIEW,
 } from 'domains/reporting/pages/self-service/constants'
-import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
+import { SelfServiceStatsPagePaywallCustomCta } from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
-import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
-import HeaderTitle from 'pages/common/components/HeaderTitle'
-import PageHeader from 'pages/common/components/PageHeader'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import { withStoreIntegration } from 'pages/automate/common/utils/withStoreIntegrations'
+import { HeaderTitle } from 'pages/common/components/HeaderTitle'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
 import { STATS_ROUTES } from 'routes/constants'
 import { AccountFeature } from 'state/currentAccount/types'
 
@@ -38,7 +38,7 @@ export function AutomateOverview() {
     return <AutomateOverviewContent />
 }
 
-export default withFeaturePaywall(
+const DefaultExportAutomateOverview = withFeaturePaywall(
     AccountFeature.AutomationSelfServiceStatistics,
     undefined,
     {
@@ -53,3 +53,5 @@ export default withFeaturePaywall(
         } as PaywallConfig,
     },
 )(withStoreIntegration(PAGE_TITLE_OVERVIEW, AutomateOverview))
+
+export { DefaultExportAutomateOverview }

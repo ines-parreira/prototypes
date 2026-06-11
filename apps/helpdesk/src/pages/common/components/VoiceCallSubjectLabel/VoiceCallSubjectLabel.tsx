@@ -1,7 +1,7 @@
 import type { VoiceCallSubject } from 'models/voiceCall/types'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import { VoiceCallQueueLabel } from 'pages/common/components/VoiceCallQueueLabel/VoiceCallQueueLabel'
 
 type VoiceCallSubjectLabelProps = {
@@ -41,4 +41,4 @@ const VoiceCallSubjectLabel = ({ subject }: VoiceCallSubjectLabelProps) => {
     }
 }
 
-export default VoiceCallSubjectLabel
+export { VoiceCallSubjectLabel }

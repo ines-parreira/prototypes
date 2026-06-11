@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Tip from './Tip'
+import { Tip } from './Tip'
 
 const defaultState = {
     currentUser: Map({

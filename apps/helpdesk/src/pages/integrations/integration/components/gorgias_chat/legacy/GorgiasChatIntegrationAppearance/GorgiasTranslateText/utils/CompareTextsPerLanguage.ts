@@ -47,4 +47,4 @@ const isEqualTextsPerLanguage = (
     )
 }
 
-export default isEqualTextsPerLanguage
+export { isEqualTextsPerLanguage }

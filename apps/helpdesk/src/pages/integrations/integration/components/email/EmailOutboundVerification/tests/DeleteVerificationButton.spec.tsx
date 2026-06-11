@@ -21,7 +21,7 @@ import type { SenderVerification } from 'models/singleSenderVerification/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import DeleteVerificationButton from '../DeleteVerificationButton'
+import { DeleteVerificationButton } from '../DeleteVerificationButton'
 
 jest.mock('models/singleSenderVerification/resources')
 

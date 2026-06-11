@@ -4,7 +4,7 @@ import { useFormContext } from '@repo/forms'
 import { cloneDeep } from 'lodash'
 
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
-import PreviewRadioFieldSet from 'pages/common/forms/PreviewRadioFieldSet'
+import { PreviewRadioFieldSet } from 'pages/common/forms/PreviewRadioFieldSet'
 
 import { VoiceFlowNodeType } from './constants'
 import type { VoiceFlowFormValues } from './types'

@@ -6,7 +6,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     createOnboardingNotificationState,
     createStoreConfiguration,

@@ -13,7 +13,7 @@ const mockUseAppSelector = jest.fn()
 const mockUseTrialAccess = jest.fn()
 const mockExtractShopNameFromUrl = jest.fn()
 
-jest.requireMock('hooks/useAppSelector').default = mockUseAppSelector
+jest.requireMock('hooks/useAppSelector').useAppSelector = mockUseAppSelector
 jest.requireMock('pages/aiAgent/trial/hooks/useTrialAccess').useTrialAccess =
     mockUseTrialAccess
 jest.requireMock(

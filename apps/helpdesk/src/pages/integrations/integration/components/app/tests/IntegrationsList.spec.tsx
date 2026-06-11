@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import type { Integration as IntegrationType } from 'models/integration/types'
-import IntegrationsList from 'pages/integrations/integration/components/app/IntegrationsList'
+import { IntegrationsList } from 'pages/integrations/integration/components/app/IntegrationsList'
 import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

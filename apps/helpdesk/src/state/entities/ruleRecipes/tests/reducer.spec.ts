@@ -1,6 +1,6 @@
 import { emptyRuleRecipeFixture as recipe } from '../../../../fixtures/ruleRecipe'
 import { ruleRecipesFetched } from '../actions'
-import reducer from '../reducer'
+import { ruleRecipesReducer as reducer } from '../reducer'
 
 describe('rule recipe reducer', () => {
     describe('ruleRecipesFetched action', () => {

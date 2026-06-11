@@ -1,4 +1,4 @@
-import useCount from 'common/notifications/hooks/useCount'
+import { useCount } from 'common/notifications/hooks/useCount'
 
 import css from './GlobalNavigationNotificationBadge.less'
 

@@ -10,7 +10,7 @@ type Props = {
     children: (child: Source, index: number) => React.ReactNode
 }
 
-export default function List({
+export function List({
     source,
     template,
     isParentList = false,

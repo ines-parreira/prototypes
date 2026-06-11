@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import type { StoreState } from 'state/types'
@@ -22,7 +22,9 @@ import { Role } from '../Role'
 import { Statuses } from '../Statuses'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
@@ -32,7 +34,7 @@ jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentUser/selectors')
 jest.mock('pages/common/components/Loader/Loader', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>loader</div>),
+    Loader: jest.fn(() => <div>loader</div>),
 }))
 jest.mock('../hooks/useGetAgentWithEffect')
 jest.mock('../Header')

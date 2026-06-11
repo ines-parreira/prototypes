@@ -1,7 +1,7 @@
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 import { TIME_SAVED_BY_AGENTS } from './constants'

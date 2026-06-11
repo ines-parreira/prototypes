@@ -7,7 +7,7 @@ import type { TicketMessage } from 'models/ticket/types'
 
 import { useAIAgentMessageEvents } from '../../../hooks/useAIAgentMessageEvents'
 import { TicketEventEnum } from '../../AIAgentFeedbackBar/types'
-import AIAgentMessageEvents from '../AIAgentMessageEvents'
+import { AIAgentMessageEvents } from '../AIAgentMessageEvents'
 
 jest.mock('../../../hooks/useAIAgentMessageEvents')
 const mockedUseAIAgentMessageEvents = useAIAgentMessageEvents as jest.Mock

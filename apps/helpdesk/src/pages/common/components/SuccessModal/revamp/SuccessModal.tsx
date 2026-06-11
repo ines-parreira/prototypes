@@ -51,4 +51,4 @@ const SuccessModal: React.FC<Props> = ({
     </Modal>
 )
 
-export default SuccessModal
+export { SuccessModal }

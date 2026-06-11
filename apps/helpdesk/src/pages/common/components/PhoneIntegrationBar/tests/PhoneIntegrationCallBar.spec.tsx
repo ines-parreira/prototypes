@@ -4,7 +4,7 @@ import { useConditionalShortcuts } from '@repo/utils'
 import type { Call, Device } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { initialState } from 'state/twilio/voiceDevice'
 import {
@@ -14,28 +14,30 @@ import {
     mockOutgoingCall,
 } from 'tests/twilioMocks'
 
-import PhoneIntegrationCallBar from '../PhoneIntegrationCallBar'
+import { PhoneIntegrationCallBar } from '../PhoneIntegrationCallBar'
 
 jest.mock('@twilio/voice-sdk')
 jest.mock('@repo/utils', () => ({
     useConditionalShortcuts: jest.fn(),
 }))
 
-jest.mock('../OngoingPhoneCall/OngoingPhoneCall', () => () => (
-    <div data-testid="ongoing-phone-call" />
-))
+jest.mock('../OngoingPhoneCall/OngoingPhoneCall', () => ({
+    DefaultExportOngoingPhoneCall: () => (
+        <div data-testid="ongoing-phone-call" />
+    ),
+}))
 
-jest.mock('../IncomingPhoneCall/IncomingPhoneCall', () => () => (
-    <div data-testid="incoming-phone-call" />
-))
+jest.mock('../IncomingPhoneCall/IncomingPhoneCall', () => ({
+    IncomingPhoneCall: () => <div data-testid="incoming-phone-call" />,
+}))
 
-jest.mock('../OutgoingPhoneCall/OutgoingPhoneCall', () => () => (
-    <div data-testid="outgoing-phone-call" />
-))
+jest.mock('../OutgoingPhoneCall/OutgoingPhoneCall', () => ({
+    OutgoingPhoneCall: () => <div data-testid="outgoing-phone-call" />,
+}))
 
-jest.mock('../MonitoringPhoneCall/MonitoringPhoneCall', () => () => (
-    <div data-testid="monitoring-phone-call" />
-))
+jest.mock('../MonitoringPhoneCall/MonitoringPhoneCall', () => ({
+    MonitoringPhoneCall: () => <div data-testid="monitoring-phone-call" />,
+}))
 
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 

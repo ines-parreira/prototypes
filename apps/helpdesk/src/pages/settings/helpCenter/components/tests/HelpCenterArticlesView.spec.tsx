@@ -4,10 +4,10 @@ import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { billingState } from 'fixtures/billing'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegration } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
@@ -18,7 +18,7 @@ import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 import { useHelpCenterCategories } from '../../hooks/useHelpCenterCategories'
 import { SearchContextProvider } from '../../providers/SearchContext'
 import { useHasAccessToAILibrary } from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import HelpCenterArticlesView from '../HelpCenterArticlesView'
+import { HelpCenterArticlesView } from '../HelpCenterArticlesView'
 
 jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 ;(useHasAccessToAILibrary as jest.Mock).mockReturnValue(true)

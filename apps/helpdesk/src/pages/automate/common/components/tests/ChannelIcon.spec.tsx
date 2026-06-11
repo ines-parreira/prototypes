@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 
-import ChannelIcon from '../ChannelIcon'
+import { ChannelIcon } from '../ChannelIcon'
 
 describe('ChannelIcon', () => {
     test('renders Chat icon correctly', () => {

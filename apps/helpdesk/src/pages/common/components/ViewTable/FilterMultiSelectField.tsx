@@ -7,10 +7,10 @@ import _debounce from 'lodash/debounce'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { DropdownMenuProps } from 'pages/common/forms/MultiSelectOptionsField/dropdownMenuTypes'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import type { CancellableRequestInjectedProps } from 'pages/common/utils/withCancellableRequest'
-import withCancellableRequest from 'pages/common/utils/withCancellableRequest'
+import { withCancellableRequest } from 'pages/common/utils/withCancellableRequest'
 import { fieldEnumSearch } from 'state/views/actions'
 import type { FieldSearchResult } from 'state/views/types'
 
@@ -94,7 +94,7 @@ export function FilterMultiSelectField(props: Props) {
     )
 }
 
-export default withCancellableRequest<
+const DefaultExportFilterMultiSelectField = withCancellableRequest<
     'fieldEnumSearchCancellable',
     'cancelFieldEnumSearchCancellable',
     typeof fieldEnumSearch
@@ -102,3 +102,5 @@ export default withCancellableRequest<
     'fieldEnumSearchCancellable',
     fieldEnumSearch,
 )(FilterMultiSelectField)
+
+export { DefaultExportFilterMultiSelectField }

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import DistributeToTeamsWidget from '../DistributeToTeamsWidget'
+import { DefaultExportDistributeToTeamsWidget as DistributeToTeamsWidget } from '../DistributeToTeamsWidget'
 
 const mockStore = configureMockStore([thunk])
 

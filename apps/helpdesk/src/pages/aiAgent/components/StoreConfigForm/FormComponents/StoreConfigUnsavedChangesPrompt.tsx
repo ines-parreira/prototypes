@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 const sectionNames = {
     [StoreConfigFormSection.generalSettings]: 'General settings',

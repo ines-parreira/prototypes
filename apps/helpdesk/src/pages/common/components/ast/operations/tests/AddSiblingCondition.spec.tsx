@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 
 import { toJS } from 'utils'
 
-import AddSiblingCondition from '../AddSiblingCondition'
+import { AddSiblingCondition } from '../AddSiblingCondition'
 
 describe('AddSiblingCondition component', () => {
     const commonProps = {

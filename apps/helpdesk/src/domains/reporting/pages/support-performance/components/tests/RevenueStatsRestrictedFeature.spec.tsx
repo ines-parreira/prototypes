@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
-import RevenueStatsRestrictedFeature from 'domains/reporting/pages/support-performance/components/RevenueStatsRestrictedFeature'
+import { RevenueStatsRestrictedFeature } from 'domains/reporting/pages/support-performance/components/RevenueStatsRestrictedFeature'
 
 describe('<RevenueStatsRestrictedFeature />', () => {
     it('should render the restricted feature screen', () => {

@@ -200,4 +200,4 @@ const ListItem: React.FC<ListItemProps & HTMLAttributes<HTMLDivElement>> = ({
     )
 }
 
-export default ListItem
+export { ListItem }

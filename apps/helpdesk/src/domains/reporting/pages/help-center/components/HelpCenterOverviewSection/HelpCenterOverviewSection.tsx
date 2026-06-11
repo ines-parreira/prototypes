@@ -1,5 +1,5 @@
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import {
     HelpCenterChart,
@@ -42,4 +42,4 @@ const HelpCenterOverviewSection = () => {
     )
 }
 
-export default HelpCenterOverviewSection
+export { HelpCenterOverviewSection }

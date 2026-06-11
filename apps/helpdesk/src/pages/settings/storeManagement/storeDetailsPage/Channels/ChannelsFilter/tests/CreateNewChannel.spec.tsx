@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { ChannelTypes, ChannelWithMetadata } from '../../../../types'
-import CreateNewChannel from '../CreateNewChannel'
+import { CreateNewChannel } from '../CreateNewChannel'
 
 const createMockChannel = (type: ChannelTypes): ChannelWithMetadata => ({
     title: `${type} channel`,

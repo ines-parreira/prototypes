@@ -9,13 +9,14 @@ import { createStore } from 'redux'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import GmvInfluencedOverTimeChart, {
+import {
     formatLabelValue,
+    GmvInfluencedOverTimeChart,
     renderTooltipLabel,
 } from 'domains/reporting/pages/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 import type { RootState } from 'state/types'

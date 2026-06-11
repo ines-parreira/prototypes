@@ -8,18 +8,18 @@ import {
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import type { IvrMenuAction, VoiceMessage } from 'models/integration/types'
 import { IvrMenuActionType } from 'models/integration/types'
 import { Drawer } from 'pages/common/components/Drawer'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { getSmsIntegrations } from 'state/integrations/selectors'
 
-import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
-import IvrMenuActionSelect from './IvrMenuActionSelect'
-import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
-import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
+import { DEPRECATED_VoiceMessageField } from './DEPRECATED_VoiceMessageField'
+import { IvrMenuActionSelect } from './IvrMenuActionSelect'
+import { IvrMenuActionSendToSMSField } from './IvrMenuActionSendToSMSField'
+import { IvrPhoneNumberSelectField } from './IvrPhoneNumberSelectField'
 
 import css from './IvrMenuActionField.less'
 
@@ -180,4 +180,4 @@ const IvrMenuActionField = ({
     )
 }
 
-export default IvrMenuActionField
+export { IvrMenuActionField }

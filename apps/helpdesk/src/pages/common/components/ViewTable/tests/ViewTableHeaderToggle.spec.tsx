@@ -12,7 +12,7 @@ jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')
 // Mock the Toggle component
 jest.mock('split-ticket-view-toggle/components/Toggle', () => ({
     __esModule: true,
-    default: () => <div data-testid="toggle-component" />,
+    Toggle: () => <div data-testid="toggle-component" />,
 }))
 
 describe('ViewTableHeaderToggle', () => {

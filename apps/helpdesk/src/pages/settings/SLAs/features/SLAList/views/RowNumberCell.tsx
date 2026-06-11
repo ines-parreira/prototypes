@@ -4,9 +4,9 @@ import React from 'react'
 import { Text } from '@gorgias/axiom'
 
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
-export default function RowNumberCell({
+export function RowNumberCell({
     rowIndex,
     bodyCellProps,
 }: {

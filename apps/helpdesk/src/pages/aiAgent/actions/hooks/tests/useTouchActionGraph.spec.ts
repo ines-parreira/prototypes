@@ -7,7 +7,7 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import useTouchActionGraph from '../useTouchActionGraph'
+import { useTouchActionGraph } from '../useTouchActionGraph'
 
 jest.mock('hooks/integrations/useActionCentralizedLibraryEnabled')
 const mockUseActionCentralizedLibraryEnabled = jest.mocked(

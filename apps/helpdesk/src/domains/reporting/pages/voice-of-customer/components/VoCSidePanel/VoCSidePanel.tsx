@@ -20,8 +20,8 @@ import {
     setSidePanelActiveTab,
     SidePanelTab,
 } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 
 type VoCSidePanelTabsType = Record<

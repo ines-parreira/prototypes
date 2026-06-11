@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import { LegacyButton as Button, MultiButton } from '@gorgias/axiom'
 
-import IconButton from './IconButton'
+import { IconButton } from './IconButton'
 
 import css from './DropdownButton.less'
 
@@ -67,7 +67,9 @@ const DropdownButton = (
     )
 }
 
-export default forwardRef<
+const DefaultExportDropdownButton = forwardRef<
     HTMLDivElement,
     Props & ComponentProps<typeof Button>
 >(DropdownButton)
+
+export { DefaultExportDropdownButton }

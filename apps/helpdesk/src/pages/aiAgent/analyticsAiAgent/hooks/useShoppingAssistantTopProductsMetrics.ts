@@ -10,8 +10,8 @@ import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
-import useAppSelector from 'hooks/useAppSelector'
+import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantTopProductsTable/columns'
 import {
     fetchBuyThroughRatePerProduct,

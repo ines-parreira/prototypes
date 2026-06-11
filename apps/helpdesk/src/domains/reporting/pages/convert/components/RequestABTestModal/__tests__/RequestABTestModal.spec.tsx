@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import RequestABTestModal from 'domains/reporting/pages/convert/components/RequestABTestModal/RequestABTestModal'
+import { RequestABTestModal } from 'domains/reporting/pages/convert/components/RequestABTestModal/RequestABTestModal'
 
 describe('RequestABTestModal', () => {
     it('renders correctly', () => {

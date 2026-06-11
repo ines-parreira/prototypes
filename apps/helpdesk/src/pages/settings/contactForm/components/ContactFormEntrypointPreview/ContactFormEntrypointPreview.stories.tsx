@@ -2,17 +2,19 @@ import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServiceStandaloneContactFormHomePage } from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
 
 import { ContactFormFixture } from '../../fixtures/contacForm'
 import {
     selfServiceConfigurationFixture,
     workflowsEntrypointsFixture,
 } from '../../fixtures/selfServiceConfiguration'
-import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
-import type { ContactFormEntrypointPreviewProps } from './ContactFormEntrypointPreview'
-import type ContactFormEntrypointPreview from './ContactFormEntrypointPreview'
+import { StandaloneContactFormPreview } from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
+import type {
+    ContactFormEntrypointPreview,
+    ContactFormEntrypointPreviewProps,
+} from './ContactFormEntrypointPreview'
 
 const storyConfig: Meta = {
     title: 'Contact form/EntrypointPreview',

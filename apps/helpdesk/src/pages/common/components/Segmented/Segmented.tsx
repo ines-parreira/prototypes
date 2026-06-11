@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import SegmentedOption from './SegmentedOption'
+import { SegmentedOption } from './SegmentedOption'
 import type { ChangeSegmentedOptionFn } from './types/ChangeSegmentedOptionFn'
 import type { SegmentedOptionModel } from './types/SegmentedOptionModel'
 import type { SegmentedOptionValue } from './types/SegmentedOptionValue'
@@ -46,4 +46,4 @@ const Segmented = ({
     )
 }
 
-export default Segmented
+export { Segmented }

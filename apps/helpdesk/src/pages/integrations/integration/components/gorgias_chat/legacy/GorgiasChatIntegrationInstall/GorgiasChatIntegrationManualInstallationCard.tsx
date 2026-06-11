@@ -6,15 +6,15 @@ import type { Map } from 'immutable'
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetInstallationSnippet } from 'models/integration/queries'
-import IconButton from 'pages/common/components/button/IconButton'
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useConvertBundleInChatSnippetEnabled } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useConvertBundleInChatSnippetEnabled'
 import { useConvertBundleInstallationSnippet } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useConvertBundleInstallationSnippet'
 
-import ManualInstallationGTMTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab'
-import ManualInstallationOtherWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
-import ManualInstallationShopifyWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
+import { ManualInstallationGTMTab } from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab'
+import { ManualInstallationOtherWebsiteTab } from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
+import { ManualInstallationShopifyWebsiteTab } from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
 
 import css from './GorgiasChatIntegrationManualInstallationCard.less'
 
@@ -189,4 +189,4 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     )
 }
 
-export default GorgiasChatIntegrationManualInstallationCard
+export { GorgiasChatIntegrationManualInstallationCard }

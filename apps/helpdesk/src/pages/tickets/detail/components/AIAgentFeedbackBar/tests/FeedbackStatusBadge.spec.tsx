@@ -5,11 +5,13 @@ import { screen } from '@testing-library/react'
 
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
 
-import FeedbackStatusBadge from '../FeedbackStatusBadge'
+import { FeedbackStatusBadge } from '../FeedbackStatusBadge'
 import { FeedbackStatus, ResourceSection } from '../types'
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 
 describe('FeedbackStatusBadge', () => {
     const resourceSection: ResourceSection = ResourceSection.ACTIONS // Example resource section

@@ -10,7 +10,7 @@ import { commentHighlightsQueryFactory } from 'domains/reporting/models/queryFac
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import { getTeamsMinimalWithEmojiJS } from 'state/teams/selectors'
 

@@ -6,10 +6,10 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchTags } from 'models/tag/resources'
 
-export default function useListTags(
+export function useListTags(
     params?: Parameters<typeof fetchTags>[0],
     query?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof fetchTags>>,

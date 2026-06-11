@@ -21,4 +21,4 @@ const CreateCustomRuleFooter: React.FC = () => {
     )
 }
 
-export default CreateCustomRuleFooter
+export { CreateCustomRuleFooter }

@@ -39,4 +39,4 @@ const ChannelBlock = ({
     )
 }
 
-export default ChannelBlock
+export { ChannelBlock }

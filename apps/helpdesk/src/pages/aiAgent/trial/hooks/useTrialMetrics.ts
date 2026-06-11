@@ -21,7 +21,7 @@ import {
 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculateRate } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'

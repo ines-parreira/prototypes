@@ -2,7 +2,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { useFormState } from 'react-hook-form'
 
-import VoiceFormSubmitButton from '../VoiceFormSubmitButton'
+import { VoiceFormSubmitButton } from '../VoiceFormSubmitButton'
 
 jest.mock('react-hook-form', () => ({
     useFormState: jest.fn(),

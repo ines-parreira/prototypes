@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TableBody from '../TableBody'
+import { DefaultExportTableBody as TableBody } from '../TableBody'
 
 describe('<TableBody/>', () => {
     it('should render', () => {

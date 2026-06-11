@@ -69,4 +69,4 @@ const MessageFailedNotification = ({
     )
 }
 
-export default MessageFailedNotification
+export { MessageFailedNotification }

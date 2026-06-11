@@ -4,7 +4,7 @@ import { useInterval } from '@gorgias/toolkit-react'
 
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 
-import VoiceCallTimerBadge from './VoiceCallTimerBadge'
+import { VoiceCallTimerBadge } from './VoiceCallTimerBadge'
 
 jest.mock('models/voiceCall/utils')
 jest.mock('@gorgias/toolkit-react', () => ({

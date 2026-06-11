@@ -2,13 +2,13 @@ import { formatDatetime } from '@repo/utils'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export type Props = Omit<BodyCellProps, 'children' | 'ref'> & {
     surveyScoredDate: string | null
 }
 
-export default function ScoredDateBodyCell({
+export function ScoredDateBodyCell({
     surveyScoredDate,
     width,
     height,

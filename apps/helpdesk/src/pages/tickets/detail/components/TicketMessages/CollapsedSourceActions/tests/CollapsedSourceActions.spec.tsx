@@ -10,7 +10,7 @@ import { message } from 'models/ticket/tests/mocks'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { TicketMessageIntent } from '../../../../../../../models/ticket/types'
-import CollapsedSourceActions from '../CollapsedSourceActions'
+import { CollapsedSourceActions } from '../CollapsedSourceActions'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)

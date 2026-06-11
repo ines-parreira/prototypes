@@ -8,7 +8,7 @@ import { Form } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 import { changePassword } from 'state/currentUser/actions'
 import type { RootState } from 'state/types'
@@ -225,4 +225,6 @@ const connector = connect(
     },
 )
 
-export default connector(ChangePasswordContainer)
+const DefaultExportChangePassword = connector(ChangePasswordContainer)
+
+export { DefaultExportChangePassword }

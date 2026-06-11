@@ -9,7 +9,7 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 import { LegacyBanner as Banner, Button, toast } from '@gorgias/axiom'
 
 import { PhoneUseCase } from 'business/twilio'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     createPhoneNumber,
     fetchNewPhoneNumber,
@@ -20,14 +20,14 @@ import type {
     PhoneNumberMeta,
 } from 'models/phoneNumber/types'
 import { AddressType, PhoneType } from 'models/phoneNumber/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
 
-import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
+import { useCreatePhoneNumberNotifications } from './hooks/useCreatePhoneNumberNotifications'
 import { useShowPhoneUseCase } from './hooks/useShowPhoneUseCase'
-import PhoneAddressFields from './PhoneAddressFields'
-import PhoneMetaFields from './PhoneMetaFields'
-import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
+import { PhoneAddressFields } from './PhoneAddressFields'
+import { PhoneDetailsFields as PhoneMetaFields } from './PhoneMetaFields'
+import { PhoneNumberCapabilitiesAlert } from './PhoneNumberCapabilitiesAlert'
 import {
     getAddressValidationAlertMessage,
     shouldValidateAddress,
@@ -35,7 +35,7 @@ import {
 
 import css from './PhoneNumberCreateForm.less'
 
-export default function PhoneNumberCreateForm(): JSX.Element {
+export function PhoneNumberCreateForm(): JSX.Element {
     const dispatch = useAppDispatch()
 
     const [name, setName] = useState('')

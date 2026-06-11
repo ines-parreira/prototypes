@@ -8,7 +8,7 @@ import {
     OverviewMetricConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { MetricName } from 'domains/reporting/services/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     currentAccountHasFeature,
     getSurveysSettingsJS,

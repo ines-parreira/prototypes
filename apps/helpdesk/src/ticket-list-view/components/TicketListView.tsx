@@ -30,9 +30,9 @@ import {
 } from '@gorgias/axiom'
 import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import {
     SplitTicketViewToggle,
     useSplitTicketView,
@@ -42,18 +42,18 @@ import { getViewPlainJS } from 'state/views/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
-import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
-import useSelection from '../hooks/useSelection'
-import useSortOrder from '../hooks/useSortOrder'
-import useTickets from '../hooks/useTickets'
+import { useScrollActiveTicketIntoView } from '../hooks/useScrollActiveTicketIntoView'
+import { useSelection } from '../hooks/useSelection'
+import { useSortOrder } from '../hooks/useSortOrder'
+import { useTickets } from '../hooks/useTickets'
 import type { TicketCompact } from '../types'
-import BulkActions from './bulk-actions/BulkActions'
+import { BulkActions } from './bulk-actions/BulkActions'
 import { Action } from './bulk-actions/types'
-import InvalidFiltersAction from './InvalidFiltersAction'
-import SortOrderDropdown from './SortOrderDropdown'
-import Ticket from './Ticket'
-import TicketListInfo from './TicketListInfo'
-import ViewDecoration from './ViewDecoration'
+import { InvalidFiltersAction } from './InvalidFiltersAction'
+import { SortingDropdown as SortOrderDropdown } from './SortOrderDropdown'
+import { Ticket } from './Ticket'
+import { TicketListInfo } from './TicketListInfo'
+import { ViewDecoration } from './ViewDecoration'
 
 import css from './TicketListView.less'
 
@@ -82,7 +82,7 @@ type Props = {
     registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
 }
 
-export default function TicketListView({
+export function TicketListView({
     activeTicketId,
     viewId,
     registerToggleUnread,

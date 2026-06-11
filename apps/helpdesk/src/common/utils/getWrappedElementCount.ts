@@ -2,7 +2,7 @@ const TOLERANCE = 5
 
 type DomTags = keyof HTMLElementTagNameMap
 
-export default function getWrappedElementCount(
+export function getWrappedElementCount(
     container: HTMLElement | null,
     discardedTag?: DomTags | DomTags[],
 ): number {

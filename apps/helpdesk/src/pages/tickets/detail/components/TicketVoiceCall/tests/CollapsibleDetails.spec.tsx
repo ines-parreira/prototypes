@@ -3,7 +3,7 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import CollapsibleDetails from '../CollapsibleDetails'
+import { CollapsibleDetails } from '../CollapsibleDetails'
 
 const renderComponent = (title: JSX.Element, children: React.ReactNode) => {
     return render(

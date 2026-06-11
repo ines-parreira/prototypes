@@ -1,12 +1,12 @@
 import { render } from '@repo/testing'
 
-import LandingPage from '../LandingPage'
+import { LandingPage } from '../LandingPage'
 
 const mockLandingBanner = 'MockLandingBanner'
 
-jest.mock('../LandingBanner', () =>
-    jest.fn(() => <div>{mockLandingBanner}</div>),
-)
+jest.mock('../LandingBanner', () => ({
+    LandingBanner: jest.fn(() => <div>{mockLandingBanner}</div>),
+}))
 
 describe('<LandingPage />', () => {
     it('should display the landing page', () => {

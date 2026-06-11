@@ -3,7 +3,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
-import TwitterIntegrationListItem from '../TwitterIntegrationListItem'
+import { TwitterIntegrationListItem } from '../TwitterIntegrationListItem'
 
 describe('<TwitterIntegrationListItem/>', () => {
     let integration: Map<string, any>

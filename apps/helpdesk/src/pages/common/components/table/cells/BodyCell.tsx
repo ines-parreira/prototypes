@@ -7,7 +7,7 @@ import classNames from 'classnames'
 import { Skeleton } from '@gorgias/axiom'
 
 import css from 'pages/common/components/table/cells/BodyCell.less'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
+import { BodyCellContent } from 'pages/common/components/table/cells/BodyCellContent'
 
 export type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
@@ -74,4 +74,4 @@ const BodyCell = forwardRef<HTMLTableCellElement, Props>(
     },
 )
 
-export default BodyCell
+export { BodyCell }

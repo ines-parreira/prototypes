@@ -40,4 +40,4 @@ const paywallConfig = {
     ],
 }
 
-export default paywallConfig
+export { paywallConfig }

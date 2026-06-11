@@ -10,7 +10,7 @@ import {
 } from './constants'
 import type { Macro, State } from './types'
 
-export default function reducer(
+export function reducer(
     state: State = fromJS({}),
     action: GorgiasAction,
 ): State {

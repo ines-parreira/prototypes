@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TicketListInfo from '../TicketListInfo'
+import { TicketListInfo } from '../TicketListInfo'
 
 describe('TicketListInfo', () => {
     it('should render', () => {

@@ -19,7 +19,7 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import CustomFields from '../CustomFields'
+import { CustomFields } from '../CustomFields'
 
 jest.mock(
     '@repo/logging',
@@ -47,11 +47,11 @@ jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
     useDebouncedValue: jest.fn(),
 }))
-jest.mock('../components/List', () =>
-    jest.fn(() => {
+jest.mock('../components/List', () => ({
+    List: jest.fn(() => {
         return <div data-testid="custom-fields-list"></div>
     }),
-)
+}))
 
 const useParamsMock = assumeMock(useParams)
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

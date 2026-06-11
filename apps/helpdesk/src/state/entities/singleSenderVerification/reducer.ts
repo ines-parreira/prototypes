@@ -17,4 +17,4 @@ const singleSenderReducer = createReducer<SingleSenderVerificationsState>(
             }),
 )
 
-export default singleSenderReducer
+export { singleSenderReducer }

@@ -155,4 +155,4 @@ const useSendTestRequest = (
     return { isLoading, sendTestRequest }
 }
 
-export default useSendTestRequest
+export { useSendTestRequest }

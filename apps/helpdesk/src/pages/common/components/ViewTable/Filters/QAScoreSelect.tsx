@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { QA_SCORE_DIMENSIONS } from 'pages/common/components/ViewTable/Filters/utils'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 type QAScoreSelectProps = {
     onChange: (qaScoreDimension: string) => void
@@ -9,7 +9,7 @@ type QAScoreSelectProps = {
     menuContainer?: HTMLElement
 }
 
-export default function QAScoreSelect({
+export function QAScoreSelect({
     onChange,
     value,
     menuContainer,

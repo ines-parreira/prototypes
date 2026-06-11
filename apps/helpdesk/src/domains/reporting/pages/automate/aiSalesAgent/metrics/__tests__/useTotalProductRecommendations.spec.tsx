@@ -1,7 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { totalNumberProductRecommendationsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { AISalesAgentTotalProductRecommendationsQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentConversations'

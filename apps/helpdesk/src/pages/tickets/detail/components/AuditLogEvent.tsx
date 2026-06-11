@@ -31,8 +31,8 @@ import {
     TICKET_EVENT_TYPES,
 } from 'models/event/types'
 import { actionsConfigWithManagedRules } from 'pages/common/components/ast/actions/config'
-import TicketTag from 'pages/common/components/TicketTag'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { TicketTag } from 'pages/common/components/TicketTag'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import { getHumanAgents } from 'state/agents/selectors'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
@@ -40,7 +40,7 @@ import { getTeams } from 'state/teams/selectors'
 import { getEvents } from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 
-import IconButton from '../../../common/components/button/IconButton'
+import { IconButton } from '../../../common/components/button/IconButton'
 
 import css from './Event.less'
 
@@ -806,7 +806,9 @@ const connector = connect((state: RootState) => ({
     events: getEvents(state),
 }))
 
-export default connector(AuditLogEventContainer)
+const DefaultExportAuditLogEvent = connector(AuditLogEventContainer)
+
+export { DefaultExportAuditLogEvent }
 
 // Internal helper components
 type HelperProps = {

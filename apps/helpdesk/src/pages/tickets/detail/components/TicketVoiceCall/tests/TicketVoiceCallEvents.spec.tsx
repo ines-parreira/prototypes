@@ -7,29 +7,36 @@ import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import * as queries from 'models/voiceCall/queries'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
 
-import TicketVoiceCallEvents from '../TicketVoiceCallEvents'
+import { TicketVoiceCallEvents } from '../TicketVoiceCallEvents'
 
 const useListVoiceCallEventsSpy = jest.spyOn(queries, 'useListVoiceCallEvents')
 
-jest.mock('../Timeline', () => ({ children }: any) => (
-    <div data-testid="timeline">{children}</div>
-))
+jest.mock('../Timeline', () => ({
+    Timeline: ({ children }: any) => (
+        <div data-testid="timeline">{children}</div>
+    ),
+}))
 
-jest.mock('../TimelineItem', () => ({ children }: any) => (
-    <div data-testid="timeline-item">{children}</div>
-))
+jest.mock('../TimelineItem', () => ({
+    TimelineItem: ({ children }: any) => (
+        <div data-testid="timeline-item">{children}</div>
+    ),
+}))
 
 jest.mock(
     'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel',
-    () =>
-        ({ subject }: any) => <span>{subject.type} subject</span>,
+    () => ({
+        VoiceCallSubjectLabel: ({ subject }: any) => (
+            <span>{subject.type} subject</span>
+        ),
+    }),
 )
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div>{dateTime}</div>
+    ),
+}))
 
 const hasFlowEndEventMock = jest.fn()
 jest.mock('models/voiceCall/processEvents', () => ({

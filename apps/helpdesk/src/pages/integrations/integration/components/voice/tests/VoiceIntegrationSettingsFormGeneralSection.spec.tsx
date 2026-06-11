@@ -7,13 +7,12 @@ import userEvent from '@testing-library/user-event'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import VoiceIntegrationSettingsFormGeneralSection from '../VoiceIntegrationSettingsFormGeneralSection'
+import { VoiceIntegrationSettingsFormGeneralSection } from '../VoiceIntegrationSettingsFormGeneralSection'
 
 jest.mock('@repo/feature-flags')
 
 jest.mock('pages/phoneNumbers/PhoneNumberSelectField', () => ({
-    __esModule: true,
-    default: ({
+    PhoneNumberSelectField: ({
         value,
         onChange,
     }: {
@@ -30,13 +29,11 @@ jest.mock('pages/phoneNumbers/PhoneNumberSelectField', () => ({
 }))
 
 jest.mock('pages/settings/businessHours/BusinessHoursSelectField', () => ({
-    __esModule: true,
-    default: () => <div>Business hours select</div>,
+    BusinessHoursSelectField: () => <div>Business hours select</div>,
 }))
 
 jest.mock('pages/common/forms/EmojiTextInput/EmojiTextInput', () => ({
-    __esModule: true,
-    default: ({
+    EmojiTextInput: ({
         emoji,
         value,
         placeholder,

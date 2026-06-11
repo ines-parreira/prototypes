@@ -10,13 +10,13 @@ import moment from 'moment'
 import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics.less'
-import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
+import { useLiveVoiceMetricCards } from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 type Props = {
@@ -25,7 +25,7 @@ type Props = {
     cleanStatsFilters: StatsFiltersWithLogicalOperator
 }
 
-export default function LiveVoiceMetrics({
+export function LiveVoiceMetrics({
     liveVoiceCalls,
     isLoadingVoiceCalls,
     cleanStatsFilters,

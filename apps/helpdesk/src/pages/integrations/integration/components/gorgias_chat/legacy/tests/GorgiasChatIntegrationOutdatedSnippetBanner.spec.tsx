@@ -7,7 +7,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { IntegrationType } from 'models/integration/types'
 import { Tab } from 'pages/integrations/integration/types'
 
-import GorgiasChatIntegrationOutdatedSnippetBanner from '../GorgiasChatIntegrationOutdatedSnippetBanner'
+import { GorgiasChatIntegrationOutdatedSnippetBanner } from '../GorgiasChatIntegrationOutdatedSnippetBanner'
 
 describe('GorgiasChatIntegrationOutdatedSnippetBanner', () => {
     it('should render theme extension migration banner with correct content and link', () => {

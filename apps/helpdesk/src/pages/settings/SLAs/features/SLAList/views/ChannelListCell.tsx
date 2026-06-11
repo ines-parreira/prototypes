@@ -3,19 +3,19 @@ import React, { useMemo } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 import { getChannelBySlug } from 'services/channels'
 
 import type { UISLAPolicy } from '../types'
-import CellLinkWrapper from './CellLinkWrapper'
+import { CellLinkWrapper } from './CellLinkWrapper'
 
 import css from './ChannelListCell.less'
 
 const CHANNEL_LIMIT = 5
 
-export default function ChannelListCell({
+export function ChannelListCell({
     policy,
     bodyCellProps,
 }: {

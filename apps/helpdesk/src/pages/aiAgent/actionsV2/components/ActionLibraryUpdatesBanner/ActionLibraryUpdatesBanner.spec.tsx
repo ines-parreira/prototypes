@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ActionLibraryUpdatesBanner from './ActionLibraryUpdatesBanner'
+import { ActionLibraryUpdatesBanner } from './ActionLibraryUpdatesBanner'
 
 const SHOP_NAME = 'test-shop'
 const DISMISSED_KEY = `action-library-updates-banner-dismissed-${SHOP_NAME}`

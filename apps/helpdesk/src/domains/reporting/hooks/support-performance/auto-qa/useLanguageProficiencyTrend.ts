@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { languageProficiencyQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/languageProficiencyQueryFactory'
 import { languageProficiencyQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'

@@ -1,6 +1,6 @@
 import { Box, Button } from '@gorgias/axiom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 type Props = {
     text: string
@@ -28,4 +28,4 @@ const CanduActionInfobar = ({ text, btnLabel, canduId, onClick }: Props) => {
     )
 }
 
-export default CanduActionInfobar
+export { CanduActionInfobar }

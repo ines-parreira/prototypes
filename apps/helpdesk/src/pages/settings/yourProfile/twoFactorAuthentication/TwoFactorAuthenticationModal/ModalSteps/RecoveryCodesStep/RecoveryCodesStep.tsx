@@ -18,7 +18,7 @@ type OwnProps = {
     setIsRecoveryCodesSaved: Dispatch<SetStateAction<boolean>>
 }
 
-export default function RecoveryCodesStep({
+export function RecoveryCodesStep({
     recoveryCodes,
     setIsRecoveryCodesSaved,
 }: OwnProps) {

@@ -4,18 +4,18 @@ import {
     SATISFACTION_SURVEY_MIN_SCORE,
 } from 'domains/reporting/config/stats'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
-import DEPRECATED_AgentsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_AgentsStatsFilter'
-import ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
-import DEPRECATED_IntegrationsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import PeriodStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
+import { DEPRECATED_AgentsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_AgentsStatsFilter'
+import { DEPRECATED_ChannelsStatsFilter as ChannelsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
+import { DEPRECATED_IntegrationsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import { DEPRECATED_PeriodStatsFilter as PeriodStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
 import { DEPRECATED_ScoreStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ScoreStatsFilter'
-import DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import { DEPRECATED_TagsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     getMessagingAndAppIntegrationsStatsFilter,
     getStatsFilters,
     getStatsMessagingAndAppIntegrations,
 } from 'domains/reporting/state/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const SupportPerformanceSatisfactionFilters = () => {
     useCleanStatsFilters()

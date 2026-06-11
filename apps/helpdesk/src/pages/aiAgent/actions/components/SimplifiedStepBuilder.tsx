@@ -7,7 +7,7 @@ import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import type { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import StoreAppsProvider from '../providers/StoreAppsProvider'
+import { StoreAppsProvider } from '../providers/StoreAppsProvider'
 import { ConvertActionToAdvancedViewDialog } from './ConvertActionToAdvancedViewDialog'
 import { SimplifiedStepBuilderSteps } from './SimplifiedStepBuilderSteps'
 

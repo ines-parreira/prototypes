@@ -49,4 +49,4 @@ const AILibraryBanner = () => {
     )
 }
 
-export default AILibraryBanner
+export { AILibraryBanner }

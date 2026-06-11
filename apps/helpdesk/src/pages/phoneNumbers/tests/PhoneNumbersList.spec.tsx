@@ -10,7 +10,7 @@ import { PhoneUseCase } from 'business/twilio'
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PhoneNumbersList from '../PhoneNumbersList'
+import { PhoneNumbersList } from '../PhoneNumbersList'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

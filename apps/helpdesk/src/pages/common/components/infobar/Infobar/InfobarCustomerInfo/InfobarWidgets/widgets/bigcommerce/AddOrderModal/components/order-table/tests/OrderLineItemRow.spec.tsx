@@ -9,7 +9,7 @@ import {
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
 
-import OrderLineItemRow from '../OrderLineItemRow'
+import { OrderLineItemRow } from '../OrderLineItemRow'
 
 const lineItem = bigCommerceLineItemFixture()
 const product = bigCommerceProductFixture()

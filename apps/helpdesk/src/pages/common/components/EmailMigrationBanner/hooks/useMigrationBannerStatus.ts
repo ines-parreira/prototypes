@@ -3,11 +3,11 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchEmailMigrationBannerStatus } from 'models/integration/resources/email'
 import { SET_EMAIL_PROVIDER_MIGRATION_BANNER_STATUS } from 'state/integrations/constants'
 
-export default function useMigrationBannerStatus() {
+export function useMigrationBannerStatus() {
     const dispatch = useAppDispatch()
 
     const [, fetchMigrationStatus] = useAsyncFn(async () => {

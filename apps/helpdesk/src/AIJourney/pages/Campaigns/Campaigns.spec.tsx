@@ -75,7 +75,7 @@ jest.mock(
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
     __esModule: true,
-    default: () => <div data-testid="filters-panel-wrapper" />,
+    FiltersPanelWrapper: () => <div data-testid="filters-panel-wrapper" />,
 }))
 
 const mockHistoryPush = jest.fn()

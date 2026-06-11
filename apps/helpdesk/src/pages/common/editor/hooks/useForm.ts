@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { TicketStatus } from 'business/types/ticket'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 
-export default function useForm(submit: (args: SubmitArgs) => any) {
+export function useForm(submit: (args: SubmitArgs) => any) {
     const [ticketStatus, setTicketStatus] = useState<TicketStatus>(
         TicketStatus.Open,
     )

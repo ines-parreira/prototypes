@@ -2,13 +2,13 @@ import { NavLink, useLocation } from 'react-router-dom'
 
 import type { WhatsAppIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
     integration?: WhatsAppIntegration
 }
 
-export default function WhatsAppIntegrationSecondaryNavigation({
+export function WhatsAppIntegrationSecondaryNavigation({
     integration,
 }: Props): JSX.Element | null {
     const { pathname } = useLocation()

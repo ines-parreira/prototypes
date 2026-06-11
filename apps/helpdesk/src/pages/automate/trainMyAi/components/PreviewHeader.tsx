@@ -7,7 +7,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 
 import type { Components as ComponentsSSP } from '../../../../rest_api/ssp_api/client.generated'
-import ArticleSelectPreview from './ArticleSelectPreview'
+import { ArticleSelectPreview } from './ArticleSelectPreview'
 
 import css from './PreviewHeader.less'
 
@@ -20,7 +20,7 @@ interface Props {
     articleTitle?: string
 }
 
-export default function PreviewHeader({
+export function PreviewHeader({
     noRelevantArticles,
     onSelectArticle,
     onChange,

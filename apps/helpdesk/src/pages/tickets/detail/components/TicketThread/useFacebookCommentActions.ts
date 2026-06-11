@@ -10,7 +10,7 @@ import type {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as infobarActions from 'state/infobar/actions'
 
 type MessagesCache = {

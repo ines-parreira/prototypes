@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 
-import EmailVerificationStatusLabel, {
+import {
     EmailVerificationStatus,
+    EmailVerificationStatusLabel,
 } from '../../EmailVerificationStatusLabel'
 
 import css from './VerificationCardFooter.less'
@@ -15,7 +16,7 @@ type Props = {
     isDisabled?: boolean
 }
 
-export default function VerificationCardFooter({
+export function VerificationCardFooter({
     icon,
     label,
     isVerified,

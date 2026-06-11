@@ -5,9 +5,9 @@ import _capitalize from 'lodash/capitalize'
 import type { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import getVariableWithValue from './getVariableWithValue'
+import { getVariableWithValue } from './getVariableWithValue'
 
-export default function replaceIntegrationVariables(
+export function replaceIntegrationVariables(
     integrationType: string,
     ticketState: Map<any, any>,
     variable: string,

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Header from 'pages/common/components/ProductDetail/Header'
+import { Header } from 'pages/common/components/ProductDetail/Header'
 
 import { dummyProduct } from './fixtures'
 

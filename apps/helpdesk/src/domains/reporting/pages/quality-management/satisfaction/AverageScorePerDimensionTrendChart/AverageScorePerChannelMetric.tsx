@@ -13,7 +13,7 @@ import {
     getFormattedInfo,
 } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getAllAgentsJS } from 'state/agents/selectors'
 import { getIntegrations } from 'state/integrations/selectors'
 

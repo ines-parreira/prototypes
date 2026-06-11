@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import { Button } from '@gorgias/axiom'
 
 import { THEME_NAME } from 'core/theme'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 import type { AutoReplyReturnSettings } from 'state/rules/types'
 
 import type { ManagedRuleDetailProps } from './ManagedRuleEditor'
@@ -57,5 +57,3 @@ export const AutoReplyReturnDemo = ({ settings }: Props) => (
         </div>
     </div>
 )
-
-export default AutoReplyReturnDemo

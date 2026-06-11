@@ -9,14 +9,14 @@ import type { User } from '@gorgias/helpdesk-types'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
 
 import { UsersSettingsItem } from '../UsersSettingsItem'
 import { UsersSettingsTable } from '../UsersSettingsTable'
 
-jest.mock('pages/common/components/table/cells/HeaderCellProperty', () =>
-    jest.fn(() => <th data-testid="header-cell" />),
-)
+jest.mock('pages/common/components/table/cells/HeaderCellProperty', () => ({
+    HeaderCellProperty: jest.fn(() => <th data-testid="header-cell" />),
+}))
 
 jest.mock('../UsersSettingsItem', () => ({
     UsersSettingsItem: jest.fn(() => <tr data-testid="user-item" />),

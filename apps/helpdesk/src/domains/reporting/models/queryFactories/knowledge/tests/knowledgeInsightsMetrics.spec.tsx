@@ -59,8 +59,12 @@ jest.mock(
         })),
     }),
 )
-jest.mock('hooks/useAppSelector', () => jest.fn(() => 'America/New_York'))
-jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn(() => 'America/New_York'),
+}))
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: jest.fn(() => jest.fn()),
+}))
 
 const queryClient = new QueryClient({
     defaultOptions: {

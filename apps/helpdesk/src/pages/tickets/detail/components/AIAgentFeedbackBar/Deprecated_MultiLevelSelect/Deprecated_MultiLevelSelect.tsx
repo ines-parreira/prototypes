@@ -4,11 +4,11 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownFooter as DropdownFooter } from 'pages/common/components/dropdown/DropdownFooter'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import { useSearch } from '../hooks/useSearch'
 import { CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID } from './constants'
@@ -39,7 +39,7 @@ export type MultiLevelSelectProps = {
  * @date 2024-10-04
  * @type ui-component
  */
-export default function MultiLevelSelect({
+export function MultiLevelSelect({
     dropdownClassName,
     choices,
     onChange,

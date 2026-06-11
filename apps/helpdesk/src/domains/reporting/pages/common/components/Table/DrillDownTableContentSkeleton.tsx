@@ -3,8 +3,8 @@ import type { FunctionComponent } from 'react'
 import { Skeleton } from '@gorgias/axiom'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 export const DrillDownTableContentSkeleton: FunctionComponent<{
     columnWidths: number[]

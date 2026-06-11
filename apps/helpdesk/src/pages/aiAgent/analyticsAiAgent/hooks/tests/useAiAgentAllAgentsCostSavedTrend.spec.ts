@@ -2,8 +2,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { allAgentsAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

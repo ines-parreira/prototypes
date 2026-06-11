@@ -13,7 +13,9 @@ import { useGetTicketContext } from './useGetTicketContext'
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/integrations/selectors')
 jest.mock('state/ticket/selectors')
-jest.mock('hooks/useAppSelector', () => (selector: Function) => selector())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (selector: Function) => selector(),
+}))
 
 const mockGetCurrentAccountId = jest.mocked(getCurrentAccountId)
 const mockGetShopifyIntegrationsSortedByName = jest.mocked(

@@ -10,7 +10,7 @@ type Props = {
     isPercentage?: boolean
 }
 
-export default function StatDifference({
+export function StatDifference({
     label,
     value,
     moreIsBetter,

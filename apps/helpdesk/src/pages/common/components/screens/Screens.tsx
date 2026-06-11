@@ -24,4 +24,4 @@ const Screens = ({ activeScreen, children }: Props) => {
     )
 }
 
-export default Screens
+export { Screens }

@@ -6,7 +6,7 @@ import { Map } from 'immutable'
 import { noop } from 'lodash'
 
 import { migrationProviders } from '../../fixtures/migration-providers'
-import MigrationCredentialsModal from './MigrationCredentialsModal'
+import { MigrationCredentialsModal } from './MigrationCredentialsModal'
 
 const provider = migrationProviders[0]
 const credentials = {

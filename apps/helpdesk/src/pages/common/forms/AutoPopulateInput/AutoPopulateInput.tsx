@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import React, { useEffect, useMemo, useState } from 'react'
 
-import CheckBox from '../CheckBox'
+import { DefaultExportCheckBox as CheckBox } from '../CheckBox'
 import type { InputFieldProps } from '../DEPRECATED_InputField'
-import DEPRECATED_InputField from '../DEPRECATED_InputField'
+import { InputField as DEPRECATED_InputField } from '../DEPRECATED_InputField'
 
 import css from './AutoPopulateInput.less'
 
@@ -57,4 +57,4 @@ const AutoPopulateInput = ({
     )
 }
 
-export default AutoPopulateInput
+export { AutoPopulateInput }

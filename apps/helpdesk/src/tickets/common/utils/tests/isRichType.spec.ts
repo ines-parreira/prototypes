@@ -1,6 +1,6 @@
 import _isBoolean from 'lodash/isBoolean'
 
-import isRichType from '../isRichType'
+import { isRichType } from '../isRichType'
 
 describe('isRichType', () => {
     it('is boolean', () => {

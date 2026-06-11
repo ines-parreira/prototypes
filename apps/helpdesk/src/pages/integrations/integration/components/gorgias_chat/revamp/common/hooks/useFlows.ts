@@ -6,9 +6,9 @@ import { TicketChannel } from 'business/types/ticket'
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 type UseFlowsParams = {
     integration: Map<any, any>

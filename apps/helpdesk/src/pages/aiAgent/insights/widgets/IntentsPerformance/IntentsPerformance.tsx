@@ -5,12 +5,12 @@ import { useGridSize } from '@gorgias/toolkit-react'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Period } from 'domains/reporting/models/stat/types'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,

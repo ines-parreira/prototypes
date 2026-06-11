@@ -5,7 +5,7 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 const useReportOrderIssueFlowScenarios = (shopName: string) => {
     const history = useHistory()
@@ -60,4 +60,4 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
     }
 }
 
-export default useReportOrderIssueFlowScenarios
+export { useReportOrderIssueFlowScenarios }

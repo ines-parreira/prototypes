@@ -4,7 +4,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { LocaleCode } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -51,4 +51,4 @@ const LanguageInputSection = ({
     )
 }
 
-export default LanguageInputSection
+export { LanguageInputSection }

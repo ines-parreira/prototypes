@@ -7,10 +7,10 @@ import isUrl from 'validator/lib/isURL'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { ABTest } from 'models/convert/abTest/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 type Props = {
     abTest?: ABTest
@@ -84,4 +84,4 @@ const UpdateReportLinkModal: React.FC<Props> = ({
     )
 }
 
-export default UpdateReportLinkModal
+export { UpdateReportLinkModal }

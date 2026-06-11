@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import SetStatusAction from '../SetStatusAction'
+import { SetStatusAction } from '../SetStatusAction'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)

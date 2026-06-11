@@ -14,12 +14,12 @@ import {
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
+import { DonutChart } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import AverageSurveyScoreDonutChart from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+import { AverageSurveyScoreDonutChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import { SatisfactionAverageSurveyScoreMetric } from 'domains/reporting/state/ui/stats/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)

@@ -1,13 +1,13 @@
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 
-import Header from './Header'
-import InfoCard from './InfoCard'
-import Slides from './Slides'
+import { Header } from './Header'
+import { InfoCard } from './InfoCard'
+import { Slides } from './Slides'
 import type { ProductDetail } from './types'
 
 import css from './Detail.less'
 
-export default function Detail(props: ProductDetail) {
+export function Detail(props: ProductDetail) {
     const {
         screenshots = [],
         longDescription,

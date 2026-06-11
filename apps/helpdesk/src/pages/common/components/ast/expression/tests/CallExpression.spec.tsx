@@ -4,15 +4,17 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import CallExpression from 'pages/common/components/ast/expression/CallExpression'
-import Expression from 'pages/common/components/ast/expression/Expression'
-import Statement from 'pages/common/components/ast/statements/Statement'
+import { CallExpression } from 'pages/common/components/ast/expression/CallExpression'
+import { Expression } from 'pages/common/components/ast/expression/Expression'
+import { DefaultExportStatement as Statement } from 'pages/common/components/ast/statements/Statement'
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
 jest.mock(
     'pages/common/components/ast/operations/DeleteBinaryExpression',
-    () => () => <div>DeleteBinaryExpressionMock</div>,
+    () => ({
+        DeleteBinaryExpression: () => <div>DeleteBinaryExpressionMock</div>,
+    }),
 )
 
 const commonProps = {

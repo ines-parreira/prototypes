@@ -9,7 +9,7 @@ const _url = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js'
 const _onLoad: (() => void)[] = []
 let _isLoading = false
 
-export default function load(cb: () => void) {
+export function load(cb: () => void) {
     if (available()) {
         cb()
         return

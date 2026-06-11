@@ -1,6 +1,6 @@
 import { useTicketsFieldTimeSeries } from 'domains/reporting/hooks/ticket-insights/useTicketsFieldTimeSeries'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatLabeledTooltipTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { LINES_COLORS } from 'domains/reporting/pages/constants'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -9,7 +9,7 @@ import {
     TicketInsightsFieldsMetricConfig,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export function TicketInsightsFieldTrend({
     chartId,

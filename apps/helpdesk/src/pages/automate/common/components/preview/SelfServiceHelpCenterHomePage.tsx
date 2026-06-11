@@ -1,9 +1,9 @@
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
-import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
-import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
+import { HelpCenterPreviewAutomation } from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
+import { HelpCenterPreviewHomePage } from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 
-import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+import { useWorkflowsEntrypoints } from './hooks/useWorkflowsEntrypoints'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 type Props = {
@@ -64,4 +64,4 @@ const SelfServiceHelpCenterHomePage = ({ helpCenter }: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterHomePage
+export { SelfServiceHelpCenterHomePage }

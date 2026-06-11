@@ -4,9 +4,9 @@ import { useMemo } from 'react'
 import type { ContactForm } from 'models/contactForm/types'
 import type { Locale } from 'models/helpCenter/types'
 import { LanguageTagList } from 'pages/common/components/LanguageTagList'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import StoreName from 'pages/settings/helpCenter/components/StoreName'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { StoreName } from 'pages/settings/helpCenter/components/StoreName'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 export type ContactFormTableRowProps = {

@@ -26,7 +26,7 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import type { Intent } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 import intentTableCss from './IntentTable.less'
 

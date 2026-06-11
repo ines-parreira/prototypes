@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getActiveView } from 'state/views/selectors'
 
-import useIsTicketNavigationAvailable from './useIsTicketNavigationAvailable'
-import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
+import { useIsTicketNavigationAvailable } from './useIsTicketNavigationAvailable'
+import { usePrevNextTicketNavigation } from './usePrevNextTicketNavigation'
 
-export default function useGoToPreviousTicket(ticketId?: string) {
+export function useGoToPreviousTicket(ticketId?: string) {
     const { isEnabled: isSplitTicketViewEnabled, previousTicketId } =
         useSplitTicketView()
 

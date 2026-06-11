@@ -10,11 +10,11 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
@@ -23,7 +23,7 @@ import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_DEFAULT_THEME,
 } from 'pages/settings/helpCenter/constants'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import type { FileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
 import { useFileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
 import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
@@ -45,7 +45,7 @@ import { FontSelectField } from '../../../common/FontSelectField/FontSelectField
 import type { HelpCenterLayout } from '../../types/layout.enum'
 import { isHelpCenterLayout } from '../../types/layout.enum'
 import { getHelpCenterLayout } from '../../utils/helpCenter.utils'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+import { HelpCenterPageWrapper } from '../HelpCenterPageWrapper'
 import { ImageRepositioningModal } from '../ImageRepositioningModal'
 import { ImageUpload } from '../ImageUpload'
 import { LanguageSelect } from '../LanguageSelect/LanguageSelect'
@@ -669,5 +669,3 @@ export const HelpCenterAppearanceView: React.FC = () => {
         </HelpCenterPageWrapper>
     )
 }
-
-export default HelpCenterAppearanceView

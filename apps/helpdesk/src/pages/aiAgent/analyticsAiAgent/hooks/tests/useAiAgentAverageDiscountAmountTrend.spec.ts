@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { averageDiscountAmountQueryV2Factory } from 'domains/reporting/models/scopes/aiSalesAgentDiscounts'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -26,7 +27,7 @@ const statsFilters: StatsFilters = {
 
 jest.mock('domains/reporting/hooks/useStatsMetricTrend', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStatsMetricTrend: jest.fn(),
     fetchStatsMetricTrend: jest.fn(),
 }))
 const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)

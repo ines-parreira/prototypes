@@ -3,10 +3,10 @@ import {
     isVoiceCallTableColumnSortable,
     voiceCallTableColumnNameToDimension,
 } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
-import useOrderBy from 'hooks/useOrderBy'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 
-export default function useVoiceCallTableOrdering() {
+export function useVoiceCallTableOrdering() {
     const {
         orderBy: orderByColumnName,
         toggleOrderBy,

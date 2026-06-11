@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     CreateStoreConfigurationPayload,
     StoreConfiguration,
@@ -12,7 +12,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
 import { useStoreConfigurationMutation } from '../hooks/useStoreConfigurationMutation'
-import AiAgentStoreConfigurationContext from './AiAgentStoreConfigurationContext'
+import { AiAgentStoreConfigurationContext } from './AiAgentStoreConfigurationContext'
 
 type Props = {
     children: ReactNode
@@ -77,4 +77,4 @@ const AiAgentStoreConfigurationProvider = ({ children }: Props) => {
     )
 }
 
-export default AiAgentStoreConfigurationProvider
+export { AiAgentStoreConfigurationProvider }

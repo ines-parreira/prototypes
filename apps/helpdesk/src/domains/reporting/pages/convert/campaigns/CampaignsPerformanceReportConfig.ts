@@ -7,7 +7,7 @@ import { PerformanceImpressionsGraphChart } from 'domains/reporting/pages/conver
 import { PerformanceImpressionsKpiChart } from 'domains/reporting/pages/convert/charts/PerformanceImpressionsKpiChart'
 import { PerformanceInfluencedRevenueShareKpiChart } from 'domains/reporting/pages/convert/charts/PerformanceInlfluencedRevenueShareKpiChart'
 import { RevenueKpiChart } from 'domains/reporting/pages/convert/charts/RevenueKpiChart'
-import CampaignRevenueChart from 'domains/reporting/pages/convert/components/CampaignRevenueChart'
+import { CampaignRevenueChart } from 'domains/reporting/pages/convert/components/CampaignRevenueChart'
 import { fetchCampaignReportData } from 'domains/reporting/pages/convert/components/DownloadOverviewData/GenerateReportService'
 import { OverviewMetricConfig } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import {

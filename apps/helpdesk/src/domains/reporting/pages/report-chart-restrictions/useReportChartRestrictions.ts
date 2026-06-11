@@ -19,7 +19,7 @@ import {
     RBAC_RESTRICTIONS,
     RestrictedComponentType,
 } from 'domains/reporting/pages/report-chart-restrictions/config'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'

@@ -7,7 +7,7 @@ import {
 } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useRunningJobs } from 'jobs'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'

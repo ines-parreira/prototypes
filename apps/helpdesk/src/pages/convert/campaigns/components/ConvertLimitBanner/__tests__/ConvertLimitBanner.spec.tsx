@@ -13,7 +13,7 @@ import {
 } from 'fixtures/convert'
 import { user } from 'fixtures/users'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RootState } from 'state/types'
 
 import { ConvertLimitBanner } from '../ConvertLimitBanner'

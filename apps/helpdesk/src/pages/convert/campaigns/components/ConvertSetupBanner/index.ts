@@ -1,1 +1,1 @@
-export { default } from './ConvertSetupBanner'
+export { ConvertSetupBanner } from './ConvertSetupBanner'

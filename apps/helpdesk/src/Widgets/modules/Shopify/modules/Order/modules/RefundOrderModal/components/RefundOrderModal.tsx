@@ -19,11 +19,11 @@ import {
 import { getRefundAmount } from 'business/shopify/refund'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import {
     onCancel,
@@ -36,7 +36,7 @@ import {
 import { getRefundOrderState } from 'state/infobarActions/shopify/refundOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
-import OrderForm from 'Widgets/modules/Shopify/modules/Order/modules/OrderForm'
+import { OrderForm } from 'Widgets/modules/Shopify/modules/Order/modules/OrderForm'
 
 import css from './RefundOrderModal.less'
 
@@ -244,4 +244,6 @@ const connector = connect(
     },
 )
 
-export default connector(RefundOrderModalContainer)
+const DefaultExportRefundOrderModal = connector(RefundOrderModalContainer)
+
+export { DefaultExportRefundOrderModal }

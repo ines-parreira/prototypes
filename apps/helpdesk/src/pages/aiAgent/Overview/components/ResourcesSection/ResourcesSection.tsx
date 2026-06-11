@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
 import { CardTitle } from 'pages/aiAgent/components/Card'
 
 import css from './ResourcesSection.less'

@@ -4,8 +4,8 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
@@ -16,7 +16,7 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import HttpRequestEditor from '../index'
+import { HttpRequestEditor } from '../index'
 
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('models/workflows/queries')

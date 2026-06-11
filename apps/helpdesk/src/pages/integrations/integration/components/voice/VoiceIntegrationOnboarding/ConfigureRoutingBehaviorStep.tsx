@@ -1,14 +1,14 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 
-import VoiceFormSubmitButton from '../VoiceFormSubmitButton'
-import RoutingTemplateRadioFieldSet from './RoutingTemplateRadioFieldSet'
-import VoiceIntegrationOnboardingCancelButton from './VoiceIntegrationOnboardingCancelButton'
+import { VoiceFormSubmitButton } from '../VoiceFormSubmitButton'
+import { RoutingTemplateRadioFieldSet } from './RoutingTemplateRadioFieldSet'
+import { VoiceIntegrationOnboardingCancelButton } from './VoiceIntegrationOnboardingCancelButton'
 
 import css from './VoiceIntegrationOnboardingStep.less'
 
-export default function ConfigureRoutingBehaviorStep() {
+export function ConfigureRoutingBehaviorStep() {
     const { goToPreviousStep } = useNavigateWizardSteps()
 
     return (

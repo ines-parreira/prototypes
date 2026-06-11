@@ -1,7 +1,7 @@
 import { EditorState, RichUtils, SelectionState } from 'draft-js'
 
 import { mockPluginMethods, typeText } from '../../../tests/draftTestUtils'
-import createClearFormattingPlugin from '../index'
+import { createClearFormattingPlugin } from '../index'
 
 function createBackslashEvent(withCommand = true) {
     return {

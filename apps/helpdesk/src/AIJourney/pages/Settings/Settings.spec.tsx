@@ -31,7 +31,7 @@ jest.mock(
 
 jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => ({
     __esModule: true,
-    default: () => null,
+    FormUnsavedChangesPrompt: () => null,
 }))
 
 if (typeof Element.prototype.getAnimations === 'undefined') {

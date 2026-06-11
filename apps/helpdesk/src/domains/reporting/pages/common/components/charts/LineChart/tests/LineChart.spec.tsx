@@ -5,8 +5,9 @@ import * as chartjs from 'chart.js'
 import colors from '@gorgias/design-tokens/tokens/colors'
 
 import { ThemeProvider } from 'core/theme'
-import LineChart, {
+import {
     CHART_TOOLTIP_TARGET,
+    DefaultExportLineChart as LineChart,
     LineChart as LineChartWithoutTheme,
 } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'

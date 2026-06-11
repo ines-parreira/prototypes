@@ -13,12 +13,12 @@ import {
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { isTrialing } from 'state/currentAccount/selectors'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const mockUseAppSelector = assumeMock(useAppSelector)
 
 jest.mock('@repo/feature-flags', () => ({

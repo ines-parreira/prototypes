@@ -2,7 +2,7 @@ import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import type { ExtraHTMLDto } from 'models/helpCenter/types'
 
-import CodeEditor from '../CodeEditor/CodeEditor'
+import { CodeEditor } from '../CodeEditor/CodeEditor'
 
 import css from './ExtraHtmlSection.less'
 

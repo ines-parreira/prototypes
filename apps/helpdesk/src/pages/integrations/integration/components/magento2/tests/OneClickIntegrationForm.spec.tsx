@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from 'models/integration/types'
 import * as actions from 'state/integrations/actions'
 
-import OneClickIntegrationForm from '../OneClickIntegrationForm'
+import { OneClickIntegrationForm } from '../OneClickIntegrationForm'
 
 jest.spyOn(actions, 'deleteIntegration')
 jest.spyOn(actions, 'updateOrCreateIntegrationRequest')

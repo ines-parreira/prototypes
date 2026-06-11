@@ -5,88 +5,90 @@ import { userEvent } from '@testing-library/user-event'
 import { TimeFrameField } from '../TimeFrameField'
 
 jest.mock('pages/common/forms/DatePicker', () => {
-    return function MockDatePicker(props: any) {
-        return (
-            <div data-testid="mock-date-picker">
-                {props.isOpen && (
-                    <div data-testid="date-picker-dropdown">
-                        <ul>
-                            <li
-                                onClick={() => {
-                                    const sevenDaysAgo = new Date()
-                                    sevenDaysAgo.setDate(
-                                        sevenDaysAgo.getDate() - 7,
-                                    )
-                                    props.onSubmit(
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 1, 2025',
-                                        },
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 8, 2025',
-                                        },
-                                    )
-                                }}
-                            >
-                                Last 7 days
-                            </li>
-                            <li
-                                onClick={() => {
-                                    props.onSubmit(
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Feb 8, 2025',
-                                        },
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 8, 2025',
-                                        },
-                                    )
-                                }}
-                            >
-                                Last 6 months
-                            </li>
-                            <li
-                                onClick={() => {
-                                    props.onSubmit(
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 8, 2024',
-                                        },
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 8, 2025',
-                                        },
-                                    )
-                                }}
-                            >
-                                Last 12 months
-                            </li>
-                            <li
-                                onClick={() => {
-                                    props.onSubmit(
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 8, 2023',
-                                        },
-                                        {
-                                            format: (__fmt: string) =>
-                                                'Aug 8, 2025',
-                                        },
-                                    )
-                                }}
-                            >
-                                Last 24 months
-                            </li>
-                        </ul>
-                        <button onClick={props.onCancel}>Cancel</button>
-                        <button onClick={props.onClear}>Clear</button>
-                    </div>
-                )}
-                {props.children}
-            </div>
-        )
+    return {
+        DatePicker: function MockDatePicker(props: any) {
+            return (
+                <div data-testid="mock-date-picker">
+                    {props.isOpen && (
+                        <div data-testid="date-picker-dropdown">
+                            <ul>
+                                <li
+                                    onClick={() => {
+                                        const sevenDaysAgo = new Date()
+                                        sevenDaysAgo.setDate(
+                                            sevenDaysAgo.getDate() - 7,
+                                        )
+                                        props.onSubmit(
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 1, 2025',
+                                            },
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 8, 2025',
+                                            },
+                                        )
+                                    }}
+                                >
+                                    Last 7 days
+                                </li>
+                                <li
+                                    onClick={() => {
+                                        props.onSubmit(
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Feb 8, 2025',
+                                            },
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 8, 2025',
+                                            },
+                                        )
+                                    }}
+                                >
+                                    Last 6 months
+                                </li>
+                                <li
+                                    onClick={() => {
+                                        props.onSubmit(
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 8, 2024',
+                                            },
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 8, 2025',
+                                            },
+                                        )
+                                    }}
+                                >
+                                    Last 12 months
+                                </li>
+                                <li
+                                    onClick={() => {
+                                        props.onSubmit(
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 8, 2023',
+                                            },
+                                            {
+                                                format: (__fmt: string) =>
+                                                    'Aug 8, 2025',
+                                            },
+                                        )
+                                    }}
+                                >
+                                    Last 24 months
+                                </li>
+                            </ul>
+                            <button onClick={props.onCancel}>Cancel</button>
+                            <button onClick={props.onClear}>Clear</button>
+                        </div>
+                    )}
+                    {props.children}
+                </div>
+            )
+        },
     }
 })
 

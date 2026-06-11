@@ -6,7 +6,7 @@ import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import EmailInvoicePopover from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/EmailInvoicePopover'
+import { EmailInvoicePopover } from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/EmailInvoicePopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 jest.mock('@repo/logging', () => {

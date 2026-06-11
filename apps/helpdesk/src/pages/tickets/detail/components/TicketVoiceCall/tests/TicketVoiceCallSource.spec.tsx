@@ -3,13 +3,13 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TicketVoiceCallSource from '../TicketVoiceCallSource'
+import { TicketVoiceCallSource } from '../TicketVoiceCallSource'
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div>{dateTime}</div>
+    ),
+}))
 
 describe('TicketVoiceCallSource', () => {
     const props = {

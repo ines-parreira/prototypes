@@ -1,6 +1,6 @@
 import { useCreatedVsClosedTicketsTimeSeries } from 'domains/reporting/hooks/useCreatedVsClosedTicketsTimeSeries'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportBarChart as BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { TICKETS_CREATED_VS_CLOSED_HINT } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { CREATED_VS_CLOSED_TICKETS_LABEL } from 'domains/reporting/services/constants'

@@ -16,12 +16,12 @@ import type { Macro } from '@gorgias/helpdesk-queries'
 import { clearMacroBeforeApply } from 'business/macro'
 import type { MacrosProperties } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
-import type RichField from 'pages/common/forms/RichField/RichField'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
 import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
 } from 'pages/tickets/common/macros/utils'
-import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
+import { PrefillMacroAlert } from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getPreferences } from 'state/currentUser/selectors'
 import { getNewMessageType, isCacheAdded } from 'state/newMessage/selectors'
@@ -36,9 +36,9 @@ import {
 import type { RootState } from 'state/types'
 import { nestedReplace } from 'tickets/common/utils'
 
-import TicketMacros from './TicketMacros'
-import TicketMacrosSearch from './TicketMacrosSearch'
-import TicketReply from './TicketReply'
+import { TicketMacros } from './TicketMacros'
+import { TicketMacrosSearch } from './TicketMacrosSearch'
+import { TicketReply } from './TicketReply'
 
 import css from './TicketReplyArea.less'
 
@@ -610,7 +610,7 @@ const connector = connect(
 
 const ConnectedTicketReplyArea = connector(TicketReplyArea)
 
-export default function TicketReplyAreaWithStandaloneAiContext(
+export function TicketReplyAreaWithStandaloneAiContext(
     props: React.ComponentProps<typeof ConnectedTicketReplyArea>,
 ) {
     const { isStandaloneAiAgent } = useStandaloneAiAccess()

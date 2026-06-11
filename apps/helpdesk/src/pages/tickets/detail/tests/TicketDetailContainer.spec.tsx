@@ -29,10 +29,10 @@ import {
 } from 'fixtures/customField'
 import { MacroActionName } from 'models/macroAction/types'
 import * as voiceCallQueries from 'models/voiceCall/queries'
-import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
-import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
+import { useGoToNextTicket } from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import { useGoToPreviousTicket } from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import { pendingMessageManager } from 'services/pendingMessageManager/pendingMessageManager'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { initialState as currentUser } from 'state/currentUser/reducers'
 import {
@@ -46,8 +46,8 @@ import * as customFieldsUtils from 'utils/customFields'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 // oxlint-disable-next-line no-named-as-default
-import type TicketView from '../components/TicketView'
-import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
+import type { TicketView } from '../components/TicketView'
+import { useTicketActivityTracking } from '../hooks/useTicketActivityTracking'
 import { TicketDetailContainer } from '../TicketDetailContainer'
 
 const NavigateButton = ({ to }: { to: string }) => {
@@ -85,30 +85,35 @@ jest.mock('@repo/utils', () => ({
 jest.mock('../components/TicketView', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { TicketStatus } = require('business/types/ticket')
-    return ({ submit, setStatus }: ComponentProps<typeof TicketView>) => (
-        <div>
-            <div
-                data-testid="TicketView-submit"
-                onClick={() => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    submit({ status: TicketStatus.Closed })
-                }}
-            />
-            <div
-                data-testid="TicketView-submit-send"
-                onClick={() => {
-                    submit({ status: TicketStatus.Open })
-                }}
-            />
-            <div
-                data-testid="TicketView-change-status"
-                onClick={() => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    setStatus(TicketStatus.Closed)
-                }}
-            />
-        </div>
-    )
+    return {
+        TicketView: ({
+            submit,
+            setStatus,
+        }: ComponentProps<typeof TicketView>) => (
+            <div>
+                <div
+                    data-testid="TicketView-submit"
+                    onClick={() => {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        submit({ status: TicketStatus.Closed })
+                    }}
+                />
+                <div
+                    data-testid="TicketView-submit-send"
+                    onClick={() => {
+                        submit({ status: TicketStatus.Open })
+                    }}
+                />
+                <div
+                    data-testid="TicketView-change-status"
+                    onClick={() => {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        setStatus(TicketStatus.Closed)
+                    }}
+                />
+            </div>
+        ),
+    }
 })
 jest.mock('pages/tickets/detail/components/TicketThread/TicketThread', () => ({
     TicketThread: jest.fn(() => <div>TicketThread mock</div>),
@@ -123,8 +128,10 @@ jest.mock(
 )
 
 jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
-    sendMessage: jest.fn(),
-    skipExistingTimer: jest.fn(),
+    pendingMessageManager: {
+        sendMessage: jest.fn(),
+        skipExistingTimer: jest.fn(),
+    },
 }))
 
 jest.mock('@repo/logging')
@@ -176,12 +183,16 @@ const shortcutManagerMock = shortcutManager as jest.Mocked<
 >
 
 const mockSetRecentItem = jest.fn()
-jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
-    setRecentItem: mockSetRecentItem,
+jest.mock('hooks/useRecentItems/useRecentItems', () => ({
+    useRecentItems: () => ({
+        setRecentItem: mockSetRecentItem,
+    }),
 }))
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('@repo/activity-tracker')
 
 jest.spyOn(customFieldsUtils, 'mergeFieldsStateWithMacroValues')
@@ -242,11 +253,13 @@ jest.mock(
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper',
-    () => () => (
-        <div data-testid="knowledge-source-sidebar">
-            Knowledge Source Sidebar
-        </div>
-    ),
+    () => ({
+        KnowledgeSourceSidebarWrapper: () => (
+            <div data-testid="knowledge-source-sidebar">
+                Knowledge Source Sidebar
+            </div>
+        ),
+    }),
 )
 
 jest.mock(

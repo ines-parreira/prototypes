@@ -11,7 +11,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 
 import { withTooltip } from './KnowledgeEditorTopBarCommonControls'
 import type { GuidanceMode } from './KnowledgeEditorTopBarGuidanceControls'

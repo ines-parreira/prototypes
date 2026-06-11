@@ -20,19 +20,19 @@ import type {
     MultiSelectBinaryChoiceFieldOption,
 } from 'models/customerChannel/types'
 import type { SourceType } from 'models/ticket/types'
-import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { BinaryChoiceField } from 'pages/common/components/BinaryChoiceField'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import {
     isCustomerDataPresent,
     isCustomerDataValid,
 } from 'pages/common/components/infobar/utils'
 import { JSONTree } from 'pages/common/components/JSONTree'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import MultiSelectBinaryChoiceField from 'pages/common/components/MultiSelectBinaryChoiceField'
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { MultiSelectBinaryChoiceField } from 'pages/common/components/MultiSelectBinaryChoiceField'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 
 const defaultContent = {
     name: '',
@@ -65,7 +65,7 @@ type State = {
     channels: CustomerChannel[]
 }
 
-export default class MergeCustomersModal extends Component<Props, State> {
+export class MergeCustomersModal extends Component<Props, State> {
     state = _clone(defaultContent)
 
     componentDidMount = () => {

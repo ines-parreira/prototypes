@@ -8,7 +8,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { getTagName } from 'domains/reporting/pages/ticket-insights/tags/helpers'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const firstTagID = '255148'
 const secondTagID = '487270'
@@ -17,7 +17,7 @@ jest.mock('domains/reporting/hooks/metricsPerPeriod')
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('state/entities/tags/selectors')
 const useTagsTicketCountMock = assumeMock(useTagsTicketCount)
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 const mockValue = {

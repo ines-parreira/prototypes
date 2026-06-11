@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import AutoPopulateInput from '../AutoPopulateInput'
+import { AutoPopulateInput } from '../AutoPopulateInput'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

@@ -34,4 +34,4 @@ const TypingMessage = ({
     )
 }
 
-export default TypingMessage
+export { TypingMessage }

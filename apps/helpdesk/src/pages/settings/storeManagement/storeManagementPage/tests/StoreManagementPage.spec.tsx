@@ -9,17 +9,18 @@ import { MemoryRouter } from 'react-router-dom'
 import { mockStoresWithAssignedChannels } from '../../fixtures'
 import { StoreManagementProvider } from '../../StoreManagementProvider'
 import * as StoreManagementProviderModule from '../../StoreManagementProvider'
-import StoreManagementPage from '../StoreManagementPage'
+import { StoreManagementPage } from '../StoreManagementPage'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../../hooks/useStoresWithMaps', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStoresWithMaps: jest.fn(),
 }))
 
-const mockUseStoresWithMaps = require('../../hooks/useStoresWithMaps').default
+const mockUseStoresWithMaps =
+    require('../../hooks/useStoresWithMaps').useStoresWithMaps
 
 const renderWithProviders = (component: React.ReactElement) => {
     return render(

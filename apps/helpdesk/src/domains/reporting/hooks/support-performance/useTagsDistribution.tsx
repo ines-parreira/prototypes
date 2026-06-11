@@ -9,7 +9,7 @@ import {
 } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { getTagName } from 'domains/reporting/pages/ticket-insights/tags/helpers'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 

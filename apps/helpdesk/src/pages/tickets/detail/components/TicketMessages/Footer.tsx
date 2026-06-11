@@ -2,7 +2,7 @@ import classNamesBind from 'classnames/bind'
 
 import type { TicketMessage } from 'models/ticket/types'
 
-import SourceDetailsFooter from './SourceDetailsFooter'
+import { SourceDetailsFooter } from './SourceDetailsFooter'
 
 import css from './Footer.less'
 
@@ -14,7 +14,7 @@ type Props = {
     isMessageDeleted: boolean
 }
 
-export default function Footer(props: Props) {
+export function Footer(props: Props) {
     const { message, isMessageHidden, isMessageDeleted } = props
     return (
         <div className={classNames(css.footer)}>

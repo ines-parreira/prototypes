@@ -15,15 +15,15 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import type { GorgiasChatAutoResponderReply } from 'models/integration/types/gorgiasChat'
 import { GorgiasChatEmailCaptureType } from 'models/integration/types/gorgiasChat'
 import type { SimulateConversationMessage } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout'
-import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
+import { SaveChangesPrompt } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
 import { ChatAutomationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/components/ChatAutomationCard/ChatAutomationCard'
 import { ChatAvailabilityCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/components/ChatAvailabilityCard/ChatAvailabilityCard'
 import { ChatEmailCaptureCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/components/ChatEmailCaptureCard/ChatEmailCaptureCard'

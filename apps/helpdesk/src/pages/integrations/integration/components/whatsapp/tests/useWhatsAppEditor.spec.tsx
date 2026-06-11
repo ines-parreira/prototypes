@@ -11,9 +11,9 @@ import { TicketChannel } from 'business/types/ticket'
 import type { MacroAction } from 'models/macroAction/types'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 
-import useWhatsAppEditor from '../useWhatsAppEditor'
+import { useWhatsAppEditor } from '../useWhatsAppEditor'
 import * as whatsAppUtils from '../utils'
-import WhatsAppEditorProvider from '../WhatsAppEditorProvider'
+import { WhatsAppEditorProvider } from '../WhatsAppEditorProvider'
 
 const mockStore = configureMockStore([thunk])
 

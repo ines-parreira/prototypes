@@ -1,5 +1,5 @@
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import css from './GorgiasChatIntegrationLanguagesTable.less'
 

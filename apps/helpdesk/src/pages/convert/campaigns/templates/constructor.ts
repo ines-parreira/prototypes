@@ -8,7 +8,7 @@ import type { DiscountCode } from 'models/discountCodes/types'
 import type { IntegrationDataItem } from 'models/integration/types'
 import { isProductAvailable } from 'pages/convert/campaigns/utils/checkProductAvailability'
 import { transformProductToCampaignAttachment } from 'pages/convert/campaigns/utils/transformProductToCampaignAttachment'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 
 import type { CampaignConfiguration, CampaignTemplate } from './types'
 

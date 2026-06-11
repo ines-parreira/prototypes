@@ -38,4 +38,4 @@ export const usePropagateError = (path: string, hasError: boolean) => {
     }, [path, hasError, hadError, setError])
 }
 
-export default CancelOrderFlowViewContext
+export { CancelOrderFlowViewContext }

@@ -6,8 +6,8 @@ import { Popover } from 'reactstrap'
 import { useAppNode } from 'appNode'
 import { ModalContext } from 'pages/common/components/modal/Modal'
 
-import Button from './Button'
-import TourTooltip from './TourTooltip'
+import { DefaultExportButton as Button } from './Button'
+import { TourTooltip } from './TourTooltip'
 
 import css from './ButtonPopover.less'
 
@@ -29,7 +29,7 @@ type Props = {
     toggleGuard?: (e: MouseEvent<any, globalThis.MouseEvent>) => boolean
 }
 
-export default function ButtonPopover({
+export function ButtonPopover({
     isActive = false,
     isDisabled = false,
     isOpen = false,

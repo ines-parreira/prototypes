@@ -16,7 +16,7 @@ import {
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 
 import {
@@ -29,7 +29,7 @@ import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.
 import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
 import { useFileIngestion } from '../../hooks/useFileIngestion'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
-import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
+import { AiAgentOnboardingWizardStepKnowledge } from '../AiAgentOnboardingWizardKnowledge'
 import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 const SHOP_NAME = 'test-shop'

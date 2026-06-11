@@ -12,7 +12,7 @@ interface RequirementTypeInputProps {
     onChange: (value: RequirementType) => void
 }
 
-export default function RequirementTypeInput(props: RequirementTypeInputProps) {
+export function RequirementTypeInput(props: RequirementTypeInputProps) {
     return (
         <div className={props.className}>
             <Label className={css.label}>Field visibility</Label>

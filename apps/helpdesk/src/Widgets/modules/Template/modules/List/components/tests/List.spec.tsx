@@ -7,8 +7,8 @@ import * as ticketFixtures from 'fixtures/ticket'
 import * as widgetsFixtures from 'fixtures/widgets'
 import type { CardTemplate, ListTemplate, Source } from 'models/widget/types'
 
-import List from '../List'
-import UIList from '../views/List'
+import { List } from '../List'
+import { List as UIList } from '../views/List'
 
 const CHILDREN_TEST_ID = 'childrennnn'
 

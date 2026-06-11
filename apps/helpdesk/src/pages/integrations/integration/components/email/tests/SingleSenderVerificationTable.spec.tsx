@@ -5,14 +5,18 @@ import { cleanup, screen } from '@testing-library/react'
 
 import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/emailMigration'
 
-import SingleSenderVerificationTable from '../EmailMigration/SingleSenderVerificationTable'
+import { SingleSenderVerificationTable } from '../EmailMigration/SingleSenderVerificationTable'
 
 const integrations =
     migrationOutboundVerificationUnverifiedSingleSender.integrations
 
 jest.mock(
     'pages/integrations/integration/components/email/EmailMigration/SingleSenderVerificationTableRow',
-    () => () => <div>SingleSenderVerificationTableRowMock</div>,
+    () => ({
+        SingleSenderVerificationTableRow: () => (
+            <div>SingleSenderVerificationTableRowMock</div>
+        ),
+    }),
 )
 
 describe('SingleSenderVerificationTable', () => {

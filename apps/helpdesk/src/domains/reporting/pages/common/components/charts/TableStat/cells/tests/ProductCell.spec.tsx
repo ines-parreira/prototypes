@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import axios from 'axios'
 
-import ProductCell from 'domains/reporting/pages/common/components/charts/TableStat/cells/ProductCell'
+import { ProductCell } from 'domains/reporting/pages/common/components/charts/TableStat/cells/ProductCell'
 
 describe('ProductCell', () => {
     beforeEach(() => {

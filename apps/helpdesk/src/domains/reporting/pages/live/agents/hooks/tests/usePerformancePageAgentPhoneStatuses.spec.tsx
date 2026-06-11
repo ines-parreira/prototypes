@@ -5,7 +5,7 @@ import {
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { usePerformancePageAgentPhoneStatuses } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import * as selectors from 'state/entities/stats/selectors'
 import type { RootState } from 'state/types'
 

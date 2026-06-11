@@ -11,7 +11,7 @@ import React, {
 import classnames from 'classnames'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import { DropdownContext } from './Dropdown'
 
@@ -147,4 +147,6 @@ const DropdownQuickSelect = <T extends boolean | number | string>(
     )
 }
 
-export default forwardRef(DropdownQuickSelect)
+const DefaultExportDropdownQuickSelect = forwardRef(DropdownQuickSelect)
+
+export { DefaultExportDropdownQuickSelect }

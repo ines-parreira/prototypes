@@ -1,7 +1,7 @@
 import { Skeleton } from '@gorgias/axiom'
 
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
 import css from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts/CampaignPerformanceCharts.less'
 import { OverviewMetricConfig } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { usePerformanceTotalStats } from 'domains/reporting/pages/convert/hooks/usePerformanceTotalStats'

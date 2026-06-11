@@ -8,12 +8,16 @@ export const initialState: HelpCenterState = {
     currentId: null,
 }
 
-export default createReducer<HelpCenterState>(initialState, (builder) =>
-    builder
-        .addCase(changeViewLanguage, (state, { payload }) => {
-            state.currentLanguage = payload
-        })
-        .addCase(changeHelpCenterId, (state, { payload }) => {
-            state.currentId = payload
-        }),
+const DefaultExportReducer = createReducer<HelpCenterState>(
+    initialState,
+    (builder) =>
+        builder
+            .addCase(changeViewLanguage, (state, { payload }) => {
+                state.currentLanguage = payload
+            })
+            .addCase(changeHelpCenterId, (state, { payload }) => {
+                state.currentId = payload
+            }),
 )
+
+export { DefaultExportReducer }

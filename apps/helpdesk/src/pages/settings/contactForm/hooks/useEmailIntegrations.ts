@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,

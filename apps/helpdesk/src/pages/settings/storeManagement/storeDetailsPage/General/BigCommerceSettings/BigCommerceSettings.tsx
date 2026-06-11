@@ -13,7 +13,7 @@ export type ShopifySettingsProps = {
     onDeleteIntegration: (integration: BigCommerceIntegration) => void
 }
 
-export default function BigCommerceSettings({
+export function BigCommerceSettings({
     integration,
     onDeleteIntegration,
 }: ShopifySettingsProps) {

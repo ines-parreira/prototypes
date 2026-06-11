@@ -4,11 +4,13 @@ import { Panels } from '@repo/layout'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TicketInfobarPanel from '../TicketInfobarPanel'
+import { TicketInfobarPanel } from '../TicketInfobarPanel'
 
-jest.mock('pages/tickets/detail/TicketInfobarContainer', () => () => (
-    <div>TicketInfobarContainer</div>
-))
+jest.mock('pages/tickets/detail/TicketInfobarContainer', () => ({
+    DefaultExportTicketInfobarContainer: () => (
+        <div>TicketInfobarContainer</div>
+    ),
+}))
 
 describe('TicketInfobarPanel', () => {
     it('should render the ticket infobar', () => {

@@ -11,9 +11,9 @@ import { TicketStatus } from 'business/types/ticket'
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import css from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat.less'
 import { useStatsViewFilters } from 'domains/reporting/pages/common/utils'
-import ViewLink from 'domains/reporting/pages/common/ViewLink'
+import { ViewLink } from 'domains/reporting/pages/common/ViewLink'
 import { ViewField } from 'models/view/types'
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 import { getChannels } from 'services/channels'
 import { EqualityOperator } from 'state/rules/types'
 import { humanizeChannel } from 'state/ticket/utils'
@@ -38,7 +38,7 @@ type Props = {
     statusFilter?: ViewFilter
 }
 
-export default function TicketDetailsStat({
+export function TicketDetailsStat({
     agentName,
     agentId,
     openTickets,

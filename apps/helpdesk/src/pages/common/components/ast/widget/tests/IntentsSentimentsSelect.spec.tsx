@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import _noop from 'lodash/noop'
 
-import IntentsSentimentsSelect from '../IntentsSentimentsSelect'
+import { IntentsSentimentsSelect } from '../IntentsSentimentsSelect'
 
 const minProps: ComponentProps<typeof IntentsSentimentsSelect> = {
     options: ['foo', 'bar'],

@@ -11,7 +11,7 @@ import { mockHandleCallWhisperingHandler } from '@gorgias/helpdesk-mocks'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 
-import MonitoringPhoneCall from '../MonitoringPhoneCall'
+import { MonitoringPhoneCall } from '../MonitoringPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -19,7 +19,7 @@ jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () => ({
         __esModule: true,
-        default: ({
+        VoiceCallCustomerLabel: ({
             customerId,
             phoneNumber,
         }: {
@@ -37,7 +37,7 @@ jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () => ({
         __esModule: true,
-        default: ({ agentId }: { agentId: number }) => (
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <span data-testid="agent-label">Agent {agentId}</span>
         ),
     }),

@@ -219,4 +219,4 @@ const useAiSalesAgentOverviewReportData = () => {
     }
 }
 
-export default useAiSalesAgentOverviewReportData
+export { useAiSalesAgentOverviewReportData }

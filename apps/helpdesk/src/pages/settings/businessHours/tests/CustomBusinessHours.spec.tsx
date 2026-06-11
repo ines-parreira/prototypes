@@ -2,9 +2,9 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 
-import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
-import CustomBusinessHours from '../CustomBusinessHours'
-import ListCustomBusinessHours from '../ListCustomBusinessHours'
+import { AddCustomBusinessHoursModal } from '../AddCustomBusinessHoursModal'
+import { CustomBusinessHours } from '../CustomBusinessHours'
+import { ListCustomBusinessHours } from '../ListCustomBusinessHours'
 
 jest.mock('../AddCustomBusinessHoursModal')
 const AddBusinessHoursModalMock = assumeMock(AddCustomBusinessHoursModal)

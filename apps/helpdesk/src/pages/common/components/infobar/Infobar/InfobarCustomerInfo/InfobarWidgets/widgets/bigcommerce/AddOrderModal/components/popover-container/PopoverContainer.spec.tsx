@@ -9,7 +9,7 @@ import { PopoverContainer } from './PopoverContainer'
 // We don't care about internals of `Dropdown`, just want to render out the children that we pass
 jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     __esModule: true,
-    default: ({ children }: PropsWithChildren<unknown>) => <>{children}</>,
+    Dropdown: ({ children }: PropsWithChildren<unknown>) => <>{children}</>,
 }))
 
 const WrapperComponent = (

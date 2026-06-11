@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import CampaignsStatsFilter from 'domains/reporting/pages/support-performance/revenue/CampaignsStatsFilter'
+import { CampaignsStatsFilter } from 'domains/reporting/pages/support-performance/revenue/CampaignsStatsFilter'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { campaign } from 'fixtures/campaign'
 import { channelConnection } from 'fixtures/channelConnection'

@@ -7,7 +7,7 @@ import { FormGroup } from 'reactstrap'
 import { fromAST } from 'common/utils'
 
 import type { RuleDraft } from '../../../../state/rules/types'
-import Program from '../../../common/components/ast/Program'
+import { Program } from '../../../common/components/ast/Program'
 import type { RuleItemActions } from '../types'
 import { RulesTriggerSelect } from './RulesTriggerSelect'
 
@@ -48,4 +48,4 @@ function RuleEditor({
     )
 }
 
-export default RuleEditor
+export { RuleEditor }

@@ -240,7 +240,7 @@ describe('<Access/>', () => {
 
         jest.spyOn(
             require('../CustomSsoProviders'),
-            'default',
+            'CustomSsoProviders',
         ).mockImplementation(({ setShowModal }: any) => {
             React.useEffect(() => setShowModal(true), [setShowModal])
             return null

@@ -7,7 +7,7 @@ import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import { CONVERT_SHOPIFY_TRIGGERS } from 'pages/convert/campaigns/constants/triggers'
 import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
@@ -155,4 +155,4 @@ const CampaignIncognitoVisitorsSwitch: FC<Props> = ({ triggers, onChange }) => {
     )
 }
 
-export default CampaignIncognitoVisitorsSwitch
+export { CampaignIncognitoVisitorsSwitch }

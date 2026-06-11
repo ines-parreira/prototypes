@@ -58,5 +58,5 @@ const TopProductItemSkeleton = () => {
     )
 }
 
-export default TopProductItem
+export { TopProductItem }
 export { TopProductItemSkeleton }

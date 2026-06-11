@@ -7,16 +7,17 @@ import { TransferType } from './types'
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>Agent Label (ID: {agentId})</div>
         ),
+    }),
 )
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
-    () =>
-        ({
+    () => ({
+        VoiceCallCustomerLabel: ({
             phoneNumber,
             customerName,
             customerId,
@@ -27,6 +28,7 @@ jest.mock(
                 {showBothNameAndPhone && ` (${phoneNumber})`}
             </div>
         ),
+    }),
 )
 
 describe('<TransferTargetLabel />', () => {

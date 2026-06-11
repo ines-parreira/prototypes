@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import AIAutofill from '../AIAutofill'
+import { AIAutofill } from '../AIAutofill'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)

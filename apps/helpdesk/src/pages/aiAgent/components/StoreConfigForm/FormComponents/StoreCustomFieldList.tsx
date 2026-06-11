@@ -1,7 +1,7 @@
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import type { CustomField } from 'custom-fields/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './CustomFieldsFormComponent.less'
 

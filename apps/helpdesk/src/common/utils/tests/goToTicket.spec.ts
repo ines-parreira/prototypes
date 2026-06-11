@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 
-import goToTicket from 'common/utils/goToTicket'
+import { goToTicket } from 'common/utils/goToTicket'
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),

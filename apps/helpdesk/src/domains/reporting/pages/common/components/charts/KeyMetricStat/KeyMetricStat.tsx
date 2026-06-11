@@ -41,4 +41,4 @@ const KeyMetricStat = ({ data, config, meta, loading }: Props) => {
     )
 }
 
-export default KeyMetricStat
+export { KeyMetricStat }

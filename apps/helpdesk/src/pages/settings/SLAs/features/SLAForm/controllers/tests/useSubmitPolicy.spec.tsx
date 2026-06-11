@@ -15,7 +15,7 @@ import {
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type { SLAFormValues } from '../useFormValues'
-import useSubmitPolicy from '../useSubmitPolicy'
+import { useSubmitPolicy } from '../useSubmitPolicy'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),

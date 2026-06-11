@@ -2,7 +2,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import BusinessHoursPage from '../BusinessHoursPage'
+import { BusinessHoursPage } from '../BusinessHoursPage'
 import { BUSINESS_HOURS_BASE_URL } from '../constants'
 
 jest.mock('@repo/feature-flags')

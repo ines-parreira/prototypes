@@ -6,7 +6,7 @@ import {
     getLast28DaysDateRange,
     useSkillSupportingKnowledgesMetric,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
 import { useSkillEditorStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/context'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'

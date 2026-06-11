@@ -8,7 +8,7 @@ import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
 } from '../constants'
 import { FallbackWorker, fallbackWorkerAdapter } from '../fallbackWorkerAdapter'
-import IncrementalBackoff from '../incrementalBackoff'
+import { IncrementalBackoff } from '../incrementalBackoff'
 import type { WSMessage } from '../types'
 import { BroadcastChannelEvent } from '../types'
 

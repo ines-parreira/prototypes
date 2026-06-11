@@ -13,15 +13,15 @@ import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { EntityType } from 'models/view/types'
-import BlankState from 'pages/common/components/BlankState/BlankState'
-import Loader from 'pages/common/components/Loader/Loader'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { BlankState } from 'pages/common/components/BlankState/BlankState'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import css from 'pages/common/components/ViewTable/Table.less'
-import HeaderCell from 'pages/common/components/ViewTable/Table/HeaderCell'
-import Row from 'pages/common/components/ViewTable/Table/Row'
-import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { HeaderCell } from 'pages/common/components/ViewTable/Table/HeaderCell'
+import { Row } from 'pages/common/components/ViewTable/Table/Row'
+import { ViewSelection } from 'pages/common/components/ViewTable/Table/ViewSelection'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import type { RootState } from 'state/types'
 import type { fetchViewItems } from 'state/views/actions'
@@ -38,7 +38,7 @@ import {
 import type { FetchViewItemsOptions, ViewImmutable } from 'state/views/types'
 import { ViewNavDirection } from 'state/views/types'
 
-import ShowMoreFieldsDropdown from './ShowMoreFieldsDropdown'
+import { ShowMoreFieldsDropdown } from './ShowMoreFieldsDropdown'
 
 type OwnProps = {
     headerRow?: ReactNode
@@ -459,4 +459,6 @@ const connector = connect(
     },
 )
 
-export default connector(TableContainer)
+const DefaultExportTable = connector(TableContainer)
+
+export { DefaultExportTable }

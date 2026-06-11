@@ -13,7 +13,7 @@ import {
     useTheme,
 } from 'core/theme'
 
-import ThemeMenu from '../ThemeMenu'
+import { ThemeMenu } from '../ThemeMenu'
 
 jest.mock(
     '@repo/logging',

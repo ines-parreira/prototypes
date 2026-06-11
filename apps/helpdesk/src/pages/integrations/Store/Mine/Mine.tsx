@@ -8,13 +8,13 @@ import { Button, toast } from '@gorgias/axiom'
 import logoRecharge from 'assets/img/integrations/recharge.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
 import logoYotpo from 'assets/img/integrations/yotpo.png'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { fetchInstalledApps } from 'models/integration/resources'
 import type { AppListItem } from 'models/integration/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { fetchIntegrations } from 'state/integrations/actions'
 import {
     getIntegrationsByTypes,
@@ -22,9 +22,9 @@ import {
 } from 'state/integrations/selectors'
 import type { IntegrationListItem } from 'state/integrations/types'
 
-import Card from '../Card'
-import CardsWrapper from '../CardsWrapper'
-import Loader from '../Loader'
+import { Card } from '../Card'
+import { Category as CardsWrapper } from '../CardsWrapper'
+import { Loader } from '../Loader'
 
 import css from './Mine.less'
 
@@ -32,7 +32,7 @@ type Item = IntegrationListItem | AppListItem
 
 export const LOCAL_STORAGE_KEY = `integrations_connected_warning_discarded`
 
-export default function Mine() {
+export function Mine() {
     useTitle('My apps')
     const dispatch = useAppDispatch()
 

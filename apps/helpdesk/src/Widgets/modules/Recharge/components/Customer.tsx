@@ -5,7 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/recharge.svg'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { renderTemplate } from 'pages/common/utils/template'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

@@ -5,7 +5,7 @@ import { assumeMock, render } from '@repo/testing'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { isLiveCallRinging } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import VoiceCallActivity from 'domains/reporting/pages/voice/components/VoiceCallActivity/VoiceCallActivity'
+import { VoiceCallActivity } from 'domains/reporting/pages/voice/components/VoiceCallActivity/VoiceCallActivity'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'

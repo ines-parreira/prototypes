@@ -8,12 +8,12 @@ import { Collapse } from 'reactstrap'
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { ActionTemplateExecution } from 'config'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
 import { hasContent } from 'state/newMessage/selectors'
 import { getActionTemplate } from 'utils'
 
-import TicketReplyAction from './TicketReplyAction'
+import { DefaultExportTicketReplyAction as TicketReplyAction } from './TicketReplyAction'
 
 import css from './TicketReplyActions.less'
 
@@ -23,7 +23,7 @@ type Props = {
     onDelete: (actionIndex: number, ticketId: number) => void
 }
 
-export default function TicketReplyActions({
+export function TicketReplyActions({
     ticketId,
     appliedMacro,
     onDelete,

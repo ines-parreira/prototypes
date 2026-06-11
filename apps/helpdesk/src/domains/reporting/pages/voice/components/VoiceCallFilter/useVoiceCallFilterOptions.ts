@@ -17,7 +17,7 @@ const FULL_INBOUND_STATUS_FILTER = [
     VoiceCallDisplayStatus.CallbackRequested,
 ]
 
-export default function useVoiceCallFilterOptions(
+export function useVoiceCallFilterOptions(
     onFilterSelect: (value: VoiceCallFilterOptions) => void,
 ) {
     const [selectedDirection, setSelectedDirection] = useState(

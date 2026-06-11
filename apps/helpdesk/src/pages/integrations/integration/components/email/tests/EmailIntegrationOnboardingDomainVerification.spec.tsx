@@ -5,12 +5,12 @@ import { screen } from '@testing-library/react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import PromptModal from 'pages/common/components/PromptModal'
+import { PromptModal } from 'pages/common/components/PromptModal'
 
-import EmailIntegrationOnboardingButtons from '../CustomerOnboarding/EmailIntegrationOnboardingButtons'
-import EmailIntegrationOnboardingDomainVerification from '../CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
-import EmailDomainVerificationContent from '../EmailDomainVerification/EmailDomainVerificationContent'
-import useDomainVerification from '../EmailDomainVerification/useDomainVerification'
+import { EmailIntegrationOnboardingButtons } from '../CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import { EmailIntegrationOnboardingDomainVerification } from '../CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
+import { EmailDomainVerificationContent } from '../EmailDomainVerification/EmailDomainVerificationContent'
+import { useDomainVerification } from '../EmailDomainVerification/useDomainVerification'
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 
 jest.mock('pages/common/components/PromptModal')

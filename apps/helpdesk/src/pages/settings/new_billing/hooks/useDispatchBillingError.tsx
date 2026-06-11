@@ -33,4 +33,4 @@ const useDispatchBillingError = (contactBilling: ContactBilling) => {
     )
 }
 
-export default useDispatchBillingError
+export { useDispatchBillingError }

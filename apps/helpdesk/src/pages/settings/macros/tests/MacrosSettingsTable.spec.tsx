@@ -10,8 +10,8 @@ import { useLocation, useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
 
@@ -35,8 +35,12 @@ jest.mock('reactstrap', () => {
     }
 })
 jest.mock('hooks/useHasAgentPrivileges')
-jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
-jest.mock('pages/settings/macros/MoreActions', () => () => 'MoreActionsMock')
+jest.mock('hooks/useGetDateAndTimeFormat', () => ({
+    useGetDateAndTimeFormat: () => 'DD/MM/YYYY',
+}))
+jest.mock('pages/settings/macros/MoreActions', () => ({
+    MoreActions: () => 'MoreActionsMock',
+}))
 
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
     typeof useHasAgentPrivileges
@@ -70,7 +74,7 @@ const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 const mockMutateBulkArchive = jest.fn()
 const mockMutateBulkUnarchive = jest.fn()
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('@tanstack/react-query', () => ({

@@ -6,9 +6,9 @@ import { fireEvent } from '@testing-library/react'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
-import Body from '../Body'
-import Context from '../Context'
-import focusOnNextItem from '../focusOnNextItem'
+import { Body } from '../Body'
+import { DefaultExportContext as Context } from '../Context'
+import { focusOnNextItem } from '../focusOnNextItem'
 
 jest.mock('../focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock

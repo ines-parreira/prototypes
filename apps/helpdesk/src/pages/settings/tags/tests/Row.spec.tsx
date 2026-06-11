@@ -8,8 +8,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { tags } from 'fixtures/tag'
-import useAppDispatch from 'hooks/useAppDispatch'
-import Row from 'pages/settings/tags/Row'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { Row } from 'pages/settings/tags/Row'
 import { cancel, edit, remove, save, select } from 'state/tags/actions'
 
 const mockStore = configureMockStore([thunk])

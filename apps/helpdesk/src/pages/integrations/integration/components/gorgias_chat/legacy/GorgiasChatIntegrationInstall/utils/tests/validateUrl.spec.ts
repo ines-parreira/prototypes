@@ -1,6 +1,6 @@
 import { GorgiasChatInstallationVisibilityConditionOperator } from 'models/integration/types'
 
-import validateUrl from '../validateUrl'
+import { validateUrl } from '../validateUrl'
 
 describe('validateUrl()', () => {
     it('should return "unsupported" for url with hash', () => {

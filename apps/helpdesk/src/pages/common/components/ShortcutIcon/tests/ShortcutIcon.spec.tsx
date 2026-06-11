@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ShortcutIcon from '../ShortcutIcon'
+import { ShortcutIcon } from '../ShortcutIcon'
 
 describe('<ShortcutIcon />', () => {
     it('should render an icon', () => {

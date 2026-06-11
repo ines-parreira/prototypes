@@ -4,7 +4,7 @@ import { useParams } from 'react-router'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 import { useShopNameResolution } from '../useShopNameResolution'
 
@@ -16,7 +16,7 @@ jest.mock('react-router', () => ({
 // Mock the hooks
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStoreIntegrations: jest.fn(),
 }))
 const mockedUseStoreIntegrations = jest.mocked(useStoreIntegrations)
 

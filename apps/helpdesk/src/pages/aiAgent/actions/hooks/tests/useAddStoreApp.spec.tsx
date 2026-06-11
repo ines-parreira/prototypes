@@ -7,7 +7,7 @@ import type { Integration } from 'models/integration/types'
 import { useUpsertStoreApps } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useAddStoreApp from '../useAddStoreApp'
+import { useAddStoreApp } from '../useAddStoreApp'
 
 const queryClient = mockQueryClient()
 

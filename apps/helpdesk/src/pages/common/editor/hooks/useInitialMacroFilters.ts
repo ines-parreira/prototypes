@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { MacrosProperties } from 'models/macro/types'
 import { getMacroParametersOptions } from 'state/macro/selectors'
 import { getTicket } from 'state/ticket/selectors'
 
-export default function useInitialMacroFilters() {
+export function useInitialMacroFilters() {
     const ticket = useAppSelector(getTicket)
     const macroFilterOptions = useAppSelector(getMacroParametersOptions)
 

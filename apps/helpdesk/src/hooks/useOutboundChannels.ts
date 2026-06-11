@@ -5,8 +5,8 @@ import { uniq } from 'lodash'
 
 import { PhoneUseCase } from 'business/twilio'
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { isSource, isTicketMessageSourceType } from 'models/ticket/predicates'
@@ -90,7 +90,7 @@ export const LEGACY_SOURCES_WITH_INITIATION: TicketMessageSourceType[] = [
     TicketMessageSourceType.WhatsAppMessage,
 ]
 
-export default function useOutboundChannels(): {
+export function useOutboundChannels(): {
     channels: Array<Channel | TicketMessageSourceType>
     selectChannel: (channel: Maybe<Channel | TicketMessageSourceType>) => void
     selectedChannel: Maybe<Channel | TicketMessageSourceType>

@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Caption from './Caption'
+import { Caption } from './Caption'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Caption',

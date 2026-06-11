@@ -6,9 +6,9 @@ import { Table } from 'reactstrap'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import { activateRule, reorderRules } from '../../../../models/rule/resources'
 import {
@@ -17,8 +17,8 @@ import {
 } from '../../../../state/entities/rules/actions'
 import type { Rule, RulePriority } from '../../../../state/rules/types'
 import { RuleLimitStatus } from '../../../../state/rules/types'
-import ReactSortable from '../../../common/components/dragging/ReactSortable'
-import RuleRow from './components/RuleRow'
+import { ReactSortable } from '../../../common/components/dragging/ReactSortable'
+import { RuleRow } from './components/RuleRow'
 
 import css from './RulesList.less'
 
@@ -199,5 +199,3 @@ export function RulesList({
         </div>
     )
 }
-
-export default RulesList

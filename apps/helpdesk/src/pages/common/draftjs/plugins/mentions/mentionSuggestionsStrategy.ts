@@ -18,4 +18,4 @@ const mentionSuggestionStrategy =
         )
     }
 
-export default mentionSuggestionStrategy
+export { mentionSuggestionStrategy }

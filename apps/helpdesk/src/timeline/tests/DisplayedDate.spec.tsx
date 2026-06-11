@@ -3,14 +3,14 @@ import { screen } from '@testing-library/react'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 
-import DisplayedDate from '../DisplayedDate'
+import { DisplayedDate } from '../DisplayedDate'
 import type { SortOption } from '../types'
 
 jest.mock('pages/common/utils/DatetimeLabel', () => {
-    return jest.fn(() => <div>Mocked DatetimeLabel</div>)
+    return { DatetimeLabel: jest.fn(() => <div>Mocked DatetimeLabel</div>) }
 })
 
 const DatetimeLabelMock = DatetimeLabel as jest.MockedFunction<

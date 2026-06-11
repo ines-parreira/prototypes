@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Source } from 'models/widget/types'
 import type {
     Button as ButtonType,
@@ -10,15 +10,15 @@ import type {
     OnRemoveButton,
     OnSubmitButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import Modal from 'pages/common/components/modal/Modal'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import {
     removeEditedWidget,
     startWidgetEdition,
     updateCustomActions,
 } from 'state/widgets/actions'
 
-import EditableButton from './Button'
-import Form from './Form'
+import { DefaultExportButton as EditableButton } from './Button'
+import { DefaultExportForm as Form } from './Form'
 
 import css from './Editor.less'
 
@@ -128,5 +128,3 @@ export function Editor({ templatePath, absolutePath, source, buttons }: Props) {
         </>
     )
 }
-
-export default Editor

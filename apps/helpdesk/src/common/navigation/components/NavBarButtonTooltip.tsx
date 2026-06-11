@@ -1,4 +1,4 @@
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import { ShortcutIcon } from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 
 import { NavBarDisplayMode } from '../hooks/useNavBar/context'
 import { useNavBar } from '../hooks/useNavBar/useNavBar'

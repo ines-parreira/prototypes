@@ -4,12 +4,12 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceHelpCenterChannels } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import { useSelfServiceStandaloneContactFormChannels } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 
-import WorkflowsPublisher from '../WorkflowsPublisher'
+import { WorkflowsPublisher } from '../WorkflowsPublisher'
 
 // Mock the hooks
 jest.mock('pages/automate/workflows/hooks/useWorkflowEditor')
@@ -24,16 +24,24 @@ jest.mock('react-router-dom', () => ({
 }))
 
 // Mock child components to simplify testing
-jest.mock('../../EditorDrawerHeader', () => () => <div>EditorDrawerHeader</div>)
-jest.mock('../channels/ChatChannels', () => () => <div>ChatChannels</div>)
-jest.mock('../channels/ContactFormChannels', () => () => (
-    <div>ContactFormChannels</div>
-))
-jest.mock('../channels/HelpCenterChannels', () => () => (
-    <div>HelpCenterChannels</div>
-))
-jest.mock('../helper/NoChannelAlert', () => () => <div>NoChannelsAlert</div>)
-jest.mock('../helper/ChannelLink', () => () => <div>ChannelsLink</div>)
+jest.mock('../../EditorDrawerHeader', () => ({
+    EditorDrawerHeader: () => <div>EditorDrawerHeader</div>,
+}))
+jest.mock('../channels/ChatChannels', () => ({
+    ChatChannels: () => <div>ChatChannels</div>,
+}))
+jest.mock('../channels/ContactFormChannels', () => ({
+    ContactFormChannels: () => <div>ContactFormChannels</div>,
+}))
+jest.mock('../channels/HelpCenterChannels', () => ({
+    HelpCenterChannels: () => <div>HelpCenterChannels</div>,
+}))
+jest.mock('../helper/NoChannelAlert', () => ({
+    NoChannelsAlert: () => <div>NoChannelsAlert</div>,
+}))
+jest.mock('../helper/ChannelLink', () => ({
+    ChannelsLink: () => <div>ChannelsLink</div>,
+}))
 
 const mockSetFlowPublishingInChannels = jest.fn()
 

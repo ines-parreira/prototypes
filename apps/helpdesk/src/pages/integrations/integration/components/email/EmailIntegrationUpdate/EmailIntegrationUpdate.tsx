@@ -8,21 +8,21 @@ import { Col, Container } from 'reactstrap'
 
 import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import EmailGenericModal from 'pages/integrations/integration/components/email/components/EmailGenericModal'
-import EmailIntegrationAddressField from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField'
-import EmailIntegrationButtons from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationButtons'
-import EmailSettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { EmailGenericModal } from 'pages/integrations/integration/components/email/components/EmailGenericModal'
+import { EmailIntegrationAddressField } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationAddressField'
+import { EmailIntegrationButtons } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationButtons'
+import { EmailSettings } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings'
 import { useEmailIntegrationUpdate } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/hooks/useEmailIntegrationUpdate'
-import EmailIntegrationConnectStore from 'pages/integrations/integration/components/email/EmailToStoreMapping/EmailIntegrationConnectStore'
+import { EmailIntegrationConnectStore } from 'pages/integrations/integration/components/email/EmailToStoreMapping/EmailIntegrationConnectStore'
 import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -236,4 +236,4 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
     )
 }
 
-export default EmailIntegrationUpdate
+export { EmailIntegrationUpdate }

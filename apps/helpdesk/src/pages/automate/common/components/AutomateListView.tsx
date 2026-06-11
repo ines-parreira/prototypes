@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import css from './AutomateListView.less'
 
@@ -64,4 +64,4 @@ const AutomateListView = ({
     )
 }
 
-export default AutomateListView
+export { AutomateListView }

@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import type { Magento2Integration } from 'models/integration/types'
 
-import ActionButtons from '../ActionButtons'
+import { ActionButtons } from '../ActionButtons'
 
 const FormWrapper = ({ children }: { children?: React.ReactNode }) => {
     const methods = useForm({

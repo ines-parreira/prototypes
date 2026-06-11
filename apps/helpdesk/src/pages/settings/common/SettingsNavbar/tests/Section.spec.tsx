@@ -7,7 +7,7 @@ import configureStore from 'redux-mock-store'
 import { Navigation } from 'components/Navigation/Navigation'
 import { UserRole } from 'config/types/user'
 
-import Section from '../Section'
+import { Section } from '../Section'
 
 const mockStore = configureStore([])
 

@@ -64,4 +64,4 @@ export const getGorgiasMainThemeAppExtensionId = (): string => {
     }
 }
 
-export default useThemeAppExtensionInstallation
+export { useThemeAppExtensionInstallation }

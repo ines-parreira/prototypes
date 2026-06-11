@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import { IntegrationType } from 'models/integration/constants'
 import * as actions from 'state/integrations/actions'
 
-import StartMigrationIntegrationsTable from '../EmailMigration/StartMigrationIntegrationsTable'
+import { StartMigrationIntegrationsTable } from '../EmailMigration/StartMigrationIntegrationsTable'
 
 jest.spyOn(actions, 'deleteIntegration')
 

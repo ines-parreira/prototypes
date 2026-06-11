@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import TeamAverageTalkTimeCell from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
+import { TeamAverageTalkTimeCell } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell'
 import { useAverageTalkTimeMetric } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import { VOICE_AGENTS_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'
 import { initialState as agentPerformanceInitialState } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'

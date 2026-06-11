@@ -12,13 +12,13 @@ import {
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import MacrosCSVImportPopover from './MacrosCSVImportPopover'
+import { MacrosCSVImportPopover } from './MacrosCSVImportPopover'
 
 export function MacrosCreateDropdown(): JSX.Element {
     const [isImportOpen, setImportOpen] = useState(false)

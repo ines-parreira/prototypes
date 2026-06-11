@@ -8,13 +8,15 @@ import { Route, Router } from 'react-router-dom'
 
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 import { useStoreSelector } from '../useStoreSelector'
 
 export const BASE_PATH = '/app/settings/flows'
 
-jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => jest.fn())
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    useStoreIntegrations: jest.fn(),
+}))
 const useStoreIntegrationsMock = assumeMock(useStoreIntegrations)
 
 const createWrapper =

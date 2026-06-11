@@ -10,8 +10,8 @@ import {
 
 import { reportError } from '@repo/logging'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     ContactForm,
     UpdateSubjectLinesProps,

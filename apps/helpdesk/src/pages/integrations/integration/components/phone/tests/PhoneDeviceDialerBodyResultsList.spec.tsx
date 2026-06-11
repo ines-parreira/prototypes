@@ -6,11 +6,11 @@ import { fireEvent, screen, within } from '@testing-library/react'
 
 import type { UserSearchResult } from 'models/search/types'
 
-import PhoneDeviceDialerBodyResultsList from '../PhoneDeviceDialerBodyResultsList'
+import { PhoneDeviceDialerBodyResultsList } from '../PhoneDeviceDialerBodyResultsList'
 
-jest.mock('pages/common/components/Avatar/Avatar', () => () => (
-    <div data-testid="avatar" />
-))
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    Avatar: () => <div data-testid="avatar" />,
+}))
 
 describe('PhoneDeviceDialerBodyResultsList', () => {
     const mockResults: UserSearchResult[] = [

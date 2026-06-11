@@ -21,7 +21,6 @@ import {
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
     __esModule: true,
-    default: jest.fn(),
     DashboardComponent: jest.fn(),
 }))
 const DashboardComponentMock = assumeMock(DashboardComponent)

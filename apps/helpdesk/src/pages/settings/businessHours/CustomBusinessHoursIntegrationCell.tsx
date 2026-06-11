@@ -1,7 +1,7 @@
 import { LegacyLabel as Label } from '@gorgias/axiom'
 import type { IntegrationType } from '@gorgias/helpdesk-types'
 
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 
 import css from './CustomBusinessHoursIntegrationCell.less'
 
@@ -11,7 +11,7 @@ type Props = {
     type: IntegrationType
 }
 
-export default function CustomBusinessHoursIntegrationCell({
+export function CustomBusinessHoursIntegrationCell({
     name,
     address,
     type,

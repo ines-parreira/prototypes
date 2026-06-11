@@ -10,7 +10,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EDITOR_MODAL_CONTAINER_ID,
@@ -19,8 +19,8 @@ import {
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 
 import { CloseModal } from '../../../articles/CloseModal'
-import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
-import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
+import { HelpCenterEditModal } from '../../../articles/HelpCenterEditModal'
+import { HelpCenterEditor } from '../../../articles/HelpCenterEditor/HelpCenterEditor'
 
 import css from './HelpCenterWizardArticleEditor.less'
 
@@ -200,4 +200,4 @@ const ArticleEditor: React.FC<Props> = ({
     )
 }
 
-export default ArticleEditor
+export { ArticleEditor }

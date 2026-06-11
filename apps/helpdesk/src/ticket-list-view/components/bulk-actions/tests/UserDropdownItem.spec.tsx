@@ -2,9 +2,9 @@ import { render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import UserDropdownItem from '../UserDropdownItem'
+import { UserDropdownItem } from '../UserDropdownItem'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock

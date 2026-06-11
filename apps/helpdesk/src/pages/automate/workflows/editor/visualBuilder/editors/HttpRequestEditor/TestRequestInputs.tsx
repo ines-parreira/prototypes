@@ -3,10 +3,10 @@ import React, { useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './TestRequestInputs.less'
 
@@ -97,4 +97,4 @@ const TestRequestInputs = ({
     )
 }
 
-export default TestRequestInputs
+export { TestRequestInputs }

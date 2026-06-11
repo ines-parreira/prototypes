@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import RelativeTime from '../RelativeTime'
+import { RelativeTime } from '../RelativeTime'
 
 describe('RelativeTime', () => {
     const startTime = 1708689346000

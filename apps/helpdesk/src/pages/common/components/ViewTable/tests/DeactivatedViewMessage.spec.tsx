@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DeactivatedViewMessage from '../DeactivatedViewMessage'
+import { DeactivatedViewMessage } from '../DeactivatedViewMessage'
 
 describe('<DeactivatedViewMessage/>', () => {
     describe('render()', () => {

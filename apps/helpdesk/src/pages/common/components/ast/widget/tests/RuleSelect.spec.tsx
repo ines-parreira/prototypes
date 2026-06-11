@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import RuleSelect from '../RuleSelect'
+import { RuleSelect } from '../RuleSelect'
 
 describe('<RuleSelect/>', () => {
     it('should display the placeholder when no label is passed', () => {

@@ -5,31 +5,33 @@ import { screen } from '@testing-library/react'
 
 import { PageSection } from 'config/pages'
 import { UserRole } from 'config/types/user'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
-import LegacyPage from 'pages/LegacyPage'
-import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
+import { memoizedWithUserRoleRequired as withUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
+import { DefaultExportLegacyPage as LegacyPage } from 'pages/LegacyPage'
+import { SettingsNavbar } from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 import { AccountFeature } from 'state/currentAccount/types'
 
 import { renderAppSettings } from '../settingsRenderer'
 
-jest.mock('pages/LegacyPage', () =>
-    jest.fn(({ children }) => (
+jest.mock('pages/LegacyPage', () => ({
+    DefaultExportLegacyPage: jest.fn(({ children }) => (
         <>
             <div>LegacyPage</div>
             <div>{children}</div>
         </>
     )),
-)
+}))
 const mockedUserRoleRequiredComponent = jest.fn(() => 'roleContent')
-jest.mock('pages/common/utils/withUserRoleRequired', () =>
-    jest.fn(() => mockedUserRoleRequiredComponent),
-)
+jest.mock('pages/common/utils/withUserRoleRequired', () => ({
+    memoizedWithUserRoleRequired: jest.fn(
+        () => mockedUserRoleRequiredComponent,
+    ),
+}))
 const mockedPageComponent = jest.fn(() => 'paywalledContent')
 const mockedInBetweenFeaturePaywall = jest.fn(() => mockedPageComponent)
-jest.mock('pages/common/utils/withFeaturePaywall', () =>
-    jest.fn(() => mockedInBetweenFeaturePaywall),
-)
+jest.mock('pages/common/utils/withFeaturePaywall', () => ({
+    memoizedWithFeaturePaywall: jest.fn(() => mockedInBetweenFeaturePaywall),
+}))
 
 const mockedApp = assumeMock(LegacyPage)
 const mockedWithUserRoleRequired = assumeMock(withUserRoleRequired)

@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import type { ZendeskIntegrationMeta } from 'models/integration/types'
-import ImportStatusAlert from 'pages/settings/importZendesk/zendesk/ImportStatusAlert'
+import { ImportStatusAlert } from 'pages/settings/importZendesk/zendesk/ImportStatusAlert'
 import {
     failedImport,
     pendingImport,

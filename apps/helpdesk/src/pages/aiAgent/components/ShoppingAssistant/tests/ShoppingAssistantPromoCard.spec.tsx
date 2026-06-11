@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'

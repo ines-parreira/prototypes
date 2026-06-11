@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import classnames from 'classnames'
 
-import Accordion from 'pages/common/components/accordion/Accordion'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
 import { Drawer } from 'pages/common/components/Drawer'
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
@@ -12,10 +12,10 @@ import type {
     LlmTriggeredExecution,
     TemplateConfiguration,
 } from '../types'
-import CollapsableVariables from './ActionEventsCollapsableVariables'
-import ActionEventTitle from './ActionEventTitle'
+import { CollapsableVariables } from './ActionEventsCollapsableVariables'
+import { ActionEventTitle } from './ActionEventTitle'
 import type { ActionStepAccordionItemProps } from './ActionStepAccordionItem'
-import ActionStepAccordionItem from './ActionStepAccordionItem'
+import { ActionStepAccordionItem } from './ActionStepAccordionItem'
 
 import css from './ActionEventSidePanel.less'
 
@@ -29,7 +29,7 @@ type Props = {
     onClose: () => void
 }
 
-export default function ActionEventSidePanel({
+export function ActionEventSidePanel({
     isOpen,
     actionConfiguration,
     execution,

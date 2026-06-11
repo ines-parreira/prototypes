@@ -12,8 +12,8 @@ import { reportError } from '@repo/logging'
 import type { Draft } from 'immer'
 import { produce } from 'immer'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     HelpCenter,
     HelpCenterTranslationSeoMeta,

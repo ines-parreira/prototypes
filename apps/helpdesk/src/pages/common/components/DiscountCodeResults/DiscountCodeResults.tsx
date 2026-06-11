@@ -14,16 +14,16 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import {
     DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
 } from 'models/discountCodes/constants'
 import type { DiscountCode } from 'models/discountCodes/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { DefaultExportDiscountCodeCreateModal as DiscountCodeCreateModal } from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
 import { getTicketState } from 'state/ticket/selectors'
@@ -37,7 +37,7 @@ type OwnProps = {
     onResetStoreChoice?: () => void
 }
 
-export default function DiscountCodeResults({
+export function DiscountCodeResults({
     integration,
     onResetStoreChoice,
     onDiscountSelected,

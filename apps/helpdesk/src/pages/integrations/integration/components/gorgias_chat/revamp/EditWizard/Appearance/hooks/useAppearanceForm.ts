@@ -12,7 +12,7 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegrationMeta,

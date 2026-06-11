@@ -35,4 +35,4 @@ const validateUrl = (
     return isValid ? 'valid' : 'invalid'
 }
 
-export default validateUrl
+export { validateUrl }

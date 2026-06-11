@@ -1,6 +1,6 @@
 import type { CustomFieldValue } from 'custom-fields/types'
 
-import isMultiValueEmpty from '../isMultiValueEmpty'
+import { isMultiValueEmpty } from '../isMultiValueEmpty'
 
 describe('isMultiValueEmpty', () => {
     it('should return true for undefined', () => {

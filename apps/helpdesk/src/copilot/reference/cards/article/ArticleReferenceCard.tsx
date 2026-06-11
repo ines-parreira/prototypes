@@ -5,7 +5,7 @@ import type { IconName } from '@gorgias/axiom'
 
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
-import RelativeTime from 'pages/common/components/RelativeTime'
+import { RelativeTime } from 'pages/common/components/RelativeTime'
 
 import { ArticleTypeBadge } from './ArticleTypeBadge'
 import type { ArticleTypeBadgeColor } from './ArticleTypeBadge'

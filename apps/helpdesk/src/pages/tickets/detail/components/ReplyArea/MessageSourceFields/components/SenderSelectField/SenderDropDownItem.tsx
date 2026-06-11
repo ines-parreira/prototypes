@@ -1,8 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { Sender } from 'hooks/useOutboundChannels'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DefaultIntegrationBadge from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultIntegrationBadge } from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'
 
 import css from './SenderDropDownItem.less'
 
@@ -39,4 +39,4 @@ const SenderDropDownItem = ({
     )
 }
 
-export default SenderDropDownItem
+export { SenderDropDownItem }

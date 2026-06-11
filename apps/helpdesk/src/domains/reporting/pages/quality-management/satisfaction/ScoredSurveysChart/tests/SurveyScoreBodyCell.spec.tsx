@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import SurveyScoreBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/SurveyScoreBodyCell'
+import { SurveyScoreBodyCell } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/SurveyScoreBodyCell'
 
 describe('<SurveyScoreBodyCell>', () => {
     it('should render score', () => {

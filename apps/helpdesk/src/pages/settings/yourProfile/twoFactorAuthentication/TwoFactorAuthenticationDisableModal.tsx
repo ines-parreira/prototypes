@@ -6,13 +6,13 @@ import type { AxiosError } from 'axios'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { User } from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { deleteTwoFASecret } from 'models/twoFactorAuthentication/resources'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { DEPRECATED_Modal } from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
-import InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import { update2FAEnabled } from 'state/currentUser/actions'
 import { hasPassword as hasPasswordSelector } from 'state/currentUser/selectors'
 
@@ -26,7 +26,7 @@ export type OwnProps = {
     onSuccess: () => void
 }
 
-export default function TwoFactorAuthenticationDisableModal({
+export function TwoFactorAuthenticationDisableModal({
     user,
     title,
     actionButtonText,

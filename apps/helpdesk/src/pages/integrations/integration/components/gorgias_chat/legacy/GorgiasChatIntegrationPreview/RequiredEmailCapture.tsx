@@ -1,10 +1,10 @@
-import InputPrompt from 'gorgias-design-system/Input/InputPrompt'
+import { InputPrompt } from 'gorgias-design-system/Input/InputPrompt'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from '../../../../../../../config/integrations/gorgias_chat'
-import BotMessages from './BotMessages'
+import { BotMessages } from './BotMessages'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -13,7 +13,7 @@ type Props = {
     language?: string
 }
 
-export default function RequiredEmailCapture({
+export function RequiredEmailCapture({
     language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     name,
 }: Props) {

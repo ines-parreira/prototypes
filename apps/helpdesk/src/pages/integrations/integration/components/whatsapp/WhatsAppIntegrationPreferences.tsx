@@ -9,15 +9,15 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { WhatsAppIntegration } from 'models/integration/types'
 import { isWhatsAppIntegration } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { EmojiTextInput } from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences.less'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+import { PhoneNumberTitle } from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 import {
@@ -29,7 +29,7 @@ type Props = {
     integration: WhatsAppIntegration
 }
 
-export default function WhatsAppIntegrationPreferences({
+export function WhatsAppIntegrationPreferences({
     integration,
 }: Props): JSX.Element {
     const [isInitialized, setIsInitialized] = useState(false)

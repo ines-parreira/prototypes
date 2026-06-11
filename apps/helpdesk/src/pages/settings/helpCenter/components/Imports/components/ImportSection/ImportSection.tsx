@@ -18,15 +18,15 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import settingsCss from 'pages/settings/settings.less'
 
 import { CSV_MIGRATION_PROVIDER_TYPE } from '../CsvColumnMatching/utils'
-import ImportArticlesModal from './components/ImportArticlesModal'
-import MigrationCredentialsModal from './components/MigrationCredentialsModal'
-import MigrationStateModal from './components/MigrationStateModal'
-import ProviderSelectModal from './components/ProviderSelectModal'
+import { ImportArticlesModal } from './components/ImportArticlesModal'
+import { MigrationCredentialsModal } from './components/MigrationCredentialsModal'
+import { MigrationStateModal } from './components/MigrationStateModal'
+import { ProviderSelectModal } from './components/ProviderSelectModal'
 import { csvProviderMeta } from './csv-provider-meta'
 import type {
     AutoOpenSessionLocationState,
@@ -753,5 +753,3 @@ export const ImportSection: React.FC<Props> = ({
         </>
     )
 }
-
-export default ImportSection

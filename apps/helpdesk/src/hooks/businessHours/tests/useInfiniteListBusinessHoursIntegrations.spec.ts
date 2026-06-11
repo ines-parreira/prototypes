@@ -5,7 +5,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { listBusinessHoursIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import useInfiniteListBusinessHoursIntegrations from '../useInfiniteListBusinessHoursIntegrations'
+import { useInfiniteListBusinessHoursIntegrations } from '../useInfiniteListBusinessHoursIntegrations'
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),

@@ -10,7 +10,7 @@ import classnames from 'classnames'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import css from 'pages/common/components/EditableTitle/EditableTitle.less'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 type Props = {
     className?: string
@@ -133,4 +133,8 @@ const EditableTitle = (
     )
 }
 
-export default forwardRef<HTMLInputElement, Props>(EditableTitle)
+const DefaultExportEditableTitle = forwardRef<HTMLInputElement, Props>(
+    EditableTitle,
+)
+
+export { DefaultExportEditableTitle }

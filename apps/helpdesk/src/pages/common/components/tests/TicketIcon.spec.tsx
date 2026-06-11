@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 
-import TicketIcon, { NullTicketIcon } from '../TicketIcon'
+import { NullTicketIcon, TicketIcon } from '../TicketIcon'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

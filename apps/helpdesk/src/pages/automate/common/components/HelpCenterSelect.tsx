@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react'
 
 import type { HelpCenter } from '../../../../models/helpCenter/types'
-import Dropdown from '../../../common/components/dropdown/Dropdown'
-import DropdownBody from '../../../common/components/dropdown/DropdownBody'
-import DropdownItem from '../../../common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from '../../../common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from '../../../common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from '../../../common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'
 
@@ -82,4 +83,4 @@ const HelpCenterSelect = ({
     )
 }
 
-export default HelpCenterSelect
+export { HelpCenterSelect }

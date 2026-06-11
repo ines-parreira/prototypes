@@ -14,9 +14,9 @@ import type { ButtonProps } from '@gorgias/axiom'
 
 import type { WithAppNodeProps } from 'appNode'
 import { withAppNode } from 'appNode'
-import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DEPRECATED_BooleanField } from 'pages/common/forms/DEPRECATED_BooleanField'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { CustomerContextType } from 'providers/infobar/CustomerContext'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
@@ -409,6 +409,8 @@ const connector = connect(
     },
 )
 
-export default connector(
+const DefaultExportActionButton = connector(
     withActionButtonContext(withAppNode(ActionButtonContainer)),
 )
+
+export { DefaultExportActionButton }

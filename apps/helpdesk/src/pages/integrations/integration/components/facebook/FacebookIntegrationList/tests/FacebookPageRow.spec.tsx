@@ -7,7 +7,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 
-import FacebookPageRow from '../FacebookPageRow'
+import { FacebookPageRow } from '../FacebookPageRow'
 
 describe('FacebookPageRow component', () => {
     it('should not render non-facebook integration', () => {

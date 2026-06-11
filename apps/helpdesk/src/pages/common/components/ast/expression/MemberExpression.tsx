@@ -11,7 +11,7 @@ import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import {
     IDENTIFIER_CATEGORIES,
@@ -35,7 +35,7 @@ import { getIconFromUrl } from 'utils'
 
 import { getFieldSchemaDefinitionKey } from '../../ViewTable/Filters/utils'
 import { getSyntaxTreeLeaves } from '../utils'
-import RuleSelect from '../widget/RuleSelect'
+import { RuleSelect } from '../widget/RuleSelect'
 import {
     isMetafieldCategory,
     MetafieldCategoryOptions,
@@ -632,5 +632,3 @@ export function MemberExpression({
         </div>
     )
 }
-
-export default MemberExpression

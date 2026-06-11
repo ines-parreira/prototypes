@@ -7,8 +7,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
-import TicketNavbarDropTarget, {
+import {
     TicketNavbarDropDirection,
+    TicketNavbarDropTarget,
 } from '../TicketNavbarDropTarget'
 
 const MockedDragComponent = ({ isOver }: { isOver?: boolean }) => {

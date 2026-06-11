@@ -11,8 +11,8 @@ import {
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS,
 } from 'config/integrations/shopify'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { ShopifyIntegration } from 'models/integration/types'
 import type { ToolbarContextType } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -34,7 +34,7 @@ import { getTicketState } from 'state/ticket/selectors'
 import { canAddVideoPlayer } from 'utils'
 
 import type { Props as RichFieldProps } from './RichField'
-import RichField from './RichField'
+import { RichField } from './RichField'
 
 type Props = {
     disableOutOfStockProducts?: boolean
@@ -229,4 +229,8 @@ const TicketRichField = (
     )
 }
 
-export default forwardRef<RichField, Props>(TicketRichField)
+const DefaultExportTicketRichField = forwardRef<RichField, Props>(
+    TicketRichField,
+)
+
+export { DefaultExportTicketRichField }

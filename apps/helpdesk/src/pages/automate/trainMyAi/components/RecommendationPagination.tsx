@@ -8,11 +8,7 @@ interface Props {
     onChange: (page: number) => void
 }
 
-export default function RecommendationPagination({
-    page,
-    count,
-    onChange,
-}: Props) {
+export function RecommendationPagination({ page, count, onChange }: Props) {
     return (
         <div className={css.container}>
             {typeof count === 'number' && count > 1 && (

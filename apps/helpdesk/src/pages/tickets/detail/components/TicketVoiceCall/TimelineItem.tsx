@@ -4,7 +4,7 @@ type TimelineItemProps = {
     children: React.ReactNode
 }
 
-export default function TimelineItem({ children }: TimelineItemProps) {
+export function TimelineItem({ children }: TimelineItemProps) {
     return (
         <div className={css.timelineItem}>
             <div className={css.separator}>

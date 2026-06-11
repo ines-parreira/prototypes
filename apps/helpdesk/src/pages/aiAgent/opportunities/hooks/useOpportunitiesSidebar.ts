@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import OpportunitiesSidebarContext from '../context/OpportunitiesSidebarContext'
+import { DefaultExportOpportunitiesSidebarContext as OpportunitiesSidebarContext } from '../context/OpportunitiesSidebarContext'
 
 export function useOpportunitiesSidebar() {
     const ctx = useContext(OpportunitiesSidebarContext)

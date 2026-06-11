@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import closeIcon from 'assets/img/icons/close.svg'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from './ConvertCampaignsNewHomeInfobar.less'
 
@@ -57,4 +57,4 @@ const ConvertCampaignsNewHomeInfobar = ({ integrationId }: Props) => {
     )
 }
 
-export default ConvertCampaignsNewHomeInfobar
+export { ConvertCampaignsNewHomeInfobar }

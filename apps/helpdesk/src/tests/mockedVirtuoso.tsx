@@ -118,4 +118,4 @@ const mockedVirtuoso = {
     TableVirtuoso: forwardRef(TableVirtuoso),
 }
 
-export default mockedVirtuoso
+export { mockedVirtuoso }

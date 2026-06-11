@@ -3,7 +3,7 @@ import { Duration } from '@gorgias/toolkit'
 
 export type SaveState = 'idle' | 'saving' | 'saved'
 
-export default function useSaveState(isSaving: boolean) {
+export function useSaveState(isSaving: boolean) {
     const [saveState, setSaveState] = useState<SaveState>('idle')
 
     useEffect(() => {

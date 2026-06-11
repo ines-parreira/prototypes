@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-export default function WhatsappBusinessManagerLinkButton() {
+export function WhatsappBusinessManagerLinkButton() {
     return (
         <Button
             intent="secondary"

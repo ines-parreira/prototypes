@@ -12,7 +12,7 @@ import {
     JsonLogicOperator,
     ReportIssueVariable,
 } from 'models/selfServiceConfiguration/types'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 type OperatorOption = {

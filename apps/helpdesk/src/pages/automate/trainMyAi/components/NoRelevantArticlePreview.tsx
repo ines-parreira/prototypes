@@ -8,7 +8,7 @@ type Props = {
     helpCenterId?: number
 }
 
-export default function NoRelevantArticlePreview({ helpCenterId }: Props) {
+export function NoRelevantArticlePreview({ helpCenterId }: Props) {
     return (
         <div className={css.container}>
             <p>No relevant articles</p>

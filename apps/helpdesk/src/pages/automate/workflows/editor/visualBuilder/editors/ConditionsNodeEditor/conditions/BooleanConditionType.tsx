@@ -4,7 +4,7 @@ import type {
     ConditionSchema,
     EqualsSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 interface Props {
     condition: EqualsSchema<boolean>

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { cleanup, screen } from '@testing-library/react'
 
 import { providerTutorials } from '../EmailMigration/constants'
-import MigrationTutorialList from '../EmailMigration/MigrationTutorialList'
+import { MigrationTutorialList } from '../EmailMigration/MigrationTutorialList'
 
 describe('MigrationTutorialList', () => {
     const renderComponent = () =>

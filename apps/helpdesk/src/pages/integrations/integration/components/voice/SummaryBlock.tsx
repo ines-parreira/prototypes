@@ -31,4 +31,4 @@ function SummaryBlock({
     )
 }
 
-export default SummaryBlock
+export { SummaryBlock }

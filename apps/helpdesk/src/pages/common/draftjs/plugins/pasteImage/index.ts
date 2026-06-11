@@ -39,4 +39,4 @@ const pasteImagePlugin = (
     }
 }
 
-export default pasteImagePlugin
+export { pasteImagePlugin }

@@ -5,8 +5,9 @@ import { fireEvent } from '@testing-library/react'
 
 import { useListTeams } from 'models/team/queries'
 
-import VoiceIntegrationPreferencesTeamSelect, {
+import {
     NO_TEAM_SELECTED_LABEL,
+    VoiceIntegrationPreferencesTeamSelect,
 } from '../VoiceIntegrationPreferencesTeamSelect'
 
 jest.mock('models/team/queries', () => ({

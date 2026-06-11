@@ -1,3 +1,3 @@
-import HelpCenterCreationWizard from './HelpCenterCreationWizard'
+import { HelpCenterCreationWizard } from './HelpCenterCreationWizard'
 
-export default HelpCenterCreationWizard
+export { HelpCenterCreationWizard }

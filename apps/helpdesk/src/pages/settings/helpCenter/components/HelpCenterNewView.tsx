@@ -19,13 +19,13 @@ import {
 
 import shopify from 'assets/img/integrations/shopify.png'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CreateHelpCenterDto, LocaleCode } from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,
@@ -39,7 +39,7 @@ import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { EMAIL_INTEGRATION_TYPES } from '../../../../constants/integration'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import { useAppDispatch } from '../../../../hooks/useAppDispatch'
 import { SubdomainInput } from '../components/SubdomainSection'
 import {
     HELP_CENTER_BASE_PATH,
@@ -498,4 +498,6 @@ const connector = connect(null, {
     notify: notifyAction,
 })
 
-export default connector(HelpCenterNewView)
+const DefaultExportHelpCenterNewView = connector(HelpCenterNewView)
+
+export { DefaultExportHelpCenterNewView }

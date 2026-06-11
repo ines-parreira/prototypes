@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
+import { useWhatsAppMigration } from 'hooks/useWhatsAppMigration'
 import { WhatsAppCodeVerificationMethod } from 'models/integration/types'
-import FormRow from 'pages/common/forms/FormRow'
-import InputField from 'pages/common/forms/input/InputField'
+import { FormRow } from 'pages/common/forms/FormRow'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { formatAsNationalNumber } from 'pages/phoneNumbers/utils'
-import SettingsContent from 'pages/settings/SettingsContent'
+import { SettingsContent } from 'pages/settings/SettingsContent'
 
-import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
+import { WhatsAppMigrationButtons } from './WhatsAppMigrationButtons'
 
-export default function WhatsAppMigrationVerificationForm(): JSX.Element | null {
+export function WhatsAppMigrationVerificationForm(): JSX.Element | null {
     const migration = useWhatsAppMigration()
     const [code, setCode] = useState('')
 

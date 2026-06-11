@@ -4,8 +4,8 @@ import { useHasNewViewCountScheduler } from '@repo/views'
 import type { Program } from 'estree'
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
-import pollingManager from 'services/pollingManager'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { pollingManager } from 'services/pollingManager'
 import { CollectionOperator, EqualityOperator } from 'state/rules/types'
 import {
     getActiveView,
@@ -13,7 +13,7 @@ import {
 } from 'state/views/selectors'
 import { getViewFilters } from 'state/views/utils'
 
-export default function usePollingManager() {
+export function usePollingManager() {
     const { value: hasNewScheduler, isLoading } = useHasNewViewCountScheduler()
     const currentUser = useAppSelector((state) => state.currentUser)
     const activeView = useAppSelector(getActiveView)

@@ -19,20 +19,20 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    '../HelpCenterPageWrapper',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => (
-            <div data-testid="HelpCenterPageWrapper">{children}</div>
-        ),
-)
+jest.mock('../HelpCenterPageWrapper', () => ({
+    HelpCenterPageWrapper: ({ children }: { children?: React.ReactNode }) => (
+        <div data-testid="HelpCenterPageWrapper">{children}</div>
+    ),
+}))
 
 jest.mock('../../hooks/useCurrentHelpCenter', () => {
-    return jest.fn(() => ({
-        id: 1,
-        name: 'helpCenter',
-        description: 'description',
-    }))
+    return {
+        useCurrentHelpCenter: jest.fn(() => ({
+            id: 1,
+            name: 'helpCenter',
+            description: 'description',
+        })),
+    }
 })
 
 describe('HelpCenterAutomateView', () => {

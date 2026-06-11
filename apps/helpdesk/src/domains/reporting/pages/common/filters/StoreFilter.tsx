@@ -11,7 +11,7 @@ import {
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
-import Filter from 'domains/reporting/pages/common/components/Filter/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
     emptyFilter,
@@ -25,7 +25,7 @@ import {
     getStoreIntegrations,
 } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Integration } from 'models/integration/types'
 import type { RootState } from 'state/types'
 
@@ -37,7 +37,7 @@ type Props = {
     ) => void
 } & RemovableFilter
 
-export default function StoreFilter({
+export function StoreFilter({
     value = emptyFilter,
     storeIntegrations,
     dispatchUpdate,

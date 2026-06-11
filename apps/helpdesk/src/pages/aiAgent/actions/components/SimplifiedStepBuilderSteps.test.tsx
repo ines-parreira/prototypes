@@ -12,7 +12,7 @@ import { SimplifiedStepBuilderSteps } from './SimplifiedStepBuilderSteps'
 jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
-    default: () => ({
+    useApps: () => ({
         apps: [],
         actionsApps: [],
     }),
@@ -21,7 +21,7 @@ jest.mock(
     'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp',
     () => ({
         __esModule: true,
-        default: () => () => null,
+        useGetAppFromTemplateApp: () => () => null,
     }),
 )
 jest.mock('../providers/StoreTrackstarContext', () => ({
@@ -50,7 +50,7 @@ jest.mock(
     'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer',
     () => ({
         __esModule: true,
-        default: () => null,
+        NodeEditorDrawer: () => null,
     }),
 )
 const mockVisualBuilderDispatch = jest.fn()
@@ -71,49 +71,51 @@ jest.mock(
     () => {
         return {
             __esModule: true,
-            default: jest.fn().mockImplementation(({ isOpen, nodeId }: any) => {
-                if (!isOpen) return null
+            DefaultExportNodeMenu: jest
+                .fn()
+                .mockImplementation(({ isOpen, nodeId }: any) => {
+                    if (!isOpen) return null
 
-                const React = require('react')
-                const { useFlag } = require('@repo/feature-flags')
-                const {
-                    useVisualBuilderContext,
-                } = require('pages/automate/workflows/hooks/useVisualBuilder')
-                const { FeatureFlagKey } = require('@repo/feature-flags')
+                    const React = require('react')
+                    const { useFlag } = require('@repo/feature-flags')
+                    const {
+                        useVisualBuilderContext,
+                    } = require('pages/automate/workflows/hooks/useVisualBuilder')
+                    const { FeatureFlagKey } = require('@repo/feature-flags')
 
-                const liquidTemplateFlag = useFlag(
-                    FeatureFlagKey.LiquidTemplateStep,
-                    {
-                        actions: false,
-                        actionsPlatform: false,
-                        flows: false,
-                    },
-                )
+                    const liquidTemplateFlag = useFlag(
+                        FeatureFlagKey.LiquidTemplateStep,
+                        {
+                            actions: false,
+                            actionsPlatform: false,
+                            flows: false,
+                        },
+                    )
 
-                const { dispatch } = useVisualBuilderContext()
+                    const { dispatch } = useVisualBuilderContext()
 
-                // Simulate the menu structure
-                return React.createElement(
-                    'div',
-                    { 'data-testid': 'node-menu' },
-                    // Show liquid template if flag is enabled for actions
-                    liquidTemplateFlag?.actions
-                        ? React.createElement(
-                              'div',
-                              {
-                                  onClick: () => {
-                                      dispatch({
-                                          type: 'INSERT_LIQUID_TEMPLATE_NODE',
-                                          beforeNodeId: nodeId,
-                                      })
+                    // Simulate the menu structure
+                    return React.createElement(
+                        'div',
+                        { 'data-testid': 'node-menu' },
+                        // Show liquid template if flag is enabled for actions
+                        liquidTemplateFlag?.actions
+                            ? React.createElement(
+                                  'div',
+                                  {
+                                      onClick: () => {
+                                          dispatch({
+                                              type: 'INSERT_LIQUID_TEMPLATE_NODE',
+                                              beforeNodeId: nodeId,
+                                          })
+                                      },
+                                      'data-testid': 'liquid-template-option',
                                   },
-                                  'data-testid': 'liquid-template-option',
-                              },
-                              'Liquid Template',
-                          )
-                        : null,
-                )
-            }),
+                                  'Liquid Template',
+                              )
+                            : null,
+                    )
+                }),
         }
     },
 )

@@ -1,16 +1,20 @@
 import { combineReducers } from 'redux'
 
-import articlesReducer, {
+import {
     initialState as articlesInitialState,
+    DefaultExportReducer as articlesReducer,
 } from './articles'
-import categoriesReducer, {
+import {
     initialState as categoriesInitialState,
+    DefaultExportReducer as categoriesReducer,
 } from './categories'
-import helpCentersReducer, {
+import {
     initialState as helpCentersInitialState,
+    helpCenterReducer as helpCentersReducer,
 } from './helpCenters'
-import helpCentersAutomationSettingsReducer, {
+import {
     initialState as helpCentersAutomationSettingsInitialState,
+    helpCenterAutomationSettingsReducer as helpCentersAutomationSettingsReducer,
 } from './helpCentersAutomationSettings'
 
 export const initialState = {
@@ -20,9 +24,11 @@ export const initialState = {
     helpCentersAutomationSettings: helpCentersAutomationSettingsInitialState,
 }
 
-export default combineReducers({
+const DefaultExportReducer = combineReducers({
     articles: articlesReducer,
     categories: categoriesReducer,
     helpCenters: helpCentersReducer,
     helpCentersAutomationSettings: helpCentersAutomationSettingsReducer,
 })
+
+export { DefaultExportReducer }

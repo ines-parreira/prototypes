@@ -1,6 +1,6 @@
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 export type ActionSchema<TName extends string = string> = {
     icon: string

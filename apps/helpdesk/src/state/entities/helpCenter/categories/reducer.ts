@@ -24,7 +24,7 @@ export const initialState: HelpCenterCategoriesState = {
     },
 }
 
-export default createReducer<HelpCenterCategoriesState>(
+const DefaultExportReducer = createReducer<HelpCenterCategoriesState>(
     initialState,
     (builder) =>
         builder
@@ -131,3 +131,5 @@ export default createReducer<HelpCenterCategoriesState>(
             // Restores initial state
             .addCase(resetCategories, () => initialState),
 )
+
+export { DefaultExportReducer }

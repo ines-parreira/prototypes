@@ -20,7 +20,7 @@ import {
 } from 'fixtures/customField'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import TicketField from '../TicketField'
+import { DefaultExportTicketField as TicketField } from '../TicketField'
 
 const mockStore = configureMockStore()
 

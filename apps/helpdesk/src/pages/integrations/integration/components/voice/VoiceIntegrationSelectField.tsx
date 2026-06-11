@@ -7,16 +7,17 @@ import { useId } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, Skeleton, toast } from '@gorgias/axiom'
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from 'pages/common/components/dropdown/DropdownItemLabel'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import usePhoneNumbers from '../phone/usePhoneNumbers'
+import { usePhoneNumbers } from '../phone/usePhoneNumbers'
 import { useInfiniteListVoiceIntegrations } from './hooks/useInfiniteListVoiceIntegrations'
 
 import css from './VoiceIntegrationSelectField.less'
@@ -28,7 +29,7 @@ type VoiceIntegrationSelectProps = {
     hiddenIntegrations?: number[]
 }
 
-export default function VoiceIntegrationSelectField({
+export function VoiceIntegrationSelectField({
     value,
     onChange,
     name,

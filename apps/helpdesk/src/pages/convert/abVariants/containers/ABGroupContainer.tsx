@@ -13,10 +13,10 @@ import {
 } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import StartABTestModal from 'pages/convert/abVariants/components/StartABTestModal'
-import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { StartABTestModal } from 'pages/convert/abVariants/components/StartABTestModal'
+import { StopABTestModal } from 'pages/convert/abVariants/components/StopABTestModal'
 import { usePauseABGroup } from 'pages/convert/abVariants/hooks/usePauseABGroup'
 import { useStartABGroup } from 'pages/convert/abVariants/hooks/useStartABGroup'
 import { useStopABGroup } from 'pages/convert/abVariants/hooks/useStopABGroup'
@@ -286,5 +286,3 @@ export const ABGroupContainer: React.FC<Props> = ({
         </div>
     )
 }
-
-export default ABGroupContainer

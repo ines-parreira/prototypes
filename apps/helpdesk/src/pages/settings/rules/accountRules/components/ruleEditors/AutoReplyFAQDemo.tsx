@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { THEME_NAME } from 'core/theme'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 import { FakeFAQArticlePreview } from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import type { AutoReplyFAQSettings } from 'state/rules/types'
 
@@ -58,5 +58,3 @@ export const AutoReplyFAQDemo = ({ settings }: Props) => {
         </div>
     )
 }
-
-export default AutoReplyFAQDemo

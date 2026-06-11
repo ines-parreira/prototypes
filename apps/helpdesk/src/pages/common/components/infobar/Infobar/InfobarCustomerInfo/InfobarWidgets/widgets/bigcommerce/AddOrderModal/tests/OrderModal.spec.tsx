@@ -19,8 +19,9 @@ import {
 import { integrationsState } from 'fixtures/integrations'
 import type { BigCommerceCheckout } from 'models/integration/types'
 import { BigCommerceActionType } from 'models/integration/types'
-import OrderModalRenderWrapper, {
+import {
     OrderModal,
+    OrderModalRenderWrapper,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
 import { useCheckout } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModalHelper'
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'

@@ -29,13 +29,15 @@ jest.mock(
 )
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
-    return jest.fn(() => [
-        {
-            id: 1,
-            type: 'shopType',
-            name: 'shopName',
-        },
-    ])
+    return {
+        useStoreIntegrations: jest.fn(() => [
+            {
+                id: 1,
+                type: 'shopType',
+                name: 'shopName',
+            },
+        ]),
+    }
 })
 jest.mock('react-router-dom', () => {
     return {

@@ -15,9 +15,9 @@ import {
     DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,
     PREVIEW,
 } from 'pages/aiAgent/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import InputField from 'pages/common/forms/input/InputField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 
@@ -276,4 +276,4 @@ const AiAgentPreviewModeSettingsView: React.FC<
     )
 }
 
-export default AiAgentPreviewModeSettingsView
+export { AiAgentPreviewModeSettingsView }

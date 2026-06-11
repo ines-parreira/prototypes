@@ -7,13 +7,13 @@ import { Col, Container, Form, FormGroup, Label, Row } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { EmojiTextInput } from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import { PhoneNumberSelectField } from 'pages/phoneNumbers/PhoneNumberSelectField'
 import css from 'pages/settings/settings.less'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
@@ -133,4 +133,4 @@ function SmsIntegrationCreate({
     )
 }
 
-export default SmsIntegrationCreate
+export { SmsIntegrationCreate }

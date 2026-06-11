@@ -18,7 +18,7 @@ type Props = {
     notification: Notification<EmailDomainPayload>
 } & ContentProps
 
-export default function DomainVerificationNotification({
+export function DomainVerificationNotification({
     notification,
     ...props
 }: Props) {

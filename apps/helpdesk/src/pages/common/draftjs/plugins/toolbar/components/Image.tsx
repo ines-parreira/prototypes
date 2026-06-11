@@ -67,4 +67,4 @@ class Image extends Component<Props> {
     }
 }
 
-export default Image
+export { Image }

@@ -2,13 +2,14 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useShoutoutTopResults } from 'domains/reporting/hooks/useShoutoutTopResults'
-import Shoutout, {
+import {
+    Shoutout,
     SHOUTOUT_HEIGHT_PX,
 } from 'domains/reporting/pages/common/components/Shoutout/Shoutout'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import type { ShoutoutConfig } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
 
-export default function AgentsShoutOut({
+export function AgentsShoutOut({
     useQuery,
     queryOrder,
     metricName,

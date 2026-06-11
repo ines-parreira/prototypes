@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ModalActionsFooter from '../ModalActionsFooter'
+import { ModalActionsFooter } from '../ModalActionsFooter'
 
 describe('<ModalActionsFooter />', () => {
     const minProps = {

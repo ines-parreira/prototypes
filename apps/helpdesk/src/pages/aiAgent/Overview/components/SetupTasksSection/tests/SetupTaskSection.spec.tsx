@@ -32,7 +32,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
-    default: jest.fn(() => []),
+    useSelfServiceChatChannels: jest.fn(() => []),
 }))
 jest.mock(
     'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData',

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -52,4 +52,4 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
     return { customDomainHostnames, isLoading }
 }
 
-export default useHelpCenterCustomDomainHostnames
+export { useHelpCenterCustomDomainHostnames }

@@ -4,12 +4,12 @@ import { act } from '@testing-library/react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as infobarActions from 'state/infobar/actions'
 
 import { useInstagramCommentActions } from '../useInstagramCommentActions'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
 }))

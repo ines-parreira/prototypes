@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { Route, Switch } from 'react-router-dom'
 
-import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
+import { DefaultStatsFilters } from 'domains/reporting/pages/DefaultStatsFilters'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { VoiceOfCustomerNavbarContainer } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer'
 import { ProductInsightsPage } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
@@ -27,22 +27,20 @@ jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
 jest.mock('domains/reporting/pages/DefaultStatsFilters')
 const DefaultStatsFiltersMock = assumeMock(DefaultStatsFilters)
-jest.mock(
-    'pages/LegacyPage',
-    () =>
-        ({
-            content: Content,
-            navbar: Navbar,
-        }: {
-            content?: ComponentType<any>
-            navbar: ComponentType<any>
-        }) => (
-            <>
-                <Navbar />
-                {Content && <Content />}
-            </>
-        ),
-)
+jest.mock('pages/LegacyPage', () => ({
+    DefaultExportLegacyPage: ({
+        content: Content,
+        navbar: Navbar,
+    }: {
+        content?: ComponentType<any>
+        navbar: ComponentType<any>
+    }) => (
+        <>
+            <Navbar />
+            {Content && <Content />}
+        </>
+    ),
+}))
 describe('VoiceOfCustomerRoutes', () => {
     beforeEach(() => {
         ProtectedRouteMock.mockImplementation(({ children }) => (

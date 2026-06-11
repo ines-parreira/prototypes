@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import { ScoredSurveyDataKey } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
-import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
+import { ScoredSurveysTable } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { OrderDirection } from 'models/api/types'
 
 const data = [

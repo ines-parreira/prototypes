@@ -8,7 +8,7 @@ import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 import type { VoiceCall } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
 
-import TicketVoiceCallDuration from '../TicketVoiceCallDuration'
+import { TicketVoiceCallDuration } from '../TicketVoiceCallDuration'
 
 jest.mock('models/voiceCall/utils', () => ({
     isFinalVoiceCallStatus: jest.fn(),

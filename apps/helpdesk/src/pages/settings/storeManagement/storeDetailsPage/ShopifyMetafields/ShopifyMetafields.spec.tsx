@@ -9,11 +9,11 @@ import {
     mockUpdateMetafieldDefinitionHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
-import ShopifyMetafields from './ShopifyMetafields'
+import { ShopifyMetafields } from './ShopifyMetafields'
 
 jest.mock('hooks/useAppSelector')
 

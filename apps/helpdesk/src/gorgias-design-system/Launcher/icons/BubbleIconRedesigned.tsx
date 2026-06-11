@@ -32,4 +32,4 @@ const BubbleIconRedesigned = ({
     </svg>
 )
 
-export default BubbleIconRedesigned
+export { BubbleIconRedesigned }

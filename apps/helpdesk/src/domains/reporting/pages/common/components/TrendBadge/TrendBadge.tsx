@@ -42,7 +42,7 @@ type Props = {
  * @date 2025-09-23
  * @type reporting-ui-kit
  */
-export default function TrendBadge({
+export function TrendBadge({
     className,
     value,
     prevValue,

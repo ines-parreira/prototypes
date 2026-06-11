@@ -9,7 +9,7 @@ import {
     fetchGenericTrend,
     useGenericTrend,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGenericTrend'
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
+import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 
 export const useClickThroughRateTrend = (
     filters: StatsFilters,

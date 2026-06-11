@@ -4,9 +4,9 @@ import React, { useCallback, useMemo, useState } from 'react'
 import type { Map } from 'immutable'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { LightCampaignModal } from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 

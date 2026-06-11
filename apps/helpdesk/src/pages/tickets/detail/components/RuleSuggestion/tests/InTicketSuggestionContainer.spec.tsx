@@ -2,7 +2,7 @@ import { useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import InTicketSuggestionContainer from '../InTicketSuggestionContainer'
+import { InTicketSuggestionContainer } from '../InTicketSuggestionContainer'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -10,9 +10,9 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('pages/common/components/Avatar/Avatar', () => () => (
-    <div>Avatar</div>
-))
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    Avatar: () => <div>Avatar</div>,
+}))
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
     Avatar: () => <div>New Avatar</div>,

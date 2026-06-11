@@ -1,4 +1,4 @@
-import GorgiasChatIntegrationInstallLegacy from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall'
+import { GorgiasChatIntegrationInstall as GorgiasChatIntegrationInstallLegacy } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { ChatSettingsInstallationSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/ChatSettingsInstallationSkeleton'
 import { GorgiasChatIntegrationInstallRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/GorgiasChatIntegrationInstall'

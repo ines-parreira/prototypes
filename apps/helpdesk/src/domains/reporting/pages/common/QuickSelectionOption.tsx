@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import { DropdownItem } from 'reactstrap'
 
 import css from 'domains/reporting/pages/common/QuickSelectionOption.less'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 type Props = {
     className?: string
@@ -49,4 +49,4 @@ const QuickSelectionOption = ({
     </DropdownItem>
 )
 
-export default QuickSelectionOption
+export { QuickSelectionOption }

@@ -3,8 +3,8 @@ import classnames from 'classnames'
 import type { VoiceCallRecordingTranscriptionSpeakersItem } from '@gorgias/helpdesk-queries'
 
 import { getFormattedDurationTranscriptionStart } from 'models/voiceCall/utils'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
 import css from './TranscriptionData.less'
 
@@ -17,7 +17,7 @@ type TranscriptionReplyProps = {
     speakerMapping: Record<string, VoiceCallRecordingTranscriptionSpeakersItem>
 }
 
-export default function TranscriptionReply({
+export function TranscriptionReply({
     channel,
     speaker,
     start,

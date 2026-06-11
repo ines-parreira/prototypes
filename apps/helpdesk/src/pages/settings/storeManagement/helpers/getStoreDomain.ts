@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/constants'
 import type { StoreIntegration } from 'models/integration/types'
 
-export default function getStoreDomain(store: StoreIntegration) {
+export function getStoreDomain(store: StoreIntegration) {
     switch (store.type) {
         case IntegrationType.Magento2:
             return store.meta?.store_url

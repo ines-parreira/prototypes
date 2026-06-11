@@ -10,7 +10,7 @@ import Lightbox from 'react-images'
 
 import { AttachmentEnum } from 'common/types'
 import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import { ContactFormAttachmentContainer } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
 import { DiscountOfferTicketAttachment } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
@@ -426,4 +426,7 @@ function withTicketAttachmentsFlags<P extends { flags?: FeatureFlagsMap }>(
     }
 }
 
-export default withTicketAttachmentsFlags(TicketAttachments)
+const DefaultExportTicketAttachments =
+    withTicketAttachmentsFlags(TicketAttachments)
+
+export { DefaultExportTicketAttachments }

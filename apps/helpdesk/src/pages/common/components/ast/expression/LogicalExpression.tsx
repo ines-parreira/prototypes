@@ -1,6 +1,6 @@
 import type { List, Map } from 'immutable'
 
-import AddSiblingCondition from 'pages/common/components/ast/operations/AddSiblingCondition'
+import { AddSiblingCondition } from 'pages/common/components/ast/operations/AddSiblingCondition'
 import type { SyntaxTree } from 'pages/common/components/ast/utils'
 import { getSyntaxTreeLeaves } from 'pages/common/components/ast/utils'
 import type { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
@@ -17,7 +17,7 @@ type LogicalExpressionProps = {
     schemas: Map<any, any>
 }
 
-export default function LogicalExpression({
+export function LogicalExpression({
     left,
     right,
     rule,

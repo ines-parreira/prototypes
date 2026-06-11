@@ -9,10 +9,10 @@ import Editor from 'draft-js-plugins-editor'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
-import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
-import GuidanceActionTag from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
+import { GuidanceVariableTag } from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
+import { GuidanceActionTag } from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import type {
     DecoratorComponentProps,
     DecoratorStrategyCallback,

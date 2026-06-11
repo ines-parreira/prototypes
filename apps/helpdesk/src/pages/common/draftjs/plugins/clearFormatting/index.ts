@@ -61,4 +61,4 @@ const createClearFormattingPlugin = (): Plugin => {
     }
 }
 
-export default createClearFormattingPlugin
+export { createClearFormattingPlugin }

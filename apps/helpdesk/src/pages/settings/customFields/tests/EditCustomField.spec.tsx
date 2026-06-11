@@ -11,9 +11,9 @@ import {
     productManagedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import EditCustomField from 'pages/settings/customFields/EditCustomField'
+import { EditCustomField } from 'pages/settings/customFields/EditCustomField'
 
-import EditFieldForm from '../components/EditFieldForm'
+import { EditFieldForm } from '../components/EditFieldForm'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -21,9 +21,9 @@ jest.mock('react-router-dom', () => ({
     useParams: () => ({ id: 10 }),
     Link: () => 'link',
 }))
-jest.mock('../components/EditFieldForm', () =>
-    jest.fn(() => <div>They see me rollin', they hatiiin'</div>),
-)
+jest.mock('../components/EditFieldForm', () => ({
+    EditFieldForm: jest.fn(() => <div>They see me rollin', they hatiiin'</div>),
+}))
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
 

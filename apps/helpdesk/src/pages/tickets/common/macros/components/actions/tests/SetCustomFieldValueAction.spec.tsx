@@ -1,17 +1,17 @@
 import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
+import { CustomFieldIdInput } from 'pages/common/components/ast/widget/CustomFieldIdInput'
+import { CustomFieldSelect } from 'pages/common/components/ast/widget/CustomFieldSelect'
 
-import SetCustomFieldAction from '../SetCustomFieldValueAction'
+import { SetCustomFieldValueAction as SetCustomFieldAction } from '../SetCustomFieldValueAction'
 
-jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () =>
-    jest.fn(() => <div>CustomFieldSelect</div>),
-)
-jest.mock('pages/common/components/ast/widget/CustomFieldIdInput', () =>
-    jest.fn(() => <div>CustomFieldIdInput</div>),
-)
+jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () => ({
+    CustomFieldSelect: jest.fn(() => <div>CustomFieldSelect</div>),
+}))
+jest.mock('pages/common/components/ast/widget/CustomFieldIdInput', () => ({
+    CustomFieldIdInput: jest.fn(() => <div>CustomFieldIdInput</div>),
+}))
 
 const mockCustomFieldSelect = assumeMock(CustomFieldSelect)
 const mockCustomFieldIdInput = assumeMock(CustomFieldIdInput)

@@ -13,14 +13,14 @@ import {
     JsonLogicOperator,
     ReportIssueVariable,
 } from 'models/selfServiceConfiguration/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import { SCENARIO_MAX_NUMBER_OF_CONDITIONS_PER_VARIABLE } from '../constants'
-import ReportOrderIssueScenarioConditionOrBlock from './ReportOrderIssueScenarioConditionOrBlock'
-import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
+import { ReportOrderIssueScenarioConditionOrBlock } from './ReportOrderIssueScenarioConditionOrBlock'
+import { ReportOrderIssueScenarioConditionRule } from './ReportOrderIssueScenarioConditionRule'
 import { usePropagateError } from './ReportOrderIssueScenarioFormContext'
 
 import css from './ReportOrderIssueScenarioConditions.less'
@@ -223,4 +223,4 @@ const ReportOrderIssueScenarioConditions = ({ value, onChange }: Props) => {
     )
 }
 
-export default ReportOrderIssueScenarioConditions
+export { ReportOrderIssueScenarioConditions }

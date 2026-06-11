@@ -5,8 +5,8 @@ import type { Map } from 'immutable'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 type UseArticleRecommendationParams = {

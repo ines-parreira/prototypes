@@ -5,9 +5,9 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
-import useVoiceCallTableOrdering from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
+import { useVoiceCallTableOrdering } from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
 import css from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable.less'
-import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
+import { VoiceCallTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import {
     CALL_LIST_PAGE_SIZE,
     MAX_VOICE_CALLS_PAGE_NUMBER,
@@ -16,7 +16,7 @@ import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceC
 import { useVoiceCallList } from 'domains/reporting/pages/voice/hooks/useVoiceCallList'
 import type { VoiceCallFilterOptions } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
-import Pagination from 'pages/common/components/Pagination'
+import { Pagination } from 'pages/common/components/Pagination'
 
 type VoiceCallTableProps = {
     statsFilters: StatsFilters

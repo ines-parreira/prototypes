@@ -4,7 +4,7 @@ import { act, fireEvent, screen } from '@testing-library/react'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import KnowledgeSourcePopover from '../KnowledgeSourcePopover'
+import { DefaultExportKnowledgeSourcePopover as KnowledgeSourcePopover } from '../KnowledgeSourcePopover'
 
 jest.mock('utils', () => ({
     ...jest.requireActual('utils'),

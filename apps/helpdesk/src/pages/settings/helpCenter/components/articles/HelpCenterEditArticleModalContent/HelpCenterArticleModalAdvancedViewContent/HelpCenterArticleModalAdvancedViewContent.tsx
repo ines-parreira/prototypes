@@ -8,7 +8,7 @@ import type {
     LocaleCode,
 } from 'models/helpCenter/types'
 import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import {
@@ -18,9 +18,9 @@ import {
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
 import type { ActionType, OptionItem } from '../../ArticleLanguageSelect'
-import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
-import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
-import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
+import { HelpCenterEditAdvancedArticleForm } from '../../HelpCenterEditAdvancedArticleForm'
+import { HelpCenterEditModalFooter } from '../../HelpCenterEditModalFooter'
+import { HelpCenterEditModalHeader } from '../../HelpCenterEditModalHeader'
 import { HelpCenterArticleModalView } from '../types'
 
 import css from '../HelpCenterEditArticleModalContent.less'
@@ -171,4 +171,4 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     )
 }
 
-export default HelpCenterArticleModalAdvancedViewContent
+export { HelpCenterArticleModalAdvancedViewContent }

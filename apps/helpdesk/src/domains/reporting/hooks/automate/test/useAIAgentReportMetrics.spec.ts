@@ -34,7 +34,7 @@ import { getData as getPerformanceData } from 'domains/reporting/services/agents
 import { formatData as getTicketInsightsData } from 'domains/reporting/services/ticketFieldsReportingService'
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createCsv } from 'utils/file'
 
 const timeSeriesMock = [
@@ -85,7 +85,7 @@ const periodDateTimes = [
     '2024-09-20T00:00:00.000',
 ]
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 // useAgentPerformanceMetrics
 jest.mock('domains/reporting/hooks/support-performance/agents/useAgentsMetrics')

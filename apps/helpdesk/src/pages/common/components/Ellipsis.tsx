@@ -18,4 +18,4 @@ const Ellipsis = ({ title, onClick, className }: Props) => (
     </div>
 )
 
-export default Ellipsis
+export { Ellipsis }

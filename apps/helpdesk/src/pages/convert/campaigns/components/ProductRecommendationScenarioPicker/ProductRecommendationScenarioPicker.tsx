@@ -5,7 +5,7 @@ import { ulid } from 'ulidx'
 
 import { AttachmentEnum } from 'common/types'
 import { useModalManager } from 'hooks/useModalManager'
-import ProductRecommendationModal from 'pages/convert/campaigns/components/ProductRecommendationModal/ProductRecommendationModal'
+import { ProductRecommendationModal } from 'pages/convert/campaigns/components/ProductRecommendationModal/ProductRecommendationModal'
 import { SCENARIO_CONFIG } from 'pages/convert/campaigns/constants/productRecommendationScenarios'
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
@@ -119,4 +119,4 @@ const ProductRecommendationScenarioPicker = ({ onClick }: Props) => {
     )
 }
 
-export default ProductRecommendationScenarioPicker
+export { ProductRecommendationScenarioPicker }

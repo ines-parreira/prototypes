@@ -7,7 +7,7 @@ import type {
     GmailIntegration,
 } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OutlookIntegration } from 'models/integration/types'
 import {
     EmailVerificationStatus,

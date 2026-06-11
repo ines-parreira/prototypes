@@ -1,7 +1,7 @@
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 type PartialDataAlertProps = {
     collectionStartDate: string
@@ -20,4 +20,4 @@ const PartialDataAlert = ({ collectionStartDate }: PartialDataAlertProps) => {
     )
 }
 
-export default PartialDataAlert
+export { PartialDataAlert }

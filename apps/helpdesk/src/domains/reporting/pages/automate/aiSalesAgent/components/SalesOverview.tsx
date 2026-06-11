@@ -21,16 +21,16 @@ import { MIN_DATE_FOR_SALES_AGENT_STATS } from 'domains/reporting/pages/automate
 import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import { useFirstStoreWithAiSalesData } from 'domains/reporting/pages/convert/hooks/useFirstStoreWithAiSalesData'
 import { CampaignStatsFilters } from 'domains/reporting/pages/convert/providers/CampaignStatsFilters'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreIntegrationById } from 'pages/aiAgent/hooks/useStoreIntegrationById'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
@@ -317,4 +317,4 @@ const SalesOverview = () => {
     )
 }
 
-export default SalesOverview
+export { SalesOverview }

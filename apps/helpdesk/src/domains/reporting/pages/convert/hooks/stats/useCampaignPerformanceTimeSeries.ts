@@ -87,4 +87,4 @@ const useCampaignPerformanceTimeSeries = (
     }
 }
 
-export default useCampaignPerformanceTimeSeries
+export { useCampaignPerformanceTimeSeries }

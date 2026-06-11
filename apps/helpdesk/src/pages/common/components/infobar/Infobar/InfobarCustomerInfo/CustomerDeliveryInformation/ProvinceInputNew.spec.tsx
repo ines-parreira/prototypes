@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ProvinceInputNew from './ProvinceInputNew'
+import { ProvinceInputNew } from './ProvinceInputNew'
 
 describe('ProvinceInputNew', () => {
     const defaultProps = {

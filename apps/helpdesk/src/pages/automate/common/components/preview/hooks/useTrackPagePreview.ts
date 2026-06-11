@@ -44,4 +44,4 @@ const useTrackPagePreview = () => {
     return { ref }
 }
 
-export default useTrackPagePreview
+export { useTrackPagePreview }

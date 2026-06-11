@@ -9,7 +9,7 @@ import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasCha
 import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import ReportOrderIssueFlowScenarioPreview from '../ReportOrderIssueFlowScenarioPreview'
+import { ReportOrderIssueFlowScenarioPreview } from '../ReportOrderIssueFlowScenarioPreview'
 
 const mockOnChannelChange = jest.fn()
 
@@ -66,7 +66,12 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServicePreviewContainer',
     () => ({
         __esModule: true,
-        default: ({ channels, channel, onChange, children }: any) => {
+        SelfServicePreviewContainer: ({
+            channels,
+            channel,
+            onChange,
+            children,
+        }: any) => {
             captured.onChange = onChange
             captured.channels = channels
             captured.channel = channel
@@ -84,7 +89,7 @@ jest.mock(
                 return children
             },
         }
-        return { __esModule: true, default: context }
+        return { __esModule: true, SelfServicePreviewContext: context }
     },
 )
 
@@ -92,7 +97,7 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServicePreview',
     () => ({
         __esModule: true,
-        default: () => <div>SelfServicePreview</div>,
+        SelfServicePreview: () => <div>SelfServicePreview</div>,
     }),
 )
 

@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { FormGroup, FormText } from 'reactstrap'
 
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import css from './OrderTotals.less'
 
@@ -102,5 +102,3 @@ export function OrderTotals({
         </dl>
     )
 }
-
-export default OrderTotals

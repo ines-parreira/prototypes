@@ -4,14 +4,14 @@ import { fromJS } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import ActionsPlatformUseCaseTemplatesView from '../ActionsPlatformUseCaseTemplatesView'
-import useApps from '../hooks/useApps'
-import useDeleteActionTemplate from '../hooks/useDeleteActionTemplate'
+import { ActionsPlatformUseCaseTemplatesView } from '../ActionsPlatformUseCaseTemplatesView'
+import { useApps } from '../hooks/useApps'
+import { useDeleteActionTemplate } from '../hooks/useDeleteActionTemplate'
 
 jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')

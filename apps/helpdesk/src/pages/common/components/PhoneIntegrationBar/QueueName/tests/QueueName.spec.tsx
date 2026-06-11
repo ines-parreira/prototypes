@@ -10,7 +10,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { VoiceQueue } from '@gorgias/helpdesk-types'
 
-import QueueName from '../QueueName'
+import { QueueName } from '../QueueName'
 
 jest.mock('@repo/feature-flags')
 

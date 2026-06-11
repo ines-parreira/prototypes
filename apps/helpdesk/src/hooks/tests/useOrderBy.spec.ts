@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import useOrderBy from 'hooks/useOrderBy'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 
 describe('useOrderBy', () => {

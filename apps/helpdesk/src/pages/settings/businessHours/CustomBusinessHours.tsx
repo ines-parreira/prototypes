@@ -2,13 +2,13 @@ import { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import SectionHeader from '../../common/components/SectionHeader/SectionHeader'
-import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'
-import ListCustomBusinessHours from './ListCustomBusinessHours'
+import { SectionHeader } from '../../common/components/SectionHeader/SectionHeader'
+import { AddCustomBusinessHoursModal } from './AddCustomBusinessHoursModal'
+import { ListCustomBusinessHours } from './ListCustomBusinessHours'
 
 import css from './CustomBusinessHours.less'
 
-export default function CustomBusinessHours() {
+export function CustomBusinessHours() {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     return (

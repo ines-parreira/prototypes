@@ -9,7 +9,7 @@ import {
     SourceType,
 } from '@gorgias/ecommerce-storage-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { executeAction } from 'state/infobar/actions'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'

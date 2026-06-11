@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import { TicketChannel } from 'business/types/ticket'
 
-import ChannelBlock from '../ChannelBlock'
+import { ChannelBlock } from '../ChannelBlock'
 import { ChannelConfig } from '../utils'
 
 describe('ChannelBlock Component', () => {

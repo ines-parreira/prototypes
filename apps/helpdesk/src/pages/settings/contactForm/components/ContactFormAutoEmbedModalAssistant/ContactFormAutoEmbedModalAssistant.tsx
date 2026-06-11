@@ -6,12 +6,13 @@ import { useHistory } from 'react-router-dom'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm'
-import PageEmbedmentForm, {
+import {
     EmbedMode,
+    PageEmbedmentForm,
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
     usePageEmbedmentForm,
 } from 'pages/common/components/PageEmbedmentForm'
@@ -178,4 +179,4 @@ const ContactFormAutoEmbedModalAssistant = (
     )
 }
 
-export default ContactFormAutoEmbedModalAssistant
+export { ContactFormAutoEmbedModalAssistant }

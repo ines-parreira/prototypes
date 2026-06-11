@@ -2,11 +2,11 @@ import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { billingState } from 'fixtures/billing'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import { useContactFormAutomationSettings } from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 import type { RootState } from 'state/types'
 
-import ContactFormFlowsBanner from '../ContactFormFlowsBanner'
+import { ContactFormFlowsBanner } from '../ContactFormFlowsBanner'
 
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 const mockUseContactFormAutomationSettings =

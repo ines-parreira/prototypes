@@ -84,27 +84,26 @@ jest.mock(
 )
 jest.mock('pages/common/components/TrialTryModal/TrialTryModal', () => ({
     __esModule: true,
-    default: jest.fn(() => null),
+    TrialTryModal: jest.fn(() => null),
 }))
 jest.mock(
     'pages/common/components/RequestTrialModal/RequestTrialModal',
     () => ({
         __esModule: true,
-        default: jest.fn(() => null),
+        RequestTrialModal: jest.fn(() => null),
     }),
 )
 jest.mock(
     'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal',
     () => ({
         __esModule: true,
-        default: jest.fn(() => null),
+        TrialFinishSetupModal: jest.fn(() => null),
     }),
 )
 jest.mock(
     'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal',
     () => ({
         __esModule: true,
-        default: jest.fn(() => null),
         UpgradePlanModal: jest.fn(() => null),
     }),
 )

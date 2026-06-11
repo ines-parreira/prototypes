@@ -4,7 +4,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type { Integration } from 'models/integration/types'
 
 import type { ChannelWithMetadata } from '../../../../types'
-import ChannelsFilter from '../ChannelsFilter'
+import { ChannelsFilter } from '../ChannelsFilter'
 
 const mockStores = [
     {

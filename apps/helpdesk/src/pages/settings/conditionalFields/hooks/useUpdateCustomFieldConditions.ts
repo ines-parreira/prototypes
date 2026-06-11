@@ -14,7 +14,7 @@ import {
  * - Optimistic update
  * - Query invalidation
  */
-export default function useUpdateCustomFieldConditions() {
+export function useUpdateCustomFieldConditions() {
     const queryClient = useQueryClient()
     const queryKey = queryKeys.customFieldConditions.listCustomFieldConditions()
 

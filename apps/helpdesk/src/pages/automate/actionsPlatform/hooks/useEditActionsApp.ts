@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     actionsAppDefinitionKeys,
     useUpsertActionsApp,
@@ -32,4 +32,4 @@ const useEditActionsApp = (id: string) => {
     return { isLoading, editActionsApp: mutateAsync }
 }
 
-export default useEditActionsApp
+export { useEditActionsApp }

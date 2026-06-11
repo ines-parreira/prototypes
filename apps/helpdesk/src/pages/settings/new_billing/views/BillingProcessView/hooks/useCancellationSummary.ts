@@ -8,7 +8,7 @@ import type {
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 
-import useProductCancellations from '../../../hooks/useProductCancellations'
+import { useProductCancellations } from '../../../hooks/useProductCancellations'
 
 type CancellablePlan = AutomatePlan | SMSOrVoicePlan | ConvertPlan
 

@@ -5,7 +5,7 @@ import { MetafieldsContainer } from '../../modules/Metafields'
 import { CustomerMetafields } from './CustomerMetafields'
 import type { MetafieldProps } from './types'
 
-export default function WrappedCustomerMetafields({
+export function WrappedCustomerMetafields({
     integrationId,
     customerId,
     metafields,

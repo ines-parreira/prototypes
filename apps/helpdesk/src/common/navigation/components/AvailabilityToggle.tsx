@@ -5,8 +5,8 @@ import cn from 'classnames'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { submitSetting } from 'state/currentUser/actions'
 import {
     getCurrentUser,
@@ -17,7 +17,7 @@ import {
 
 import css from './UserMenu.less'
 
-export default function AvailabilityToggle() {
+export function AvailabilityToggle() {
     const dispatch = useAppDispatch()
     const currentUserPreferences = useAppSelector(getPreferences)
     const isAvailable = useAppSelector(getIsAvailable)

@@ -14,7 +14,7 @@ import {
 import { UserSettingType } from '@gorgias/helpdesk-types'
 
 import type { CurrentUser } from '../types'
-import YourProfileContainer from '../YourProfileContainer'
+import { YourProfileContainer } from '../YourProfileContainer'
 
 jest.mock('../components/YourProfileView', () => ({
     YourProfileView: jest.fn(

@@ -1,17 +1,17 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import AutomateView from '../AutomateView'
+import { AutomateView } from '../AutomateView'
 
 // Mock components used within AutomateView
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loading...</div>
-))
-jest.mock(
-    'pages/common/components/SecondaryNavbar/SecondaryNavbar',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
-)
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loading...</div>,
+}))
+jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => ({
+    SecondaryNavbar: ({ children }: { children?: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+}))
 describe('AutomateView', () => {
     test('renders with title and action', () => {
         render(

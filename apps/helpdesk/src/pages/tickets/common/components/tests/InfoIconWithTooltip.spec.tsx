@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import InfoIconWithTooltip from '../InfoIconWithTooltip'
+import { InfoIconWithTooltip } from '../InfoIconWithTooltip'
 
 describe('InfoIconWithTooltip Component', () => {
     const id = 'tooltip-message-feedback'

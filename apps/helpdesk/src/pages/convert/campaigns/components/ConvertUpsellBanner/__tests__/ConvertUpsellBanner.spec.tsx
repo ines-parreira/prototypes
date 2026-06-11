@@ -2,12 +2,14 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ConvertUpsellBanner from '../ConvertUpsellBanner'
+import { ConvertUpsellBanner } from '../ConvertUpsellBanner'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 
 describe('ConvertUpsellBanner', () => {

@@ -7,16 +7,16 @@ import type { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from 'models/integration/types'
 
 import { StoreManagementProvider } from '../../StoreManagementProvider'
-import ChannelsTab from '../Channels/ChannelsTab'
-import useStoreGetter from '../General/hooks/useStoreGetter'
-import StoreDetailsPage from '../StoreDetailsPage'
+import { ChannelsTab } from '../Channels/ChannelsTab'
+import { useStoreGetter } from '../General/hooks/useStoreGetter'
+import { StoreDetailsPage } from '../StoreDetailsPage'
 
 jest.mock('@repo/feature-flags')
 jest.mock('../Channels/ChannelsTab')
 jest.mock('../General/hooks/useStoreGetter')
 jest.mock('../../hooks/useStoresWithMaps', () => ({
     __esModule: true,
-    default: () => ({
+    useStoresWithMaps: () => ({
         enrichedStores: [
             {
                 store: {

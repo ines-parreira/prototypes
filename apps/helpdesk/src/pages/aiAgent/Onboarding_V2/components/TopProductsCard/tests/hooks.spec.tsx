@@ -15,7 +15,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useTopProducts from '../hooks'
+import { useTopProducts } from '../hooks'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock('models/integration/queries')

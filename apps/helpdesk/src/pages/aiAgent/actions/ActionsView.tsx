@@ -12,19 +12,19 @@ import {
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
+import { AutomateViewEmptyStateBanner } from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
-import ActionsList from './components/ActionsList'
-import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
-import BrowseAllActionsButton from './components/BrowseAllActionsButton'
-import CreateCustomActionButton from './components/CreateCustomActionButton'
+import { ActionsList } from './components/ActionsList'
+import { ActionsUseCaseTemplatesCards } from './components/ActionsUseCaseTemplatesCards'
+import { BrowseAllActionsButton } from './components/BrowseAllActionsButton'
+import { CreateCustomActionButton } from './components/CreateCustomActionButton'
 import {
     ACTIONS_DESCRIPTION_INTRO,
     EMPTY_STATE_BANNER_ACTIONS_DESCRIPTION,
 } from './constants'
 import { handleError } from './hooks/errorHandler'
 import { useSupportActionTracking } from './hooks/useSupportActionTracking'
-import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
+import { StoreTrackstarProvider } from './providers/StoreTrackstarProvider'
 
 import css from './ActionsView.less'
 
@@ -132,4 +132,4 @@ const ActionsView = () => {
     )
 }
 
-export default ActionsView
+export { ActionsView }

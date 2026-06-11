@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
@@ -12,8 +12,8 @@ import { useStoreIntegration } from 'pages/integrations/integration/hooks/useSto
 
 import { Tab } from '../../types'
 import { GorgiasChatIntegration } from './GorgiasChatIntegration'
-import useIsQuickRepliesEnabled from './legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
-import useSelfServiceConfiguration from './legacy/hooks/useSelfServiceConfiguration'
+import { useIsQuickRepliesEnabled } from './legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import { useSelfServiceConfiguration } from './legacy/hooks/useSelfServiceConfiguration'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -97,17 +97,29 @@ jest.mock('./GorgiasAutomateChatIntegration', () => ({
 
 jest.mock(
     './legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText',
-    () => () => <div data-testid="translate-text" />,
+    () => ({
+        DefaultExportGorgiasTranslateText: () => (
+            <div data-testid="translate-text" />
+        ),
+    }),
 )
 
 jest.mock(
     './legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
-    () => () => <div data-testid="campaigns-tab" />,
+    () => ({
+        GorgiasChatIntegrationCampaignsComponent: () => (
+            <div data-testid="campaigns-tab" />
+        ),
+    }),
 )
 
 jest.mock(
     './legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies',
-    () => () => <div data-testid="quick-replies-tab" />,
+    () => ({
+        GorgiasChatIntegrationQuickRepliesWithHook: () => (
+            <div data-testid="quick-replies-tab" />
+        ),
+    }),
 )
 
 const mockUseParams = useParams as jest.Mock

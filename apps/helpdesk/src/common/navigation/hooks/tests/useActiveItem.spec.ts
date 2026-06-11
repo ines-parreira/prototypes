@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import type { Location } from 'history'
 import { useLocation } from 'react-router-dom'
 
-import useActiveItem from '../useActiveItem'
+import { useActiveItem } from '../useActiveItem'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

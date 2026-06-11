@@ -10,14 +10,14 @@ import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
 } from 'models/integration/types/gorgiasChat'
-import PageHeader from 'pages/common/components/PageHeader'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 
-import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
-import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
-import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding'
-import GorgiasChatCreationWizardStepInstallation from './components/steps/GorgiasChatCreationWizardStepInstallation'
+import { GorgiasChatCreationWizardStepAutomate } from './components/steps/GorgiasChatCreationWizardStepAutomate'
+import { GorgiasChatCreationWizardStepBasics } from './components/steps/GorgiasChatCreationWizardStepBasics'
+import { GorgiasChatCreationWizardStepBranding } from './components/steps/GorgiasChatCreationWizardStepBranding'
+import { GorgiasChatCreationWizardStepInstallation } from './components/steps/GorgiasChatCreationWizardStepInstallation'
 
 import css from './GorgiasChatCreationWizard.less'
 
@@ -128,4 +128,4 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizard
+export { GorgiasChatCreationWizard }

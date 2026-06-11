@@ -1,12 +1,14 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import PhoneIntegrationBar from '../PhoneIntegrationBar'
+import { PhoneIntegrationBar } from '../PhoneIntegrationBar'
 
-jest.mock('../PhoneIntegrationCallBar', () =>
-    jest.fn(() => <div>PhoneIntegrationCallBar</div>),
-)
-jest.mock('../WrapUpCallBar', () => jest.fn(() => <div>WrapUpCallBar</div>))
+jest.mock('../PhoneIntegrationCallBar', () => ({
+    PhoneIntegrationCallBar: jest.fn(() => <div>PhoneIntegrationCallBar</div>),
+}))
+jest.mock('../WrapUpCallBar', () => ({
+    WrapUpCallBar: jest.fn(() => <div>WrapUpCallBar</div>),
+}))
 
 describe('PhoneIntegrationBar', () => {
     const renderComponent = () => {

@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 
 import type { CardEditFormState } from '../../types'
-import type CardEditForm from './CardEditForm'
-import CardHeader from './CardHeader'
+import type { CardEdit as CardEditForm } from './CardEditForm'
+import { CardHeader } from './CardHeader'
 
 import css from './Card.less'
 
@@ -41,7 +41,7 @@ type Props = {
     isDefaultOpen?: boolean
 }
 
-export default function Card(props: Props) {
+export function Card(props: Props) {
     const {
         extensions: {
             afterTitle,

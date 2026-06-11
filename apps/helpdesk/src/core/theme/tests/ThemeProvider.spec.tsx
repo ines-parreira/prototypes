@@ -7,8 +7,8 @@ import type { LegacyLegacyTheme } from '@gorgias/axiom'
 import { LegacyThemeContext as UIKitThemeContext } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
 
-import AppThemeContext from '../ThemeContext'
-import ThemeProvider from '../ThemeProvider'
+import { DefaultExportThemeContext as AppThemeContext } from '../ThemeContext'
+import { ThemeProvider } from '../ThemeProvider'
 
 describe('ThemeProvider', () => {
     it('should provide the theme context and render its children', () => {

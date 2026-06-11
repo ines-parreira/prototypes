@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AiAgentScope } from 'models/aiAgent/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

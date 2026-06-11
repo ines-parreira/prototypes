@@ -30,4 +30,4 @@ const resolveTicketPropertyValue = (
     )
 }
 
-export default resolveTicketPropertyValue
+export { resolveTicketPropertyValue }

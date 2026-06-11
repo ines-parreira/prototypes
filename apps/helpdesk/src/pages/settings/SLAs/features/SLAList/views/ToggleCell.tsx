@@ -5,15 +5,15 @@ import { useCallback } from 'react'
 import cn from 'classnames'
 
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
 import type { OnTogglePolicyFn, UISLAPolicy } from '../types'
-import CellLinkWrapper from './CellLinkWrapper'
+import { CellLinkWrapper } from './CellLinkWrapper'
 
 import css from './ToggleCell.less'
 
-export default function ToggleCell({
+export function ToggleCell({
     policy,
     bodyCellProps,
     onToggle,

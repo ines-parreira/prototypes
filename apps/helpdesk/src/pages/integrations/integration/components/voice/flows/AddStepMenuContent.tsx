@@ -97,4 +97,4 @@ function AddStepMenuContent({
     )
 }
 
-export default AddStepMenuContent
+export { AddStepMenuContent }

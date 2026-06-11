@@ -3,11 +3,11 @@ import { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import RadioButton from 'pages/common/components/RadioButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
 import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
 import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
@@ -103,4 +103,4 @@ const StopABTestModal: React.FC<Props> = (props) => {
     )
 }
 
-export default StopABTestModal
+export { StopABTestModal }

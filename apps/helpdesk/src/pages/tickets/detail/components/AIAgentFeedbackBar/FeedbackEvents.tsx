@@ -5,10 +5,10 @@ import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
 import { useAIAgentMessageEvents } from '../../hooks/useAIAgentMessageEvents'
-import TicketEvent from './TicketEvent'
+import { TicketEvent } from './TicketEvent'
 import { TicketEventEnum } from './types'
 
 import css from './AIAgentFeedbackBar.less'
@@ -100,4 +100,4 @@ const FeedbackEvents: FC<Props> = ({ messages, shopName }) => {
     )
 }
 
-export default FeedbackEvents
+export { FeedbackEvents }

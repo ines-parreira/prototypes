@@ -15,11 +15,11 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import closeIcon from 'assets/img/icons/close.svg'
 import { getConfigByName } from 'config/views'
 import { EntityType, ViewCategory } from 'models/view/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
-import Search from 'pages/common/components/Search'
-import ViewName from 'pages/common/components/ViewName/ViewName'
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportEditableTitle as EditableTitle } from 'pages/common/components/EditableTitle/EditableTitle'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { DefaultExportViewName as ViewName } from 'pages/common/components/ViewName/ViewName'
+import { EmojiSelect } from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import css from 'pages/common/components/ViewTable/Header.less'
 import type { RootState } from 'state/types'
 import {
@@ -346,4 +346,6 @@ const connector = connect(
     },
 )
 
-export default connector(HeaderContainer)
+const DefaultExportHeader = connector(HeaderContainer)
+
+export { DefaultExportHeader }

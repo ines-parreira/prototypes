@@ -13,7 +13,7 @@ import {
 } from 'fixtures/shopify'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import ShippingPopover from '../ShippingPopover'
+import { ShippingPopover } from '../ShippingPopover'
 
 jest.mock('@repo/logging', () => {
     const segmentTracker: Record<string, unknown> =

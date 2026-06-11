@@ -3,9 +3,9 @@ import React from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
-import { default as TemplateCardComponent } from '../TemplateCard'
+import { TemplateCard as TemplateCardComponent } from '../TemplateCard'
 
 const storyConfig: Meta = {
     title: 'General/TemplateCard/TemplateCard',

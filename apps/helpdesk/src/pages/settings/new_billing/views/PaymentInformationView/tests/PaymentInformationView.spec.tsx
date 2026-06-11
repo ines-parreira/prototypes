@@ -21,10 +21,10 @@ import {
 import type { HelpdeskPlan } from 'models/billing/types'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
-import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
+import { useProductCancellations } from 'pages/settings/new_billing/hooks/useProductCancellations'
 
 import type { PaymentInformationViewProps } from '../PaymentInformationView'
-import PaymentInformationView from '../PaymentInformationView'
+import { PaymentInformationView } from '../PaymentInformationView'
 
 jest.mock('@repo/logging')
 jest.mock('pages/settings/new_billing/hooks/useProductCancellations')

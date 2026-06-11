@@ -4,12 +4,12 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import type { CustomSSOProviders } from 'state/currentAccount/types'
 
-import CustomSsoProviderModal from './components/CustomSsoProviderModal'
-import ProviderItem from './components/ProviderItem'
+import { CustomSsoProviderModal } from './components/CustomSsoProviderModal'
+import { ProviderItem } from './components/ProviderItem'
 import { useCustomSsoProviderModalState } from './hooks'
 import type { CustomSSOProviderData } from './types'
 
@@ -169,4 +169,4 @@ const CustomSsoProviders = ({
     )
 }
 
-export default CustomSsoProviders
+export { CustomSsoProviders }

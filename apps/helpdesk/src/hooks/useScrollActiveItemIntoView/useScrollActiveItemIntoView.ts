@@ -41,4 +41,4 @@ const useScrollActiveItemIntoView = (
     }, [isActive, elementRef, shouldScrollOnScrollParentResize])
 }
 
-export default useScrollActiveItemIntoView
+export { useScrollActiveItemIntoView }

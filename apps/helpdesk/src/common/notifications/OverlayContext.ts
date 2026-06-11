@@ -1,7 +1,9 @@
 import { createContext } from 'react'
 
-import type useNotificationsContext from './hooks/useNotificationsContext'
+import type { useNotificationsContext } from './hooks/useNotificationsContext'
 
 type ContextType = ReturnType<typeof useNotificationsContext>
 
-export default createContext<ContextType | null>(null)
+const DefaultExportOverlayContext = createContext<ContextType | null>(null)
+
+export { DefaultExportOverlayContext }

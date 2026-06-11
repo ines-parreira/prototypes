@@ -5,7 +5,7 @@ import { flatMap } from 'lodash'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import Filter from 'domains/reporting/pages/common/components/Filter/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter/Filter'
 import type { DropdownOption } from 'domains/reporting/pages/types'
 
 const storyConfig: Meta = {

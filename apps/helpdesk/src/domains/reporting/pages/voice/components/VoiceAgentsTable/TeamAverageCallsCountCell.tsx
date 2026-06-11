@@ -8,7 +8,7 @@ import {
 import css from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTable.less'
 import { VOICE_METRIC_COLUMN_WIDTH } from 'domains/reporting/pages/voice/constants/voiceAgents'
 import type { useTotalCallsMetric } from 'domains/reporting/pages/voice/hooks/agentMetrics'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 type TeamAverageCallsCountCellProps = {
     agentsCount: number
@@ -38,4 +38,4 @@ const TeamAverageCallsCountCell = ({
     )
 }
 
-export default TeamAverageCallsCountCell
+export { TeamAverageCallsCountCell }

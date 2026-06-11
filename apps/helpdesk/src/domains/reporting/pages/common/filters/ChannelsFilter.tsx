@@ -8,7 +8,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import {

@@ -28,4 +28,4 @@ const sectionsReducer = createReducer<SectionsState>(initialState, (builder) =>
         }),
 )
 
-export default sectionsReducer
+export { sectionsReducer }

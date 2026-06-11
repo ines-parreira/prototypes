@@ -15,7 +15,7 @@ import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/t
 import type { AlertNotification } from 'state/notifications/types'
 
 import { useSelfServiceConfigurationUpdate } from './useSelfServiceConfigurationUpdate'
-import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegration } from './useSelfServiceStoreIntegration'
 
 const useSelfServiceConfiguration = (
     shopType: string,
@@ -110,4 +110,4 @@ const useSelfServiceConfiguration = (
     }
 }
 
-export default useSelfServiceConfiguration
+export { useSelfServiceConfiguration }

@@ -6,18 +6,18 @@ import { Button } from '@gorgias/axiom'
 
 import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { IntegrationType } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import Detail from 'pages/common/components/ProductDetail'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import AppActionsTab from 'pages/integrations/integration/components/app/AppActionsTab'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Detail } from 'pages/common/components/ProductDetail'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
+import { AppActionsTab } from 'pages/integrations/integration/components/app/AppActionsTab'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 import { assetsUrl } from 'utils'
 
-import Create from './Create'
-import Integration from './Integration'
-import List from './List'
+import { Create } from './Create'
+import { Integration } from './Integration'
+import { List } from './List'
 
 const connectionsPath = 'connections'
 const actionsPath = 'actions'
@@ -164,4 +164,4 @@ function Shopify({ integration, integrations, loading, redirectUri }: Props) {
     )
 }
 
-export default Shopify
+export { Shopify }

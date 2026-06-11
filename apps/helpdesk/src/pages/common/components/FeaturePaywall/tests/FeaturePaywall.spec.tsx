@@ -18,7 +18,7 @@ import type { AvailablePlansOf, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState } from 'state/types'
 
-import FeaturePaywall from '../FeaturePaywall'
+import { FeaturePaywall } from '../FeaturePaywall'
 
 jest.mock('react-images', () => {
     return ({

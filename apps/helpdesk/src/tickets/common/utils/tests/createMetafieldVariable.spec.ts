@@ -1,4 +1,4 @@
-import createMetafieldVariable from '../createMetafieldVariable'
+import { createMetafieldVariable } from '../createMetafieldVariable'
 
 describe('createMetafieldVariable', () => {
     describe('returns undefined for non-matching values', () => {

@@ -62,7 +62,7 @@ jest.mock(
             .mockReturnValue({ isHelpCenterLoading: false, helpCenters: [] }),
     }),
 )
-jest.spyOn(hooks, 'default').mockReturnValue(fromJS(shopifyIntegration))
+jest.spyOn(hooks, 'useAppSelector').mockReturnValue(fromJS(shopifyIntegration))
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData', () => ({
     useGetOnboardingData: jest.fn(),
 }))

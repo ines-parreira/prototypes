@@ -2,24 +2,24 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import type { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSection as DropdownSection } from 'pages/common/components/dropdown/DropdownSection'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import type {
     LanguageCode,
     WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
 import { supportedLanguages } from '../models/workflowConfiguration.types'
-import DeleteWorkflowAction from './DeleteWorkflowAction'
+import { DeleteWorkflowAction } from './DeleteWorkflowAction'
 import { DraftBadge } from './DraftBadge'
 
 import css from './WorkflowsRow.less'
@@ -206,4 +206,4 @@ const WorkflowRow = ({
     )
 }
 
-export default WorkflowRow
+export { WorkflowRow }

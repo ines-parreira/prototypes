@@ -8,7 +8,7 @@ import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallUtils from 'models/voiceCall/types'
 import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
 
-import responseSourceType from '../responseSourceType'
+import { responseSourceType } from '../responseSourceType'
 
 const isVoiceCallSpy = jest.spyOn(voiceCallUtils, 'isVoiceCall')
 

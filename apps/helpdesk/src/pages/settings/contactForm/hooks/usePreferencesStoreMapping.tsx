@@ -13,7 +13,7 @@ interface UsePreferencesStoreMappingProps {
     contactForm: ContactForm
 }
 
-export default function usePreferencesStoreMapping({
+export function usePreferencesStoreMapping({
     contactForm,
 }: UsePreferencesStoreMappingProps) {
     const { mutateAsync: createMapping } = useCreateStoreMapping()

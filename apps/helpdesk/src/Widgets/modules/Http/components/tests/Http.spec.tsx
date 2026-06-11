@@ -3,9 +3,9 @@ import React, { useContext } from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 
-import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { CustomizationContext, Template } from 'Widgets/modules/Template'
 
-import HttpWidget, { customization } from '../Http'
+import { customization, HttpWidget } from '../Http'
 
 jest.mock('Widgets/modules/Template', () => {
     const templateExports: Record<string, unknown> = jest.requireActual(
@@ -14,7 +14,7 @@ jest.mock('Widgets/modules/Template', () => {
     return {
         __esModule: true,
         ...templateExports,
-        default: jest.fn(),
+        Template: jest.fn(),
     }
 })
 const TemplateMock = assumeMock(Template)

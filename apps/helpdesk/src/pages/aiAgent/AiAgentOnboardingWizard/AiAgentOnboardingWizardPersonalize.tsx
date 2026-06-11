@@ -4,12 +4,13 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import WizardFooter, {
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import {
     FOOTER_BUTTONS,
+    WizardFooter,
 } from 'pages/common/components/wizard/WizardFooter'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import { WizardStepSkeleton } from 'pages/common/components/wizard/WizardStepSkeleton'
 
 import { ChatSettingsFormComponent } from '../components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
 import { EmailFormComponent } from '../components/StoreConfigForm/FormComponents/EmailFormComponent'
@@ -22,7 +23,7 @@ import {
     AiAgentChannel,
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
-import useCustomToneOfVoicePreview from '../hooks/useCustomToneOfVoicePreview'
+import { useCustomToneOfVoicePreview } from '../hooks/useCustomToneOfVoicePreview'
 import type { FormValues } from '../types'
 import type { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
 import { HeaderSection } from './HeaderSection'
@@ -286,4 +287,4 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
     )
 }
 
-export default AiAgentOnboardingWizardStepPersonalize
+export { AiAgentOnboardingWizardStepPersonalize }

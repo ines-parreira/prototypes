@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react'
 
 import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import SenderDropDownItem from './SenderDropDownItem'
+import { SenderDropDownItem } from './SenderDropDownItem'
 
 import css from './SenderSelectField.less'
 
@@ -78,4 +79,4 @@ const SenderSelectField = () => {
     )
 }
 
-export default SenderSelectField
+export { SenderSelectField }

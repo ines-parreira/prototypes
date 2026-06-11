@@ -5,8 +5,8 @@ import { sanitizeHtmlMinimal } from '@repo/utils'
 import classNames from 'classnames'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { ControlledCollapsibleDetails } from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
 import { ProductImage } from './ProductImage'
 
@@ -219,4 +219,4 @@ const IntegrationProductView = ({ product }: Props) => {
     )
 }
 
-export default IntegrationProductView
+export { IntegrationProductView }

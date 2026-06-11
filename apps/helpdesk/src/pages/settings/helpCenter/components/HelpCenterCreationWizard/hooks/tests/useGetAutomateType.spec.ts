@@ -1,10 +1,10 @@
 import { renderHook } from '@repo/testing'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { HelpCenterAutomateType } from 'models/helpCenter/types'
 
-import useGetAutomateType from '../useGetAutomateType'
+import { useGetAutomateType } from '../useGetAutomateType'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('hooks/useAppSelector')

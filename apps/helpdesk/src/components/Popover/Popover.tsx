@@ -45,7 +45,7 @@ type Props = {
  * @date 2026-03-11
  * @type ui-kit-migration
  */
-export default function Popover({
+export function Popover({
     buttonProps: {
         className: buttonClassName,
         children: buttonText = 'Confirm',

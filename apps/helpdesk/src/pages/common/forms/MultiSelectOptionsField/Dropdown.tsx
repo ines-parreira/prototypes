@@ -8,8 +8,8 @@ import _min from 'lodash/min'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
 import type { DropdownMenuProps } from './dropdownMenuTypes'
-import Input from './Input'
-import Menu from './Menu'
+import { Input } from './Input'
+import { Menu } from './Menu'
 import type { Option } from './types'
 
 import css from './Dropdown.less'
@@ -33,7 +33,7 @@ type Props = {
     dropdownClassName?: string
 }
 
-export default function Dropdown(props: Props) {
+export function Dropdown(props: Props) {
     const {
         menu: CustomDropdownMenu = DropdownMenu,
         isLoading = false,

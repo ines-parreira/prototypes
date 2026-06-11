@@ -4,7 +4,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import type { RecentChatTicket } from '../../business/types/recentChats'
 import type { Ticket } from '../../models/ticket/types'
-import browserNotification from '../../services/browserNotification'
+import { browserNotification } from '../../services/browserNotification'
 import type { StoreDispatch } from '../types'
 import * as constants from './constants'
 

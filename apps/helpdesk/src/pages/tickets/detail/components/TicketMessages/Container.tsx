@@ -16,18 +16,18 @@ import { IntegrationType } from 'models/integration/constants'
 import { isFailed, isPending } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'
 import { MessageMetadataType } from 'models/ticket/types'
-import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar as DEPRECATED_Avatar } from 'pages/common/components/Avatar/Avatar'
 import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infobar/utils'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
-import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
+import { SimplifiedAIAgentBanner } from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { MessageHeader } from 'tickets/ticket-detail/components/MessageHeader'
 import { withMessageTranslations } from 'tickets/ticket-detail/components/withMessageTranslations'
 
-import AIAgentMessageEvents from './AIAgentMessageEvents'
+import { AIAgentMessageEvents } from './AIAgentMessageEvents'
 import { AiAgentReasoning } from './AiAgentReasoning'
 import { Avatar } from './Avatar'
-import Footer from './Footer'
+import { Footer } from './Footer'
 
 import css from './Container.less'
 
@@ -364,4 +364,8 @@ function withTicketMessageFlags<P extends { flags?: FeatureFlagsMap }>(
     }
 }
 
-export default withTicketMessageFlags(withMessageTranslations(Container))
+const DefaultExportContainer = withTicketMessageFlags(
+    withMessageTranslations(Container),
+)
+
+export { DefaultExportContainer }

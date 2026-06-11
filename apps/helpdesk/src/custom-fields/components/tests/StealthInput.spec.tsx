@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import StealthInput from '../StealthInput'
+import { DefaultExportStealthInput as StealthInput } from '../StealthInput'
 
 describe('<StealthInput />', () => {
     const initialProps = {

@@ -9,7 +9,7 @@ import {
 } from 'models/workflows/queries'
 
 import { handleError } from '../errorHandler'
-import useDeleteAction from '../useDeleteAction'
+import { useDeleteAction } from '../useDeleteAction'
 
 jest.mock('models/workflows/queries')
 const useDeleteWorkflowConfigurationMock = assumeMock(

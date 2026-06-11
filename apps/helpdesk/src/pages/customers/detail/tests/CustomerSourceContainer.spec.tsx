@@ -6,20 +6,21 @@ import { fromJS } from 'immutable'
 
 import { shopifyWidget } from 'fixtures/widgets'
 
-import type SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
+import type { SourceWrapper } from '../../../common/components/sourceWidgets/SourceWrapper'
 import { CustomerSourceContainer } from '../CustomerSourceContainer'
 
-jest.mock(
-    '../../../common/components/sourceWidgets/SourceWrapper',
-    () =>
-        ({ context, identifier }: ComponentProps<typeof SourceWrapper>) => (
-            <div>
-                SourceWrapper
-                <div>context: {context}</div>
-                <div>identifier: {identifier}</div>
-            </div>
-        ),
-)
+jest.mock('../../../common/components/sourceWidgets/SourceWrapper', () => ({
+    SourceWrapper: ({
+        context,
+        identifier,
+    }: ComponentProps<typeof SourceWrapper>) => (
+        <div>
+            SourceWrapper
+            <div>context: {context}</div>
+            <div>identifier: {identifier}</div>
+        </div>
+    ),
+}))
 
 describe('<CustomerSourceContainer />', () => {
     const minProps = {

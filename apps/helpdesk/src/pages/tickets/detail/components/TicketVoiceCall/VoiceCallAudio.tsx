@@ -5,9 +5,9 @@ import {
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
-import DownloadableDeletableRecording from '../PhoneEvent/DownloadableDeletableRecording'
+import { DownloadableDeletableRecording } from '../PhoneEvent/DownloadableDeletableRecording'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -17,7 +17,7 @@ type Props = {
     voiceCall: VoiceCall
 }
 
-export default function VoiceCallAudio({ audio, type, voiceCall }: Props) {
+export function VoiceCallAudio({ audio, type, voiceCall }: Props) {
     if (!!audio.deleted_datetime) {
         return (
             <div

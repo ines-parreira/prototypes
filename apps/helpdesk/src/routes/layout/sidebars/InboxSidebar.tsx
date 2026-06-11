@@ -1,6 +1,6 @@
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import { DefaultExportTicketNavbar as TicketNavbar } from 'pages/tickets/navbar/TicketNavbar'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 
 export function InboxSidebar() {

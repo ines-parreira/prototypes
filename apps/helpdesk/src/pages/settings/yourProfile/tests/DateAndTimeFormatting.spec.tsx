@@ -7,7 +7,7 @@ import {
     DateFormattingSetting,
     TimeFormattingSetting,
 } from 'models/agents/types'
-import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
+import { DateAndTimeFormatting } from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 
 describe('DateAndTimeFormatting', () => {
     it.each([

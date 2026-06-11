@@ -1,6 +1,6 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import { VoiceCallCallerExperienceMetric } from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     AVERAGE_WAIT_TIME_METRIC_HINT,
     AVERAGE_WAIT_TIME_METRIC_TITLE,

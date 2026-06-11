@@ -6,17 +6,17 @@ import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchMigrations } from 'models/integration/resources/email'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
 import { SET_EMAIL_PROVIDER_MIGRATIONS } from 'state/integrations/constants'
 import { getEmailMigrations } from 'state/integrations/selectors'
 
-import SteppedNavBar from '../SteppedNavBar/SteppedNavBar'
-import MigrationEmailForwarding from './MigrationEmailForwarding'
-import MigrationOutboundVerification from './MigrationOutboundVerification'
+import { SteppedNavBar } from '../SteppedNavBar/SteppedNavBar'
+import { MigrationEmailForwarding } from './MigrationEmailForwarding'
+import { MigrationOutboundVerification } from './MigrationOutboundVerification'
 import { getInboundUnverifiedMigrations } from './utils'
 
 enum VerificationStep {
@@ -24,7 +24,7 @@ enum VerificationStep {
     DomainVerification = 1,
 }
 
-export default function MigrationInProgress() {
+export function MigrationInProgress() {
     const [currentStep, setCurrentStep] = useState<VerificationStep | null>(
         null,
     )

@@ -198,4 +198,6 @@ const SourceIcon = (
     )
 }
 
-export default forwardRef(SourceIcon)
+const DefaultExportSourceIcon = forwardRef(SourceIcon)
+
+export { DefaultExportSourceIcon }

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import type { SupportedCategories } from '../../types'
 import { mockImportableFields } from './data'
-import MetafieldsImportList from './MetafieldsImportList'
+import { MetafieldsImportList } from './MetafieldsImportList'
 
 jest.mock('../../hooks/useImportableMetafields')
 

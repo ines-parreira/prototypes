@@ -3,8 +3,9 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import TrendBadge, {
+import {
     DEFAULT_BADGE_TEXT,
+    TrendBadge,
 } from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 

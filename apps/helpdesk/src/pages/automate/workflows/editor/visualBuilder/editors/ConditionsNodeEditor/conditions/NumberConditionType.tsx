@@ -7,7 +7,7 @@ import type {
     NumberSchema,
 } from 'pages/automate/workflows/models/conditions.types'
 import type { WorkflowVariableFormat } from 'pages/automate/workflows/models/variables.types'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 import css from '../ConditionsNodeEditor.less'
 

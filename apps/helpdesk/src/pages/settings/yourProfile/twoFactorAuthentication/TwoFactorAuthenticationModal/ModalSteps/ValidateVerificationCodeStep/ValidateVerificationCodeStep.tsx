@@ -3,7 +3,7 @@ import React from 'react'
 
 import classnames from 'classnames'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 
 import css from '../ModalSteps.less'
@@ -14,7 +14,7 @@ type OwnProps = {
     isUpdate?: boolean
 }
 
-export default function ValidateVerificationCodeStep({
+export function ValidateVerificationCodeStep({
     setVerificationCode,
     setErrorText,
     isUpdate,

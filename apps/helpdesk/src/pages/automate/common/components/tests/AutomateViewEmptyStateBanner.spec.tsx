@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import AutomateViewEmptyStateBanner from '../AutomateViewEmptyStateBanner'
+import { AutomateViewEmptyStateBanner } from '../AutomateViewEmptyStateBanner'
 
 describe('<AutomateViewEmptyStateBanner />', () => {
     it('should render with title, description, and image', () => {

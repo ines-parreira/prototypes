@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/types'
-import TwitterIntegrationDetail from 'pages/integrations/integration/components/twitter/TwitterIntegrationDetail'
+import { TwitterIntegrationDetail } from 'pages/integrations/integration/components/twitter/TwitterIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 describe('<TwitterIntegrationDetail/>', () => {

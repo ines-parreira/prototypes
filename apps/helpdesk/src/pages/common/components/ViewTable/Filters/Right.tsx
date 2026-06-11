@@ -19,18 +19,18 @@ import { Input } from 'reactstrap'
 
 import type { StoreMapping } from '@gorgias/helpdesk-types'
 
-import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
+import { CustomFieldByIdInput } from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
 import type { CustomFieldValue } from 'custom-fields/types'
 import { ViewField } from 'models/view/types'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
-import FilterDropdown from 'pages/common/components/ViewTable/FilterDropdown'
-import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
+import { TagDropdownMenu } from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import { FilterDropdown } from 'pages/common/components/ViewTable/FilterDropdown'
+import { DefaultExportFilterMultiSelectField as FilterMultiSelectField } from 'pages/common/components/ViewTable/FilterMultiSelectField'
 import { getQaScoreDimensionFromObjectPath } from 'pages/common/components/ViewTable/Filters/utils/qaScoreDimensions'
-import DatePicker from 'pages/common/forms/DatePicker'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import { DatePicker } from 'pages/common/forms/DatePicker'
+import { MultiSelectField } from 'pages/common/forms/MultiSelectField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
-import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
+import { TimedeltaPicker } from 'pages/common/forms/TimedeltaPicker'
 import { IntegrationsDetailLabel } from 'pages/common/utils/labels'
 import {
     getDateAndTimeFormatter,
@@ -653,4 +653,6 @@ const connector = connect((state: RootState, ownProps: OwnProps) => {
     }
 })
 
-export default connector(RightContainer)
+const DefaultExportRight = connector(RightContainer)
+
+export { DefaultExportRight }

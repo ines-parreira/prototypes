@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { voiceCallSlaAchievementRateQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import { voiceCallsSlaAchievementRateQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'

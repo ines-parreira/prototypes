@@ -3,8 +3,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import useStoresRequiringScriptTagMigration from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useStoresRequiringScriptTagMigration } from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
@@ -44,7 +44,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 

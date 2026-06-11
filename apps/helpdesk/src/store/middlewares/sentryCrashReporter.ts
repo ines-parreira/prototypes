@@ -37,4 +37,4 @@ const crashReporter: Middleware =
         }
     }
 
-export default crashReporter
+export { crashReporter }

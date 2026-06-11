@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 

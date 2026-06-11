@@ -2,7 +2,7 @@ import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
 
@@ -36,4 +36,4 @@ const DataCell: React.FC<Props> = ({ format, data, isLoading = false }) => {
     return <>{data}</>
 }
 
-export default DataCell
+export { DataCell }

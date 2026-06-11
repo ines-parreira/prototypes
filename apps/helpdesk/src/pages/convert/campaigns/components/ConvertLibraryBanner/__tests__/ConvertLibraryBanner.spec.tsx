@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
-import ConvertLibraryBanner from '../ConvertLibraryBanner'
+import { ConvertLibraryBanner } from '../ConvertLibraryBanner'
 
 describe('ConvertLibraryBanner', () => {
     const integrationId = 123

@@ -6,30 +6,36 @@ import { useLocation } from 'react-router-dom'
 import { createVoiceQueues } from '@gorgias/helpdesk-client'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceQueueCreatePage from '../VoiceQueueCreatePage'
+import { VoiceQueueCreatePage } from '../VoiceQueueCreatePage'
 
 jest.mock('@gorgias/helpdesk-client')
 const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
-jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
-    <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
-))
+jest.mock('../VoiceQueueEditOrCreateForm', () => ({
+    VoiceQueueEditOrCreateForm: () => (
+        <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
+    ),
+}))
 
-jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
-    <button type="submit">{children}</button>
-))
+jest.mock('../VoiceFormSubmitButton', () => ({
+    VoiceFormSubmitButton: ({ children }: any) => (
+        <button type="submit">{children}</button>
+    ),
+}))
 
-jest.mock('../VoiceQueueSettingsForm', () => ({ children, onSubmit }: any) => (
-    <form
-        data-testid="settings-form"
-        onSubmit={(e) => {
-            e.preventDefault()
-            onSubmit({ name: 'Test Queue', id: '123' })
-        }}
-    >
-        {children}
-    </form>
-))
+jest.mock('../VoiceQueueSettingsForm', () => ({
+    VoiceQueueSettingsForm: ({ children, onSubmit }: any) => (
+        <form
+            data-testid="settings-form"
+            onSubmit={(e) => {
+                e.preventDefault()
+                onSubmit({ name: 'Test Queue', id: '123' })
+            }}
+        >
+            {children}
+        </form>
+    ),
+}))
 
 const CurrentPath = () => {
     const location = useLocation()

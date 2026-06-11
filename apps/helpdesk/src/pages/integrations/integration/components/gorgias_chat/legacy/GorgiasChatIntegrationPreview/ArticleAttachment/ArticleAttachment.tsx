@@ -26,4 +26,4 @@ const ArticleAttachment = ({
     )
 }
 
-export default ArticleAttachment
+export { ArticleAttachment }

@@ -13,8 +13,9 @@ import {
 import classnames from 'classnames'
 import { useEffectOnce, useEvent } from '@gorgias/toolkit-react'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Group, {
+import { IconButton } from 'pages/common/components/button/IconButton'
+import {
+    Group,
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
@@ -266,4 +267,8 @@ function NumberInput(
     )
 }
 
-export default forwardRef<HTMLInputElement, Props>(NumberInput)
+const DefaultExportNumberInput = forwardRef<HTMLInputElement, Props>(
+    NumberInput,
+)
+
+export { DefaultExportNumberInput }

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ReportOrderIssueScenarioForm from '../ReportOrderIssueScenarioForm'
+import { ReportOrderIssueScenarioForm } from '../ReportOrderIssueScenarioForm'
 
 describe('<ReportOrderIssueScenarioForm />', () => {
     it('should render component', () => {

@@ -17,7 +17,7 @@ import type {
     TicketNavbarDragObject,
     TicketNavbarDropDirection,
 } from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import type { SectionsState } from 'state/entities/sections/types'
 import type { ViewsState } from 'state/entities/views/types'
 import type { RootState } from 'state/types'
@@ -182,4 +182,8 @@ const connector = connect((state: RootState) => ({
     currentUser: state.currentUser,
 }))
 
-export default connector(TicketNavbarSectionBridgeContainer)
+const DefaultExportTicketNavbarSectionBridge = connector(
+    TicketNavbarSectionBridgeContainer,
+)
+
+export { DefaultExportTicketNavbarSectionBridge }

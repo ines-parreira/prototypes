@@ -75,4 +75,4 @@ const SendCampaignConfirmation = ({
     )
 }
 
-export default SendCampaignConfirmation
+export { SendCampaignConfirmation }

@@ -9,15 +9,16 @@ import configureMockStore from 'redux-mock-store'
 
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import type { SubmitMessageFeedback } from 'models/aiAgentFeedback/types'
 import type { TicketMessage } from 'models/ticket/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import AIAgentMessageFeedback, {
+import {
+    AIAgentMessageFeedback,
     FEEDBACK_MESSAGE_ACTIONS_TEST_ID,
     FEEDBACK_MESSAGE_GUIDANCE_TEST_ID,
     FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID,

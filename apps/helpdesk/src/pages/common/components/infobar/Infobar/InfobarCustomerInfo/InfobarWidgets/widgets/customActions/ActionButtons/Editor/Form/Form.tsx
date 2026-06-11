@@ -13,12 +13,12 @@ import type {
     OnSubmitButton,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import Action from './Action'
+import { Action } from './Action'
 
 import css from './Form.less'
 
@@ -106,7 +106,9 @@ function Form({ button = initialState, onSubmit, index, onClose }: Props) {
     )
 }
 
-export default memo(Form)
+const DefaultExportForm = memo(Form)
+
+export { DefaultExportForm }
 
 function trimLeftoverData(button: ButtonType): ButtonType {
     return produce(button, ({ action }: ButtonType) => {

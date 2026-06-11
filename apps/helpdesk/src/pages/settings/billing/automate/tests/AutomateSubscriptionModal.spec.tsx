@@ -35,7 +35,7 @@ import {
 import type { SubscriptionUpdateResponse } from 'state/currentAccount/actions'
 import type { RootState } from 'state/types'
 
-import AutomateSubscriptionModal from '../AutomateSubscriptionModal'
+import { AutomateSubscriptionModal } from '../AutomateSubscriptionModal'
 
 const defaultState: Partial<RootState> = {
     currentUser: fromJS({

@@ -6,7 +6,7 @@ import { ulid } from 'ulidx'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
+import { AutomateFormView } from 'pages/automate/common/components/AutomateFormView'
 import {
     useVisualBuilder,
     VisualBuilderContext,
@@ -20,13 +20,13 @@ import {
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 
-import ActionsPlatformUseCaseTemplateFormView from './components/ActionsPlatformUseCaseTemplateFormView'
-import useCreateActionTemplate from './hooks/useCreateActionTemplate'
-import useTouchActionUseCaseTemplateGraph from './hooks/useTouchActionUseCaseTemplateGraph'
-import useValidateActionUseCaseTemplateGraph from './hooks/useValidateActionUseCaseTemplateGraph'
-import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformUseCaseTemplateFormView } from './components/ActionsPlatformUseCaseTemplateFormView'
+import { useCreateActionTemplate } from './hooks/useCreateActionTemplate'
+import { useTouchActionUseCaseTemplateGraph } from './hooks/useTouchActionUseCaseTemplateGraph'
+import { useValidateActionUseCaseTemplateGraph } from './hooks/useValidateActionUseCaseTemplateGraph'
+import { useValidateOnVisualBuilderGraphChange } from './hooks/useValidateOnVisualBuilderGraphChange'
 import type { ActionTemplate } from './types'
 
 import css from './ActionsPlatformEditTemplateView.less'
@@ -228,4 +228,4 @@ const ActionsPlatformCreateUseCaseTemplateView = () => {
     )
 }
 
-export default ActionsPlatformCreateUseCaseTemplateView
+export { ActionsPlatformCreateUseCaseTemplateView }

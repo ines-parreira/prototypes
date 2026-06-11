@@ -16,7 +16,7 @@ import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
-import VoiceMessageField from '../../VoiceMessageField'
+import { VoiceMessageField } from '../../VoiceMessageField'
 import { VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
 import type { IvrMenuNode } from '../types'

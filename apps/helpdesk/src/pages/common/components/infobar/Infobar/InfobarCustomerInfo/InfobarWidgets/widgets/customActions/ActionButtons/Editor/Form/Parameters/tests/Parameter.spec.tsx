@@ -4,7 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import Parameter from '../Parameter'
+import { DefaultExportParameter as Parameter } from '../Parameter'
 
 describe('<Parameter/>', () => {
     const props = {

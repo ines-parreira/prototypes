@@ -4,8 +4,8 @@ import { fromJS } from 'immutable'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     HANDOVER_DEFAULT_CONTENT_TYPE,
     HANDOVER_DEFAULT_METHOD,

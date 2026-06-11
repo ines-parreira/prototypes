@@ -11,9 +11,9 @@ import type {
     CustomFieldInputSettingsDropdown,
     CustomFieldValue,
 } from 'custom-fields/types'
-import useListTags from 'tags/useListTags'
+import { useListTags } from 'tags/useListTags'
 
-export default function useConditionsData(searchQuery: string) {
+export function useConditionsData(searchQuery: string) {
     const tagsQuery = useListTags(
         searchQuery ? { search: searchQuery } : undefined,
     )

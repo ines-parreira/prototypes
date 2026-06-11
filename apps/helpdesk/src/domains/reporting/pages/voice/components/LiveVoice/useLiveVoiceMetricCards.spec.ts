@@ -9,7 +9,7 @@ import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/query
 import { voiceCallsSummaryMetricsQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCallsSummary'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
+import { useLiveVoiceMetricCards } from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
 import { filterLiveCallsByStatus } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import * as constants from 'domains/reporting/pages/voice/constants/liveVoice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'

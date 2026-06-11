@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import ReactSelect from '../ReactSelect'
+import { Select as ReactSelect } from '../ReactSelect'
 
 const minProps: ComponentProps<typeof ReactSelect> = {
     value: 'foo',

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { oauthPermissions } from 'config/oauthPermissions'
-import AppPermission from 'pages/integrations/Advanced/AppPermission'
+import { AppPermission } from 'pages/integrations/Advanced/AppPermission'
 
 describe(`AppPermission`, () => {
     it('should render', () => {

@@ -13,7 +13,7 @@ import { ulid } from 'ulidx'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import ActionsPlatformVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
+import { WorkflowVisualBuilder as ActionsPlatformVisualBuilder } from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
@@ -21,7 +21,7 @@ import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacFo
 import type { RootState } from 'state/types'
 import { mockReactFlow } from 'tests/mockedReactFlow'
 
-import WorkflowVisualBuilder from '../editor/visualBuilder/WorkflowVisualBuilder'
+import { DefaultExportWorkflowVisualBuilder as WorkflowVisualBuilder } from '../editor/visualBuilder/WorkflowVisualBuilder'
 import type { ConditionsSchema } from '../models/conditions.types'
 import {
     buildEdgeCommonProperties,

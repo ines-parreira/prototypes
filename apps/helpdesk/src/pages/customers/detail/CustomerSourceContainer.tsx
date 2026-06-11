@@ -10,7 +10,7 @@ import { getActiveCustomerId } from '../../../state/customers/selectors'
 import type { RootState, StoreDispatch } from '../../../state/types'
 import * as widgetsActions from '../../../state/widgets/actions'
 import { getSources } from '../../../state/widgets/selectors'
-import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
+import { SourceWrapper } from '../../common/components/sourceWidgets/SourceWrapper'
 
 export const CustomerSourceContainer = ({
     actions,
@@ -54,4 +54,6 @@ const connector = connect(
     }),
 )
 
-export default connector(CustomerSourceContainer)
+const DefaultExportCustomerSourceContainer = connector(CustomerSourceContainer)
+
+export { DefaultExportCustomerSourceContainer }

@@ -6,7 +6,7 @@ import { act, waitFor } from '@testing-library/react'
 
 import * as integrationHelpers from 'state/integrations/helpers'
 
-import usePaginatedProductsByIds from '../usePaginatedProductsByIds'
+import { usePaginatedProductsByIds } from '../usePaginatedProductsByIds'
 
 jest.mock('state/integrations/helpers', () => ({
     fetchIntegrationProducts: jest.fn(),

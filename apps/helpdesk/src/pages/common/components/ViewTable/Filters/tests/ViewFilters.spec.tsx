@@ -16,7 +16,7 @@ import {
 
 import { view as viewFixture } from '../../../../../../fixtures/views'
 import type { CallExpression } from '../CallExpression'
-import ViewFilters from '../ViewFilters'
+import { ViewFilters } from '../ViewFilters'
 
 jest.mock('state/views/actions')
 
@@ -62,9 +62,10 @@ const defaultState: Partial<RootState> = {
 ;(updateFieldFilter as jest.Mock).mockImplementation(() => () => ({}))
 ;(updateFieldFilterOperator as jest.Mock).mockImplementation(() => () => ({}))
 
-jest.mock(
-    '../CallExpression',
-    () => (props: ComponentProps<typeof CallExpression>) => {
+jest.mock('../CallExpression', () => ({
+    DefaultExportCallExpression: (
+        props: ComponentProps<typeof CallExpression>,
+    ) => {
         const { removeCondition, updateOperator, updateFieldFilter } = props
 
         removeCondition(0)
@@ -73,7 +74,7 @@ jest.mock(
 
         return <div>CallExpression</div>
     },
-)
+}))
 
 describe('<ViewFilters />', () => {
     it('should return null if schemas are empty', () => {

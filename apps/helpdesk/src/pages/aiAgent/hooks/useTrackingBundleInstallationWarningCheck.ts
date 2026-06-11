@@ -9,7 +9,7 @@ import {
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useListBundles } from 'models/convert/bundle/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import { useShopifyIntegrations } from 'pages/automate/common/hooks/useShopifyIntegrations'
 
 const BUNDLE_RECENT_ACTIVITY_THRESHOLD_IN_HOURS = 72
 

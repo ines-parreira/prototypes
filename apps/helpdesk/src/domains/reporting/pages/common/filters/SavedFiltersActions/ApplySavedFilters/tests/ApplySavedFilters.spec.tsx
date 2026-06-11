@@ -3,9 +3,10 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
 import type { SavedFilter } from 'domains/reporting/models/stat/types'
-import ApplySavedFilers, {
+import {
     APPLY_SAVED_FILTER_TOOLTIP,
     APPLY_SAVED_FILTERS,
+    ApplySavedFilters as ApplySavedFilers,
     CREATE_SAVED_FILTERS_LABEL,
     NO_FILTERS_CONTENT,
     NOT_ADMIN_CONTENT,

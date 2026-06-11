@@ -10,13 +10,13 @@ import logo from 'assets/img/infobar/shopify.svg'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { ActionButtonsGroup } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
-import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
+import { DefaultExportDraftOrderModal as DraftOrderModal } from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import {
     CardHeaderIcon,
@@ -31,7 +31,7 @@ import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'
 import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
 import { getMetafieldsFromSource } from '../modules/Metafields/helpers/getMetafieldsFromSource'
-import CustomerMetafieldsSection from './CustomerMetafieldsSection'
+import { CustomerMetafieldsSection } from './CustomerMetafieldsSection'
 
 function Wrapper({
     source,

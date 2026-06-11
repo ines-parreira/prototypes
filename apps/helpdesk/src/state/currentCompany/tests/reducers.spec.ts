@@ -1,5 +1,6 @@
-import reducer, {
+import {
     initialState,
+    DefaultExportCurrentCompanySlice as reducer,
     resetCompanyState,
     setCompanyGmvBand,
 } from 'state/currentCompany/currentCompanySlice'

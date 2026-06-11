@@ -11,20 +11,24 @@ import { ExpressionFieldType } from '@gorgias/helpdesk-types'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import useSaveCondition from '../../hooks/useSaveCondition'
-import ConditionForm from '../ConditionForm'
+import { useSaveCondition } from '../../hooks/useSaveCondition'
+import { EditConditionForm as ConditionForm } from '../ConditionForm'
 import { DeletionPopover } from '../DeletionPopover'
 import { ExpressionField } from '../ExpressionField'
-import ThenField from '../ThenField'
+import { DefaultExportThenField as ThenField } from '../ThenField'
 
-jest.mock('../../hooks/useSaveCondition', () => jest.fn())
+jest.mock('../../hooks/useSaveCondition', () => ({
+    useSaveCondition: jest.fn(),
+}))
 jest.mock('../DeletionPopover', () => ({
     DeletionPopover: jest.fn(),
 }))
 jest.mock('../ExpressionField', () => ({
     ExpressionField: jest.fn(() => <div>Expression field</div>),
 }))
-jest.mock('../ThenField', () => jest.fn(() => <div>Then field</div>))
+jest.mock('../ThenField', () => ({
+    DefaultExportThenField: jest.fn(() => <div>Then field</div>),
+}))
 jest.spyOn(history, 'push')
 
 const DeletionPopoverMock = assumeMock(DeletionPopover)

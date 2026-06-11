@@ -13,13 +13,13 @@ import type {
     UpdateContactFormDto,
 } from 'models/contactForm/types'
 import type { LocaleCode } from 'models/helpCenter/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { ConnectContactFormToShopSection } from 'pages/settings/contactForm/components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
-import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
-import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
-import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
+import { ContactFormNameInputSection } from 'pages/settings/contactForm/components/ContactFormNameInputSection'
+import { EmailIntegrationInputSection } from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
+import { LanguageInputSection } from 'pages/settings/contactForm/components/LanguageInputSection'
 import {
     CONTACT_FORM_BASE_PATH,
     EMAIL_SELECTION_INPUT_LABEL,
@@ -29,10 +29,10 @@ import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFo
 import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import { useDefaultEmailSelectedBanner } from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import usePreferencesStoreMapping from 'pages/settings/contactForm/hooks/usePreferencesStoreMapping'
+import { usePreferencesStoreMapping } from 'pages/settings/contactForm/hooks/usePreferencesStoreMapping'
 import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import { PendingChangesModal } from 'pages/settings/helpCenter/components/PendingChangesModal'
 import settingsCss from 'pages/settings/settings.less'
 
 const ContactFormPreferences = (): JSX.Element => {
@@ -317,4 +317,4 @@ const ContactFormPreferences = (): JSX.Element => {
     )
 }
 
-export default ContactFormPreferences
+export { ContactFormPreferences }

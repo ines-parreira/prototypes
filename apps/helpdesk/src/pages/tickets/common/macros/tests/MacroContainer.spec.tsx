@@ -6,11 +6,11 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
+import { useMacrosSearch } from 'pages/common/editor/hooks/useMacrosSearch'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { ModalProps } from '../components/MacroModal'
-import MacroContainer from '../MacroContainer'
+import { MacroContainer } from '../MacroContainer'
 import { getDefaultSelectedMacroId } from '../utils'
 
 jest.mock('../utils')
@@ -18,35 +18,32 @@ const getDefaultSelectedMacroIdMock = assumeMock(getDefaultSelectedMacroId)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock(
-    '../components/MacroModal',
-    () =>
-        ({
-            fetchMacros,
-            handleClickItem,
-            onSearch,
-            searchParams,
-        }: ModalProps) => (
+jest.mock('../components/MacroModal', () => ({
+    MacroModal: ({
+        fetchMacros,
+        handleClickItem,
+        onSearch,
+        searchParams,
+    }: ModalProps) => (
+        <div>
+            MacroModal
             <div>
-                MacroModal
-                <div>
-                    params:
-                    {Object.keys(searchParams).length === 0
-                        ? 'empty'
-                        : Object.entries(searchParams).map(
-                              ([key, value]) =>
-                                  `${key}: ${JSON.stringify(value)}`,
-                          )}
-                </div>
-                <div onClick={() => fetchMacros()}>fetchMacros</div>
-                <div onClick={() => fetchMacros(true)}>fetchMacrosReset</div>
-                <div onClick={() => handleClickItem(11)}>handleClickItem</div>
-                <div onClick={() => onSearch({ search: 'new search' })}>
-                    onSearch
-                </div>
+                params:
+                {Object.keys(searchParams).length === 0
+                    ? 'empty'
+                    : Object.entries(searchParams).map(
+                          ([key, value]) => `${key}: ${JSON.stringify(value)}`,
+                      )}
             </div>
-        ),
-)
+            <div onClick={() => fetchMacros()}>fetchMacros</div>
+            <div onClick={() => fetchMacros(true)}>fetchMacrosReset</div>
+            <div onClick={() => handleClickItem(11)}>handleClickItem</div>
+            <div onClick={() => onSearch({ search: 'new search' })}>
+                onSearch
+            </div>
+        </div>
+    ),
+}))
 
 jest.mock('pages/common/editor/hooks/useMacrosSearch')
 const refetchMock = jest.fn()

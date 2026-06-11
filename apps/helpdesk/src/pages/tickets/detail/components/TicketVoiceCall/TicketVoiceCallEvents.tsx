@@ -4,8 +4,8 @@ import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 import { hasFlowEndEvent, processEvents } from 'models/voiceCall/processEvents'
 import { useListVoiceCallEvents } from 'models/voiceCall/queries'
 
-import TicketVoiceCallEvent from './TicketVoiceCallEvent'
-import Timeline from './Timeline'
+import { TicketVoiceCallEvent } from './TicketVoiceCallEvent'
+import { Timeline } from './Timeline'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -85,4 +85,4 @@ const TicketVoiceCallEvents = ({
     )
 }
 
-export default TicketVoiceCallEvents
+export { TicketVoiceCallEvents }

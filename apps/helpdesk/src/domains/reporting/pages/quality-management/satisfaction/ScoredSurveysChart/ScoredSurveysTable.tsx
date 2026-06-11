@@ -13,12 +13,12 @@ import {
 } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/utils'
 import type { OrderDirection } from 'models/api/types'
 import { opposite } from 'models/api/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 export type TableState = {
     currentPage: number
@@ -33,7 +33,7 @@ type Props = {
     handleSort: (property: ScoredSurveyDataKey) => void
 }
 
-export default function ScoredSurveysTable({
+export function ScoredSurveysTable({
     data,
     isFetching,
     tableState,

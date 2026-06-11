@@ -12,8 +12,8 @@ import { shortcutManager } from '@repo/utils'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     BigCommerceActionType,
     BigCommerceIntegration,
@@ -22,15 +22,15 @@ import {
     BigCommerceRefundType,
     IntegrationType,
 } from 'models/integration/types'
-import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
+import { GeneralErrorPopupModal } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -354,7 +354,7 @@ type ConnectedProps = {
     }
 } & Pick<InfobarModalProps, 'isOpen' | 'onClose'>
 
-export default function RefundOrderModalRenderWrapper(props: ConnectedProps) {
+export function RefundOrderModalRenderWrapper(props: ConnectedProps) {
     const { integrationId } = useContext(IntegrationContext)
     const { customerId } = useContext(CustomerContext)
 

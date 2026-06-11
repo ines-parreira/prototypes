@@ -8,7 +8,7 @@ type ViewingIndicatorProps = {
     className?: string
 }
 
-export default function ViewingIndicator({
+export function ViewingIndicator({
     title,
     position = 'left',
     className,

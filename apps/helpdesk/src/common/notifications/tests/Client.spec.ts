@@ -1,12 +1,12 @@
 import type { Feed, FeedEventPayload } from '@knocklabs/client'
 
-import Client from '../Client'
+import { Client } from '../Client'
 import type { RawNotification } from '../types'
-import transformKnockNotification from '../utils/transformKnockNotification'
+import { transformKnockNotification } from '../utils/transformKnockNotification'
 
-jest.mock('../utils/transformKnockNotification', () =>
-    jest.fn((n: unknown) => n),
-)
+jest.mock('../utils/transformKnockNotification', () => ({
+    transformKnockNotification: jest.fn((n: unknown) => n),
+}))
 const transformKnockNotificationMock = transformKnockNotification as jest.Mock
 
 describe('Client', () => {

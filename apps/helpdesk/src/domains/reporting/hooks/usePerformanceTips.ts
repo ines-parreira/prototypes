@@ -5,7 +5,7 @@ import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing'
 import type { MetricName } from 'domains/reporting/services/constants'
 import type { Tip } from 'domains/reporting/services/supportPerformanceTipService'
 import { getPerformanceTip } from 'domains/reporting/services/supportPerformanceTipService'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
 export const usePerformanceTips = (

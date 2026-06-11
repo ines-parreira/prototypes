@@ -9,10 +9,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { actionFixture } from 'fixtures/infobarCustomActions'
-import ActionEditor from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor'
+import { ActionEditor } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor'
 import * as infobarActions from 'state/infobar/actions'
 
-import Button from '../Button'
+import { DefaultExportButton as Button } from '../Button'
 
 const mockedActionId = 'someActionId'
 jest.mock('state/infobar/actions', () => ({
@@ -20,7 +20,7 @@ jest.mock('state/infobar/actions', () => ({
 }))
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor',
-    () => jest.fn(() => <div>mocked action editor</div>),
+    () => ({ ActionEditor: jest.fn(() => <div>mocked action editor</div>) }),
 )
 const mockedActionEditor = assumeMock(ActionEditor)
 

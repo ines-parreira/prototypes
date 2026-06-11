@@ -13,8 +13,8 @@ import {
 } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 import { useStoreSelector } from 'settings/automate'
 
 import css from './OrderManagementFlowHeader.less'

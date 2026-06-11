@@ -14,7 +14,7 @@ import type { RuleRecipe } from 'models/ruleRecipe/types'
 import { createTag, fetchTags } from 'models/tag/resources'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AutoresponderViewButton from '../AutoresponderViewButton'
+import { AutoresponderViewButton } from '../AutoresponderViewButton'
 
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 const createTagMock = createTag as jest.MockedFunction<typeof createTag>

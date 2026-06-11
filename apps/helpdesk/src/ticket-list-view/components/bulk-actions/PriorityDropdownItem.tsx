@@ -7,7 +7,7 @@ import { PriorityIcon } from 'pages/tickets/common/components/PriorityIcon'
 
 import css from './style.less'
 
-export default function PriorityDropdownItem({ item }: { item: Item }) {
+export function PriorityDropdownItem({ item }: { item: Item }) {
     return (
         <div aria-label={item.name} className={css.item}>
             <PriorityIcon priority={item.name! as TicketPriority} />

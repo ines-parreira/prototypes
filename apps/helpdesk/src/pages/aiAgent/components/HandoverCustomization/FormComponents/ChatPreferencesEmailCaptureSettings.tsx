@@ -5,9 +5,9 @@ import cn from 'classnames'
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import type { RadioFieldOption } from 'pages/common/forms/RadioFieldSet'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 
 import css from './ChatPreferencesEmailCaptureSettings.less'
 
@@ -87,4 +87,4 @@ const ChatPreferencesEmailCaptureSettings = ({
     )
 }
 
-export default ChatPreferencesEmailCaptureSettings
+export { ChatPreferencesEmailCaptureSettings }

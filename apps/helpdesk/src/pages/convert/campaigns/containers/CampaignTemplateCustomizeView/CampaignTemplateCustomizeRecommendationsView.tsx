@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import type { ConvertRouteTemplateParams } from 'pages/convert/common/types'
 
-import CampaignTemplateCustomizeBaseView from './CampaignTemplateCustomizeBaseView'
+import { CampaignTemplateCustomizeBaseView } from './CampaignTemplateCustomizeBaseView'
 
 const CampaignTemplateCustomizeRecommendationsView = () => {
     const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
@@ -24,4 +24,4 @@ const CampaignTemplateCustomizeRecommendationsView = () => {
         />
     )
 }
-export default CampaignTemplateCustomizeRecommendationsView
+export { CampaignTemplateCustomizeRecommendationsView }

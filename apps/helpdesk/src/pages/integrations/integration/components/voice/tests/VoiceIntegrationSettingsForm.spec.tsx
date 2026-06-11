@@ -8,14 +8,14 @@ import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
 import { integrationsState } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
-import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
+import { usePhoneNumbers } from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 import {
     useDeletePhoneIntegration,
     useFormSubmit,
 } from '../useVoiceSettingsForm'
-import VoiceIntegrationSettingsForm from '../VoiceIntegrationSettingsForm'
+import { VoiceIntegrationSettingsForm } from '../VoiceIntegrationSettingsForm'
 
 jest.mock('hooks/useAppDispatch')
 
@@ -32,31 +32,39 @@ const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const useDeleteVoiceIntegrationMock = assumeMock(useDeletePhoneIntegration)
 
-jest.mock('../VoiceIntegrationSettingsFormGeneralSection', () => () => (
-    <FormField name="name" isRequired>
-        {(field) => (
-            <input
-                aria-label="Integration name"
-                value={field.value ?? ''}
-                onChange={(event) => field.onChange(event.target.value)}
-            />
-        )}
-    </FormField>
-))
-jest.mock('../VoiceIntegrationSettingCallRecording', () => () => (
-    <div>VoiceIntegrationSettingCallRecording</div>
-))
-jest.mock('../VoiceIntegrationSettingCallTranscription', () => () => (
-    <div>VoiceIntegrationSettingCallTranscription</div>
-))
-jest.mock('../VoiceIntegrationSettingSpamPrevention', () => () => (
-    <div>VoiceIntegrationSettingSpamPrevention</div>
-))
-jest.mock(
-    './../VoiceMessageTTS/TextToSpeechProvider',
-    () =>
-        ({ children }: { children: React.ReactNode }) => <>{children}</>,
-)
+jest.mock('../VoiceIntegrationSettingsFormGeneralSection', () => ({
+    VoiceIntegrationSettingsFormGeneralSection: () => (
+        <FormField name="name" isRequired>
+            {(field) => (
+                <input
+                    aria-label="Integration name"
+                    value={field.value ?? ''}
+                    onChange={(event) => field.onChange(event.target.value)}
+                />
+            )}
+        </FormField>
+    ),
+}))
+jest.mock('../VoiceIntegrationSettingCallRecording', () => ({
+    VoiceIntegrationSettingCallRecording: () => (
+        <div>VoiceIntegrationSettingCallRecording</div>
+    ),
+}))
+jest.mock('../VoiceIntegrationSettingCallTranscription', () => ({
+    VoiceIntegrationSettingCallTranscription: () => (
+        <div>VoiceIntegrationSettingCallTranscription</div>
+    ),
+}))
+jest.mock('../VoiceIntegrationSettingSpamPrevention', () => ({
+    VoiceIntegrationSettingSpamPrevention: () => (
+        <div>VoiceIntegrationSettingSpamPrevention</div>
+    ),
+}))
+jest.mock('./../VoiceMessageTTS/TextToSpeechProvider', () => ({
+    TextToSpeechProvider: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
+}))
 jest.mock('@gorgias/realtime')
 
 describe('<VoiceIntegrationSettingsForm />', () => {

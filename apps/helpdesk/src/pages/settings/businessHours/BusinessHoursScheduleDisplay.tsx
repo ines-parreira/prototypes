@@ -18,7 +18,7 @@ type Props = {
     businessHoursConfig?: BusinessHoursConfig
 }
 
-export default function BusinessHoursScheduleDisplay({
+export function BusinessHoursScheduleDisplay({
     businessHoursConfig,
     className,
 }: Props) {

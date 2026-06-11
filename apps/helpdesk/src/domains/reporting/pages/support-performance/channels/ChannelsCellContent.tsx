@@ -19,9 +19,9 @@ import {
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { getHeatmapMode } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Channel } from 'models/channel/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export const ChannelsCellContent = ({
     column,

@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable'
 
 import type { VoiceCall } from 'models/voiceCall/types'
-import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
-import PhoneEvent from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
-import TicketVoiceCall from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall'
+import { VoiceRecordingsProvider } from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
+import { PhoneEvent } from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
+import { TicketVoiceCall } from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall'
 
 import type { TicketElement as TicketElementType } from '../types'
 import { TicketAIEvent } from './TicketAIEvent'

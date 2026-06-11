@@ -11,7 +11,7 @@ import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 
-import Recharge from '../Recharge'
+import { Recharge } from '../Recharge'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurationTemplates: jest.fn(),

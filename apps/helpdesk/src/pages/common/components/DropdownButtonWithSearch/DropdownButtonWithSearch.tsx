@@ -8,7 +8,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './DropdownButtonWithSearch.less'
 
@@ -168,4 +168,4 @@ const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
     )
 }
 
-export default DropdownButtonWithSearch
+export { DropdownButtonWithSearch }

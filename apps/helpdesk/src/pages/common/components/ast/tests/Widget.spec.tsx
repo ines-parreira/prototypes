@@ -23,7 +23,7 @@ import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { getLanguageDisplayName } from 'utils'
 
-import Widget from '../Widget'
+import { Widget } from '../Widget'
 import { useGetCustomFieldById } from '../widget/useGetCustomFieldById'
 import _astCodeContains from './fixtures/astCodeContains.json'
 import _astCodeEq from './fixtures/astCodeEq.json'
@@ -63,17 +63,17 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () =>
-    jest.fn(() => <div>CustomFieldSelect</div>),
-)
+jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () => ({
+    CustomFieldSelect: jest.fn(() => <div>CustomFieldSelect</div>),
+}))
 
-jest.mock('pages/common/components/ast/widget/PrioritySelect', () =>
-    jest.fn(() => <div>PrioritySelect</div>),
-)
+jest.mock('pages/common/components/ast/widget/PrioritySelect', () => ({
+    PrioritySelect: jest.fn(() => <div>PrioritySelect</div>),
+}))
 
-jest.mock('pages/common/components/ast/widget/SelfServiceFlowSelect', () =>
-    jest.fn(() => <div>SelfServiceFlowSelect</div>),
-)
+jest.mock('pages/common/components/ast/widget/SelfServiceFlowSelect', () => ({
+    SelfServiceFlowSelect: jest.fn(() => <div>SelfServiceFlowSelect</div>),
+}))
 
 const useFlagMock = assumeMock(useFlag)
 useFlagMock.mockReturnValue(true)

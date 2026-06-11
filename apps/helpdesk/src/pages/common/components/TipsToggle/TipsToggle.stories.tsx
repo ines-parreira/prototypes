@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TipsToggle from './TipsToggle'
+import { TipsToggle } from './TipsToggle'
 
 const storyConfig: Meta = {
     title: 'Stats/TipsToggle',

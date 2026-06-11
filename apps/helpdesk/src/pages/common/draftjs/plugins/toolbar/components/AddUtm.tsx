@@ -5,8 +5,8 @@ import { Button } from 'reactstrap'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import type { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
@@ -95,4 +95,4 @@ const AddUtm = (props: AddUtmProps) => {
     )
 }
 
-export default AddUtm
+export { AddUtm }

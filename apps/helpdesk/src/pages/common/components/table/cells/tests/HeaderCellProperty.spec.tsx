@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { OrderDirection } from 'models/api/types'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
 
 describe('<HeaderCellProperty/>', () => {
     const minProps = {

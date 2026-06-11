@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from '../../state/types'
-import useAppDispatch from '../useAppDispatch'
+import { useAppDispatch } from '../useAppDispatch'
 
 describe('useAppDispatch', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([

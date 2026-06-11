@@ -6,7 +6,7 @@ import { act, waitFor } from '@testing-library/react'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useMicrophonePermissions from '../useMicrophonePermissions'
+import { useMicrophonePermissions } from '../useMicrophonePermissions'
 
 const render = (time?: number) =>
     renderHook(() => useMicrophonePermissions(time), {

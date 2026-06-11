@@ -8,8 +8,8 @@ import {
 } from 'custom-fields/constants'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 
-import DropdownInput from '../DropdownInput'
-import DropdownInputRow from '../DropdownInputRow'
+import { DefaultExportDropdownInput as DropdownInput } from '../DropdownInput'
+import { DefaultExportDropdownInputRow as DropdownInputRow } from '../DropdownInputRow'
 
 let idCount = 1
 jest.mock('lodash/uniqueId')
@@ -17,7 +17,7 @@ const uniqueIdMock = uniqueId as jest.Mock
 uniqueIdMock.mockImplementation((id: string) => `${id || ''}${idCount++}`)
 jest.mock('../DropdownInputRow', () => ({
     __esModule: true,
-    default: jest.fn(
+    DefaultExportDropdownInputRow: jest.fn(
         // eslint-disable-next-line
         jest.requireActual('../DropdownInputRow').DropdownInputRow,
     ),

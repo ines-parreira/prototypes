@@ -7,22 +7,22 @@ import type { ContentState } from 'draft-js'
 import { EditorState, Modifier } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
-import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
+import { createWorkflowVariablesPlugin } from 'pages/automate/workflows/draftjs/plugins/variables'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
 import type {
     WorkflowVariable,
     WorkflowVariableList,
     WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
-import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { WorkflowVariablePicker } from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { insertText } from 'utils'
 import {
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
 } from 'utils/editor'
 
-import LiquidFilterPopover from './LiquidFilterPopover'
+import { LiquidFilterPopover } from './LiquidFilterPopover'
 
 import css from './TextareaWithVariables.less'
 
@@ -230,4 +230,4 @@ const TextareaWithVariables = ({
     )
 }
 
-export default TextareaWithVariables
+export { TextareaWithVariables }

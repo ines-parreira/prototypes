@@ -1,7 +1,7 @@
 import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'

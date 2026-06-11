@@ -3,16 +3,18 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { createEvent, fireEvent, waitFor } from '@testing-library/react'
 
-import CircularAudioPlayer from '../CircularAudioPlayer'
+import { CircularAudioPlayer } from '../CircularAudioPlayer'
 
 const audioPlayMock = jest.fn().mockResolvedValue(undefined)
 const audioPauseMock = jest.fn()
 HTMLMediaElement.prototype.play = audioPlayMock
 HTMLMediaElement.prototype.pause = audioPauseMock
 
-jest.mock('../CircularProgressBar', () => (props: { progress: number }) => (
-    <div data-testid="circular-progress-bar">{props.progress}</div>
-))
+jest.mock('../CircularProgressBar', () => ({
+    CircularProgressBar: (props: { progress: number }) => (
+        <div data-testid="circular-progress-bar">{props.progress}</div>
+    ),
+}))
 
 describe('CircularAudioPlayer', () => {
     const AUDIO_SRC = 'https://assets.gorgias.io/phone/ClockworkWaltz.mp3'

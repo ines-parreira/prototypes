@@ -3,7 +3,7 @@ import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import RemoveShopifyBilling from '../RemoveShopifyBilling'
+import { RemoveShopifyBilling } from '../RemoveShopifyBilling'
 
 const mockedServer = new MockAdapter(client)
 

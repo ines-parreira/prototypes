@@ -1,15 +1,15 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
 
-import InlineStyle from './InlineStyle'
+import { InlineStyle } from './InlineStyle'
 
-export { default as InlineStyle } from './InlineStyle'
-export { default as AddLink } from './AddLink'
-export { default as AddImage } from './AddImage'
-export { default as AddVideo } from './AddVideo'
-export { default as AddEmoji } from './AddEmoji'
-export { default as AddProductLink } from './AddProductLink'
-export { default as AddDiscountCode } from './AddDiscountCode'
-export { default as Translate } from './Translate'
+export { InlineStyle } from './InlineStyle'
+export { DefaultExportAddLink as AddLink } from './AddLink'
+export { AddImage } from './AddImage'
+export { AddVideo } from './AddVideo'
+export { AddEmoji } from './AddEmoji'
+export { AddProductLink } from './AddProductLink'
+export { AddDiscountCode } from './AddDiscountCode'
+export { Translate } from './Translate'
 
 export const Bold = decorateComponentWithProps(InlineStyle, {
     icon: 'format_bold',
@@ -43,4 +43,4 @@ export const OrderedList = decorateComponentWithProps(InlineStyle, {
     name: 'Ordered List',
 })
 
-export { default as HeadingPicker } from './HeadingPicker'
+export { HeadingPicker } from './HeadingPicker'

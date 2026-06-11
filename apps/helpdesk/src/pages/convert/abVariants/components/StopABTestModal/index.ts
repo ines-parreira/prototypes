@@ -1,1 +1,1 @@
-export { default } from './StopABTestModal'
+export { StopABTestModal } from './StopABTestModal'

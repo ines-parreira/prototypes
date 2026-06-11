@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils'
 
 import { SLAPolicyMetricUnit } from '@gorgias/helpdesk-types'
 
-import TimeUnitSelectField from '../TimeUnitSelectField'
+import { TimeUnitSelectField } from '../TimeUnitSelectField'
 
 describe('TimeUnitSelectField', () => {
     it('should pass correct inputTransform and outputTransform', async () => {

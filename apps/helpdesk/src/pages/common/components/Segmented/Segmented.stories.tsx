@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Segmented from './Segmented'
+import { Segmented } from './Segmented'
 
 const storyConfig: Meta = {
     title: 'Data Display/Segmented',

@@ -27,37 +27,33 @@ jest.mock('@gorgias/axiom', () => {
     }
 })
 
-jest.mock(
-    'pages/common/components/dropdown/Dropdown',
-    () =>
-        ({
-            children,
-            isOpen,
-        }: {
-            children: React.ReactNode
-            isOpen: boolean
-        }) => (
-            <div data-testid="dropdown" data-open={isOpen}>
-                {children}
-            </div>
-        ),
-)
+jest.mock('pages/common/components/dropdown/Dropdown', () => ({
+    Dropdown: ({
+        children,
+        isOpen,
+    }: {
+        children: React.ReactNode
+        isOpen: boolean
+    }) => (
+        <div data-testid="dropdown" data-open={isOpen}>
+            {children}
+        </div>
+    ),
+}))
 
-jest.mock(
-    'pages/common/components/dropdown/DropdownBody',
-    () =>
-        ({
-            children,
-            className,
-        }: {
-            children: React.ReactNode
-            className?: string
-        }) => (
-            <div data-testid="dropdown-body" className={className}>
-                {children}
-            </div>
-        ),
-)
+jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
+    DefaultExportDropdownBody: ({
+        children,
+        className,
+    }: {
+        children: React.ReactNode
+        className?: string
+    }) => (
+        <div data-testid="dropdown-body" className={className}>
+            {children}
+        </div>
+    ),
+}))
 
 const useFlagMock = assumeMock(useFlag)
 

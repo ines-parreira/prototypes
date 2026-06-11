@@ -7,7 +7,7 @@ interface ContactForm {
     shop_integration_id?: number | null
 }
 
-export default function useViewStoreMapping() {
+export function useViewStoreMapping() {
     const { mutate: createMapping } = useCreateStoreMapping()
 
     const handleStoreMapping = useCallback(

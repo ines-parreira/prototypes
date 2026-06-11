@@ -39,4 +39,4 @@ const FeedbackOrders: React.FC<Props> = ({ orders }) => {
     )
 }
 
-export default FeedbackOrders
+export { FeedbackOrders }

@@ -3,8 +3,8 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import ConditionalField from 'pages/settings/conditionalFields/ConditionalField'
-import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
+import { ConditionalField } from 'pages/settings/conditionalFields/ConditionalField'
+import { ConditionalFields as ConditionalFieldsComponent } from 'pages/settings/conditionalFields/ConditionalFields'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
 import { ConditionalFields } from '../ConditionalFields'
@@ -16,7 +16,9 @@ jest.mock('react-router-dom', () => ({
     Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
-jest.mock('pages/common/components/NoMatch', () => () => <div>404</div>)
+jest.mock('pages/common/components/NoMatch', () => ({
+    NoMatch: () => <div>404</div>,
+}))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),

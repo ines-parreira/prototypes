@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { LocaleCode } from 'models/helpCenter/types'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import * as useHelpCenterActions from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import * as helpCenterApi from 'pages/settings/helpCenter/hooks/useHelpCenterApi'

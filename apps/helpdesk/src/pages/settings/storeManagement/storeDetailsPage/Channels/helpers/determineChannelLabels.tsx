@@ -1,6 +1,6 @@
 import type { ChannelWithMetadata } from '../../../types'
 
-export default function determineChannelLabels(channel: ChannelWithMetadata) {
+export function determineChannelLabels(channel: ChannelWithMetadata) {
     switch (channel.type) {
         case 'voice':
             return {

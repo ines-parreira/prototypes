@@ -7,7 +7,7 @@ import { useCallbackRef, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
 import type { Invoice } from 'state/billing/types'
 
 import { useInvoicePayment } from './hooks/useInvoicePayment'
@@ -106,4 +106,4 @@ const PaymentsHistoryView = () => {
     )
 }
 
-export default PaymentsHistoryView
+export { PaymentsHistoryView }

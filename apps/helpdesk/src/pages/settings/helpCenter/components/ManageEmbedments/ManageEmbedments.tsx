@@ -8,24 +8,24 @@ import { Link, useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm'
 import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { CONTACT_FORM_EMBEDMENTS_LIMIT } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import { PendingChangesModal } from 'pages/settings/helpCenter/components/PendingChangesModal'
 import {
     helpCenterPageEmbedmentsKeys,
     useDeletePageEmbedment,
@@ -38,7 +38,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { HELP_CENTER_BASE_PATH } from '../../constants'
-import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
+import { HelpCenterAutoEmbedModalAssistant } from '../HelpCenterAutoEmbedModalAssistant'
 
 import css from './ManageEmbedments.less'
 
@@ -458,4 +458,4 @@ const ManageEmbedments = ({
     )
 }
 
-export default ManageEmbedments
+export { ManageEmbedments }

@@ -8,19 +8,19 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
 
-import DefaultIntegrationBadge from '../DefaultIntegrationBadge'
+import { DefaultIntegrationBadge } from '../DefaultIntegrationBadge'
 
 import css from './EmailIntegrationAddressField.less'
 
@@ -89,4 +89,4 @@ function EmailIntegrationAddressField({ integration }: Props) {
     )
 }
 
-export default EmailIntegrationAddressField
+export { EmailIntegrationAddressField }

@@ -16,7 +16,7 @@ import { HELPDESK_PRODUCT_ID } from 'fixtures/plans'
 import { TicketPurpose } from 'state/billing/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import ContactSupportModal from '../ContactSupportModal'
+import { ContactSupportModal } from '../ContactSupportModal'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
@@ -38,7 +38,9 @@ const mockedServer = new MockAdapter(client)
 
 const mockHandleClose = jest.fn()
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)

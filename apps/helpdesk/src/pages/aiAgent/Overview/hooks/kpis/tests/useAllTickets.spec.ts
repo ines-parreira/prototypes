@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'

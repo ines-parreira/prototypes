@@ -27,7 +27,7 @@ import {
     dispatchDocumentEvent,
     useListenToDocumentEvent,
 } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
-import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
+import { useHelpCenterCustomDomainHostnames } from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 
 type Props = {
     helpCenterId: number

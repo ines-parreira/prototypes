@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Disclaimer from '../Disclaimer'
+import { Disclaimer } from '../Disclaimer'
 
 describe('Disclaimer', () => {
     it('renders the disclaimer', () => {

@@ -6,13 +6,13 @@ import { screen } from '@testing-library/react'
 import type { EmailDomain } from '@gorgias/helpdesk-queries'
 
 import * as helpers from '../../../helpers'
-import RecordDiffStatus from '../RecordDiffStatus'
-import RecordsTable from '../RecordsTable'
+import { RecordDiffStatus } from '../RecordDiffStatus'
+import { RecordsTable } from '../RecordsTable'
 
 jest.mock('../RecordDiffStatus')
-jest.mock('../RecordsTableSkeleton', () => () => (
-    <div>RecordsTableSkeleton</div>
-))
+jest.mock('../RecordsTableSkeleton', () => ({
+    RecordsTableSkeleton: () => <div>RecordsTableSkeleton</div>,
+}))
 
 const RecordDiffStatusMock = assumeMock(RecordDiffStatus)
 

@@ -1,10 +1,10 @@
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import { useHelpCenterTranslation } from '../../providers/HelpCenterTranslation'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import ChatApplication from './components/ChatApplication'
-import ContactFormInfoSection from './components/ContactFormInfoSection'
-import FooterActions from './components/FooterActions'
-import PhoneContactInfoSection from './components/PhoneContactInfoSection'
+import { HelpCenterPageWrapper } from '../HelpCenterPageWrapper'
+import { ChatApplication } from './components/ChatApplication'
+import { ContactFormInfoSection } from './components/ContactFormInfoSection'
+import { FooterActions } from './components/FooterActions'
+import { PhoneContactInfoSection } from './components/PhoneContactInfoSection'
 
 import css from './HelpCenterContactView.less'
 
@@ -28,4 +28,4 @@ const HelpCenterContactView: React.FC = () => {
     )
 }
 
-export default HelpCenterContactView
+export { HelpCenterContactView }

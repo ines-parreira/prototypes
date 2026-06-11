@@ -6,9 +6,9 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { VARIANT_LIMIT } from 'pages/convert/abVariants/contants'
 import { abVariantsUrl } from 'pages/convert/abVariants/urls'
 import type { Props as CampaignDetailsFormProps } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
@@ -231,5 +231,3 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
         />
     )
 }
-
-export default ABTestVariantEditPage

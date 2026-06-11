@@ -8,8 +8,8 @@ import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/Con
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 
 import { AI_AGENT_SENDER } from '../../constants'
-import KnowledgeSourcesWrapper from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
-import PlaygroundMessageComponent from '../PlaygroundMessage/PlaygroundMessage'
+import { KnowledgeSourcesWrapper } from '../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper'
+import { PlaygroundMessage as PlaygroundMessageComponent } from '../PlaygroundMessage/PlaygroundMessage'
 import { PlaygroundReasoning } from '../PlaygroundReasoning/PlaygroundReasoning'
 
 import css from '../../AiAgentPlayground.less'

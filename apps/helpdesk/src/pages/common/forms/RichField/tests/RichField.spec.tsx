@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import { convertToHTML } from 'utils/editor'
 
-import RichField from '../RichField'
+import { RichField } from '../RichField'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

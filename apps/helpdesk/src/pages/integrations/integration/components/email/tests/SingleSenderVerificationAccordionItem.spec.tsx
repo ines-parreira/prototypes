@@ -9,7 +9,7 @@ import {
 } from 'fixtures/emailMigration'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 
-import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
+import { SingleSenderVerificationAccordionItem } from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
 jest.mock('@gorgias/analytics-ui-kit', () => ({
     Card: () => <div data-testid="verified-domain-card" />,

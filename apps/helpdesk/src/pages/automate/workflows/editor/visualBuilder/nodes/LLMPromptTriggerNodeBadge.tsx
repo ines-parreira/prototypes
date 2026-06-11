@@ -12,4 +12,4 @@ const LLMPromptTriggerNodeBadge = () => {
     )
 }
 
-export default LLMPromptTriggerNodeBadge
+export { LLMPromptTriggerNodeBadge }

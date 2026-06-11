@@ -8,7 +8,7 @@ import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
-import HelpCenterNewView from '../HelpCenterNewView'
+import { DefaultExportHelpCenterNewView as HelpCenterNewView } from '../HelpCenterNewView'
 
 const mockCheckHelpCenterWithSubdomainExists = jest.fn()
 const mockCreateHelpCenter = jest.fn()

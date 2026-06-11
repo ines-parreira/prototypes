@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 
 import { channels } from 'common/notifications/data'
 
-import EventSettingsTableHead from '../EventSettingsTableHead'
+import { EventSettingsTableHead } from '../EventSettingsTableHead'
 
 const TableWrapper = ({ children }: PropsWithChildren<unknown>) => (
     <table>{children}</table>

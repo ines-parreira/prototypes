@@ -3,14 +3,14 @@ import React, { useMemo } from 'react'
 import { createMemoryHistory } from 'history'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
-import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
-import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServicePreview } from 'pages/automate/common/components/preview/SelfServicePreview'
+import { SelfServicePreviewContainer } from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { getContactFormsAutomationSettings } from 'state/entities/contactForm/contactFormsAutomationSettings'
@@ -171,4 +171,4 @@ const ConnectedChannelsPreview = ({
     )
 }
 
-export default ConnectedChannelsPreview
+export { ConnectedChannelsPreview }

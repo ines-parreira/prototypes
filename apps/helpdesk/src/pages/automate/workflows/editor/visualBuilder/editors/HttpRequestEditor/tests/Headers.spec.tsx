@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import Headers from '../Headers'
+import { Headers } from '../Headers'
 
 describe('<Headers />', () => {
     it('should trigger name change', () => {

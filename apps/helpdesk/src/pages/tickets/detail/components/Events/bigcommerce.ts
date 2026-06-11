@@ -63,4 +63,4 @@ const bigCommerceEvent = ({
     }
 }
 
-export default bigCommerceEvent
+export { bigCommerceEvent }

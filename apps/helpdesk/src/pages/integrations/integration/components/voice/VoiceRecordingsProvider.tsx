@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { VoiceRecordingsContext } from './VoiceRecordingsContext'
 
-export default function VoiceRecordingsProvider({
+export function VoiceRecordingsProvider({
     children,
     voiceCallId = null,
 }: {

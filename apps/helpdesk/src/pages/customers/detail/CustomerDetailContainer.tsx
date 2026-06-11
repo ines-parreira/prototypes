@@ -7,16 +7,16 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { useRecentItems } from 'hooks/useRecentItems/useRecentItems'
 import type { PickedCustomer } from 'models/search/types'
 import { pickedCustomerFields } from 'models/search/types'
-import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
+import { CreateTicketButton } from 'pages/common/components/CreateTicket/CreateTicketButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportCustomerForm as CustomerForm } from 'pages/customers/common/components/CustomerForm'
 import { fetchCustomer } from 'state/customers/actions'
 import * as customersHelpers from 'state/customers/helpers'
 import {
@@ -25,7 +25,7 @@ import {
     makeGetActiveCustomerChannelsByType,
 } from 'state/customers/selectors'
 import type { RootState } from 'state/types'
-import Timeline from 'timeline/Timeline'
+import { DefaultExportTimeline as Timeline } from 'timeline/Timeline'
 
 import css from './CustomerDetailContainer.less'
 
@@ -124,4 +124,6 @@ const connector = connect(
     },
 )
 
-export default connector(CustomerDetailContainer)
+const DefaultExportCustomerDetailContainer = connector(CustomerDetailContainer)
+
+export { DefaultExportCustomerDetailContainer }

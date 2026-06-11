@@ -12,7 +12,7 @@ import type {
 } from 'models/integration/types'
 import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 
-import IvrMenuActionField from '../IvrMenuActionField'
+import { IvrMenuActionField } from '../IvrMenuActionField'
 
 const mockStore = configureMockStore([thunk])
 const defaultPlayMessageAction: IvrPlayVoiceMessageAction = {

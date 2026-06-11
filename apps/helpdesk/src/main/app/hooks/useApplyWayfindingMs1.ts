@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 
-export default function useApplyWayfindingMs1() {
+export function useApplyWayfindingMs1() {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     useEffect(() => {

@@ -10,7 +10,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { PolicyKey } from 'models/selfServiceConfiguration/types'
-import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
+import { EmptyResponseMessageContentError } from 'pages/automate/common/components/EmptyResponseMessageContentError'
 
 import type { OrderManagementFlow } from './useOrderManagementFlows'
 

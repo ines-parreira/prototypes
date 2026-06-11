@@ -3,7 +3,7 @@ import type { AnyAction } from '@reduxjs/toolkit'
 import type { TicketMessage } from 'models/ticket/types'
 
 import { changeTicketMessage } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, DefaultExportReducer as reducer } from '../reducer'
 
 describe('ticketAIAgentFeedback reducer', () => {
     it('should return the initial state', () => {

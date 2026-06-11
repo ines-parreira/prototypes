@@ -5,15 +5,15 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import Detail from 'pages/common/components/ProductDetail'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Detail } from 'pages/common/components/ProductDetail'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import Integration from './Integration'
-import List from './List'
+import { Integration } from './Integration'
+import { List } from './List'
 import { getConnectUrl } from './Utils'
 
 const connectionsPath = 'connections'
@@ -121,4 +121,4 @@ function BigCommerce({
     )
 }
 
-export default BigCommerce
+export { BigCommerce }

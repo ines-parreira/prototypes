@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useSubscription } from 'models/billing/queries'
 import type { PlanId } from 'models/billing/types'
 
-export default function useProductCancellations() {
+export function useProductCancellations() {
     const subscriptionQuery = useSubscription()
 
     const cancellationsByPlanId = useMemo(() => {

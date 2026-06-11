@@ -1,1 +1,1 @@
-export { default } from './DropAreas'
+export { DropAreas } from './DropAreas'

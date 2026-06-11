@@ -23,7 +23,7 @@ import {
 } from 'models/discountCodes/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
+import { UniqueDiscountCodeResults } from '../UniqueDiscountOfferResults'
 
 jest.mock('models/convert/discountOffer/queries')
 jest.mock('hooks/useModalManager')

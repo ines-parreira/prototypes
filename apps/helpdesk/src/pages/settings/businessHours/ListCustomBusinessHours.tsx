@@ -8,21 +8,21 @@ import type {
 import { useListBusinessHours } from '@gorgias/helpdesk-queries'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import Search from 'pages/common/components/Search'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
-import ListCustomBusinessHoursTableRow from './ListCustomBusinessHoursTableRow'
+import { ListCustomBusinessHoursTableRow } from './ListCustomBusinessHoursTableRow'
 
 import css from './ListCustomBusinessHours.less'
 
-export default function ListCustomBusinessHours() {
+export function ListCustomBusinessHours() {
     const [cursor, setCursor] = useState<string | undefined>(undefined)
     const [order_by, setOrderBy] = useState<ListBusinessHoursOrderBy>()
     const direction = useMemo(() => order_by?.split(':')?.[1], [order_by])

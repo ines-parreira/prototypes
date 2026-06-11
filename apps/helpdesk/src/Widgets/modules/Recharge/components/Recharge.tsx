@@ -1,6 +1,6 @@
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import type { TemplateCustomization } from 'Widgets/modules/Template'
-import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { CustomizationContext, Template } from 'Widgets/modules/Template'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 import type { WidgetProps } from 'Widgets/modules/Widget'
 
@@ -52,7 +52,7 @@ export const customization: TemplateCustomization = {
     ],
 }
 
-export default function RechargeWidget(props: WidgetProps) {
+export function RechargeWidget(props: WidgetProps) {
     // You can set as much contexts as you want here
     return (
         <CustomizationContext.Provider value={customization}>

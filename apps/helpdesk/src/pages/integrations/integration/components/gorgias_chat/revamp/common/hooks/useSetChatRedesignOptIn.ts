@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { fromJS } from 'immutable'
 import type { Map } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 /**

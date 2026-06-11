@@ -18,11 +18,11 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
 import type { LanguageChat } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { GorgiasChatLauncherType } from 'models/integration/types'
-import useIsAutomateSubscriber from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsAutomateSubscriber'
-import useIntegrationPageViewLogEvent from 'pages/integrations/integration/hooks/useIntegrationPageViewLogEvent'
+import { useIsAutomateSubscriber } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsAutomateSubscriber'
+import { useIntegrationPageViewLogEvent } from 'pages/integrations/integration/hooks/useIntegrationPageViewLogEvent'
 import type {
     Texts,
     TextsMultiLanguage,

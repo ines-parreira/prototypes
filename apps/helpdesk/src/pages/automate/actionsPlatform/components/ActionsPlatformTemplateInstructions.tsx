@@ -1,6 +1,6 @@
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
-import FormLabel from './FormLabel'
+import { FormLabel } from './FormLabel'
 
 type Props = {
     value: string
@@ -48,4 +48,4 @@ const ActionsPlatformTemplateInstructions = ({
     )
 }
 
-export default ActionsPlatformTemplateInstructions
+export { ActionsPlatformTemplateInstructions }

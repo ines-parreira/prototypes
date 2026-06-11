@@ -1,9 +1,9 @@
 import classnames from 'classnames'
 
-import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
+import { FakeTicketComponent } from 'pages/settings/rules/components/FakeTicketComponent'
 
 import type { ManagedRuleModalProps } from '../InstallRuleModalBody'
-import TargetCount from './components/TargetCount'
+import { TargetCount } from './components/TargetCount'
 
 import defaultModalCss from '../RuleRecipeModal.less'
 import css from './ManagedRuleModal.less'

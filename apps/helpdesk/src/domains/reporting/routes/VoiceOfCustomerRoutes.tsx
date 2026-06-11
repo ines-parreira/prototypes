@@ -9,11 +9,11 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
+import { DefaultStatsFilters } from 'domains/reporting/pages/DefaultStatsFilters'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { VoiceOfCustomerNavbarContainer } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer'
 import { ProductInsightsPage } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
-import LegacyPage from 'pages/LegacyPage'
+import { DefaultExportLegacyPage as LegacyPage } from 'pages/LegacyPage'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
 export const VoiceOfCustomerRoutes = () => {

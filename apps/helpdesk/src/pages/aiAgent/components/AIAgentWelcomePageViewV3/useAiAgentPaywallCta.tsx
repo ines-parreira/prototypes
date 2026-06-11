@@ -17,8 +17,8 @@ import {
 import { logInTrialEventFromPaywall } from 'pages/aiAgent/components/ShoppingAssistant/utils/eventLogger'
 import type { TrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
-import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
-import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import { RequestTrialModal } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
+import { TrialFinishSetupModal } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 
 export type AiAgentCtasParams = {
     canStartOnboarding: boolean

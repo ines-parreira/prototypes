@@ -85,5 +85,3 @@ export const useTopProducts = (args: {
     timezone: string
     currency?: string
 }) => useTopProductsImplementation(args)
-
-export default useTopProducts

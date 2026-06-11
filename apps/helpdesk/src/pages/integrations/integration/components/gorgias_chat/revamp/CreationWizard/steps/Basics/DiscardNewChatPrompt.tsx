@@ -87,4 +87,4 @@ const DiscardNewChatPrompt: React.FC<Props> = ({ when }) => {
     )
 }
 
-export default DiscardNewChatPrompt
+export { DiscardNewChatPrompt }

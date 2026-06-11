@@ -9,11 +9,11 @@ import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
-import ABTestSettingPage from '../ABTestSettingsPage'
+import { ABTestSettingsPage as ABTestSettingPage } from '../ABTestSettingsPage'
 
-jest.mock('pages/convert/abVariants/components/VariantsList', () => () => (
-    <div>Variant List</div>
-))
+jest.mock('pages/convert/abVariants/components/VariantsList', () => ({
+    VariantsList: () => <div>Variant List</div>,
+}))
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection,

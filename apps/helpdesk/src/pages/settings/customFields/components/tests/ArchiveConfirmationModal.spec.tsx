@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import noop from 'lodash/noop'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import { ArchiveConfirmationModal } from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 
 describe('<ArchiveConfirmationModal/>', () => {
     it.each(Object.values(OBJECT_TYPES))('should render', (objectType) => {

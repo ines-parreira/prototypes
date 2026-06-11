@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { useParams } from 'react-router-dom'
 
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useWorkflowChannelSupport from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import { useWorkflowChannelSupport } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 const useOnlySupportedChannels = (
@@ -39,4 +39,4 @@ const useOnlySupportedChannels = (
     return onlySupportedChannels
 }
 
-export default useOnlySupportedChannels
+export { useOnlySupportedChannels }

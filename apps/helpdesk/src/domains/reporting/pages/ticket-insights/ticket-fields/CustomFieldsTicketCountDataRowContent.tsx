@@ -30,8 +30,8 @@ import {
     TicketFieldsMetric,
     ValueMode,
 } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export type WithSelectedCustomField = {
     selectedCustomField: { id: number; label: string }

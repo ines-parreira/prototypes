@@ -60,4 +60,4 @@ const SummaryTotalWithDiscounts = ({
     )
 }
 
-export default SummaryTotalWithDiscounts
+export { SummaryTotalWithDiscounts }

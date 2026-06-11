@@ -4,7 +4,7 @@ import { Map } from 'immutable'
 
 import type { RootState } from 'state/types'
 
-import Tip from '../Tip'
+import { Tip } from '../Tip'
 
 const defaultState = {
     currentUser: Map({

@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { isCurrentlyOnTicket } from 'utils'
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
     setCustomer: () => void
 }
 
-export default function InfobarCustomerActions({
+export function InfobarCustomerActions({
     sources,
     customer,
     selectedCustomer,

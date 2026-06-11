@@ -9,18 +9,18 @@ import type {
     ReturnAction,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import ReturnOrderAction from './components/ReturnOrderAction'
-import ReturnOrderEligibility from './components/ReturnOrderEligibility'
+import { ReturnOrderAction } from './components/ReturnOrderAction'
+import { ReturnOrderEligibility } from './components/ReturnOrderEligibility'
 import { DEFAULT_RETURN_ACTION } from './constants'
-import useReturnOrderFlow from './hooks/useReturnOrderFlow'
-import ReturnOrderFlowPreview from './ReturnOrderFlowPreview'
+import { useReturnOrderFlow } from './hooks/useReturnOrderFlow'
+import { ReturnOrderFlowPreview } from './ReturnOrderFlowPreview'
 import type { ReturnOrderFlowViewContextType } from './ReturnOrderFlowViewContext'
-import ReturnOrderFlowViewContext from './ReturnOrderFlowViewContext'
+import { ReturnOrderFlowViewContext } from './ReturnOrderFlowViewContext'
 
 const ReturnOrderFlowView = () => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -152,4 +152,4 @@ const ReturnOrderFlowView = () => {
     )
 }
 
-export default ReturnOrderFlowView
+export { ReturnOrderFlowView }

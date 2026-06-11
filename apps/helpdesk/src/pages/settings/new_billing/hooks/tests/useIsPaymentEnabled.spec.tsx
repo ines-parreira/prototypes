@@ -17,7 +17,7 @@ import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { CreditCard } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 

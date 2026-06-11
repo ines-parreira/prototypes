@@ -1,7 +1,7 @@
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 
 import type { LlmTriggeredExecution } from '../types'
-import ActionStatus from './ActionsStatus'
+import { ActionStatus } from './ActionsStatus'
 
 import css from './ActionEventTitle.less'
 
@@ -63,4 +63,4 @@ const ActionEventTitle = ({
     )
 }
 
-export default ActionEventTitle
+export { ActionEventTitle }

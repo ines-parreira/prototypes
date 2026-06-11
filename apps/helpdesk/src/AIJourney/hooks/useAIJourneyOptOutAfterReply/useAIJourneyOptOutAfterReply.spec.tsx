@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { aiJourneyOptedOutAfterReplyQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 
 import { useAIJourneyOptOutAfterReply } from './useAIJourneyOptOutAfterReply'
 

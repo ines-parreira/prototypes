@@ -152,5 +152,3 @@ export function TicketReplyActionHelpdeskV2({
         </ActionRow>
     )
 }
-
-export default TicketReplyActionHelpdeskV2

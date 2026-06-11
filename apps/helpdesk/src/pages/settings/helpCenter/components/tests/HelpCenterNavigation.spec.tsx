@@ -16,19 +16,23 @@ import { HelpCenterNavigation } from '../HelpCenterNavigation'
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => {
-    return ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    )
+    return {
+        SecondaryNavbar: ({ children }: { children?: React.ReactNode }) => (
+            <div>{children}</div>
+        ),
+    }
 })
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
-    return jest.fn(() => [
-        {
-            id: 1,
-            type: 'shopType',
-            name: 'shopName',
-        },
-    ])
+    return {
+        useStoreIntegrations: jest.fn(() => [
+            {
+                id: 1,
+                type: 'shopType',
+                name: 'shopName',
+            },
+        ]),
+    }
 })
 jest.mock('@repo/feature-flags')
 

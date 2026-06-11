@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
 import css from './HelpCenterWizardOrderManagement.less'
 
@@ -40,4 +40,4 @@ const HelpCenterWizardOrderManagement = ({
     )
 }
 
-export default HelpCenterWizardOrderManagement
+export { HelpCenterWizardOrderManagement }

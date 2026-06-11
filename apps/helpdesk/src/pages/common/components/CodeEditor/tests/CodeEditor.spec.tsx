@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CodeEditor from '../CodeEditor'
+import { CodeEditor } from '../CodeEditor'
 
 describe('<CodeEditor />', () => {
     it('should render the component', () => {

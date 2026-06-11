@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchRules } from 'models/rule/resources'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

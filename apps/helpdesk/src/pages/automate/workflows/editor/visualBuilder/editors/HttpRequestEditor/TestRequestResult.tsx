@@ -12,14 +12,14 @@ import {
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import IconButton from 'pages/common/components/button/IconButton'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import { validateJSON } from 'utils'
 
 import css from './TestRequestResult.less'
@@ -327,4 +327,4 @@ const TestRequestResult = ({
     )
 }
 
-export default TestRequestResult
+export { TestRequestResult }

@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,

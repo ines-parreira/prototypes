@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TopElementsCard from './TopElementsCard'
+import { TopElementsCard } from './TopElementsCard'
 
 const storyConfig: Meta<typeof TopElementsCard> = {
     title: 'AI Agent/Onboarding_V2/TopElementsCard/TopElementsCard',

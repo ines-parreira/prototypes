@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     GorgiasChatIntegration,
     ShopifyIntegration,
@@ -99,4 +99,4 @@ const useSpqInstallationStatus = (
     }
 }
 
-export default useSpqInstallationStatus
+export { useSpqInstallationStatus }

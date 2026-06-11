@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import TicketAssignee from '../TicketAssignee/TicketAssignee'
+import { TicketAssignee } from '../TicketAssignee/TicketAssignee'
 
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),

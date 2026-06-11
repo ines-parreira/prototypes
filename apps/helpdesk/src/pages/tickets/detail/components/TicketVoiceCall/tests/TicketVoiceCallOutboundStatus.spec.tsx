@@ -6,12 +6,12 @@ import {
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 
-import TicketVoiceCallOutboundStatus from '../TicketVoiceCallOutboundStatus'
+import { TicketVoiceCallOutboundStatus } from '../TicketVoiceCallOutboundStatus'
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
-    () =>
-        ({
+    () => ({
+        VoiceCallCustomerLabel: ({
             customerId,
             phoneNumber,
             interactable,
@@ -24,18 +24,23 @@ jest.mock(
                 TicketVoiceCallCustomerLabel {customerId}
             </div>
         ),
+    }),
 )
 
-jest.mock('../TicketVoiceCallEvents', () => ({ callId }: any) => (
-    <div data-testid="ticket-voice-call-events">{callId}</div>
-))
+jest.mock('../TicketVoiceCallEvents', () => ({
+    TicketVoiceCallEvents: ({ callId }: any) => (
+        <div data-testid="ticket-voice-call-events">{callId}</div>
+    ),
+}))
 
-jest.mock('../CollapsibleDetails', () => ({ title, children }: any) => (
-    <div data-testid="collapsible-details">
-        <div>{title}</div>
-        <div>{children}</div>
-    </div>
-))
+jest.mock('../CollapsibleDetails', () => ({
+    CollapsibleDetails: ({ title, children }: any) => (
+        <div data-testid="collapsible-details">
+            <div>{title}</div>
+            <div>{children}</div>
+        </div>
+    ),
+}))
 
 jest.mock('models/voiceCall/types', () => {
     const originalModule = jest.requireActual('models/voiceCall/types')

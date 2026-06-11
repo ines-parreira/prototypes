@@ -3,14 +3,14 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { trimHTML } from '@repo/utils'
 import { useHistory } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
 
 import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
-import useReportOrderIssueFlowScenarios from './useReportOrderIssueFlowScenarios'
+import { useReportOrderIssueFlowScenarios } from './useReportOrderIssueFlowScenarios'
 
 const useReportOrderIssueFlowScenario = (
     shopName: string,
@@ -116,4 +116,4 @@ const useReportOrderIssueFlowScenario = (
     }
 }
 
-export default useReportOrderIssueFlowScenario
+export { useReportOrderIssueFlowScenario }

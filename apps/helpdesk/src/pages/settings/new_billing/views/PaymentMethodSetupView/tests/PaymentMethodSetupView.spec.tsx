@@ -31,9 +31,9 @@ jest.mock('@stripe/react-stripe-js', () => ({
     AddressElement: jest.fn(() => <div data-testid="stripe-address-element" />),
 }))
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div data-testid="loader" />
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div data-testid="loader" />,
+}))
 
 jest.mock('@gorgias/helpdesk-client')
 

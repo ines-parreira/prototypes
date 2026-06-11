@@ -8,7 +8,7 @@ import type { Store } from 'redux'
 
 import { fetchMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'

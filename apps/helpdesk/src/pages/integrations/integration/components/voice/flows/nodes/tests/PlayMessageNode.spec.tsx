@@ -13,12 +13,16 @@ import type { PlayMessageStep } from '@gorgias/helpdesk-types'
 import { FlowProvider } from 'core/ui/flows'
 
 import type { VoiceFlowFormValues } from '../../types'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { PlayMessageNode } from '../PlayMessageNode'
 
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceMessageTTS/VoiceMessageTTSPreviewFields',
-    () => () => <div>VoiceMessageTTSPreviewFields</div>,
+    () => ({
+        VoiceMessageTTSPreviewFields: () => (
+            <div>VoiceMessageTTSPreviewFields</div>
+        ),
+    }),
 )
 
 describe('PlayMessageNode', () => {

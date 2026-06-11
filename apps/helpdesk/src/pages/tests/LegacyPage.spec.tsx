@@ -14,7 +14,7 @@ import { store } from 'common/store'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { openPanel } from 'state/layout/actions'
 
-import LegacyPage from '../LegacyPage'
+import { DefaultExportLegacyPage as LegacyPage } from '../LegacyPage'
 
 jest.mock('@gorgias/copilot')
 

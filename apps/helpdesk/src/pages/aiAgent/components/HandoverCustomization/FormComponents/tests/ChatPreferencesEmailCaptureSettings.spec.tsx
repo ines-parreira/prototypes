@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 
-import ChatPreferencesEmailCaptureSettings from '../ChatPreferencesEmailCaptureSettings'
+import { ChatPreferencesEmailCaptureSettings } from '../ChatPreferencesEmailCaptureSettings'
 
 describe('ChatPreferencesEmailCaptureSettings', () => {
     const defaultProps = {

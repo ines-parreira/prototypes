@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import AddActionOrIfStatement from '../AddActionOrIfStatement'
+import { AddActionOrIfStatement } from '../AddActionOrIfStatement'
 
 describe('AddActionOrIfStatement component', () => {
     const commonProps = {

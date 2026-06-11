@@ -82,4 +82,4 @@ const ContactFormPreview = ({ formRef }: ContactFormPreviewProps) => {
     )
 }
 
-export default ContactFormPreview
+export { ContactFormPreview }

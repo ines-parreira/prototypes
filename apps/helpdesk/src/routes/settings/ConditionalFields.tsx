@@ -2,8 +2,8 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import ConditionalFieldForm from 'pages/settings/conditionalFields/ConditionalField'
-import ConditionalFieldsComponent from 'pages/settings/conditionalFields/ConditionalFields'
+import { ConditionalField as ConditionalFieldForm } from 'pages/settings/conditionalFields/ConditionalField'
+import { ConditionalFields as ConditionalFieldsComponent } from 'pages/settings/conditionalFields/ConditionalFields'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { ChannelsReport } from 'domains/reporting/pages/support-performance/channels/ChannelsReport'
 import {
@@ -43,14 +43,15 @@ jest.mock(
         }: ComponentProps<typeof DrillDownModalTrigger>) => children,
     }),
 )
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: (
+        props: ComponentProps<typeof FiltersPanelWrapper>,
+    ) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
     },
-)
+}))
 jest.mock(
     'domains/reporting/pages/support-performance/channels/ChannelsDownloadDataButton',
     () => ({

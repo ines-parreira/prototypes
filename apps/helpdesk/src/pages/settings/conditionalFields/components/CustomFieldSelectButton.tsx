@@ -10,7 +10,7 @@ import type { RequirementType } from '@gorgias/helpdesk-queries'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 const SelectTrigger = ({
     hasError: __hasError,
@@ -48,7 +48,7 @@ function requirementTypeToString(requirementType?: RequirementType): string {
     return 'Optional: Always Visible'
 }
 
-export default function CustomFieldSelectButton({
+export function CustomFieldSelectButton({
     objectType,
     ignoreIds,
     onSelect,

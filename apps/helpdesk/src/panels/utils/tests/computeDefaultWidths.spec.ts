@@ -1,4 +1,4 @@
-import computeDefaultWidths from '../computeDefaultWidths'
+import { computeDefaultWidths } from '../computeDefaultWidths'
 
 describe('computeDefaultWidths', () => {
     it('should clamp widths that exceed min/max constraints', () => {

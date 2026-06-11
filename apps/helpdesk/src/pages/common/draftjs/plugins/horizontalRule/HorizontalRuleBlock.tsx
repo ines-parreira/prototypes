@@ -6,4 +6,4 @@ const HorizontalRuleBlock = () => {
     return <div className={css.horizontalRule} />
 }
 
-export default HorizontalRuleBlock
+export { HorizontalRuleBlock }

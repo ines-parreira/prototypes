@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import type { User } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { UserMenuTrigger } from '../UserMenuTrigger'
 

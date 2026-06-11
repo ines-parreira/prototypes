@@ -14,7 +14,7 @@ import {
 } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import InstallationCard from './InstallationCard'
+import { InstallationCard } from './InstallationCard'
 
 const mockCard = jest.fn(({ children }: any) => children)
 const mockHeading = jest.fn(({ children }: any) => children)
@@ -64,7 +64,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/StoreController',
     () => ({
         __esModule: true,
-        default: (props: any) => mockStoreController(props),
+        StoreController: (props: any) => mockStoreController(props),
     }),
 )
 
@@ -72,20 +72,20 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/OneClickInstall',
     () => ({
         __esModule: true,
-        default: (props: any) => mockOneClickInstall(props),
+        OneClickInstall: (props: any) => mockOneClickInstall(props),
     }),
 )
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: (selector: any) => mockUseAppSelector(selector),
+    useAppSelector: (selector: any) => mockUseAppSelector(selector),
 }))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyCheckoutChatInstallation',
     () => ({
         __esModule: true,
-        default: (integration: any) =>
+        useShopifyCheckoutChatInstallation: (integration: any) =>
             mockUseShopifyCheckoutChatInstallation(integration),
     }),
 )
@@ -94,7 +94,8 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useChatMigrationBanner',
     () => ({
         __esModule: true,
-        default: (integration: any) => mockUseChatMigrationBanner(integration),
+        useChatMigrationBanner: (integration: any) =>
+            mockUseChatMigrationBanner(integration),
     }),
 )
 
@@ -102,7 +103,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation',
     () => ({
         __esModule: true,
-        default: (storeIntegration: any) =>
+        useThemeAppExtensionInstallation: (storeIntegration: any) =>
             mockUseThemeAppExtensionInstallation(storeIntegration),
     }),
 )

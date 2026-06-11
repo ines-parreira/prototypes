@@ -10,9 +10,9 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
-import SelfServiceChatIntegrationPreview from '../SelfServiceChatIntegrationPreview'
+import { DefaultExportSelfServiceChatIntegrationPreview as SelfServiceChatIntegrationPreview } from '../SelfServiceChatIntegrationPreview'
 
 const mockIntegration: GorgiasChatIntegration = {
     name: 'integration',

@@ -28,4 +28,4 @@ const ChannelsLink = ({
         </Link>
     )
 }
-export default ChannelsLink
+export { ChannelsLink }

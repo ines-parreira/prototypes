@@ -3,14 +3,14 @@ import { Container } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import templatesImage from 'assets/img/workflows/templates.png'
-import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
+import { AutomateViewEmptyStateBanner } from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
 import {
     WORKFLOWS_DESCRIPTION,
     WORKFLOWS_MAIN_TITLE,
 } from '../common/constants'
 import { WORKFLOW_TEMPLATES_LIST } from '../workflowTemplates'
-import WorkflowTemplateCard from './WorkflowTemplateCard'
+import { WorkflowTemplateCard } from './WorkflowTemplateCard'
 
 import templatesCss from '../WorkflowTemplatesView.less'
 import css from './WorkflowsEmptyState.less'
@@ -71,4 +71,4 @@ const WorkflowsEmptyState: React.FC<Props> = ({
     )
 }
 
-export default WorkflowsEmptyState
+export { WorkflowsEmptyState }

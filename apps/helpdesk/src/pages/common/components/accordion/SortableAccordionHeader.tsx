@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import type { AccordionHeaderProps } from './AccordionHeader'
-import AccordionHeader from './AccordionHeader'
+import { AccordionHeader } from './AccordionHeader'
 import { useSortableAccordionContext } from './SortableAccordionContext'
 import { useSortableAccordionItemContext } from './SortableAccordionItemContext'
 
@@ -36,4 +36,4 @@ const SortableAccordionHeader = (props: Props) => {
     )
 }
 
-export default SortableAccordionHeader
+export { SortableAccordionHeader }

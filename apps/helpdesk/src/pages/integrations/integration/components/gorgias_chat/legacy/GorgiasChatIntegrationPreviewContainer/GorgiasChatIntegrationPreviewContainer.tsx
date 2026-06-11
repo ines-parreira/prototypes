@@ -27,4 +27,4 @@ const GorgiasChatIntegrationPreviewContainer = ({
     </Container>
 )
 
-export default GorgiasChatIntegrationPreviewContainer
+export { GorgiasChatIntegrationPreviewContainer }

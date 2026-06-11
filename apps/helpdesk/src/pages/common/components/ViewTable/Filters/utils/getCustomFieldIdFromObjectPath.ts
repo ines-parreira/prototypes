@@ -1,4 +1,4 @@
-export default function getCustomFieldIdFromObjectPath(path: string) {
+export function getCustomFieldIdFromObjectPath(path: string) {
     const regex = /\[(\d+)\]/
     const match = path.match(regex)
 

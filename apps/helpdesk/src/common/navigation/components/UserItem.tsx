@@ -3,19 +3,19 @@ import { useCallback, useRef, useState } from 'react'
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { useCurrentUser, UserAvatar } from '@repo/users'
 
-import useAppSelector from 'hooks/useAppSelector'
-import LegacyAvatar from 'pages/common/components/Avatar/Avatar'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Avatar as LegacyAvatar } from 'pages/common/components/Avatar/Avatar'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import {
     getCurrentUser,
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
 
-import UserMenu from './UserMenu'
+import { UserMenu } from './UserMenu'
 
 import css from './UserItem.less'
 
-export default function UserItem() {
+export function UserItem() {
     const currentUser = useAppSelector(getCurrentUser)
     const isAvailable = useAppSelector(getIsAvailable)
     const user = useCurrentUser()

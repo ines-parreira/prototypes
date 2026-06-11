@@ -21,7 +21,9 @@ const mockSetOptIn = jest.fn(() => Promise.resolve())
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => () => 'https://example.com/oauth/{shop_name}'),
+    useAppSelector: jest.fn(
+        () => () => 'https://example.com/oauth/{shop_name}',
+    ),
 }))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -29,7 +31,7 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('pages/integrations/common/components/ForwardIcon', () => ({
     __esModule: true,
-    default: ({ href, onClick }: { href: string; onClick: () => void }) => (
+    ForwardIcon: ({ href, onClick }: { href: string; onClick: () => void }) => (
         <a data-testid="forward-icon" href={href} onClick={onClick}>
             Forward
         </a>

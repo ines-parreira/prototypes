@@ -8,13 +8,13 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import PageHeader from 'pages/common/components/PageHeader'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 
 import { isAiAgentOnboardingWizardStep } from '../hooks/utils/configurationForm.utils'
-import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'
-import AiAgentOnboardingWizardPersonalize from './AiAgentOnboardingWizardPersonalize'
+import { AiAgentOnboardingWizardStepKnowledge as AiAgentOnboardingWizardKnowledge } from './AiAgentOnboardingWizardKnowledge'
+import { AiAgentOnboardingWizardStepPersonalize as AiAgentOnboardingWizardPersonalize } from './AiAgentOnboardingWizardPersonalize'
 
 import css from './AiAgentOnboardingWizard.less'
 
@@ -85,4 +85,4 @@ const AiAgentOnboardingWizard = () => {
     )
 }
 
-export default AiAgentOnboardingWizard
+export { AiAgentOnboardingWizard }

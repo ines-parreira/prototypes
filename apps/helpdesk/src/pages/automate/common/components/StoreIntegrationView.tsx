@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
-import LinkButton from 'pages/common/components/button/LinkButton'
-import PageHeader from 'pages/common/components/PageHeader'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 import css from './StoreIntegrationView.less'
 
@@ -29,4 +29,4 @@ const StoreIntegrationView = ({ title }: { title: string }) => {
         </div>
     )
 }
-export default StoreIntegrationView
+export { StoreIntegrationView }

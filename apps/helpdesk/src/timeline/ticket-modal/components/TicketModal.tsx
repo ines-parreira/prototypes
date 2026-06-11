@@ -11,9 +11,9 @@ import {
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 import { TicketDetail } from 'tickets/ticket-detail/components/TicketDetail'
 
 import type { useTicketModal } from '../hooks/useTicketModal'

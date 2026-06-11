@@ -5,7 +5,7 @@ import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
 import { useStoreManagementState } from '../../../StoreManagementProvider'
 
-export default function useStoreDeleter() {
+export function useStoreDeleter() {
     const history = useHistory()
     const { refetchIntegrations, refetchMapping } = useStoreManagementState()
 

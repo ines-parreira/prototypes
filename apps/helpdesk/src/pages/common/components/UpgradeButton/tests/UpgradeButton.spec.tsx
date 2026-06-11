@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
-import UpgradeButton from '../UpgradeButton'
+import { UpgradeButton } from '../UpgradeButton'
 
 describe('UpgradeButton', () => {
     it('should display with default props', () => {

@@ -3,7 +3,7 @@ import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import VoiceIntegrationSettingCallTranscription from '../VoiceIntegrationSettingCallTranscription'
+import { VoiceIntegrationSettingCallTranscription } from '../VoiceIntegrationSettingCallTranscription'
 
 describe('VoiceIntegrationSettingCallTranscription', () => {
     const renderComponent = () =>

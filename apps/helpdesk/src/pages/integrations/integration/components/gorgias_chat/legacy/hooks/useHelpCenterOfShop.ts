@@ -43,4 +43,4 @@ const useHelpCenterOfShop = (shopName?: string, shopType?: string) => {
     }
 }
 
-export default useHelpCenterOfShop
+export { useHelpCenterOfShop }

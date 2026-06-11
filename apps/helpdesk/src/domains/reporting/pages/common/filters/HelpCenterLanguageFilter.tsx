@@ -7,7 +7,7 @@ import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/s
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
-import Filter from 'domains/reporting/pages/common/components/Filter/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter/Filter'
 import {
     FilterLabels,
     helpCenterLanguageFilterLogicalOperators,
@@ -19,7 +19,7 @@ import {
 import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
@@ -133,7 +133,7 @@ const HelpCenterLanguageFilter = ({
     )
 }
 
-export default HelpCenterLanguageFilter
+export { HelpCenterLanguageFilter }
 
 export const HelpCenterLanguageFilterWithState = connect(
     (state: RootState) => ({

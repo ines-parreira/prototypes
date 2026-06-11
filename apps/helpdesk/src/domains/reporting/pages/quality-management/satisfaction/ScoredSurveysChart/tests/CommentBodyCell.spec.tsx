@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import CommentBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell'
+import { CommentBodyCell } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell'
 
 describe('<CommentBodyCell>', () => {
     it('should render comment', () => {

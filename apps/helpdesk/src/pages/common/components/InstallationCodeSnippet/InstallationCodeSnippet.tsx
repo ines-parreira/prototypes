@@ -43,4 +43,4 @@ const InstallationCodeSnippet = ({ code, onCopy }: Props) => {
     )
 }
 
-export default InstallationCodeSnippet
+export { InstallationCodeSnippet }

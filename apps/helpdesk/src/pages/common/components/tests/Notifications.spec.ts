@@ -1,6 +1,6 @@
 import { STATUSES } from 'reapop'
 
-import theme, { createNotificationsTheme } from '../Notifications'
+import { createNotificationsTheme, theme } from '../Notifications'
 
 const mockNotification = {
     id: '1',

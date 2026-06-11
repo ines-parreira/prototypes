@@ -8,7 +8,7 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { PlaygroundSettings } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSettings/PlaygroundSettings'
 import { SyncingSourcesMessage } from 'pages/aiAgent/PlaygroundV2/components/SyncingSourcesMessage/SyncingSourcesMessage'
 import {

@@ -3,7 +3,7 @@ import { Component } from 'react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 type Props = {
     action: Map<string, any>
@@ -11,7 +11,7 @@ type Props = {
     updateActionArgs: (index: number, args: Map<string, any>) => void
 }
 
-export default class SetSubjectAction extends Component<Props> {
+export class SetSubjectAction extends Component<Props> {
     componentDidMount() {
         if (!this.props.action.getIn(['arguments', 'subject'])) {
             this.props.updateActionArgs(this.props.index, fromJS({}))

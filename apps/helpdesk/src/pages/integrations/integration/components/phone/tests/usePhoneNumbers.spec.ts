@@ -3,9 +3,11 @@ import { renderHook } from '@repo/testing'
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import * as phoneNumbersSelectors from 'state/entities/phoneNumbers/selectors'
 
-import usePhoneNumbers from '../usePhoneNumbers'
+import { usePhoneNumbers } from '../usePhoneNumbers'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 const getNewPhoneNumbersSpy = jest.spyOn(
     phoneNumbersSelectors,

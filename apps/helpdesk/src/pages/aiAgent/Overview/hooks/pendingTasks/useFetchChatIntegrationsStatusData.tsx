@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'

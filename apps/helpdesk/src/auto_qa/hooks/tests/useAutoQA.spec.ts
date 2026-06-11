@@ -7,7 +7,7 @@ import {
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/helpdesk-queries'
 
-import useAutoQA from '../useAutoQA'
+import { useAutoQA } from '../useAutoQA'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     TicketQAScoreDimensionName: {

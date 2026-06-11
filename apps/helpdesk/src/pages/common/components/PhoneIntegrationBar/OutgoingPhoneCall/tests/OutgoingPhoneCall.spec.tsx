@@ -11,7 +11,7 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockOutgoingCall } from 'tests/twilioMocks'
 
-import OutgoingPhoneCall from '../OutgoingPhoneCall'
+import { OutgoingPhoneCall } from '../OutgoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 

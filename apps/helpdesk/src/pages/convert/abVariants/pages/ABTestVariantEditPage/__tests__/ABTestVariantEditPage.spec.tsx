@@ -16,7 +16,7 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ABTestVariantEditPage from '../ABTestVariantEditPage'
+import { ABTestVariantEditPage } from '../ABTestVariantEditPage'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

@@ -14,12 +14,12 @@ import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import withRouter from 'pages/common/utils/withRouter'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { withRouter } from 'pages/common/utils/withRouter'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
@@ -223,4 +223,8 @@ const connector = connect(null, {
     deleteIntegration,
     updateOrCreateIntegration,
 })
-export default withRouter(connector(SmileIntegrationDetailComponent))
+const DefaultExportSmileIntegrationDetail = withRouter(
+    connector(SmileIntegrationDetailComponent),
+)
+
+export { DefaultExportSmileIntegrationDetail }

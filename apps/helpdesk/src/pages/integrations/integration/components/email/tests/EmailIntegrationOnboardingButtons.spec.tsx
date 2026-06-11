@@ -7,7 +7,7 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import { EmailIntegrationOnboardingButtons } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
 import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
@@ -33,7 +33,11 @@ jest.mock('@gorgias/toolkit-react', () => ({
 }))
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons',
-    () => () => <div>OnboardingDomainVerificationButtons</div>,
+    () => ({
+        OnboardingDomainVerificationButtons: () => (
+            <div>OnboardingDomainVerificationButtons</div>
+        ),
+    }),
 )
 
 const defaultHookResult: UseEmailOnboardingHookResult = {

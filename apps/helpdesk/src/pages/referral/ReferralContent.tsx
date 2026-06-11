@@ -1,6 +1,6 @@
 import { Container } from 'reactstrap'
 
-import PageHeader from '../common/components/PageHeader'
+import { PageHeader } from '../common/components/PageHeader'
 
 export const ReferralContent = () => {
     return (
@@ -10,5 +10,3 @@ export const ReferralContent = () => {
         </div>
     )
 }
-
-export default ReferralContent

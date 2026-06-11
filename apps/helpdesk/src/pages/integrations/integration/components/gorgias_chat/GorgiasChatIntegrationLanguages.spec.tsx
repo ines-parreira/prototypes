@@ -13,7 +13,11 @@ jest.mock(
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages',
-    () => () => <div data-testid="legacy-languages" />,
+    () => ({
+        GorgiasChatIntegrationLanguages: () => (
+            <div data-testid="legacy-languages" />
+        ),
+    }),
 )
 
 jest.mock(

@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { OBJECT_PATHS, OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { updateCustomFieldFilterId } from 'state/views/actions'
 import type { Schemas } from 'types'
 
@@ -18,11 +18,7 @@ type Props = {
     schemas: Schemas
 }
 
-export default function useCustomFieldsFilters({
-    objectPath,
-    index,
-    schemas,
-}: Props) {
+export function useCustomFieldsFilters({ objectPath, index, schemas }: Props) {
     const dispatch = useAppDispatch()
 
     const customFieldId = useMemo(

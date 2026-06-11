@@ -5,8 +5,9 @@ import { screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import * as logout from '../logoutUser'
-import SessionChangeDetection, {
+import {
     LOGOUT_EXPLANATION,
+    SessionChangeDetection,
     USER_CHANGE_EXPLANATION,
 } from '../SessionChangeDetection'
 

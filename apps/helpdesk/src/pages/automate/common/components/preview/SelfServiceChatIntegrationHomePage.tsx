@@ -7,16 +7,16 @@ import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import Card from 'gorgias-design-system/Cards/Card'
-import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
-import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
-import List from 'gorgias-design-system/List/List'
-import ListItem from 'gorgias-design-system/List/ListItem'
+import { Card } from 'gorgias-design-system/Cards/Card'
+import { Conversation } from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
+import { ChatMessageInput } from 'gorgias-design-system/Input/ChatMessageInput'
+import { List } from 'gorgias-design-system/List/List'
+import { ListItem } from 'gorgias-design-system/List/ListItem'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ConversationAvatars'
+import { ConversationAvatars } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ConversationAvatars'
 import {
     AddIcon,
     BoxIcon,
@@ -25,7 +25,7 @@ import {
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/icon-utils'
 
 import { MAX_ACTIVE_FLOWS } from '../constants'
-import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+import { useWorkflowsEntrypoints } from './hooks/useWorkflowsEntrypoints'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationHomePage.less'
@@ -174,4 +174,4 @@ const SelfServiceChatIntegrationHomePage = ({
     )
 }
 
-export default SelfServiceChatIntegrationHomePage
+export { SelfServiceChatIntegrationHomePage }

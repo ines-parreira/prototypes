@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { billingKeys, useUpdateBillingContact } from 'models/billing/queries'
 import type { updateBillingContact } from 'models/billing/resources'
 import { UPDATE_BILLING_CONTACT_ERROR } from 'state/billing/constants'

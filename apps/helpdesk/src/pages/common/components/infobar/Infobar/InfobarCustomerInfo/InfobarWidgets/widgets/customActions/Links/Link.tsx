@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Source } from 'models/widget/types'
 import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
@@ -15,7 +15,7 @@ import { AppContext } from 'providers/infobar/AppContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import Editor from './Editor'
+import { Editor } from './Editor'
 
 import css from './Links.less'
 
@@ -95,5 +95,3 @@ export function Link(props: Props) {
         </li>
     )
 }
-
-export default Link

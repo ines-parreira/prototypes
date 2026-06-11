@@ -44,7 +44,7 @@ const SentimentIconLabel: {
     },
 }
 
-export default function PerformanceTip({
+export function PerformanceTip({
     children,
     className,
     canduId,

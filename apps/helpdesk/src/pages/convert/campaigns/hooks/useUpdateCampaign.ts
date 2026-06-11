@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useUpdateCampaign as usePureUpdateCampaign } from 'models/convert/campaign/queries'
 import { invalidateCacheOnCampaignChange } from 'pages/convert/campaigns/hooks/utils'
 import { notify } from 'state/notifications/actions'

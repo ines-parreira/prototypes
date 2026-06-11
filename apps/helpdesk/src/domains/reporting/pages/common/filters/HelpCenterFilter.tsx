@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
     emptyFilter,
@@ -15,7 +15,7 @@ import {
 import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 import type { RootState } from 'state/types'
 
@@ -83,7 +83,7 @@ const HelpCenterFilter = ({ value = emptyFilter, dispatchUpdate }: Props) => {
     )
 }
 
-export default HelpCenterFilter
+export { HelpCenterFilter }
 
 export const HelpCenterFilterWithState = connect(
     (state: RootState) => ({

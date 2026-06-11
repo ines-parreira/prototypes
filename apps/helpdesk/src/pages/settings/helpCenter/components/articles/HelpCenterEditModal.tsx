@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import ReactDOM from 'react-dom'
 import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -105,5 +105,3 @@ export const HelpCenterEditModal = ({
 
     return (portalRoot && ReactDOM.createPortal(modal, portalRoot)) || modal
 }
-
-export default HelpCenterEditModal

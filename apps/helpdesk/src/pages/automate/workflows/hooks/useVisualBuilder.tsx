@@ -5,7 +5,7 @@ import { createContext, useCallback, useContext, useMemo } from 'react'
 import _noop from 'lodash/noop'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import {
     buildWorkflowVariableFromNode,

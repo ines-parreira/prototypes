@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { CardTemplate, LeafTemplate, Source } from 'models/widget/types'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
-import type Field from 'Widgets/modules/Template/modules/Field'
+import type { Field } from 'Widgets/modules/Template/modules/Field'
 
 import type { TemplateCustomization } from '../types'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import RecommendationPagination from '../RecommendationPagination'
+import { RecommendationPagination } from '../RecommendationPagination'
 
 describe('<RecommendationPagination />', () => {
     it('should render component', () => {

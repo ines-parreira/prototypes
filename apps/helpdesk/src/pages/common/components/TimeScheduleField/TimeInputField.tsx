@@ -3,13 +3,13 @@ import type { ComponentProps } from 'react'
 import classNames from 'classnames'
 
 import { THEME_NAME, useTheme } from 'core/theme'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './TimeInputField.less'
 
 type Props = ComponentProps<typeof InputField>
 
-export default function TimeInputField({ className, ...props }: Props) {
+export function TimeInputField({ className, ...props }: Props) {
     const theme = useTheme()
 
     return (

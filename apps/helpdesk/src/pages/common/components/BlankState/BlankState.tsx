@@ -22,4 +22,4 @@ const BlankState = ({ message }: Props) => {
     )
 }
 
-export default BlankState
+export { BlankState }

@@ -12,4 +12,4 @@ const SelectFieldDropdownAction: React.FC<{
         {children}
     </div>
 )
-export default SelectFieldDropdownAction
+export { SelectFieldDropdownAction }

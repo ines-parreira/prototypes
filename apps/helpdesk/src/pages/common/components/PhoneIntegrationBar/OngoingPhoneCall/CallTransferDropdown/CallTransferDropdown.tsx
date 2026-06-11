@@ -12,12 +12,12 @@ import {
 
 import { getCallSid } from 'hooks/integrations/phone/twilioCall.utils'
 import type { UserSearchResult } from 'models/search/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import type { AlertBannerData } from 'pages/common/components/dropdown/DropdownAlertBanner'
-import DropdownAlertBanner from 'pages/common/components/dropdown/DropdownAlertBanner'
-import AgentCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent'
-import ExternalCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
-import QueueCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/QueueCallTransferDropdownContent'
+import { DropdownAlertBanner } from 'pages/common/components/dropdown/DropdownAlertBanner'
+import { AgentCallTransferDropdownContent } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent'
+import { ExternalCallTransferDropdownContent } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
+import { QueueCallTransferDropdownContent } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/QueueCallTransferDropdownContent'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { getTransferReceiverData } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils'
@@ -256,4 +256,4 @@ const CallTransferDropdown = ({
     )
 }
 
-export default CallTransferDropdown
+export { CallTransferDropdown }

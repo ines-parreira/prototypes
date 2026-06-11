@@ -19,7 +19,7 @@ import {
 import { getChannels } from 'services/channels'
 
 import type { SLAFormValues } from '../controllers/useFormValues'
-import useFormValues from '../controllers/useFormValues'
+import { useFormValues } from '../controllers/useFormValues'
 
 import css from './ChannelSelectBox.less'
 

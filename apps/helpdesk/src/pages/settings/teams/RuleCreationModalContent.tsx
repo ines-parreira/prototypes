@@ -18,21 +18,22 @@ import {
 
 import { TicketChannel } from 'business/types/ticket'
 import { ISO639English } from 'constants/languages'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createRule } from 'models/rule/resources'
 import type { Team } from 'models/team/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownQuickSelect as DropdownQuickSelect } from 'pages/common/components/dropdown/DropdownQuickSelect'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { IntegrationsDetailLabel } from 'pages/common/utils/labels'
 import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
 import { getEmptyRule } from 'state/rules/utils'
@@ -72,7 +73,7 @@ function makeRuleCode(teamId: number, conditionStatement: string) {
     }`
 }
 
-export default function RuleCreationModalContent({ onClose, team }: Props) {
+export function RuleCreationModalContent({ onClose, team }: Props) {
     const integrations = useAppSelector(getMessagingAndAppIntegrations)
     const tags = useAppSelector((state) => state.entities.tags)
     const ref = useRef<HTMLFormElement>(null)

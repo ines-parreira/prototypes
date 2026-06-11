@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 
 import type { Action } from '../TicketActions'
-import TicketActions from '../TicketActions'
+import { TicketActions } from '../TicketActions'
 
 describe('TicketActions', () => {
     it('should call the provided action when the action is clicked', () => {

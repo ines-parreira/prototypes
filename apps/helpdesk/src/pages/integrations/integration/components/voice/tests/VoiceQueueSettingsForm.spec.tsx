@@ -16,8 +16,8 @@ import {
 import * as validators from '@gorgias/helpdesk-validators'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import useAppDispatch from 'hooks/useAppDispatch'
-import InputField from 'pages/common/forms/input/InputField'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import {
     QUEUE_CAPACITY_VALIDATION_ERROR,
@@ -25,7 +25,7 @@ import {
     WAIT_TIME_VALIDATION_ERROR,
 } from '../constants'
 import { getVoiceQueueEditableFields } from '../utils'
-import VoiceQueueSettingsForm from '../VoiceQueueSettingsForm'
+import { VoiceQueueSettingsForm } from '../VoiceQueueSettingsForm'
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
 
 jest.mock('@gorgias/helpdesk-validators', () => ({
@@ -43,7 +43,7 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
 
     return {
         __esModule: true,
-        default: forwardRef((props: any) =>
+        UnsavedChangesPrompt: forwardRef((props: any) =>
             mockUnsavedChangesPrompt(props as any),
         ),
     }

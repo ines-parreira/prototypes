@@ -129,4 +129,4 @@ export const variable = {
 
 const variableDecorators = [variable]
 
-export default variableDecorators
+export { variableDecorators }

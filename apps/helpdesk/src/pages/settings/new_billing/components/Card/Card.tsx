@@ -39,4 +39,4 @@ const Card = ({ children, title, link }: CardProps) => {
     )
 }
 
-export default Card
+export { Card }

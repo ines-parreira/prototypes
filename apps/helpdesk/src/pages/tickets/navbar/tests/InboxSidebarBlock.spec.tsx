@@ -10,7 +10,7 @@ import { InboxSidebarBlock } from '../InboxSidebarBlock'
 
 jest.mock('../TicketNavbarDropTarget', () => ({
     __esModule: true,
-    default: ({ children }: any) => <div>{children}</div>,
+    TicketNavbarDropTarget: ({ children }: any) => <div>{children}</div>,
 }))
 
 const renderComponent = (

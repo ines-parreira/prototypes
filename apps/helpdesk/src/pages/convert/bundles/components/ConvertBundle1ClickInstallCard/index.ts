@@ -1,1 +1,1 @@
-export { default } from './ConvertBundle1ClickInstallCard'
+export { ConvertBundle1ClickInstallCard } from './ConvertBundle1ClickInstallCard'

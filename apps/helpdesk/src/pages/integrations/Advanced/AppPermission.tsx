@@ -11,7 +11,7 @@ function makePermissionsLabel(verbs: string[]): string {
     return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-export default function AppPermission(permission: AppOAuthPermission) {
+export function AppPermission(permission: AppOAuthPermission) {
     const tooltipId = 'app-permission-tooltip-' + useId()
 
     return (

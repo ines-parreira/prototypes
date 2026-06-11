@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import DEPRECATED_ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
+import { DEPRECATED_ChannelsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
 import {
     initialState,
     mergeStatsFilters,

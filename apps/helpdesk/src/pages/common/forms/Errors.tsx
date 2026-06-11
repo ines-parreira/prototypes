@@ -8,4 +8,4 @@ const Errors: FC<ComponentProps<typeof FormFeedback>> = ({
     ...rest
 }) => <FormFeedback {...rest}>{children}</FormFeedback>
 
-export default Errors
+export { Errors }

@@ -1,5 +1,5 @@
 import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
-import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
+import { VoiceCallDrillDownTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 import { useVoiceDrillDownHookV2 } from 'domains/reporting/pages/voice/VoiceConfigs/useVoiceDrillDownHookV2'
 import { VoiceAgentsMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceMetricsConfig'

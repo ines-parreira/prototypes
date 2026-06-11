@@ -42,4 +42,4 @@ const rulesReducer = createReducer<RulesState>(initialState, (builder) =>
         }),
 )
 
-export default rulesReducer
+export { rulesReducer }

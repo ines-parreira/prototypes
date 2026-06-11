@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 
-import Navigation from 'pages/common/components/Navigation/Navigation'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
 
 const commonProps: ComponentProps<typeof Navigation> = {
     hasNextItems: true,

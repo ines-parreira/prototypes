@@ -5,8 +5,8 @@ import { createWorkflowConfigurationShallow } from 'fixtures/workflows'
 import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
-import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useHelpCentersAutomationSettings } from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { ChannelLanguage } from 'pages/automate/common/types'
 import type { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import type { Components } from 'rest_api/help_center_api/client.generated'
@@ -16,12 +16,13 @@ import { useHelpCenterFlows } from '../useHelpCenterFlows'
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
 }))
-jest.mock('pages/automate/common/hooks/useHelpCenterAutomationSettings', () =>
-    jest.fn(),
+jest.mock(
+    'pages/automate/common/hooks/useHelpCenterAutomationSettings',
+    () => ({ useHelpCentersAutomationSettings: jest.fn() }),
 )
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () =>
-    jest.fn(),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
+    useSelfServiceConfiguration: jest.fn(),
+}))
 
 const shopType = IntegrationType.Shopify
 const shopName = 'test-shop'

@@ -5,7 +5,7 @@ import type { GenericAttachment } from 'common/types'
 /**
  * Upload file action meant to be used by another action
  */
-export default function uploadFiles(
+export function uploadFiles(
     files: FileList | Array<GenericAttachment> | File[],
     params: Maybe<Record<string, unknown>> = null,
 ): Promise<GenericAttachment[]> {

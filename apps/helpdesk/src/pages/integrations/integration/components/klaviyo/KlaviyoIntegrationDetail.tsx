@@ -21,11 +21,11 @@ import {
     KLAVIYO_INITIAL_SYNC_SYNCING,
 } from 'config/integrations/klaviyo'
 import { KLAVIYO_INTEGRATION_TYPE } from 'constants/integration'
-import Alert from 'pages/common/components/Alert/Alert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import PageHeader from 'pages/common/components/PageHeader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import type {
@@ -525,4 +525,4 @@ class KlaviyoIntegrationDetail extends Component<Props> {
     }
 }
 
-export default KlaviyoIntegrationDetail
+export { KlaviyoIntegrationDetail }

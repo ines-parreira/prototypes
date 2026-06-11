@@ -6,8 +6,8 @@ import styled from '@emotion/styled'
 import { gorgiasColors } from 'gorgias-design-system/styles'
 
 import { deriveLauncherColors } from './deriveLauncherColors'
-import BubbleIconRedesigned from './icons/BubbleIconRedesigned'
-import CloseIcon from './icons/CloseIcon'
+import { BubbleIconRedesigned } from './icons/BubbleIconRedesigned'
+import { CloseIcon } from './icons/CloseIcon'
 
 const StyledLabel = styled.span<{
     showIconOnly: boolean
@@ -240,4 +240,4 @@ const Launcher: React.FC<LauncherProps & HTMLAttributes<HTMLButtonElement>> = ({
     )
 }
 
-export default Launcher
+export { Launcher }

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import RadioFieldSet from '../RadioFieldSet'
+import { RadioFieldSet } from '../RadioFieldSet'
 
 describe('<RadioFieldSet />', () => {
     const minProps = {

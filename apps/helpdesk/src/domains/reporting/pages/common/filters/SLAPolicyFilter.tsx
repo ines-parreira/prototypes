@@ -8,7 +8,7 @@ import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {

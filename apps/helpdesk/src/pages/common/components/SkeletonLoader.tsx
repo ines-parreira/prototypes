@@ -30,4 +30,4 @@ const SkeletonLoader = ({ className, length = 3 }: Props) => (
     </div>
 )
 
-export default SkeletonLoader
+export { SkeletonLoader }

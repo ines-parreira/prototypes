@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import VoiceIntegrationBasicLabel from './VoiceIntegrationBasicLabel'
+import { VoiceIntegrationBasicLabel } from './VoiceIntegrationBasicLabel'
 
 describe('VoiceIntegrationBasicLabel', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([])

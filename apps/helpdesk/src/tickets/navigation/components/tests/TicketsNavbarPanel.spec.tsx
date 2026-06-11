@@ -6,11 +6,11 @@ import { screen } from '@testing-library/react'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 
-import TicketsNavbarPanel from '../TicketsNavbarPanel'
+import { TicketsNavbarPanel } from '../TicketsNavbarPanel'
 
-jest.mock('pages/tickets/navbar/TicketNavbar', () => () => (
-    <div>TicketNavbar</div>
-))
+jest.mock('pages/tickets/navbar/TicketNavbar', () => ({
+    DefaultExportTicketNavbar: () => <div>TicketNavbar</div>,
+}))
 
 describe('TicketsNavbarPanel', () => {
     it('should render the ticket navbar', () => {

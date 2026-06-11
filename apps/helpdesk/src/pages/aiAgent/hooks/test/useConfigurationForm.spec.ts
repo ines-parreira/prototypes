@@ -5,11 +5,11 @@ import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import type { StoreState } from 'state/types'
 

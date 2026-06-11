@@ -11,7 +11,7 @@ type CategoryChipProps = {
     category: SupportedCategories
 }
 
-export default function CategoryChip({ category }: CategoryChipProps) {
+export function CategoryChip({ category }: CategoryChipProps) {
     return (
         <div
             className={cn(

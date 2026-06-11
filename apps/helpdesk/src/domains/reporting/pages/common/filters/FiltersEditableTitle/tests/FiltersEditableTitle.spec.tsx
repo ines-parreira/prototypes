@@ -12,12 +12,12 @@ import {
     NOT_EXISTENT_ADMIN_ERROR,
     NOT_EXISTENT_AGENT_ERROR,
 } from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isTeamLead } from 'utils'
 
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),

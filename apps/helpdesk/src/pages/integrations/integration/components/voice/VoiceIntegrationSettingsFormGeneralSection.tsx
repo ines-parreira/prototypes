@@ -9,11 +9,11 @@ import type {
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
-import BusinessHoursSelectField from 'pages/settings/businessHours/BusinessHoursSelectField'
+import { EmojiTextInput } from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import { PhoneNumberSelectField } from 'pages/phoneNumbers/PhoneNumberSelectField'
+import { BusinessHoursSelectField } from 'pages/settings/businessHours/BusinessHoursSelectField'
 import {
     getNewPhoneNumbers,
     getPhoneNumber,
@@ -103,4 +103,4 @@ function VoiceIntegrationSettingsFormGeneralSection({
     )
 }
 
-export default VoiceIntegrationSettingsFormGeneralSection
+export { VoiceIntegrationSettingsFormGeneralSection }

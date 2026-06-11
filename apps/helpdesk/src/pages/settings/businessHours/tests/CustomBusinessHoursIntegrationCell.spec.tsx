@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import CustomBusinessHoursIntegrationCell from '../CustomBusinessHoursIntegrationCell'
+import { CustomBusinessHoursIntegrationCell } from '../CustomBusinessHoursIntegrationCell'
 
 describe('CustomBusinessHoursIntegrationCell', () => {
     it('renders the integration name, icon type and address', () => {

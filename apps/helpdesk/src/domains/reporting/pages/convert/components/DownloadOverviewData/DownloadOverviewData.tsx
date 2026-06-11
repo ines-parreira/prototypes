@@ -21,4 +21,4 @@ const DownloadOverviewData = () => {
     )
 }
 
-export default DownloadOverviewData
+export { DownloadOverviewData }

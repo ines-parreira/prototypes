@@ -1,11 +1,11 @@
 import { renderHook } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
 
-import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
+import { usePrevNextTicketNavigation } from '../usePrevNextTicketNavigation'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = useAppDispatch as jest.Mock
 const clearTicketMock = jest.spyOn(ticketActions, 'clearTicket')
 const goToNextOrPrevTicketMock = jest.spyOn(

@@ -1,6 +1,6 @@
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
 
 import type { TransitionsState } from '../types'
 
@@ -35,4 +35,4 @@ const TransitionConditionsAccordion = ({
     )
 }
 
-export default TransitionConditionsAccordion
+export { TransitionConditionsAccordion }

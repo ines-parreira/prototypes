@@ -2,36 +2,36 @@ import { combineReducers } from 'redux'
 
 import type { ContactFormState } from 'state/entities/contactForm'
 
-import auditLogEvents from './auditLogEvents/reducer'
+import { auditLogEventsReducer as auditLogEvents } from './auditLogEvents/reducer'
 import type { AuditLogEventsState } from './auditLogEvents/types'
-import chatsApplicationAutomationSettings from './chatsApplicationAutomationSettings/reducer'
+import { chatsApplicationAutomationSettingsReducer as chatsApplicationAutomationSettings } from './chatsApplicationAutomationSettings/reducer'
 import type { ChatsApplicationAutomationSettingsState } from './chatsApplicationAutomationSettings/types'
-import contactForm from './contactForm/reducer'
-import helpCenter from './helpCenter/reducer'
+import { DefaultExportReducer as contactForm } from './contactForm/reducer'
+import { DefaultExportReducer as helpCenter } from './helpCenter/reducer'
 import type { HelpCenterState } from './helpCenter/types'
-import macros from './macros/reducer'
+import { macrosReducer as macros } from './macros/reducer'
 import type { MacrosState } from './macros/types'
-import newPhoneNumbers from './phoneNumbers/newReducer'
-import phoneNumbers from './phoneNumbers/reducer'
+import { newPhoneNumbersReducer as newPhoneNumbers } from './phoneNumbers/newReducer'
+import { phoneNumbersReducer as phoneNumbers } from './phoneNumbers/reducer'
 import type {
     NewPhoneNumbersState,
     PhoneNumbersState,
 } from './phoneNumbers/types'
-import ruleRecipes from './ruleRecipes/reducer'
+import { ruleRecipesReducer as ruleRecipes } from './ruleRecipes/reducer'
 import type { RuleRecipesState } from './ruleRecipes/types'
-import rules from './rules/reducer'
+import { rulesReducer as rules } from './rules/reducer'
 import type { RulesState } from './rules/types'
-import sections from './sections/reducer'
+import { sectionsReducer as sections } from './sections/reducer'
 import type { SectionsState } from './sections/types'
-import selfServiceConfigurations from './selfServiceConfigurations/reducer'
+import { selfServiceConfigurationsReducer as selfServiceConfigurations } from './selfServiceConfigurations/reducer'
 import type { SelfServiceConfigurationsState } from './selfServiceConfigurations/types'
-import singleSenderVerifications from './singleSenderVerification/reducer'
+import { singleSenderReducer as singleSenderVerifications } from './singleSenderVerification/reducer'
 import type { SingleSenderVerificationsState } from './singleSenderVerification/types'
-import stats from './stats/reducer'
+import { sectionsReducer as stats } from './stats/reducer'
 import type { StatsState } from './stats/types'
-import tags from './tags/reducer'
+import { tagsReducer as tags } from './tags/reducer'
 import type { TagsState } from './tags/types'
-import views from './views/reducer'
+import { viewsReducer as views } from './views/reducer'
 import type { ViewsState } from './views/types'
 
 const entitiesReducers = combineReducers<{
@@ -68,6 +68,6 @@ const entitiesReducers = combineReducers<{
     chatsApplicationAutomationSettings,
 })
 
-export default entitiesReducers
+export { entitiesReducers }
 
 export type EntitiesState = ReturnType<typeof entitiesReducers>

@@ -5,16 +5,16 @@ import classnames from 'classnames'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { MAX_HEADER_LENGTH } from 'config'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import type {
     OnChangeAction,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import { validateDropdownValues, validateHeaderName } from './validators'
 
@@ -188,4 +188,6 @@ function ParameterComponent({
     )
 }
 
-export default memo(ParameterComponent)
+const DefaultExportParameter = memo(ParameterComponent)
+
+export { DefaultExportParameter }

@@ -14,7 +14,7 @@ import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/stand
 import type { ChannelIdentifier } from 'services/channels'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
-import ChannelSelect from '../ChannelSelect'
+import { ChannelSelect } from '../ChannelSelect'
 
 jest.mock('@repo/utils', () => {
     const React = jest.requireActual('react')

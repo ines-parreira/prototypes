@@ -52,7 +52,7 @@ import {
     isTextsMultiLanguage,
 } from 'config/integrations/gorgias_chat'
 import type { LanguageChat } from 'constants/languages'
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
+import { Launcher } from 'gorgias-design-system/Launcher/Launcher'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
@@ -67,23 +67,23 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import CheckBox from 'pages/common/forms/CheckBox'
-import ColorField from 'pages/common/forms/ColorField'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import InputField from 'pages/common/forms/input/InputField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { ColorField } from 'pages/common/forms/ColorField'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/types'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
-import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AutoResponderMessages'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ConversationTimestamp'
-import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/OfflineMessages'
-import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { AutoResponderMessages } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AutoResponderMessages'
+import { ChatIntegrationPreview } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ConversationTimestamp } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ConversationTimestamp'
+import { OfflineMessages } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/OfflineMessages'
+import { GorgiasChatIntegrationPreviewContainer } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import { Tab } from 'pages/integrations/integration/types'
 import { FontSelectField } from 'pages/settings/common/FontSelectField/FontSelectField'
 import type {
@@ -95,15 +95,15 @@ import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
-import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
+import { useIntegrationPageViewLogEvent } from '../../../../hooks/useIntegrationPageViewLogEvent'
 import { CustomizeTranslationsButton } from '../components/CustomizeTranslationsButton'
-import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
-import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import { ChatHomePreview } from '../GorgiasChatIntegrationPreview/ChatHomePreview'
+import { ChatIntegrationPreviewContent } from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import { defaultChatFontFamily } from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
-import useSelfServiceConfiguration from '../hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from '../hooks/useSelfServiceConfiguration'
 import { CustomizeToneOfVoiceBlock } from './components/CustomizeToneOfVoiceBlock'
-import ImageField, { ImageFieldVariant } from './components/ImageField'
-import UploadLogoCaption from './components/UploadLogoCaption'
+import { ImageField, ImageFieldVariant } from './components/ImageField'
+import { UploadLogoCaption } from './components/UploadLogoCaption'
 import { multiLanguageInitialTextsEmptyData } from './GorgiasTranslateText/GorgiasTranslateText'
 import { StoreNameDropdown } from './StoreNameDropdown'
 
@@ -1782,4 +1782,8 @@ const mapStateToProps = (state: RootState) => {
 }
 const connector = connect(mapStateToProps)
 
-export default connector(GorgiasChatIntegrationAppearanceComponent)
+const DefaultExportGorgiasChatIntegrationAppearance = connector(
+    GorgiasChatIntegrationAppearanceComponent,
+)
+
+export { DefaultExportGorgiasChatIntegrationAppearance }

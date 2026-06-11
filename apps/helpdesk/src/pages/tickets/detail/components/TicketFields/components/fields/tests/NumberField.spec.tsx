@@ -14,7 +14,7 @@ import {
 } from 'state/ticket/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import NumberField from '../NumberField'
+import { NumberField } from '../NumberField'
 
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()

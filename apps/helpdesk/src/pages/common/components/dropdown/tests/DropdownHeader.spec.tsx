@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import DropdownHeader from '../DropdownHeader'
+import { DefaultExportDropdownHeader as DropdownHeader } from '../DropdownHeader'
 
 describe('<DropdownHeader />', () => {
     it('should render', () => {

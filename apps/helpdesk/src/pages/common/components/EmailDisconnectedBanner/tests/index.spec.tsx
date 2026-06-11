@@ -6,9 +6,9 @@ import { Route } from 'react-router-dom'
 
 import * as useAppSelector from 'hooks/useAppSelector'
 
-import EmailDisconnectedBanner from '..'
+import { EmailDisconnectedBanner } from '..'
 
-const appSelectorSpy = jest.spyOn(useAppSelector, 'default')
+const appSelectorSpy = jest.spyOn(useAppSelector, 'useAppSelector')
 
 describe('EmailMigrationBanner', () => {
     let testLocation: Location

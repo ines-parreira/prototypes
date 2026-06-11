@@ -29,12 +29,12 @@ import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { submitSettingSuccess } from 'state/currentUser/actions'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import type DeleteSectionModal from '../DeleteSectionModal'
-import type SectionFormModal from '../SectionFormModal'
+import type { DeleteSectionModal } from '../DeleteSectionModal'
+import type { SectionFormModal } from '../SectionFormModal'
 import { TicketNavbarContainer } from '../TicketNavbar'
 import type { TicketNavbarBlock } from '../TicketNavbarBlock'
-import type TicketNavbarContent from '../TicketNavbarContent'
-import type TicketNavbarContentBridge from '../TicketNavbarContentBridge'
+import type { DefaultExportTicketNavbarContent as TicketNavbarContent } from '../TicketNavbarContent'
+import type { TicketNavbarContentBridgeContainer as TicketNavbarContentBridge } from '../TicketNavbarContentBridge'
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -127,168 +127,158 @@ const mockUseVisibleNavigationViewIds = useVisibleNavigationViewIds as jest.Mock
 jest.mock('../DefaultViews', () => ({
     DefaultViews: () => <div>DefaultViews</div>,
 }))
-jest.mock(
-    '../SectionFormModal',
-    () =>
-        ({
-            isNewSection,
-            isOpen,
-            isSubmitting,
-            onChange,
-            onClose,
-            onSubmit,
-            sectionForm,
-        }: ComponentProps<typeof SectionFormModal>) => (
-            <div data-testid="SectionFormModal">
-                <input
-                    type="text"
-                    data-testid="SectionModal-change"
-                    onChange={(e) => {
-                        onChange(e.target.name as any, e.target.value as any)
-                    }}
-                />
-                <div data-testid="SectionModal-close" onClick={onClose} />
-                <div data-testid="SectionModal-submit" onClick={onSubmit} />
-                <div>isNewSection: {isNewSection.toString()}</div>
-                <div>isOpen: {isOpen.toString()}</div>
-                <div>isSubmitting: {isSubmitting.toString()}</div>
-                <div>sectionForm: {JSON.stringify(sectionForm)}</div>
-            </div>
-        ),
-)
-jest.mock(
-    '../DeleteSectionModal',
-    () =>
-        ({
-            isOpen,
-            isSubmitting,
-            onClose,
-            onSubmit,
-            section,
-        }: ComponentProps<typeof DeleteSectionModal>) => (
-            <div data-testid="DeleteSectionModal">
-                <div data-testid="DeleteModal-close" onClick={onClose} />
-                <div data-testid="DeleteModal-submit" onClick={onSubmit} />
-                <div>isOpen: {isOpen.toString()}</div>
-                <div>isSubmitting: {isSubmitting.toString()}</div>
-                <div>section: {JSON.stringify(section)}</div>
-            </div>
-        ),
-)
-jest.mock(
-    '../TicketNavbarContent',
-    () =>
-        ({
-            elements,
-            isPrivate,
-            onSubmitMoveItem,
-            onSectionDeleteClick,
-            onSectionRenameClick,
-        }: ComponentProps<typeof TicketNavbarContent>) => {
-            const firstSectionId =
-                elements.find(
-                    (element) =>
-                        element.type === TicketNavbarElementType.Section,
-                )?.data.id ?? 1
+jest.mock('../SectionFormModal', () => ({
+    SectionFormModal: ({
+        isNewSection,
+        isOpen,
+        isSubmitting,
+        onChange,
+        onClose,
+        onSubmit,
+        sectionForm,
+    }: ComponentProps<typeof SectionFormModal>) => (
+        <div data-testid="SectionFormModal">
+            <input
+                type="text"
+                data-testid="SectionModal-change"
+                onChange={(e) => {
+                    onChange(e.target.name as any, e.target.value as any)
+                }}
+            />
+            <div data-testid="SectionModal-close" onClick={onClose} />
+            <div data-testid="SectionModal-submit" onClick={onSubmit} />
+            <div>isNewSection: {isNewSection.toString()}</div>
+            <div>isOpen: {isOpen.toString()}</div>
+            <div>isSubmitting: {isSubmitting.toString()}</div>
+            <div>sectionForm: {JSON.stringify(sectionForm)}</div>
+        </div>
+    ),
+}))
+jest.mock('../DeleteSectionModal', () => ({
+    DeleteSectionModal: ({
+        isOpen,
+        isSubmitting,
+        onClose,
+        onSubmit,
+        section,
+    }: ComponentProps<typeof DeleteSectionModal>) => (
+        <div data-testid="DeleteSectionModal">
+            <div data-testid="DeleteModal-close" onClick={onClose} />
+            <div data-testid="DeleteModal-submit" onClick={onSubmit} />
+            <div>isOpen: {isOpen.toString()}</div>
+            <div>isSubmitting: {isSubmitting.toString()}</div>
+            <div>section: {JSON.stringify(section)}</div>
+        </div>
+    ),
+}))
+jest.mock('../TicketNavbarContent', () => ({
+    DefaultExportTicketNavbarContent: ({
+        elements,
+        isPrivate,
+        onSubmitMoveItem,
+        onSectionDeleteClick,
+        onSectionRenameClick,
+    }: ComponentProps<typeof TicketNavbarContent>) => {
+        const firstSectionId =
+            elements.find(
+                (element) => element.type === TicketNavbarElementType.Section,
+            )?.data.id ?? 1
 
-            if (isPrivate) {
-                privateOnSubmitMoveItem = onSubmitMoveItem
-                privateTicketNavbarContentProps = {
-                    elements,
-                }
-            } else {
-                publicOnSubmitMoveItem = onSubmitMoveItem
-                publicTicketNavbarContentProps = {
-                    elements,
-                }
+        if (isPrivate) {
+            privateOnSubmitMoveItem = onSubmitMoveItem
+            privateTicketNavbarContentProps = {
+                elements,
             }
-
-            return (
-                <div
-                    data-testid="TicketNavbarContent"
-                    data-scope={isPrivate ? 'private' : 'public'}
-                >
-                    {elements.map((element) => (
-                        <div key={element.data.id}>
-                            element: {JSON.stringify(element)}
-                        </div>
-                    ))}
-                    {onSectionDeleteClick && (
-                        <div
-                            data-testid="TicketNavbarContent-delete"
-                            onClick={() => onSectionDeleteClick(firstSectionId)}
-                        />
-                    )}
-                    {onSectionRenameClick && (
-                        <div
-                            data-testid="TicketNavbarContent-rename"
-                            onClick={() => onSectionRenameClick(firstSectionId)}
-                        />
-                    )}
-                </div>
-            )
-        },
-)
-jest.mock(
-    '../TicketNavbarContentBridge',
-    () =>
-        ({
-            elements,
-            isPrivate,
-            onSubmitMoveItem,
-            onSectionDeleteClick,
-            onSectionRenameClick,
-            sections,
-            views,
-        }: ComponentProps<typeof TicketNavbarContentBridge>) => {
-            const firstSectionId =
-                elements.find(
-                    (element) =>
-                        element.type === TicketNavbarElementType.Section,
-                )?.data.id ?? 1
-
-            if (isPrivate) {
-                privateOnSubmitMoveItem = onSubmitMoveItem
-                privateTicketNavbarContentProps = {
-                    elements,
-                    sections,
-                    views,
-                }
-            } else {
-                publicOnSubmitMoveItem = onSubmitMoveItem
-                publicTicketNavbarContentProps = {
-                    elements,
-                    sections,
-                    views,
-                }
+        } else {
+            publicOnSubmitMoveItem = onSubmitMoveItem
+            publicTicketNavbarContentProps = {
+                elements,
             }
+        }
 
-            return (
-                <div
-                    data-testid="TicketNavbarContent"
-                    data-scope={isPrivate ? 'private' : 'public'}
-                >
-                    {elements.map((element) => (
-                        <div key={element.data.id}>
-                            element: {JSON.stringify(element)}
-                        </div>
-                    ))}
-                    {onSectionDeleteClick && (
-                        <div
-                            data-testid="TicketNavbarContent-delete"
-                            onClick={() => onSectionDeleteClick(firstSectionId)}
-                        />
-                    )}
-                    {onSectionRenameClick && (
-                        <div
-                            data-testid="TicketNavbarContent-rename"
-                            onClick={() => onSectionRenameClick(firstSectionId)}
-                        />
-                    )}
-                </div>
-            )
-        },
-)
+        return (
+            <div
+                data-testid="TicketNavbarContent"
+                data-scope={isPrivate ? 'private' : 'public'}
+            >
+                {elements.map((element) => (
+                    <div key={element.data.id}>
+                        element: {JSON.stringify(element)}
+                    </div>
+                ))}
+                {onSectionDeleteClick && (
+                    <div
+                        data-testid="TicketNavbarContent-delete"
+                        onClick={() => onSectionDeleteClick(firstSectionId)}
+                    />
+                )}
+                {onSectionRenameClick && (
+                    <div
+                        data-testid="TicketNavbarContent-rename"
+                        onClick={() => onSectionRenameClick(firstSectionId)}
+                    />
+                )}
+            </div>
+        )
+    },
+}))
+jest.mock('../TicketNavbarContentBridge', () => ({
+    TicketNavbarContentBridgeContainer: ({
+        elements,
+        isPrivate,
+        onSubmitMoveItem,
+        onSectionDeleteClick,
+        onSectionRenameClick,
+        sections,
+        views,
+    }: ComponentProps<typeof TicketNavbarContentBridge>) => {
+        const firstSectionId =
+            elements.find(
+                (element) => element.type === TicketNavbarElementType.Section,
+            )?.data.id ?? 1
+
+        if (isPrivate) {
+            privateOnSubmitMoveItem = onSubmitMoveItem
+            privateTicketNavbarContentProps = {
+                elements,
+                sections,
+                views,
+            }
+        } else {
+            publicOnSubmitMoveItem = onSubmitMoveItem
+            publicTicketNavbarContentProps = {
+                elements,
+                sections,
+                views,
+            }
+        }
+
+        return (
+            <div
+                data-testid="TicketNavbarContent"
+                data-scope={isPrivate ? 'private' : 'public'}
+            >
+                {elements.map((element) => (
+                    <div key={element.data.id}>
+                        element: {JSON.stringify(element)}
+                    </div>
+                ))}
+                {onSectionDeleteClick && (
+                    <div
+                        data-testid="TicketNavbarContent-delete"
+                        onClick={() => onSectionDeleteClick(firstSectionId)}
+                    />
+                )}
+                {onSectionRenameClick && (
+                    <div
+                        data-testid="TicketNavbarContent-rename"
+                        onClick={() => onSectionRenameClick(firstSectionId)}
+                    />
+                )}
+            </div>
+        )
+    },
+}))
 const mockedServer = new MockAdapter(client)
 let publicOnSubmitMoveItem:
     | ComponentProps<typeof TicketNavbarContent>['onSubmitMoveItem']

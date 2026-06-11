@@ -30,10 +30,7 @@ const DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS = 60
 export const domainVerificationStorageKey = (domainName: string) =>
     `email-domain-verification-requested-at-${domainName}`
 
-export default function DomainVerificationProvider({
-    children,
-    domainName,
-}: Props) {
+export function DomainVerificationProvider({ children, domainName }: Props) {
     const {
         isPending: isRequestPending,
         isRequested,

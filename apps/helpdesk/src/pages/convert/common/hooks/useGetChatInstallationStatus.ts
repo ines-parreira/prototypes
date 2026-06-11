@@ -86,4 +86,4 @@ const useGetChatInstallationStatus = (
     }, [integration])
 }
 
-export default useGetChatInstallationStatus
+export { useGetChatInstallationStatus }

@@ -17,9 +17,9 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
 import { VoiceIntegrationSelectCaption } from '../../VoiceIntegrationSelectCaption'
-import VoiceIntegrationSelectField from '../../VoiceIntegrationSelectField'
-import VoiceQueueSelectField from '../../VoiceQueueSelectField'
-import VoiceQueueSummary from '../../VoiceQueueSummary'
+import { VoiceIntegrationSelectField } from '../../VoiceIntegrationSelectField'
+import { VoiceQueueSelectField } from '../../VoiceQueueSelectField'
+import { VoiceQueueSummary } from '../../VoiceQueueSummary'
 import { VoiceFlowNodeType } from '../constants'
 import { RouteToStepTypeField } from '../RouteToStepTypeField'
 import type {
@@ -28,7 +28,7 @@ import type {
 } from '../types'
 import { validateRouteToStep } from '../utils/validationUtils'
 import { EnqueueNode } from './EnqueueNode'
-import VoiceNodeFormSection from './VoiceNodeFormSection'
+import { VoiceNodeFormSection } from './VoiceNodeFormSection'
 import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'

@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import FacebookIntegrationLoginButton from '../FacebookIntegrationLoginButton'
+import { FacebookIntegrationLoginButton } from '../FacebookIntegrationLoginButton'
 
 describe('FacebookIntegrationLoginButton component', () => {
     let store: MockStoreEnhanced

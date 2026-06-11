@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import SettingsCardHeader from '../SettingsCardHeader'
+import { SettingsCardHeader } from '../SettingsCardHeader'
 
 describe('SettingsCard Components', () => {
     describe('SettingsCardHeader', () => {

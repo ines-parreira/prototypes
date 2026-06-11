@@ -3,7 +3,7 @@ import {
     usePhoneStatusBatchPollingInterval,
 } from '@repo/agent-status'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getUserIdsFromLiveAgentsPerformance } from 'state/entities/stats/selectors'
 
 type UsePerformancePageAgentPhoneStatusesParams = {

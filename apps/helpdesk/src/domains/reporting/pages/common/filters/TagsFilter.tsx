@@ -9,7 +9,7 @@ import {
     FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,

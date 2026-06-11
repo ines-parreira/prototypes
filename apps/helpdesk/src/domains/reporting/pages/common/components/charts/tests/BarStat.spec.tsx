@@ -8,7 +8,7 @@ import {
     stats as statsConfig,
     SUPPORT_VOLUME,
 } from 'domains/reporting/config/stats'
-import BarStat from 'domains/reporting/pages/common/components/charts/BarStat'
+import { DefaultExportBarStat as BarStat } from 'domains/reporting/pages/common/components/charts/BarStat'
 
 const minProps: ComponentProps<typeof BarStat> = {
     data: fromJS({

@@ -2,16 +2,16 @@ import { Route, Switch, useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType, isSmsIntegration } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import SmsIntegrationCreate from 'pages/integrations/integration/components/sms/SmsIntegrationCreate'
-import SmsIntegrationPreferences from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
-import SmsIntegrationSecondaryNavigation from 'pages/integrations/integration/components/sms/SmsIntegrationSecondaryNavigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
+import { PhoneIntegrationBreadcrumbs } from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import { PhoneIntegrationsList } from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
+import { SmsIntegrationCreate } from 'pages/integrations/integration/components/sms/SmsIntegrationCreate'
+import { SmsIntegrationPreferences } from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
+import { SmsIntegrationSecondaryNavigation } from 'pages/integrations/integration/components/sms/SmsIntegrationSecondaryNavigation'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 import {
     getIntegrationById,
@@ -19,9 +19,9 @@ import {
 } from 'state/integrations/selectors'
 
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
-import SmsIntegrationDetails from './SmsIntegrationDetails'
+import { SmsIntegrationDetails } from './SmsIntegrationDetails'
 
-export default function SmsIntegration() {
+export function SmsIntegration() {
     const config = getIntegrationConfig(IntegrationType.Sms)
     const { integrationId } = useParams<{ integrationId: string }>()
     const { phoneNumberId } = useSearch<{

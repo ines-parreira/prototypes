@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
-import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
+import { IntegrationListLimitAlert } from '../IntegrationListLimitAlert'
 
 describe('<IntegrationListLimitAlert/>', () => {
     it('should not render', () => {

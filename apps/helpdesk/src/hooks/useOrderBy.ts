@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { OrderDirection } from 'models/api/types'
 
-export default function useOrderBy<T extends string>(
+export function useOrderBy<T extends string>(
     defaultOrderBy?: T,
     defaultOrderDirection: OrderDirection = OrderDirection.Asc,
 ) {

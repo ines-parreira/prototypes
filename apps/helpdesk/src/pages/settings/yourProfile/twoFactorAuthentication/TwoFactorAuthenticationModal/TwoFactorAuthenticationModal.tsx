@@ -7,8 +7,8 @@ import { dismissNotification } from 'reapop'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     createRecoveryCodes as createRecoveryCodesResource,
     fetchAuthenticatorDataRenewed as fetchAuthenticatorDataRenewedResource,
@@ -21,18 +21,18 @@ import type {
     AuthenticatorData,
     RecoveryCode,
 } from 'models/twoFactorAuthentication/types'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { DEPRECATED_Modal } from 'pages/common/components/DEPRECATED_Modal'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import { getTwoFAEnforcedDatetime } from 'state/currentAccount/selectors'
 import { update2FAEnabled } from 'state/currentUser/actions'
 import { TWO_FA_REQUIRED_NOTIFICATION_ID } from 'state/currentUser/constants'
 import { has2FaEnabled as has2FaEnabledSelector } from 'state/currentUser/selectors'
 
-import ModalBanners from './ModalBanners'
-import ModalContinueButton from './ModalContinueButton'
-import ModalStep from './ModalStep'
-import ModalWizardHeader from './ModalWizardHeader'
+import { ModalBanners } from './ModalBanners'
+import { ModalContinueButton } from './ModalContinueButton'
+import { ModalStep } from './ModalStep'
+import { ModalWizardHeader } from './ModalWizardHeader'
 
 import css from './TwoFactorAuthenticationModal.less'
 
@@ -52,7 +52,7 @@ const modalHeaders = [
     'Save your recovery codes',
 ]
 
-export default function TwoFactorAuthenticationModal({
+export function TwoFactorAuthenticationModal({
     isOpen,
     onCancel,
     onFinish,

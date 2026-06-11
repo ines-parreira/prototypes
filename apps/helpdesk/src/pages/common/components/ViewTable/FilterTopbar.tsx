@@ -40,8 +40,8 @@ import {
 
 import { getConfigByName } from 'config/views'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { JobType } from 'models/job/types'
 import type { View } from 'models/view/types'
 import {
@@ -51,14 +51,14 @@ import {
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import { Separator } from 'pages/common/components/Separator/Separator'
-import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
+import { DefaultExportViewSharingButton as ViewSharingButton } from 'pages/common/components/ViewSharing/ViewSharingButton'
 import type { CancellableRequestInjectedProps } from 'pages/common/utils/withCancellableRequest'
-import withCancellableRequest from 'pages/common/utils/withCancellableRequest'
+import { withCancellableRequest } from 'pages/common/utils/withCancellableRequest'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -96,7 +96,7 @@ import { fieldPath, getDefaultOperator, slugify } from 'utils'
 
 import { AddFilterDropdown } from './AddFilterDropdown'
 import { getDefaultCustomFieldOperator } from './Filters/utils'
-import Filters from './Filters/ViewFilters'
+import { ViewFilters as Filters } from './Filters/ViewFilters'
 
 import css from './FilterTopbar.less'
 
@@ -629,7 +629,7 @@ export const FilterTopbar = ({
     )
 }
 
-export default withCancellableRequest<
+const DefaultExportFilterTopbar = withCancellableRequest<
     'fetchViewItemsCancellable',
     'cancelFetchViewItemsCancellable',
     typeof fetchViewItems
@@ -637,3 +637,5 @@ export default withCancellableRequest<
     'fetchViewItemsCancellable',
     fetchViewItems,
 )(FilterTopbar)
+
+export { DefaultExportFilterTopbar }

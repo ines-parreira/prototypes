@@ -5,14 +5,14 @@ import cn from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { Item } from 'components/Dropdown'
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 
-import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
+import { UserAssigneeDropdownMenu } from './UserAssigneeDropdownMenu'
 
 import css from './style.less'
 
-export default function AssignUser({
+export function AssignUser({
     isDisabled,
     onClick,
 }: {

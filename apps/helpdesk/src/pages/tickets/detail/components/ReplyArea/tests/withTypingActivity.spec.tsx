@@ -3,7 +3,7 @@ import { render, userEvent } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import type { TypingActivityProps } from '../withTypingActivity'
-import withTypingActivity from '../withTypingActivity'
+import { withTypingActivity } from '../withTypingActivity'
 
 jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')

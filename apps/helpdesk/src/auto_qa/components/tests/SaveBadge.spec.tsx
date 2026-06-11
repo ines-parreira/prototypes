@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import SaveBadge from '../SaveBadge'
+import { SaveBadge } from '../SaveBadge'
 
 describe('SaveBadge', () => {
     it('should return null if the state is idle', () => {

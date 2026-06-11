@@ -12,18 +12,18 @@ import {
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import type { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
-import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
-import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
-import TestLiquidTemplateModal from './TestLiquidTemplateModal'
+import { TextareaWithVariables } from '../../components/variables/TextareaWithVariables'
+import { NodeEditorDrawerHeader } from '../../NodeEditorDrawerHeader'
+import { TestLiquidTemplateModal } from './TestLiquidTemplateModal'
 
 import css from '../NodeEditor.less'
 import liquidTemplateEditorCss from './LiquidTemplateEditor.less'
 
-export default function LiquidTemplateEditor({
+export function LiquidTemplateEditor({
     nodeInEdition,
 }: {
     nodeInEdition: LiquidTemplateNodeType

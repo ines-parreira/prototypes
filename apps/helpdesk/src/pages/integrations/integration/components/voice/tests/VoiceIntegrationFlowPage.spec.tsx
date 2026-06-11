@@ -10,11 +10,11 @@ import {
     mockPhoneIntegration,
 } from '@gorgias/helpdesk-mocks'
 
-import VoiceIntegrationFlowPage from '../VoiceIntegrationFlowPage'
+import { VoiceIntegrationFlowPage } from '../VoiceIntegrationFlowPage'
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loading...</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loading...</div>,
+}))
 jest.mock(
     'pages/integrations/integration/components/voice/flows/VoiceFlow',
     () => ({

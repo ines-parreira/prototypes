@@ -7,16 +7,16 @@ import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { bundleKeys } from 'models/convert/bundle/queries'
 import type { Bundle, BundleActionResponse } from 'models/convert/bundle/types'
-import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
+import { BundleManualInstallationCard } from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
 import { convertStatusKeys } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { getIconFromType } from 'state/integrations/helpers'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
+import { ConvertBundle1ClickInstallCard } from '../ConvertBundle1ClickInstallCard'
 
 import css from './ConvertBundleDetail.less'
 
@@ -188,4 +188,4 @@ const ConvertBundleDetail = ({
     )
 }
 
-export default ConvertBundleDetail
+export { ConvertBundleDetail }

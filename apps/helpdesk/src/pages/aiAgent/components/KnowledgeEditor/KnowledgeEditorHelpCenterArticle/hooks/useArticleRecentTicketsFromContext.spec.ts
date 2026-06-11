@@ -5,7 +5,7 @@ import {
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/ArticleContext'
 import type { ArticleContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/types'
 
@@ -20,7 +20,7 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/ArticleContext',

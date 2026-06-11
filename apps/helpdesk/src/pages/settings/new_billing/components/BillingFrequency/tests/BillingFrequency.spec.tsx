@@ -8,7 +8,7 @@ import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 import { TicketPurpose } from 'state/billing/types'
 
 import type { BillingFrequencyProps } from '../BillingFrequency'
-import BillingFrequency from '../BillingFrequency'
+import { BillingFrequency } from '../BillingFrequency'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

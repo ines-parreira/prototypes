@@ -5,8 +5,8 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import type { PhoneIntegration } from 'models/integration/types'
 
-import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
-import usePhoneNumbers from '../usePhoneNumbers'
+import { PhoneDeviceDialerIntegrationSelect } from '../PhoneDeviceDialerIntegrationSelect'
+import { usePhoneNumbers } from '../usePhoneNumbers'
 
 jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
 

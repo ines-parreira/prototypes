@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import type { TicketStatus } from '../../../../../business/types/ticket'
 import type { RootState } from '../../../../../state/types'
-import Select from './ReactSelect'
+import { Select } from './ReactSelect'
 
 type Props = {
     onChange: (value: TicketStatus) => void
@@ -40,4 +40,6 @@ const connector = connect((state: RootState) => ({
     schemas: state.schemas,
 }))
 
-export default connector(StatusSelect)
+const DefaultExportStatusSelect = connector(StatusSelect)
+
+export { DefaultExportStatusSelect }

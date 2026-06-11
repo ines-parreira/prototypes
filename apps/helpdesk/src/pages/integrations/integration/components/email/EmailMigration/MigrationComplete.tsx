@@ -7,7 +7,7 @@ import migrationCompleteIcon from 'assets/img/integrations/email-migration-compl
 
 import css from './MigrationComplete.less'
 
-export default function MigrationComplete() {
+export function MigrationComplete() {
     const history = useHistory()
 
     return (

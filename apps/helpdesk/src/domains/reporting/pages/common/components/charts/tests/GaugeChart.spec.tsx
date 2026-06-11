@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import GaugeChart from 'domains/reporting/pages/common/components/charts/GaugeChart'
+import { GaugeChart } from 'domains/reporting/pages/common/components/charts/GaugeChart'
 import {
     ChatWorkload,
     EmailWorkload,

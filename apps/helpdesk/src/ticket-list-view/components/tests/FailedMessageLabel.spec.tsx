@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
+import { FailedMessageLabel } from 'ticket-list-view/components/FailedMessageLabel'
 
 describe('<FailedMessageLabel />', () => {
     it('should render the failed message text', () => {

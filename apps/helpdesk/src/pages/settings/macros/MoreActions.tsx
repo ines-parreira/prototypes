@@ -6,12 +6,12 @@ import { useRouteMatch } from 'react-router-dom'
 import type { ArchiveMacroAsUserResult, Macro } from '@gorgias/helpdesk-queries'
 
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { BodyCellContent } from 'pages/common/components/table/cells/BodyCellContent'
 
 import css from './MoreActions.less'
 
@@ -23,7 +23,7 @@ type Props = {
     macro: Macro
 }
 
-export default function MoreActions({
+export function MoreActions({
     onMacroDelete,
     onMacroDuplicate,
     onMacroArchiveOrUnarchived,

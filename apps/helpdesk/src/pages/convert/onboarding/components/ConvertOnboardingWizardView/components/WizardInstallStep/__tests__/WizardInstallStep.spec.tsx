@@ -10,7 +10,7 @@ import { shopifyIntegration } from 'fixtures/integrations'
 import { BundleInstallationMethod } from 'models/convert/bundle/types'
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
-import WizardInstallStep from '../WizardInstallStep'
+import { WizardInstallStep } from '../WizardInstallStep'
 
 const mockStore = configureMockStore()
 
@@ -22,7 +22,7 @@ const defaultState = {
 
 const useThemeAppExtensionInstallationSpy = jest.spyOn(
     useThemeAppExtensionInstallation,
-    'default',
+    'useThemeAppExtensionInstallation',
 )
 
 describe('WizardInstallStep', () => {

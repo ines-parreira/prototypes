@@ -6,7 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchTeams } from 'models/team/resources'
 
 export function useListTeams(

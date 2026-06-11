@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 import { replaceAttachmentURL } from 'utils'
 
 import css from './VoiceMessageField.less'
@@ -22,7 +22,7 @@ type PropsVoiceRecordingInput = {
     isLoading?: boolean
 }
 
-export default function VoiceRecordingInput({
+export function VoiceRecordingInput({
     voiceRecordingPath,
     onVoiceRecordingUpload,
     uploadLabel = 'Select file',

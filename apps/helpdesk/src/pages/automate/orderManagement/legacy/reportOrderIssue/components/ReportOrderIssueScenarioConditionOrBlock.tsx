@@ -5,7 +5,7 @@ import type {
     JsonLogicRuleOverVariable,
 } from 'models/selfServiceConfiguration/types'
 
-import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
+import { ReportOrderIssueScenarioConditionRule } from './ReportOrderIssueScenarioConditionRule'
 
 import css from './ReportOrderIssueScenarioConditionOrBlock.less'
 
@@ -63,4 +63,4 @@ const ReportOrderIssueScenarioConditionOrBlock = ({
     )
 }
 
-export default ReportOrderIssueScenarioConditionOrBlock
+export { ReportOrderIssueScenarioConditionOrBlock }

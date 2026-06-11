@@ -15,7 +15,7 @@ import {
 
 import { Dot, MenuItem, SubMenu, Text, toast } from '@gorgias/axiom'
 
-import AvailabilityToggle from 'common/navigation/components/AvailabilityToggle'
+import { AvailabilityToggle } from 'common/navigation/components/AvailabilityToggle'
 import { isGorgiasApiError } from 'models/api/types'
 
 interface UserMenuStatusSubMenuProps {

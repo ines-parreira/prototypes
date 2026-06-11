@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import TextInputWithVariables from '../TextInputWithVariables'
+import { DefaultExportTextInputWithVariables as TextInputWithVariables } from '../TextInputWithVariables'
 
 describe('<TextInputWithVariables />', () => {
     it('should apply date filter for date variable', () => {

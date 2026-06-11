@@ -6,10 +6,10 @@ import {
 } from 'models/widget/types'
 import { seekNextValues } from 'Widgets/modules/Template/helpers/iterator'
 
-import Card from './widgets/Card'
-import Field from './widgets/Field'
-import List from './widgets/List'
-import Wrapper from './widgets/Wrapper'
+import { Card } from './widgets/Card'
+import { Field } from './widgets/Field'
+import { List } from './widgets/List'
+import { Wrapper } from './widgets/Wrapper'
 
 export type Props = {
     parentTemplate?: Template
@@ -18,7 +18,7 @@ export type Props = {
     isRoot?: boolean
 }
 
-export default function Widget({ parentTemplate, template, source }: Props) {
+export function Widget({ parentTemplate, template, source }: Props) {
     const isParentList = isListTemplate(parentTemplate)
     if (template === null) return null
 

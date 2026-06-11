@@ -2,14 +2,14 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TicketMacrosSearch from '../TicketMacrosSearch'
+import { TicketMacrosSearch } from '../TicketMacrosSearch'
 
-jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
-    <div>MacroFilters</div>
-))
+jest.mock('pages/common/components/MacroFilters/MacroFilters', () => ({
+    MacroFilters: () => <div>MacroFilters</div>,
+}))
 jest.mock(
     'pages/tickets/common/macros/components/OnbordingMacroPopover',
-    () => () => <div>OnbordingMacroPopover</div>,
+    () => ({ OnbordingMacroPopover: () => <div>OnbordingMacroPopover</div> }),
 )
 
 describe('<TicketMacrosSearch />', () => {

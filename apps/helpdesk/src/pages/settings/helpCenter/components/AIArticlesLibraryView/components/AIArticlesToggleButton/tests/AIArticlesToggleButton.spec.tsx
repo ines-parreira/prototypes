@@ -6,7 +6,7 @@ import type { AIArticleToggleOption } from 'models/helpCenter/types'
 import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 import { AI_ARTICLES_TOGGLE_OPTIONS } from '../../../constants'
-import AIArticlesToggleButton from '../AIArticlesToggleButton'
+import { AIArticlesToggleButton } from '../AIArticlesToggleButton'
 
 describe('AIArticlesToggleButton', () => {
     const countArray = [3, 8, 11]

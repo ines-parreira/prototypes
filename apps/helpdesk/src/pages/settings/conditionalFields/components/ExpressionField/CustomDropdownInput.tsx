@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
 
 import type { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './CustomDropdownInput.less'
 

@@ -6,7 +6,7 @@ import _isString from 'lodash/isString'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { SliderRef } from 'utils/wrappers/Slider'
-import Slider from 'utils/wrappers/Slider'
+import { Slider } from 'utils/wrappers/Slider'
 
 import css from './HeroImageCarousel.less'
 
@@ -178,4 +178,4 @@ const HeroImageCarousel = ({
         </div>
     )
 }
-export default HeroImageCarousel
+export { HeroImageCarousel }

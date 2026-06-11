@@ -5,10 +5,10 @@ import type { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import type { AccordionItemProps } from './AccordionItem'
-import AccordionItem from './AccordionItem'
+import { AccordionItem } from './AccordionItem'
 import { useSortableAccordionContext } from './SortableAccordionContext'
 import type { SortableAccordionItemContextType } from './SortableAccordionItemContext'
-import SortableAccordionItemContext from './SortableAccordionItemContext'
+import { SortableAccordionItemContext } from './SortableAccordionItemContext'
 
 type Props = { id: string; index?: number } & Omit<AccordionItemProps, 'id'>
 
@@ -53,4 +53,4 @@ const SortableAccordionItem = ({ index = 1, ...props }: Props) => {
     )
 }
 
-export default SortableAccordionItem
+export { SortableAccordionItem }

@@ -14,9 +14,9 @@ import {
     filterKeysMock,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/tests/helpers.spec'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({

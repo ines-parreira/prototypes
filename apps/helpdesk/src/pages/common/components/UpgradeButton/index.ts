@@ -1,3 +1,3 @@
-import UpgradeButton from './UpgradeButton'
+import { UpgradeButton } from './UpgradeButton'
 
-export default UpgradeButton
+export { UpgradeButton }

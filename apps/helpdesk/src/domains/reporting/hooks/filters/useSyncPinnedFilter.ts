@@ -5,8 +5,8 @@ import {
     actions,
     selectors,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const useApplyPinnedFilter = () => {
     const dispatch = useAppDispatch()

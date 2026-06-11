@@ -3,7 +3,7 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { StaticRouter } from 'react-router-dom'
 
-import NavbarLink from '../NavbarLink'
+import { NavbarLink } from '../NavbarLink'
 
 describe('NavbarLink', () => {
     it('should render an inactive navbar link', () => {

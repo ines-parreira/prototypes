@@ -7,14 +7,14 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { Tag } from '@gorgias/helpdesk-types'
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OrderBy } from 'models/tag/types'
 import { ORDER_BY } from 'models/tag/types'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { getSelectAll, makeGetSelectedTagMeta } from 'state/tags/selectors'
 
-import Row from './Row'
-import TableActions from './TableActions/TableActions'
+import { Row } from './Row'
+import { TableActions } from './TableActions/TableActions'
 
 import css from './Table.less'
 
@@ -191,4 +191,4 @@ const Table = ({
     )
 }
 
-export default Table
+export { Table }

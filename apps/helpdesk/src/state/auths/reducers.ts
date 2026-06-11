@@ -6,7 +6,7 @@ import type { AuthItem, AuthsState } from './types'
 
 export const initialState: AuthsState = fromJS([])
 
-export default function reducer(
+export function reducer(
     state: AuthsState = initialState,
     action: GorgiasAction,
 ): AuthsState {

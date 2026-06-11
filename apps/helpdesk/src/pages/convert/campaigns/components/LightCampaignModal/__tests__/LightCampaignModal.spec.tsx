@@ -6,7 +6,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'
 
-import LightCampaignModal from '../LightCampaignModal'
+import { LightCampaignModal } from '../LightCampaignModal'
 
 describe('<LightCampaignModal />', () => {
     const setIsDismissed = jest.fn()

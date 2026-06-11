@@ -1,4 +1,4 @@
-import RestrictedFeature from 'pages/common/components/RestrictedFeature'
+import { RestrictedFeature } from 'pages/common/components/RestrictedFeature'
 import { assetsUrl } from 'utils'
 
 const RevenueStatsRestrictedFeature = () => {
@@ -18,4 +18,4 @@ const RevenueStatsRestrictedFeature = () => {
     )
 }
 
-export default RevenueStatsRestrictedFeature
+export { RevenueStatsRestrictedFeature }

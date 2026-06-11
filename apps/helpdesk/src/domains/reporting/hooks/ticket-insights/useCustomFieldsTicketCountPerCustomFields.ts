@@ -27,7 +27,7 @@ import type {
 import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 
 const breakdownTimeSeries = (

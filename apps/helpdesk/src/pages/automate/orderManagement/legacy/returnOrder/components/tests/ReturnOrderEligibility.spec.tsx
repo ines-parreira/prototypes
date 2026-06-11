@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ReturnOrderEligibility from '../ReturnOrderEligibility'
+import { ReturnOrderEligibility } from '../ReturnOrderEligibility'
 
 describe('<ReturnOrderEligibility />', () => {
     it('should render component', () => {

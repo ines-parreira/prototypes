@@ -12,17 +12,17 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppSelector from 'hooks/useAppSelector'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import ClickablePhoneNumber from 'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { ClickablePhoneNumber } from 'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
 
-import CustomerInfoWrapper from './CustomerInfoWrapper'
-import NewPhoneNumber from './NewPhoneNumber'
+import { CustomerInfoWrapper } from './CustomerInfoWrapper'
+import { NewPhoneNumber } from './NewPhoneNumber'
 
 import css from './CustomerChannels.less'
 
@@ -233,5 +233,3 @@ export const CustomerChannels = ({
         </div>
     )
 }
-
-export default CustomerChannels

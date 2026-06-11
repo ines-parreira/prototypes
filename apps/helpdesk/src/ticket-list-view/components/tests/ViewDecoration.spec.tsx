@@ -6,7 +6,7 @@ import { systemViewIcons } from '@repo/tickets/utils/views'
 import type { View } from 'models/view/types'
 import { ViewCategory } from 'models/view/types'
 
-import ViewDecoration from '../ViewDecoration'
+import { ViewDecoration } from '../ViewDecoration'
 
 describe('<ViewDecoration />', () => {
     it('should display view emoji decoration', () => {

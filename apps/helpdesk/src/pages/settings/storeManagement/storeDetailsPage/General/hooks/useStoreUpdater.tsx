@@ -1,7 +1,7 @@
 import { toast } from '@gorgias/axiom'
 import { useUpdateIntegration } from '@gorgias/helpdesk-queries'
 
-export default function useStoreUpdater(refetchStore: () => void) {
+export function useStoreUpdater(refetchStore: () => void) {
     const connectMutationOptions = {
         onSuccess: () => {
             toast.success('Integration successfully updated')

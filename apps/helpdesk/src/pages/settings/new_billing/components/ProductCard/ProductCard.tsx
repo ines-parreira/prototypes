@@ -18,7 +18,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 import {
@@ -31,7 +31,7 @@ import {
     isLegacyAutomate,
     isTrial,
 } from 'models/billing/utils'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import {
     getCheapestProductPlans,
     getCurrentHelpdeskCadence,
@@ -395,4 +395,4 @@ const ProductCard = ({
     )
 }
 
-export default ProductCard
+export { ProductCard }

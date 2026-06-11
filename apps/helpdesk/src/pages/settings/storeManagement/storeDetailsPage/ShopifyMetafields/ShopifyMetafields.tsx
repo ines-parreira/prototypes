@@ -4,17 +4,17 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Text } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { useMetafields } from './hooks/useMetafields'
 import { columns } from './MetafieldsTable/Columns'
-import MetafieldsTable from './MetafieldsTable/MetafieldsTable'
+import { MetafieldsTable } from './MetafieldsTable/MetafieldsTable'
 
 import styles from './ShopifyMetafields.less'
 
-export default function ShopifyMetafields() {
+export function ShopifyMetafields() {
     const { data = [], isLoading } = useMetafields()
 
     const accountId = useAppSelector(getCurrentAccountId)

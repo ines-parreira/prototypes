@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import SelfServicePreviewContainer from './SelfServicePreviewContainer'
+import { SelfServicePreviewContainer } from './SelfServicePreviewContainer'
 
 type Props<T extends SelfServiceChannel> = {
     channels: T[]
@@ -32,4 +32,4 @@ const UncontrolledSelfServicePreviewContainer = <T extends SelfServiceChannel>({
     )
 }
 
-export default UncontrolledSelfServicePreviewContainer
+export { UncontrolledSelfServicePreviewContainer }

@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import VisibilityChip from './VisibilityChip'
+import { VisibilityChip } from './VisibilityChip'
 
 describe('VisibilityChip', () => {
     it('should render Hidden text', () => {

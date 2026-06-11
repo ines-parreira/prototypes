@@ -9,9 +9,9 @@ import type {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Caption from 'pages/common/forms/Caption/Caption'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 import { isBigCommerceCartLineItem } from '../../utils'
 import { PopoverContainer } from '../popover-container/PopoverContainer'
@@ -42,7 +42,7 @@ const Amount = ({
     )
 }
 
-export default function PriceComponent({
+export function PriceComponent({
     lineItem,
     currencyCode,
     handleDiscount,

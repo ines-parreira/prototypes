@@ -43,7 +43,7 @@ import type {
 import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
 import { getCadenceName, getProductInfo } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 import type { Components } from 'rest_api/revenue_addon_api/client.generated'
 import { notify } from 'state/notifications/actions'
@@ -81,17 +81,19 @@ const mockClientPut = assumeMock(client.put)
 
 const mockStartSubscription = jest.fn()
 jest.mock('services/gorgiasApi', () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            startSubscription: mockStartSubscription,
-        }
-    })
+    return {
+        GorgiasApi: jest.fn().mockImplementation(() => {
+            return {
+                startSubscription: mockStartSubscription,
+            }
+        }),
+    }
 })
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus', () => ({
     __esModule: true,
     ...jest.requireActual('pages/convert/common/hooks/useGetConvertStatus'),
-    default: jest.fn(),
+    useGetConvertStatus: jest.fn(),
 }))
 const mockUseGetConvertStatus = useGetConvertStatus as jest.MockedFunction<
     typeof useGetConvertStatus

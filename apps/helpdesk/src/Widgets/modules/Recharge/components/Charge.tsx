@@ -12,7 +12,7 @@ import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { LineItem } from 'constants/integrations/types/shopify'
-import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import { ActionButtonsGroup } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { renderTemplate } from 'pages/common/utils/template'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'

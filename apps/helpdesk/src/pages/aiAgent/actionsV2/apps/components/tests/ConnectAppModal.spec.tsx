@@ -7,7 +7,7 @@ import { AxiomProvider } from '@gorgias/axiom'
 import { ThemeProvider } from 'core/theme'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 import { ConnectAppModal } from '../ConnectAppModal'
 

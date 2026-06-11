@@ -13,4 +13,4 @@ const FailedMessageLabel = () => {
     )
 }
 
-export default FailedMessageLabel
+export { FailedMessageLabel }

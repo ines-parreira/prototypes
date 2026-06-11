@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 import { THEME_NAME, useTheme } from 'core/theme'
 
 import { useSetBanners } from '../../hooks/useSetBanners'
-import App from '../App'
+import { App } from '../App'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -24,50 +24,72 @@ jest.mock('common/notifications', () => ({
     NotificationsToasts: jest.fn(() => <div>toasts</div>),
     useDesktopNotifications: jest.fn(),
 }))
-jest.mock('hooks/useHasPhone', () => jest.fn(() => true))
+jest.mock('hooks/useHasPhone', () => ({ useHasPhone: jest.fn(() => true) }))
 jest.mock('notifications', () => ({
     AlertNotifications: jest.fn(() => <div>alerts</div>),
 }))
-jest.mock('pages/common/components/EmailDisconnectedBanner', () =>
-    jest.fn(() => <div>EmailDisconnectedBanner</div>),
-)
+jest.mock('pages/common/components/EmailDisconnectedBanner', () => ({
+    EmailDisconnectedBanner: jest.fn(() => <div>EmailDisconnectedBanner</div>),
+}))
 jest.mock(
     'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner',
-    () => jest.fn(() => <div>EmailDomainVerificationBanner</div>),
+    () => ({
+        EmailDomainVerificationBanner: jest.fn(() => (
+            <div>EmailDomainVerificationBanner</div>
+        )),
+    }),
 )
 jest.mock(
     'pages/common/components/EmailMigrationBanner/EmailMigrationBanner',
-    () => jest.fn(() => <div>EmailMigrationBanner</div>),
+    () => ({
+        EmailMigrationBanner: jest.fn(() => <div>EmailMigrationBanner</div>),
+    }),
 )
-jest.mock('pages/common/components/KeyboardHelp/KeyboardHelp', () =>
-    jest.fn(() => <div>KeyboardHelp</div>),
-)
+jest.mock('pages/common/components/KeyboardHelp/KeyboardHelp', () => ({
+    KeyboardHelp: jest.fn(() => <div>KeyboardHelp</div>),
+}))
 jest.mock(
     'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar',
-    () => jest.fn(() => <div>PhoneIntegrationBar</div>),
+    () => ({
+        PhoneIntegrationBar: jest.fn(() => <div>PhoneIntegrationBar</div>),
+    }),
 )
 jest.mock(
     'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner',
-    () => jest.fn(() => <div>ScriptTagMigrationBanner</div>),
+    () => ({
+        ScriptTagMigrationBanner: jest.fn(() => (
+            <div>ScriptTagMigrationBanner</div>
+        )),
+    }),
 )
 jest.mock(
     'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal',
-    () => jest.fn(() => <div>ScriptTagMigrationModal</div>),
+    () => ({
+        ScriptTagMigrationModal: jest.fn(() => (
+            <div>ScriptTagMigrationModal</div>
+        )),
+    }),
 )
-jest.mock('pages/common/components/SessionChangeDetection', () =>
-    jest.fn(() => <div>SessionChangeDetection</div>),
-)
-jest.mock('pages/common/components/Spotlight/Spotlight', () =>
-    jest.fn(() => <div>Spotlight</div>),
-)
+jest.mock('pages/common/components/SessionChangeDetection', () => ({
+    SessionChangeDetection: jest.fn(() => <div>SessionChangeDetection</div>),
+}))
+jest.mock('pages/common/components/Spotlight/Spotlight', () => ({
+    Spotlight: jest.fn(() => <div>Spotlight</div>),
+}))
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal',
-    () => jest.fn(() => <div>OutOfRecoveryCodesModal</div>),
+    () => ({
+        OutOfRecoveryCodesModal: jest.fn(() => (
+            <div>OutOfRecoveryCodesModal</div>
+        )),
+    }),
 )
-jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
-jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
-    jest.fn(() => <div>ImpersonatedBanner</div>),
-)
+jest.mock('AlertBanners', () => ({
+    DefaultExportAlertBanners: jest.fn(() => <div>AlertBanners</div>),
+}))
+jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () => ({
+    ImpersonationBanner: jest.fn(() => <div>ImpersonatedBanner</div>),
+}))
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
     useApplyTheme: jest.fn(),
@@ -78,15 +100,27 @@ const useThemeMock = useTheme as jest.Mock
 jest.mock('../../hooks/useSetBanners', () => ({
     useSetBanners: jest.fn(),
 }))
-jest.mock('../../hooks/useAppShortcuts', () => jest.fn(() => undefined))
-jest.mock('../../hooks/useInitialViewCountsFetch', () =>
-    jest.fn(() => undefined),
-)
-jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
-jest.mock('../../hooks/useViewCountScheduler', () => jest.fn(() => undefined))
-jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
-jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
-jest.mock('../../hooks/useApplyWayfindingMs1', () => jest.fn(() => undefined))
+jest.mock('../../hooks/useAppShortcuts', () => ({
+    useAppShortcuts: jest.fn(() => undefined),
+}))
+jest.mock('../../hooks/useInitialViewCountsFetch', () => ({
+    useInitialViewCountsFetch: jest.fn(() => undefined),
+}))
+jest.mock('../../hooks/usePollingManager', () => ({
+    usePollingManager: jest.fn(() => undefined),
+}))
+jest.mock('../../hooks/useViewCountScheduler', () => ({
+    useViewCountScheduler: jest.fn(() => undefined),
+}))
+jest.mock('../../hooks/useSharedLogic', () => ({
+    useSharedLogic: jest.fn(() => undefined),
+}))
+jest.mock('../../hooks/useActivityTracker', () => ({
+    useActivityTracker: jest.fn(() => undefined),
+}))
+jest.mock('../../hooks/useApplyWayfindingMs1', () => ({
+    useApplyWayfindingMs1: jest.fn(() => undefined),
+}))
 
 describe('App component', () => {
     beforeEach(() => {

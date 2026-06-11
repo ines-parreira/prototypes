@@ -123,7 +123,7 @@ jest.mock('models/helpCenter/queries', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 'UTC'),
+    useAppSelector: jest.fn(() => 'UTC'),
 }))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({

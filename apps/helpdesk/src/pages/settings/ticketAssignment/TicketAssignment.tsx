@@ -14,18 +14,18 @@ import {
 } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Alert from 'pages/common/components/Alert/Alert'
-import HeaderTitle from 'pages/common/components/HeaderTitle'
-import PageHeader from 'pages/common/components/PageHeader'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { HeaderTitle } from 'pages/common/components/HeaderTitle'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import settingsCss from 'pages/settings/settings.less'
-import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
+import { TeamCreationModal } from 'pages/settings/teams/TeamCreationModal'
 import { fetchChats } from 'state/chats/actions'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getTicketAssignmentSettings } from 'state/currentAccount/selectors'
@@ -541,4 +541,4 @@ const TicketAssignment = () => {
     )
 }
 
-export default TicketAssignment
+export { TicketAssignment }

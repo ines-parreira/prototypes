@@ -107,4 +107,4 @@ export const createNotificationsTheme = (): Theme => {
 
 const theme: Theme = createNotificationsTheme()
 
-export default theme
+export { theme }

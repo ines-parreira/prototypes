@@ -22,4 +22,4 @@ const Slider = forwardRef<BaseSlider, SliderProps>(
     },
 )
 
-export default Slider
+export { Slider }

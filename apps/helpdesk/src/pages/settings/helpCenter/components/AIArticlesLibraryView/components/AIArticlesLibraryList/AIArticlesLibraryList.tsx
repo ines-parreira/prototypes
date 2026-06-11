@@ -9,9 +9,9 @@ import type { AILibraryArticleItem } from 'models/helpCenter/types'
 import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
 import { AI_ARTICLES_TOGGLE_OPTIONS } from '../../constants'
-import AIArticleLibraryRedirect from './AIArticleLibraryRedirect'
-import AIArticleList from './AIArticleList'
-import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
+import { AIArticleLibraryRedirect } from './AIArticleLibraryRedirect'
+import { AIArticlesList as AIArticleList } from './AIArticleList'
+import { AIArticlesLibraryListReviewedState } from './AIArticlesLibraryListReviewedState'
 
 import css from './AIArticlesLibraryList.less'
 
@@ -150,4 +150,4 @@ const AIArticlesLibraryList = ({
     )
 }
 
-export default AIArticlesLibraryList
+export { AIArticlesLibraryList }

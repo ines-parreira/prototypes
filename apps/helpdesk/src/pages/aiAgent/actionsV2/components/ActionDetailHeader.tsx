@@ -11,7 +11,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useGuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { displayAuditLogEvents, hideAuditLogEvents } from 'state/ticket/actions'
 
 /**

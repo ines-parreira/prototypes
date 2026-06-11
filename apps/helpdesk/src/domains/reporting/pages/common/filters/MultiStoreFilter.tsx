@@ -9,7 +9,7 @@ import { useListStores } from '@gorgias/helpdesk-queries'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -54,7 +54,7 @@ type Props = {
 } & RemovableFilter &
     OptionalFilterProps
 
-export default function MultiStoreFilter({
+export function MultiStoreFilter({
     value = emptyFilter,
     warningType,
     warningMessage,

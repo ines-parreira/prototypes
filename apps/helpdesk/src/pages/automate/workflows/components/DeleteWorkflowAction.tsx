@@ -1,5 +1,5 @@
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 type Props = {
     onDelete: () => void
@@ -33,4 +33,4 @@ const DeleteWorkflowAction = ({ onDelete, isUpdatePending }: Props) => {
     )
 }
 
-export default DeleteWorkflowAction
+export { DeleteWorkflowAction }

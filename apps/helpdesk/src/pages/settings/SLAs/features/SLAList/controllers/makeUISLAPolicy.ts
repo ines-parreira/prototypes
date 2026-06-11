@@ -4,7 +4,7 @@ import type { SLAPolicy } from '@gorgias/helpdesk-queries'
 
 import type { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
-export default function makeUISLAPolicy(policy: SLAPolicy): UISLAPolicy {
+export function makeUISLAPolicy(policy: SLAPolicy): UISLAPolicy {
     return {
         uuid: policy.uuid,
         name: policy.name,

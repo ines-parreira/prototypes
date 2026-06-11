@@ -5,9 +5,9 @@ import type { OperatorType } from 'pages/common/components/ViewTable/Filters/typ
 import type { Schemas } from 'types'
 import { findProperty } from 'utils'
 
-import getFieldSchemaDefinitionKey from './getFieldSchemaDefinitionKey'
+import { getFieldSchemaDefinitionKey } from './getFieldSchemaDefinitionKey'
 
-export default function getCustomFieldOperators(
+export function getCustomFieldOperators(
     schemas: Schemas,
     customField?: CustomField | null,
     path = CustomFieldTreePath.Ticket,

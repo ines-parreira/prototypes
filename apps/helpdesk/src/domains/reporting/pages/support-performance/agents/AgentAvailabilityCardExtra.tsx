@@ -6,7 +6,7 @@ import { AgentAvailabilityEditColumns } from 'domains/reporting/pages/support-pe
 import css from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra.less'
 import { useAgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentAvailabilitySlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 export const CANDU_ID = 'agent-availability-edit-table-toggle'

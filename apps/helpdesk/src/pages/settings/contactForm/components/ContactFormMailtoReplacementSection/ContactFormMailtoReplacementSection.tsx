@@ -9,15 +9,16 @@ import {
 } from '@gorgias/axiom'
 
 import type { ShopifyIntegration } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import IconButton from 'pages/common/components/button/IconButton'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
-import useThemeAppExtensionInstallation, {
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { useShopifyThemeAppExtension } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
+import {
     getGorgiasMainThemeAppExtensionId,
+    useThemeAppExtensionInstallation,
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
-import ContactFormMailtoReplacementSectionItem from './ContactFormMailtoReplacementSectionItem'
+import { ContactFormMailtoReplacementSectionItem } from './ContactFormMailtoReplacementSectionItem'
 import { useContactFormMailtoReplacementConfig } from './useContactFormMailtoReplacementConfig'
 
 import css from './ContactFormMailtoReplacementSection.less'
@@ -248,4 +249,4 @@ const ContactFormMailtoReplacementSection = ({
     )
 }
 
-export default ContactFormMailtoReplacementSection
+export { ContactFormMailtoReplacementSection }

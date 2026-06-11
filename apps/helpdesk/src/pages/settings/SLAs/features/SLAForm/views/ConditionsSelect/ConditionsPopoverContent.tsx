@@ -3,7 +3,7 @@ import type { Tag } from '@gorgias/helpdesk-queries'
 
 import type { ChoicesTree } from 'custom-fields/components/MultiLevelSelect/types'
 import type { CustomField } from 'custom-fields/types'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 
 import { BackButton } from './BackButton'
 import { ClearAllFooter } from './ClearAllFooter'

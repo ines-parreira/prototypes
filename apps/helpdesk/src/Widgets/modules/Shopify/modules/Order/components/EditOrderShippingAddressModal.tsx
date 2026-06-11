@@ -26,11 +26,11 @@ import { states } from 'fixtures/states'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
@@ -592,4 +592,8 @@ const connector = connect(
     },
 )
 
-export default connector(EditOrderShippingAddressModal)
+const DefaultExportEditOrderShippingAddressModal = connector(
+    EditOrderShippingAddressModal,
+)
+
+export { DefaultExportEditOrderShippingAddressModal }

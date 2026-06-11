@@ -6,7 +6,7 @@ import { ButtonIntent, ButtonVariant } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
 
-import StoreController from './StoreController'
+import { StoreController } from './StoreController'
 
 const mockButton = jest.fn((__props: any) => null)
 const mockStoreNameDropdown = jest.fn((__props: any) => null)
@@ -39,18 +39,18 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/DisconnectStoreModal',
     () => ({
         __esModule: true,
-        default: (props: any) => mockDisconnectStoreModal(props),
+        DisconnectStoreModal: (props: any) => mockDisconnectStoreModal(props),
     }),
 )
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockUseAppDispatch(),
+    useAppDispatch: () => mockUseAppDispatch(),
 }))
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: (selector: any) => mockUseAppSelector(selector),
+    useAppSelector: (selector: any) => mockUseAppSelector(selector),
 }))
 
 jest.mock('@gorgias/toolkit-react', () => ({

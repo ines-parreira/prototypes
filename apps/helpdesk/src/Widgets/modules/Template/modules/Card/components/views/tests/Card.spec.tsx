@@ -4,15 +4,15 @@ import type React from 'react'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import Card from '../Card'
-import CardHeader from '../CardHeader'
+import { Card } from '../Card'
+import { CardHeader } from '../CardHeader'
 
 const CARD_HEADER_TEST_ID = 'card-header'
-jest.mock('../CardHeader', () =>
-    jest.fn(() => {
+jest.mock('../CardHeader', () => ({
+    CardHeader: jest.fn(() => {
         return <span data-testid={CARD_HEADER_TEST_ID}>card header</span>
     }),
-)
+}))
 const CardHeaderMock = assumeMock(CardHeader)
 
 const AFTER_TITLE_TEXT = 'after title'

@@ -11,7 +11,7 @@ import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { FlowProvider } from 'core/ui/flows'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
-import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
+import { TextToSpeechContext } from '../../../VoiceMessageTTS/TextToSpeechContext'
 import { VoiceFlowNodeType } from '../../constants'
 import type {
     IntermediaryNode,

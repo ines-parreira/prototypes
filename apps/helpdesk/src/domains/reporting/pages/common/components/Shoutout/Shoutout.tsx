@@ -11,7 +11,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import css from 'domains/reporting/pages/common/components/Shoutout/Shoutout.less'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
 type Props = {
     persons: ShoutoutPerson[]
@@ -30,7 +30,7 @@ export const SHOUTOUT_MAX_PERSONS = 5
 export const SHOUTOUT_HEIGHT_PX = 82
 export const SHOUTOUT_NO_VALUE_PLACEHOLDER = '-'
 
-export default function Shoutout({
+export function Shoutout({
     persons,
     multiplePersonsLabel,
     metricName,

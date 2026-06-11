@@ -9,7 +9,7 @@ import type {
     ListIntegrations200,
 } from '@gorgias/helpdesk-client'
 
-import useAllIntegrations from '../useAllIntegrations'
+import { useAllIntegrations } from '../useAllIntegrations'
 
 jest.mock('@gorgias/helpdesk-client', () => ({
     listIntegrations: jest.fn(),

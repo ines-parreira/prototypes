@@ -16,9 +16,9 @@ import {
     useSubscribeToEvent,
 } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { FroalaEditor } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/froala-config'
-import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
+import { FroalaEditorFunctionality as FroalaEditorComponent } from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
 
 import { useMessagesContext } from '../../contexts/MessagesContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'

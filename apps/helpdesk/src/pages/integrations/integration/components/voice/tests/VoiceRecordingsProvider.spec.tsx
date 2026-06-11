@@ -5,7 +5,7 @@ import { fireEvent } from '@testing-library/react'
 
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 
-import VoiceRecordingsProvider from '../VoiceRecordingsProvider'
+import { VoiceRecordingsProvider } from '../VoiceRecordingsProvider'
 
 describe('VoiceRecordingsProvider', () => {
     it('should render children', () => {

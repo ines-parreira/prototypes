@@ -10,24 +10,28 @@ import thunk from 'redux-thunk'
 
 import { customer } from 'fixtures/customer'
 import type { RootState, StoreDispatch } from 'state/types'
-import Timeline from 'timeline/Timeline'
+import { DefaultExportTimeline as Timeline } from 'timeline/Timeline'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
 jest.mock('@repo/feature-flags')
-jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
-jest.mock('pages/customers/common/components/CustomerForm', () => () => (
-    <div>CustomerForm</div>
-))
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
-)
+jest.mock('timeline/Timeline', () => ({
+    DefaultExportTimeline: jest.fn(() => <div>Timeline</div>),
+}))
+jest.mock('pages/customers/common/components/CustomerForm', () => ({
+    DefaultExportCustomerForm: () => <div>CustomerForm</div>,
+}))
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div>{dateTime}</div>
+    ),
+}))
 
 const mockSetRecentItem = jest.fn()
-jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
-    setRecentItem: mockSetRecentItem,
+jest.mock('hooks/useRecentItems/useRecentItems', () => ({
+    useRecentItems: () => ({
+        setRecentItem: mockSetRecentItem,
+    }),
 }))
 
 const useFlagMock = assumeMock(useFlag)

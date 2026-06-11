@@ -5,7 +5,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import type { ChannelLanguage } from 'pages/automate/common/types'
 
-import useLanguagesMismatchWarnings from '../useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from '../useLanguagesMismatchWarnings'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)

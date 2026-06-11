@@ -6,7 +6,7 @@ type TypeNotSupportedTooltipProps = {
     trigger: ReactElement<DOMAttributes<HTMLButtonElement>, string>
 }
 
-export default function TypeNotSupportedTooltip({
+export function TypeNotSupportedTooltip({
     trigger,
 }: TypeNotSupportedTooltipProps) {
     return (

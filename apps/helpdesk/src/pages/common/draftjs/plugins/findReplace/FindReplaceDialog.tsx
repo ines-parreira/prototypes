@@ -221,4 +221,4 @@ const FindReplaceDialog = ({
     )
 }
 
-export default FindReplaceDialog
+export { FindReplaceDialog }

@@ -7,7 +7,7 @@ import { useGetHelpCenterCategoryTree } from 'models/helpCenter/queries'
 import type { Category } from 'models/helpCenter/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useHelpCenterArticleTree from '../useHelpCenterArticleTree'
+import { useHelpCenterArticleTree } from '../useHelpCenterArticleTree'
 
 jest.mock('models/helpCenter/queries')
 

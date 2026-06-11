@@ -30,4 +30,4 @@ const AIArticleLibraryRedirect = ({
     </div>
 )
 
-export default AIArticleLibraryRedirect
+export { AIArticleLibraryRedirect }

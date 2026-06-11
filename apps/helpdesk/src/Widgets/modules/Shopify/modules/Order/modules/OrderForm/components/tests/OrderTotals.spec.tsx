@@ -10,7 +10,7 @@ import {
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
 
-import OrderTotals from '../OrderTotals'
+import { OrderTotals } from '../OrderTotals'
 
 jest.mock('lodash/debounce', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -5,18 +5,18 @@ import classNames from 'classnames'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { THEME_NAME } from 'core/theme'
-import InputField from 'gorgias-design-system/Input/TextField'
+import { TextField as InputField } from 'gorgias-design-system/Input/TextField'
 import type { ShopperAuthenticationNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import RadioButton from 'pages/common/components/RadioButton'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
+import { NodeEditorDrawerHeader } from '../../NodeEditorDrawerHeader'
 
 import css from '../NodeEditor.less'
 import shopperAuthenticationCss from './ShopperAuthenticationEditor.less'
 
-export default function ShopperAuthenticationEditor({
+export function ShopperAuthenticationEditor({
     nodeInEdition,
 }: {
     nodeInEdition: ShopperAuthenticationNodeType

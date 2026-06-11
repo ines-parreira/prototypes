@@ -20,8 +20,8 @@ import {
 } from 'business/types/ticket'
 import { UserRole } from 'config/types/user'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { MacroAction } from 'models/macroAction/types'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import type { RuleAction } from 'models/rule/types'
@@ -46,8 +46,8 @@ import {
 import { hasRole } from 'utils'
 import { getMomentNow } from 'utils/date'
 
-import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
-import InTicketSuggestion from './InTicketSuggestion'
+import { useRuleSuggestionForDemos } from '../../hooks/useRuleSuggestionForDemos'
+import { InTicketSuggestion } from './InTicketSuggestion'
 
 import css from './RuleSuggestion.less'
 
@@ -97,7 +97,7 @@ export const isSuggestionEmpty = ({
     text,
 }: ReturnType<typeof getRuleSuggestionContent>) => !actions?.length && !text
 
-export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
+export function RuleSuggestion({ ticket, isCollapsed }: Props) {
     const dispatch = useAppDispatch()
     const { hasAccess } = useAiAgentAccess()
     const recipes = useRuleRecipes()

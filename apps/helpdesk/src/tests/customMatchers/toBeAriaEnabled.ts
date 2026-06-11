@@ -3,10 +3,7 @@ import { matcherHint, printReceived } from 'jest-matcher-utils'
 
 import { isElementOrAncestorAriaDisabled, isHtmlElement } from './utils'
 
-export default function toBeAriaEnabled(
-    this: MatcherContext,
-    element: unknown,
-) {
+export function toBeAriaEnabled(this: MatcherContext, element: unknown) {
     const isElement = isHtmlElement(element, toBeAriaEnabled, this)
 
     const isAriaEnabled = isElement

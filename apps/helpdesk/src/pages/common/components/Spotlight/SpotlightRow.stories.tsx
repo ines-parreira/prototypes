@@ -5,7 +5,7 @@ import { EntityType } from '@repo/logging'
 import { MemoryRouter } from 'react-router-dom'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
-import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
+import { SpotlightRow } from 'pages/common/components/Spotlight/SpotlightRow'
 
 const storyConfig: Meta = {
     title: 'General/SpotlightRow',

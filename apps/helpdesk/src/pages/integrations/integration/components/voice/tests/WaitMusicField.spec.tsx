@@ -11,8 +11,8 @@ import {
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
 import type { LocalWaitMusicPreferences } from 'models/integration/types/phone'
 
-import useVoiceMessageValidation from '../hooks/useVoiceMessageValidation'
-import WaitMusicField from '../WaitMusicField'
+import { useVoiceMessageValidation } from '../hooks/useVoiceMessageValidation'
+import { WaitMusicField } from '../WaitMusicField'
 
 jest.mock('@gorgias/helpdesk-client')
 

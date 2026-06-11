@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
-import Provider from '../ThemeProvider'
-import useSetTheme from '../useSetTheme'
+import { ThemeProvider as Provider } from '../ThemeProvider'
+import { useSetTheme } from '../useSetTheme'
 
 jest.unmock('core/theme/useTheme.ts')
 

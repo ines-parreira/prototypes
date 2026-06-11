@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
-import MetaRepliedByLabel from 'pages/tickets/detail/components/TicketMessages/MetaRepliedByLabel'
+import { MetaRepliedByLabel } from 'pages/tickets/detail/components/TicketMessages/MetaRepliedByLabel'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()

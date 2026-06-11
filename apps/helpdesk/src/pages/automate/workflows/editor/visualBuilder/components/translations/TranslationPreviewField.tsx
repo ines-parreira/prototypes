@@ -5,10 +5,10 @@ import { CompositeDecorator, Editor, EditorState } from 'draft-js'
 
 import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
-import createWorkflowVariablesPlugin from '../../../../draftjs/plugins/variables'
+import { createWorkflowVariablesPlugin } from '../../../../draftjs/plugins/variables'
 import { getWorkflowVariableListForNode } from '../../../../models/variables.model'
 
 import 'draft-js/dist/Draft.css'
@@ -20,7 +20,7 @@ type Props = {
     nodeId: string
 }
 
-export default function TranslationsPreviewField({ nodeId, tkey }: Props) {
+export function TranslationsPreviewField({ nodeId, tkey }: Props) {
     const { translateKey } = useWorkflowEditorContext()
     const { previewLanguageList, previewLanguage, translatedGraph } =
         useTranslationsPreviewContext()

@@ -16,7 +16,7 @@ import {
     getNotificationReceivedDatetimePayload,
 } from 'automate/notifications/utils'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'
 import type { OnboardingNotificationState } from 'models/aiAgent/types'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'

@@ -14,7 +14,7 @@ import type {
     AgentAvailabilityData,
     StatusBreakdown,
 } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 type AgentAvailabilityRowProps = {
     agent: AgentAvailabilityData

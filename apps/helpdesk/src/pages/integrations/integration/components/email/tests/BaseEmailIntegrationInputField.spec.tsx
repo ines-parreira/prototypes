@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import copy from 'copy-to-clipboard'
 
-import BaseEmailIntegrationInputField from '../BaseEmailIntegrationInputField'
+import { BaseEmailIntegrationInputField } from '../BaseEmailIntegrationInputField'
 
 window.GORGIAS_STATE = {
     integrations: {

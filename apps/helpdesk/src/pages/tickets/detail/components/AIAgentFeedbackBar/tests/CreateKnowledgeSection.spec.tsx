@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
-import CreateKnowledgeSection from '../CreateKnowledgeSection'
+import { CreateKnowledgeSection } from '../CreateKnowledgeSection'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 
 jest.mock(

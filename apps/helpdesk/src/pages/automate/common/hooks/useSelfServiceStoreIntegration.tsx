@@ -4,7 +4,7 @@ import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 
-import useStoreIntegrations from './useStoreIntegrations'
+import { useStoreIntegrations } from './useStoreIntegrations'
 
 export const useSelfServiceStoreIntegrationMultiStore = (
     shopType: string,
@@ -40,7 +40,7 @@ const useSelfServiceStoreIntegration = (shopType: string, shopName: string) => {
     }, [storeIntegrations, shopType, shopName])
 }
 
-export default useSelfServiceStoreIntegration
+export { useSelfServiceStoreIntegration }
 
 export const StoreIntegrationContext = createContext<
     StoreIntegration | undefined

@@ -4,7 +4,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { TopProductRecommendationTableStats } from 'domains/reporting/pages/automate/aiSalesAgent/components/TopProductRecommendationTableStats'
 import { WarningBannerContext } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 const ITEMS_PER_PAGE = 10
@@ -86,4 +86,4 @@ const TopProductRecommendationTable = ({
     return <ChartComponent />
 }
 
-export default TopProductRecommendationTable
+export { TopProductRecommendationTable }

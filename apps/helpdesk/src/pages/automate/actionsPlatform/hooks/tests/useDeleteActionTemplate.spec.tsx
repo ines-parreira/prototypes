@@ -13,7 +13,7 @@ import {
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useDeleteActionTemplate from '../useDeleteActionTemplate'
+import { useDeleteActionTemplate } from '../useDeleteActionTemplate'
 
 jest.mock('models/workflows/queries')
 

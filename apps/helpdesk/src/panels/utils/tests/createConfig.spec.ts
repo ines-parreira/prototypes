@@ -1,6 +1,6 @@
 import type { Config } from 'panels'
 
-import createConfig from '../createConfig'
+import { createConfig } from '../createConfig'
 
 describe('createConfig', () => {
     const defaultConfig: Config = [

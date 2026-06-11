@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import BookDemoContainer from '../BookDemoContainer'
+import { BookDemoContainer } from '../BookDemoContainer'
 
 describe('BookDemoContainer', () => {
     const mockOnBookDemo = jest.fn()

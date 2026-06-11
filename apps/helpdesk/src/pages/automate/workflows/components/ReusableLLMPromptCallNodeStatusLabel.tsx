@@ -1,4 +1,4 @@
-import VisualBuilderNodeIconContent from '../editor/visualBuilder/nodes/VisualBuilderNodeIconContent'
+import { VisualBuilderNodeIconContent } from '../editor/visualBuilder/nodes/VisualBuilderNodeIconContent'
 
 type Props = {
     hasMissingCredentials?: boolean
@@ -73,4 +73,4 @@ const ReusableLLMPromptCallNodeStatusLabel = ({
     return null
 }
 
-export default ReusableLLMPromptCallNodeStatusLabel
+export { ReusableLLMPromptCallNodeStatusLabel }

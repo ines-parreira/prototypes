@@ -9,8 +9,8 @@ import {
     LegacySelectField as SelectField,
 } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 
 import type { SortOption } from './types'
 

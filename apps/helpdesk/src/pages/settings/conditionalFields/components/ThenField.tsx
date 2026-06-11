@@ -9,16 +9,16 @@ import type {
 } from '@gorgias/helpdesk-types'
 
 import type { CustomField } from 'custom-fields/types'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Caption from 'pages/common/forms/Caption/Caption'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
-import ConfirmCustomFieldRequirementTypeChangeModal from './ConfirmCustomFieldRequirementTypeChangeModal'
-import CustomFieldSelectButton from './CustomFieldSelectButton'
-import ThenFieldRow from './ThenFieldRow'
+import { ConfirmRequirementTypeChangeModal as ConfirmCustomFieldRequirementTypeChangeModal } from './ConfirmCustomFieldRequirementTypeChangeModal'
+import { CustomFieldSelectButton } from './CustomFieldSelectButton'
+import { ThenFieldRow } from './ThenFieldRow'
 
 import css from './ThenField.less'
 
@@ -28,7 +28,7 @@ type ThenFieldProps = {
     error?: string
 }
 
-export default forwardRef(function ThenField(
+const DefaultExportThenField = forwardRef(function ThenField(
     { value: requirements, onChange, error }: ThenFieldProps,
     __ref,
 ) {
@@ -152,3 +152,5 @@ export default forwardRef(function ThenField(
         </>
     )
 })
+
+export { DefaultExportThenField }

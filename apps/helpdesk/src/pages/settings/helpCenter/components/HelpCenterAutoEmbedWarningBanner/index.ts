@@ -1,2 +1,2 @@
-export { default } from './HelpCenterAutoEmbedWarningBanner'
+export { HelpCenterAutoEmbedWarningBanner } from './HelpCenterAutoEmbedWarningBanner'
 export * from './HelpCenterAutoEmbedWarningBanner'

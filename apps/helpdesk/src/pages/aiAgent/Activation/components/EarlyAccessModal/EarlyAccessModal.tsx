@@ -19,11 +19,11 @@ import {
     CardTitle,
 } from 'pages/aiAgent/components/Card'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import css from './EarlyAccessModal.less'
 

@@ -18,7 +18,7 @@ import type {
     User,
 } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Ticket } from 'models/ticket/types'
 import { setReceivers } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'

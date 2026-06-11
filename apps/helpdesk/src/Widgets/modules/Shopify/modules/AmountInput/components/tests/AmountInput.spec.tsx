@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import { AmountInput } from 'Widgets/modules/Shopify/modules/AmountInput'
 
 describe('<AmountInput/>', () => {
     let onChange: jest.MockedFunction<any>

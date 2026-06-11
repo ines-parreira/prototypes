@@ -8,8 +8,8 @@ import { setupServer } from 'msw/node'
 
 import { mockListUsersHandler } from '@gorgias/helpdesk-mocks'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import AgentCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { AgentCallTransferDropdownContent } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent'
 import {
     getAvailabilityBadgeColor,
     getAvailabilityStatus,

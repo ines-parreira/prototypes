@@ -24,16 +24,16 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 }))
 
 jest.mock('models/billing/queries')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('pages/common/components/Loader/Loader', () => ({
     __esModule: true,
-    default: () => <div role="progressbar" aria-label="Loading" />,
+    Loader: () => <div role="progressbar" aria-label="Loading" />,
 }))
 jest.mock(
     'pages/settings/new_billing/components/BillingScheduledUpdates/BillingScheduledUpdates',
     () => ({
         __esModule: true,
-        default: () => (
+        BillingScheduledUpdates: () => (
             <div data-testid="billing-scheduled-updates">Scheduled Updates</div>
         ),
     }),

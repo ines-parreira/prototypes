@@ -4,7 +4,7 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { TicketIds } from '../Context'
 
-export default function useSplitTicketViewContext() {
+export function useSplitTicketViewContext() {
     const [prevNextTicketIds, setPrevNextTicketIds] = useState<TicketIds>({
         prev: undefined,
         next: undefined,

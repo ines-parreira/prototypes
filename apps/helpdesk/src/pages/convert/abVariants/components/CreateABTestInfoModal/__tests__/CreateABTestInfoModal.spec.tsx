@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 
-import CreateABTestInfoModal from '../CreateABTestInfoModal'
+import { CreateABTestInfoModal } from '../CreateABTestInfoModal'
 
 describe('<CreateABTestInfoModal />', () => {
     it('renders', () => {

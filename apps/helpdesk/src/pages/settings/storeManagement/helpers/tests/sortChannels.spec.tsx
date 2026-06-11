@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 
-import sortChannels from '../sortChannels'
+import { sortChannels } from '../sortChannels'
 
 const emailIntegration = {
     type: IntegrationType.Email,

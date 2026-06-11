@@ -8,7 +8,7 @@ type Props = {
     tooltipText?: string
 }
 
-export default function DeactivatedViewIcon({ id, tooltipText }: Props) {
+export function DeactivatedViewIcon({ id, tooltipText }: Props) {
     return (
         <>
             <span id={id}>

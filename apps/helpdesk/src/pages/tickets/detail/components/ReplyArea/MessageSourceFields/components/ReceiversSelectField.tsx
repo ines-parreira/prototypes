@@ -7,8 +7,8 @@ import { isValidPhoneNumber } from 'libphonenumber-js'
 import _debounce from 'lodash/debounce'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import type { SearchResponse } from 'models/search/types'
 import { SearchType } from 'models/search/types'
 import { updatePotentialCustomers } from 'state/newMessage/actions'
@@ -23,7 +23,7 @@ import {
 } from 'tickets/common/utils'
 import { isEmail } from 'utils'
 
-import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
+import { MultiSelectAsyncField } from './MultiSelectAsyncField/MultiSelectAsyncField'
 
 type Props = {
     tabIndex?: number
@@ -160,4 +160,9 @@ const ReceiversSelectField = function ReceiversSelectField(
     )
 }
 
-export default forwardRef<MultiSelectAsyncField, Props>(ReceiversSelectField)
+const DefaultExportReceiversSelectField = forwardRef<
+    MultiSelectAsyncField,
+    Props
+>(ReceiversSelectField)
+
+export { DefaultExportReceiversSelectField }

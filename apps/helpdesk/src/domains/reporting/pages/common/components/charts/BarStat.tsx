@@ -8,7 +8,7 @@ import {
     chartMaxHeight,
     colors as colorsConfig,
 } from 'domains/reporting/config/stats'
-import Legend from 'domains/reporting/pages/common/components/Legend/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/Legend/Legend'
 
 type Props = {
     data: Map<any, any>
@@ -65,4 +65,6 @@ export function BarStat({ config, data, legend }: Props) {
 }
 
 // Use memo to prevent redrawing on state change
-export default memo(BarStat, (prev, next) => _isEqual(prev, next))
+const DefaultExportBarStat = memo(BarStat, (prev, next) => _isEqual(prev, next))
+
+export { DefaultExportBarStat }

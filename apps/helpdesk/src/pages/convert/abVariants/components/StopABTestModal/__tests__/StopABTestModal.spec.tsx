@@ -5,7 +5,7 @@ import { act } from '@testing-library/react'
 
 import { campaignWithABGroup, variants } from 'fixtures/abGroup'
 
-import StopABTestModal from '../StopABTestModal'
+import { StopABTestModal } from '../StopABTestModal'
 
 describe('<StopABTestModal />', () => {
     const onClose = jest.fn()

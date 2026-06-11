@@ -16,7 +16,7 @@ import {
     smsPlan1,
     voicePlan1,
 } from 'fixtures/plans'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
     getShopifyBillingStatus,
@@ -45,30 +45,35 @@ jest.mock('state/currentAccount/selectors', () => ({
     shouldPayWithShopify: jest.fn(),
     getShopifyBillingStatus: jest.fn(),
 }))
-jest.mock('../../../components/Card', () =>
-    jest.fn(({ children }) => <div>{children}</div>),
-)
+jest.mock('../../../components/Card', () => ({
+    Card: jest.fn(({ children }) => <div>{children}</div>),
+}))
 
 jest.mock('../../../components/BillingSummaryBreakdown', () => ({
     BillingSummaryBreakdown: jest.fn(() => null),
 }))
 
-jest.mock('../../../components/SummaryFooter', () =>
-    jest.fn(({ onOpenConfirmationModal, updateSubscription }) => (
-        <>
-            {onOpenConfirmationModal && (
-                <button onClick={onOpenConfirmationModal} type="button">
-                    open modal
-                </button>
-            )}
-            {!onOpenConfirmationModal && updateSubscription && (
-                <button onClick={() => void updateSubscription()} type="button">
-                    legacy submit
-                </button>
-            )}
-        </>
-    )),
-)
+jest.mock('../../../components/SummaryFooter', () => ({
+    SummaryFooter: jest.fn(
+        ({ onOpenConfirmationModal, updateSubscription }) => (
+            <>
+                {onOpenConfirmationModal && (
+                    <button onClick={onOpenConfirmationModal} type="button">
+                        open modal
+                    </button>
+                )}
+                {!onOpenConfirmationModal && updateSubscription && (
+                    <button
+                        onClick={() => void updateSubscription()}
+                        type="button"
+                    >
+                        legacy submit
+                    </button>
+                )}
+            </>
+        ),
+    ),
+}))
 
 jest.mock('../../../components/ConfirmChangesModal', () => ({
     ConfirmChangesModal: jest.fn(

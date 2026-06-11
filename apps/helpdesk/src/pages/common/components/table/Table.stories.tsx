@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
-import GaugeAddon from 'domains/reporting/pages/common/components/charts/GaugeAddon'
+import { GaugeAddon } from 'domains/reporting/pages/common/components/charts/GaugeAddon'
 import { DistributionCategoryCell } from 'domains/reporting/pages/ticket-insights/components/DistributionCategoryCell'
 import { OrderDirection } from 'models/api/types'
 
-import BodyCell from './cells/BodyCell'
-import HeaderCell from './cells/HeaderCell'
-import HeaderCellProperty from './cells/HeaderCellProperty'
-import TableBody from './TableBody'
-import TableBodyRow from './TableBodyRow'
-import TableHead from './TableHead'
-import TableWrapper from './TableWrapper'
+import { BodyCell } from './cells/BodyCell'
+import { HeaderCell } from './cells/HeaderCell'
+import { HeaderCellProperty } from './cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from './TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from './TableBodyRow'
+import { TableHead } from './TableHead'
+import { TableWrapper } from './TableWrapper'
 
 const tableColumns = [
     {

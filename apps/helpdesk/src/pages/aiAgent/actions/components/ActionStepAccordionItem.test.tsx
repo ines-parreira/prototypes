@@ -2,11 +2,15 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { ActionStepItem, TransitionsState } from '../types'
-import ActionStepAccordionItem from './ActionStepAccordionItem'
+import { ActionStepAccordionItem } from './ActionStepAccordionItem'
 
 jest.mock('./TransitionConditionsAccordion', () => ({
     __esModule: true,
-    default: ({ transition }: { transition: TransitionsState }) => (
+    TransitionConditionsAccordion: ({
+        transition,
+    }: {
+        transition: TransitionsState
+    }) => (
         <div data-testid="transition-conditions-accordion">
             Transition: {transition.name || 'Unnamed'}
         </div>
@@ -14,7 +18,7 @@ jest.mock('./TransitionConditionsAccordion', () => ({
 }))
 jest.mock('./ActionEventTitle', () => ({
     __esModule: true,
-    default: ({
+    ActionEventTitle: ({
         title,
         status,
         isLiquidTemplate,
@@ -36,13 +40,13 @@ jest.mock('./ActionEventTitle', () => ({
 }))
 jest.mock('./HttpRequestLogsView', () => ({
     __esModule: true,
-    default: ({ logs }: { logs: any[] }) => (
+    HttpRequestLogsView: ({ logs }: { logs: any[] }) => (
         <div data-testid="http-request-logs">{logs.length} logs</div>
     ),
 }))
 jest.mock('./NoHttpRequestLogsView', () => ({
     __esModule: true,
-    default: ({ step }: { step: ActionStepItem }) => (
+    NoHttpRequestLogsView: ({ step }: { step: ActionStepItem }) => (
         <div data-testid="no-http-request-logs">
             No logs for step {step.stepId}
         </div>

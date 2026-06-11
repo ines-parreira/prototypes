@@ -1,6 +1,6 @@
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 
 import { DECREASE_IN_RESOLUTION_TIME } from './constants'
 import type { BaseAutomateMetricProps } from './types'

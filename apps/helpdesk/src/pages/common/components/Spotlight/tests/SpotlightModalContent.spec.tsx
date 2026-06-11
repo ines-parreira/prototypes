@@ -1,4 +1,4 @@
-import mockedVirtuoso from 'tests/mockedVirtuoso'
+import { mockedVirtuoso } from 'tests/mockedVirtuoso'
 
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
@@ -16,14 +16,14 @@ import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-import SpotlightCallRow from 'pages/common/components/Spotlight/SpotlightCallRow'
-import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
+import { SpotlightCallRow } from 'pages/common/components/Spotlight/SpotlightCallRow'
+import { SpotlightCustomerRow } from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import {
     MORE_RESULTS_LABEL,
     RECENTLY_ACCESSED_LABEL,
     SpotlightModalContent,
 } from 'pages/common/components/Spotlight/SpotlightModalContent'
-import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import { SpotlightTicketRow } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 

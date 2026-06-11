@@ -11,4 +11,4 @@ const EmptyResponseMessageContentError = () => {
     )
 }
 
-export default EmptyResponseMessageContentError
+export { EmptyResponseMessageContentError }

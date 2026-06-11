@@ -1,1 +1,1 @@
-export { default } from './ContactFormInfoSection'
+export { ContactFormInfoSection } from './ContactFormInfoSection'

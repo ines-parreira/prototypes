@@ -24,8 +24,8 @@ import {
 } from 'config/integrations/gorgias_chat'
 import type { User } from 'config/types/user'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
@@ -34,7 +34,7 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import Accordion from 'pages/common/components/accordion/Accordion'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { findContactCaptureForm } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import { ProductRecommendationBanner } from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
@@ -63,11 +63,11 @@ import { convertToHTML } from 'utils/editor'
 
 import { HeaderReturnButton } from '../../../common/components/HeaderReturnButton'
 import { CampaignFooter } from '../../components/CampaignFooter'
-import CampaignPreview from '../../components/CampaignPreview'
+import { CampaignPreview } from '../../components/CampaignPreview'
 import { CampaignAudienceStep } from '../../containers/CampaignAudienceStep'
 import { CampaignBasicStep } from '../../containers/CampaignBasicStep'
 import { CampaignMessageStep } from '../../containers/CampaignMessageStep'
-import CampaignPublishScheduleStep from '../../containers/CampaignPublishScheduleStep'
+import { CampaignPublishScheduleStep } from '../../containers/CampaignPublishScheduleStep'
 import { IntegrationProvider } from '../../containers/IntegrationProvider'
 import { useChatPreviewProps } from '../../hooks/useChatPreviewProps'
 import { useManageTriggers } from '../../hooks/useManageTriggers'

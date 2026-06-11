@@ -65,8 +65,12 @@ const mockRequiredOnIntentAndOpenCustomFieldCondition = {
     ],
 }
 
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn((fn: () => unknown) => fn()),
+}))
 jest.mock('state/ticket/actions', () => ({
     setHasAttemptedToCloseTicket: jest.fn(),
     triggerTicketFieldsErrors: jest.fn(),

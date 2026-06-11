@@ -22,7 +22,7 @@ const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
     __esModule: true,
-    default: jest.fn().mockReturnValue({
+    useCurrentHelpCenter: jest.fn().mockReturnValue({
         id: 1,
     }),
 }))

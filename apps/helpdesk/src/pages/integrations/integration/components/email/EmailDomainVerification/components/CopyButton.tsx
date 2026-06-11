@@ -5,7 +5,7 @@ import Clipboard from 'clipboard'
 
 import { toast } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 import css from '../EmailDomainVerification.less'
 
@@ -40,4 +40,4 @@ const CopyButton = ({ clipboardTarget, fillStyle }: Props) => {
     )
 }
 
-export default CopyButton
+export { CopyButton }

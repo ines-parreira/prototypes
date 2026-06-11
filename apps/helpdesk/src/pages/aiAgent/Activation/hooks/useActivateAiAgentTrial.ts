@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { storeConfigurationKeys } from 'models/aiAgent/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {

@@ -13,7 +13,7 @@ type Props = {
     state: SaveState
 }
 
-export default function SaveBadge({ state }: Props) {
+export function SaveBadge({ state }: Props) {
     if (state === 'saving') {
         return (
             <Badge className={css.badge} type="grey">

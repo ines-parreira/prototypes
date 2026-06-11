@@ -7,7 +7,7 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/constants'
 
-export default function useStoreGetter(id: number) {
+export function useStoreGetter(id: number) {
     const history = useHistory()
 
     const { isFetching, data, error, refetch } = useGetIntegration(id, {

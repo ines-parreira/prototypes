@@ -1,6 +1,6 @@
 import type { CampaignTemplateSectionType } from 'pages/convert/campaigns/templates/types'
 
-import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'
+import { CampainLibraryTileTemplate } from '../CampaignLibraryTileTemplate'
 
 import css from './CampaignLibrarySection.less'
 
@@ -27,4 +27,4 @@ const CampaignLibrarySection = ({ section, integrationId }: OwnProps) => {
     )
 }
 
-export default CampaignLibrarySection
+export { CampaignLibrarySection }

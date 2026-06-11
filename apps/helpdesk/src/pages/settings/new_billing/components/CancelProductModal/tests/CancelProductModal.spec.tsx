@@ -29,10 +29,10 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { reportCRMGrowthError } from '../../../utils/reportCRMGrowthError'
 import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'
-import CancellationReasons from '../CancellationReasons'
-import CancellationSummary from '../CancellationSummary'
-import CancelProductModal from '../CancelProductModal'
-import ChurnMitigationOffer from '../ChurnMitigationOffer'
+import { CancellationReasons } from '../CancellationReasons'
+import { CancellationSummary } from '../CancellationSummary'
+import { CancelProductModal } from '../CancelProductModal'
+import { ChurnMitigationOffer } from '../ChurnMitigationOffer'
 import {
     CancellationFlowStep,
     CancellationPrimaryReasonInternalName,
@@ -40,9 +40,9 @@ import {
     CancellationSecondaryReasonInternalName,
     CancellationSecondaryReasonLabel,
 } from '../constants'
-import useCancellationFlowStepsStateMachine from '../hooks/useCancellationFlowStepsStateMachine'
-import useFindChurnMitigationOffer from '../hooks/useFindChurnMitigationOffer'
-import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
+import { useCancellationFlowStepsStateMachine } from '../hooks/useCancellationFlowStepsStateMachine'
+import { useFindChurnMitigationOfferId as useFindChurnMitigationOffer } from '../hooks/useFindChurnMitigationOffer'
+import { ProductFeaturesFOMO } from '../ProductFeaturesFOMO'
 import { cancellationReasonsReducer, DEFAULT_STATE } from '../reducers'
 import { sendAcceptedChurnMitigationOfferToSupport } from '../resources'
 import {
@@ -52,7 +52,7 @@ import {
     SMS_CANCELLATION_SCENARIO,
     VOICE_CANCELLATION_SCENARIO,
 } from '../scenarios'
-import Disclaimer from '../UI/Disclaimer'
+import { Disclaimer } from '../UI/Disclaimer'
 
 // components mocks
 const mockStore = configureMockStore([thunk])
@@ -70,29 +70,37 @@ const store = mockStore({
 })
 const queryClient = mockQueryClient()
 
-jest.mock('../ProductFeaturesFOMO/ProductFeaturesFOMO', () =>
-    jest.fn(() => <div data-testid="product-features-fomo"></div>),
-)
+jest.mock('../ProductFeaturesFOMO/ProductFeaturesFOMO', () => ({
+    ProductFeaturesFOMO: jest.fn(() => (
+        <div data-testid="product-features-fomo"></div>
+    )),
+}))
 const MockProductFeaturesFOMO = assumeMock(ProductFeaturesFOMO)
 
-jest.mock('../CancellationReasons/CancellationReasons', () =>
-    jest.fn(() => <div data-testid="cancellation-reasons"></div>),
-)
+jest.mock('../CancellationReasons/CancellationReasons', () => ({
+    CancellationReasons: jest.fn(() => (
+        <div data-testid="cancellation-reasons"></div>
+    )),
+}))
 const CancellationReasonsMock = assumeMock(CancellationReasons)
 
-jest.mock('../ChurnMitigationOffer/ChurnMitigationOffer', () =>
-    jest.fn(() => <div data-testid="churn-mitigation-offer"></div>),
-)
+jest.mock('../ChurnMitigationOffer/ChurnMitigationOffer', () => ({
+    ChurnMitigationOffer: jest.fn(() => (
+        <div data-testid="churn-mitigation-offer"></div>
+    )),
+}))
 const ChurnMitigationOfferMock = assumeMock(ChurnMitigationOffer)
 
-jest.mock('../CancellationSummary/CancellationSummary', () =>
-    jest.fn(() => <div data-testid="cancellation-summary"></div>),
-)
+jest.mock('../CancellationSummary/CancellationSummary', () => ({
+    CancellationSummary: jest.fn(() => (
+        <div data-testid="cancellation-summary"></div>
+    )),
+}))
 const CancellationSummaryMock = assumeMock(CancellationSummary)
 
-jest.mock('../UI/Disclaimer', () =>
-    jest.fn(() => <div data-testid="disclaimer" />),
-)
+jest.mock('../UI/Disclaimer', () => ({
+    Disclaimer: jest.fn(() => <div data-testid="disclaimer" />),
+}))
 const DisclaimerMock = assumeMock(Disclaimer)
 
 // business logic mocks

@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import { useShopifyIntegrations } from 'pages/automate/common/hooks/useShopifyIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useAiAgentOnboardingNotification } from './useAiAgentOnboardingNotification'
@@ -102,4 +102,4 @@ const useMeetAiAgentNotifications = () => {
     ])
 }
 
-export default useMeetAiAgentNotifications
+export { useMeetAiAgentNotifications }

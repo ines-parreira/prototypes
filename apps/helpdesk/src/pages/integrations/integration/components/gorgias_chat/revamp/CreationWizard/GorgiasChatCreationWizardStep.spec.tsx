@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgiasChat'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 
 import { GorgiasChatCreationWizardStep } from './GorgiasChatCreationWizardStep'
 
@@ -15,7 +15,7 @@ const mockLogWizardEvent = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/hooks/useLogWizardEvent',
-    () => () => mockLogWizardEvent,
+    () => ({ useLogWizardEvent: () => mockLogWizardEvent }),
 )
 
 const mockStore = configureMockStore([thunk])

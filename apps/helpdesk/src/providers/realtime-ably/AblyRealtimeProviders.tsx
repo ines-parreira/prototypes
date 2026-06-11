@@ -104,4 +104,4 @@ const AblyRealtimeProviders = ({ children }: Props) => {
     )
 }
 
-export default AblyRealtimeProviders
+export { AblyRealtimeProviders }

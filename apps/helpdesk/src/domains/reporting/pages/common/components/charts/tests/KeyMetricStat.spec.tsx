@@ -11,7 +11,7 @@ import {
     SATISFACTION_SURVEYS,
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
-import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat'
+import { KeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat'
 
 describe('KeyMetricStat', () => {
     const minProps: ComponentProps<typeof KeyMetricStat> = {

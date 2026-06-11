@@ -20,14 +20,14 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
+import { CampaignPreview } from 'pages/convert/campaigns/components/CampaignPreview'
 import { findContactCaptureForm } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import { ProductRecommendationBanner } from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
 import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
@@ -55,7 +55,7 @@ import { transformAttachmentsToProductRecommendations } from 'pages/convert/camp
 import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import SimpleCampaignEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/SimpleCampaignEditor'
+import { SimpleCampaignEditor } from 'pages/convert/onboarding/components/SimpleCampaignEditor/SimpleCampaignEditor'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { setNewMessageForChatCampaign } from 'state/newMessage/actions'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
@@ -443,4 +443,4 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     )
 }
 
-export default ConvertSimplifiedEditorModal
+export { ConvertSimplifiedEditorModal }

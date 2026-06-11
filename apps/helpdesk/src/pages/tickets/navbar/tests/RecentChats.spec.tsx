@@ -6,8 +6,8 @@ import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
 import { MAX_RECENT_CHATS } from 'config/recentChats'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { closePanels } from 'state/layout/actions'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import { setViewActive } from 'state/views/actions'
@@ -33,10 +33,10 @@ jest.mock('@repo/routing', () => ({
     history: { push: jest.fn() },
 }))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 jest.mock('state/layout/actions', () => ({ closePanels: jest.fn() }))

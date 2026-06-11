@@ -7,7 +7,7 @@ type Props = {
     spam?: boolean
 }
 
-export default class TicketSpam extends Component<Props> {
+export class TicketSpam extends Component<Props> {
     static defaultProps: Pick<Props, 'spam'> = {
         spam: false,
     }

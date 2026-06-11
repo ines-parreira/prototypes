@@ -43,7 +43,7 @@ export function buildViewLinkTo(
     }
 }
 
-export default function ViewLink({
+export function ViewLink({
     viewName,
     filters,
     children,

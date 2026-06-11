@@ -29,4 +29,4 @@ const selfServiceConfigurationsReducer =
             }),
     )
 
-export default selfServiceConfigurationsReducer
+export { selfServiceConfigurationsReducer }

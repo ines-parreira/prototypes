@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
 
-import useActualTheme from '../useActualTheme'
+import { useActualTheme } from '../useActualTheme'
 
 jest.unmock('core/theme/useActualTheme.ts')
 

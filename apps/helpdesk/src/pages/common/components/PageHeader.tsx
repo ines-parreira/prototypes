@@ -23,4 +23,4 @@ const PageHeader = ({ title, children, className }: Props) => {
     )
 }
 
-export default PageHeader
+export { PageHeader }

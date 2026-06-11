@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import Handle from '../Handle'
+import { Handle } from '../Handle'
 
 describe('Handle', () => {
     it('should call the onResizeStart function on mousedown', () => {

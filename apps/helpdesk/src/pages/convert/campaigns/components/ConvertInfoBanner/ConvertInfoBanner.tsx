@@ -3,7 +3,7 @@ import React from 'react'
 
 import { sanitizeHtmlDefault } from '@repo/utils'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { BannerType } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 type OwnProps = {
@@ -28,4 +28,4 @@ const ConvertInfoBanner = ({ type, text, ...props }: OwnProps) => {
     )
 }
 
-export default ConvertInfoBanner
+export { ConvertInfoBanner }

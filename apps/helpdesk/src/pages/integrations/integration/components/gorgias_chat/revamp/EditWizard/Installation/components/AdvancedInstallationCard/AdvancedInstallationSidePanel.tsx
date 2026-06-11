@@ -15,9 +15,9 @@ import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBu
 import { useConvertBundleInChatSnippetEnabled } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useConvertBundleInChatSnippetEnabled'
 import { useConvertBundleInstallationSnippet } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useConvertBundleInstallationSnippet'
 
-import AnyOtherWebsiteContent from './AnyOtherWebsiteContent'
-import GoogleTagManagerContent from './GoogleTagManagerContent'
-import ShopifyWebsiteContent from './ShopifyWebsiteContent'
+import { AnyOtherWebsiteContent } from './AnyOtherWebsiteContent'
+import { GoogleTagManagerContent } from './GoogleTagManagerContent'
+import { ShopifyWebsiteContent } from './ShopifyWebsiteContent'
 
 enum ButtonGroupKeys {
     SHOPIFY_WEBSITE = 'shopify-website',
@@ -145,4 +145,4 @@ const AdvancedInstallationSidePanel = ({
     )
 }
 
-export default AdvancedInstallationSidePanel
+export { AdvancedInstallationSidePanel }

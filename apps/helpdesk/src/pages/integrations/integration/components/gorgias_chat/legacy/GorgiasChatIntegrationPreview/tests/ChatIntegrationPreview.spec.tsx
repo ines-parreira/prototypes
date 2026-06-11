@@ -28,11 +28,11 @@ import { PositionAxis } from 'pages/integrations/integration/components/gorgias_
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AutoResponder from '../AutoResponder'
-import ChatIntegrationPreview from '../ChatIntegrationPreview'
-import MessageContent from '../MessageContent'
-import OptionalEmailCapture from '../OptionalEmailCapture'
-import RequiredEmailCapture from '../RequiredEmailCapture'
+import { AutoResponder } from '../AutoResponder'
+import { ChatIntegrationPreview } from '../ChatIntegrationPreview'
+import { MessageContent } from '../MessageContent'
+import { OptionalEmailCapture } from '../OptionalEmailCapture'
+import { RequiredEmailCapture } from '../RequiredEmailCapture'
 
 const mainColor = '#123456'
 const conversationColor = '#456789'
@@ -42,7 +42,9 @@ const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ConversationTimestamp.tsx',
-    () => () => <div>ConversationTimestampMock</div>,
+    () => ({
+        ConversationTimestamp: () => <div>ConversationTimestampMock</div>,
+    }),
 )
 
 const defaultState = {

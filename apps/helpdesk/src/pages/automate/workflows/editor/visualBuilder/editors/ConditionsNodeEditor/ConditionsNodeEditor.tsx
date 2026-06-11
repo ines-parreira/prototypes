@@ -13,20 +13,20 @@ import type {
     ConditionsNodeType,
     VisualBuilderEdge,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
-import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
+import { SortableAccordion } from 'pages/common/components/accordion/SortableAccordion'
+import { SortableAccordionItem } from 'pages/common/components/accordion/SortableAccordionItem'
 import { Drawer } from 'pages/common/components/Drawer'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import InputField from 'pages/common/forms/input/InputField'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
+import { NodeEditorDrawerHeader } from '../../NodeEditorDrawerHeader'
 import { ConditionsBranchItem } from './ConditionsBranchItem'
 import { buildConditionSchemaByVariableType } from './utils'
 
 import css from '../NodeEditor.less'
 import conditionsCss from './ConditionsNodeEditor.less'
 
-export default function ConditionsNodeEditor({
+export function ConditionsNodeEditor({
     nodeInEdition,
 }: {
     nodeInEdition: ConditionsNodeType

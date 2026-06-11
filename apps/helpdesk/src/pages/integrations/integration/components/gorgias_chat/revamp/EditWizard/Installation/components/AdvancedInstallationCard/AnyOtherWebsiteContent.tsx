@@ -1,6 +1,6 @@
 import { Heading, HeadingSize, Skeleton, Text } from '@gorgias/axiom'
 
-import CodeSnippet from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CodeSnippet'
+import { CodeSnippet } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CodeSnippet'
 
 import css from './AdvancedInstallationSidePanel.less'
 
@@ -51,4 +51,4 @@ const AnyOtherWebsiteContent = ({
     )
 }
 
-export default AnyOtherWebsiteContent
+export { AnyOtherWebsiteContent }

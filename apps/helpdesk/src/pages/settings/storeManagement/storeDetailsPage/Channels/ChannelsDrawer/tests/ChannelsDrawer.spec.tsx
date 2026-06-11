@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
 import type { ChannelChange, ChannelWithMetadata } from '../../../../types'
-import ChannelsDrawer from '../ChannelsDrawer'
+import { ChannelsDrawer } from '../ChannelsDrawer'
 
 const mockChannel: ChannelWithMetadata = {
     title: 'Test Channel',

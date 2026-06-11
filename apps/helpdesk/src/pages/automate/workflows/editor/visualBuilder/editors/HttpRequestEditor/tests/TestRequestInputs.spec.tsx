@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
-import TestRequestInputs from '../TestRequestInputs'
+import { TestRequestInputs } from '../TestRequestInputs'
 
 const mockOnSendTestRequest = jest.fn()
 const mockOnClose = jest.fn()

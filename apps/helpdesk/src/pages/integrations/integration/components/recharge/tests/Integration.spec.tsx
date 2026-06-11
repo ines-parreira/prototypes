@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Integration from 'pages/integrations/integration/components/recharge/Integration'
+import { Integration } from 'pages/integrations/integration/components/recharge/Integration'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 const mockStore = configureMockStore([thunk])

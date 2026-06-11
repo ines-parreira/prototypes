@@ -20,36 +20,38 @@ import {
     toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createTeam } from 'models/team/resources'
 import type { Team } from 'models/team/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import Dropdown, {
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import {
+    Dropdown,
     DropdownContext,
 } from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownQuickSelect as DropdownQuickSelect } from 'pages/common/components/dropdown/DropdownQuickSelect'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { EmojiSelect } from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import type { WizardContextState } from 'pages/common/components/wizard/Wizard'
-import Wizard, { WizardContext } from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import InputField from 'pages/common/forms/input/InputField'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import SelectInputBox, {
+import { Wizard, WizardContext } from 'pages/common/components/wizard/Wizard'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getHumanAgents } from 'state/agents/selectors'
 import { FETCH_TEAM_SUCCESS } from 'state/teams/constants'
 
-import RuleCreationModalContent from './RuleCreationModalContent'
+import { RuleCreationModalContent } from './RuleCreationModalContent'
 
 import css from './TeamCreationModal.less'
 
@@ -61,11 +63,7 @@ type Props = {
 
 const steps = ['teamCreation', 'ruleCreation']
 
-export default function TeamCreationModal({
-    isOpen,
-    onClose,
-    onTeamCreated,
-}: Props) {
+export function TeamCreationModal({ isOpen, onClose, onTeamCreated }: Props) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getHumanAgents)
     const ref = useRef<HTMLDivElement>(null)

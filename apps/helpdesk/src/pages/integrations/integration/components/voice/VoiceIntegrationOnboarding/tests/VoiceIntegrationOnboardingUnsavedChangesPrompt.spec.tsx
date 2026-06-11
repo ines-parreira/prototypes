@@ -1,10 +1,10 @@
 import { assumeMock, render } from '@repo/testing'
 
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 
 import { VoiceIntegrationOnboardingStep } from '../constants'
-import VoiceIntegrationOnboardingUnsavedChangesPrompt from '../VoiceIntegrationOnboardingUnsavedChangesPrompt'
+import { VoiceIntegrationOnboardingUnsavedChangesPrompt } from '../VoiceIntegrationOnboardingUnsavedChangesPrompt'
 
 jest.mock('../useVoiceOnboardingForm', () => ({
     useOnboardingForm: () => ({

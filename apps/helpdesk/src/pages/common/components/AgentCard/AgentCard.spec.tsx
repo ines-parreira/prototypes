@@ -4,13 +4,13 @@ import { render } from '@repo/testing'
 import { UserAvatar } from '@repo/users'
 import { screen } from '@testing-library/react'
 
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
-import AgentCard from './AgentCard'
+import { AgentCard } from './AgentCard'
 
 jest.mock('pages/common/components/Avatar/Avatar', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>AvatarMock</div>),
+    Avatar: jest.fn(() => <div>AvatarMock</div>),
 }))
 jest.mock('@repo/users', () => ({
     ...jest.requireActual('@repo/users'),

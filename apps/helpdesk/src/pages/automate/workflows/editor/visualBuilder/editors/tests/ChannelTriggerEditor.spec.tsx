@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { TranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
@@ -12,7 +12,7 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import ChannelTriggerEditor from '../ChannelTriggerEditor'
+import { ChannelTriggerEditor } from '../ChannelTriggerEditor'
 
 describe('<ChannelTriggerEditor />', () => {
     it('should dispatch SET_TOUCHED', () => {

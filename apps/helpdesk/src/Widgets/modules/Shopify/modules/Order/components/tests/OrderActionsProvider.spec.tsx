@@ -22,25 +22,25 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportEditOrderModal: () => null,
     }),
 )
 jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
     __esModule: true,
-    default: () => null,
+    DefaultExportDraftOrderModal: () => null,
 }))
 jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportRefundOrderModal: () => null,
     }),
 )
 jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportCancelOrderModal: () => null,
     }),
 )
 

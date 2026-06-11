@@ -7,7 +7,8 @@ import { screen } from '@testing-library/react'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import HelpCenterFilter, {
+import {
+    HelpCenterFilter,
     HelpCenterFilterWithState,
 } from 'domains/reporting/pages/common/filters/HelpCenterFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'

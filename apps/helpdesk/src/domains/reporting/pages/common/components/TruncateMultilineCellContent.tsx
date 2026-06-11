@@ -98,5 +98,3 @@ export const TruncateMultilineCellContent = ({
         </>
     )
 }
-
-export default TruncateMultilineCellContent

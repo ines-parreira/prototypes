@@ -16,7 +16,7 @@ export const initialState: TicketsState = fromJS({
     items: [],
 })
 
-export default function reducer(
+export function reducer(
     state: TicketsState = initialState,
     action: GorgiasAction,
 ): TicketsState {

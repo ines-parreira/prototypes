@@ -1,7 +1,7 @@
 import css from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity.less'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getTransferTargetVoiceCallSubject } from 'models/voiceCall/utils'
-import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
+import { VoiceCallSubjectLabel } from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 
 type Props = {
     voiceCall: VoiceCallSummary
@@ -23,4 +23,4 @@ const VoiceCallTransferActivity = ({ voiceCall }: Props) => {
     )
 }
 
-export default VoiceCallTransferActivity
+export { VoiceCallTransferActivity }

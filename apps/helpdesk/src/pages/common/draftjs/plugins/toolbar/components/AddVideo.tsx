@@ -6,8 +6,8 @@ import ReactPlayer from 'react-player'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { ButtonPopover as Popover } from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { fixVideoUrlForReactPlayer, insertLink, insertText } from 'utils'
 
 import { addVideo } from '../../utils'
@@ -155,4 +155,4 @@ const AddVideo = ({ getEditorState, setEditorState, isDisabled }: Props) => {
     )
 }
 
-export default AddVideo
+export { AddVideo }

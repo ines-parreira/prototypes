@@ -10,4 +10,4 @@ const UnknownSyntax = ({ type }: Props) => (
     </Badge>
 )
 
-export default UnknownSyntax
+export { UnknownSyntax }

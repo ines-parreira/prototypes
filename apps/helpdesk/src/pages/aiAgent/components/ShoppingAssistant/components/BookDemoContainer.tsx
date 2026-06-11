@@ -47,4 +47,4 @@ const BookDemoContainer = ({
     )
 }
 
-export default BookDemoContainer
+export { BookDemoContainer }

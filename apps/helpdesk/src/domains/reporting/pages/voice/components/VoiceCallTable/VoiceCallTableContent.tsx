@@ -17,16 +17,16 @@ import {
     getOrderedCells,
     getOrderedHeaderCells,
 } from 'domains/reporting/pages/voice/components/VoiceCallTable/voiceCallTableContentCells'
-import VoiceQueueProvider from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
+import { VoiceQueueProvider } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import type { OrderDirection } from 'models/api/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 type VoiceCallTableContentProps = {
     data?: VoiceCallSummary[]
@@ -43,7 +43,7 @@ type VoiceCallTableContentProps = {
     onColumnClick?: (column: VoiceCallTableColumn) => void
 }
 
-export default function VoiceCallTableContent({
+export function VoiceCallTableContent({
     data,
     isFetching,
     columns,

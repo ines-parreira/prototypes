@@ -23,7 +23,7 @@ import { integrationsState } from '../../../../../../fixtures/integrations'
 import { MacroActionName } from '../../../../../../models/macroAction/types'
 import type { RootState } from '../../../../../../state/types'
 import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
-import TicketReplyActions from '../TicketReplyActions'
+import { TicketReplyActions } from '../TicketReplyActions'
 
 const mockStore = configureMockStore([thunk])
 const queryClient = mockQueryClient()

@@ -15,10 +15,10 @@ import {
 } from '@gorgias/axiom'
 
 import { disconnectApp } from 'models/integration/resources'
-import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { AlloyConnectButton } from 'pages/integrations/components/AlloyConnectButton'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 
-import SetupCard from './SetupCard'
+import { SetupCard } from './SetupCard'
 
 type InboundConnectionCardProps = {
     appId: string
@@ -31,7 +31,7 @@ type InboundConnectionCardProps = {
     onAuthorizeReturn?: () => void | Promise<void>
 }
 
-export default function InboundConnectionCard({
+export function InboundConnectionCard({
     appId,
     appTitle,
     connectUrl,

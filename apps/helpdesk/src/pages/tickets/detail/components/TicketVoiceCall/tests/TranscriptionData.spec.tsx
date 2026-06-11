@@ -7,7 +7,7 @@ import { useGetVoiceCallRecordingTranscription } from '@gorgias/helpdesk-queries
 
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
 
-import TranscriptionData from '../TranscriptionData'
+import { TranscriptionData } from '../TranscriptionData'
 
 jest.mock('@gorgias/helpdesk-queries')
 const mockUseGetVoiceCallRecordingTranscription =
@@ -15,17 +15,19 @@ const mockUseGetVoiceCallRecordingTranscription =
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
-    () =>
-        ({ customerId }: { customerId: number }) => (
+    () => ({
+        VoiceCallCustomerLabel: ({ customerId }: { customerId: number }) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
         ),
+    }),
 )
 
 describe('TranscriptionData', () => {

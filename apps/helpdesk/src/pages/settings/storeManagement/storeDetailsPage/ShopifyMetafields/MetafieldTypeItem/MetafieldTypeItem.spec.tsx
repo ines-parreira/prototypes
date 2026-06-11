@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
-import MetafieldTypeItem from './MetafieldTypeItem'
+import { MetafieldTypeItem } from './MetafieldTypeItem'
 
 describe('MetafieldTypeItem', () => {
     it('renders with correct icon and label for single_line_text_field type', () => {

@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import SpotlightNoResults from '../SpotlightNoResults'
+import { SpotlightNoResults } from '../SpotlightNoResults'
 
 describe('<SpotlightNoResults />', () => {
     const mockHandleAdvancedSearch = jest.fn()

@@ -13,11 +13,11 @@ import {
     REVENUE_PER_AGENT,
     REVENUE_PER_DAY,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
-import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
-import SupportPerformanceRevenue from 'domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenue'
+import type { DEPRECATED_TagsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import { DefaultExportSupportPerformanceRevenue as SupportPerformanceRevenue } from 'domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenue'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
@@ -34,28 +34,29 @@ import {
 import { teams } from 'fixtures/teams'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import { IntegrationType } from 'models/integration/constants'
-import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import type { FeaturePaywall } from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
-jest.mock(
-    'pages/common/components/FeaturePaywall/FeaturePaywall',
-    () =>
-        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
-            return <div>Paywall for {feature}</div>
-        },
-)
+jest.mock('pages/common/components/FeaturePaywall/FeaturePaywall', () => ({
+    FeaturePaywall: ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
+        return <div>Paywall for {feature}</div>
+    },
+}))
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter',
-    () =>
-        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+    () => ({
+        DEPRECATED_TagsStatsFilter: ({
+            value,
+        }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
         ),
+    }),
 )
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
@@ -65,7 +66,9 @@ jest.mock(
 )
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>,
+    () => ({
+        DEPRECATED_ChannelsStatsFilter: () => <div>ChannelsStatsFilter</div>,
+    }),
 )
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')

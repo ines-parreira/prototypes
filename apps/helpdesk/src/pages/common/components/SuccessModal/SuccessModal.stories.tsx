@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import SuccessModal, { SuccessModalIcon } from './SuccessModal'
+import { SuccessModal, SuccessModalIcon } from './SuccessModal'
 
 const storyConfig: Meta = {
     title: 'General/Modals/Success modal',

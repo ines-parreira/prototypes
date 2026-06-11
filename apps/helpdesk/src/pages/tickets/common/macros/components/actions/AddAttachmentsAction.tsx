@@ -6,7 +6,7 @@ import { Badge } from 'reactstrap'
 
 import { MAX_ATTACHMENTS_SIZE } from 'config/editor'
 import type { Attachment } from 'models/ticket/types'
-import FileField from 'pages/common/forms/FileField'
+import { FileFieldContainer as FileField } from 'pages/common/forms/FileField'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
     removeAttachment: (actionIndex: number, fileIndex: number) => void
 }
 
-export default class AddAttachmentsAction extends Component<Props> {
+export class AddAttachmentsAction extends Component<Props> {
     _addAttachments = (files: Attachment[]) => {
         this.props.addAttachments(this.props.index, files)
     }

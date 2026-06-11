@@ -3,12 +3,12 @@ import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
-import ChangePasswordContainer from '../ChangePassword'
-import PasswordAnd2FA from '../PasswordAnd2FA'
+import { DefaultExportChangePassword as ChangePasswordContainer } from '../ChangePassword'
+import { PasswordAnd2FA } from '../PasswordAnd2FA'
 
 jest.mock('../ChangePassword', () => ({
     __esModule: true,
-    default: jest.fn(() => null),
+    DefaultExportChangePassword: jest.fn(() => null),
 }))
 const ChangePasswordContainerMock = assumeMock(ChangePasswordContainer)
 const LocationPath = () => {

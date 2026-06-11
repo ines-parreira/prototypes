@@ -8,7 +8,7 @@ import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
 import { useListActionsApps } from 'models/workflows/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useGetAppImageUrl from '../useGetAppImageUrl'
+import { useGetAppImageUrl } from '../useGetAppImageUrl'
 
 jest.mock('models/integration/queries')
 jest.mock('models/workflows/queries')

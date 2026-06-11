@@ -4,12 +4,12 @@ import type { Map } from 'immutable'
 
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import IconButton from 'pages/common/components/button/IconButton'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { UncontrolledDropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 
 import css from './CustomerOptionsDropdown.less'
@@ -20,7 +20,7 @@ interface Props {
     onSyncToShopify: (customer: TicketCustomer) => void
 }
 
-export default function CustomerOptionsDropdownButton({
+export function CustomerOptionsDropdownButton({
     activeCustomer,
     onEditCustomer,
     onSyncToShopify,

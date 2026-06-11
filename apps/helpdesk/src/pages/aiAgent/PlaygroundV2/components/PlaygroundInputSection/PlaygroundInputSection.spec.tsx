@@ -72,7 +72,7 @@ jest.mock('./PlaygroundInputSection.less', () => ({
 }))
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent',
-    () => () => <div />,
+    () => ({ FroalaEditorFunctionality: () => <div /> }),
 )
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
@@ -97,7 +97,7 @@ jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent',
     () => ({
         __esModule: true,
-        default: ({ model, onModelChange }: any) => (
+        FroalaEditorFunctionality: ({ model, onModelChange }: any) => (
             <div className="fr-element">
                 <textarea
                     value={model}
@@ -146,7 +146,7 @@ jest.mock(
 )
 jest.mock('pages/common/forms/input/TextInput', () => ({
     __esModule: true,
-    default: React.forwardRef(
+    DefaultExportTextInput: React.forwardRef(
         ({ value, onChange, isDisabled, ...props }: any, ref: any) => (
             <input
                 ref={ref}

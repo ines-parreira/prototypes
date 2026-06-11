@@ -12,7 +12,7 @@ export const initialState: CurrentAccountState = fromJS({
     },
 })
 
-export default function reducer(
+export function reducer(
     state: CurrentAccountState = initialState,
     action: GorgiasAction,
 ): CurrentAccountState {

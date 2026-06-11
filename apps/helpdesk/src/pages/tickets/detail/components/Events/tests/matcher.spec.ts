@@ -1,9 +1,9 @@
 import { fromJS, Map } from 'immutable'
 
-import bigCommerceEvent from '../bigcommerce'
+import { bigCommerceEvent } from '../bigcommerce'
 import { eventMatcher } from '../matcher'
-import rechargeEvent from '../recharge'
-import shopifyEvent from '../shopify'
+import { rechargeEvent } from '../recharge'
+import { shopifyEvent } from '../shopify'
 
 jest.mock('../shopify')
 jest.mock('../recharge')

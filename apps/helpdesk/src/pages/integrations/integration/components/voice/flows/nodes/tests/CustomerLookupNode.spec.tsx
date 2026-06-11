@@ -26,7 +26,7 @@ import { Flow, FlowProvider } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowNode } from '../../types'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { CustomerLookupNode } from '../CustomerLookupNode'
 
 const mockCustomFields: CustomField[] = [

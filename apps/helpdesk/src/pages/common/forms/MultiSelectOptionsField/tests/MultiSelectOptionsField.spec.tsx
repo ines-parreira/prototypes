@@ -7,7 +7,7 @@ import _noop from 'lodash/noop'
 
 import { TAGS_LIMIT } from 'models/integration/constants'
 
-import MultiSelectField from '../MultiSelectOptionsField'
+import { MultiSelectOptionsField as MultiSelectField } from '../MultiSelectOptionsField'
 
 type OptionProps = ComponentProps<typeof MultiSelectField>['options']
 

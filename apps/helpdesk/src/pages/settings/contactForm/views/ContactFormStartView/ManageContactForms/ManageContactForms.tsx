@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { Button } from '@gorgias/axiom'
 
 import type { ContactForm } from 'models/contactForm/types'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import {
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_CUSTOMIZATION_PATH,
@@ -99,4 +99,4 @@ const ManageContactForms = ({
     )
 }
 
-export default ManageContactForms
+export { ManageContactForms }

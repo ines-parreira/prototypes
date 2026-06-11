@@ -7,7 +7,7 @@ import { compare } from 'utils'
 /**
  * Return passed messages ordered by created_datetime
  */
-export default function orderedMessages(
+export function orderedMessages(
     messages: Array<TicketMessage> | List<any>,
 ): Map<any, any> {
     return toImmutable<List<any>>(messages).sort(

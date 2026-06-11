@@ -75,5 +75,3 @@ export const Badge: FC<BadgeProps> = ({ ...props }: BadgeProps) => {
         </StyledBadge>
     )
 }
-
-export default Badge

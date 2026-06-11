@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import isForwardedMessage from '../isForwardedMessage'
+import { isForwardedMessage } from '../isForwardedMessage'
 
 describe('isForwardedMessage()', () => {
     it('should detect forwarded message', () => {

@@ -5,7 +5,7 @@ import type { Order } from 'constants/integrations/types/shopify'
 import { FinancialStatus } from 'constants/integrations/types/shopify'
 import { shopifyOrderFixture } from 'fixtures/shopify'
 
-import OrderCard from '../OrderCard'
+import { OrderCard } from '../OrderCard'
 
 type OrderWithName = Order & { name: string; financial_status: FinancialStatus }
 

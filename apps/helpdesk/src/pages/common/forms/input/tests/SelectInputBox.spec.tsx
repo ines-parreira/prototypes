@@ -6,7 +6,10 @@ import { fireEvent } from '@testing-library/react'
 
 import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
-import SelectInputBox, { SelectInputBoxContext } from '../SelectInputBox'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
+    SelectInputBoxContext,
+} from '../SelectInputBox'
 
 describe('<SelectInputBox />', () => {
     const defaultProps: ComponentProps<typeof SelectInputBox> = {

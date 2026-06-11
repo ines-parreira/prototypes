@@ -20,7 +20,7 @@ export type MappedFormSLAPolicy = {
     >
 }
 
-export default function makeMappedFormSLAPolicy(
+export function makeMappedFormSLAPolicy(
     policy: SLAPolicy,
 ): MappedFormSLAPolicy {
     const {

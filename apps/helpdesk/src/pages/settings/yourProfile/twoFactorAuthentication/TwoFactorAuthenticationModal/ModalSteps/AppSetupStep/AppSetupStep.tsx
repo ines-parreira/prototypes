@@ -5,7 +5,7 @@ import settingsCss from 'pages/settings/settings.less'
 
 import css from '../ModalSteps.less'
 
-export default function AppSetupStep() {
+export function AppSetupStep() {
     return (
         <>
             <div className={css.headingBold}>Have your mobile device ready</div>

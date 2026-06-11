@@ -2,9 +2,9 @@ import classnames from 'classnames'
 import { FormGroup } from 'reactstrap'
 
 import { callForwardingCountries } from 'business/twilio'
-import CheckBox from 'pages/common/forms/CheckBox'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 
 import css from './ForwardingCallsPreferences.less'
@@ -79,4 +79,4 @@ function ForwardingCallsPreferences({
     )
 }
 
-export default ForwardingCallsPreferences
+export { ForwardingCallsPreferences }

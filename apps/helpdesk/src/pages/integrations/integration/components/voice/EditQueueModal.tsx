@@ -6,15 +6,15 @@ import {
 import type { UpdateVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
-import CreateEditQueueModalFormContent from './CreateEditQueueModalFormContent'
+import { CreateEditQueueModalFormContent } from './CreateEditQueueModalFormContent'
 import { getVoiceQueueEditableFields } from './utils'
-import VoiceFormSubmitButton from './VoiceFormSubmitButton'
-import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
+import { VoiceFormSubmitButton } from './VoiceFormSubmitButton'
+import { VoiceQueueSettingsForm } from './VoiceQueueSettingsForm'
 
 import css from './EditQueueModal.less'
 
@@ -25,7 +25,7 @@ type Props = {
     queue: VoiceQueue
 }
 
-export default function EditQueueModal({
+export function EditQueueModal({
     isOpen = true,
     onClose,
     onUpdateSuccess,

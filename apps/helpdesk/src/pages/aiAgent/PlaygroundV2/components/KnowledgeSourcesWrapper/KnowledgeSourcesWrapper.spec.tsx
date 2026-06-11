@@ -9,7 +9,7 @@ import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/component
 import { useEnrichFeedbackData } from '../../../../tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
 import { useSettingsContext } from '../../contexts/SettingsContext'
 import { useFeedbackPolling } from '../../hooks/useFeedbackPolling'
-import KnowledgeSourcesWrapper from './KnowledgeSourcesWrapper'
+import { KnowledgeSourcesWrapper } from './KnowledgeSourcesWrapper'
 
 // Mock the hooks and components
 jest.mock('../../hooks/useFeedbackPolling')

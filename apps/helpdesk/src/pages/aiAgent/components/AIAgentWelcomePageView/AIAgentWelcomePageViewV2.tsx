@@ -30,7 +30,7 @@ import {
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import type { AiAgentWelcomePageProps } from './AIAgentWelcomePageView'
 

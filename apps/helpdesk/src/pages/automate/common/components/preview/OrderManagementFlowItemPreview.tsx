@@ -29,4 +29,4 @@ const OrderManagementFlowItemPreview = ({
     )
 }
 
-export default OrderManagementFlowItemPreview
+export { OrderManagementFlowItemPreview }

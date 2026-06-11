@@ -5,7 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getDeactivatedOAuthEmailIntegrations } from 'state/integrations/selectors'
 

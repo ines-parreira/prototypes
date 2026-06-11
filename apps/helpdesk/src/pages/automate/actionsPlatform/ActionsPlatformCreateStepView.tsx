@@ -19,20 +19,20 @@ import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PageHeader from 'pages/common/components/PageHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import ActionsPlatformStepAppSelectBox from './components/ActionsPlatformStepAppSelectBox'
-import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
-import useApps from './hooks/useApps'
-import useCreateActionTemplate from './hooks/useCreateActionTemplate'
-import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
-import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
-import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformStepAppSelectBox } from './components/ActionsPlatformStepAppSelectBox'
+import { WorkflowVisualBuilder } from './components/visualBuilder/WorkflowVisualBuilder'
+import { useApps } from './hooks/useApps'
+import { useCreateActionTemplate } from './hooks/useCreateActionTemplate'
+import { useTouchActionStepGraph } from './hooks/useTouchActionStepGraph'
+import { useValidateActionStepGraph } from './hooks/useValidateActionStepGraph'
+import { useValidateOnVisualBuilderGraphChange } from './hooks/useValidateOnVisualBuilderGraphChange'
 import type { ActionTemplate, ActionTemplateApp } from './types'
 
 import css from './ActionsPlatformEditStepView.less'
@@ -290,4 +290,4 @@ const ActionsPlatformCreateStepView = () => {
     )
 }
 
-export default ActionsPlatformCreateStepView
+export { ActionsPlatformCreateStepView }

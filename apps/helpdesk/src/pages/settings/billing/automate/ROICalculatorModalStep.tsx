@@ -3,9 +3,9 @@ import { ModalFooter, ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
-import ROICalculator from './ROICalculator/ROICalculator'
+import { ROICalculator } from './ROICalculator/ROICalculator'
 
 import css from './AutomateSubscriptionModal.less'
 
@@ -38,4 +38,4 @@ const ROICalculatorModalStep = ({
     </>
 )
 
-export default ROICalculatorModalStep
+export { ROICalculatorModalStep }

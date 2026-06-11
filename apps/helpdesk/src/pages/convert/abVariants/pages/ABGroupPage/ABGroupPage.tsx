@@ -11,10 +11,10 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { useGetCampaign } from 'models/convert/campaign/queries'
 import type { CampaignUpdatePayload } from 'models/convert/campaign/types'
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import { SkeletonLoader } from 'pages/common/components/SkeletonLoader'
 import { ABGroupContainer } from 'pages/convert/abVariants/containers/ABGroupContainer'
-import ABTestSettingsPage from 'pages/convert/abVariants/pages/ABTestSettingsPage'
-import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
+import { ABTestSettingsPage } from 'pages/convert/abVariants/pages/ABTestSettingsPage'
+import { ABTestVariantEditPage } from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
 import {
     abVariantAddPath,
     abVariantEditorPath,
@@ -325,4 +325,4 @@ const ABGroupPage = () => {
     )
 }
 
-export default ABGroupPage
+export { ABGroupPage }

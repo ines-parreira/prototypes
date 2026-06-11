@@ -2,14 +2,15 @@ import { useRef, useState } from 'react'
 
 import type { VoiceQueueWaitMusicLibrary } from '@gorgias/helpdesk-queries'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import CircularAudioPlayer from './CircularAudioPlayer'
+import { CircularAudioPlayer } from './CircularAudioPlayer'
 import { WAIT_MUSIC_LIBRARY } from './waitMusicLibraryConstants'
 
 import css from './WaitMusicLibrarySelect.less'
@@ -86,4 +87,4 @@ const WaitMusicLibrarySelect = ({ library, onChange }: Props) => {
     )
 }
 
-export default WaitMusicLibrarySelect
+export { WaitMusicLibrarySelect }

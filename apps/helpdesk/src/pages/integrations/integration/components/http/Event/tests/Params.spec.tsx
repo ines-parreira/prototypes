@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Params from '../Params'
+import { Params } from '../Params'
 
 describe('Params', () => {
     it('should not render the component because it has no params', () => {

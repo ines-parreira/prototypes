@@ -4,7 +4,7 @@ import { Box, Icon, Tag, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
-import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
+import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import type { SkillActionGroup } from './skillReviewActions.utils'

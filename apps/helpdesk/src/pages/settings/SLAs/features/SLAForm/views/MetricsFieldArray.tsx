@@ -10,10 +10,10 @@ import {
 import { Box, ToggleField } from '@gorgias/axiom'
 import type { CreateSLAPolicy } from '@gorgias/helpdesk-types'
 
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import NumberInputField from './NumberInputField'
-import TimeUnitSelectField from './TimeUnitSelectField'
+import { DefaultExportNumberInputField as NumberInputField } from './NumberInputField'
+import { TimeUnitSelectField } from './TimeUnitSelectField'
 
 import css from './MetricsFieldArray.less'
 

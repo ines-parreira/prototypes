@@ -11,8 +11,8 @@ import type { WidgetsState } from 'state/widgets/types'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { itemsWithContext } from 'state/widgets/utils'
 
-import WidgetEditionTools from './WidgetEditionTools'
-import WooCommerceStoreWidget from './WooCommerceStoreWidget'
+import { WidgetEditionTools } from './WidgetEditionTools'
+import { WooCommerceStoreWidget } from './WooCommerceStoreWidget'
 import type { WooCommercePair } from './WooCommerceStoreWidget'
 
 import css from './TicketInfobarContainer.less'
@@ -22,7 +22,7 @@ type Props = {
     widgets: WidgetsState
 }
 
-export default function WooCommerceTabContent({ sources, widgets }: Props) {
+export function WooCommerceTabContent({ sources, widgets }: Props) {
     const isEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
         [widgets],

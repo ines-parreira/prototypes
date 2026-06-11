@@ -4,7 +4,7 @@ import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 
-import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
+import { useThemeAppExtensionInstallation } from '../useThemeAppExtensionInstallation'
 
 jest.mock('@repo/feature-flags')
 jest.mock('@repo/utils')

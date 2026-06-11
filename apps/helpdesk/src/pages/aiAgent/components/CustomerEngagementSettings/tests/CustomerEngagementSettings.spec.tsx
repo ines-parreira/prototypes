@@ -16,7 +16,7 @@ import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as chatColorHook from 'pages/aiAgent/hooks/useGetChatIntegrationColor'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 import type {
     Texts,
     TextsPerLanguage,
@@ -216,7 +216,7 @@ jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/useSpqInstallationStatus',
     () => ({
         __esModule: true,
-        default: jest.fn(() => ({
+        useSpqInstallationStatus: jest.fn(() => ({
             isSpqInstalled: true,
             isLoaded: true,
         })),
@@ -224,7 +224,11 @@ jest.mock(
 )
 jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
-    () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
+    () => ({
+        AiShoppingAssistantExpireBanner: () => (
+            <div>AI-Shopping-Assistant-Expire-Banner</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow',

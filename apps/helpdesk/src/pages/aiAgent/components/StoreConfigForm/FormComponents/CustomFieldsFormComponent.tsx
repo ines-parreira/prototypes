@@ -12,7 +12,7 @@ import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomF
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'
 import { isCustomFieldSystemReadOnly } from 'custom-fields/types'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
 import { populateConditionalFieldIds } from 'pages/aiAgent/hooks/utils/add-conditional-custom-field-ids-based-on-conditions.util'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import type { Value } from 'pages/common/forms/SelectField/types'

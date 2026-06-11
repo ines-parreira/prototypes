@@ -2,7 +2,7 @@ import icon from 'assets/img/icons/invalid-filters.svg'
 
 import css from './DeactivatedViewMessage.less'
 
-export default function DeactivatedViewMessage() {
+export function DeactivatedViewMessage() {
     return (
         <div className="d-flex h-100">
             <div className="m-auto text-center">

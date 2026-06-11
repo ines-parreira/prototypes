@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import type { Moment } from 'moment'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 import {
     isTicketMessageDeleted,
@@ -20,12 +20,12 @@ import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 's
 import { buildFirstTicketMessage } from 'state/ticket/utils'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
-import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
+import { AIAgentDraftMessage } from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import { DRAFT_MESSAGE_TAG } from '../AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import { getShouldTicketHaveReasoning } from './aiAgentReasoningDisplay'
-import Container from './Container'
-import Message from './Message'
+import { DefaultExportContainer as Container } from './Container'
+import { Message } from './Message'
 
 type Props = {
     messages: TicketMessage_DEPRECATED[]
@@ -41,7 +41,7 @@ type Props = {
     messagePosition: number
 }
 
-export default function TicketMessages({
+export function TicketMessages({
     messages,
     ticketId,
     timezone,

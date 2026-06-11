@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { useAiAgentFormChanges } from '../hooks/useAiAgentFormChanges'
-import AiAgentFormChangesContext from './AiAgentFormChangesContext'
+import { AiAgentFormChangesContext } from './AiAgentFormChangesContext'
 
 type Props = {
     children: ReactNode
@@ -37,4 +37,4 @@ const AiAgentFormChangesProvider = ({ children }: Props) => {
     )
 }
 
-export default AiAgentFormChangesProvider
+export { AiAgentFormChangesProvider }

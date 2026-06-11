@@ -5,14 +5,14 @@ import { useInterval } from '@gorgias/toolkit-react'
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
+import { LiveVoiceAgentRow } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import {
     isAgentAvailable,
     isAgentBusy,
     mapBusyAgentStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
-import AgentCard from 'pages/common/components/AgentCard/AgentCard'
+import { AgentCard } from 'pages/common/components/AgentCard/AgentCard'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

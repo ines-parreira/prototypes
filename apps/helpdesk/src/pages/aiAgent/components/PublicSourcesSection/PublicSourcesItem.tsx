@@ -10,15 +10,15 @@ import {
 } from '@gorgias/axiom'
 
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
+import { SyncDomainConfirmationModal } from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
 import {
     getNextSyncDate,
     isSyncLessThan24Hours,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import InputField from 'pages/common/forms/input/InputField'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import type { SourceItem } from './types'
 import { DOCUMENT_EXTENSIONS } from './utils'

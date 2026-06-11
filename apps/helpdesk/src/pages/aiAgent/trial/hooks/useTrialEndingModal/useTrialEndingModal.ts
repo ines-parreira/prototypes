@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { formatAmount } from '@repo/billing'
 
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
 import {

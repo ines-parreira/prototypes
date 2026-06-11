@@ -8,7 +8,7 @@ import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/He
 import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ChatApplication from '../ChatApplication'
+import { ChatApplication } from '../ChatApplication'
 
 const queryClient = mockQueryClient()
 const mockedUpdateTranslation = jest.fn()

@@ -1,2 +1,2 @@
-export { default as EditOrderShippingAddressModal } from './components/EditOrderShippingAddressModal'
-export { default as OrderMetafields } from './components/OrderMetafields'
+export { DefaultExportEditOrderShippingAddressModal as EditOrderShippingAddressModal } from './components/EditOrderShippingAddressModal'
+export { WrappedOrderMetafields as OrderMetafields } from './components/OrderMetafields'

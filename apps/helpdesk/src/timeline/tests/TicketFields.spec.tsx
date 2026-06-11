@@ -6,7 +6,7 @@ import type { TicketCustomFieldValue } from '@gorgias/helpdesk-queries'
 import { useListCustomFields } from '@gorgias/helpdesk-queries'
 import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
-import getWrappedElementCount from 'common/utils/getWrappedElementCount'
+import { getWrappedElementCount } from 'common/utils/getWrappedElementCount'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import {
@@ -14,7 +14,7 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import TicketFields from '../TicketFields'
+import { TicketFields } from '../TicketFields'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),

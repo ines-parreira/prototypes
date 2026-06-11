@@ -8,7 +8,7 @@ type Props = {
     name: string
 }
 
-export default function WizardStep({ children, name }: Props) {
+export function WizardStep({ children, name }: Props) {
     const wizardContext = useContext(WizardContext)
 
     if (wizardContext === null) {

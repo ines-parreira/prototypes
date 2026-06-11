@@ -5,14 +5,15 @@ import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm'
-import PageEmbedmentForm, {
+import {
     EmbedMode,
+    PageEmbedmentForm,
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
     usePageEmbedmentForm,
 } from 'pages/common/components/PageEmbedmentForm'
@@ -192,4 +193,4 @@ const HelpCenterAutoEmbedModalAssistant = (
     )
 }
 
-export default HelpCenterAutoEmbedModalAssistant
+export { HelpCenterAutoEmbedModalAssistant }

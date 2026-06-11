@@ -16,7 +16,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 
 import css from './ExternalFilesSection.less'

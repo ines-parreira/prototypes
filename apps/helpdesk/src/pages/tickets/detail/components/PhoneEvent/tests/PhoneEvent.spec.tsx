@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 
-import PhoneEvent from '../PhoneEvent'
+import { PhoneEvent } from '../PhoneEvent'
 
 describe('<PhoneEvent/>', () => {
     describe('render()', () => {

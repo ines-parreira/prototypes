@@ -7,7 +7,7 @@ import {
     formatDatetime,
 } from '@repo/utils'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -127,4 +127,4 @@ const CampaignScheduleSummary: React.FC<Props> = ({
     return <div className={css.messageWrapper}>{message}</div>
 }
 
-export default CampaignScheduleSummary
+export { CampaignScheduleSummary }

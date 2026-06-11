@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getEmailIntegrations } from 'state/integrations/selectors'
 import { isAdmin } from 'utils'
@@ -45,7 +45,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 

@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import IconTooltip from './IconTooltip'
+import { IconTooltip } from './IconTooltip'
 
 const storyConfig: Meta = {
     title: 'Data Entry/IconTooltip',

@@ -11,7 +11,7 @@ import type {
 
 import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
 import { BigCommerceRefundActionType } from '../types'
-import OrderTable from './order-table/OrderTable'
+import { OrderTable } from './order-table/OrderTable'
 
 import cssRefundOrderModal from '../RefundOrderModal.less'
 import css from './EntireOrderRefundOrderModal.less'

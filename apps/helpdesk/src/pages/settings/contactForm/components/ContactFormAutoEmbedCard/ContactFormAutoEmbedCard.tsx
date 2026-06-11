@@ -11,7 +11,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ContactFormPageEmbedment } from 'models/contactForm/types'
 import type { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
 import {
@@ -24,7 +24,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { CONTACT_FORM_MANAGE_EMBEDMENTS_PATH } from '../../constants'
 import { useGetShopifyPages } from '../../queries'
-import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
+import { ContactFormAutoEmbedModalAssistant } from '../ContactFormAutoEmbedModalAssistant'
 import {
     CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
     CONTACT_FORM_AUTO_EMBED_CARD_ID,
@@ -274,4 +274,4 @@ const ContactFormAutoEmbedCard = ({
     return null
 }
 
-export default ContactFormAutoEmbedCard
+export { ContactFormAutoEmbedCard }

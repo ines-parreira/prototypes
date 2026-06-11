@@ -1,10 +1,10 @@
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 
 import { useStoreManagementState } from '../StoreManagementProvider'
 
-export default function StoreManagementStoreSelector() {
+export function StoreManagementStoreSelector() {
     const { stores } = useStoreManagementState()
     const { id } = useParams<{ id: string }>()
     const history = useHistory()

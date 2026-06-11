@@ -9,7 +9,7 @@ import { memoize, throttle } from 'lodash'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 

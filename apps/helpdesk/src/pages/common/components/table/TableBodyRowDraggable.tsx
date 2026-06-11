@@ -3,8 +3,8 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/common/components/table/TableBodyRowDraggable.less'
 import type {
     Callbacks,

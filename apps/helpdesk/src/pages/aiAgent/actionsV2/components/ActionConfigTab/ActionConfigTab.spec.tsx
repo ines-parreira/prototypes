@@ -22,12 +22,12 @@ import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useAddStoreApp } from 'pages/aiAgent/actions/hooks/useAddStoreApp'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useThreeplIntegrations } from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 

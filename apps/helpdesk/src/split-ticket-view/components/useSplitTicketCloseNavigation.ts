@@ -10,9 +10,7 @@ type Args = {
     isOnSplitTicketView?: boolean
 }
 
-export default function useSplitTicketCloseNavigation({
-    isOnSplitTicketView,
-}: Args) {
+export function useSplitTicketCloseNavigation({ isOnSplitTicketView }: Args) {
     const { ticketId } = useParams<{ ticketId: string }>()
     const viewId = useViewId()
     const { ticketViewNavigation } = useTicketViewNavigation()

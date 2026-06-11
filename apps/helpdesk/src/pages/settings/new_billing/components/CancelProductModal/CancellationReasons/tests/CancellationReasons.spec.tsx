@@ -6,7 +6,7 @@ import { DEFAULT_STATE } from 'pages/settings/new_billing/components/CancelProdu
 import { HELPDESK_CANCELLATION_SCENARIO } from 'pages/settings/new_billing/components/CancelProductModal/scenarios'
 import { CancellationReasonsActionType } from 'pages/settings/new_billing/components/CancelProductModal/types'
 
-import CancellationReasons from '../CancellationReasons'
+import { CancellationReasons } from '../CancellationReasons'
 
 describe('CancellationReasons - Helpdesk', () => {
     it('renders with no reasons selected', () => {

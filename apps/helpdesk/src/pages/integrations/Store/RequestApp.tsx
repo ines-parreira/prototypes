@@ -4,15 +4,15 @@ import React, { useEffect, useRef, useState } from 'react'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { requestNewIntegration } from 'models/integration/resources'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import css from './RequestApp.less'
 
-export default function RequestApp() {
+export function RequestApp() {
     const [isOpen, setOpen] = useState(false)
     const [description, setDescription] = useState('')
     const textareaRef = useRef<HTMLTextAreaElement>(null)

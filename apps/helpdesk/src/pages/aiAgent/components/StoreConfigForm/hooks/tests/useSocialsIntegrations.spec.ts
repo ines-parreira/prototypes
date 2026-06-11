@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useSocialsIntegrations } from '../useSocialsIntegrations'
 

@@ -9,9 +9,9 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { CreateContactFormDto } from 'models/contactForm/types'
 import type { LocaleCode } from 'models/helpCenter/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
-import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { ContactFormNameInputSection } from 'pages/settings/contactForm/components/ContactFormNameInputSection'
+import { LanguageInputSection } from 'pages/settings/contactForm/components/LanguageInputSection'
 import {
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_CUSTOMIZATION_PATH,
@@ -20,7 +20,7 @@ import {
 } from 'pages/settings/contactForm/constants'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import useViewStoreMapping from 'pages/settings/contactForm/hooks/useViewStoreMapping'
+import { useViewStoreMapping } from 'pages/settings/contactForm/hooks/useViewStoreMapping'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -199,4 +199,4 @@ const ContactFormCreateView = (): JSX.Element => {
     )
 }
 
-export default ContactFormCreateView
+export { ContactFormCreateView }

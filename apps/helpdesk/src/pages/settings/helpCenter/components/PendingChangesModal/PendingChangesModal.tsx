@@ -94,4 +94,4 @@ const PendingChangesModal = ({
     )
 }
 
-export default PendingChangesModal
+export { PendingChangesModal }

@@ -1,6 +1,6 @@
 import { USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
-import isAnswerableType from '../isAnswerableType'
+import { isAnswerableType } from '../isAnswerableType'
 
 describe('isAnswerableType', () => {
     it('is correct', () => {

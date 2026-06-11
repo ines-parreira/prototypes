@@ -1,7 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
-import uploadFiles from '../uploadFiles'
+import { uploadFiles } from '../uploadFiles'
 
 describe('uploadFiles()', () => {
     let mockServer: MockAdapter

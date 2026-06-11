@@ -41,7 +41,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({ label }: Props) {
     )
 })
 
-export default function TriggerButtonNodeWrapper(
+export function TriggerButtonNodeWrapper(
     node: NodeProps<ChannelTriggerNodeType>,
 ) {
     const label = node.data.label

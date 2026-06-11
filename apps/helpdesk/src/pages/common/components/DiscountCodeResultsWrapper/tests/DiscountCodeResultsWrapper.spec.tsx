@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { integrationsState } from 'fixtures/integrations'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 import type { DiscountCodeResultsWrapperProps } from '../DiscountCodeResultsWrapper'
 import { DiscountCodeResultsWrapper } from '../DiscountCodeResultsWrapper'

@@ -11,11 +11,11 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { StatConfigMetric } from 'domains/reporting/config/stats'
 import { StatType } from 'domains/reporting/models/stat/types'
-import DistributionKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat'
-import DonutKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'
+import { DistributionKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat'
+import { DonutKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCell.less'
-import KeyMetricCellWrapper from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCellWrapper'
-import StatDifference from 'domains/reporting/pages/common/components/StatDifference'
+import { KeyMetricCellWrapper } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCellWrapper'
+import { StatDifference } from 'domains/reporting/pages/common/components/StatDifference'
 import {
     formatComparedPeriodString,
     formatCurrency,
@@ -24,7 +24,7 @@ import {
     formatPercent,
 } from 'domains/reporting/pages/common/utils'
 import { NOT_AVAILABLE_LABEL } from 'domains/reporting/services/constants'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 export const NO_VALUE_PLACEHOLDER = '-'
 

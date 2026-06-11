@@ -9,8 +9,8 @@ import {
     mockUpdateBusinessHoursHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import CustomBusinessHoursProvider from '../CustomBusinessHoursProvider'
-import EditCustomBusinessHoursForm from '../EditCustomBusinessHoursForm'
+import { CustomBusinessHoursProvider } from '../CustomBusinessHoursProvider'
+import { EditCustomBusinessHoursForm } from '../EditCustomBusinessHoursForm'
 
 const server = setupServer()
 

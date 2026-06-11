@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import DeletedArticlePreview from '../DeletedArticlePreview'
+import { DeletedArticlePreview } from '../DeletedArticlePreview'
 
 describe('<DeletedArticlePreview />', () => {
     it('should render component', () => {

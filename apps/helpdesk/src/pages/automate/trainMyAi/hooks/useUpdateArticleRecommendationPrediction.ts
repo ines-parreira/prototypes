@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     articleRecommendationdDefinitionKeys,
@@ -17,7 +17,7 @@ type Props = {
     shopType?: string
 }
 
-export default function useUpdateArticleRecommendationPrediction({
+export function useUpdateArticleRecommendationPrediction({
     page,
     shopName,
     shopType,

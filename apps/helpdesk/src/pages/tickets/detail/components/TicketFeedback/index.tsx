@@ -1,4 +1,4 @@
-import TicketFeedback from './TicketFeedback'
+import { TicketFeedback } from './TicketFeedback'
 
-export default TicketFeedback
-export { default as useHasAIAgent } from './hooks/useHasAIAgent'
+export { TicketFeedback }
+export { useHasAIAgent } from './hooks/useHasAIAgent'

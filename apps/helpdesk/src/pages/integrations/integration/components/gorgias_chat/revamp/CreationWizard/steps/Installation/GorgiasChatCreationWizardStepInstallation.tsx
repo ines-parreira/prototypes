@@ -8,8 +8,8 @@ import { fromJS } from 'immutable'
 
 import { Card, Heading, Radio, RadioGroup, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
@@ -17,10 +17,11 @@ import {
 } from 'models/integration/types'
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
-import useThemeAppExtensionInstallation, {
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useShopifyThemeAppExtension } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
+import {
     getGorgiasMainThemeAppExtensionId,
+    useThemeAppExtensionInstallation,
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/GorgiasChatCreationWizardStep'
 import { Tab } from 'pages/integrations/integration/types'
@@ -29,8 +30,8 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { errorToPlainText } from 'utils'
 
 import { GorgiasChatCreationWizardFooter } from '../../components/GorgiasChatCreationWizardFooter'
-import SaveChangesPrompt from '../../components/SaveChangesPrompt'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { SaveChangesPrompt } from '../../components/SaveChangesPrompt'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
 

@@ -1,6 +1,6 @@
 import _isBoolean from 'lodash/isBoolean'
 
-import isPublic from '../isPublic'
+import { isPublic } from '../isPublic'
 
 describe('isPublic', () => {
     it('is boolean', () => {

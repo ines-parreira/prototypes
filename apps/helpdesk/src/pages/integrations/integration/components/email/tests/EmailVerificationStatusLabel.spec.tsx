@@ -4,8 +4,9 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup, screen } from '@testing-library/react'
 
-import EmailVerificationStatusLabel, {
+import {
     EmailVerificationStatus,
+    EmailVerificationStatusLabel,
 } from '../EmailVerificationStatusLabel'
 
 describe('EmailVerificationStatusLabel', () => {

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import TextareaWithVariables from '../TextareaWithVariables'
+import { TextareaWithVariables } from '../TextareaWithVariables'
 
 describe('<TextareaWithVariables />', () => {
     it('should apply json filter for JSON variable', () => {

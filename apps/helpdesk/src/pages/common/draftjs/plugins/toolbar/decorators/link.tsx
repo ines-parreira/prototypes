@@ -6,7 +6,7 @@ import type {
     DecoratorStrategyCallback,
 } from '../../types'
 import { removeLink } from '../../utils'
-import LinkPopover from '../components/LinkPopover'
+import { LinkPopover } from '../components/LinkPopover'
 
 type Config = {
     isActive: () => boolean
@@ -76,4 +76,4 @@ const link = (config: Config): Decorator => ({
     },
 })
 
-export default link
+export { link }

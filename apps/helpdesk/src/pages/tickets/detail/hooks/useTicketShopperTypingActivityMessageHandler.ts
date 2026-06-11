@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import type { UseChannelProps } from '@gorgias/realtime'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { setTypingActivityShopper } from 'state/ticket/actions'
 
 const TICKET_TYPING_ACTIVITY_SHOPPER_STARTED_ABLY_EVENT =

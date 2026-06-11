@@ -5,8 +5,8 @@ import type { Macro } from '@gorgias/helpdesk-queries'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     setHasAttemptedToCloseTicket,
     triggerTicketFieldsErrors,

@@ -12,12 +12,12 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { uploadFiles } from 'common/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasApiError } from 'models/api/types'
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { saveFileAsDownloaded } from 'utils/file'
 
@@ -236,5 +236,3 @@ export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
         </Modal>
     )
 }
-
-export default MacrosCSVImportPopover

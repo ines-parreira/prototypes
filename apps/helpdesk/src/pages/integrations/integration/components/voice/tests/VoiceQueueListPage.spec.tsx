@@ -5,8 +5,8 @@ import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useIn
 import { voiceQueue } from 'fixtures/voiceQueue'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceQueueList from '../VoiceQueueList'
-import VoiceQueueListPage from '../VoiceQueueListPage'
+import { VoiceQueueList } from '../VoiceQueueList'
+import { VoiceQueueListPage } from '../VoiceQueueListPage'
 
 jest.mock('domains/reporting/hooks/common/useInfiniteListVoiceQueues')
 const useInfiniteListVoiceQueuesMock = assumeMock(useInfiniteListVoiceQueues)

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function useScrollOffset(element: HTMLElement | null) {
+export function useScrollOffset(element: HTMLElement | null) {
     const [offset, setOffset] = useState(0)
 
     useEffect(() => {

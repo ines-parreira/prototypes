@@ -27,7 +27,7 @@ import {
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
 import type { UnsavedChangesPromptTrigger } from 'pages/common/components/UnsavedChangesPrompt'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { MessageGuidanceCard } from 'AIJourney/components'

@@ -10,11 +10,11 @@ import {
 } from '@gorgias/axiom'
 
 import { Accordion } from 'components/Accordion/Accordion'
-import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
-import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
-import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
-import ActionsPlatformTemplateName from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateName'
-import ActionsPlatformTemplateSteps from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
+import { ActionsPlatformTemplateConditions } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
+import { ActionsPlatformTemplateConfirmation } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
+import { ActionsPlatformTemplateInstructions } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
+import { ActionsPlatformTemplateName } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateName'
+import { ActionsPlatformTemplateSteps } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -273,4 +273,4 @@ const ActionFormView = ({
     )
 }
 
-export default ActionFormView
+export { ActionFormView }

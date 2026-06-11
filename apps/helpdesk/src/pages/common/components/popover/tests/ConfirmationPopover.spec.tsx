@@ -5,8 +5,8 @@ import { fireEvent } from '@testing-library/react'
 
 import { Button } from '@gorgias/axiom'
 
-import Group from '../../layout/Group'
-import ConfirmationPopover from '../ConfirmationPopover'
+import { Group } from '../../layout/Group'
+import { ConfirmationPopover } from '../ConfirmationPopover'
 
 jest.spyOn(window, 'clearTimeout')
 

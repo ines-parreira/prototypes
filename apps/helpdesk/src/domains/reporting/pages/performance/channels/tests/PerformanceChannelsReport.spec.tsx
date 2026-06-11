@@ -32,9 +32,9 @@ jest.mock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => <div>DrillDownModal</div>,
 }))
-jest.mock('domains/reporting/pages/voice/VoicePaywall', () => () => (
-    <div>VoicePaywall</div>
-))
+jest.mock('domains/reporting/pages/voice/VoicePaywall', () => ({
+    VoicePaywall: () => <div>VoicePaywall</div>,
+}))
 jest.mock('state/billing/selectors', () => ({
     ...jest.requireActual('state/billing/selectors'),
     currentAccountHasProduct: jest.fn(() => () => false),

@@ -6,17 +6,17 @@ import { useFormContext } from 'react-hook-form'
 import { LegacyButton as Button, Label } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
-import BusinessHoursSelectField from 'pages/settings/businessHours/BusinessHoursSelectField'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { EmojiTextInput } from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import { PhoneNumberSelectField } from 'pages/phoneNumbers/PhoneNumberSelectField'
+import { BusinessHoursSelectField } from 'pages/settings/businessHours/BusinessHoursSelectField'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
-import VoiceIntegrationOnboardingCancelButton from './VoiceIntegrationOnboardingCancelButton'
+import { VoiceIntegrationOnboardingCancelButton } from './VoiceIntegrationOnboardingCancelButton'
 
 import css from './VoiceIntegrationOnboardingStep.less'
 
@@ -109,4 +109,4 @@ const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
     )
 }
 
-export default AddPhoneNumberStep
+export { AddPhoneNumberStep }

@@ -25,13 +25,13 @@ import {
 } from 'fixtures/customField'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import TicketFields from 'pages/tickets/detail/components/TicketFields/TicketFields'
+import { DefaultExportTicketFields as TicketFields } from 'pages/tickets/detail/components/TicketFields/TicketFields'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { initialState as ticketState } from 'state/ticket/reducers'
 import type { StoreDispatch } from 'state/types'
 
-import triggerTicketFieldsRefreshAndInvalidation from '../triggerTicketFieldsRefreshAndInvalidation'
+import { triggerTicketFieldsRefreshAndInvalidation } from '../triggerTicketFieldsRefreshAndInvalidation'
 
 type MockedRootState = {
     ticket: Map<any, any>

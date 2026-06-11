@@ -24,7 +24,7 @@ import { initialState as categoriesState } from 'state/entities/helpCenter/categ
 import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import CurrentHelpCenterContext from '../../../contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from '../../../contexts/CurrentHelpCenterContext'
 import { getSingleCategoryEnglish } from '../../../fixtures/getCategoriesResponse.fixtures'
 import { HelpCenterCategoryEdit } from '../HelpCenterCategoryEdit'
 
@@ -52,7 +52,7 @@ jest.mock('rest_api/help_center_api/uploadAttachments', () => {
         uploadAttachments: jest.fn(
             (files: FileList) => Promise.resolve([{ url: files[0].name }]), // Use this just for testing purposes to see which exact image was "uploaded"
         ),
-    } as unknown
+    }
 })
 
 const onLocaleChange = jest.fn()

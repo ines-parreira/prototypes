@@ -119,4 +119,4 @@ const DropAreas: React.FC<Props> = ({
     )
 }
 
-export default DropAreas
+export { DropAreas }

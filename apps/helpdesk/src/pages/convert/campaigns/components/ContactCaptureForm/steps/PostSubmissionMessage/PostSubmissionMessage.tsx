@@ -12,8 +12,8 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
+import { DefaultExportTicketRichField as TicketRichField } from 'pages/common/forms/RichField/TicketRichField'
+import { CampaignPreview } from 'pages/convert/campaigns/components/CampaignPreview'
 import { DEFAULT_THANK_YOU_MESSAGE } from 'pages/convert/campaigns/components/CampaignPreview/components/ContactCaptureFormPreview/ContactCaptureFormPreview'
 import { ErrorMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import type { StepProps } from 'pages/convert/campaigns/components/ContactCaptureForm/types'

@@ -21,7 +21,9 @@ jest.mock('models/convert/abTest/queries')
 const usePureUpdateABTestMock = assumeMock(usePureUpdateABTest)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 
 describe('useUpdateABTest', () => {

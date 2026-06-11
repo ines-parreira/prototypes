@@ -10,12 +10,12 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 
-import OnbordingMacroPopover from '../OnbordingMacroPopover'
+import { OnbordingMacroPopover } from '../OnbordingMacroPopover'
 
 jest.mock('hooks/useAppDispatch.ts', () => {
     return {
         __esModule: true,
-        default: () => jest.fn(),
+        useAppDispatch: () => jest.fn(),
     }
 })
 

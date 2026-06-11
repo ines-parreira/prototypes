@@ -1,12 +1,12 @@
 import type React from 'react'
 import { useRef, useState } from 'react'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 // eslint-disable-next-line import/no-named-as-default
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportSelectInputBox as SelectInputBox } from 'pages/common/forms/input/SelectInputBox'
 
 export const DropdownSelector: React.FC<{
     items: any[]

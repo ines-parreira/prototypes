@@ -74,4 +74,4 @@ function YourProfileContainer() {
     )
 }
 
-export default YourProfileContainer
+export { YourProfileContainer }

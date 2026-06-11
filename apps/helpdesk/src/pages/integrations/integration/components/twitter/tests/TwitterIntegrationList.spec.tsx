@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
 import { AccountFeature } from '../../../../../../state/currentAccount/types'
-import TwitterIntegrationList from '../TwitterIntegrationList'
+import { DefaultExportTwitterIntegrationList as TwitterIntegrationList } from '../TwitterIntegrationList'
 
 describe('<TwitterIntegrationList/>', () => {
     const middlewares = [thunk]

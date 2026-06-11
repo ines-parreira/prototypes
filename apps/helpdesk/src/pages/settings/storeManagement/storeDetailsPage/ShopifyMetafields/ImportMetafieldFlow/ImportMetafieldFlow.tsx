@@ -1,12 +1,12 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Modal from 'pages/common/components/modal/Modal'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import type { Field } from '../MetafieldsTable/types'
-import ImportMetafieldContent from './ImportMetafieldContent'
+import { ImportMetafieldContent } from './ImportMetafieldContent'
 
 import styles from './ImportMetafieldFlow.less'
 
@@ -16,7 +16,7 @@ interface ImportMetafieldFlowProps {
     importedFields?: Field[]
 }
 
-export default function ImportMetafieldFlow({
+export function ImportMetafieldFlow({
     onClose,
     isOpen,
     importedFields,

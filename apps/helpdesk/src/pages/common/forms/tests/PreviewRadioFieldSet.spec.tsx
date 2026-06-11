@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import PreviewRadioFieldSet from '../PreviewRadioFieldSet'
+import { PreviewRadioFieldSet } from '../PreviewRadioFieldSet'
 
 describe('<PreviewRadioFieldSet />', () => {
     const minProps: ComponentProps<typeof PreviewRadioFieldSet> = {

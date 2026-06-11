@@ -3,8 +3,8 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import ToolbarProvider from '../../ToolbarProvider'
-import WorkflowVariableDropdown from '../WorkflowVariableDropdown'
+import { ToolbarProvider } from '../../ToolbarProvider'
+import { WorkflowVariableDropdown } from '../WorkflowVariableDropdown'
 
 describe('<WorkflowVariableDropdown />', () => {
     it('should filter out not supported data types', () => {

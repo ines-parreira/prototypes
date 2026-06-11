@@ -9,12 +9,12 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { CATEGORIES_SORT_ORDER } from 'pages/automate/actionsPlatform/constants'
 import type { CATEGORIES } from 'pages/automate/actionsPlatform/constants'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
 import { useSearchParam } from '../../../../hooks/useSearchParam'
-import UseCaseTemplateCard from './UseCaseTemplateCard'
+import { UseCaseTemplateCard } from './UseCaseTemplateCard'
 
 import css from './ActionsUseCaseTemplatesCards.less'
 
@@ -117,4 +117,4 @@ const ActionsUseCaseTemplatesCards = ({
     )
 }
 
-export default ActionsUseCaseTemplatesCards
+export { ActionsUseCaseTemplatesCards }

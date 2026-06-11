@@ -6,7 +6,7 @@ import {
     useLocalStorageWithExpiry,
 } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/constants'
 import { PendingTasksSection } from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
 import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'

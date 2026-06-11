@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,

@@ -1,15 +1,15 @@
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import type {
     LanguageCode,
     WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
-import WorkflowRow from './WorkflowRow'
+import { WorkflowRow } from './WorkflowRow'
 
 export type Workflow = {
     workflow_id: string
@@ -69,4 +69,4 @@ const WorkflowsList = ({
     )
 }
 
-export default WorkflowsList
+export { WorkflowsList }

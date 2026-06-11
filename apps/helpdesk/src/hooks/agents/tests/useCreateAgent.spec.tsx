@@ -23,7 +23,9 @@ jest.mock('models/agents/queries')
 const usePureCreateAgentMock = assumeMock(usePureCreateAgent)
 jest.mock('../errorHandler')
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 const useQueryClientMock = assumeMock(useQueryClient)
 

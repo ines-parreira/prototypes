@@ -91,4 +91,4 @@ const VisibilityCell = ({
     )
 }
 
-export default VisibilityCell
+export { VisibilityCell }

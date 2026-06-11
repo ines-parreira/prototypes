@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import {
     getShopDomainFromStoreIntegration,

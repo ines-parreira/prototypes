@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/plans'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { Cadence } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'

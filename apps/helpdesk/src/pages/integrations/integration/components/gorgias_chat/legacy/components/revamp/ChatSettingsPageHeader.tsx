@@ -125,4 +125,4 @@ const ChatSettingsPageHeader = ({
     )
 }
 
-export default ChatSettingsPageHeader
+export { ChatSettingsPageHeader }

@@ -7,8 +7,8 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { errorToChildren } from 'utils'
 
 export enum TwilioSubaccountStatus {
@@ -146,4 +146,4 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
     )
 }
 
-export default TwilioSubaccountStatusForm
+export { TwilioSubaccountStatusForm }

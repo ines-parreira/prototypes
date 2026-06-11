@@ -10,7 +10,7 @@ import type {
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import css from 'domains/reporting/pages/common/filters/AggregationWindowFilter.less'
 import {
     FilterLabels,

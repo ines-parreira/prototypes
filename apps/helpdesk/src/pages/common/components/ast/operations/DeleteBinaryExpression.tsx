@@ -9,7 +9,7 @@ type Props = {
     parent: List<any>
 }
 
-export default function DeleteBinaryExpression({ actions, parent }: Props) {
+export function DeleteBinaryExpression({ actions, parent }: Props) {
     const handleClick = () => {
         actions.modifyCodeAST(
             parent,

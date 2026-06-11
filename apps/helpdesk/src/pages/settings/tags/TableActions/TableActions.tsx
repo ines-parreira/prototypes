@@ -5,11 +5,11 @@ import type { List } from 'immutable'
 
 import type { Tag } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTags } from 'state/tags/selectors'
 
-import BulkDeleteButton from './BulkDeleteButton'
-import MergeButton from './MergeButton'
+import { BulkDeleteButton } from './BulkDeleteButton'
+import { MergeButton } from './MergeButton'
 
 import css from './TableActions.less'
 
@@ -65,4 +65,4 @@ const TableActions = ({ onBulkDelete, onMerge, selectedTagsIds }: Props) => {
     )
 }
 
-export default TableActions
+export { TableActions }

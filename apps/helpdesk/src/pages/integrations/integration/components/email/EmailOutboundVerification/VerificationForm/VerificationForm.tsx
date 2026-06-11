@@ -9,8 +9,8 @@ import { Box, Button } from '@gorgias/axiom'
 import { states } from 'config/states'
 import { states as countries } from 'fixtures/states'
 import type { SenderInformation } from 'models/singleSenderVerification/types'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 import css from './VerificationForm.less'
 
@@ -33,7 +33,7 @@ export type Props = {
 
 export const FORM_ID = 'single-sender-verification-form'
 
-export default function VerificationForm({
+export function VerificationForm({
     isFormDisabled,
     isLoading,
     showSubmitButton,

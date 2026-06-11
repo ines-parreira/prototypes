@@ -17,24 +17,24 @@ import {
 } from 'models/convert/campaign/queries'
 import type { ChannelConnection } from 'models/convert/channelConnection/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
+import { ConvertInstallModal } from 'pages/convert/bundles/components/ConvertInstallModal'
 import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import { ONBOARDING_CAMPAIGN_TEMPLATES_LIST } from 'pages/convert/campaigns/templates'
 import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
-import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import { useIsManualInstallationMethodRequired } from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import {
     ONBOARDING_WIZARD_LABELS,
     OnboardingWizardSteps,
 } from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
 
-import WizardCampaignsStep from '../WizardCampaignsStep'
-import WizardFooter from '../WizardFooter'
-import WizardInstallStep from '../WizardInstallStep'
+import { WizardCampaignsStep } from '../WizardCampaignsStep'
+import { WizardFooter } from '../WizardFooter'
+import { WizardInstallStep } from '../WizardInstallStep'
 
 import css from './WizardLayout.less'
 
@@ -253,4 +253,4 @@ const WizardLayout = ({
     )
 }
 
-export default WizardLayout
+export { WizardLayout }

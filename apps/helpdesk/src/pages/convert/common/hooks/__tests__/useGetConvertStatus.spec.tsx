@@ -7,7 +7,7 @@ import { waitFor } from '@testing-library/react'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useGetConvertStatus from '../useGetConvertStatus'
+import { useGetConvertStatus } from '../useGetConvertStatus'
 
 const queryClient = mockQueryClient()
 

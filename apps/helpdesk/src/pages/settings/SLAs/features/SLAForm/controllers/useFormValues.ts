@@ -10,7 +10,7 @@ import type { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 
 export type SLAFormValues = ReturnType<typeof useFormValues>
 
-export default function useFormValues(
+export function useFormValues(
     policy?: Omit<MappedFormSLAPolicy, 'uuid'>,
     resolvedConditions?: ConditionItem[],
 ) {

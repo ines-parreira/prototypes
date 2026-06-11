@@ -17,10 +17,10 @@ import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
-import GorgiasChatCreationWizardStepBasics from './GorgiasChatCreationWizardStepBasics'
+import { GorgiasChatCreationWizardStepBasics } from './GorgiasChatCreationWizardStepBasics'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
@@ -33,10 +33,9 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 
 const mockStore = configureMockStore([thunk])
 

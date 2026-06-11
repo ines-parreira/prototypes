@@ -23,4 +23,4 @@ const TriggersContext = createContext<ContextModel>({
     onTriggerValidationUpdate: () => null,
 })
 
-export default TriggersContext
+export { TriggersContext }

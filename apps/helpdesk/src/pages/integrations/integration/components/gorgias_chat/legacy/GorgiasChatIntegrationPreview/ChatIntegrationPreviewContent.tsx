@@ -16,4 +16,4 @@ const ChatIntegrationPreviewContent = ({ children, style }: Props) => {
     )
 }
 
-export default ChatIntegrationPreviewContent
+export { ChatIntegrationPreviewContent }

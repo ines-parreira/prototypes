@@ -1,5 +1,5 @@
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
@@ -29,4 +29,4 @@ function VoiceCallVolumeMetricEmpty({
     )
 }
 
-export default VoiceCallVolumeMetricEmpty
+export { VoiceCallVolumeMetricEmpty }

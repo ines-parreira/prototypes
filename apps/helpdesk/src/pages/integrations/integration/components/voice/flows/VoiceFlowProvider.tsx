@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import VoiceFlowContext from './VoiceFlowContext'
+import { VoiceFlowContext } from './VoiceFlowContext'
 
-export default function VoiceFlowProvider({
+export function VoiceFlowProvider({
     children,
     selectedNode: initialSelectedNode = null,
 }: {

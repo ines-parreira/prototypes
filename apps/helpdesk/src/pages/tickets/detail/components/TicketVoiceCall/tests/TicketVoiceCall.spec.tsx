@@ -5,22 +5,24 @@ import { render } from '@repo/testing'
 import type { VoiceCall } from 'models/voiceCall/types'
 import * as voiceCall from 'models/voiceCall/types'
 
-import TicketVoiceCall from '../TicketVoiceCall'
+import { TicketVoiceCall } from '../TicketVoiceCall'
 
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallInbound',
-    () =>
-        ({ voiceCall }: { voiceCall: VoiceCall }) => (
+    () => ({
+        TicketVoiceCallInbound: ({ voiceCall }: { voiceCall: VoiceCall }) => (
             <div>TicketVoiceCallInbound {voiceCall.id}</div>
         ),
+    }),
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallOutbound',
-    () =>
-        ({ voiceCall }: { voiceCall: VoiceCall }) => (
+    () => ({
+        TicketVoiceCallOutbound: ({ voiceCall }: { voiceCall: VoiceCall }) => (
             <div>TicketVoiceCallOutbound {voiceCall.id}</div>
         ),
+    }),
 )
 
 const isOutboundVoiceCall = jest.spyOn(voiceCall, 'isOutboundVoiceCall')

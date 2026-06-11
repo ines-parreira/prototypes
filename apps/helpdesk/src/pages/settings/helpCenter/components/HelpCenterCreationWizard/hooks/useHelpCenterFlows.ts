@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { ChannelLanguage } from 'pages/automate/common/types'
 
 export const useHelpCenterFlows = ({

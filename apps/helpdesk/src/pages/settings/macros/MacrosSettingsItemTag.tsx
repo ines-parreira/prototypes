@@ -1,6 +1,6 @@
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
 import css from './MacrosSettingsItem.less'
 

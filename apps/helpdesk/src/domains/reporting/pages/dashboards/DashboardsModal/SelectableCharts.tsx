@@ -9,7 +9,7 @@ import {
 } from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon'
 import css from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableCharts.less'
 import type { ChartConfig } from 'domains/reporting/pages/dashboards/types'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 export const SelectableCharts = ({
     charts,

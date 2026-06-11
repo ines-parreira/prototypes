@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
@@ -21,11 +21,11 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
-jest.mock('pages/common/components/TrialTryModal/TrialTryModal', () =>
-    jest.fn(({ isOpen }) =>
+jest.mock('pages/common/components/TrialTryModal/TrialTryModal', () => ({
+    TrialTryModal: jest.fn(({ isOpen }) =>
         isOpen ? <div data-testid="trial-modal">Trial Modal</div> : null,
     ),
-)
+}))
 jest.mock('lottie-react', () => ({
     __esModule: true,
     default: jest.fn(({ animationData, ...props }) => (

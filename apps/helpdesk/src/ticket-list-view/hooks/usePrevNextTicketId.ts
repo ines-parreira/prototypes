@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import type { TicketPartial } from 'ticket-list-view/types'
 
-export default function usePrevNextTicketId(
+export function usePrevNextTicketId(
     activeTicketId: number | undefined,
     direction: 'prev' | 'next',
     partials: TicketPartial[],

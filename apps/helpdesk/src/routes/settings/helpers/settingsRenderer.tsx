@@ -1,10 +1,10 @@
 import type { ComponentProps, ComponentType } from 'react'
 import React from 'react'
 
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
-import LegacyPage from 'pages/LegacyPage'
-import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
+import { memoizedWithUserRoleRequired as withUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
+import { DefaultExportLegacyPage as LegacyPage } from 'pages/LegacyPage'
+import { SettingsNavbar } from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 
 type NarrowedWithUserRoleParams =
     Parameters<typeof withUserRoleRequired> extends [

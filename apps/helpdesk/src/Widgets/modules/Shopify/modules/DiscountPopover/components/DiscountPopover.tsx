@@ -29,7 +29,7 @@ import { getDiscountAmount } from 'business/shopify/discount'
 import { formatPrice } from 'business/shopify/number'
 import type { AppliedDiscount } from 'constants/integrations/types/shopify'
 import { DiscountType } from 'constants/integrations/types/shopify'
-import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import { AmountInput } from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './DiscountPopover.less'
@@ -55,7 +55,7 @@ type State = {
     title: string
 }
 
-export default class DiscountPopover extends PureComponent<Props, State> {
+export class DiscountPopover extends PureComponent<Props, State> {
     static defaultProps: Pick<Props, 'placement'> = {
         placement: 'bottom',
     }

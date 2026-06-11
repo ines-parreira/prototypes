@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FieldContainer from '../FieldContainer'
+import { FieldContainer } from '../FieldContainer'
 
 describe('<FieldContainer/>', () => {
     it('should add the `fieldContainer` class while preserving provided one', () => {

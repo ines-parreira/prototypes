@@ -13,4 +13,4 @@ const NodeEditorDrawerContext = createContext<NodeEditorDrawerContextType>({
 export const useNodeEditorDrawerContext = () =>
     useContext(NodeEditorDrawerContext)
 
-export default NodeEditorDrawerContext
+export { NodeEditorDrawerContext }

@@ -65,4 +65,4 @@ const useTouchActionStepGraph = () => {
     }, [])
 }
 
-export default useTouchActionStepGraph
+export { useTouchActionStepGraph }

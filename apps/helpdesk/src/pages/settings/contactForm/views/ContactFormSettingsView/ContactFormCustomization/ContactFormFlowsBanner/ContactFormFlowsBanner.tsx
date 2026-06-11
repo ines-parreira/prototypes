@@ -1,6 +1,6 @@
-import useAppSelector from 'hooks/useAppSelector'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import FlowsBanner from 'pages/settings/contactForm/components/FlowsBanner'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useContactFormAutomationSettings as useContactFormsAutomationSettings } from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import { FlowsBanner } from 'pages/settings/contactForm/components/FlowsBanner'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
 type Props = {
@@ -29,4 +29,4 @@ const ContactFormFlowsBanner = ({ contactFormId, shopName }: Props) => {
     )
 }
 
-export default ContactFormFlowsBanner
+export { ContactFormFlowsBanner }

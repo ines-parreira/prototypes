@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
-import OverlayContext from '../OverlayContext'
+import { DefaultExportOverlayContext as OverlayContext } from '../OverlayContext'
 
-export default function useNotificationsOverlay() {
+export function useNotificationsOverlay() {
     const ctx = useContext(OverlayContext)
     if (!ctx) {
         throw new Error(

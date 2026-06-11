@@ -15,8 +15,8 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import { useStoreConfiguration } from '../../hooks/useStoreConfiguration'
 import { useStoreConfigurationMutation } from '../../hooks/useStoreConfigurationMutation'
-import AiAgentStoreConfigurationContext from '../AiAgentStoreConfigurationContext'
-import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvider'
+import { AiAgentStoreConfigurationContext } from '../AiAgentStoreConfigurationContext'
+import { AiAgentStoreConfigurationProvider } from '../AiAgentStoreConfigurationProvider'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import EmailIntegrationForwardingSetupForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationForwardingSetupForm'
+import { EmailIntegrationForwardingSetupForm } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationForwardingSetupForm'
 import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
@@ -19,15 +19,26 @@ jest.mock(
 )
 jest.mock(
     'pages/integrations/integration/components/email/BaseEmailIntegrationInputField',
-    () => () => '<BaseEmailIntegrationInputField />',
+    () => ({
+        BaseEmailIntegrationInputField: () =>
+            '<BaseEmailIntegrationInputField />',
+    }),
 )
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons',
-    () => () => <div>EmailIntegrationOnboardingButtons</div>,
+    () => ({
+        EmailIntegrationOnboardingButtons: () => (
+            <div>EmailIntegrationOnboardingButtons</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailForwardingInstructions',
-    () => () => <div>EmailForwardingInstructions</div>,
+    () => ({
+        EmailForwardingInstructions: () => (
+            <div>EmailForwardingInstructions</div>
+        ),
+    }),
 )
 
 const existingIntegration = {

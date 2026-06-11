@@ -64,4 +64,4 @@ const useTouchWorkflowGraph = () => {
     }, [])
 }
 
-export default useTouchWorkflowGraph
+export { useTouchWorkflowGraph }

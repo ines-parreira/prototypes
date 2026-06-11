@@ -4,8 +4,8 @@ import React, { useCallback, useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { LegacyButtonProps as ButtonProps } from '@gorgias/axiom'
 
-import PrivateReplyButton from './PrivateReplyButton'
-import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'
+import { PrivateReplyButton } from './PrivateReplyButton'
+import { DefaultExportPrivateReplyModal as PrivateReplyModal } from './PrivateReplyModal/PrivateReplyModal'
 
 type Props = Omit<
     ComponentProps<typeof PrivateReplyButton>,
@@ -13,7 +13,7 @@ type Props = Omit<
 > &
     Omit<ComponentProps<typeof PrivateReplyModal>, 'isOpen' | 'toggle'>
 
-export default function PrivateReply({
+export function PrivateReply({
     integrationId,
     messageId,
     ticketMessageId,

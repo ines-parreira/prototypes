@@ -10,7 +10,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
-import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
+import { AiShoppingAssistantExpireBanner } from '../AiShoppingAssistantExpireBanner'
 import { ConversationLauncherSettings } from './ConversationLauncherSettings'
 import { ConversationStartersSettings } from './ConversationStartersSettings'
 import { useGmvUsdOver30Days } from './hooks/useGmvUsdOver30Days'

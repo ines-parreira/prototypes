@@ -13,10 +13,10 @@ import {
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { RootState } from 'state/types'
 
-import TrackOrderFlowViewContainer from '../TrackOrderFlowViewContainer'
+import { TrackOrderFlowViewContainer } from '../TrackOrderFlowViewContainer'
 import { useTrackOrderFlowViewContext } from '../TrackOrderFlowViewContext'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')

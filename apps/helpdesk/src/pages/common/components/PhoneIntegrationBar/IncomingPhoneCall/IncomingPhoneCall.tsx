@@ -12,18 +12,18 @@ import { Box, Button, Icon, LegacyButton, Tag, Text } from '@gorgias/axiom'
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { declineCall } from 'hooks/integrations/phone/api'
-import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+import { useMicrophonePermissions } from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
-import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallAgentLabel } from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../constants'
 import { useConnectionParameters } from '../hooks'
-import PhoneBarCallerDetailsContainer from '../PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
-import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
-import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
-import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
-import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
-import QueueName from '../QueueName/QueueName'
+import { PhoneBarCallerDetailsContainer } from '../PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
+import { PhoneBarContainer } from '../PhoneBarContainer/PhoneBarContainer'
+import { PhoneBarInnerContent } from '../PhoneBarInnerContent/PhoneBarInnerContent'
+import { PhoneCustomerName } from '../PhoneCustomerName/PhoneCustomerName'
+import { PhoneInfobarWrapper } from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
+import { DefaultExportPhoneIntegrationName as PhoneIntegrationName } from '../PhoneIntegrationName/PhoneIntegrationName'
+import { QueueName } from '../QueueName/QueueName'
 
 import css from './IncomingPhoneCall.less'
 
@@ -31,7 +31,7 @@ type Props = {
     call: Call
 }
 
-export default function IncomingPhoneCall({ call }: Props): JSX.Element {
+export function IncomingPhoneCall({ call }: Props): JSX.Element {
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
     const history = useHistory()

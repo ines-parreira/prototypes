@@ -6,10 +6,10 @@ import { screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 import { integrationsState } from 'fixtures/integrations'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import type { PhoneIntegration } from 'models/integration/types'
-import VoiceIntegrationIVRPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
+import { VoiceIntegrationIVRPreferences } from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
 
 import { getDefaultValues, useFormSubmit } from '../useVoiceSettingsForm'
 
@@ -36,9 +36,11 @@ const FormMock = assumeMock(Form)
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('../VoiceIntegrationIVRPreferencesForm', () => () => (
-    <div>VoiceIntegrationIVRPreferencesForm</div>
-))
+jest.mock('../VoiceIntegrationIVRPreferencesForm', () => ({
+    VoiceIntegrationIVRPreferencesForm: () => (
+        <div>VoiceIntegrationIVRPreferencesForm</div>
+    ),
+}))
 
 describe('<VoiceIntegrationIVRPreferences />', () => {
     const props = {

@@ -2,7 +2,7 @@ import { Skeleton } from '@gorgias/axiom'
 
 import css from './TicketSkeleton.less'
 
-export default function TicketSkeleton() {
+export function TicketSkeleton() {
     return (
         <div className={css.container}>
             <Skeleton height={24} className={css.icon} />

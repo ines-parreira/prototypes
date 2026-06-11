@@ -8,13 +8,13 @@ import { useAverageDiscountPercentage } from 'domains/reporting/pages/automate/a
 import { useAverageOrdersPerDayTrend } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { mockedCategories } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/constants'
 import type { TopElement } from 'pages/aiAgent/Onboarding_V2/components/TopElementsCard/types'
 import type { Product } from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
-import useTopProducts from '../components/TopProductsCard/hooks'
+import { useTopProducts } from '../components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from './useGetAverageOrderValue'
 import { useGetRepeatRate } from './useGetRepeatRate'
 

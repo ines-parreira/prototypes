@@ -57,7 +57,7 @@ jest.mock(
     'pages/settings/helpCenter/contexts/CurrentHelpCenterContext',
     () => ({
         __esModule: true,
-        default: {
+        DefaultExportCurrentHelpCenterContext: {
             Provider: ({ children }: any) => <>{children}</>,
         },
     }),

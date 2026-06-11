@@ -13,7 +13,7 @@ type Props = {
     searchValue?: string
 }
 
-export default function DefaultEntryComponent({
+export function DefaultEntryComponent({
     mention,
     theme,
     searchValue, // eslint-disable-line @typescript-eslint/no-unused-vars

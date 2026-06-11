@@ -18,4 +18,4 @@ const StandaloneContactFormPreview = ({ children, name }: Props) => {
     )
 }
 
-export default StandaloneContactFormPreview
+export { StandaloneContactFormPreview }

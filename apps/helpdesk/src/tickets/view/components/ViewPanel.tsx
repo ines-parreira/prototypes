@@ -1,6 +1,6 @@
 import { Panel } from '@repo/layout'
 
-import TicketList from 'pages/tickets/list/TicketList'
+import { TicketList } from 'pages/tickets/list/TicketList'
 
 const panelConfig = {
     defaultSize: Infinity,
@@ -8,7 +8,7 @@ const panelConfig = {
     maxSize: Infinity,
 }
 
-export default function ViewPanel() {
+export function ViewPanel() {
     return (
         <Panel name="view" config={panelConfig}>
             <TicketList />

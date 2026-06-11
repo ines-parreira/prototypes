@@ -65,4 +65,4 @@ const useAutoScrollOnDragging = (speedRatio = 30) => {
     return { scrollableAreaRef }
 }
 
-export default useAutoScrollOnDragging
+export { useAutoScrollOnDragging }

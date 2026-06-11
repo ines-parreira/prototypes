@@ -1,5 +1,5 @@
-import useAppSelector from 'hooks/useAppSelector'
-import GorgiasChatIntegrationAppearanceLegacy from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportGorgiasChatIntegrationAppearance as GorgiasChatIntegrationAppearanceLegacy } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { ChatSettingsAppearanceSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/ChatSettingsAppearanceSkeleton'
 import { GorgiasChatIntegrationAppearanceRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/GorgiasChatIntegrationAppearance'

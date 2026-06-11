@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
-import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
+import { CustomerSyncForm } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './ShopifyCustomerProfileSync.less'
@@ -16,7 +16,7 @@ interface Props {
 /**
  * Render a section with option to sync customer profile to Shopify.
  */
-export default function ShopifyCustomerProfileSync({ activeCustomer }: Props) {
+export function ShopifyCustomerProfileSync({ activeCustomer }: Props) {
     const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
 
     const openSyncModal = () => {

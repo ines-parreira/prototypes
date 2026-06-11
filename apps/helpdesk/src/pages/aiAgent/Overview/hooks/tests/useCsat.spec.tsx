@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'

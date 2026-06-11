@@ -13,8 +13,8 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { isImmutable } from 'common/utils'
 import { SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND } from 'config'
-import StarRating from 'pages/common/components/StarRating'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { StarRating } from 'pages/common/components/StarRating'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { isEmail, isUrl } from 'utils'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 

@@ -21,14 +21,14 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 import { toast, LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { fromAST } from 'common/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { createRule } from 'models/rule/resources'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { ErrorsContext } from 'pages/common/components/ast/Errors'
 import { updateCodeAst } from 'pages/common/components/ast/utils'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { ruleCreated } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import { eventTypes as getEventTypes } from 'state/rules/helpers'
@@ -37,8 +37,8 @@ import { RuleLimitStatus } from 'state/rules/types'
 import { getEmptyRule } from 'state/rules/utils'
 import { getSchemas } from 'state/schemas/selectors'
 
-import RuleEditor from '../../../components/RuleEditor'
-import RuleItemButtons from '../../../components/RuleItemButtons'
+import { RuleEditor } from '../../../components/RuleEditor'
+import { RuleItemButtons } from '../../../components/RuleItemButtons'
 import type { CodeASTType } from '../../../types'
 import type { EditorHandle, RuleEditorProps } from '../RuleFormEditor'
 import { getRuleActions } from './utils'
@@ -308,4 +308,9 @@ const DefaultRuleEditor = (
     )
 }
 
-export default forwardRef<EditorHandle, RuleEditorProps>(DefaultRuleEditor)
+const DefaultExportDefaultRuleEditor = forwardRef<
+    EditorHandle,
+    RuleEditorProps
+>(DefaultRuleEditor)
+
+export { DefaultExportDefaultRuleEditor }

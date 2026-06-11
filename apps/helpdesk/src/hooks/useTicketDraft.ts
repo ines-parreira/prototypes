@@ -12,8 +12,8 @@ import { useEffectOnce, usePrevious } from '@gorgias/toolkit-react'
 import type { Macro, TicketPriority } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Ticket } from 'models/ticket/types'
 import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
 import {
@@ -103,7 +103,7 @@ export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
     return true
 }
 
-export default function useTicketDraft(isTicketNew = false) {
+export function useTicketDraft(isTicketNew = false) {
     const isPreviousTicketNew = usePrevious(isTicketNew)
     const localForageRef = useRef<LocalForage>()
     if (!localForageRef.current) {

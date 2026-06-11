@@ -15,7 +15,7 @@ jest.mock(
     'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField',
     () => ({
         __esModule: true,
-        default: ({
+        MultiSelectOptionsField: ({
             plural,
             singular,
             selectedOptions,

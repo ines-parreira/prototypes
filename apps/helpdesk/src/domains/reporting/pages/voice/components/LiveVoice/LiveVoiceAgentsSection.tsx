@@ -3,18 +3,18 @@ import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 import type { ListLiveCallQueueAgentsParams } from '@gorgias/helpdesk-types'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
+import { LiveVoiceAgentsList } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 type Props = {
     params: ListLiveCallQueueAgentsParams
 }
 
-export default function LiveVoiceAgentsSection({ params }: Props) {
+export function LiveVoiceAgentsSection({ params }: Props) {
     const {
         data: agents,
         isLoading,

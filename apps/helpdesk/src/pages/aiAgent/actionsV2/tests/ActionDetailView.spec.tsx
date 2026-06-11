@@ -5,12 +5,12 @@ import { screen, waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 
-import ActionDetailView from '../ActionDetailView'
+import { ActionDetailView } from '../ActionDetailView'
 
 const LOCATION_PROBE_PREFIX = 'probe-search:'
 const LocationProbe = () => {
@@ -24,7 +24,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useUpsertAction: jest.fn(),
 }))
 jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
     AiAgentLayout: ({
@@ -61,7 +61,9 @@ jest.mock('../components/ActionUsageTab', () => ({
 
 jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children: ReactNode }) => <>{children}</>,
+    GuidanceReferenceProvider: ({ children }: { children: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(

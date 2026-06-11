@@ -43,4 +43,4 @@ const AIArticlesToggleButton = ({
     )
 }
 
-export default AIArticlesToggleButton
+export { AIArticlesToggleButton }

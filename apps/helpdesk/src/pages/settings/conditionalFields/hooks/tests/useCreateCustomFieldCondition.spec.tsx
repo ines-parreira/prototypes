@@ -14,7 +14,7 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useCreateCustomFieldCondition from '../useCreateCustomFieldCondition'
+import { useCreateCustomFieldCondition } from '../useCreateCustomFieldCondition'
 
 const queryClient = mockQueryClient()
 

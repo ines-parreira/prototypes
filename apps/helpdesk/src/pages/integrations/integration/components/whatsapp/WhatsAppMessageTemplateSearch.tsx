@@ -4,13 +4,13 @@ import { Duration } from '@gorgias/toolkit'
 import classNames from 'classnames'
 import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
-import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
-import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { TemplateLanguageFilterDropdown } from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
+import { TemplateTypeFilterDropdown } from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
 import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 
-import useWhatsAppEditor from './useWhatsAppEditor'
+import { useWhatsAppEditor } from './useWhatsAppEditor'
 
 import css from './WhatsAppMessageTemplateSearch.less'
 
@@ -19,7 +19,7 @@ export type WhatsAppMessageTemplateSearchFilters = {
     name: string
 }
 
-export default function WhatsAppMessageTemplateSearch() {
+export function WhatsAppMessageTemplateSearch() {
     const [isFocused, setIsFocused] = useState(false)
     const [filters, setFilters] =
         useState<WhatsAppMessageTemplateSearchFilters>({

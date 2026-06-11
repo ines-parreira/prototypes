@@ -14,7 +14,7 @@ type Props = {
     onChange: (label: string) => void
 }
 
-export default function RadioChoiceField({ value, choices, onChange }: Props) {
+export function RadioChoiceField({ value, choices, onChange }: Props) {
     return (
         <div className={css.container}>
             {choices.map((choice) => (

@@ -54,4 +54,4 @@ const ticketLanguages = [
     'zh-tw',
 ]
 
-export default ticketLanguages
+export { ticketLanguages }

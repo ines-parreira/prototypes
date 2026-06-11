@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import DisconnectStoreModal from './DisconnectStoreModal'
+import { DisconnectStoreModal } from './DisconnectStoreModal'
 
 describe('DisconnectStoreModal', () => {
     const mockOnOpenChange = jest.fn()

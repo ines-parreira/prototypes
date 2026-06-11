@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { NON_FRACTIONAL_CURRENCIES } from 'constants/integrations/shopify'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 import css from './AmountInput.less'
 
@@ -23,7 +23,7 @@ type Props = {
     onChange: (value: number) => void
 }
 
-export default class AmountInput extends PureComponent<Props> {
+export class AmountInput extends PureComponent<Props> {
     static defaultProps: Pick<
         Props,
         | 'id'

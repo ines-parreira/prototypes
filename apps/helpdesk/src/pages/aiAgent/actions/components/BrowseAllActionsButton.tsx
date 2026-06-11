@@ -4,7 +4,7 @@ import { Button } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-export default function BrowseAllActionsButton() {
+export function BrowseAllActionsButton() {
     const { shopName } = useParams<{
         shopName: string
     }>()

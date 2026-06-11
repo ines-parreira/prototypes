@@ -6,15 +6,15 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import Card from 'gorgias-design-system/Cards/Card'
-import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
-import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
+import { Card } from 'gorgias-design-system/Cards/Card'
+import { Conversation } from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
+import { ChatMessageInput } from 'gorgias-design-system/Input/ChatMessageInput'
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 
-import ConversationAvatars from './ConversationAvatars'
+import { ConversationAvatars } from './ConversationAvatars'
 import { AddIcon, BoxIcon, ChevronRightIcon, PlaneIcon } from './icon-utils'
-import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
+import { PrivacyPolicyDisclaimer } from './PrivacyPolicyDisclaimer'
 
 import css from './ChatHomePreview.less'
 
@@ -131,4 +131,4 @@ const ChatHomePreview: React.FC<Props> = ({
     )
 }
 
-export default ChatHomePreview
+export { ChatHomePreview }

@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 
 import { ProductType } from 'models/billing/types'
 
-import LimitWarning from '../LimitWarning'
+import { LimitWarning } from '../LimitWarning'
 
 const mockStore = configureMockStore([thunk])
 const HELPDESK_PRODUCT_ID = 'hepdeskpid'

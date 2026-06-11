@@ -6,7 +6,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { Button } from '@gorgias/axiom'
 
-import Dropdown, { DropdownContext } from '../Dropdown'
+import { Dropdown, DropdownContext } from '../Dropdown'
 
 function MockedImplementation(props: Partial<ComponentProps<typeof Dropdown>>) {
     const targetRef = useRef<HTMLDivElement>(null)

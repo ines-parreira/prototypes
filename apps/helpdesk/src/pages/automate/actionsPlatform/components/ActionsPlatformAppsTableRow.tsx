@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import { AUTH_TYPE_LABEL_BY_TYPE } from '../constants'
 import type { ActionsApp, App } from '../types'
@@ -44,4 +44,4 @@ const ActionsPlatformAppsTableRow = ({ app, actionsApp, onClick }: Props) => {
     )
 }
 
-export default ActionsPlatformAppsTableRow
+export { ActionsPlatformAppsTableRow }

@@ -4,7 +4,7 @@ import { Skeleton } from '@gorgias/axiom'
 
 import type { UserSearchResult } from 'models/search/types'
 
-import PhoneDeviceDialerBodyResultsList from './PhoneDeviceDialerBodyResultsList'
+import { PhoneDeviceDialerBodyResultsList } from './PhoneDeviceDialerBodyResultsList'
 
 import css from './PhoneDevice.less'
 
@@ -18,7 +18,7 @@ type Props = {
     fallbackContent?: React.ReactNode
 }
 
-export default function PhoneSearchResultsContent({
+export function PhoneSearchResultsContent({
     results,
     isLoading,
     isSearchTypeCustomer,

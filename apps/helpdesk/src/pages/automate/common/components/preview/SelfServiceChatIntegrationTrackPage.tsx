@@ -8,8 +8,8 @@ import {
 } from 'config/integrations/gorgias_chat'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 
-import useOrderDates from './hooks/useOrderDates'
-import useTrackPagePreview from './hooks/useTrackPagePreview'
+import { useOrderDates } from './hooks/useOrderDates'
+import { useTrackPagePreview } from './hooks/useTrackPagePreview'
 
 import css from './SelfServiceChatIntegrationTrackPage.less'
 
@@ -157,4 +157,4 @@ const SelfServiceChatIntegrationTrackPage = ({ integration }: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationTrackPage
+export { SelfServiceChatIntegrationTrackPage }

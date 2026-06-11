@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { ActionStepItem } from '../types'
-import NoHttpRequestLogsView from './NoHttpRequestLogsView'
+import { NoHttpRequestLogsView } from './NoHttpRequestLogsView'
 
 const baseStep: ActionStepItem = {
     at: new Date().toISOString(),

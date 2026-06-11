@@ -39,7 +39,7 @@ export type Props = {
     shouldStopPropagation?: boolean
 }
 
-export default function ColorPicker({
+export function ColorPicker({
     className,
     colors = defaultColors,
     value,

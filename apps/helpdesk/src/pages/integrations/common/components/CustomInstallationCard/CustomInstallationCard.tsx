@@ -23,7 +23,7 @@ type State = {
     isCopied: boolean
 }
 
-export default class CustomInstallationCard extends Component<Props, State> {
+export class CustomInstallationCard extends Component<Props, State> {
     state: State = {
         isCopied: false,
     }

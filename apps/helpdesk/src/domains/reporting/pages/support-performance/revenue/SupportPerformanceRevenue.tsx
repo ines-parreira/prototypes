@@ -10,24 +10,24 @@ import {
     REVENUE_PER_TICKET,
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     OneDimensionalUnionChart,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
 import { BarStat } from 'domains/reporting/pages/common/components/charts/BarStat'
-import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
-import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
-import KeyMetricStatWrapper from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
-import RevenueStatsRestrictedFeature from 'domains/reporting/pages/support-performance/components/RevenueStatsRestrictedFeature'
+import { KeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
+import { DefaultExportTableStat as TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
+import { KeyMetricStatWrapper } from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
+import { RevenueStatsRestrictedFeature } from 'domains/reporting/pages/support-performance/components/RevenueStatsRestrictedFeature'
 import { SupportPerformanceRevenueFilters } from 'domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenueFilters'
 import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import { getCleanStatsFiltersWithInitialStoreIntegration } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
+import { ConvertLimitBanner } from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import { AccountFeature } from 'state/currentAccount/types'
 
 const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
@@ -154,6 +154,8 @@ function RevenueOrRestrictedFeaturePage() {
     )
 }
 
-export default withFeaturePaywall(AccountFeature.RevenueStatistics)(
-    RevenueOrRestrictedFeaturePage,
-)
+const DefaultExportSupportPerformanceRevenue = withFeaturePaywall(
+    AccountFeature.RevenueStatistics,
+)(RevenueOrRestrictedFeaturePage)
+
+export { DefaultExportSupportPerformanceRevenue }

@@ -6,17 +6,19 @@ import copyToClipboard from 'copy-to-clipboard'
 import type { TicketCompact, TicketTag } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import { TicketTags } from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
-import TicketFields from 'timeline/TicketFields'
+import { TicketFields } from 'timeline/TicketFields'
 
 import { TicketAssignee } from '../TicketAssignee'
 import { TicketHeader } from '../TicketHeader'
 
-jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags', () =>
-    jest.fn(() => <div>A tag</div>),
-)
-jest.mock('timeline/TicketFields', () => jest.fn(() => null))
+jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags', () => ({
+    TicketTags: jest.fn(() => <div>A tag</div>),
+}))
+jest.mock('timeline/TicketFields', () => ({
+    TicketFields: jest.fn(() => null),
+}))
 jest.mock('../TicketAssignee', () => ({
     TicketAssignee: jest.fn(() => <div>An assignee</div>),
 }))

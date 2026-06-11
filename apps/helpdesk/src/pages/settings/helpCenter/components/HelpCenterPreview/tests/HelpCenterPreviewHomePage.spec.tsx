@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 
 import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 
-import HelpCenterPreviewHomePage from '../HelpCenterPreviewHomePage'
+import { HelpCenterPreviewHomePage } from '../HelpCenterPreviewHomePage'
 
 const renderComponent = (
     props: ComponentProps<typeof HelpCenterPreviewHomePage>,

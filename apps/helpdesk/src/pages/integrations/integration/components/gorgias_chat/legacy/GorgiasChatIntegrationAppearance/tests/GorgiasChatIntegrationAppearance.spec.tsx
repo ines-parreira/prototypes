@@ -78,21 +78,25 @@ jest.mock('pages/common/forms/FileField', () => {
 
     return {
         __esModule: true,
-        default: FileFieldMocked,
+        FileFieldContainer: FileFieldMocked,
     }
 })
 
 type Props = ComponentProps<typeof GorgiasChatIntegrationAppearanceComponent>
 
-jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
-    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-})
+jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => ({
+    GorgiasChatIntegrationConnectedChannel: () => {
+        return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+    },
+}))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
-    () => () => {
-        return <div data-testid="GorgiasChatIntegrationHeader" />
-    },
+    () => ({
+        GorgiasChatIntegrationHeader: () => {
+            return <div data-testid="GorgiasChatIntegrationHeader" />
+        },
+    }),
 )
 
 const mockClient = mockQueryClient()

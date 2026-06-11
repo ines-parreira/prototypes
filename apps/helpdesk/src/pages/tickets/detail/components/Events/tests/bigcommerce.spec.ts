@@ -1,6 +1,6 @@
 import { fromJS, Map } from 'immutable'
 
-import bigcommerceEvent from '../bigcommerce'
+import { bigCommerceEvent as bigcommerceEvent } from '../bigcommerce'
 
 describe('bigcommerceEvent', () => {
     const actionConfig = {

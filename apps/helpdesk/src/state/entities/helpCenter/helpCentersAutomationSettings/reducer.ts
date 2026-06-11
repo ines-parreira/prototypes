@@ -41,4 +41,4 @@ const helpCenterAutomationSettingsReducer =
             ),
     )
 
-export default helpCenterAutomationSettingsReducer
+export { helpCenterAutomationSettingsReducer }

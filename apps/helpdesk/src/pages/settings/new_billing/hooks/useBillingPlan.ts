@@ -18,8 +18,8 @@ import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import { getSubscriptionQuery } from 'models/billing/queries'
 import type { ProductInfo } from 'models/billing/types'
@@ -31,10 +31,11 @@ import {
     isEnterprise,
 } from 'models/billing/utils'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
-import useGetConvertStatus, {
+import {
     convertStatusKeys,
+    useGetConvertStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import {
     getAvailableAutomatePlans,
     getAvailableConvertPlans,

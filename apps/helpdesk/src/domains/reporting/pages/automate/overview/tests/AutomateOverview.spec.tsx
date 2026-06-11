@@ -38,9 +38,9 @@ import { AutomateOverview } from 'domains/reporting/pages/automate/overview/Auto
 import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/automate/overview/AutomateOverviewDownloadDataButton'
 import { TimeSavedByAgentsKPIChart } from 'domains/reporting/pages/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import type { DEPRECATED_TagsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
@@ -68,14 +68,19 @@ jest.mock('react-chartjs-2', () => ({
 }))
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter',
-    () =>
-        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+    () => ({
+        DEPRECATED_TagsStatsFilter: ({
+            value,
+        }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
         ),
+    }),
 )
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>,
+    () => ({
+        DEPRECATED_ChannelsStatsFilter: () => <div>ChannelsStatsFilter</div>,
+    }),
 )
 
 jest.mock('react-router-dom', () => ({

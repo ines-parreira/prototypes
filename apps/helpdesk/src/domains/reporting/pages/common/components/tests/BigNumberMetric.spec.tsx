@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
 
 describe('<BigNumberMetric />', () => {
     it('should render the number metric', () => {

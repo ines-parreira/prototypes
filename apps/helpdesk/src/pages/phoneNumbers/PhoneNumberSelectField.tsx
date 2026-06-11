@@ -2,12 +2,12 @@ import React, { useCallback, useState } from 'react'
 
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/types'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
-import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { SelectFieldDropdownAction } from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
+import { PhoneNumberCreateModalForm } from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
 import {
     countryCode,
     hasCapability,
@@ -130,4 +130,4 @@ function PhoneNumberSelectField({
     )
 }
 
-export default PhoneNumberSelectField
+export { PhoneNumberSelectField }

@@ -146,4 +146,4 @@ const VisibilityCondition: React.FC<Props> = ({
     )
 }
 
-export default VisibilityCondition
+export { VisibilityCondition }

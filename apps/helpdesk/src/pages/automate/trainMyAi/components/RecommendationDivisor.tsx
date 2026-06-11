@@ -1,6 +1,6 @@
 import css from './RecommendationDivisor.less'
 
-export default function RecommendationDivisor() {
+export function RecommendationDivisor() {
     return (
         <div className={css.container}>
             <div className={css.content}>

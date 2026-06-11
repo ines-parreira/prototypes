@@ -9,7 +9,7 @@ import {
 } from 'state/widgets/constants'
 import type { WidgetType } from 'state/widgets/types'
 
-import ColorPanel from './views/ColorPanel'
+import { ColorPanel } from './views/ColorPanel'
 
 export const WIDGET_COLORS: Readonly<Partial<Record<WidgetType, string>>> = {
     [IntegrationType.Shopify]: `var(--shopifyGreen)`,
@@ -32,7 +32,7 @@ type Props = {
     children?: ReactNode
 }
 
-export default function WidgetPanel({
+export function WidgetPanel({
     widgetType,
     customColor,
     fallbackColor,

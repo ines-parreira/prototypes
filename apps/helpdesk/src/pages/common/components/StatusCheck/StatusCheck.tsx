@@ -2,7 +2,7 @@ import { Col, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Loader from '../Loader/Loader'
+import { Loader } from '../Loader/Loader'
 
 import css from './StatusCheck.less'
 

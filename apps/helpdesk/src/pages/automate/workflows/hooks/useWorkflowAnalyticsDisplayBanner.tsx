@@ -69,4 +69,4 @@ const useWorkflowAnalyticsDisplayBanner = ({
     return useMemo(() => ({ ...banners, onClose }), [banners])
 }
 
-export default useWorkflowAnalyticsDisplayBanner
+export { useWorkflowAnalyticsDisplayBanner }

@@ -4,13 +4,13 @@ import type { ComponentProps } from 'react'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 
-import type Expression from 'pages/common/components/ast/expression/Expression'
+import type { Expression } from 'pages/common/components/ast/expression/Expression'
 import type { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import AlternateStatement from './AlternateStatement'
+import { AlternateStatement } from './AlternateStatement'
 import { ConsequentStatement } from './ConsequentStatement'
-import TestExpression from './TestExpression'
+import { TestExpression } from './TestExpression'
 
 /**
  * IF Statement Component
@@ -31,10 +31,7 @@ type IfStatementState = {
     isHovered: boolean
 }
 
-export default class IfStatement extends Component<
-    IfStatementProps,
-    IfStatementState
-> {
+export class IfStatement extends Component<IfStatementProps, IfStatementState> {
     state = {
         isHovered: false,
     }

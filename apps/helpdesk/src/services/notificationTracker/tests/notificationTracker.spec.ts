@@ -38,11 +38,16 @@ describe('notificationTracker', () => {
     })
 
     it('should return an instance of EventTracker', () => {
-        expect(notificationTracker.default).toBeInstanceOf(EventTracker)
+        expect(notificationTracker.notificationTrackerInstance).toBeInstanceOf(
+            EventTracker,
+        )
     })
 
     it('should log an event', async () => {
-        const logEventSpy = jest.spyOn(notificationTracker.default, 'logEvent')
+        const logEventSpy = jest.spyOn(
+            notificationTracker.notificationTrackerInstance,
+            'logEvent',
+        )
         notificationTracker.logNotificationEvent(NotificationEvent)
 
         await waitFor(() => {

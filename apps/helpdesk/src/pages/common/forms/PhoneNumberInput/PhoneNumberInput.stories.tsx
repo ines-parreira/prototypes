@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import PhoneNumberInput from './PhoneNumberInput'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from './PhoneNumberInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/PhoneNumberInput',

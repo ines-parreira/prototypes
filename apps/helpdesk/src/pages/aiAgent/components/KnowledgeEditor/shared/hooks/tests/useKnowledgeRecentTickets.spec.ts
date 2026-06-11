@@ -5,7 +5,7 @@ import {
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useKnowledgeRecentTickets } from '../useKnowledgeRecentTickets'
 
@@ -18,7 +18,7 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
 const mockUseRecentTicketsWithDrilldown =

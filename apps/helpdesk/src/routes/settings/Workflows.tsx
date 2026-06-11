@@ -5,10 +5,10 @@ import { PageSection } from 'config/pages'
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
-import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
-import ManageTags from 'pages/settings/tags/ManageTags'
-import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
+import { AutoMergeSettings } from 'pages/settings/autoMerge/AutoMergeSettings'
+import { SatisfactionSurveyView } from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
+import { ManageTags } from 'pages/settings/tags/ManageTags'
+import { TicketAssignment } from 'pages/settings/ticketAssignment/TicketAssignment'
 import {
     workflowsRoutes as routes,
     WorkflowsRoute,

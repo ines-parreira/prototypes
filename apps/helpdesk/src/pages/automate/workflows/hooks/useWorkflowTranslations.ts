@@ -34,7 +34,7 @@ import {
 
 type TranslationsByLang = Record<string, Record<string, string>>
 
-export default function useWorkflowTranslations(
+export function useWorkflowTranslations(
     configurationInternalId: string,
     availableLanguages: LanguageCode[],
     isNew: boolean,

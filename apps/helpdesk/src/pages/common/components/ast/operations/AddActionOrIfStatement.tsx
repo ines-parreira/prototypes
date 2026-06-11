@@ -6,12 +6,12 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import Errors from 'pages/common/components/ast/Errors'
+import { Errors } from 'pages/common/components/ast/Errors'
 import { computeLeftPadding } from 'pages/common/components/ast/utils'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
-import useHoverable from '../../../hooks/useHoverable'
+import { useHoverable } from '../../../hooks/useHoverable'
 
 type Props = {
     rule: Map<any, any>
@@ -24,7 +24,7 @@ type Props = {
     empty?: boolean
 }
 
-export default function AddActionOrIfStatement({
+export function AddActionOrIfStatement({
     title,
     depth,
     removable = false,

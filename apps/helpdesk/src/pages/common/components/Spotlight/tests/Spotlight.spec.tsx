@@ -7,14 +7,14 @@ import { assumeMock, render } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
 import { fireEvent, screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Spotlight from 'pages/common/components/Spotlight/Spotlight'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Spotlight } from 'pages/common/components/Spotlight/Spotlight'
 import type { SpotlightContextType } from 'providers/ui/SpotlightContext'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
 
 jest.mock('pages/common/components/Spotlight/SpotlightModal.tsx', () => ({
     __esModule: true,
-    default: ({ onCloseModal }: { onCloseModal: () => void }) => (
+    SpotlightModal: ({ onCloseModal }: { onCloseModal: () => void }) => (
         <div>
             <button name="close" onClick={onCloseModal}>
                 Legacy close
@@ -33,7 +33,9 @@ jest.mock('@repo/search', () => ({
     ),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn(() => true))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn(() => true),
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     useHelpdeskV2MS4Dash6Flag: jest.fn(() => false),

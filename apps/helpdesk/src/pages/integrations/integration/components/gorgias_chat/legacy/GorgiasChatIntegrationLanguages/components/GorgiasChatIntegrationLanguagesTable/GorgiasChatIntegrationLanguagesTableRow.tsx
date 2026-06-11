@@ -1,8 +1,8 @@
 import { history } from '@repo/routing'
 
 import { Badge } from 'gorgias-design-system/Badge/Badge'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import { GorgiasChatIntegrationLanguagesTableRowActions } from './GorgiasChatIntegrationLanguagesTableRowActions'
 import type { LanguageItemRow } from './types'

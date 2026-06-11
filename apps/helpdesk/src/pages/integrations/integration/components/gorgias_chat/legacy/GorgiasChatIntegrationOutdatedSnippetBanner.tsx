@@ -25,4 +25,4 @@ const GorgiasChatIntegrationOutdatedSnippetBanner: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatIntegrationOutdatedSnippetBanner
+export { GorgiasChatIntegrationOutdatedSnippetBanner }

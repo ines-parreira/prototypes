@@ -48,4 +48,4 @@ const CollapsedAction: React.FC<Props> = ({
     </DropdownItem>
 )
 
-export default CollapsedAction
+export { CollapsedAction }

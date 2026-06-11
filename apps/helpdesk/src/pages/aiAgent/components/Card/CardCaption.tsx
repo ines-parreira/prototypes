@@ -11,4 +11,4 @@ const CardCaption = forwardRef<
     <div ref={ref} className={cn(css.cardCaption, className)} {...props} />
 ))
 
-export default CardCaption
+export { CardCaption }

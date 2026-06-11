@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Feature from '../Feature'
+import { Feature } from '../Feature'
 
 describe('Feature', () => {
     it('should render feature with the title, icon and the description', function () {

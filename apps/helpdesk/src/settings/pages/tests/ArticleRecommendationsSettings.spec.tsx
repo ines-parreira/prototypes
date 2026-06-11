@@ -33,7 +33,7 @@ jest.mock(
     'pages/automate/articleRecommendation/ArticleRecommendationView',
     () => ({
         __esModule: true,
-        default: () => <div>Article Recommendation View</div>,
+        ArticleRecommendationView: () => <div>Article Recommendation View</div>,
     }),
 )
 
@@ -43,7 +43,7 @@ jest.mock('../flows-routes/AutomateSettingsFlowsChannelsRoute', () => ({
 
 jest.mock('pages/common/components/StoreSelector/StoreSelector', () => ({
     __esModule: true,
-    default: ({ integrations }: { integrations: StoreIntegration[] }) => (
+    StoreSelector: ({ integrations }: { integrations: StoreIntegration[] }) => (
         <div data-testid="store-selector">
             {integrations.map((integration) => (
                 <div

@@ -9,16 +9,16 @@ import type FroalaEditorComponentType from 'react-froala-wysiwyg'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { LocaleCode } from 'models/helpCenter/types'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { replaceUploadUrls } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { config, configXS, FroalaEditor } from './froala-config'
-import FroalaEditorComponent from './FroalaEditorComponent'
+import { FroalaEditorFunctionality as FroalaEditorComponent } from './FroalaEditorComponent'
 import {
     createOnCloseEventHandler,
     generateEditorAttachmentHTML,
@@ -336,4 +336,4 @@ const HelpCenterEditor = ({
     )
 }
 
-export default HelpCenterEditor
+export { HelpCenterEditor }

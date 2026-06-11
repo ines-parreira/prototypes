@@ -11,17 +11,18 @@ import {
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import type { DimensionConfig } from '../types'
-import DimensionUser from './DimensionUser'
+import { DimensionUser } from './DimensionUser'
 
 import css from './Dimension.less'
 
@@ -32,12 +33,7 @@ type Props = {
     ticketId: number
 }
 
-export default function Dimension({
-    config,
-    dimension,
-    onChange,
-    ticketId,
-}: Props) {
+export function Dimension({ config, dimension, onChange, ticketId }: Props) {
     const [isExpanded, setIsExpanded] = useState(
         () =>
             config.autoExpandThreshold !== undefined &&

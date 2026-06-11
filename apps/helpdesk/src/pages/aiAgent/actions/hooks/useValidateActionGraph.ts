@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { produce } from 'immer'
 import _set from 'lodash/set'
 
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getConditionsNodeErrors,
@@ -121,4 +121,4 @@ const useValidateActionGraph = (
     )
 }
 
-export default useValidateActionGraph
+export { useValidateActionGraph }

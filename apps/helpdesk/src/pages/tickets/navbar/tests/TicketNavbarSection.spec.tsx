@@ -26,7 +26,7 @@ let capturedNestedViewCanDrop: ((item: any) => boolean) | null = null
 // Mock TicketNavbarDropTarget for this test
 jest.mock('../TicketNavbarDropTarget', () => ({
     __esModule: true,
-    default: ({
+    TicketNavbarDropTarget: ({
         accept,
         bottomIndicatorClassName,
         canDrop,

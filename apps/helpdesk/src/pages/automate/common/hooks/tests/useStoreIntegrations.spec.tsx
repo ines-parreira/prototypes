@@ -16,7 +16,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import type { RootState } from 'state/types'
 
-import useStoreIntegrations from '../useStoreIntegrations'
+import { useStoreIntegrations } from '../useStoreIntegrations'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)

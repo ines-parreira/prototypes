@@ -9,13 +9,13 @@ import {
 } from 'reactstrap'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useOutboundChannels from 'hooks/useOutboundChannels'
+import { useOutboundChannels } from 'hooks/useOutboundChannels'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 import type { Channel } from 'services/channels'
 import { humanizeChannel } from 'state/ticket/utils'
 
-import ConvertToForwardPopover from './ConvertToForwardPopover'
+import { ConvertToForwardPopover } from './ConvertToForwardPopover'
 
 import css from './ChannelSelect.less'
 
@@ -24,7 +24,7 @@ type Props = {
     selectedChannelOverride?: Maybe<Channel | TicketMessageSourceType>
 }
 
-export default function ChannelSelect({
+export function ChannelSelect({
     channelsOverride,
     selectedChannelOverride,
 }: Props) {

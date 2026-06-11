@@ -10,7 +10,7 @@ import {
     mockPhoneIntegration,
 } from '@gorgias/helpdesk-mocks'
 
-import VoiceFlowPreview from '../VoiceFlowPreview'
+import { VoiceFlowPreview } from '../VoiceFlowPreview'
 
 jest.mock('@gorgias/realtime')
 jest.mock('../VoiceFlow', () => ({
@@ -21,9 +21,9 @@ jest.mock('../VoiceFlow', () => ({
     ),
 }))
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div data-testid="loader">Loading...</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div data-testid="loader">Loading...</div>,
+}))
 
 const server = setupServer()
 

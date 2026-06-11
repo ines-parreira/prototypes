@@ -1,7 +1,7 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {

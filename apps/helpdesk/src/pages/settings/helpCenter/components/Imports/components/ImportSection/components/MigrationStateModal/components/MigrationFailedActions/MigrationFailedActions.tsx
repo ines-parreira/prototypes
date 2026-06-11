@@ -42,4 +42,4 @@ const MigrationFailedActions: React.FC<Props> = ({ state }) => {
     )
 }
 
-export default MigrationFailedActions
+export { MigrationFailedActions }

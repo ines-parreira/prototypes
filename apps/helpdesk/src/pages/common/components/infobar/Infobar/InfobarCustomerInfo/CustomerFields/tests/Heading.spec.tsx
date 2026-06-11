@@ -10,7 +10,9 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { Heading } from '../Heading'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
 }))

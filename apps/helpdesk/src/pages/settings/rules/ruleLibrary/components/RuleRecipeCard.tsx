@@ -12,9 +12,9 @@ import { toast } from '@gorgias/axiom'
 import successIcon from 'assets/img/icons/success.svg'
 import { fromAST } from 'common/utils'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { IntegrationType } from 'models/integration/constants'
 import type { StoreIntegration } from 'models/integration/types'
 import { createRule } from 'models/rule/resources'
@@ -364,4 +364,4 @@ function RuleRecipeCard({
     )
 }
 
-export default RuleRecipeCard
+export { RuleRecipeCard }

@@ -7,8 +7,8 @@ import {
 } from 'reactstrap'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {
     getNewMessageChannel,
     isNewMessagePublic,
@@ -22,7 +22,7 @@ type Props = {
     value: TemplateTypeFilterOption
 }
 
-export default function TemplateTypeFilterDropdown({ value }: Props) {
+export function TemplateTypeFilterDropdown({ value }: Props) {
     const { setSelectedTemplateType } = useWhatsAppEditor()
 
     const channel = useAppSelector(getNewMessageChannel)

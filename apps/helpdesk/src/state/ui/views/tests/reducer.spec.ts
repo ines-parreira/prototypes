@@ -1,5 +1,5 @@
 import { activeViewIdSet } from '../actions'
-import reducer from '../reducer'
+import { ViewsReducer as reducer } from '../reducer'
 
 describe('views reducer', () => {
     describe('activeViewIdSet action', () => {

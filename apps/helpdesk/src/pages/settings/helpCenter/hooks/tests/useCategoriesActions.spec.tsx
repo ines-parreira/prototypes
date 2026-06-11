@@ -26,7 +26,7 @@ import { useHelpCenterApi } from '../useHelpCenterApi'
 
 jest.mock('../useCurrentHelpCenter', () => ({
     __esModule: true,
-    default: jest.fn().mockReturnValue({
+    useCurrentHelpCenter: jest.fn().mockReturnValue({
         id: 1,
     }),
 }))

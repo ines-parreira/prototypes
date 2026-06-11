@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 import { AutomateUpgradeBadge } from '../AutomateUpgradeBadge'
 

@@ -83,4 +83,4 @@ const ImportEmailSuccessNotification = ({
     )
 }
 
-export default ImportEmailSuccessNotification
+export { ImportEmailSuccessNotification }

@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import UnpublishedHelpCenterAlert from 'domains/reporting/pages/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
+import { UnpublishedHelpCenterAlert } from 'domains/reporting/pages/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
 
 describe('<UnpublishedHelpCenterAlert />', () => {
     it('should render with correct text and link', () => {

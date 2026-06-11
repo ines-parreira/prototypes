@@ -3,7 +3,7 @@ import { act, fireEvent, screen } from '@testing-library/react'
 
 import { authenticatorData } from 'fixtures/authenticatorData'
 
-import CantScanQRCode from '../CantScanQRCode'
+import { CantScanQRCode } from '../CantScanQRCode'
 
 describe('<CantScanQRCode />', () => {
     describe('render()', () => {

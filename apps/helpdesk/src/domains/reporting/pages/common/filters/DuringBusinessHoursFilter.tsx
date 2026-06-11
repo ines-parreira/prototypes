@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {

@@ -8,7 +8,7 @@ import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { ThemeProvider } from 'core/theme'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 import type { TableRow } from '../../../pages/Flows/Flows'
 import {

@@ -29,4 +29,4 @@ const useTouchActionUseCaseTemplateGraph = () => {
     }, [])
 }
 
-export default useTouchActionUseCaseTemplateGraph
+export { useTouchActionUseCaseTemplateGraph }

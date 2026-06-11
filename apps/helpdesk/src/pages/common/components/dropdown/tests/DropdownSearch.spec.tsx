@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import Dropdown, { DropdownContext } from '../Dropdown'
-import DropdownSearch from '../DropdownSearch'
+import { Dropdown, DropdownContext } from '../Dropdown'
+import { DefaultExportDropdownSearch as DropdownSearch } from '../DropdownSearch'
 
 const MockedComponent = (props: ComponentProps<typeof DropdownSearch>) => {
     const targetRef = useRef<HTMLDivElement>(null)

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardStatus,
@@ -9,7 +9,8 @@ import {
 } from 'models/integration/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import useSelfServiceStoreIntegration, {
+import {
+    useSelfServiceStoreIntegration,
     useSelfServiceStoreIntegrationMultiStore,
 } from './useSelfServiceStoreIntegration'
 
@@ -116,4 +117,4 @@ const useSelfServiceChatChannels = (
     )
 }
 
-export default useSelfServiceChatChannels
+export { useSelfServiceChatChannels }

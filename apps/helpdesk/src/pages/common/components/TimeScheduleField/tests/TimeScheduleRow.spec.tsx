@@ -3,9 +3,9 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import TimeScheduleRow from '../TimeScheduleRow'
+import { TimeScheduleRow } from '../TimeScheduleRow'
 
 const props = {
     index: 0,

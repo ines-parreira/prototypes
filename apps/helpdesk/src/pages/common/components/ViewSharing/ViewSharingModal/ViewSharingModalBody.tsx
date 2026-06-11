@@ -5,17 +5,17 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
 import { ViewVisibility } from 'models/view/types'
-import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
+import { RadioChoiceField } from 'pages/common/forms/RadioChoiceField'
 import { getHumanAgents } from 'state/agents/selectors'
 import { getTeams } from 'state/teams/selectors'
 import type { RootState } from 'state/types'
 
-import Alert, { AlertType } from '../../Alert/Alert'
-import Loader from '../../Loader/Loader'
-import PrivateBody from './PrivateBody'
-import PublicBody from './PublicBody'
-import SharedBody from './SharedBody'
-import ViewSharingModalWarning from './ViewSharingModalWarning'
+import { Alert, AlertType } from '../../Alert/Alert'
+import { Loader } from '../../Loader/Loader'
+import { PrivateBody } from './PrivateBody'
+import { PublicBody } from './PublicBody'
+import { SharedBody } from './SharedBody'
+import { ViewSharingModalWarning } from './ViewSharingModalWarning'
 
 type OwnProps = {
     visibility: string
@@ -138,4 +138,8 @@ const connector = connect((state: RootState) => ({
     teams: getTeams(state).toList(),
 }))
 
-export default connector(ViewSharingModalBodyContainer)
+const DefaultExportViewSharingModalBody = connector(
+    ViewSharingModalBodyContainer,
+)
+
+export { DefaultExportViewSharingModalBody }

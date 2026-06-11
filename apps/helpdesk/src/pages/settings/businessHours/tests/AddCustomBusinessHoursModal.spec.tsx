@@ -6,11 +6,13 @@ import { setupServer } from 'msw/node'
 
 import { mockCreateBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
 
-import AddCustomBusinessHoursModal from '../AddCustomBusinessHoursModal'
+import { AddCustomBusinessHoursModal } from '../AddCustomBusinessHoursModal'
 
-jest.mock('../CustomBusinessHoursIntegrationsTable', () => () => (
-    <div>CustomBusinessHoursIntegrationsTable</div>
-))
+jest.mock('../CustomBusinessHoursIntegrationsTable', () => ({
+    CustomBusinessHoursIntegrationsTable: () => (
+        <div>CustomBusinessHoursIntegrationsTable</div>
+    ),
+}))
 
 jest.mock('@repo/forms', () => ({
     ...jest.requireActual('@repo/forms'),

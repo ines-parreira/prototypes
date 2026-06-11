@@ -31,7 +31,7 @@ import {
 } from 'models/event/types'
 import type { Ticket, TicketMessage } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
-import socketManager from 'services/socketManager/socketManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { initialState as integrationsState } from 'state/integrations/reducers'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
@@ -89,9 +89,13 @@ jest.mock('utils', () => {
 })
 
 jest.mock('services/socketManager/socketManager', () => {
-    return {
+    const socketManager = {
         join: jest.fn(),
         send: jest.fn(),
+    }
+
+    return {
+        socketManager,
     }
 })
 

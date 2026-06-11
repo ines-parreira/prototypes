@@ -5,7 +5,7 @@ import type { Infocard } from './types'
 
 import css from './Detail.less'
 
-export default function InfoCard(props: Infocard) {
+export function InfoCard(props: Infocard) {
     const { isHidden, banner, CTA, pricing, resources = {}, support } = props
     const { documentationLink, privacyPolicyLink, others } = resources
 

@@ -6,8 +6,8 @@ import { fromJS } from 'immutable'
 import type { ObjectType } from '@gorgias/helpdesk-types'
 
 import type { CustomFieldValue } from 'custom-fields/types'
-import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
+import { CustomFieldIdInput } from 'pages/common/components/ast/widget/CustomFieldIdInput'
+import { CustomFieldSelect } from 'pages/common/components/ast/widget/CustomFieldSelect'
 
 import css from './SetCustomFieldValueAction.less'
 
@@ -79,4 +79,4 @@ const SetCustomFieldValueAction = ({
     )
 }
 
-export default SetCustomFieldValueAction
+export { SetCustomFieldValueAction }

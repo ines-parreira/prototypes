@@ -6,11 +6,11 @@ import {
     useScoredSurveys,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useScoredSurveys'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import type { TableState } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
-import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
+import { ScoredSurveysTable } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import css from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable.less'
 import {
     SCORED_SURVEYS,
@@ -26,7 +26,7 @@ const initialTableState: TableState = {
     orderDirection: OrderDirection.Desc,
 }
 
-export default function ScoredSurveysChart(props: DashboardChartProps) {
+export function ScoredSurveysChart(props: DashboardChartProps) {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const [tableState, setTableState] = useState(initialTableState)

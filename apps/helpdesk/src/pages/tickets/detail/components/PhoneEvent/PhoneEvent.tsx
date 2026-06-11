@@ -5,11 +5,11 @@ import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
 import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 import callAnsweredIcon from './icons/call-answered.svg'
 import callForwardedIcon from './icons/call-forwarded.svg'
-import PhoneEventDetails from './PhoneEventDetails'
+import { PhoneEventDetails } from './PhoneEventDetails'
 
 import css from '../Event.less'
 
@@ -54,7 +54,7 @@ type Props = {
     isLast: boolean
 }
 
-export default function PhoneEvent({ event, isLast }: Props): JSX.Element {
+export function PhoneEvent({ event, isLast }: Props): JSX.Element {
     const eventType = event.get('type')
     const icon = icons.get(eventType) || null
 

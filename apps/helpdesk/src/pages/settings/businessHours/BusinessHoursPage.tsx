@@ -2,16 +2,16 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Switch, useRouteMatch } from 'react-router'
 import { Route } from 'react-router-dom'
 
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
-import BusinessHoursLegacy from './BusinessHoursLegacy'
-import CustomBusinessHours from './CustomBusinessHours'
-import DefaultBusinessHours from './DefaultBusinessHours'
-import EditCustomBusinessHoursPage from './EditCustomBusinessHoursPage'
+import { BusinessHoursLegacy } from './BusinessHoursLegacy'
+import { CustomBusinessHours } from './CustomBusinessHours'
+import { DefaultBusinessHours } from './DefaultBusinessHours'
+import { EditCustomBusinessHoursPage } from './EditCustomBusinessHoursPage'
 
 import settingsCss from '../settings.less'
 
-export default function BusinessHoursPage() {
+export function BusinessHoursPage() {
     const isCBHEnabled = useFlag(FeatureFlagKey.CustomBusinessHours)
 
     const { path } = useRouteMatch()

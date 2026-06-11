@@ -1,1 +1,1 @@
-export { default } from './WizardCampaignsStep'
+export { WizardCampaignsStep } from './WizardCampaignsStep'

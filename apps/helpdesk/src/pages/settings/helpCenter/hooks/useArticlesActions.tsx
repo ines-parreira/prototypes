@@ -3,8 +3,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { chain as _chain } from 'lodash'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import type {
     Article,
@@ -29,7 +29,7 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import { ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE } from '../constants'
 import type { ArticleTemplateKey } from '../types/articleTemplates'
 import { useCategoriesActions } from './useCategoriesActions'
-import useCurrentHelpCenter from './useCurrentHelpCenter'
+import { useCurrentHelpCenter } from './useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'
 
 function updatePositionRequest(

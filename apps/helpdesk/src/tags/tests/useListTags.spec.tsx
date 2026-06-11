@@ -11,11 +11,11 @@ import {
 } from 'fixtures/axiosResponse'
 import { tags } from 'fixtures/tag'
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchTags } from 'models/tag/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useListTags from '../useListTags'
+import { useListTags } from '../useListTags'
 
 const queryClient = mockQueryClient()
 

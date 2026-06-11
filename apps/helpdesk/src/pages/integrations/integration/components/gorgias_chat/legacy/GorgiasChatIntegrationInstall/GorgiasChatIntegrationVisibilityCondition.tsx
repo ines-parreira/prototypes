@@ -10,10 +10,10 @@ import {
 
 import type { GorgiasChatInstallationVisibilityCondition } from 'models/integration/types'
 import { GorgiasChatInstallationVisibilityConditionOperator } from 'models/integration/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 import type { UrlValidationResult } from './utils/validateUrl'
 
@@ -126,4 +126,4 @@ const GorgiasChatIntegrationVisibilityCondition: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatIntegrationVisibilityCondition
+export { GorgiasChatIntegrationVisibilityCondition }

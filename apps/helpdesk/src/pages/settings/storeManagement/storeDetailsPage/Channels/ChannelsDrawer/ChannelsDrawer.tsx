@@ -7,7 +7,7 @@ import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import { Drawer } from 'pages/common/components/Drawer'
 
 import type { ChannelChange, ChannelWithMetadata } from '../../../types'
-import DrawerContent from './DrawerContent'
+import { DrawerContent } from './DrawerContent'
 
 import css from './ChannelsDrawer.less'
 
@@ -20,7 +20,7 @@ interface ChannelsDrawerProps {
     setChanges: Dispatch<SetStateAction<ChannelChange[]>>
 }
 
-export default function ChannelsDrawer({
+export function ChannelsDrawer({
     isLoading,
     activeChannel,
     changes,

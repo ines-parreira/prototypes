@@ -24,7 +24,9 @@ import { Cadence, ProductType } from 'models/billing/types'
 import type { ConfirmChangesModalProps } from '../ConfirmChangesModal'
 import { ConfirmChangesModal } from '../ConfirmChangesModal'
 
-jest.mock('hooks/useGetDateAndTimeFormat', () => jest.fn(() => 'MMMM D, YYYY'))
+jest.mock('hooks/useGetDateAndTimeFormat', () => ({
+    useGetDateAndTimeFormat: jest.fn(() => 'MMMM D, YYYY'),
+}))
 
 jest.mock('../../BillingSummaryBreakdown', () => ({
     BillingSummaryBreakdown: jest.fn(

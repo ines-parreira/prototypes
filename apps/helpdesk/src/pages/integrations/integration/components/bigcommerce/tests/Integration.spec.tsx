@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Integration from 'pages/integrations/integration/components/bigcommerce/Integration'
+import { Integration } from 'pages/integrations/integration/components/bigcommerce/Integration'
 import { getConnectUrl } from 'pages/integrations/integration/components/bigcommerce/Utils'
 import * as actions from 'state/integrations/actions'
 

@@ -13,4 +13,4 @@ const safeDivide = (a?: number | null, b?: number | null): number => {
     return divisor === 0 ? 0 : dividend / divisor
 }
 
-export default safeDivide
+export { safeDivide }

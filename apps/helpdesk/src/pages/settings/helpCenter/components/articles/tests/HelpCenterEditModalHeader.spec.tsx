@@ -16,9 +16,9 @@ import { getSingleArticleEnglish } from '../../../fixtures/getArticlesResponse.f
 import { getLocalesResponseFixture } from '../../../fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from '../../../providers/SupportedLocales'
 import { getArticleUrl } from '../../../utils/helpCenter.utils'
-import useCategoriesOptions from '../ArticleCategorySelect/hooks/useCategoriesOptions'
+import { useCategoriesOptions } from '../ArticleCategorySelect/hooks/useCategoriesOptions'
 import type { Props as HelpCenterEditModalHeaderProps } from '../HelpCenterEditModalHeader'
-import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
+import { HelpCenterEditModalHeader } from '../HelpCenterEditModalHeader'
 
 const windowOpenMock = jest.fn().mockReturnValue({
     focus: jest.fn(),

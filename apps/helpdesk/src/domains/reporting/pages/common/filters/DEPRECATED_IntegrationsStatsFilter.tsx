@@ -9,10 +9,10 @@ import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
 import zendeskIcon from 'assets/img/integrations/zendesk.png'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/IntegrationsStatsFilter.less'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
+import { SelectStatsFilter } from 'domains/reporting/pages/common/SelectStatsFilter'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX,
     HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
@@ -85,7 +85,7 @@ export const getIntegrationIcon = (integration: Integration) => {
  * @date 2024-07-03
  * @type feature-component
  */
-export default function DEPRECATED_IntegrationsStatsFilter({
+export function DEPRECATED_IntegrationsStatsFilter({
     value = [],
     integrations,
     isMultiple = false,

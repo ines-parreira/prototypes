@@ -6,7 +6,7 @@ import type { CreateSLAPolicy, SLAPolicyMetric } from '@gorgias/helpdesk-types'
 import { mapConditionsToFilters } from './mapConditionFilters'
 import type { SLAFormValues } from './useFormValues'
 
-export default function makeCreateSLAPolicyBody(
+export function makeCreateSLAPolicyBody(
     formPolicy: SLAFormValues,
 ): CreateSLAPolicy {
     const { conditions, ...rest } = formPolicy

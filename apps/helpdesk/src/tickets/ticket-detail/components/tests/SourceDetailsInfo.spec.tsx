@@ -5,9 +5,9 @@ import type { Meta } from 'models/ticket/types'
 
 import { SourceDetailsInfo } from '../SourceDetailsInfo'
 
-jest.mock('pages/common/utils/DatetimeLabel', () =>
-    jest.fn(({ dateTime }) => <div>{dateTime}</div>),
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: jest.fn(({ dateTime }) => <div>{dateTime}</div>),
+}))
 
 jest.mock('../SourceDetailsFrom', () => ({
     SourceDetailsFrom: jest.fn(({ label, children }) => (

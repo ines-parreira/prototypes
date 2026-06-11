@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import HelpCenterStatsLoading from 'domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
+import { HelpCenterStatsLoading } from 'domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',

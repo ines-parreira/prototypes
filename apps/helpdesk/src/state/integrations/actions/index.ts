@@ -26,7 +26,7 @@ import {
 } from 'models/integration/types'
 import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 import type { AplicationAgentsResponse } from 'rest_api/gorgias_chat_protected_api/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { fetchAccountSettings } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 import * as constants from 'state/integrations/constants'

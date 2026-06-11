@@ -49,4 +49,4 @@ const Triggers: React.FC<Props> = ({ triggers, campaignMeta }) => {
     )
 }
 
-export default Triggers
+export { Triggers }

@@ -6,7 +6,7 @@ import { EditorState } from 'draft-js'
 
 import { useLanguageDropdown } from '../hooks/useLanguageDropdown'
 import { useOutboundTranslation } from '../hooks/useOutboundTranslation'
-import Translate from '../Translate'
+import { Translate } from '../Translate'
 
 jest.mock('../hooks/useOutboundTranslation')
 const mockUseOutboundTranslation = useOutboundTranslation as jest.Mock
@@ -14,17 +14,22 @@ const mockUseOutboundTranslation = useOutboundTranslation as jest.Mock
 jest.mock('../hooks/useLanguageDropdown')
 const mockUseLanguageDropdown = useLanguageDropdown as jest.Mock
 
-jest.mock('../LanguageDropdown', () => () => <div>LanguageDropdown</div>)
+jest.mock('../LanguageDropdown', () => ({
+    LanguageDropdown: () => <div>LanguageDropdown</div>,
+}))
 
 jest.mock(
     'pages/common/draftjs/plugins/toolbar/components/ButtonPopover',
-    () =>
-        ({ button }: { button: ReactNode }) => <div>{button}</div>,
+    () => ({
+        ButtonPopover: ({ button }: { button: ReactNode }) => (
+            <div>{button}</div>
+        ),
+    }),
 )
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 
 const mockGetEditorState = jest.fn(() => EditorState.createEmpty())
 const mockSetEditorState = jest.fn()

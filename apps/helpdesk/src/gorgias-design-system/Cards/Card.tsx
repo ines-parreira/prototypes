@@ -131,4 +131,4 @@ const Card: FC<CardProps & HTMLAttributes<HTMLDivElement>> = ({
         </StyledCardContainer>
     )
 }
-export default Card
+export { Card }

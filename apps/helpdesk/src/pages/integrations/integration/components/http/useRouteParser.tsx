@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { HttpIntegration } from 'models/integration/types'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'

@@ -10,7 +10,7 @@ import { Category } from 'models/integration/types/app'
 import type { Application } from 'services/applications'
 import { getApplicationById } from 'services/applications'
 
-import Card, { CARD_LINK_TEST_ID, LOADING_TEST_ID, Pills } from '../Card'
+import { Card, CARD_LINK_TEST_ID, LOADING_TEST_ID, Pills } from '../Card'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

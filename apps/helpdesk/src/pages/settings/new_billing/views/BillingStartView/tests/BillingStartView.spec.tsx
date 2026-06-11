@@ -23,16 +23,18 @@ import {
     convertStatusOkWarning,
     convertStatusOkWarningUpgrade,
 } from 'fixtures/convert'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 
-import BillingStartView from '../BillingStartView'
+import { BillingStartView } from '../BillingStartView'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('pages/aiAgent/hooks/useMeetAiAgentNotification')
 jest.mock('hooks/useGetDateAndTimeFormat')

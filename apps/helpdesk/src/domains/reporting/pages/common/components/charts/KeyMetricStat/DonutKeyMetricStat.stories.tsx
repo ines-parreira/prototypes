@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import DonutKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'
-import StatDifference from 'domains/reporting/pages/common/components/StatDifference'
+import { DonutKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'
+import { StatDifference } from 'domains/reporting/pages/common/components/StatDifference'
 
 const storyConfig: Meta = {
     title: 'Stats/DonutKeyMetricStat',

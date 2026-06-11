@@ -4,13 +4,13 @@ import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
 import type { IntegrationType } from 'models/integration/constants'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import { getIconFromType } from 'state/integrations/helpers'
 
-import getStoreDomain from '../../helpers/getStoreDomain'
+import { getStoreDomain } from '../../helpers/getStoreDomain'
 import type { StoreWithAssignedChannels } from '../../types'
-import ChannelListCell from './ChannelListCell'
+import { ChannelListCell } from './ChannelListCell'
 
 import css from './StoreManagementTableRow.less'
 
@@ -18,7 +18,7 @@ export interface StoreManagementTableRowProps {
     store: StoreWithAssignedChannels
 }
 
-export default function StoreManagementTableRow({
+export function StoreManagementTableRow({
     store,
 }: StoreManagementTableRowProps) {
     const history = useHistory()

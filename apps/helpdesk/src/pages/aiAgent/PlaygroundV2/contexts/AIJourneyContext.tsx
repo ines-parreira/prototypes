@@ -30,7 +30,7 @@ import {
     useUpdateJourney,
 } from 'AIJourney/queries'
 import type { Product } from 'constants/integrations/types/shopify'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import type { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/types'
 import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'

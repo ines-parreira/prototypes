@@ -10,7 +10,7 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import useStoreGetter from '../useStoreGetter'
+import { useStoreGetter } from '../useStoreGetter'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -23,7 +23,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => jest.fn(),
+    useAppDispatch: () => jest.fn(),
 }))
 
 describe('useStoreGetter', () => {

@@ -7,7 +7,7 @@ import { useLinkTrackstar } from '@gorgias/workflows-queries'
 
 import type { OutboundAuth } from 'models/integration/types/app'
 
-import SetupCard from './SetupCard'
+import { SetupCard } from './SetupCard'
 
 type OutboundConnectionCardProps = {
     appTitle: string
@@ -17,7 +17,7 @@ type OutboundConnectionCardProps = {
     onTrackstarAuthCode: (authCode: string) => void | Promise<void>
 }
 
-export default function OutboundConnectionCard({
+export function OutboundConnectionCard({
     appTitle,
     outboundAuth,
     isSubmitting,

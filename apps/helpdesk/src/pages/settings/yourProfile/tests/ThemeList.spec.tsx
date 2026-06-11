@@ -5,7 +5,7 @@ import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { THEME_CONFIGS, THEME_NAME } from 'core/theme'
-import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
+import { ThemeList } from 'pages/settings/yourProfile/components/ThemeList'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

@@ -8,7 +8,7 @@ import type { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/ty
 /**
  * Return whether or not the message is forwarded
  */
-export default function isForwardedMessage(
+export function isForwardedMessage(
     message: Map<any, any> | TicketMessage | TicketMessage_DEPRECATED,
 ) {
     return (

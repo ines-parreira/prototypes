@@ -6,8 +6,8 @@ import type { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import type { NewPhoneNumbersState } from 'state/entities/phoneNumbers/types'
 
-import usePhoneNumbers from '../phone/usePhoneNumbers'
-import VoiceQueueSettingsLinkedIntegrations from './VoiceQueueSettingsLinkedIntegrations'
+import { usePhoneNumbers } from '../phone/usePhoneNumbers'
+import { VoiceQueueSettingsLinkedIntegrations } from './VoiceQueueSettingsLinkedIntegrations'
 
 jest.mock('../phone/usePhoneNumbers')
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import SummaryHeader from '../SummaryHeader'
+import { SummaryHeader } from '../SummaryHeader'
 
 describe('SummaryHeader', () => {
     it('renders with no selected reason', () => {

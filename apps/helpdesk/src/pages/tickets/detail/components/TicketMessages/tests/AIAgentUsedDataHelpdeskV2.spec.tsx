@@ -2,7 +2,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'

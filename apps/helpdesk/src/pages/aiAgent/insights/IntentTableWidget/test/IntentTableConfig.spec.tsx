@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 
@@ -24,9 +24,11 @@ import {
 import { IntentTableColumn } from '../types'
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('pages/common/utils/mobile')
 
 const mockedIsMediumOrSmallScreen = jest.mocked(isMediumOrSmallScreen)

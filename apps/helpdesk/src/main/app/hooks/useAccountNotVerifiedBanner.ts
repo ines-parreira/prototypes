@@ -1,6 +1,6 @@
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { resendVerificationEmail } from 'state/currentAccount/actions'
 import { getBaseEmailIntegration } from 'state/integrations/selectors'
 

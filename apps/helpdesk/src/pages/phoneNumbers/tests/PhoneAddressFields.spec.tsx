@@ -6,7 +6,7 @@ import { PhoneCountry } from 'business/twilio'
 import type { AddressInformation } from 'models/phoneNumber/types'
 import { AddressType } from 'models/phoneNumber/types'
 
-import PhoneAddressFields from '../PhoneAddressFields'
+import { PhoneAddressFields } from '../PhoneAddressFields'
 
 describe('<PhoneAddressFields />', () => {
     const onChange: jest.MockedFunction<

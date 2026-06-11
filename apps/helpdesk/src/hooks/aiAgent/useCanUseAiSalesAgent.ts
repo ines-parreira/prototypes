@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'

@@ -9,7 +9,7 @@ import {
     bigCommerceLineItemFixture,
 } from 'fixtures/bigcommerce'
 
-import PriceComponent from '../PriceComponent'
+import { PriceComponent } from '../PriceComponent'
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),

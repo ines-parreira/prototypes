@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DonutKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'
+import { DonutKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DonutKeyMetricStat'
 
 describe('DonutKeyMetricStat', () => {
     const fill = 'success'

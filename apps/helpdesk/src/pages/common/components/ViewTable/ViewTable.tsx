@@ -15,21 +15,21 @@ import type { RouteComponentProps } from 'react-router-dom'
 import { getConfigByName } from 'config/views'
 import type { ViewVisibility } from 'models/view/types'
 import { EntityType, ViewType } from 'models/view/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import { Separator } from 'pages/common/components/Separator/Separator'
-import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
-import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
-import Header from 'pages/common/components/ViewTable/Header'
-import Table from 'pages/common/components/ViewTable/Table'
-import MissingBillingInformationRow from 'pages/common/components/ViewTable/Table/MissingBillingInformationRow'
+import { DeactivatedViewMessage } from 'pages/common/components/ViewTable/DeactivatedViewMessage'
+import { DefaultExportFilterTopbar as FilterTopbar } from 'pages/common/components/ViewTable/FilterTopbar'
+import { DefaultExportHeader as Header } from 'pages/common/components/ViewTable/Header'
+import { DefaultExportTable as Table } from 'pages/common/components/ViewTable/Table'
+import { MissingBillingInformationRow } from 'pages/common/components/ViewTable/Table/MissingBillingInformationRow'
 import css from 'pages/common/components/ViewTable/ViewTable.less'
 import type { ViewSearchUrlSyncInjectedProps } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
-import withViewSearchUrlSync from 'pages/common/components/ViewTable/withViewSearchUrlSync'
+import { withViewSearchUrlSync } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 import { isCreationUrl } from 'pages/common/utils/url'
 import type { CancellableRequestInjectedProps } from 'pages/common/utils/withCancellableRequest'
-import withCancellableRequest from 'pages/common/utils/withCancellableRequest'
-import withRouter from 'pages/common/utils/withRouter'
+import { withCancellableRequest } from 'pages/common/utils/withCancellableRequest'
+import { withRouter } from 'pages/common/utils/withRouter'
 import type { RootState } from 'state/types'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import { fetchViewItems, setViewActive, updateView } from 'state/views/actions'
@@ -442,7 +442,7 @@ const connector = connect(
     },
 )
 
-export default withRouter(
+const DefaultExportViewTable = withRouter(
     withCancellableRequest<
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',
@@ -452,3 +452,5 @@ export default withRouter(
         fetchViewItems,
     )(connector(withViewSearchUrlSync(ViewTableContainer))),
 )
+
+export { DefaultExportViewTable }

@@ -1,1 +1,1 @@
-export { default } from './ProviderSelectModal'
+export { ProviderSelectModal } from './ProviderSelectModal'

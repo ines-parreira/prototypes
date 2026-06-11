@@ -1,7 +1,7 @@
 import type { FieldValues, Path, UseControllerProps } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 export type IFormInputFieldProps<
     TFieldName extends Path<TFieldValues>,

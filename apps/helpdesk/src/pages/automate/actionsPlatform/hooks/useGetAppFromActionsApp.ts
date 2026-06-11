@@ -19,4 +19,4 @@ const useGetAppFromActionsApp = ({ apps }: Props) => {
     )
 }
 
-export default useGetAppFromActionsApp
+export { useGetAppFromActionsApp }

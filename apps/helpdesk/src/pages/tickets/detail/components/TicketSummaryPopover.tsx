@@ -5,9 +5,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { Popover } from 'components/Popover'
-import useAppSelector from 'hooks/useAppSelector'
-import TicketSummarySection, {
+import { useAppSelector } from 'hooks/useAppSelector'
+import {
     TicketSummaryButton,
+    TicketSummarySection,
 } from 'pages/tickets/detail/components/TicketSummary'
 import css from 'pages/tickets/detail/components/TicketSummary.less'
 
@@ -76,4 +77,4 @@ const TicketSummaryPopover = forwardRef(
     },
 )
 
-export default TicketSummaryPopover
+export { TicketSummaryPopover }

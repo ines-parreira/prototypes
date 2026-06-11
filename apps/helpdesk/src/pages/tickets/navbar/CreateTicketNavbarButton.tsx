@@ -7,11 +7,11 @@ import { Box } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { Navigation } from 'components/Navigation/Navigation'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useCreateTicketButton'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { UncontrolledDropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 import css from './CreateTicketNavbarButton.less'
 

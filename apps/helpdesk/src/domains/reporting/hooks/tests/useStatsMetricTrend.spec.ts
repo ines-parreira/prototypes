@@ -6,10 +6,11 @@ import {
     fetchStatsMetric,
     useStatsMetric,
 } from 'domains/reporting/hooks/useStatsMetric'
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
     getStatsTrendFetch,
     getStatsTrendHook,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import type { BuiltQuery } from 'domains/reporting/models/scopes/scope'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

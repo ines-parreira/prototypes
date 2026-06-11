@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 

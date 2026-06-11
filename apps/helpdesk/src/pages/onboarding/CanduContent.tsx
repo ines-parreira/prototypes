@@ -1,8 +1,8 @@
 import { useCallbackRef } from '@gorgias/toolkit-react'
 
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
 
-import PageHeader from '../common/components/PageHeader'
+import { PageHeader } from '../common/components/PageHeader'
 
 type Props = {
     title: string
@@ -21,5 +21,3 @@ export const CanduContent = ({ title, containerId }: Props) => {
         </div>
     )
 }
-
-export default CanduContent

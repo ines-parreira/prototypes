@@ -7,12 +7,12 @@ import type { TicketCompact } from '@gorgias/helpdesk-queries'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 import { useTimelineData } from 'timeline/hooks/useTimelineData'
 
-import Filters from '../filters/Filters'
+import { Filters } from '../filters/Filters'
 import { useTimelineFilters } from '../filters/hooks/useTimelineFilters'
 import { NoResults } from '../NoResults'
 import { Sort } from '../Sort'
 import { SortedTicketList } from '../SortedTicketList'
-import Timeline from '../Timeline'
+import { DefaultExportTimeline as Timeline } from '../Timeline'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -25,10 +25,12 @@ jest.mock('@repo/feature-flags', () => ({
 jest.mock('../hooks/useTimelineData', () => ({
     useTimelineData: jest.fn(),
 }))
-jest.mock('../TicketCard', () => jest.fn(() => <div>TicketCard</div>))
+jest.mock('../TicketCard', () => ({
+    TicketCard: jest.fn(() => <div>TicketCard</div>),
+}))
 jest.mock('../filters/Filters', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>Filters</div>),
+    Filters: jest.fn(() => <div>Filters</div>),
 }))
 jest.mock('../Sort', () => ({
     Sort: jest.fn(() => <div>Sort</div>),

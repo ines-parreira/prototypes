@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ActionLibraryHeader from '../ActionLibraryHeader'
+import { ActionLibraryHeader } from '../ActionLibraryHeader'
 
 jest.mock(
     'pages/aiAgent/components/AiAgentLayout/usePlaygroundButtonInLayoutHeader',

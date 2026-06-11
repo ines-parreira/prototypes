@@ -9,4 +9,4 @@ const ConversationTimestamp = () => (
     </div>
 )
 
-export default ConversationTimestamp
+export { ConversationTimestamp }

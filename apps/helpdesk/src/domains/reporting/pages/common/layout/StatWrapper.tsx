@@ -18,11 +18,11 @@ import type {
     Stat,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
-import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
+import { StatsHelpIcon } from 'domains/reporting/pages/common/components/StatsHelpIcon'
 import css from 'domains/reporting/pages/common/layout/StatWrapper.less'
-import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
-import Loader from 'pages/common/components/Loader/Loader'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { saveFileAsDownloaded } from 'utils/file'
@@ -46,7 +46,7 @@ type Props = {
     refineDownload?: (csvData: string) => string
 } & Omit<HTMLAttributes<HTMLDivElement>, 'children'>
 
-export default function StatWrapper({
+export function StatWrapper({
     stat,
     statDataLabelOverride,
     isFetchingStat,

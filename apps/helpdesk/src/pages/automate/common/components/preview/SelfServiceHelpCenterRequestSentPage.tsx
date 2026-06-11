@@ -4,7 +4,7 @@ import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
 
 import { LINE_ITEMS } from './constants'
-import useOrderDates from './hooks/useOrderDates'
+import { useOrderDates } from './hooks/useOrderDates'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterRequestSentPage.less'
@@ -132,4 +132,4 @@ const SelfServiceHelpCenterRequestSentPage = ({ helpCenter }: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterRequestSentPage
+export { SelfServiceHelpCenterRequestSentPage }

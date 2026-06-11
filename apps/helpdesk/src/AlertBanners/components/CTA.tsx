@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import BaseButton from 'pages/common/components/button/BaseButton'
-import LinkButton from 'pages/common/components/button/LinkButton'
+import { BaseButton } from 'pages/common/components/button/BaseButton'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
 
 import type { AlertBannerCTATypes } from '../types'
 

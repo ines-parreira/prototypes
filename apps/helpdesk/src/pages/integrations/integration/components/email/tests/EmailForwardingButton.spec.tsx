@@ -9,12 +9,14 @@ import MockAdapter from 'axios-mock-adapter'
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
 
-import EmailForwardingButton from '../EmailMigration/EmailForwardingButton'
+import { EmailForwardingButton } from '../EmailMigration/EmailForwardingButton'
 import * as utils from '../EmailMigration/utils'
 import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const serverMock = new MockAdapter(client)
 const computeStatusSpy = jest.spyOn(

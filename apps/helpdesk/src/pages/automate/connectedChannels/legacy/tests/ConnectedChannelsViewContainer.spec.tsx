@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom'
 import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
 
-import ConnectedChannelsViewContainer from '../ConnectedChannelsViewContainer'
+import { ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

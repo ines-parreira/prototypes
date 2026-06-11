@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 
-import deriveLabelFromIntegration from '../deriveLabelFromIntegration'
+import { deriveLabelFromIntegration } from '../deriveLabelFromIntegration'
 
 describe('deriveLabelFromIntegration', () => {
     it('should return meta.address when address exists in meta', () => {

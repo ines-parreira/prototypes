@@ -6,8 +6,8 @@ import { useTitle } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import type { AutomatePlan, HelpdeskPlan } from 'models/billing/types'
 import { fetchApps } from 'models/integration/resources'
@@ -17,7 +17,7 @@ import {
     Category as CategoryType,
     isCategory,
 } from 'models/integration/types/app'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import {
     getAvailableAutomatePlans,
     getAvailableHelpdeskPlans,
@@ -35,10 +35,10 @@ import {
 } from 'state/integrations/selectors'
 import type { IntegrationListItem } from 'state/integrations/types'
 
-import Card from './Card'
-import CardsWrapper from './CardsWrapper'
-import Category from './Category'
-import CategoryFilter from './CategoryFilter'
+import { Card } from './Card'
+import { Category as CardsWrapper } from './CardsWrapper'
+import { Category } from './Category'
+import { CategoryFilter } from './CategoryFilter'
 import {
     CATEGORY_DATA,
     CATEGORY_URL_PARAM,
@@ -47,10 +47,10 @@ import {
     SEARCH_URL_PARAM,
 } from './constants'
 import { filterOutDeprecatedIntegrations } from './filters'
-import LimitWarning from './LimitWarning'
-import Loader from './Loader'
-import RequestApp from './RequestApp'
-import Search from './Search'
+import { LimitWarning } from './LimitWarning'
+import { Loader } from './Loader'
+import { RequestApp } from './RequestApp'
+import { Search } from './Search'
 
 import css from './All.less'
 
@@ -79,7 +79,7 @@ export function addRequiredPlanToIntegrations(
     })
 }
 
-export default function All() {
+export function All() {
     useTitle('All apps')
     const dispatch = useAppDispatch()
 

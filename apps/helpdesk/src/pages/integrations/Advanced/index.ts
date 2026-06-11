@@ -1,3 +1,3 @@
-import AppAdvanced from './AppAdvanced'
+import { AppAdvanced } from './AppAdvanced'
 
-export default AppAdvanced
+export { AppAdvanced }

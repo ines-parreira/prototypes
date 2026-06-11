@@ -6,11 +6,11 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { Item } from 'components/Dropdown'
 import type { Team } from 'models/team/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
 import css from './style.less'
 
-export default function TeamDropdownItem({ item }: { item: Item }) {
+export function TeamDropdownItem({ item }: { item: Item }) {
     const [isItemOverflowing, setIsItemOverflowing] = useState(false)
     const [itemRef, setItemRef] = useState<HTMLDivElement | null>(null)
 

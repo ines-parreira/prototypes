@@ -7,8 +7,12 @@ export const initialState: ContactFormState = {
     currentId: null,
 }
 
-export default createReducer<ContactFormState>(initialState, (builder) =>
-    builder.addCase(changeContactFormId, (state, { payload }) => {
-        state.currentId = payload
-    }),
+const DefaultExportReducer = createReducer<ContactFormState>(
+    initialState,
+    (builder) =>
+        builder.addCase(changeContactFormId, (state, { payload }) => {
+            state.currentId = payload
+        }),
 )
+
+export { DefaultExportReducer }

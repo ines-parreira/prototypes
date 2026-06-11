@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { resolutionCompletenessQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
 import { resolutionCompletenessQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'

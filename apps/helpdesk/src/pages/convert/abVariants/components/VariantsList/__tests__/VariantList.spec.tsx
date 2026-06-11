@@ -9,7 +9,7 @@ import { campaignWithABGroup } from 'fixtures/abGroup'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
-import VariantsList from '../VariantList'
+import { VariantsList } from '../VariantList'
 
 jest.mock('domains/reporting/pages/convert/hooks/stats/useGetTableStat')
 const useGetTableStatMock = assumeMock(useGetTableStat)

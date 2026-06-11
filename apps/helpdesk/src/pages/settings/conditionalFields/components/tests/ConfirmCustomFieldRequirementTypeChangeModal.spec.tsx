@@ -11,7 +11,7 @@ import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useU
 import type { CustomField } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import ConfirmCustomFieldRequirementTypeChangeModal from '../ConfirmCustomFieldRequirementTypeChangeModal'
+import { ConfirmRequirementTypeChangeModal as ConfirmCustomFieldRequirementTypeChangeModal } from '../ConfirmCustomFieldRequirementTypeChangeModal'
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinition')
 
@@ -19,16 +19,10 @@ const mockUpdateCustomFieldDefinition = assumeMock(
     useUpdateCustomFieldDefinition,
 )
 
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            Link: jest.fn(
-                ({ children }: { children?: React.ReactNode }) => children,
-            ),
-        }) as Record<string, unknown>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    Link: jest.fn(({ children }: { children?: React.ReactNode }) => children),
+}))
 const mockedLink = assumeMock(Link)
 
 describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {

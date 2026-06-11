@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import CardHeaderIcon from '../CardHeaderIcon'
+import { CardHeaderIcon } from '../CardHeaderIcon'
 
 describe('CardHeaderIcon', () => {
     it('renders an img with the correct src and alt', () => {

@@ -1,19 +1,19 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
+import { useWhatsAppMigration } from 'hooks/useWhatsAppMigration'
 import { WhatsAppCodeVerificationMethod } from 'models/integration/types'
-import FormRow from 'pages/common/forms/FormRow'
-import InputField from 'pages/common/forms/input/InputField'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import MigrationTutorialList from 'pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsSidebar from 'pages/settings/SettingsSidebar'
+import { FormRow } from 'pages/common/forms/FormRow'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
+import { MigrationTutorialList } from 'pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsSidebar } from 'pages/settings/SettingsSidebar'
 
-import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
-import WhatsAppMigrationSteppedNavBar from './WhatsAppMigrationSteppedNavBar'
+import { WhatsAppMigrationButtons } from './WhatsAppMigrationButtons'
+import { WhatsAppMigrationSteppedNavBar } from './WhatsAppMigrationSteppedNavBar'
 
-export default function WhatsAppMigrationForm(): JSX.Element | null {
+export function WhatsAppMigrationForm(): JSX.Element | null {
     const migration = useWhatsAppMigration()
 
     return (

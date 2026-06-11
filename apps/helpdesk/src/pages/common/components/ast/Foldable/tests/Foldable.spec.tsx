@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import Foldable from '../Foldable'
+import { Foldable } from '../Foldable'
 
 describe('Foldable component', () => {
     it('should render open', () => {

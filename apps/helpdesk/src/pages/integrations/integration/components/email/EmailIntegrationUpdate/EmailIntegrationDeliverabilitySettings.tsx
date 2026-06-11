@@ -10,8 +10,8 @@ import type {
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
+import { FormSection } from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
 import { canEnableEmailingViaInternalProvider } from '../helpers'
 
@@ -27,7 +27,7 @@ type Props = {
     onChange: (newValue: boolean) => void
 }
 
-export default function EmailIntegrationDeliverabilitySettings({
+export function EmailIntegrationDeliverabilitySettings({
     integration,
     onChange,
 }: Props) {

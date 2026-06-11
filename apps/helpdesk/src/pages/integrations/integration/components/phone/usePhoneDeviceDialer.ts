@@ -3,21 +3,21 @@ import { useState } from 'react'
 import type { CountryCode } from 'libphonenumber-js'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types/phone'
 import type { UserSearchResult } from 'models/search/types'
 import { LAST_USED_INTEGRATION_STORAGE_KEY } from 'pages/integrations/integration/components/voice/constants'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import { getPhoneIntegrations } from 'state/integrations/selectors'
 
-import useDialerOutboundCall from './useDialerOutboundCall'
-import usePhoneNumbers from './usePhoneNumbers'
+import { useDialerOutboundCall } from './useDialerOutboundCall'
+import { usePhoneNumbers } from './usePhoneNumbers'
 
 type UsePhoneDeviceDialerArgs = {
     onCallInitiated: () => void
 }
 
-export default function usePhoneDeviceDialer({
+export function usePhoneDeviceDialer({
     onCallInitiated,
 }: UsePhoneDeviceDialerArgs) {
     const [selectedNumber, setSelectedNumber] = useState('')

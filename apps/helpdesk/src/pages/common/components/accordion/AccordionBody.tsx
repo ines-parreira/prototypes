@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
 
 import { useAccordionItemContext } from './AccordionItemContext'
 
@@ -27,4 +27,4 @@ const AccordionBody = ({ children }: Props) => {
     )
 }
 
-export default AccordionBody
+export { AccordionBody }

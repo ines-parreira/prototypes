@@ -9,8 +9,8 @@ import type { JobType } from '@gorgias/helpdesk-queries'
 import { useCreateJob } from '@gorgias/helpdesk-queries'
 
 import { getConfigByType } from 'config/views'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -18,8 +18,8 @@ import { getActiveView } from 'state/views/selectors'
 import { getMoment } from 'utils/date'
 
 import type { Update } from './types'
-import useCancelJob from './useCancelJob'
-import useNotificationPayload from './useNotificationPayload'
+import { useCancelJob } from './useCancelJob'
+import { useNotificationPayload } from './useNotificationPayload'
 
 const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
     const dispatch = useAppDispatch()
@@ -200,4 +200,4 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
     }
 }
 
-export default useBulkAction
+export { useBulkAction }

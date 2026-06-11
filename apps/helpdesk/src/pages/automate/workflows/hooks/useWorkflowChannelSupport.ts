@@ -167,7 +167,7 @@ function useGetChannelTypesWhereWorkflowIsEnabled(
     )
 }
 
-export default function useWorkflowChannelSupport(
+export function useWorkflowChannelSupport(
     shopType: string,
     shopName: string,
 ): WorkflowChannelSupportContext {

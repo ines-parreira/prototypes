@@ -5,7 +5,7 @@ import { useId } from '@gorgias/toolkit-react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'

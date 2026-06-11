@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../../constants'
-import VoiceIntegrationOnboardingCancelButton from '../VoiceIntegrationOnboardingCancelButton'
+import { VoiceIntegrationOnboardingCancelButton } from '../VoiceIntegrationOnboardingCancelButton'
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),

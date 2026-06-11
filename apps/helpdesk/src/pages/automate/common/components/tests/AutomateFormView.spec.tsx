@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import AutomateFormView from '../AutomateFormView'
+import { AutomateFormView } from '../AutomateFormView'
 
 describe('<AutomateFormView />', () => {
     it('should render form view with header, secondary navbar and content', () => {

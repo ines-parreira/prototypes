@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
-import useReportOrderIssueFlowScenario from '../useReportOrderIssueFlowScenario'
+import { useReportOrderIssueFlowScenario } from '../useReportOrderIssueFlowScenario'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('hooks/useAppDispatch')

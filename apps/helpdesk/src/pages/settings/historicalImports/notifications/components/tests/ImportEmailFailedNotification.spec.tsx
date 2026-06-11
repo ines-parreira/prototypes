@@ -9,7 +9,7 @@ import user from '@testing-library/user-event'
 import type { Notification } from 'common/notifications'
 
 import type { ImportNotification } from '../../types'
-import ImportEmailFailedNotification from '../ImportEmailFailedNotification'
+import { ImportEmailFailedNotification } from '../ImportEmailFailedNotification'
 import { createMockFailedNotification } from './shared-mocks'
 
 jest.mock('@repo/feature-flags', () => ({

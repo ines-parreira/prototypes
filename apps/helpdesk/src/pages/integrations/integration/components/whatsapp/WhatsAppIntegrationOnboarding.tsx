@@ -1,9 +1,9 @@
 import { Container } from 'reactstrap'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import css from 'pages/settings/settings.less'
 
-export default function WhatsAppIntegrationOnboarding(): JSX.Element | null {
+export function WhatsAppIntegrationOnboarding(): JSX.Element | null {
     return (
         <Container fluid className={css.pageContainer}>
             <>

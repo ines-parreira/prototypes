@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { getByText } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import Tag from '../Tag'
+import { Tag } from '../Tag'
 import type { Option } from '../types'
 
 describe('multi select options field tag', () => {

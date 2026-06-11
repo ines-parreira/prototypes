@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
-import ImportEmail from './Import'
+import { ImportEmails as ImportEmail } from './Import'
 
 // Polyfill for getAnimations which is not available in JSDOM
 Element.prototype.getAnimations = jest.fn().mockReturnValue([])

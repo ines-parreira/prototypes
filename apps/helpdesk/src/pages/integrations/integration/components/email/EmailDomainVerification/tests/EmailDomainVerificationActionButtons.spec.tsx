@@ -3,9 +3,9 @@ import { act, fireEvent, screen } from '@testing-library/react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import useDeleteEmailIntegration from '../../useDeleteEmailIntegration'
-import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
-import useDomainVerification from '../useDomainVerification'
+import { useDeleteEmailIntegration } from '../../useDeleteEmailIntegration'
+import { EmailDomainVerificationActionButtons } from '../EmailDomainVerificationActionButtons'
+import { useDomainVerification } from '../useDomainVerification'
 
 jest.mock('../useDomainVerification')
 jest.mock('../../useDeleteEmailIntegration')

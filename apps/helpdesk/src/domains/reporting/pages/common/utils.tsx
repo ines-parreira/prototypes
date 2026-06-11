@@ -11,9 +11,9 @@ import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
+import { DefaultExportStatsFiltersContext as StatsFiltersContext } from 'domains/reporting/pages/StatsFiltersContext'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewField } from 'models/view/types'
 import {
     CollectionOperator,

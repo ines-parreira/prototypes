@@ -74,4 +74,4 @@ const CollapsibleSection = ({
     )
 }
 
-export default CollapsibleSection
+export { CollapsibleSection }

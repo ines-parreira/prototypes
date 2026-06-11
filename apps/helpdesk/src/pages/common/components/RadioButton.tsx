@@ -3,7 +3,7 @@ import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import Caption from '../forms/Caption/Caption'
+import { Caption } from '../forms/Caption/Caption'
 import type { RadioFieldOption } from '../forms/RadioFieldSet'
 
 import css from './RadioButton.less'
@@ -59,4 +59,8 @@ function RadioButton(
     )
 }
 
-export default forwardRef<HTMLInputElement, Props>(RadioButton)
+const DefaultExportRadioButton = forwardRef<HTMLInputElement, Props>(
+    RadioButton,
+)
+
+export { DefaultExportRadioButton }

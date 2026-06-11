@@ -5,22 +5,22 @@ import { history } from '@repo/routing'
 import { reverse, sortBy } from 'lodash'
 
 import { PhoneUseCase } from 'business/twilio'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import type { NewPhoneNumber, PhoneNumber } from 'models/phoneNumber/types'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
-import PhoneNumberTitle from './PhoneNumberTitle'
+import { PhoneNumberTitle } from './PhoneNumberTitle'
 
 import css from './PhoneNumbersList.less'
 
@@ -164,5 +164,3 @@ export function PhoneNumbersList(): JSX.Element | null {
         </TableWrapper>
     )
 }
-
-export default PhoneNumbersList

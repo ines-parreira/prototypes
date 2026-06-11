@@ -9,7 +9,7 @@ type Props = {
     setIsOpen: (isOpen: boolean) => void
 }
 
-export default function ControlledCollapsibleDetails({
+export function ControlledCollapsibleDetails({
     title,
     children,
     isOpen,

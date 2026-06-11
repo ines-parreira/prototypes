@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
-import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
+import { ContactFormCreateView } from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'

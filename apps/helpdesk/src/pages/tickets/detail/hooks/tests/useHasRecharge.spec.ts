@@ -1,11 +1,11 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useHasRecharge from '../useHasRecharge'
+import { useHasRecharge } from '../useHasRecharge'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 

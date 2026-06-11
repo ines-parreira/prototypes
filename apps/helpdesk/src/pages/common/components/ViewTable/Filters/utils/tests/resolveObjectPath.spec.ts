@@ -1,6 +1,6 @@
 import type { Expression } from 'estree'
 
-import resolveObjectPath from '../resolveObjectPath'
+import { resolveObjectPath } from '../resolveObjectPath'
 
 describe('resolveObjectPath', () => {
     it('should return object path for MemberExpression', () => {

@@ -121,4 +121,4 @@ const TTSPreviewButton = ({
     )
 }
 
-export default TTSPreviewButton
+export { TTSPreviewButton }

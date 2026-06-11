@@ -5,8 +5,8 @@ import { FormGroup, Label } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { ContactPhoneNumber } from 'models/helpCenter/types'
-import InputField from 'pages/common/forms/input/InputField'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import css from './PhoneNumbersForm.less'
 
@@ -115,4 +115,4 @@ const PhoneNumbersForm: React.FC<Props> = ({
     )
 }
 
-export default PhoneNumbersForm
+export { PhoneNumbersForm }

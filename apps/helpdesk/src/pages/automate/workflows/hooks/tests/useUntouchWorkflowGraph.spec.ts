@@ -5,7 +5,7 @@ import {
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 
-import useUntouchWorkflowGraph from '../useUntouchWorkflowGraph'
+import { useUntouchWorkflowGraph } from '../useUntouchWorkflowGraph'
 
 describe('useUntouchWorkflowGraph()', () => {
     it('should untouch workflow graph', () => {

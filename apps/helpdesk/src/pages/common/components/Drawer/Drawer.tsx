@@ -14,7 +14,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import Loader from '../Loader/Loader'
+import { Loader } from '../Loader/Loader'
 
 import css from './Drawer.less'
 

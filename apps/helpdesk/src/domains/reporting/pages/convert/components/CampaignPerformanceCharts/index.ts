@@ -1,1 +1,1 @@
-export { default } from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts/CampaignPerformanceCharts'
+export { CampaignPerformanceCharts } from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts/CampaignPerformanceCharts'

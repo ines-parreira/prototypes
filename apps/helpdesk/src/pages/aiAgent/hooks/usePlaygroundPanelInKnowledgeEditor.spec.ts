@@ -7,7 +7,7 @@ import { usePlaygroundPanelInKnowledgeEditor } from './usePlaygroundPanelInKnowl
 const mockUseScreenSize = jest.fn()
 jest.mock('panels/hooks/useScreenSize', () => ({
     __esModule: true,
-    default: () => mockUseScreenSize(),
+    useScreenSize: () => mockUseScreenSize(),
 }))
 
 describe('usePlaygroundPanelInKnowledgeEditor', () => {

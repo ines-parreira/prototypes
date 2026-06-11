@@ -23,7 +23,7 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 // oxlint-disable-next-line no-named-as-default
-import ManagedRuleEditor from '../ManagedRuleEditor'
+import { DefaultExportManagedRuleEditor as ManagedRuleEditor } from '../ManagedRuleEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 jest.mock('hooks/aiAgent/useAiAgentAccess')

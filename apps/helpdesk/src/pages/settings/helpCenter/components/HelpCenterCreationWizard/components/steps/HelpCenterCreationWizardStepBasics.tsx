@@ -16,18 +16,19 @@ import { IntegrationType } from 'models/integration/constants'
 import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import { LanguagePicker } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import WizardFooter, {
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import {
     FOOTER_BUTTONS,
+    WizardFooter,
 } from 'pages/common/components/wizard/WizardFooter'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputField from 'pages/common/forms/input/InputField'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { WizardStepSkeleton } from 'pages/common/components/wizard/WizardStepSkeleton'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import type { HelpCenterContactFormIntegrationTypes } from 'pages/settings/common/SelectStore/SelectStore'
-import SelectStore from 'pages/settings/common/SelectStore/SelectStore'
+import { SelectStore } from 'pages/settings/common/SelectStore/SelectStore'
 import {
     HELP_CENTER_DOMAIN,
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -49,7 +50,7 @@ import {
     mapLanguagePickerToHelpCenterLanguages,
 } from '../../HelpCenterCreationWizardUtils'
 import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
-import DiscardNewHelpCenterPrompt from '../DiscardNewHelpCenterPrompt'
+import { DiscardNewHelpCenterPrompt } from '../DiscardNewHelpCenterPrompt'
 
 import css from './HelpCenterCreationWizardStepBasics.less'
 
@@ -417,4 +418,4 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
     )
 }
 
-export default HelpCenterCreationWizardStepBasics
+export { HelpCenterCreationWizardStepBasics }

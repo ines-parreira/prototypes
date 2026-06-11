@@ -6,7 +6,7 @@ import { useAutomateMetricsTimeSeries } from 'domains/reporting/hooks/automate/u
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { getTimeSeriesFormattedData } from 'domains/reporting/pages/automate/overview/utils'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { SHORT_FORMAT } from 'domains/reporting/pages/common/utils'
 

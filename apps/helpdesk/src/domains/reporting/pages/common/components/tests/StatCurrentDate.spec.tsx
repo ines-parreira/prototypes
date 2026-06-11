@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
+import { StatCurrentDate } from 'domains/reporting/pages/common/components/StatCurrentDate'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('moment-timezone', () => {

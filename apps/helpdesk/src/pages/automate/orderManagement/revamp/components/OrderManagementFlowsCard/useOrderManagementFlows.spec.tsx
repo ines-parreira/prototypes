@@ -3,7 +3,7 @@ import { act } from '@testing-library/react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { useOrderManagementFlows } from './useOrderManagementFlows'
 
@@ -22,9 +22,9 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () =>
-    jest.fn(),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
+    useSelfServiceConfiguration: jest.fn(),
+}))
 
 const mockedUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
     typeof useAiAgentAccess

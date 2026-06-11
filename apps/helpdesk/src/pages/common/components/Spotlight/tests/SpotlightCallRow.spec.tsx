@@ -12,14 +12,15 @@ import {
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 
-import SpotlightCallRow from '../SpotlightCallRow'
+import { SpotlightCallRow } from '../SpotlightCallRow'
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
-    () =>
-        ({ customerId }: { customerId: number }) => (
+    () => ({
+        VoiceCallCustomerLabel: ({ customerId }: { customerId: number }) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
         ),
+    }),
 )
 
 jest.mock('models/voiceCall/types', () => {

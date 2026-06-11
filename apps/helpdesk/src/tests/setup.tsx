@@ -394,17 +394,17 @@ function getMockedFlagValue<T>(flag: string, defaultValue: T): T {
     return featureFlagsClientMock.variation(flag, defaultValue) as T
 }
 
-jest.mock('core/theme/useTheme.ts', () =>
-    jest.fn(() => ({
+jest.mock('core/theme/useTheme.ts', () => ({
+    useTheme: jest.fn(() => ({
         name: THEME_NAME.Light,
         resolvedName: THEME_NAME.Light,
         tokens: themeTokenMap[THEME_NAME.Light],
     })),
-)
+}))
 
-jest.mock('core/theme/useActualTheme.ts', () =>
-    jest.fn(() => [THEME_NAME.Light, jest.fn()]),
-)
+jest.mock('core/theme/useActualTheme.ts', () => ({
+    useActualTheme: jest.fn(() => [THEME_NAME.Light, jest.fn()]),
+}))
 
 jest.mock('@repo/feature-flags', () => {
     const actual = jest.requireActual(
@@ -526,10 +526,12 @@ const SocketManagerMock = () => ({
 jest.mock('services/socketManager', () => ({
     __esModule: true,
     default: SocketManagerMock(),
+    socketManager: SocketManagerMock(),
 }))
 jest.mock('services/socketManager/socketManager', () => ({
     __esModule: true,
     default: SocketManagerMock(),
+    socketManager: SocketManagerMock(),
 }))
 
 jest.mock('pages/AppContext', () => ({

@@ -1,1 +1,1 @@
-export { default as Main } from './components/Main'
+export { Main } from './components/Main'

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import IngestionProductView from '../IngestionProductView'
+import { IngestionProductView } from '../IngestionProductView'
 import type { IngestedProduct } from '../types'
 
 const mockUseShouldDisplayExecutionId = jest.fn()

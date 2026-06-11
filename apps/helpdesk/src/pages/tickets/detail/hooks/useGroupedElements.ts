@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import { getActionByName } from 'config/actions'
 import { PHONE_EVENTS } from 'constants/event'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isTicketEvent, isTicketRuleSuggestion } from 'models/ticket/predicates'
 import { contentfulEventTypesValues } from 'pages/tickets/detail/components/AuditLogEvent'
 import { PRIVATE_REPLY_ACTIONS } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
@@ -15,9 +15,9 @@ import {
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import { getTicketBodyElements, getTicketState } from 'state/ticket/selectors'
 
-import useRuleSuggestionForDemos from './useRuleSuggestionForDemos'
+import { useRuleSuggestionForDemos } from './useRuleSuggestionForDemos'
 
-export default function useGroupedElements() {
+export function useGroupedElements() {
     const bodyElements = useAppSelector(getTicketBodyElements)
     const ticket = useAppSelector(getTicketState)
     const { shouldDisplayDemoSuggestion } = useRuleSuggestionForDemos(

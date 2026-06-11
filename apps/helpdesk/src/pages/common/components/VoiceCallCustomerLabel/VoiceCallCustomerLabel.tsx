@@ -21,7 +21,7 @@ type CustomerLabelProps = {
     showBothNameAndPhone?: boolean
 }
 
-export default function VoiceCallCustomerLabel({
+export function VoiceCallCustomerLabel({
     customerId,
     customerName,
     phoneNumber,

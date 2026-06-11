@@ -1,6 +1,6 @@
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     useKnowledgeHubBulkDelete,

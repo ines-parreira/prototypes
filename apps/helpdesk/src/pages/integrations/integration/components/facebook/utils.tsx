@@ -4,7 +4,7 @@ import type { Map } from 'immutable'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { HelpdeskPlan } from 'models/billing/types'
-import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
+import { UpgradeButton } from 'pages/common/components/UpgradeButton/UpgradeButton'
 import { AccountFeature } from 'state/currentAccount/types'
 
 // PERMISSIONS in FB documentation

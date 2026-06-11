@@ -13,7 +13,7 @@ import { IntegrationType } from 'models/integration/types'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOnboardingStatusMap } from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import { MAX_EXPANDED_SECTIONS_BY_DEFAULT } from 'pages/convert/common/constants'
-import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
+import { useCanAddContactFormFlag } from 'pages/convert/common/hooks/useContactFormFlag'
 import { useGetSortedIntegrations } from 'pages/convert/common/hooks/useGetSortedIntegrations'
 
 const CONVERT_STORAGE_KEY = 'convert'

@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { TranslationSupportedLanguagesInEnglish } from '@repo/utils'
 import { act } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useLanguageDropdown } from '../useLanguageDropdown'
 

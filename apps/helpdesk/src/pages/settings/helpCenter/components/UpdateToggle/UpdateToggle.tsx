@@ -1,9 +1,9 @@
 import { reportError } from '@repo/logging'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { UpdateHelpCenterDto } from 'models/helpCenter/types'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
@@ -72,5 +72,3 @@ export const UpdateToggle = ({
         </ToggleInput>
     )
 }
-
-export default UpdateToggle

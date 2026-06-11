@@ -1,6 +1,7 @@
-import toInitialStoreState, {
+import {
     TICKET_QA_SCORE_DIMENSIONS_FILTER_SCHEMA_DEFINITION,
     TICKET_STORE_ID_FILTER_SCHEMA_DEFINITION,
+    toInitialStoreState,
 } from 'common/store/toInitialStoreState'
 import { initialState } from 'fixtures/initialState'
 

@@ -14,14 +14,10 @@ import {
 
 import { OperatorField } from '../OperatorField'
 
-jest.mock(
-    '@gorgias/axiom',
-    () =>
-        ({
-            ...jest.requireActual('@gorgias/axiom'),
-            LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
-        }) as Record<string, unknown>,
-)
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
+}))
 jest.mock('@repo/forms', () => ({
     useFormContext: jest.fn(),
 }))

@@ -5,8 +5,8 @@ import { Col, FormGroup, Row } from 'reactstrap'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import InputField from 'pages/common/forms/input/InputField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './CustomerChannelFieldArray.less'
 
@@ -108,4 +108,4 @@ class CustomerChannelFieldArray extends Component<Props> {
     }
 }
 
-export default CustomerChannelFieldArray
+export { CustomerChannelFieldArray }

@@ -1,9 +1,10 @@
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import useCurrentFilters, {
+import {
     CURRENT_FILTERS,
     getValidator,
+    useCurrentFilters,
     validateAndParseFilters,
 } from 'domains/reporting/hooks/useCurrentFilters'
 import {

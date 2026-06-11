@@ -13,15 +13,14 @@ import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
-import GorgiasChatCreationWizardStepInstallation from '../GorgiasChatCreationWizardStepInstallation'
+import { GorgiasChatCreationWizardStepInstallation } from '../GorgiasChatCreationWizardStepInstallation'
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 
 const mockStore = configureMockStore([thunk])
 

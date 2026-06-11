@@ -2,7 +2,7 @@ import { fromJS } from 'immutable'
 
 import { TicketMessageSourceType } from '../../../../../business/types/ticket'
 import type { TicketMessage } from '../../../../../models/ticket/types'
-import Error from './Error'
+import { DefaultExportError as Error } from './Error'
 
 type Props = {
     message: TicketMessage
@@ -66,4 +66,4 @@ const Errors = (props: Props) => {
     )
 }
 
-export default Errors
+export { Errors }

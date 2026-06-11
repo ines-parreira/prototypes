@@ -2,26 +2,26 @@ import { useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconLink from 'core/ui/components/IconLink'
-import useAppSelector from 'hooks/useAppSelector'
-import useOrderBy from 'hooks/useOrderBy'
+import { IconLink } from 'core/ui/components/IconLink'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import CountryFlag from 'pages/phoneNumbers/CountryFlag'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { CountryFlag } from 'pages/phoneNumbers/CountryFlag'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 import { getLanguageDisplayName } from 'utils'
 
 import { whatsAppFlagCodes } from './constants'
 import { normalizeLocale } from './utils'
-import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
-import WhatsAppMessageTemplateDetailsDrawer from './WhatsAppMessageTemplateDetailsDrawer'
-import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
+import { WhatsAppMessageTemplateCategoryLabel } from './WhatsAppMessageTemplateCategoryLabel'
+import { WhatsAppMessageTemplateDetailsDrawer } from './WhatsAppMessageTemplateDetailsDrawer'
+import { WhatsAppMessageTemplateStatusLabel } from './WhatsAppMessageTemplateStatusLabel'
 
 import css from './WhatsAppMessageTemplatesList.less'
 
@@ -29,7 +29,7 @@ type Props = {
     phoneNumberId: number
 }
 
-export default function WhatsAppMessageTemplatesList({ phoneNumberId }: Props) {
+export function WhatsAppMessageTemplatesList({ phoneNumberId }: Props) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [currentTemplate, setCurrentTemplate] =
         useState<WhatsAppMessageTemplate>()

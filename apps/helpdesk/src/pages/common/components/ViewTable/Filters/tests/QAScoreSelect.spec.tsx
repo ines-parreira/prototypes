@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import QAScoreSelect from '../QAScoreSelect'
+import { QAScoreSelect } from '../QAScoreSelect'
 
 describe('<QAScoreSelect />', () => {
     const mockOnChange = jest.fn()

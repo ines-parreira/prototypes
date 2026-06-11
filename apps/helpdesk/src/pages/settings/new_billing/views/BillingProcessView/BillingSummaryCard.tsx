@@ -18,7 +18,7 @@ import { useHistory } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import type { Cadence } from 'models/billing/types'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
@@ -29,9 +29,9 @@ import {
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
 
 import { BillingSummaryBreakdown } from '../../components/BillingSummaryBreakdown'
-import Card from '../../components/Card'
+import { Card } from '../../components/Card'
 import { ConfirmChangesModal } from '../../components/ConfirmChangesModal'
-import SummaryFooter from '../../components/SummaryFooter'
+import { SummaryFooter } from '../../components/SummaryFooter'
 import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
 import { isVersionConflictError } from '../../utils/isVersionConflictError'
 

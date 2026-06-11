@@ -3,27 +3,28 @@ import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import PageHeader from 'pages/common/components/PageHeader'
-import NavigatedSuccessModal, {
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import {
+    NavigatedSuccessModal,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
-import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
+import { BackToConvertButton } from 'pages/convert/onboarding/components/BackToConvertButton'
 import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 import type { deleteIntegration } from 'state/integrations/actions'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
-import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
-import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
-import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
-import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
-import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
+import { useChatMigrationBanner } from '../hooks/useChatMigrationBanner'
+import { useThemeAppExtensionInstallation } from '../hooks/useThemeAppExtensionInstallation'
+import { GorgiasChatIntegrationConnectStore } from './GorgiasChatIntegrationConnectStore'
+import { GorgiasChatIntegrationManualInstallationCard } from './GorgiasChatIntegrationManualInstallationCard'
+import { GorgiasChatIntegrationOneClickInstallationCard } from './GorgiasChatIntegrationOneClickInstallationCard'
+import { GorgiasChatIntegrationShopifyCheckoutChatInstallationCard } from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
 
 import css from './GorgiasChatIntegrationInstall.less'
 
@@ -227,4 +228,4 @@ const GorgiasChatIntegrationInstall = ({
     )
 }
 
-export default GorgiasChatIntegrationInstall
+export { GorgiasChatIntegrationInstall }

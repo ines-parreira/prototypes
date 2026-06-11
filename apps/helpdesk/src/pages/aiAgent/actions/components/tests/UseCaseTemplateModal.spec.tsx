@@ -6,14 +6,14 @@ import { ulid } from 'ulidx'
 
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
-import UseCaseTemplateModal from '../UseCaseTemplateModal'
+import { UseCaseTemplateModal } from '../UseCaseTemplateModal'
 
 const LocationPath = () => {
     const location = useLocation()

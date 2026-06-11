@@ -15,13 +15,13 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     AILibraryArticleItem,
     CustomerVisibility,
     LocaleCode,
 } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EDITOR_MODAL_CONTAINER_ID,
@@ -34,13 +34,13 @@ import { useSupportedLocales } from 'pages/settings/helpCenter/providers/Support
 import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import { getCategories } from 'state/entities/helpCenter/categories'
 
-import ArticleCategorySelect from '../../../articles/ArticleCategorySelect'
+import { ArticleCategorySelect } from '../../../articles/ArticleCategorySelect'
 import { ArticleLanguageSelect } from '../../../articles/ArticleLanguageSelect'
 import { CloseModal } from '../../../articles/CloseModal'
-import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
-import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
+import { HelpCenterEditModal } from '../../../articles/HelpCenterEditModal'
+import { HelpCenterEditor } from '../../../articles/HelpCenterEditor/HelpCenterEditor'
 import { isOneOfParentsUnlisted } from '../../../HelpCenterCategoryEdit/utils'
-import SelectCustomerVisibility from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
+import { SelectCustomerVisibility } from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
 import type { onEditorSaveProps } from '../../hooks/useAILibraryActions'
 
 import css from './AIArticlesLibraryArticleEditor.less'
@@ -367,4 +367,4 @@ const ArticleEditor: React.FC<Props> = ({
     )
 }
 
-export default ArticleEditor
+export { ArticleEditor }

@@ -11,14 +11,14 @@ import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import css from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable.less'
 import type { TooltipData } from 'domains/reporting/pages/types'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import { formatPercentage } from 'pages/common/utils/numbers'
 
 export enum TableCellType {
@@ -255,4 +255,4 @@ const HelpCenterStatsTable = ({
     )
 }
 
-export default HelpCenterStatsTable
+export { HelpCenterStatsTable }

@@ -58,4 +58,6 @@ const connector = connect((state: RootState, ownProps: OwnProps) => {
     }
 })
 
-export default connector(PhoneIntegrationName)
+const DefaultExportPhoneIntegrationName = connector(PhoneIntegrationName)
+
+export { DefaultExportPhoneIntegrationName }

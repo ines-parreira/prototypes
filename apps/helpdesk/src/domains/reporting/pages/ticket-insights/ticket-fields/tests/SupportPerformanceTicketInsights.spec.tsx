@@ -9,7 +9,7 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import type { CustomField } from 'custom-fields/types'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
 import { SupportPerformanceTicketInsights } from 'domains/reporting/pages/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
@@ -27,7 +27,7 @@ import {
     ticketInsightsSlice,
     initialState as ticketInsightsState,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock(
@@ -42,14 +42,15 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: (
+        props: ComponentProps<typeof FiltersPanelWrapper>,
+    ) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
     },
-)
+}))
 jest.mock(
     'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable.tsx',
 )
@@ -64,7 +65,7 @@ jest.mock(
 const TicketFieldsBlankStateMock = assumeMock(TicketFieldsBlankState)
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock(
     'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart.tsx',

@@ -4,7 +4,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { useId } from '@gorgias/toolkit-react'
 
-import RadioButton from '../components/RadioButton'
+import { DefaultExportRadioButton as RadioButton } from '../components/RadioButton'
 
 import css from './RadioFieldSet.less'
 
@@ -75,4 +75,4 @@ const RadioFieldSet = ({
     )
 }
 
-export default RadioFieldSet
+export { RadioFieldSet }

@@ -19,7 +19,7 @@ import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from 'models/integration/types'
-import EmailIntegrationUpdateContainer from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
+import { EmailIntegrationUpdate as EmailIntegrationUpdateContainer } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 import {
     getOutboundEmailProviderSettingKey,
     isBaseEmailAddress,
@@ -28,26 +28,28 @@ import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integ
 
 jest.mock('pages/integrations/integration/components/email/helpers')
 jest.mock('hooks/useAppDispatch', () => {
-    return () => jest.fn()
+    return { useAppDispatch: () => jest.fn() }
 })
 jest.mock('hooks/useAppSelector', () => {
-    return (selector: any) => {
-        const selectorStr = selector.toString()
-        if (selectorStr.includes('domain')) {
-            return 'test.com'
-        }
-        if (selectorStr.includes('forwarding')) {
-            return 'emails.gorgias.com'
-        }
-        if (
-            selectorStr.includes('getRedirectUri') ||
-            selectorStr.includes('Gmail') ||
-            selectorStr.includes('redirectUri') ||
-            selectorStr.includes('redirect')
-        ) {
+    return {
+        useAppSelector: (selector: any) => {
+            const selectorStr = selector.toString()
+            if (selectorStr.includes('domain')) {
+                return 'test.com'
+            }
+            if (selectorStr.includes('forwarding')) {
+                return 'emails.gorgias.com'
+            }
+            if (
+                selectorStr.includes('getRedirectUri') ||
+                selectorStr.includes('Gmail') ||
+                selectorStr.includes('redirectUri') ||
+                selectorStr.includes('redirect')
+            ) {
+                return 'https://gmail-redirect'
+            }
             return 'https://gmail-redirect'
-        }
-        return 'https://gmail-redirect'
+        },
     }
 })
 jest.mock('@repo/feature-flags', () => ({
@@ -55,22 +57,27 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 jest.mock('pages/common/forms/RichFieldWithVariables', () => {
-    return function MockRichFieldWithVariables({ onChange, label }: any) {
-        return (
-            <div>
-                <label>{label}</label>
-                <textarea
-                    aria-label="signature-editor"
-                    onChange={() => {
-                        onChange({
-                            getCurrentContent: () => ({
-                                getPlainText: () => 'test',
-                            }),
-                        })
-                    }}
-                />
-            </div>
-        )
+    return {
+        RichFieldWithVariables: function MockRichFieldWithVariables({
+            onChange,
+            label,
+        }: any) {
+            return (
+                <div>
+                    <label>{label}</label>
+                    <textarea
+                        aria-label="signature-editor"
+                        onChange={() => {
+                            onChange({
+                                getCurrentContent: () => ({
+                                    getPlainText: () => 'test',
+                                }),
+                            })
+                        }}
+                    />
+                </div>
+            )
+        },
     }
 })
 const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)

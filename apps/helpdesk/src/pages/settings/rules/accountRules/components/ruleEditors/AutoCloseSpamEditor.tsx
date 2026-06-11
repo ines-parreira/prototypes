@@ -1,7 +1,7 @@
 import { toast } from '@gorgias/axiom'
 
-import Alert from 'pages/common/components/Alert/Alert'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { MultiSelectField } from 'pages/common/forms/MultiSelectField'
 import type {
     AutoCloseSpamSettings,
     ManagedRuleSettings,
@@ -109,5 +109,3 @@ export const AutoCloseSpamEditor = ({
         </div>
     )
 }
-
-export default AutoCloseSpamEditor

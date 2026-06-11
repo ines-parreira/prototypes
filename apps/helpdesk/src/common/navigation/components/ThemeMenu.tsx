@@ -11,7 +11,7 @@ import type { HelpdeskThemeName } from 'core/theme'
 
 import css from './UserMenu.less'
 
-export default function ThemeMenu() {
+export function ThemeMenu() {
     const setTheme = useSetTheme()
     const theme = useTheme()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()

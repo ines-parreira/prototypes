@@ -13,14 +13,14 @@ import {
 import { UploadType } from 'common/types'
 import { EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS } from 'constants/integration'
 import { IntegrationType } from 'models/integration/constants'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import InputField from 'pages/common/forms/input/InputField'
-import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
-import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
-import EmailIntegrationDeliverabilitySettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { RichFieldWithVariables } from 'pages/common/forms/RichFieldWithVariables'
+import { BaseEmailIntegrationInputField } from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
+import { EmailIntegrationDeliverabilitySettings } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings'
 import { displayRestrictedSymbols } from 'utils'
 import { convertToHTML } from 'utils/editor'
 
@@ -281,4 +281,4 @@ const EmailSettings = ({
     )
 }
 
-export default EmailSettings
+export { EmailSettings }

@@ -5,8 +5,8 @@ import { useCookies } from 'react-cookie'
 
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { getTicketState } from 'state/ticket/selectors'
 
 import type {
@@ -16,7 +16,7 @@ import type {
     Guidance,
     Knowledge,
 } from '../../../../../models/aiAgentFeedback/types'
-import IconButton from '../../../../common/components/button/IconButton'
+import { IconButton } from '../../../../common/components/button/IconButton'
 import type { ResourceSection } from './types'
 import { ActionStatus } from './types'
 

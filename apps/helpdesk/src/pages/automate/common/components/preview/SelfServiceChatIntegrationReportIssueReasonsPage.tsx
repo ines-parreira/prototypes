@@ -6,8 +6,8 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import List from 'gorgias-design-system/List/List'
-import ListItem from 'gorgias-design-system/List/ListItem'
+import { List } from 'gorgias-design-system/List/List'
+import { ListItem } from 'gorgias-design-system/List/ListItem'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { ChevronRightIcon } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/icon-utils'
 
@@ -66,4 +66,4 @@ const SelfServiceChatIntegrationReportIssueReasonsPage = ({
     )
 }
 
-export default SelfServiceChatIntegrationReportIssueReasonsPage
+export { SelfServiceChatIntegrationReportIssueReasonsPage }

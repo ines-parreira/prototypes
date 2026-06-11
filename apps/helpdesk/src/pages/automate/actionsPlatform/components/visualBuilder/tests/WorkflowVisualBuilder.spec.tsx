@@ -8,7 +8,7 @@ import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/us
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import WorkflowVisualBuilder from '../WorkflowVisualBuilder'
+import { WorkflowVisualBuilder } from '../WorkflowVisualBuilder'
 
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),

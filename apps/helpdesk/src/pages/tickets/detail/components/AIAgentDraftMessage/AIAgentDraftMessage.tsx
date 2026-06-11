@@ -2,7 +2,7 @@ import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import type { TicketMessage } from 'models/ticket/types'
 
-import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
+import { InTicketSuggestion } from '../RuleSuggestion/InTicketSuggestion'
 import { useAiAgentDraftMessage } from './useAiAgentDraftMessage'
 
 import css from './AIAgentDraftMessage.less'
@@ -96,4 +96,4 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
     )
 }
 
-export default AIAgentDraftMessage
+export { AIAgentDraftMessage }

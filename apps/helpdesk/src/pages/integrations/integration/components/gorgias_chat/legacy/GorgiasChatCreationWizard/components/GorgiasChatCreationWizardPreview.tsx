@@ -13,7 +13,7 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatLauncherType } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
@@ -22,11 +22,11 @@ import {
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import ChatIntegrationPreview from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import ChatIntegrationPreviewContent from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
-import ConversationTimestamp from '../../GorgiasChatIntegrationPreview/ConversationTimestamp'
-import MessageContent from '../../GorgiasChatIntegrationPreview/MessageContent'
-import OfflineMessages from '../../GorgiasChatIntegrationPreview/OfflineMessages'
+import { ChatIntegrationPreview } from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreviewContent } from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import { ConversationTimestamp } from '../../GorgiasChatIntegrationPreview/ConversationTimestamp'
+import { MessageContent } from '../../GorgiasChatIntegrationPreview/MessageContent'
+import { OfflineMessages } from '../../GorgiasChatIntegrationPreview/OfflineMessages'
 
 import css from './GorgiasChatCreationWizardPreview.less'
 
@@ -237,4 +237,4 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardPreview
+export { GorgiasChatCreationWizardPreview }

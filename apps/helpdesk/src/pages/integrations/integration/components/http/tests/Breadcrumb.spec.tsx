@@ -11,7 +11,7 @@ import { integrationBase } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import Breadcrumb from '../Breadcrumb'
+import { Breadcrumbs as Breadcrumb } from '../Breadcrumb'
 import {
     EVENTS_PATH,
     INTEGRATIONS_LIST_PATH,
@@ -35,9 +35,9 @@ const integrationBaseId = integrationBase.id.toString()
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ integrations: fromJS(integrationsState) })
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 
 describe('Breadcrumb', () => {
     it.each([

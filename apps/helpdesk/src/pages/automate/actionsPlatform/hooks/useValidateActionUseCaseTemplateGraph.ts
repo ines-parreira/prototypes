@@ -65,4 +65,4 @@ const useValidateActionUseCaseTemplateGraph = (
     )
 }
 
-export default useValidateActionUseCaseTemplateGraph
+export { useValidateActionUseCaseTemplateGraph }

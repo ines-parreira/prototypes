@@ -7,16 +7,16 @@ import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisua
 import type { AutomatedMessageNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import type { MessageContent } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import MessageContentFormField from '../components/MessageContentFormField'
-import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
-import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
-import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
+import { MessageContentFormField } from '../components/MessageContentFormField'
+import { TranslationsPreviewField } from '../components/translations/TranslationPreviewField'
+import { TranslationPreviewHeader } from '../components/translations/TranslationPreviewHeader'
+import { NodeEditorDrawerHeader } from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 
-export default function AutomatedMessageEditor({
+export function AutomatedMessageEditor({
     nodeInEdition,
 }: {
     nodeInEdition: AutomatedMessageNodeType

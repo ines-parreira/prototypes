@@ -18,15 +18,15 @@ import type {
     IntegrationDataItem,
     ProductCardDetails,
 } from 'models/integration/types'
-import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
+import { ProductAutomations } from 'pages/common/components/ProductAutomations/ProductAutomations'
 import { transformShopifyProductToProductCardDetails } from 'pages/common/draftjs/plugins/toolbar/utils'
 import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
 import type { Props as ResultProps } from 'pages/common/forms/ProductSearchInput/Result'
-import Result from 'pages/common/forms/ProductSearchInput/Result'
+import { Result } from 'pages/common/forms/ProductSearchInput/Result'
 import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { ConvertShopifyProductLineHeader } from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getIconFromUrl } from 'utils'
 
@@ -117,7 +117,7 @@ export const generateVariantName = (
     return variantName || undefined
 }
 
-export default function ShopifyProductLine({
+export function ShopifyProductLine({
     disableOutOfStockProducts = false,
     disableVariantStep = false,
     shopifyIntegration,

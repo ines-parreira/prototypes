@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import BaseButton from '../BaseButton'
+import { BaseButton } from '../BaseButton'
 
 describe('<BaseButton />', () => {
     it('should render a button', () => {

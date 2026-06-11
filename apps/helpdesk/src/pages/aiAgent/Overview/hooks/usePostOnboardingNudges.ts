@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useGetPostStoreInstallationStepsPure,
     useUpdateStepNotificationsPure,

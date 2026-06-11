@@ -6,7 +6,7 @@ type Props = {
     summaries: VoiceCallSummary[]
 }
 
-export default function TicketVoiceCallSummary({ summaries }: Props) {
+export function TicketVoiceCallSummary({ summaries }: Props) {
     if (summaries.length === 0) {
         return <></>
     }

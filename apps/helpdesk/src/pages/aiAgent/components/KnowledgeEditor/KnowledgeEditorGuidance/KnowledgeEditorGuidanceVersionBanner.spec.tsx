@@ -44,7 +44,9 @@ jest.mock('./context', () => ({
     }),
 }))
 
-jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => unknown) => fn(),
+}))
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useGetUser: () => ({ data: undefined }),

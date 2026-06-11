@@ -5,24 +5,24 @@ import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { useAllAvailableUserIds } from '@repo/users'
-import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
+import { LiveVoiceAgentRow } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
 import {
     AgentStatusCategory,
     groupAgentsByStatus,
     recomputeAgentsWithOnlineStatusChange,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 type Props = {
     agents: LiveCallQueueAgent[]
 }
 
-export default function LiveVoiceAgentsList({ agents }: Props) {
+export function LiveVoiceAgentsList({ agents }: Props) {
     const { onlineAgents } = useAgentsOnlineStatus()
     const availableUserIds = useAllAvailableUserIds()
 

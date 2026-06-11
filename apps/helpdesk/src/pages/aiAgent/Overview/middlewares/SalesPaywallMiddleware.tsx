@@ -9,11 +9,12 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
-import AIAgentTrialSuccessModal, {
+import {
     MODAL_NAME as AI_TRIAL_MODAL_NAME,
+    AIAgentTrialSuccessModal,
 } from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
@@ -41,10 +42,10 @@ import {
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
-import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
-import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { RequestTrialModal } from 'pages/common/components/RequestTrialModal/RequestTrialModal'
+import { TrialFinishSetupModal } from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
+import { TrialTryModal } from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'

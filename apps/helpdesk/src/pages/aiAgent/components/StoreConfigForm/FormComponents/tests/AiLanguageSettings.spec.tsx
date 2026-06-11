@@ -3,50 +3,52 @@ import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { AiLanguageSettingsProps } from '../AiLanguageSettings'
-import AiLanguageSettings from '../AiLanguageSettings'
+import { AiLanguageSettings } from '../AiLanguageSettings'
 
 // Mock MacroEditLanguage component
 jest.mock(
     '../../../../../tickets/common/macros/components/MacroEditLanguage',
     () => {
-        return function MockMacroEditLanguage({
-            language,
-            setLanguage,
-            hideAutoDetect,
-            returnLanguageName,
-        }: any) {
-            const languageMap: Record<string, string | null> = {
-                fr: 'French',
-                en: 'English',
-                es: 'Spanish',
-                '': null,
-            }
+        return {
+            MacroEditLanguage: function MockMacroEditLanguage({
+                language,
+                setLanguage,
+                hideAutoDetect,
+                returnLanguageName,
+            }: any) {
+                const languageMap: Record<string, string | null> = {
+                    fr: 'French',
+                    en: 'English',
+                    es: 'Spanish',
+                    '': null,
+                }
 
-            return (
-                <div>
-                    <select
-                        data-testid="language-select"
-                        value={language || ''}
-                        onChange={(e) => {
-                            const value = e.target.value
-                            if (returnLanguageName) {
-                                setLanguage(languageMap[value] || value)
-                            } else {
-                                setLanguage(value === '' ? null : value)
-                            }
-                        }}
-                    >
-                        <option value="">No language</option>
-                        <option value="en">English</option>
-                        <option value="es">Spanish</option>
-                        <option value="fr">French</option>
-                    </select>
-                    <div
-                        data-testid="hide-auto-detect"
-                        data-hide-auto-detect={hideAutoDetect}
-                    />
-                </div>
-            )
+                return (
+                    <div>
+                        <select
+                            data-testid="language-select"
+                            value={language || ''}
+                            onChange={(e) => {
+                                const value = e.target.value
+                                if (returnLanguageName) {
+                                    setLanguage(languageMap[value] || value)
+                                } else {
+                                    setLanguage(value === '' ? null : value)
+                                }
+                            }}
+                        >
+                            <option value="">No language</option>
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                        <div
+                            data-testid="hide-auto-detect"
+                            data-hide-auto-detect={hideAutoDetect}
+                        />
+                    </div>
+                )
+            },
         }
     },
 )

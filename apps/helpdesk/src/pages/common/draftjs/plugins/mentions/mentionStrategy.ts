@@ -29,4 +29,4 @@ const findMentionEntities =
         )
     }
 
-export default findMentionEntities
+export { findMentionEntities }

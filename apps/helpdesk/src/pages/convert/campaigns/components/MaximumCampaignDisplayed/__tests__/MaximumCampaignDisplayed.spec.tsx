@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import MaximumCampaignDisplayed from '../MaximumCampaignDisplayed'
+import { MaximumCampaignDisplayed } from '../MaximumCampaignDisplayed'
 
 describe('<MaximumCampaignDisplayed />', () => {
     const defaultProps = {

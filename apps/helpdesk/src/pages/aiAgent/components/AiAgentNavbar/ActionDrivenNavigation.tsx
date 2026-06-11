@@ -24,7 +24,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
 import { CollapsedActionDrivenNavigationItems } from './CollapsedActionDrivenNavigationItems'

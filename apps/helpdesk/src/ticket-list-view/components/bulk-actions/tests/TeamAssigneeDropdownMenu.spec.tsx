@@ -6,12 +6,12 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { focusOnNextItem } from 'components/Dropdown'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
-import useSearch from 'search/useSearch'
+import { useSearch } from 'search/useSearch'
 import { useListTeams } from 'teams/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
-import type TeamDropdownItem from '../TeamDropdownItem'
+import { TeamAssigneeDropdownMenu } from '../TeamAssigneeDropdownMenu'
+import type { TeamDropdownItem } from '../TeamDropdownItem'
 
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock
@@ -24,13 +24,11 @@ const mockUseSearch = useSearch as jest.Mock
 
 const queryClient = mockQueryClient()
 
-jest.mock(
-    '../TeamDropdownItem',
-    () =>
-        ({ item }: ComponentProps<typeof TeamDropdownItem>) => (
-            <div>{item.name}</div>
-        ),
-)
+jest.mock('../TeamDropdownItem', () => ({
+    TeamDropdownItem: ({ item }: ComponentProps<typeof TeamDropdownItem>) => (
+        <div>{item.name}</div>
+    ),
+}))
 
 const mockContext: ContextType<typeof DropdownContext> = {
     isMultiple: false,

@@ -19,12 +19,12 @@ import {
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import type { IntegrationType } from 'models/integration/constants'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import withRouter from 'pages/common/utils/withRouter'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { withRouter } from 'pages/common/utils/withRouter'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import type {
@@ -242,4 +242,8 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
     }
 }
 
-export default withRouter(YotpoIntegrationDetailComponent)
+const DefaultExportYotpoIntegrationDetail = withRouter(
+    YotpoIntegrationDetailComponent,
+)
+
+export { DefaultExportYotpoIntegrationDetail }

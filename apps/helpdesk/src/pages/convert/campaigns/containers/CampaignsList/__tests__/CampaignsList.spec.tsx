@@ -18,7 +18,7 @@ import { integrationsState } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import { useSearch } from 'hooks/useSearch'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -28,7 +28,7 @@ import type { Campaign } from '../../../types/Campaign'
 import { CampaignStatus } from '../../../types/enums/CampaignStatus.enum'
 import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.enum'
 import { createTrigger } from '../../../utils/createTrigger'
-import CampaignsList from '../CampaignsList'
+import { CampaignsList } from '../CampaignsList'
 
 jest.mock('hooks/useSearch')
 jest.mock('../../../hooks/useCampaignListOptions')

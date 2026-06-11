@@ -11,7 +11,7 @@ import type {
 import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { getOutboundEmailProviderSettingKey } from 'pages/integrations/integration/components/email/helpers'
 
-import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
+import { EmailIntegrationDeliverabilitySettings } from '../EmailIntegrationDeliverabilitySettings'
 
 const onChange = jest.fn()
 

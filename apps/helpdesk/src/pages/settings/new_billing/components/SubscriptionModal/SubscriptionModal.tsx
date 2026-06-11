@@ -6,12 +6,12 @@ import { useHistory } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Plan, ProductType } from 'models/billing/types'
 import { hasSeparateInvoiceCadence, isEnterprise } from 'models/billing/utils'
-import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
-import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
+import { ContactSupportModal } from 'pages/settings/new_billing/components/ContactSupportModal'
+import { PlanSubscriptionDescription } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
+import { SubscriptionModalFooter } from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import {
@@ -203,4 +203,4 @@ const SubscriptionModal = ({
     )
 }
 
-export default SubscriptionModal
+export { SubscriptionModal }

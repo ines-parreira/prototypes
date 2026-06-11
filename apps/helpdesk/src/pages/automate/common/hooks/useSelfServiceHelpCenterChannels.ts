@@ -4,7 +4,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
 
-import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegration } from './useSelfServiceStoreIntegration'
 
 export type SelfServiceHelpCenterChannel = {
     type: TicketChannel.HelpCenter
@@ -42,4 +42,4 @@ const useSelfServiceHelpCenterChannels = (
     }, [helpCenters, storeIntegration, shopName])
 }
 
-export default useSelfServiceHelpCenterChannels
+export { useSelfServiceHelpCenterChannels }

@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import ReturnOrderAction from '../ReturnOrderAction'
+import { ReturnOrderAction } from '../ReturnOrderAction'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

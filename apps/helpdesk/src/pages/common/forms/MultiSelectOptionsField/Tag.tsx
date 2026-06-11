@@ -17,12 +17,7 @@ type Props = {
     symbolSpaces?: boolean
 }
 
-export default function Tag({
-    option,
-    onRemove,
-    isCompact,
-    symbolSpaces,
-}: Props) {
+export function Tag({ option, onRemove, isCompact, symbolSpaces }: Props) {
     const label = symbolSpaces
         ? option.label.replace(/ /g, SPACE_SYMBOL)
         : option.label

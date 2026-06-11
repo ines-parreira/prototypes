@@ -7,7 +7,7 @@ import type {
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import { labelByVisualBuilderNodeType } from '../../constants'
-import EditorDrawerHeader from './EditorDrawerHeader'
+import { EditorDrawerHeader } from './EditorDrawerHeader'
 import { useNodeEditorDrawerContext } from './NodeEditorDrawerContext'
 
 type Props = {
@@ -34,4 +34,4 @@ const NodeEditorDrawerHeader = ({ nodeInEdition, label, children }: Props) => {
     )
 }
 
-export default NodeEditorDrawerHeader
+export { NodeEditorDrawerHeader }

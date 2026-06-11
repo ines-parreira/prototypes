@@ -5,10 +5,10 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 
 import { Button, Icon } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 import type { Notification } from '../types'
-import getNotificationConfig from '../utils/getNotificationConfig'
+import { getNotificationConfig } from '../utils/getNotificationConfig'
 
 import css from './Toast.less'
 
@@ -18,7 +18,7 @@ type Props = {
     onDismiss: () => void
 }
 
-export default function Toast({ notification, onClick, onDismiss }: Props) {
+export function Toast({ notification, onClick, onDismiss }: Props) {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const handleClickClose = useCallback(

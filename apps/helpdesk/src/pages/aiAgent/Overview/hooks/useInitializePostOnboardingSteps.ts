@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
 import {
     useCreatePostStoreInstallationStepPure,

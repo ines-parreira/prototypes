@@ -16,7 +16,7 @@ import {
     logCallEnd,
 } from 'hooks/integrations/phone/twilioCall.utils'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
-import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
+import { slice } from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 
 jest.mock('common/notifications')
 jest.mock('@repo/logging')

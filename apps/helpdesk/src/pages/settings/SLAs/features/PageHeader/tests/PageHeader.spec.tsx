@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { SectionPageHeader } from 'config/pages'
 
-import PageHeader from '../PageHeader'
+import { PageHeader } from '../PageHeader'
 
 describe('<PageHeader/>', () => {
     it('should render a header', () => {

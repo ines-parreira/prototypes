@@ -15,25 +15,25 @@ import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { useTheme } from 'core/theme'
 import { VisualBuilderBackground } from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'
-import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
-import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
-import CancelOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelOrderNode'
-import CancelSubscriptionNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelSubscriptionNode'
-import ConditionsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ConditionsNode'
-import CreateDiscountCodeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CreateDiscountCodeNode'
-import EndNode from 'pages/automate/workflows/editor/visualBuilder/nodes/EndNode'
-import HttpRequestNode from 'pages/automate/workflows/editor/visualBuilder/nodes/HttpRequestNode'
-import LiquidTemplateNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LiquidTemplateNode'
-import LLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/LLMPromptTriggerNode'
-import RefundOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
-import RefundShippingCostsNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundShippingCostsNode'
-import RemoveItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
-import ReplaceItemNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReplaceItemNode'
-import ReshipForFreeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReshipForFreeNode'
-import ReusableLLMPromptCallNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNode'
-import ReusableLLMPromptTriggerNode from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptTriggerNode'
-import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
-import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
+import { CustomEdge } from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
+import { NodeEditorDrawer } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
+import { CancelOrderNodeWrapper as CancelOrderNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelOrderNode'
+import { CancelSubscriptionNodeWrapper as CancelSubscriptionNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelSubscriptionNode'
+import { ConditionsNodeWrapper as ConditionsNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/ConditionsNode'
+import { CreateDiscountCodeNodeWrapper as CreateDiscountCodeNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/CreateDiscountCodeNode'
+import { EndNodeWrapper as EndNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/EndNode'
+import { HttpRequestNodeWrapper as HttpRequestNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/HttpRequestNode'
+import { LiquidTemplateNodeWrapper as LiquidTemplateNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/LiquidTemplateNode'
+import { LLMPromptTriggerNodeWrapper as LLMPromptTriggerNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/LLMPromptTriggerNode'
+import { RefundOrderNodeWrapper as RefundOrderNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundOrderNode'
+import { RefundShippingCostsNodeWrapper as RefundShippingCostsNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/RefundShippingCostsNode'
+import { RemoveItemNodeWrapper as RemoveItemNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/RemoveItemNode'
+import { ReplaceItemNodeWrapper as ReplaceItemNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/ReplaceItemNode'
+import { ReshipForFreeNodeWrapper as ReshipForFreeNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/ReshipForFreeNode'
+import { ReusableLLMPromptCallNodeWrapper as ReusableLLMPromptCallNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNode'
+import { ReusableLLMPromptTriggerNodeWrapper as ReusableLLMPromptTriggerNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptTriggerNode'
+import { SkipChargeNodeWrapper as SkipChargeNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
+import { UpdateShippingAddressNodeWrapper as UpdateShippingAddressNode } from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type {
@@ -41,8 +41,8 @@ import type {
     VisualBuilderNode,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import EditOrderNoteNode from '../../../workflows/editor/visualBuilder/nodes/EditOrderNoteNode'
-import VisualBuilderControls from './VisualBuilderControls'
+import { EditOrderNoteNodeWrapper as EditOrderNoteNode } from '../../../workflows/editor/visualBuilder/nodes/EditOrderNoteNode'
+import { VisualBuilderControls } from './VisualBuilderControls'
 
 const nodeTypes = {
     llm_prompt_trigger: LLMPromptTriggerNode,
@@ -181,4 +181,4 @@ const WorkflowVisualBuilder = ({
     )
 }
 
-export default WorkflowVisualBuilder
+export { WorkflowVisualBuilder }

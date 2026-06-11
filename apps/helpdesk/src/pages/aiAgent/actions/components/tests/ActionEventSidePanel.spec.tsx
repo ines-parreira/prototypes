@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { LlmTriggeredExecution } from '../../types'
-import ActionEventSidePanel from '../ActionEventSidePanel'
+import { ActionEventSidePanel } from '../ActionEventSidePanel'
 
 const execution: LlmTriggeredExecution = {
     id: '1',

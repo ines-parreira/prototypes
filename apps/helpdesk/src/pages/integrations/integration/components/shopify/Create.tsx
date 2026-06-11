@@ -5,11 +5,11 @@ import { Col, Container, Form, Row } from 'reactstrap'
 
 import { Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Caption from 'pages/common/forms/Caption/Caption'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import css from 'pages/settings/settings.less'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import * as utils from 'utils'
@@ -18,7 +18,7 @@ type Props = {
     redirectUri: string
 }
 
-export default function Create({ redirectUri }: Props) {
+export function Create({ redirectUri }: Props) {
     const [shopName, setShopName] = useState('')
 
     const shopifyIntegrationAlreadyExists = !useAppSelector(

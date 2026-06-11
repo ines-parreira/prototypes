@@ -1,1 +1,1 @@
-export { default } from './ConvertOnboardingView'
+export { ConvertOnboardingView } from './ConvertOnboardingView'

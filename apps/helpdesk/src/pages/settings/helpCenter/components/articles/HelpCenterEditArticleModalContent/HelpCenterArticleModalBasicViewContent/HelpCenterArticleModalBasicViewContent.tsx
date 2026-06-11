@@ -15,7 +15,7 @@ import {
     EDITOR_MODAL_CONTAINER_ID,
     HELP_CENTER_DEFAULT_LAYOUT,
 } from 'pages/settings/helpCenter/constants'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import {
@@ -28,9 +28,9 @@ import { getDetailedFormattedDate, getFormattedDate } from 'utils/date'
 
 import { useAbilityChecker } from '../../../../hooks/useHelpCenterApi'
 import type { ActionType, OptionItem } from '../../ArticleLanguageSelect'
-import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
-import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
-import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'
+import { HelpCenterEditModalFooter } from '../../HelpCenterEditModalFooter'
+import { HelpCenterEditModalHeader } from '../../HelpCenterEditModalHeader'
+import { HelpCenterEditor } from '../../HelpCenterEditor/HelpCenterEditor'
 import { HelpCenterArticleModalView } from '../types'
 
 import css from '../HelpCenterEditArticleModalContent.less'
@@ -249,4 +249,4 @@ const HelpCenterArticleModalBasicViewContent = ({
     )
 }
 
-export default HelpCenterArticleModalBasicViewContent
+export { HelpCenterArticleModalBasicViewContent }

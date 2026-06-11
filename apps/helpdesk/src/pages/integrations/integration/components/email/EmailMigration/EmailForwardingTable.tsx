@@ -1,21 +1,22 @@
 import classNames from 'classnames'
 
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
-import Pagination from 'pages/common/components/Pagination'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
+import { Pagination } from 'pages/common/components/Pagination'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { useClientSidePagination } from 'pages/common/hooks/useClientSidePagination'
 
-import EmailVerificationStatusLabel, {
+import {
     EmailVerificationStatus,
+    EmailVerificationStatusLabel,
 } from '../EmailVerificationStatusLabel'
-import EmailForwardingButton from './EmailForwardingButton'
-import EmptyMigrationTableRow from './EmptyMigrationTableRow'
+import { EmailForwardingButton } from './EmailForwardingButton'
+import { EmptyMigrationTableRow } from './EmptyMigrationTableRow'
 import { computeMigrationInboundVerificationStatus } from './utils'
 
 import css from './EmailForwardingTable.less'
@@ -24,7 +25,7 @@ type Props = {
     migrations: EmailMigrationInboundVerification[]
 }
 
-export default function EmailForwardingTable({ migrations }: Props) {
+export function EmailForwardingTable({ migrations }: Props) {
     const { paginatedItems, ...pagination } = useClientSidePagination({
         items: migrations,
         itemsPerPage: 5,

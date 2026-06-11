@@ -40,4 +40,4 @@ function GroupAddon({ className, isDisabled = false, ...props }: Props) {
     )
 }
 
-export default GroupAddon
+export { GroupAddon }

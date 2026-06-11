@@ -5,17 +5,17 @@ import { Col, Container, Label, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import { useQueryNotify } from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 import { deleteIntegration } from 'state/integrations/actions'
 import * as integrationHelpers from 'state/integrations/helpers'
@@ -29,7 +29,7 @@ type Props = {
     redirectUri: string
 }
 
-export default function Integration({
+export function Integration({
     integration,
     availableShopifyIntegrations,
     loading,

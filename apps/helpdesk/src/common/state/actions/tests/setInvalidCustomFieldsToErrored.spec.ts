@@ -1,5 +1,5 @@
 import { SET_INVALID_CUSTOM_FIELDS_TO_ERRORED } from '../../constants'
-import setInvalidCustomFieldsToErrored from '../setInvalidCustomFieldsToErrored'
+import { setInvalidCustomFieldsToErrored } from '../setInvalidCustomFieldsToErrored'
 
 describe('setInvalidCustomFieldsToErrored', () => {
     it('should return the action object', () => {

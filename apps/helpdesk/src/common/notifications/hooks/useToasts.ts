@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { notificationSounds } from 'services'
 import { defaultSound } from 'services/NotificationSounds'
 import { getNotificationSettings } from 'state/currentUser/selectors'
 
 import type { Notification } from '../types'
-import getNotificationConfig from '../utils/getNotificationConfig'
-import useNotifications from './useNotifications'
+import { getNotificationConfig } from '../utils/getNotificationConfig'
+import { useNotifications } from './useNotifications'
 
-export default function useToasts() {
+export function useToasts() {
     const notificationSettings = useAppSelector(getNotificationSettings)
     const notificationVolume = useMemo(
         () =>

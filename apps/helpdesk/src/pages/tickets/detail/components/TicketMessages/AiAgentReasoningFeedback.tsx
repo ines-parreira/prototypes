@@ -16,11 +16,11 @@ import {
 } from '@gorgias/axiom'
 import { FindFeedbackObjectType } from '@gorgias/knowledge-service-types'
 
-import TextArea from 'gorgias-design-system/Input/TextArea'
+import { TextArea } from 'gorgias-design-system/Input/TextArea'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 
-import AutoSaveBadge from '../AIAgentFeedbackBar/AutoSaveBadge'
+import { AutoSaveBadge } from '../AIAgentFeedbackBar/AutoSaveBadge'
 import {
     AiAgentBinaryFeedbackEnum,
     AutoSaveState,

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import _noop from 'lodash/noop'
 import { Dropdown } from 'reactstrap'
 
-import HideAction from '../HideAction'
+import { HideAction } from '../HideAction'
 
 const renderAction = ({ shouldHide = false, isFacebookComment = true } = {}) =>
     render(

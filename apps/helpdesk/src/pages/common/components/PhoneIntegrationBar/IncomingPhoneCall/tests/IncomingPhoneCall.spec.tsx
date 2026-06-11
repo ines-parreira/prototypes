@@ -15,14 +15,14 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import goToTicket from 'common/utils/goToTicket'
+import { goToTicket } from 'common/utils/goToTicket'
 import * as hooks from 'pages/common/components/PhoneIntegrationBar/hooks'
-import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+import { useMicrophonePermissions } from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockIncomingCall } from 'tests/twilioMocks'
 
 import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../../constants'
-import IncomingPhoneCall from '../IncomingPhoneCall'
+import { IncomingPhoneCall } from '../IncomingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -31,10 +31,11 @@ const goToTicketMock = goToTicket as jest.MockedFunction<typeof goToTicket>
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 jest.mock(
     'pages/integrations/integration/components/voice/useMicrophonePermissions',

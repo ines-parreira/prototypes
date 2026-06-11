@@ -4,7 +4,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
-import OnboardingDomainVerificationButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons'
+import { OnboardingDomainVerificationButtons } from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
@@ -17,7 +17,7 @@ type Props = {
     cancelCallback?: () => void
 }
 
-export default function EmailIntegrationOnboardingButtons(props: Props) {
+export function EmailIntegrationOnboardingButtons(props: Props) {
     const {
         integration,
         goBack,

@@ -7,7 +7,7 @@ type Props = ComponentProps<typeof DropdownMenu> & {
     style?: CSSProperties
 }
 
-export default function TagDropdownMenu({ container, ...props }: Props) {
+export function TagDropdownMenu({ container, ...props }: Props) {
     return (
         <DropdownMenu
             {...props}

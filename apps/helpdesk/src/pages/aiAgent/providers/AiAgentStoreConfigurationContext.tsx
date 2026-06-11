@@ -29,4 +29,4 @@ const AiAgentStoreConfigurationContext =
 export const useAiAgentStoreConfigurationContext = () =>
     useContext(AiAgentStoreConfigurationContext)
 
-export default AiAgentStoreConfigurationContext
+export { AiAgentStoreConfigurationContext }

@@ -7,7 +7,7 @@ import type { TicketSummary } from '@gorgias/helpdesk-queries'
 import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
 
 import { isGorgiasApiError } from 'models/api/types'
-import socketManager from 'services/socketManager/socketManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 
 export const useTicketSummary = ({
@@ -92,5 +92,3 @@ export const useTicketSummary = ({
         hasRequested,
     }
 }
-
-export default useTicketSummary

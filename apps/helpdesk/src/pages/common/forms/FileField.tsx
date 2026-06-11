@@ -14,11 +14,11 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { getFileTooLargeError } from 'utils/file'
 
 import type { InputFieldProps } from './DEPRECATED_InputField'
-import DEPRECATED_InputField from './DEPRECATED_InputField'
+import { InputField as DEPRECATED_InputField } from './DEPRECATED_InputField'
 
 import css from './FileField.less'
 
@@ -247,5 +247,3 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
         )
     }
 }
-
-export default FileFieldContainer

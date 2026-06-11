@@ -2,13 +2,13 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TimelineItem from 'pages/tickets/detail/components/TicketVoiceCall/TimelineItem'
+import { TimelineItem } from 'pages/tickets/detail/components/TicketVoiceCall/TimelineItem'
 
-import Timeline from '../Timeline'
+import { Timeline } from '../Timeline'
 
-jest.mock('../TimelineItem', () => ({ children }: { children: any }) => (
-    <div>{children}</div>
-))
+jest.mock('../TimelineItem', () => ({
+    TimelineItem: ({ children }: { children: any }) => <div>{children}</div>,
+}))
 
 describe('Timeline', () => {
     it('should render children', () => {

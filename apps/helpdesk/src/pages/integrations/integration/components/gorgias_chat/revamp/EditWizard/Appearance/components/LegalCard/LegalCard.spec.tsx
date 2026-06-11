@@ -18,7 +18,7 @@ jest.mock(
 
 jest.mock('pages/common/forms/RichField/TicketRichField', () => ({
     __esModule: true,
-    default: ({
+    DefaultExportTicketRichField: ({
         value,
         onChange,
         'aria-label': ariaLabel,

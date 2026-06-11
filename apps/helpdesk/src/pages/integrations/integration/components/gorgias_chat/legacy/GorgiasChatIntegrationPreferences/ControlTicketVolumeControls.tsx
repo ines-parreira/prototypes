@@ -106,4 +106,4 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
     )
 }
 
-export default ControlTicketVolumeControls
+export { ControlTicketVolumeControls }

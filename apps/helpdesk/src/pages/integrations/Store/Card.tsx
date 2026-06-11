@@ -8,11 +8,11 @@ import { Link } from 'react-router-dom'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import type { AppListItem } from 'models/integration/types/app'
 import { isAppListItem } from 'models/integration/types/app'
-import UpgradeButton from 'pages/common/components/UpgradeButton'
+import { UpgradeButton } from 'pages/common/components/UpgradeButton'
 import { getApplicationById } from 'services/applications'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import type { IntegrationListItem } from 'state/integrations/types'
@@ -135,7 +135,7 @@ export type Props = {
 }
 
 // TODO(@Manuel): Handle a default icon in case image is empty
-export default function Card({
+export function Card({
     isLoading = false,
     item,
     isFeatured = false,

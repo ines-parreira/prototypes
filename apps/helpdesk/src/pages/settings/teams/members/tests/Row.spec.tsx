@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { UserRole } from 'config/types/user'
 
-import Row from '../Row'
+import { Row } from '../Row'
 
 const minProps = {
     member: {

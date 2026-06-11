@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { defaultAutoMergeSettings } from 'pages/settings/autoMerge/constants'
 import type { AccountSettingAutoMerge } from 'state/currentAccount/types'
 
-export default function useAutoMerge(
+export function useAutoMerge(
     initialAutoMergeSettings?: AccountSettingAutoMerge['data']['tickets'],
 ) {
     const [state, setState] = useState<

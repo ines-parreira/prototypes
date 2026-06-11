@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import type { Callbacks } from 'pages/common/hooks/useReorderDnD'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
@@ -55,4 +55,4 @@ const SubjectLine = ({
     )
 }
 
-export default SubjectLine
+export { SubjectLine }

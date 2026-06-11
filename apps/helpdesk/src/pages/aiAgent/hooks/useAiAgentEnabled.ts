@@ -6,8 +6,8 @@ import { toast } from '@gorgias/axiom'
 import { RuleType } from '@gorgias/helpdesk-queries'
 
 import { updateRule } from 'models/rule/resources'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useRules } from 'state/entities/rules/hooks'
 
 export const useAiAgentEnabled = ({

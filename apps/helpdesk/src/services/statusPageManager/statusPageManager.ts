@@ -440,4 +440,4 @@ Find out more on our <a href="${
 
 const statusPageManager = new StatusPageManager()
 
-export default statusPageManager
+export { statusPageManager }

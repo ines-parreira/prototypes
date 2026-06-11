@@ -2,10 +2,10 @@ import {
     isAtLeastMilestone,
     useActionCentralizedLibraryEnabled,
 } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
-import ActionLibraryView from 'pages/aiAgent/actionsV2/ActionLibraryView'
+import { ActionLibraryView } from 'pages/aiAgent/actionsV2/ActionLibraryView'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 
-import ActionsView from './ActionsView'
+import { ActionsView } from './ActionsView'
 
 const ActionsViewContainer = () => {
     const { milestone } = useActionCentralizedLibraryEnabled()
@@ -20,4 +20,4 @@ const ActionsViewContainer = () => {
     )
 }
 
-export default ActionsViewContainer
+export { ActionsViewContainer }

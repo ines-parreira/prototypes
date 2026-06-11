@@ -19,7 +19,7 @@ import {
     WIZARD_POST_COMPLETION_STATE,
 } from 'pages/aiAgent/constants'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
-import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
+import { useHelpCenterCustomDomainHostnames } from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 
 import { usePublicResourceMutation } from '../../hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'

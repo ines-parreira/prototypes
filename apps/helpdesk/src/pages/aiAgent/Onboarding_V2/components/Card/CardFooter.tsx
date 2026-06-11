@@ -11,4 +11,4 @@ const CardFooter = forwardRef<
     <div ref={ref} className={cn(css.cardFooter, className)} {...props} />
 ))
 
-export default CardFooter
+export { CardFooter }

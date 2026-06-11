@@ -12,16 +12,16 @@ import {
     atLeastOneStoreHasActiveTrialOnSpecificStores,
     useCanUseAiSalesAgent,
 } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ActivationProgress } from 'pages/aiAgent/Activation/components/ActivationProgress/ActivationProgress'
 import { AiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard'
 import { LegacyAiAgentActivationStoreCard } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard'
 import { AiAgentSalesBanner } from 'pages/aiAgent/Activation/components/AiAgentSalesBanner/AiAgentSalesBanner'
-import AIAgentTrialSuccessModal from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
+import { AIAgentTrialSuccessModal } from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 

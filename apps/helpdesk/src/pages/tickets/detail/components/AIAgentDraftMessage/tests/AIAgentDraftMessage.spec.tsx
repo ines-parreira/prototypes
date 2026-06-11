@@ -19,7 +19,7 @@ import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import { PREVIEW_HEIGHT } from '../../RuleSuggestion/SuggestionBody'
-import AIAgentDraftMessage from '../AIAgentDraftMessage'
+import { AIAgentDraftMessage } from '../AIAgentDraftMessage'
 
 jest.mock('state/currentAccount/selectors')
 jest.mock('models/aiAgentFeedback/queries')
@@ -36,7 +36,9 @@ jest.mock('state/ticket/actions', () => ({
 jest.mock('@repo/logging')
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 
 jest.mock('state/ui/ticketAIAgentFeedback', () => ({
     getSelectedAIMessage: jest.fn(),

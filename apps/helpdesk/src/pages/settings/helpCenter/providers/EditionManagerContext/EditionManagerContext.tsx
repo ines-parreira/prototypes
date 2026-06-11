@@ -2,8 +2,8 @@ import type { Dispatch, SetStateAction } from 'react'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Article,
     CreateArticleDto,
@@ -15,7 +15,7 @@ import type { HelpCenterArticleModalState } from 'pages/settings/helpCenter/comp
 import { changeViewLanguage } from 'state/ui/helpCenter'
 import { getViewLanguage } from 'state/ui/helpCenter/selectors'
 
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import type { ArticleTemplateKey } from '../../types/articleTemplates'
 
 // TODO: move to redux (as UI states?)

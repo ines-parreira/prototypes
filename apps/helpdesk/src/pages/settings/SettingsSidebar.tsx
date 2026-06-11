@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import css from './SettingsSidebar.less'
 
-export default function SettingsSidebar({
+export function SettingsSidebar({
     children,
     className,
     contentTakeFullWidth = true,

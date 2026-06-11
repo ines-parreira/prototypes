@@ -3,16 +3,16 @@ import { Col } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
-import useClipboard from 'pages/common/hooks/useClipboard'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { useClipboard } from 'pages/common/hooks/useClipboard'
 import { getForwardingEmailAddress } from 'state/integrations/selectors'
 
 import { providerTutorials } from './constants'
-import EmailForwardingTable from './EmailForwardingTable'
-import MigrationTutorialList from './MigrationTutorialList'
+import { EmailForwardingTable } from './EmailForwardingTable'
+import { MigrationTutorialList } from './MigrationTutorialList'
 
 import css from './MigrationEmailForwarding.less'
 
@@ -21,10 +21,7 @@ type Props = {
     onNextClick: () => void
 }
 
-export default function MigrationEmailForwarding({
-    migrations,
-    onNextClick,
-}: Props) {
+export function MigrationEmailForwarding({ migrations, onNextClick }: Props) {
     const forwardingEmailAddress = useAppSelector(getForwardingEmailAddress)
     const { copyButtonText } = useClipboard('#copy-email-address')
     const history = useHistory()

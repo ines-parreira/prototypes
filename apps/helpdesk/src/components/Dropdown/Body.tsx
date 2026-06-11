@@ -3,15 +3,15 @@ import { useCallback, useContext, useRef } from 'react'
 
 import cn from 'classnames'
 
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import type { Item } from './Context'
-import Context from './Context'
-import focusOnNextItem from './focusOnNextItem'
+import { DefaultExportContext as Context } from './Context'
+import { focusOnNextItem } from './focusOnNextItem'
 
 import css from './style.less'
 
@@ -117,4 +117,4 @@ const Body = ({
     )
 }
 
-export default Body
+export { Body }

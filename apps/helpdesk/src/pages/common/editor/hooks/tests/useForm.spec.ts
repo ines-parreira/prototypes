@@ -5,7 +5,7 @@ import { act } from '@testing-library/react'
 
 import { TicketStatus } from 'business/types/ticket'
 
-import useForm from '../useForm'
+import { useForm } from '../useForm'
 
 describe('useForm', () => {
     let checkValidity: jest.Mock

@@ -7,11 +7,11 @@ import { Container } from 'reactstrap'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import Segmented from 'pages/common/components/Segmented'
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import { Segmented } from 'pages/common/components/Segmented'
+import { SkeletonLoader } from 'pages/common/components/SkeletonLoader'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
-import InventoryScopeMissingBanner from 'pages/convert/campaigns/components/InventoryScopeMissingBanner'
+import { ConvertSetupBanner } from 'pages/convert/campaigns/components/ConvertSetupBanner'
+import { InventoryScopeMissingBanner } from 'pages/convert/campaigns/components/InventoryScopeMissingBanner'
 import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import { CampaignChatHiddenWarning } from '../../components/CampaignChatHiddenWarning'
@@ -262,4 +262,4 @@ const CampaignsList = ({
     )
 }
 
-export default CampaignsList
+export { CampaignsList }

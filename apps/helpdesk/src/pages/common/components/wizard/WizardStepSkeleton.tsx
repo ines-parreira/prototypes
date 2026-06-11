@@ -4,8 +4,8 @@ import { isObject } from 'lodash'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
+import { useIsIntersectingWithBrowserViewport } from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 import { AnimatedFadeInOut } from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/AnimatedFadeInOut/AnimatedFadeInOut'
 
 import css from './WizardStepSkeleton.less'
@@ -106,4 +106,4 @@ const WizardStepSkeleton: React.FC<Props> = ({
     )
 }
 
-export default WizardStepSkeleton
+export { WizardStepSkeleton }

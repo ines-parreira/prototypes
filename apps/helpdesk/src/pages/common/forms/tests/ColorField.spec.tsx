@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ColorField from '../ColorField'
+import { ColorField } from '../ColorField'
 
 jest.mock('@gorgias/toolkit-react', () => {
     const React = jest.requireActual('react') as typeof import('react')

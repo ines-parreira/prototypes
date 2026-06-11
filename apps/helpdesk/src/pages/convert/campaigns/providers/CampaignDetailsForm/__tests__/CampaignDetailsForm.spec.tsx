@@ -36,14 +36,18 @@ jest.mock('@repo/feature-flags', () => ({
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-setup-banner" />
-    })
+    return {
+        ConvertSetupBanner: jest.fn(() => {
+            return <div data-testid="mock-convert-setup-banner" />
+        }),
+    }
 })
 jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

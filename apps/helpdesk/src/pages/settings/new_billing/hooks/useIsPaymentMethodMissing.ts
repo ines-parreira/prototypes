@@ -1,6 +1,6 @@
 import { useBillingState } from '@repo/billing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     getShopifyBillingStatus,
     shouldPayWithShopify as getShouldPayWithShopify,

@@ -16,7 +16,7 @@ import {
 import { ProductType } from 'models/billing/types'
 
 import type { AutoUpgradeToggleProps } from '../AutoUpgradeToggle'
-import AutoUpgradeToggle from '../AutoUpgradeToggle'
+import { AutoUpgradeToggle } from '../AutoUpgradeToggle'
 
 const mockStore = configureMockStore()
 const store = mockStore({

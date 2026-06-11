@@ -11,7 +11,8 @@ import {
     LogicalOperatorLabel,
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import HelpCenterLanguageFilter, {
+import {
+    HelpCenterLanguageFilter,
     HelpCenterLanguageFilterWithState,
 } from 'domains/reporting/pages/common/filters/HelpCenterLanguageFilter'
 import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
@@ -25,7 +26,9 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import type { RootState } from 'state/types'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),

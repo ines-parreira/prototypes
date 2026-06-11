@@ -1,5 +1,5 @@
-import CampaignTemplateCustomizeLibraryView from './CampaignTemplateCustomizeLibraryView'
-import CampaignTemplateCustomizeRecommendationsView from './CampaignTemplateCustomizeRecommendationsView'
+import { CampaignTemplateCustomizeLibraryView } from './CampaignTemplateCustomizeLibraryView'
+import { CampaignTemplateCustomizeRecommendationsView } from './CampaignTemplateCustomizeRecommendationsView'
 
 export {
     CampaignTemplateCustomizeRecommendationsView,

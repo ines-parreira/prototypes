@@ -20,18 +20,18 @@ import {
 } from '@gorgias/axiom'
 
 import { AGENT_ROLE } from 'config/user'
-import PageHeader from 'pages/common/components/PageHeader'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { memoizedWithUserRoleRequired as withUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { FLOWS } from '../common/components/constants'
 import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
 import { WORKFLOWS_DESCRIPTION } from './common/constants'
-import WorkflowsEmptyState from './components/WorkflowsEmptyState'
-import WorkflowsList from './components/WorkflowsList'
-import useStoreWorkflows from './hooks/useStoreWorkflows'
+import { WorkflowsEmptyState } from './components/WorkflowsEmptyState'
+import { WorkflowsList } from './components/WorkflowsList'
+import { useStoreWorkflows } from './hooks/useStoreWorkflows'
 import { useStoreWorkflowsApi } from './hooks/useStoreWorkflowsApi'
-import WorkflowTemplatesViewContainer from './WorkflowTemplatesViewContainer'
+import { WorkflowTemplatesViewContainer } from './WorkflowTemplatesViewContainer'
 
 import css from './WorkflowsView.less'
 
@@ -45,7 +45,7 @@ type WorkflowsViewProps = {
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
-export default function WorkflowsView({
+export function WorkflowsView({
     shopName,
     shopType,
     goToNewWorkflowPage,

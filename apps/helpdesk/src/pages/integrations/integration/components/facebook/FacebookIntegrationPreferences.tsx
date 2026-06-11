@@ -21,12 +21,12 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
 } from 'config/integrations/index'
-import PageHeader from 'pages/common/components/PageHeader'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 import css from 'pages/settings/settings.less'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
-import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
+import { FacebookIntegrationNavigation } from './FacebookIntegrationNavigation'
 
 type Props = {
     integration: Map<any, any>
@@ -234,4 +234,8 @@ const connector = connect(null, {
     updateOrCreateIntegration,
 })
 
-export default connector(FacebookIntegrationPreferences)
+const DefaultExportFacebookIntegrationPreferences = connector(
+    FacebookIntegrationPreferences,
+)
+
+export { DefaultExportFacebookIntegrationPreferences }

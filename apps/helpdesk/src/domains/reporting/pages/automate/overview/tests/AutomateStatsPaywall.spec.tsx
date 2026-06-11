@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import AutomateStatsPaywall from 'domains/reporting/pages/automate/AutomateStatsPaywall'
+import { AutomateStatsPaywall } from 'domains/reporting/pages/automate/AutomateStatsPaywall'
 import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { TrialPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware'

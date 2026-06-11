@@ -9,7 +9,7 @@ import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { coerceResourceType } from 'pages/aiAgent/utils/reasoningResources'
 
-import KnowledgeSourceRenderer from '../AIAgentFeedbackBar/KnowledgeSourceRenderer'
+import { KnowledgeSourceRenderer } from '../AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'
 import type { useGetResourcesReasoningMetadata } from '../AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from '../AIAgentFeedbackBar/utils'

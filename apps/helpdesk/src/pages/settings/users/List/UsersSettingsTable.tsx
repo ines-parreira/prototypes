@@ -6,10 +6,10 @@ import type { User } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { UsersSettingsItem } from './UsersSettingsItem'
 
@@ -139,5 +139,3 @@ export function UsersSettingsTable({
         </TableWrapper>
     )
 }
-
-export default UsersSettingsTable

@@ -25,7 +25,7 @@ type MetricCardProps = ComponentProps<typeof LiveVoiceMetricCard> & {
     size: number
 }
 
-export default function useLiveVoiceMetricCards(
+export function useLiveVoiceMetricCards(
     liveVoiceCalls: LiveCallQueueVoiceCall[],
     isLoadingVoiceCalls: boolean,
     filters: StatsFilters,

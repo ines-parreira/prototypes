@@ -5,7 +5,7 @@ import { act } from '@testing-library/react'
 
 import type { SmsIntegration } from 'models/integration/types'
 
-import SmsIntegrationSelect from '../SmsIntegrationSelect'
+import { SmsIntegrationSelect } from '../SmsIntegrationSelect'
 
 describe('<SmsIntegrationSelect />', () => {
     const mockOnChange = jest.fn()

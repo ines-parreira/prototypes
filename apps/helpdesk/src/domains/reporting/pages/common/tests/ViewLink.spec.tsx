@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import type { LinkProps } from 'react-router-dom'
 
-import ViewLink from 'domains/reporting/pages/common/ViewLink'
+import { ViewLink } from 'domains/reporting/pages/common/ViewLink'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

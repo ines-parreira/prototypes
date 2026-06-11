@@ -1,10 +1,10 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import SettingsCard from '../SettingsCard'
-import SettingsCardContent from '../SettingsCardContent'
-import SettingsCardHeader from '../SettingsCardHeader'
-import SettingsCardTitle from '../SettingsCardTitle'
+import { SettingsCard } from '../SettingsCard'
+import { SettingsCardContent } from '../SettingsCardContent'
+import { SettingsCardHeader } from '../SettingsCardHeader'
+import { SettingsCardTitle } from '../SettingsCardTitle'
 
 describe('SettingsCard Components', () => {
     describe('SettingsCard', () => {

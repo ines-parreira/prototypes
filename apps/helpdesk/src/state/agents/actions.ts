@@ -2,7 +2,7 @@ import type { User } from 'config/types/user'
 import { USER_ROLES } from 'config/user'
 import { fetchAgents } from 'models/agents/resources'
 import type { FetchAgentsOptions } from 'models/agents/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import type { StoreDispatch } from 'state/types'
 
 import type {

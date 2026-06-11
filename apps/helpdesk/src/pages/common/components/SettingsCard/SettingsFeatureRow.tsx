@@ -6,7 +6,7 @@ import {
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
 
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 import css from './SettingsFeatureRow.less'

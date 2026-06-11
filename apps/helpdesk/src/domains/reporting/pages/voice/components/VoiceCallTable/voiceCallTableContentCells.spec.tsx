@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react'
 
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
-import MonitorCell from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'
-import VoiceCallRecording from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording'
+import { LiveVoiceCallStatusLabel } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
+import { MonitorCell } from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'
+import { VoiceCallRecording } from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording'
 import {
     VoiceCallTableColumn,
     voiceCallTableColumnName,
@@ -14,11 +14,11 @@ import {
     getOrderedCells,
     getOrderedHeaderCells,
 } from 'domains/reporting/pages/voice/components/VoiceCallTable/voiceCallTableContentCells'
-import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
+import { VoiceCallTransferActivity } from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
-import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
+import { VoiceCallStatusLabel } from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
+import { VoiceCallTimerBadge } from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel',

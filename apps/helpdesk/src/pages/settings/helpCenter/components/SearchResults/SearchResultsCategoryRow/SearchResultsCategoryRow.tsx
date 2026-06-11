@@ -6,7 +6,7 @@ import { sanitizeHtmlDefault } from '@repo/utils'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useModalManager } from 'hooks/useModalManager'
 import type {
     Article,
@@ -15,8 +15,8 @@ import type {
 } from 'models/helpCenter/types'
 import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import type { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
 import { MODALS } from 'pages/settings/helpCenter/constants'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -24,7 +24,7 @@ import { changeViewLanguage } from 'state/ui/helpCenter/actions'
 
 import { useCategoryRowActions } from '../../../hooks/useCategoryRowActions'
 import { TableActions } from '../../TableActions'
-import VisibilityCell from '../../VisibilityCell/VisibilityCell'
+import { VisibilityCell } from '../../VisibilityCell/VisibilityCell'
 import { SearchResultsArticleRow } from '../SearchResultsArticleRow'
 import { SearchResultsLoadingContent } from '../SearchResultsLoadingContent'
 import type { SearchResultCategory } from '../types'

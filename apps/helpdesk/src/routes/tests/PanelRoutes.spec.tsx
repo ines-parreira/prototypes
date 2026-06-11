@@ -16,11 +16,11 @@ import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
-import PanelRoutes from '../PanelRoutes'
+import { PanelRoutes } from '../PanelRoutes'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

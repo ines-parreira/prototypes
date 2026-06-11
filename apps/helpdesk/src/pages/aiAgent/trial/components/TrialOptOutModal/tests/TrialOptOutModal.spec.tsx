@@ -3,7 +3,7 @@ import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as useAppSelectorModule from 'hooks/useAppSelector'
 import {
     useOptOutAiAgentTrialUpgradeMutation,
@@ -12,7 +12,7 @@ import {
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import * as trialExtensionUtils from 'pages/aiAgent/trial/utils/trialExtensionUtils'
 
-import TrialOptOutModal from '../TrialOptOutModal'
+import { TrialOptOutModal } from '../TrialOptOutModal'
 
 jest.mock('@repo/logging')
 jest.mock('hooks/useAppDispatch')
@@ -59,7 +59,7 @@ describe('TrialOptOutModal', () => {
         jest.clearAllMocks()
         mockUseAppDispatch.mockReturnValue(mockDispatch)
 
-        jest.spyOn(useAppSelectorModule, 'default').mockImplementation(
+        jest.spyOn(useAppSelectorModule, 'useAppSelector').mockImplementation(
             mockUseAppSelector,
         )
         mockUseAppSelector.mockReturnValue([])

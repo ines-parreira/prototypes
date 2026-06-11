@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
+import { EmailDomainVerificationSupportContentSidebar } from '../EmailDomainVerificationSupportContentSidebar'
 
 describe('EmailDomainVerificationSupportContentSidebar', () => {
     const renderComponent = () =>

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { DragWrapper } from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { useWidgetData } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { NAMED_INTEGRATION_WIDGET_TYPES } from 'state/widgets/constants'
@@ -16,8 +16,8 @@ import {
     getWidgetType,
     toWidgetArray,
 } from './customIntegrationsUtils'
-import CustomWidgetItem from './CustomWidgetItem'
-import WidgetEditionTools from './WidgetEditionTools'
+import { CustomWidgetItem } from './CustomWidgetItem'
+import { WidgetEditionTools } from './WidgetEditionTools'
 
 import css from './TicketInfobarContainer.less'
 
@@ -30,7 +30,7 @@ type Props = {
 const NAMED_WIDGET_PLACEHOLDER_FILTER = '.named-widget-placeholder'
 const CUSTOM_INTEGRATION_ITEM = 'custom-integration-item'
 
-export default function CustomIntegrationsTabContent({
+export function CustomIntegrationsTabContent({
     sources,
     widgets,
     customerId,

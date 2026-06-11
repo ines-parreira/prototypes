@@ -7,8 +7,8 @@ import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNaviga
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 
 import { groupActionsByIntegration } from './skillReviewActions.utils'
 import { SkillReviewCardBody } from './SkillReviewCardBody'

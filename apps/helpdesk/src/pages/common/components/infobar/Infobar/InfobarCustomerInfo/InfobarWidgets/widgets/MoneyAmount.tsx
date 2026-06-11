@@ -8,7 +8,7 @@ type Props = {
     currencyDisplay?: Intl.NumberFormatOptions['currencyDisplay']
 }
 
-export default class MoneyAmount extends Component<Props> {
+export class MoneyAmount extends Component<Props> {
     static defaultProps: Pick<Props, 'negative' | 'renderIfZero'> = {
         negative: false,
         renderIfZero: false,

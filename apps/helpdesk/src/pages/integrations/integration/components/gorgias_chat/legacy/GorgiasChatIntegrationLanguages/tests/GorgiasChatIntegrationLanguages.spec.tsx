@@ -10,7 +10,7 @@ import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
+import { GorgiasChatIntegrationLanguages } from '../GorgiasChatIntegrationLanguages'
 
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
@@ -37,9 +37,11 @@ jest.mock(
         })),
     }),
 )
-jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => (
-    <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-))
+jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => ({
+    GorgiasChatIntegrationConnectedChannel: () => (
+        <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+    ),
+}))
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))

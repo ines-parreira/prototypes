@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import BulkDeleteButton from '../BulkDeleteButton'
+import { BulkDeleteButton } from '../BulkDeleteButton'
 
 const props: ComponentProps<typeof BulkDeleteButton> = {
     onBulkDelete: jest.fn(),

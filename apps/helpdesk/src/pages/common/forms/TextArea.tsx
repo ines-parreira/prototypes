@@ -13,7 +13,7 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
 import css from './TextArea.less'
 
@@ -135,4 +135,6 @@ function TextArea(
     )
 }
 
-export default forwardRef<HTMLTextAreaElement, Props>(TextArea)
+const DefaultExportTextArea = forwardRef<HTMLTextAreaElement, Props>(TextArea)
+
+export { DefaultExportTextArea }

@@ -1,5 +1,5 @@
 import type { Config } from '../types'
-import clamp from './clamp'
+import { clamp } from './clamp'
 
 type Options = {
     config: Config
@@ -9,7 +9,7 @@ type Options = {
     totalWidth: number
 }
 
-export default function mutatePanels({
+export function mutatePanels({
     config,
     currentWidths,
     delta,

@@ -8,14 +8,14 @@ import {
 import { ProductInsightsTableLabels } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import { sortingSet } from 'domains/reporting/state/ui/stats/productInsightsSlice'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const mockUseAppSelector = assumeMock(useAppSelector)
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockDispatch = jest.fn()
 

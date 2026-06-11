@@ -1,12 +1,12 @@
 import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
-import AppDetails from 'pages/common/components/ProductDetail'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { Detail as AppDetails } from 'pages/common/components/ProductDetail'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-export default function VoiceIntegrationDetails(): JSX.Element | null {
+export function VoiceIntegrationDetails(): JSX.Element | null {
     const config = getIntegrationConfig(IntegrationType.Phone)
 
     if (!config) {

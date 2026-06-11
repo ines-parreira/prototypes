@@ -5,8 +5,8 @@ import { TimeFormatType } from '@repo/utils'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
-import useAppSelector from 'hooks/useAppSelector'
-import DatePicker from 'pages/common/forms/DatePicker'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DatePicker } from 'pages/common/forms/DatePicker'
 import { getTimeFormatPreferenceSetting } from 'state/currentUser/selectors'
 
 type Props = {
@@ -65,4 +65,4 @@ const TicketSnoozePicker = ({
     )
 }
 
-export default TicketSnoozePicker
+export { TicketSnoozePicker }

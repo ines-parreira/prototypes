@@ -3,10 +3,10 @@ import {
     getOutboundDisplayStatus,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { TicketVoiceCallEvents } from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
 
-import CollapsibleDetails from './CollapsibleDetails'
+import { CollapsibleDetails } from './CollapsibleDetails'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -14,7 +14,7 @@ type Props = {
     voiceCall: VoiceCall
 }
 
-export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
+export function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
     const displayStatus = getOutboundDisplayStatus(voiceCall.status)
     switch (displayStatus) {
         case VoiceCallDisplayStatus.Ringing:

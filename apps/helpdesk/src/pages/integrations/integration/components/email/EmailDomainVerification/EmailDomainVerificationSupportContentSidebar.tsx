@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 
 import { Box, LegacySelectField as SelectField } from '@gorgias/axiom'
 
-import IconLink from 'core/ui/components/IconLink'
-import SettingsSidebar from 'pages/settings/SettingsSidebar'
+import { IconLink } from 'core/ui/components/IconLink'
+import { SettingsSidebar } from 'pages/settings/SettingsSidebar'
 
 import { supportContentDropdownOptions } from './constants'
 
 import css from './EmailDomainVerificationSupportContentSidebar.less'
 
-export default function EmailDomainVerificationSupportContentSidebar() {
+export function EmailDomainVerificationSupportContentSidebar() {
     const [selectedOption, setSelectedOption] = useState(
         supportContentDropdownOptions[0],
     )

@@ -10,7 +10,7 @@ import { THEME_NAME } from '@gorgias/design-tokens'
 import * as themeHooks from '../../../../core/theme'
 import { IntegrationType } from '../../../../models/integration/constants'
 import type { StoreIntegration } from '../../../../models/integration/types'
-import StoreSelector from './StoreSelector'
+import { StoreSelector } from './StoreSelector'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

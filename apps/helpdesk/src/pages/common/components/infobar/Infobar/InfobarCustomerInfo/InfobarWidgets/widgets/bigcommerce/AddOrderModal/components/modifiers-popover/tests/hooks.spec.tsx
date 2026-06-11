@@ -8,8 +8,8 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 
-import useAddModifiersPopover from '../useAddModifiersPopover'
-import useEditModifiersPopover from '../useEditModifiersPopover'
+import { useAddModifiersPopover } from '../useAddModifiersPopover'
+import { useEditModifiersPopover } from '../useEditModifiersPopover'
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),

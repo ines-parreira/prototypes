@@ -8,7 +8,7 @@ import { IntegrationType } from 'models/integration/types'
 import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
-import SelfServicePreviewChannelSelect from '../SelfServicePreviewChannelSelect'
+import { SelfServicePreviewChannelSelect } from '../SelfServicePreviewChannelSelect'
 
 const makeChannel = (id: number, name: string): SelfServiceChatChannel => ({
     type: TicketChannel.Chat,

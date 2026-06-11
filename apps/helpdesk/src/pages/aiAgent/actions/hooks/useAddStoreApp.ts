@@ -14,11 +14,7 @@ type Props = {
     integration?: Integration
 }
 
-export default function useAddStoreApp({
-    storeName,
-    storeType,
-    integration,
-}: Props) {
+export function useAddStoreApp({ storeName, storeType, integration }: Props) {
     const queryClient = useQueryClient()
 
     const queryKey = storeWorkflowsAppDefinitionKeys.all()

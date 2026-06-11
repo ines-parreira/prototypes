@@ -9,60 +9,67 @@ import { fromJS } from 'immutable'
 import { getConfigByName, getTicketViewField } from 'config/views'
 import { mockSearchRank } from 'fixtures/searchRank'
 import { EntityType, ViewField } from 'models/view/types'
-import type FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
-import type FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
+import type { FilterDropdownItems } from 'pages/common/components/ViewTable/FilterDropdownItems'
+import type { FilterDropdownSearch } from 'pages/common/components/ViewTable/FilterDropdownSearch'
 
-import FilterDropdown from '../FilterDropdown'
+import { FilterDropdown } from '../FilterDropdown'
 
 const mockSearchResults = jest.fn()
 jest.mock('pages/common/components/ViewTable/FilterDropdownSearch', () => {
-    return ({
-        onSearchError,
-        onSearchStart,
-        onSearchSuccess,
-    }: ComponentProps<typeof FilterDropdownSearch>) => {
-        return (
-            <div>
-                <button
-                    data-testid="search-start"
-                    onClick={() => onSearchStart()}
-                />
-                <button
-                    data-testid="search-success"
-                    onClick={() => onSearchSuccess(mockSearchResults())}
-                />
-                <button
-                    data-testid="search-error"
-                    onClick={() => onSearchError()}
-                />
-            </div>
-        )
+    return {
+        FilterDropdownSearch: ({
+            onSearchError,
+            onSearchStart,
+            onSearchSuccess,
+        }: ComponentProps<typeof FilterDropdownSearch>) => {
+            return (
+                <div>
+                    <button
+                        data-testid="search-start"
+                        onClick={() => onSearchStart()}
+                    />
+                    <button
+                        data-testid="search-success"
+                        onClick={() => onSearchSuccess(mockSearchResults())}
+                    />
+                    <button
+                        data-testid="search-error"
+                        onClick={() => onSearchError()}
+                    />
+                </div>
+            )
+        },
     }
 })
 
 const mockClickedItem = jest.fn()
 jest.mock('pages/common/components/ViewTable/FilterDropdownItems', () => {
-    return ({
-        isLoading,
-        items,
-        onItemClick,
-        onMeItemClick,
-    }: ComponentProps<typeof FilterDropdownItems>) => {
-        return (
-            <div>
-                <span data-testid="is-loading">
-                    {isLoading ? 'true' : 'false'}
-                </span>
-                <span data-testid="items">
-                    {JSON.stringify(items, null, 2)}
-                </span>
-                <button data-testid="me-item" onClick={() => onMeItemClick()} />
-                <button
-                    data-testid="item"
-                    onClick={() => onItemClick(mockClickedItem())}
-                />
-            </div>
-        )
+    return {
+        FilterDropdownItems: ({
+            isLoading,
+            items,
+            onItemClick,
+            onMeItemClick,
+        }: ComponentProps<typeof FilterDropdownItems>) => {
+            return (
+                <div>
+                    <span data-testid="is-loading">
+                        {isLoading ? 'true' : 'false'}
+                    </span>
+                    <span data-testid="items">
+                        {JSON.stringify(items, null, 2)}
+                    </span>
+                    <button
+                        data-testid="me-item"
+                        onClick={() => onMeItemClick()}
+                    />
+                    <button
+                        data-testid="item"
+                        onClick={() => onItemClick(mockClickedItem())}
+                    />
+                </div>
+            )
+        },
     }
 })
 

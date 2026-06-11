@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import AddCustomItemPopover from '../AddCustomItemPopover'
+import { AddCustomItemPopover } from '../AddCustomItemPopover'
 
 jest.mock('@repo/logging', () => {
     const segmentTracker: Record<string, unknown> =

@@ -49,4 +49,4 @@ const contactFormAutomationSettingsReducer =
                 ),
     )
 
-export default contactFormAutomationSettingsReducer
+export { contactFormAutomationSettingsReducer }

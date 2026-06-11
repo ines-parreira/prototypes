@@ -2,14 +2,14 @@ import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { AxiosError } from 'axios'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import useHelpCentersAutomationSettings from '../useHelpCenterAutomationSettings'
+import { useHelpCentersAutomationSettings } from '../useHelpCenterAutomationSettings'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('hooks/useAppSelector')
 
 const mockUseHelpCenterApi = useHelpCenterApi as jest.Mock

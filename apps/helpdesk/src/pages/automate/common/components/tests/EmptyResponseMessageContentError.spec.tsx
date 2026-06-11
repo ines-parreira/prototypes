@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import EmptyResponseMessageContentError from '../EmptyResponseMessageContentError'
+import { EmptyResponseMessageContentError } from '../EmptyResponseMessageContentError'
 
 describe('EmptyResponseMessageContentError', () => {
     test('renders correctly', () => {

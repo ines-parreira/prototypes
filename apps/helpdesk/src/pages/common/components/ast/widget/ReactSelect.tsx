@@ -6,12 +6,12 @@ import sortBy from 'lodash/sortBy'
 
 import 'react-select/dist/react-select.css'
 
-import SelectField from '../../../forms/SelectField/SelectField'
+import { SelectField } from '../../../forms/SelectField/SelectField'
 import type {
     SelectableOption as SelectOption,
     Value as SelectValue,
 } from '../../../forms/SelectField/types'
-import Errors from '../Errors'
+import { Errors } from '../Errors'
 
 type Props = {
     className?: string
@@ -34,7 +34,7 @@ type Option = SelectOption | SelectValue
  * @date 2026-01-06
  * @type ui-kit-migration
  */
-export default class Select extends Component<Props> {
+export class Select extends Component<Props> {
     static defaultProps = {
         onSearchChange: _noop,
         sortOptions: true,

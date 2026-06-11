@@ -15,7 +15,7 @@ const navigate = (path: string) => {
     history.push(path)
 }
 
-export default function UIKitRootNodeProvider({ children }: Props) {
+export function UIKitRootNodeProvider({ children }: Props) {
     const appNode = useAppNode()
 
     return (

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import PublicBody from '../PublicBody'
+import { PublicBody } from '../PublicBody'
 
 describe('<PublicBody/>', () => {
     describe('render()', () => {

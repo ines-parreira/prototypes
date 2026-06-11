@@ -5,18 +5,18 @@ import { screen } from '@testing-library/react'
 
 import { ticketInputFieldDefinition } from 'fixtures/customField'
 
-import List from '../List'
-import Row from '../Row'
+import { List } from '../List'
+import { Row } from '../Row'
 
-jest.mock('../Row', () =>
-    jest.fn(() => {
+jest.mock('../Row', () => ({
+    Row: jest.fn(() => {
         return (
             <tr>
                 <td>This is a row</td>
             </tr>
         )
     }),
-)
+}))
 
 const MockedRow = assumeMock(Row)
 

@@ -5,18 +5,20 @@ import type { TicketCompact } from '@gorgias/helpdesk-queries'
 import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { SourceBadge } from '../../tickets/ticket-detail/components/SourceBadge'
-import TicketCard from '../TicketCard'
-import TicketFields from '../TicketFields'
+import { TicketCard } from '../TicketCard'
+import { TicketFields } from '../TicketFields'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
-jest.mock('pages/common/utils/DatetimeLabel', () => jest.fn(() => <div />))
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: jest.fn(() => <div />),
+}))
 jest.mock('tickets/ticket-detail/components/SourceBadge', () => ({
     SourceBadge: jest.fn(() => <div />),
 }))
-jest.mock('../TicketFields', () => jest.fn(() => <div />))
+jest.mock('../TicketFields', () => ({ TicketFields: jest.fn(() => <div />) }))
 
 const ticket = {
     id: 1,

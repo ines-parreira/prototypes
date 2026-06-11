@@ -1,6 +1,7 @@
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { aiAgentSupportAgentDecreaseInFRTQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

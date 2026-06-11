@@ -6,7 +6,7 @@ import { screen, waitFor } from '@testing-library/react'
 import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
 
 import { CONTENT_TYPE } from '../constant'
-import ScrapedDomainSelectedContent from '../ScrapedDomainSelectedContent'
+import { ScrapedDomainSelectedContent } from '../ScrapedDomainSelectedContent'
 import type { IngestedProduct, IngestedResourceWithArticleId } from '../types'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
@@ -28,61 +28,81 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock('../ProductAdditionalInfoView', () => {
-    return function MockProductAdditionalInfoView(props: any) {
-        return (
-            <div data-testid="product-additional-info-view">
-                ProductAdditionalInfoView - Integration ID:{' '}
-                {props.integrationId} - Product ID: {props.productId}
-            </div>
-        )
+    return {
+        ProductAdditionalInfoView: function MockProductAdditionalInfoView(
+            props: any,
+        ) {
+            return (
+                <div data-testid="product-additional-info-view">
+                    ProductAdditionalInfoView - Integration ID:{' '}
+                    {props.integrationId} - Product ID: {props.productId}
+                </div>
+            )
+        },
     }
 })
 
 jest.mock('../IntegrationProductView', () => {
-    return function MockIntegrationProductView() {
-        return <div>Integration Product View</div>
+    return {
+        IntegrationProductView: function MockIntegrationProductView() {
+            return <div>Integration Product View</div>
+        },
     }
 })
 
 jest.mock('../IngestionProductView', () => {
-    return function MockIngestionProductView() {
-        return <div>Ingestion Product View</div>
+    return {
+        IngestionProductView: function MockIngestionProductView() {
+            return <div>Ingestion Product View</div>
+        },
     }
 })
 
 jest.mock('../ScrapedDomainQuestion', () => {
-    return function MockScrapedDomainQuestion() {
-        return <div>Scraped Domain Question</div>
+    return {
+        ScrapedDomainQuestion: function MockScrapedDomainQuestion() {
+            return <div>Scraped Domain Question</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/accordion/Accordion', () => {
-    return function MockAccordion({ children }: any) {
-        return <div data-testid="accordion">{children}</div>
+    return {
+        Accordion: function MockAccordion({ children }: any) {
+            return <div data-testid="accordion">{children}</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/accordion/AccordionItem', () => {
-    return function MockAccordionItem({ children, id }: any) {
-        return <div data-testid={`accordion-item-${id}`}>{children}</div>
+    return {
+        AccordionItem: function MockAccordionItem({ children, id }: any) {
+            return <div data-testid={`accordion-item-${id}`}>{children}</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/accordion/AccordionHeader', () => {
-    return function MockAccordionHeader({ children }: any) {
-        return <div data-testid="accordion-header">{children}</div>
+    return {
+        AccordionHeader: function MockAccordionHeader({ children }: any) {
+            return <div data-testid="accordion-header">{children}</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/accordion/AccordionBody', () => {
-    return function MockAccordionBody({ children }: any) {
-        return <div data-testid="accordion-body">{children}</div>
+    return {
+        AccordionBody: function MockAccordionBody({ children }: any) {
+            return <div data-testid="accordion-body">{children}</div>
+        },
     }
 })
 
 jest.mock('pages/common/components/ItemWithTooltip/ItemWithTooltip', () => {
-    return function MockItemWithTooltip({ item }: any) {
-        return <div>{item}</div>
+    return {
+        ItemWithTooltip: function MockItemWithTooltip({ item }: any) {
+            return <div>{item}</div>
+        },
     }
 })
 

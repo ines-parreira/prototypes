@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import type { List } from 'immutable'
 import { Button, Col, Row } from 'reactstrap'
 
-import TextInput from './input/TextInput'
+import { DefaultExportTextInput as TextInput } from './input/TextInput'
 
 import css from './ListField.less'
 
@@ -20,7 +20,7 @@ type Props = {
     dataCanduId?: string
 }
 
-export default class ListField extends Component<Props> {
+export class ListField extends Component<Props> {
     static defaultProps = {
         maxLength: 100,
         maxItems: 100,

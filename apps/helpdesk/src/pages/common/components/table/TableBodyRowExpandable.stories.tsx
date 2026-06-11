@@ -3,11 +3,11 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 
-import BodyCell from './cells/BodyCell'
-import HeaderCellProperty from './cells/HeaderCellProperty'
-import TableBody from './TableBody'
-import TableHead from './TableHead'
-import TableWrapper from './TableWrapper'
+import { BodyCell } from './cells/BodyCell'
+import { HeaderCellProperty } from './cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from './TableBody'
+import { TableHead } from './TableHead'
+import { TableWrapper } from './TableWrapper'
 
 const tableColumns = [
     {

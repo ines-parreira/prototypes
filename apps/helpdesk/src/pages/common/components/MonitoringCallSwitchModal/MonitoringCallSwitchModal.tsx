@@ -1,10 +1,10 @@
 import { Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 import css from './MonitoringCallSwitchModal.less'
 
@@ -15,7 +15,7 @@ type Props = {
     newMonitoredAgentId: number | null
 }
 
-export default function MonitoringCallSwitchModal({
+export function MonitoringCallSwitchModal({
     isOpen,
     onClose,
     onConfirm,

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { isProduction } from '@repo/utils'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createBaseUrl } from 'models/aiAgent/resources/message-processing'
 import { IntegrationType } from 'models/integration/constants'
 import type { HttpIntegration } from 'models/integration/types'

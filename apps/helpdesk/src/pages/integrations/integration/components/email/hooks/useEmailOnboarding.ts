@@ -22,11 +22,11 @@ import {
     useUpdateIntegration,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type { Integration, OutlookIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'

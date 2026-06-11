@@ -109,7 +109,7 @@ export const getVariant = (
     )
 }
 
-export default function ProductComponent({
+export function ProductComponent({
     product,
     lineItem,
     storeHash,

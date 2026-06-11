@@ -12,7 +12,7 @@ import {
 } from 'fixtures/shopify'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import OrderForm from '../OrderForm'
+import { OrderForm } from '../OrderForm'
 
 describe('<OrderForm/>', () => {
     const order = fromJS(shopifyOrderFixture())

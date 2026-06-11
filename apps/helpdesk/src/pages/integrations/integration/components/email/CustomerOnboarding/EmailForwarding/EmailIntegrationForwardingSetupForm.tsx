@@ -9,12 +9,12 @@ import {
 } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import FormRow from 'pages/common/forms/FormRow'
-import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
-import EmailForwardingInstructions from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailForwardingInstructions'
-import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import { FormRow } from 'pages/common/forms/FormRow'
+import { BaseEmailIntegrationInputField } from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
+import { EmailForwardingInstructions } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailForwardingInstructions'
+import { EmailIntegrationOnboardingButtons } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
 import { useEmailOnboarding } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
-import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
+import { FormSection } from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
 import css from './EmailIntegrationForwardingSetupForm.less'
 
@@ -25,7 +25,7 @@ type Props = {
     handleCancel?: () => void
 }
 
-export default function EmailIntegrationForwardingSetupForm(props: Props) {
+export function EmailIntegrationForwardingSetupForm(props: Props) {
     const {
         integration,
         sendVerification,

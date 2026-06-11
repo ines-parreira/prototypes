@@ -47,4 +47,4 @@ const TicketEvent = ({ type }: Props) => {
     )
 }
 
-export default TicketEvent
+export { TicketEvent }

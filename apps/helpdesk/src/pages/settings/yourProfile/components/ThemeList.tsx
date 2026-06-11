@@ -4,7 +4,7 @@ import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { THEME_CONFIGS } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'
 
@@ -13,7 +13,7 @@ type Props = {
     onChangeTheme: (theme: HelpdeskThemeName) => void
 }
 
-export default function ThemeList({ savedTheme, onChangeTheme }: Props) {
+export function ThemeList({ savedTheme, onChangeTheme }: Props) {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     return (

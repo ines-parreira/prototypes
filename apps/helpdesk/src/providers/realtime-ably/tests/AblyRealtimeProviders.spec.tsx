@@ -2,7 +2,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import { render } from '@repo/testing'
 
-import AblyRealtimeProviders from '../AblyRealtimeProviders'
+import { AblyRealtimeProviders } from '../AblyRealtimeProviders'
 import { useRealtimeAccountPresenceSubscription } from '../hooks/useRealtimeAccountPresenceSubscription'
 
 let mockLogHandler: ((message: string) => void) | undefined

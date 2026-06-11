@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { SELF_SERVICE_TOP_REPORTED_ISSUES } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     Period,
     TextStatAxisValue,

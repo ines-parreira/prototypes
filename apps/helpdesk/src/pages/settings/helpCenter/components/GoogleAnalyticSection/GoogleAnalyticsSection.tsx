@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import settingsCss from 'pages/settings/settings.less'
 
-import InputField from '../../../../common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from '../../../../common/forms/input/InputField'
 import { isValidGaid } from './utils'
 
 import css from './GoogleAnalyticsSection.less'
@@ -71,5 +71,3 @@ export const GoogleAnalyticsSection = ({ onChange, onDelete, gaid }: Props) => {
         </section>
     )
 }
-
-export default GoogleAnalyticsSection

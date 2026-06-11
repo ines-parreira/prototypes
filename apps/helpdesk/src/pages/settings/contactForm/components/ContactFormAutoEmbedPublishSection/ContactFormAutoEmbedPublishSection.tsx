@@ -6,7 +6,7 @@ import type {
 } from 'models/contactForm/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
-import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
+import { ContactFormAutoEmbedCard } from '../ContactFormAutoEmbedCard'
 
 export type ContactFormAutoEmbedPublishSectionProps = {
     contactFormShopName: string | null
@@ -45,4 +45,4 @@ const ContactFormAutoEmbedPublishSection = (
     )
 }
 
-export default ContactFormAutoEmbedPublishSection
+export { ContactFormAutoEmbedPublishSection }

@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { macros } from 'fixtures/macro'
-import MacroSelect from 'pages/common/components/ast/widget/MacroSelect'
+import { DefaultExportMacroSelect as MacroSelect } from 'pages/common/components/ast/widget/MacroSelect'
 import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])

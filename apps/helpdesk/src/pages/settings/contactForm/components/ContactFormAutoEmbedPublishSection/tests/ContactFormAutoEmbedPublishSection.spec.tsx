@@ -10,7 +10,7 @@ import type { RootState } from 'state/types'
 
 import { CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../ContactFormAutoEmbedCard'
 import type { ContactFormAutoEmbedPublishSectionProps } from '../ContactFormAutoEmbedPublishSection'
-import ContactFormAutoEmbedPublishSection from '../ContactFormAutoEmbedPublishSection'
+import { ContactFormAutoEmbedPublishSection } from '../ContactFormAutoEmbedPublishSection'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock

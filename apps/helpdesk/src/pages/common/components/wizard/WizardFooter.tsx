@@ -98,4 +98,4 @@ const WizardFooter: React.FC<Props> = ({
     )
 }
 
-export default WizardFooter
+export { WizardFooter }

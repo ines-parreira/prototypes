@@ -3,7 +3,7 @@ import { createContext, useContext, useMemo } from 'react'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 

@@ -90,4 +90,6 @@ export function MessageStatusIndicator({ message }: Props) {
     )
 }
 
-export default memo(MessageStatusIndicator)
+const DefaultExportMessageStatusIndicator = memo(MessageStatusIndicator)
+
+export { DefaultExportMessageStatusIndicator }

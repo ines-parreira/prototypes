@@ -8,9 +8,9 @@ import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import type { SearchResultType } from 'services/gorgiasApi'
 
 import type { Props as SearchInputProps } from '../SearchInput/SearchInput'
-import SearchInput from '../SearchInput/SearchInput'
+import { SearchInput } from '../SearchInput/SearchInput'
 import type { Props as ResultProps } from './Result'
-import Result from './Result'
+import { Result } from './Result'
 
 interface Props<
     ItemType extends IntegrationDataItem<unknown>,
@@ -31,7 +31,7 @@ interface Props<
     hasError?: boolean
 }
 
-export default function ProductSearchInput<
+export function ProductSearchInput<
     ItemType extends IntegrationDataItem<unknown>,
     Variant extends SearchResultType,
 >({

@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     fetchAchievedExposuresVoiceCallsTrend,

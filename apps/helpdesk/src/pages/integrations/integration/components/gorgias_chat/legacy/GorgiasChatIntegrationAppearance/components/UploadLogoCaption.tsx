@@ -2,7 +2,7 @@ import type React from 'react'
 import { useRef } from 'react'
 
 import type { UploadLogoModalHandle } from './UploadLogoModal'
-import UploadLogoModal from './UploadLogoModal'
+import { DefaultExportUploadLogoModal as UploadLogoModal } from './UploadLogoModal'
 
 type UploadLogoCaptionProps = {
     onConfirm: (url: string) => void
@@ -32,4 +32,4 @@ const UploadLogoCaption: React.FC<UploadLogoCaptionProps> = ({ onConfirm }) => {
     )
 }
 
-export default UploadLogoCaption
+export { UploadLogoCaption }

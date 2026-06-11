@@ -10,9 +10,9 @@ import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import EditActionView from './EditActionView'
-import GuidanceReferenceProvider from './providers/GuidanceReferenceProvider'
-import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
+import { EditActionView } from './EditActionView'
+import { GuidanceReferenceProvider } from './providers/GuidanceReferenceProvider'
+import { StoreTrackstarProvider } from './providers/StoreTrackstarProvider'
 import type { StoresWorkflowConfiguration } from './types'
 
 const EditActionViewContainer = () => {
@@ -65,4 +65,4 @@ const EditActionViewContainer = () => {
     )
 }
 
-export default EditActionViewContainer
+export { EditActionViewContainer }

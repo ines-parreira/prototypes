@@ -70,4 +70,4 @@ const OrderManagementFlowItem = ({
     )
 }
 
-export default OrderManagementFlowItem
+export { OrderManagementFlowItem }

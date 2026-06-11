@@ -2,11 +2,11 @@ import { useMemo } from 'react'
 
 import { useShortcuts } from '@repo/utils'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { pendingMessageManager } from 'services/pendingMessageManager/pendingMessageManager'
 import { goToActiveView } from 'state/views/actions'
 
-export default function useAppShortcuts() {
+export function useAppShortcuts() {
     const dispatch = useAppDispatch()
 
     const actions = useMemo(

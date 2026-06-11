@@ -8,9 +8,9 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { DisplayType } from 'components/Navigation/components/NavigationSectionItem'
 import { Navigation } from 'components/Navigation/Navigation'
 import type { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useScrollActiveItemIntoView } from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import { buildPasswordAnd2FaText } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -104,4 +104,4 @@ const Item = ({
     )
 }
 
-export default Item
+export { Item }

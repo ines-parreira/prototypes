@@ -12,7 +12,7 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 
-import ProductComponent, { getVariant, Modifiers } from '../ProductComponent'
+import { getVariant, Modifiers, ProductComponent } from '../ProductComponent'
 
 const defaultProps: ComponentProps<typeof ProductComponent> = {
     product: bigCommerceProductFixture(),

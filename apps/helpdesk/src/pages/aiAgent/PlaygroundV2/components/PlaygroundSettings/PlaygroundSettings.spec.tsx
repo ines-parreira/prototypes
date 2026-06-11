@@ -47,7 +47,7 @@ jest.mock(
     'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection',
     () => ({
         __esModule: true,
-        default: ({ value, onChange, isDisabled }: any) => (
+        ChatAvailabilitySelection: ({ value, onChange, isDisabled }: any) => (
             <div data-testid="chat-availability-selection">
                 <button
                     onClick={() => onChange('online')}
@@ -71,7 +71,7 @@ jest.mock(
     'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal',
     () => ({
         __esModule: true,
-        default: ({ isOpen, onClose, onConfirm }: any) =>
+        PlaygroundActionsModal: ({ isOpen, onClose, onConfirm }: any) =>
             isOpen ? (
                 <div data-testid="actions-warning-modal">
                     <h2>Warning: Actions will affect real data</h2>

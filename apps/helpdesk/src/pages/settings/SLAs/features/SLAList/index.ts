@@ -1,1 +1,1 @@
-export { default as SLAList } from './controllers/SLAListController'
+export { SLAListController as SLAList } from './controllers/SLAListController'

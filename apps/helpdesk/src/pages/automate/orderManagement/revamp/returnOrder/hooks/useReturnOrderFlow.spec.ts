@@ -3,9 +3,9 @@ import { act } from '@testing-library/react'
 
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
-import useReturnOrderFlow from './useReturnOrderFlow'
+import { useReturnOrderFlow } from './useReturnOrderFlow'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

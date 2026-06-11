@@ -1,5 +1,5 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { useGetRevenueShareChart } from 'domains/reporting/pages/convert/hooks/stats/useGetRevenueShareChart'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
@@ -9,7 +9,7 @@ import {
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
 } from 'domains/reporting/pages/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 
 export const title = 'Total store revenue share influenced by campaigns'

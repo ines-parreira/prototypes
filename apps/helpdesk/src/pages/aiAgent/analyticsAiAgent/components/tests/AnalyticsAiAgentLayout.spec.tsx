@@ -83,14 +83,14 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
 }))
 jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useInjectStyleToCandu: jest.fn(),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 
 const mockFiltersPanelWrapper = jest.requireMock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-).default as jest.Mock
+).FiltersPanelWrapper as jest.Mock
 
 const mockedGetPreviousUrl = jest.mocked(getPreviousUrl)
 const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)

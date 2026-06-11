@@ -10,7 +10,7 @@ import type { RootState } from 'state/types'
 import { useGetShopifyPages } from '../../../queries'
 import { HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../HelpCenterAutoEmbedCard'
 import type { HelpCenterAutoEmbedPublishSectionProps } from '../HelpCenterAutoEmbedPublishSection'
-import HelpCenterAutoEmbedPublishSection from '../HelpCenterAutoEmbedPublishSection'
+import { HelpCenterAutoEmbedPublishSection } from '../HelpCenterAutoEmbedPublishSection'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock

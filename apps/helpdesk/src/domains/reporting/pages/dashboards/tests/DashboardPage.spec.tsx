@@ -28,7 +28,7 @@ import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/Pin
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',

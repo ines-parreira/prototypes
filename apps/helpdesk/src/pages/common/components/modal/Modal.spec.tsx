@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { render } from '@repo/testing'
 
-import Modal from './Modal'
+import { DefaultExportModal as Modal } from './Modal'
 
 const focusTrapMock = jest.fn(
     ({

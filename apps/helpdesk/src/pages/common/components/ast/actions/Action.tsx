@@ -8,12 +8,12 @@ import { Card, CardBody } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import Errors from 'pages/common/components/ast/Errors'
+import { Errors } from 'pages/common/components/ast/Errors'
 import { computeLeftPadding } from 'pages/common/components/ast/utils'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import ActionSelect from './ActionSelect'
-import ActionWarning from './ActionWarning'
+import { ActionSelect } from './ActionSelect'
+import { ActionWarning } from './ActionWarning'
 import { actionsConfig, isValidActionKey } from './config'
 
 import css from './Action.less'
@@ -31,7 +31,7 @@ type Props = {
     value: string
 }
 
-export default function Action({
+export function Action({
     actions,
     children,
     depth,

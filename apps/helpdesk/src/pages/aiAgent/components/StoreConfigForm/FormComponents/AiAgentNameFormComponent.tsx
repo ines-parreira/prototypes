@@ -5,7 +5,7 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './AiAgentNameFormComponent.less'
 

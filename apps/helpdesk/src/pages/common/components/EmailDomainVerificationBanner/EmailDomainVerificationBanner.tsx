@@ -4,7 +4,7 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
@@ -15,7 +15,7 @@ import { isAdmin } from 'utils'
 
 const BANNER_VISIBILITY_KEY = 'email-domain-verification-banner-visibility'
 
-export default function EmailDomainVerificationBanner() {
+export function EmailDomainVerificationBanner() {
     const [isBannerVisible, setIsBannerVisible] = useLocalStorage<
         Maybe<boolean>
     >(BANNER_VISIBILITY_KEY, true)

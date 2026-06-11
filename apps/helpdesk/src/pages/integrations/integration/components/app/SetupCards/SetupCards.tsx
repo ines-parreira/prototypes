@@ -7,7 +7,7 @@ type SetupCardsProps = {
     outbound?: ReactNode
 }
 
-export default function SetupCards({ inbound, outbound }: SetupCardsProps) {
+export function SetupCards({ inbound, outbound }: SetupCardsProps) {
     if (!inbound && !outbound) return null
 
     return (

@@ -18,13 +18,13 @@ import { useMeasure } from '@gorgias/toolkit-react'
 import { toast } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { activateRule } from 'models/rule/resources'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
-import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { FakeTicketComponent } from 'pages/settings/rules/components/FakeTicketComponent'
+import { RuleItemButtons } from 'pages/settings/rules/components/RuleItemButtons'
 import type { InstallationError } from 'pages/settings/rules/ruleLibrary/constants'
 import { ruleUpdated } from 'state/entities/rules/actions'
 import type { ManagedRuleSettings } from 'state/rules/types'
@@ -33,19 +33,19 @@ import { convertFromHTML, convertToHTML } from 'utils/editor'
 
 import type { EditorHandle, ManagedRuleEditorProps } from '../RuleFormEditor'
 // oxlint-disable-next-line no-named-as-default
-import AutoCloseSpamEditor from './AutoCloseSpamEditor'
+import { AutoCloseSpamEditor } from './AutoCloseSpamEditor'
 // oxlint-disable-next-line no-named-as-default
-import AutoReplyFAQDemo from './AutoReplyFAQDemo'
+import { AutoReplyFAQDemo } from './AutoReplyFAQDemo'
 // oxlint-disable-next-line no-named-as-default
-import AutoReplyFAQEditor from './AutoReplyFAQEditor'
+import { AutoReplyFAQEditor } from './AutoReplyFAQEditor'
 // oxlint-disable-next-line no-named-as-default
-import AutoReplyReturnDemo from './AutoReplyReturnDemo'
+import { AutoReplyReturnDemo } from './AutoReplyReturnDemo'
 // oxlint-disable-next-line no-named-as-default
-import AutoReplyReturnEditor from './AutoReplyReturnEditor'
+import { AutoReplyReturnEditor } from './AutoReplyReturnEditor'
 // oxlint-disable-next-line no-named-as-default
-import AutoReplyWismoDemo from './AutoReplyWismoDemo'
+import { AutoReplyWismoDemo } from './AutoReplyWismoDemo'
 // oxlint-disable-next-line no-named-as-default
-import AutoReplyWismoEditor from './AutoReplyWismoEditor'
+import { AutoReplyWismoEditor } from './AutoReplyWismoEditor'
 
 import css from './RuleEditor.less'
 
@@ -258,4 +258,8 @@ export const ManagedRuleEditor = (
     )
 }
 
-export default forwardRef<EditorHandle, Props>(ManagedRuleEditor)
+const DefaultExportManagedRuleEditor = forwardRef<EditorHandle, Props>(
+    ManagedRuleEditor,
+)
+
+export { DefaultExportManagedRuleEditor }

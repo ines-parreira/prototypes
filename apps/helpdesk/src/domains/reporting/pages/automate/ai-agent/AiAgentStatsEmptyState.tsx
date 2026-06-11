@@ -8,8 +8,8 @@ import css from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsEmptyStat
 import { PAGE_TITLE_AI_AGENT } from 'domains/reporting/pages/self-service/constants'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import PageHeader from 'pages/common/components/PageHeader'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { assetsUrl } from 'utils'
 
 export const AiAgentStatsEmptyState = () => {

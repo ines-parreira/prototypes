@@ -5,9 +5,9 @@ import { useReactFlow, useViewport } from '@xyflow/react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { UncontrolledDropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 import css from './CustomControls.less'
 

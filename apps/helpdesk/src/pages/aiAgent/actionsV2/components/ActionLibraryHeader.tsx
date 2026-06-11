@@ -48,4 +48,4 @@ const ActionLibraryHeader = ({ shopName, shopType, onCreate }: Props) => {
     )
 }
 
-export default ActionLibraryHeader
+export { ActionLibraryHeader }

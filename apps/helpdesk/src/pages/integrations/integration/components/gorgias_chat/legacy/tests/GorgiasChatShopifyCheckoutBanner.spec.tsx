@@ -3,17 +3,17 @@ import { fireEvent, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'
 import { Tab } from 'pages/integrations/integration/types'
 import { hideShopifyCheckoutChatBanner } from 'state/integrations/actions'
 import * as actionTypes from 'state/integrations/constants'
 
-import GorgiasChatShopifyCheckoutChatBanner from '../GorgiasChatShopifyCheckoutChatBanner'
+import { GorgiasChatShopifyCheckoutBanner as GorgiasChatShopifyCheckoutChatBanner } from '../GorgiasChatShopifyCheckoutChatBanner'
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppDispatch: jest.fn(),
 }))
 
 jest.mock('state/integrations/actions', () => ({

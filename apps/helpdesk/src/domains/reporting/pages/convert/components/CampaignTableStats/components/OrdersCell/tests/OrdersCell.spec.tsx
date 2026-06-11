@@ -9,7 +9,7 @@ import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/t
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 jest.mock('hooks/useAppDispatch')

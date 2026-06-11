@@ -12,10 +12,10 @@ import {
 
 import { TicketChannel } from 'business/types/ticket'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import css from './CurrentlyViewingDropdown.less'

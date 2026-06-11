@@ -7,9 +7,7 @@ type Props = {
     category: WhatsAppMessageTemplateCategory
 }
 
-export default function WhatsAppMessageTemplateCategoryLabel({
-    category,
-}: Props) {
+export function WhatsAppMessageTemplateCategoryLabel({ category }: Props) {
     const { type, label } = templateCategoryToBadgeProps[category] ?? {}
 
     return <Badge type={type}>{label ?? category}</Badge>

@@ -1,6 +1,6 @@
 import type { MigrationProvider } from '../../types'
-import MigrationBaseModal from '../MigrationBaseModal'
-import ProviderInfo from '../ProviderInfo'
+import { MigrationBaseModal } from '../MigrationBaseModal'
+import { ProviderInfo } from '../ProviderInfo'
 
 import css from './ProviderSelectModal.less'
 
@@ -50,4 +50,4 @@ const ProviderSelectModal: React.FC<Props> = ({
     )
 }
 
-export default ProviderSelectModal
+export { ProviderSelectModal }

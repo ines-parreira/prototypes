@@ -2,7 +2,7 @@ import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 
 // eslint-disable-next-line no-unused-vars
 const mockUnsavedChangesPrompt = jest.fn((_args: any) => (
@@ -15,7 +15,7 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
     return {
         __esModule: true,
         // oxlint-disable-next-line forward-ref-uses-ref
-        default: forwardRef((props: any) =>
+        UnsavedChangesPrompt: forwardRef((props: any) =>
             mockUnsavedChangesPrompt(props as any),
         ),
     }

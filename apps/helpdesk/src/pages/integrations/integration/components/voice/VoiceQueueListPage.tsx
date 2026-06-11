@@ -4,13 +4,13 @@ import { Button } from '@gorgias/axiom'
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
-import VoiceQueueList from './VoiceQueueList'
+import { VoiceQueueList } from './VoiceQueueList'
 
-export default function VoiceQueueListPage() {
+export function VoiceQueueListPage() {
     const {
         data,
         isFetching,

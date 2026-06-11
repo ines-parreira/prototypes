@@ -1,7 +1,7 @@
 import { toast } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import uploadFiles from 'common/utils/uploadFiles'
+import { uploadFiles } from 'common/utils/uploadFiles'
 
 import {
     copilotAttachmentsConfig,

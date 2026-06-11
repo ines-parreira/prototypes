@@ -17,7 +17,7 @@ type Props = {
     defaultOpen?: boolean
 }
 
-export default function MetafieldsContainer({
+export function MetafieldsContainer({
     children,
     title,
     onOpened,

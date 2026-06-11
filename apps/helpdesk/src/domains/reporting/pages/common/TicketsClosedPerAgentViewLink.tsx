@@ -6,8 +6,8 @@ import type { List, Map } from 'immutable'
 
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import { useStatsViewFilters } from 'domains/reporting/pages/common/utils'
-import ViewLink from 'domains/reporting/pages/common/ViewLink'
-import useAppSelector from 'hooks/useAppSelector'
+import { ViewLink } from 'domains/reporting/pages/common/ViewLink'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewField } from 'models/view/types'
 import { getHumanAgents } from 'state/agents/selectors'
 import { CollectionOperator, EqualityOperator } from 'state/rules/types'
@@ -19,7 +19,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function TicketsClosedPerAgentViewLink({
+export function TicketsClosedPerAgentViewLink({
     agentName,
     children,
     unassignedName = 'Unassigned',

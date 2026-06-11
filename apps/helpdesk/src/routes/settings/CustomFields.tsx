@@ -4,9 +4,9 @@ import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
-import AddCustomField from 'pages/settings/customFields/AddCustomField'
-import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
-import EditCustomField from 'pages/settings/customFields/EditCustomField'
+import { AddCustomField } from 'pages/settings/customFields/AddCustomField'
+import { CustomFields as CustomFieldsComponent } from 'pages/settings/customFields/CustomFields'
+import { EditCustomField } from 'pages/settings/customFields/EditCustomField'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

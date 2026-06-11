@@ -35,9 +35,11 @@ const useStandaloneAiContextMock = assumeMock(useStandaloneAiContext)
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)

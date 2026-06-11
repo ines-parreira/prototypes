@@ -6,10 +6,10 @@ import { fromJS } from 'immutable'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
+import { CustomerSyncForm } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportCustomerForm as CustomerForm } from 'pages/customers/common/components/CustomerForm'
 
 export function useCustomerProfileActions() {
     const [isCustomerEditFormOpen, setIsCustomerEditFormOpen] = useState(false)

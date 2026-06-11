@@ -18,7 +18,7 @@ type Props = {
     onUserClick: (user: Map<any, any>) => void
 }
 
-export default function PeopleSearchResults({
+export function PeopleSearchResults({
     handleTeams,
     handleUsers,
     children,

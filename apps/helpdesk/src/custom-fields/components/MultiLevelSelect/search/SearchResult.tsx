@@ -1,6 +1,6 @@
 import type { CustomFieldValue } from 'custom-fields/types'
 
-import CheckIcon from '../CheckIcon'
+import { CheckIcon } from '../CheckIcon'
 
 import dropdownCss from '../MultiLevelSelect.less'
 import searchCss from './search.less'

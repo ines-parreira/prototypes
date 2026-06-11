@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 import css from 'domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording.less'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import Modal from 'pages/common/components/modal/Modal'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import { useDownloadRecording } from 'pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording'
 import { replaceAttachmentURL } from 'utils'
 
@@ -95,4 +95,4 @@ const VoiceCallRecording = ({ voiceCall, isDownloadable = true }: Props) => {
     )
 }
 
-export default VoiceCallRecording
+export { VoiceCallRecording }

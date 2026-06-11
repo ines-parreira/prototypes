@@ -1,6 +1,6 @@
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
-import CountryFlag from './CountryFlag'
+import { CountryFlag } from './CountryFlag'
 import { countryCode } from './utils'
 
 import css from './PhoneNumberTitle.less'
@@ -11,7 +11,7 @@ type Props = {
     withCountryCode?: boolean
 }
 
-export default function PhoneNumberTitle({
+export function PhoneNumberTitle({
     phoneNumber,
     withRoundFlag,
     withCountryCode,

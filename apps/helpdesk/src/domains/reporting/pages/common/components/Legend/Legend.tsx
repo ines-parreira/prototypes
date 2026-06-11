@@ -13,7 +13,7 @@ type Props = {
     labels: Array<Label>
 }
 
-export default function Legend({ labels }: Props) {
+export function Legend({ labels }: Props) {
     if (!_isArray(labels) || !labels.length) {
         return null
     }

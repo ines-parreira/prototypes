@@ -1,9 +1,9 @@
 import { UserRole } from 'config/types/user'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { ProductInsightsEditColumns } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsEditColumns'
 import { ProductInsightsTable } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTable'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
     useGetCustomTicketsFieldsDefinitionData,

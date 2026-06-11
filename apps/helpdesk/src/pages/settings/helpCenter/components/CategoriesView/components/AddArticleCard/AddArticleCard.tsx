@@ -30,4 +30,4 @@ const AddArticleCard = ({ onCreateArticle, canUpdateArticle }: Props) => {
     )
 }
 
-export default AddArticleCard
+export { AddArticleCard }

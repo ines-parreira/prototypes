@@ -23,7 +23,7 @@ type EditModifiersPopoverState = {
     lineItem: BigCommerceCartLineItem
 }
 
-export default function useEditModifiersPopover(
+export function useEditModifiersPopover(
     storeHash: string,
     onApply: (props: {
         product: BigCommerceProduct

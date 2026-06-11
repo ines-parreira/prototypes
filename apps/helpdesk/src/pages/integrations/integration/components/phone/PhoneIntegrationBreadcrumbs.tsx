@@ -2,7 +2,7 @@ import type { LocationState } from 'history'
 import { Link, matchPath, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     PhoneIntegration,
     SmsIntegration,
@@ -12,14 +12,14 @@ import { IntegrationType } from 'models/integration/types'
 import { friendlyName } from 'pages/phoneNumbers/utils'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
-import VoiceQueueBreadcrumbs from './VoiceQueueBreadcrumbs'
+import { VoiceQueueBreadcrumbs } from './VoiceQueueBreadcrumbs'
 
 type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
     integration?: PhoneIntegration | SmsIntegration | WhatsAppIntegration
 }
 
-export default function PhoneIntegrationBreadcrumbs({
+export function PhoneIntegrationBreadcrumbs({
     type,
     integration,
 }: Props): JSX.Element {

@@ -1,8 +1,8 @@
 import type { List, Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { MacroAction } from 'models/macroAction/types'
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 import { getTags } from 'state/tags/selectors'
 
 import { BaseActionPreview } from './BaseActionPreview'
@@ -39,5 +39,3 @@ export const TagActionPreview = ({ action }: Props) => {
         </BaseActionPreview>
     )
 }
-
-export default TagActionPreview

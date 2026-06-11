@@ -5,12 +5,12 @@ import type { CountryCode } from 'libphonenumber-js'
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import type { UserSearchResult } from 'models/search/types'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import usePhoneDeviceDialerInput from 'pages/integrations/integration/components/phone/usePhoneDeviceDialerInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { usePhoneDeviceDialerInput } from 'pages/integrations/integration/components/phone/usePhoneDeviceDialerInput'
 
-import PhoneDeviceDialerBody from './PhoneDeviceDialerBody'
+import { PhoneDeviceDialerBody } from './PhoneDeviceDialerBody'
 
 import css from './PhoneDevice.less'
 
@@ -23,7 +23,7 @@ type Props = {
     onValidationChange?: (isValid: boolean) => void
 }
 
-export default function PhoneDeviceDialerInput({
+export function PhoneDeviceDialerInput({
     value,
     onValueChange = () => {},
     onConfirm = () => {},

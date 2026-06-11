@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ProductAutomations from '../ProductAutomations'
+import { ProductAutomations } from '../ProductAutomations'
 
 describe('ProductAutomations', () => {
     it('should render the component', () => {

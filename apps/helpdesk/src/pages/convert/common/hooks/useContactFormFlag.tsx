@@ -4,4 +4,4 @@ const useCanAddContactFormFlag = () => {
     return useFlag(FeatureFlagKey.ConvertContactForm)
 }
 
-export default useCanAddContactFormFlag
+export { useCanAddContactFormFlag }

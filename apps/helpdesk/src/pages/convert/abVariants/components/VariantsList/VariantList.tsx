@@ -13,13 +13,13 @@ import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/use
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import type { ABGroup } from 'models/convert/campaign/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import VariantActions from 'pages/convert/abVariants/components/VariantActions'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { VariantActions } from 'pages/convert/abVariants/components/VariantActions'
 import type { TableColumn } from 'pages/convert/abVariants/components/VariantsList/types'
 import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
 import { getDataFromTableCell } from 'pages/convert/abVariants/components/VariantsList/utils'
@@ -34,7 +34,7 @@ import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import DataCell from './components/DataCell'
+import { DataCell } from './components/DataCell'
 
 import css from './VariantList.less'
 
@@ -303,4 +303,4 @@ const VariantsList: React.FC<Props> = ({
     )
 }
 
-export default VariantsList
+export { VariantsList }

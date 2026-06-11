@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { tags } from 'fixtures/tag'
 
-import TableActions from '../TableActions/TableActions'
+import { TableActions } from '../TableActions/TableActions'
 
 const mockStore = configureMockStore()
 

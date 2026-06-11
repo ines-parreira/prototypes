@@ -2,7 +2,7 @@ import type { IconName } from '@gorgias/axiom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import type { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
@@ -42,4 +42,4 @@ const Section = ({
     )
 }
 
-export default Section
+export { Section }

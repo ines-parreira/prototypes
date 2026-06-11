@@ -4,11 +4,11 @@ import {
     HeaderType,
     PAGE_NAME,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import BackLink from 'pages/common/components/BackLink'
+import { BackLink } from 'pages/common/components/BackLink'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
-import AiAgentScrapedDomainContentHeader from './AiAgentScrapedDomainContentHeader'
-import SyncIngestionDomainBanner from './SyncIngestionDomainBanner'
+import { AiAgentScrapedDomainContentHeader } from './AiAgentScrapedDomainContentHeader'
+import { SyncIngestionDomainBanner } from './SyncIngestionDomainBanner'
 
 import css from './AiAgentScrapedDomainContentLayout.less'
 
@@ -83,4 +83,4 @@ const AiAgentScrapedDomainContentLayout = ({
     )
 }
 
-export default AiAgentScrapedDomainContentLayout
+export { AiAgentScrapedDomainContentLayout }

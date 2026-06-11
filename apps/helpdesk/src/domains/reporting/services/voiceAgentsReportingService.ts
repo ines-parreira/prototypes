@@ -36,7 +36,7 @@ import {
 import { useVoiceAgentsMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsMetrics'
 import { useVoiceAgentsSummaryMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsSummaryMetrics'
 import { getSortedAgents } from 'domains/reporting/state/ui/stats/voiceAgentsPerformanceSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createCsv } from 'utils/file'
 
 export interface VoiceAgentsPerformanceReportData<T = MetricWithDecile> {

@@ -6,7 +6,7 @@ import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 
 import { mockPluginMethods, typeText } from '../../../tests/draftTestUtils'
 import type { PluginMethods } from '../../types'
-import createPlugin, { isDisplayedAction } from '../index'
+import { toolbarPlugin as createPlugin, isDisplayedAction } from '../index'
 import { ActionName } from '../types'
 
 describe('toolbar plugin', () => {

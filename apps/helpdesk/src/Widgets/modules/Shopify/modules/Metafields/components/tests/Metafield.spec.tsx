@@ -58,7 +58,7 @@ import {
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import Metafield from '../Metafield'
+import { Metafield } from '../Metafield'
 
 const integrationContext: IntegrationContextType = {
     integration: Map<string, unknown>(

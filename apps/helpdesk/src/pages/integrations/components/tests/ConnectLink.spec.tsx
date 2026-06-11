@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import ConnectLink from '../ConnectLink'
+import { ConnectLink } from '../ConnectLink'
 
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),

@@ -11,7 +11,9 @@ import { RuleTicketList } from '../RuleTicketList'
 
 jest.mock('models/ticket/resources')
 jest.mock('@repo/logging')
-jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
+jest.mock('hooks/useGetDateAndTimeFormat', () => ({
+    useGetDateAndTimeFormat: () => 'DD/MM/YYYY',
+}))
 describe('<RuleTicketList/>', () => {
     const minProps: ComponentProps<typeof RuleTicketList> = {
         ruleId: 1,

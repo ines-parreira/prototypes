@@ -3,26 +3,22 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import useCount from '../../hooks/useCount'
-import FeedHeader from '../FeedHeader'
+import { useCount } from '../../hooks/useCount'
+import { FeedHeader } from '../FeedHeader'
 
 const mockUseFeedStore = jest.fn()
 const mockMarkAllAsRead = jest.fn()
-jest.mock(
-    '@knocklabs/react',
-    () =>
-        ({
-            ...jest.requireActual('@knocklabs/react'),
-            useKnockFeed: () => ({
-                useFeedStore: mockUseFeedStore,
-                feedClient: {
-                    markAllAsRead: mockMarkAllAsRead,
-                },
-            }),
-        }) as Record<string, unknown>,
-)
+jest.mock('@knocklabs/react', () => ({
+    ...jest.requireActual('@knocklabs/react'),
+    useKnockFeed: () => ({
+        useFeedStore: mockUseFeedStore,
+        feedClient: {
+            markAllAsRead: mockMarkAllAsRead,
+        },
+    }),
+}))
 
-jest.mock('../../hooks/useCount', () => jest.fn())
+jest.mock('../../hooks/useCount', () => ({ useCount: jest.fn() }))
 const useCountMock = assumeMock(useCount)
 
 describe('<FeedHeader />', () => {

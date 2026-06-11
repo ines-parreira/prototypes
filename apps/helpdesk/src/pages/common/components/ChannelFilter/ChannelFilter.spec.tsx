@@ -3,7 +3,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { IntegrationType } from '../../../../models/integration/constants'
-import ChannelFilter from './ChannelFilter'
+import { ChannelFilter } from './ChannelFilter'
 
 describe('ChannelFilter', () => {
     const mockOnChange = jest.fn()

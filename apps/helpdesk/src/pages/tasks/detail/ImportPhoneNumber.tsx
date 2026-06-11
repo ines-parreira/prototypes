@@ -10,9 +10,9 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
 import { toast } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Option } from 'pages/common/forms/SelectField/types'
 import rawTypeOptions from 'pages/integrations/integration/components/phone/options/types.json'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
@@ -148,4 +148,4 @@ const ImportPhoneNumber = () => {
     )
 }
 
-export default ImportPhoneNumber
+export { ImportPhoneNumber }

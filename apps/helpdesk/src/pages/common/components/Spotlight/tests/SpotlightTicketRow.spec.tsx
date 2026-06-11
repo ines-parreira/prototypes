@@ -13,7 +13,7 @@ import { agents } from 'fixtures/agents'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import type { PickedTicket } from 'models/search/types'
-import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import { SpotlightTicketRow } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const mockStore = configureMockStore([thunk])
 

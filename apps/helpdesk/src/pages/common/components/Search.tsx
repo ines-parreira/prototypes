@@ -10,8 +10,8 @@ import React, {
 import classnames from 'classnames'
 import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './Search.less'
 
@@ -88,4 +88,6 @@ const Search = (
     )
 }
 
-export default forwardRef<HTMLInputElement, Props>(Search)
+const DefaultExportSearch = forwardRef<HTMLInputElement, Props>(Search)
+
+export { DefaultExportSearch }

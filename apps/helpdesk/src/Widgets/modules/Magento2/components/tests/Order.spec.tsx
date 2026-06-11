@@ -17,11 +17,11 @@ const BeforeContent = orderWidgets.BeforeContent!
 const AfterContent = orderWidgets.AfterContent!
 const TitleWrapper = orderWidgets.TitleWrapper!
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div>{dateTime}</div>
+    ),
+}))
 
 describe('Order', () => {
     describe('<BeforeContent/>', () => {

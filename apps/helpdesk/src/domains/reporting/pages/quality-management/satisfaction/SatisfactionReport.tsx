@@ -3,10 +3,10 @@ import { useGridSize } from '@gorgias/toolkit-react'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { SatisfactionDownloadDataButton } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import {
@@ -14,7 +14,7 @@ import {
     SatisfactionReportConfig,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 
-export default function SatisfactionReport() {
+export function SatisfactionReport() {
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
 

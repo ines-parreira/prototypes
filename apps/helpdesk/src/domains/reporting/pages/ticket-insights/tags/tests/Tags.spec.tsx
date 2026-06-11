@@ -5,7 +5,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'domains/reporting/pages/ticket-insights/tags/AllUsedTagsTableChart'
 import { Tags } from 'domains/reporting/pages/ticket-insights/tags/Tags'
 import { TagsActionMenu } from 'domains/reporting/pages/ticket-insights/tags/TagsActionMenu'
@@ -41,14 +41,15 @@ const useFlagsMock = assumeMock(useFlag)
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: (
+        props: ComponentProps<typeof FiltersPanelWrapper>,
+    ) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
     },
-)
+}))
 jest.mock('domains/reporting/pages/ticket-insights/tags/TagsTrendChart')
 const TagsTrendChartMock = assumeMock(TagsTrendChart)
 jest.mock('domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart')

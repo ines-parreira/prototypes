@@ -18,4 +18,4 @@ const useGetIsActionStepEnabled = () => {
     )
 }
 
-export default useGetIsActionStepEnabled
+export { useGetIsActionStepEnabled }

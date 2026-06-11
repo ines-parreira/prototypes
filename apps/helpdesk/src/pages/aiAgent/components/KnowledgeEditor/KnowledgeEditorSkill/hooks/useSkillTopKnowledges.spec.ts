@@ -36,7 +36,7 @@ jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn((selector) => {
+    useAppSelector: jest.fn((selector) => {
         if (selector.toString().includes('currentAccount')) return 1
         return 'UTC'
     }),

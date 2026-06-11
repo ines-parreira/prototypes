@@ -4,14 +4,14 @@ import { assumeMock, render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 
-import ConfigureRoutingBehaviorStep from '../ConfigureRoutingBehaviorStep'
+import { ConfigureRoutingBehaviorStep } from '../ConfigureRoutingBehaviorStep'
 
 jest.mock('pages/common/components/wizard/hooks/useNavigateWizardSteps')
 jest.mock('../RoutingTemplateRadioFieldSet', () => ({
     __esModule: true,
-    default: () => (
+    RoutingTemplateRadioFieldSet: () => (
         <div data-testid="routing-template-radio-field-set">
             RoutingTemplateRadioFieldSet
         </div>
@@ -19,11 +19,11 @@ jest.mock('../RoutingTemplateRadioFieldSet', () => ({
 }))
 jest.mock('../VoiceIntegrationOnboardingCancelButton', () => ({
     __esModule: true,
-    default: () => <button>Cancel</button>,
+    VoiceIntegrationOnboardingCancelButton: () => <button>Cancel</button>,
 }))
 jest.mock('../../VoiceFormSubmitButton', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
+    VoiceFormSubmitButton: ({ children }: { children?: React.ReactNode }) => (
         <button type="submit">{children}</button>
     ),
 }))

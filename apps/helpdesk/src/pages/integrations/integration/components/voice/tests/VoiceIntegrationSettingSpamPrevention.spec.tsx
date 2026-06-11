@@ -2,7 +2,7 @@ import { Form } from '@repo/forms'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import VoiceIntegrationSettingSpamPrevention from '../VoiceIntegrationSettingSpamPrevention'
+import { VoiceIntegrationSettingSpamPrevention } from '../VoiceIntegrationSettingSpamPrevention'
 
 describe('VoiceIntegrationSettingSpamPrevention', () => {
     const renderComponent = (spamPrevention = false) =>

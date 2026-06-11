@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import SectionHeader from './SectionHeader'
+import { SectionHeader } from './SectionHeader'
 
 const renderComponent = (props: { title: string; description?: string }) => {
     return render(<SectionHeader {...props} />)

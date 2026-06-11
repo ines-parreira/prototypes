@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 import { ConditionsSelectBox } from '../ConditionsSelectBox'
 import { makeConditionItem } from '../types'
-import useConditionsData from '../useConditionsData'
+import { useConditionsData } from '../useConditionsData'
 
 jest.mock('../useConditionsData')
 jest.mock('pages/common/hooks/useOnClickOutside', () => ({

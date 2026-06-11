@@ -13,8 +13,8 @@ import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { ZENDESK_IMPORTED_TICKETS_FOR_YEARS } from 'config'
 import type { ZendeskIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'
 import { createImportIntegration } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -162,4 +162,6 @@ const mapDispatchToProps = (dispatch: StoreDispatch) => {
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
-export default connector(ImportZendeskCreate)
+const DefaultExportImportZendeskCreate = connector(ImportZendeskCreate)
+
+export { DefaultExportImportZendeskCreate }

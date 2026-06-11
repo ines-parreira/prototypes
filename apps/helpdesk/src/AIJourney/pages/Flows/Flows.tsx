@@ -33,7 +33,7 @@ import {
 } from 'AIJourney/queries/useCustomFlows/useCustomFlows'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useSearchParam } from 'hooks/useSearchParam'
 
 import { filterImpersonatedColumns } from '../../utils/filterImpersonatedColumns'

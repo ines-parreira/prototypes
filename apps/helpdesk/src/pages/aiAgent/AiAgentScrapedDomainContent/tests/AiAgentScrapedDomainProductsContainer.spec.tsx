@@ -20,7 +20,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
-import AiAgentScrapedDomainProductsContainer from '../AiAgentScrapedDomainProductsContainer'
+import { AiAgentScrapedDomainProductsContainer } from '../AiAgentScrapedDomainProductsContainer'
 import { IngestionLogStatus } from '../constant'
 import {
     isProductExcludedFromAiAgent,

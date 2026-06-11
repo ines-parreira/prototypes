@@ -7,11 +7,11 @@ import { Form } from 'reactstrap'
 
 import { Button, toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ZendeskIntegration } from 'models/integration/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import InputField from 'pages/common/forms/input/InputField'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getAreIntegrationsLoading } from 'state/integrations/selectors'
 
@@ -23,7 +23,7 @@ type Props = {
     integration: ZendeskIntegration
 }
 
-export default function EditCredentialsForm({ integration }: Props) {
+export function EditCredentialsForm({ integration }: Props) {
     const [apiKey, setApiKey] = useState('')
     const [email, setEmail] = useState('')
 

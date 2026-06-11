@@ -16,19 +16,18 @@ import {
     starterHelpdeskPlan,
 } from 'fixtures/plans'
 import type { AvailablePlansOf, ProductType } from 'models/billing/types'
-import type UpgradeButton from 'pages/common/components/UpgradeButton'
+import type { UpgradeButton } from 'pages/common/components/UpgradeButton'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AutomateSubscriptionButton from '../AutomateSubscriptionButton'
+import { AutomateSubscriptionButton } from '../AutomateSubscriptionButton'
 
 const mockUpgradeButton = jest.fn()
-jest.mock(
-    'pages/common/components/UpgradeButton/UpgradeButton',
-    () => (props: ComponentProps<typeof UpgradeButton>) => {
+jest.mock('pages/common/components/UpgradeButton/UpgradeButton', () => ({
+    UpgradeButton: (props: ComponentProps<typeof UpgradeButton>) => {
         mockUpgradeButton(props)
         return 'UpgradeButtonMock'
     },
-)
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

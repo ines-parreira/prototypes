@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import type { StoreIntegration } from 'models/integration/types'
 import { isWizardSetupCompleted } from 'pages/aiAgent/utils/wizardSetupHelpers'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 /**

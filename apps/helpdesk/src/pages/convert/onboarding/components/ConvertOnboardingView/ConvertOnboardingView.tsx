@@ -12,15 +12,15 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { bundleKeys } from 'models/convert/bundle/queries'
 import { BundleStatus } from 'models/convert/bundle/types'
 import { IntegrationType } from 'models/integration/constants'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
+import { ConvertInstallModal } from 'pages/convert/bundles/components/ConvertInstallModal'
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
@@ -33,7 +33,7 @@ import {
 } from 'state/integrations/selectors'
 import { assetsUrl, toJS } from 'utils'
 
-import ConvertOnboardingStep from '../ConvertOnboardingStep'
+import { ConvertOnboardingStep } from '../ConvertOnboardingStep'
 
 import css from './ConvertOnboardingView.less'
 
@@ -343,4 +343,4 @@ const ConvertOnboardingView = () => {
     )
 }
 
-export default ConvertOnboardingView
+export { ConvertOnboardingView }

@@ -13,7 +13,7 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import type { AlertNotification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 
-import useStoreIntegrations from './useStoreIntegrations'
+import { useStoreIntegrations } from './useStoreIntegrations'
 
 export type UseSelfServiceConfigurationUpdateProps = {
     handleNotify: (notification: AlertNotification) => void

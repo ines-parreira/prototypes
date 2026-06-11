@@ -53,7 +53,7 @@ import {
     startOfYear,
     useStatsViewFilters,
 } from 'domains/reporting/pages/common/utils'
-import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
+import { DefaultExportStatsFiltersContext as StatsFiltersContext } from 'domains/reporting/pages/StatsFiltersContext'
 import { tags } from 'fixtures/tag'
 import type { RootState } from 'state/types'
 

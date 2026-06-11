@@ -6,7 +6,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
-import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
+import { DefaultExportMergeTicketsContainer as MergeTicketsContainer } from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 
 describe('MergeTicketsContainer component', () => {
     const ticketSubject = 'foo'

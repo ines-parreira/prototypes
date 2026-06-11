@@ -4,7 +4,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 
-import ConditionalFieldRow from '../ConditionalFieldRow'
+import { ConditionalFieldRow } from '../ConditionalFieldRow'
 
 const mockCreateCondition = jest.fn().mockResolvedValue({ data: { id: 123 } })
 const mockUpdateCondition = jest.fn().mockResolvedValue({})

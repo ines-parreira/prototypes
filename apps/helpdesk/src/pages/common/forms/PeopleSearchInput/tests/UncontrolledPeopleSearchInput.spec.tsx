@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import UncontrolledPeopleSearchInput from '../UncontrolledPeopleSearchInput'
+import { UncontrolledPeopleSearchInput } from '../UncontrolledPeopleSearchInput'
 
 const teams: Map<any, any> = fromJS({
     all: [

@@ -6,8 +6,8 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import type BodyCell from 'pages/common/components/table/cells/BodyCell'
-import type HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import type { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import type { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
 
 export const getVoiceDrillDownColumns = (
     metricName?: string,

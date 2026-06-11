@@ -5,8 +5,8 @@ import { act, waitFor } from '@testing-library/react'
 
 import type { Config } from 'panels/types'
 
-import usePanels from '../usePanels'
-import useScreenSize from '../useScreenSize'
+import { usePanels } from '../usePanels'
+import { useScreenSize } from '../useScreenSize'
 
 jest.mock('../useScreenSize')
 

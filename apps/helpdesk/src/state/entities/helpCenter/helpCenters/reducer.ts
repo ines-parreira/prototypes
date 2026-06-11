@@ -44,4 +44,4 @@ const helpCenterReducer = createReducer<HelpCentersState>(
             }),
 )
 
-export default helpCenterReducer
+export { helpCenterReducer }

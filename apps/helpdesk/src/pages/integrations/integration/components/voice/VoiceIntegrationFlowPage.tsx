@@ -6,10 +6,10 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { FlowProvider } from 'core/ui/flows'
 import { isPhoneIntegration } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 import { VoiceFlow } from './flows/VoiceFlow'
-import VoiceFlowForm from './flows/VoiceFlowForm'
+import { VoiceFlowForm } from './flows/VoiceFlowForm'
 
 function VoiceIntegrationFlowPage() {
     const { integrationId: idParam } = useParams<{ integrationId: string }>()
@@ -51,4 +51,4 @@ function VoiceIntegrationFlowPage() {
     )
 }
 
-export default VoiceIntegrationFlowPage
+export { VoiceIntegrationFlowPage }

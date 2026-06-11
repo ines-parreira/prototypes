@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom'
 import { user } from 'fixtures/users'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
@@ -31,7 +31,7 @@ import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
@@ -122,16 +122,19 @@ jest.mock(
         )),
     }),
 )
-jest.mock('pages/aiAgent/Activation/components/AIAgentTrialSuccessModal', () =>
-    jest.fn(({ isOpen, onClick, onClose }) =>
-        isOpen ? (
-            <div>
-                <h2>Trial Success Modal</h2>
-                <button onClick={onClick}>Navigate</button>
-                <button onClick={onClose}>Close</button>
-            </div>
-        ) : null,
-    ),
+jest.mock(
+    'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal',
+    () => ({
+        AIAgentTrialSuccessModal: jest.fn(({ isOpen, onClick, onClose }) =>
+            isOpen ? (
+                <div>
+                    <h2>Trial Success Modal</h2>
+                    <button onClick={onClick}>Navigate</button>
+                    <button onClick={onClose}>Close</button>
+                </div>
+            ) : null,
+        ),
+    }),
 )
 const mockShopName = 'test-shop'
 const renderMiddleware = () => {

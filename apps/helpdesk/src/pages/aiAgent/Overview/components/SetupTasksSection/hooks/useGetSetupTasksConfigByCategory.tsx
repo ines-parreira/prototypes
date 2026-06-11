@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import type { PostStoreInstallationSteps } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'

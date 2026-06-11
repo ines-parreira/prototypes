@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import SecondaryReasons from '../SecondaryReasons'
+import { SecondaryReasons } from '../SecondaryReasons'
 
 describe('SecondaryReasons', () => {
     const secondaryReasons = ['secondary1', 'secondary2', 'secondary3']

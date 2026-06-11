@@ -16,7 +16,7 @@ import {
     useJourneys,
     useUpdateJourney,
 } from '../../../../../AIJourney/queries'
-import useAppSelector from '../../../../../hooks/useAppSelector'
+import { useAppSelector } from '../../../../../hooks/useAppSelector'
 import { PlaygroundEvent } from '../../types'
 import {
     AI_JOURNEY_DEFAULT_STATE,

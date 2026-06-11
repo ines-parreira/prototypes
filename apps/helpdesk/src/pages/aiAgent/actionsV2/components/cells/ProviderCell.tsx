@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
-import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 
 import { Avatar, Icon } from '@gorgias/axiom'
 
@@ -63,4 +63,4 @@ const ProviderCell = ({ action }: Props) => {
     return <Avatar name={fallbackName} size="sm" />
 }
 
-export default ProviderCell
+export { ProviderCell }

@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { OrderDirection } from 'models/api/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { useStoreManagementState } from '../StoreManagementProvider'
 import {
@@ -14,7 +14,7 @@ import {
     StoreManagementTableColumn,
     TableLabels,
 } from './StoreManagementTableConfig'
-import StoreManagementTableRow from './StoreManagementTableRow/StoreManagementTableRow'
+import { StoreManagementTableRow } from './StoreManagementTableRow/StoreManagementTableRow'
 
 import css from './StoreManagementTable.less'
 

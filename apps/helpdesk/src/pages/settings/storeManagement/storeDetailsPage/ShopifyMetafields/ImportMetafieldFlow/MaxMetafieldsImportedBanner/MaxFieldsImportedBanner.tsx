@@ -1,6 +1,6 @@
 import { LegacyBanner as Banner } from '@gorgias/axiom'
 
-export default function MaxFieldsImportedBanner() {
+export function MaxFieldsImportedBanner() {
     return (
         <Banner type="info">
             Maximum number of metafields imported. Remove one from your list in

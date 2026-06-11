@@ -5,8 +5,8 @@ import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
 import { defined } from 'utils'
 
 import type { InputFieldProps } from './DEPRECATED_InputField'
-import InputField from './DEPRECATED_InputField'
-import Errors from './Errors'
+import { InputField } from './DEPRECATED_InputField'
+import { Errors } from './Errors'
 
 import css from './DEPRECATED_InputField.less'
 
@@ -17,7 +17,7 @@ type Props = InputFieldProps<boolean>
  * @date 2022-02-22
  * @type ui-component
  */
-export default class DEPRECATED_BooleanField extends InputField<Props> {
+export class DEPRECATED_BooleanField extends InputField<Props> {
     static defaultProps = {
         type: 'checkbox',
     }

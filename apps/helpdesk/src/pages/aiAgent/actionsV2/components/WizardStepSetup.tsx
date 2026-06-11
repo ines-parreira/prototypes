@@ -9,8 +9,8 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 
-import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
-import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
+import { ActionsPlatformTemplateConfirmation } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
+import { ActionsPlatformTemplateInstructions } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'

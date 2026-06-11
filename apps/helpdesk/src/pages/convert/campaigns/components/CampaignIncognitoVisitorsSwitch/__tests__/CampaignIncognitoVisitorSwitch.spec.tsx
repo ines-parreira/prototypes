@@ -7,7 +7,7 @@ import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignT
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { createTrigger } from 'pages/convert/campaigns/utils/createTrigger'
 
-import CampaignIncognitoVisitorsSwitch from '../CampaignIncognitoVisitorsSwitch'
+import { CampaignIncognitoVisitorsSwitch } from '../CampaignIncognitoVisitorsSwitch'
 
 describe('<CampaignIncognitoVisitorsSwitch />', () => {
     it('is disabled', () => {

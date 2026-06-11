@@ -8,7 +8,7 @@ import {
     isLessThan24HoursAgo,
     isTrialNotificationOfType,
 } from 'automate/notifications/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { getAccountAdminsJS } from 'state/agents/selectors'

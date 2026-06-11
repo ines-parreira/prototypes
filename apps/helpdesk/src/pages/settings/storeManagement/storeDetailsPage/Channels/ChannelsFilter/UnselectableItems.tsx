@@ -2,10 +2,10 @@ import React from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
-import deriveLabelFromIntegration from '../../../helpers/deriveLabelFromIntegration'
-import integrationBelongsToChannel from '../../../helpers/integrationBelongsToChannel'
+import { deriveLabelFromIntegration } from '../../../helpers/deriveLabelFromIntegration'
+import { integrationBelongsToChannel } from '../../../helpers/integrationBelongsToChannel'
 import { useStoreManagementState } from '../../../StoreManagementProvider'
 import type { ChannelWithMetadata } from '../../../types'
 
@@ -17,9 +17,7 @@ interface UnselectableItemsProps {
 
 const noop = () => {}
 
-export default function UnselectableItems({
-    activeChannel,
-}: UnselectableItemsProps) {
+export function UnselectableItems({ activeChannel }: UnselectableItemsProps) {
     const { id: currentStoreId } = useParams<{ id: string }>()
 
     const { stores } = useStoreManagementState()

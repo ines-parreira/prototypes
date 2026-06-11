@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import MetricTip from 'domains/reporting/pages/support-performance/components/MetricTip'
+import { MetricTip } from 'domains/reporting/pages/support-performance/components/MetricTip'
 
 const storyConfig: Meta<typeof MetricTip> = {
     title: 'Stats/MetricTooltip',

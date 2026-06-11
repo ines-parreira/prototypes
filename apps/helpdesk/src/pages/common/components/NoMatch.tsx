@@ -4,7 +4,7 @@ import { assetsUrl } from 'utils'
 
 import css from './NoMatch.less'
 
-export default function NoMatch() {
+export function NoMatch() {
     return (
         <Box
             as="main"

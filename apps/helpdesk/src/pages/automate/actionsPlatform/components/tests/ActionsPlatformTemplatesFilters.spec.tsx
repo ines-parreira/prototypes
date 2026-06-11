@@ -6,7 +6,7 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { IntegrationType } from 'models/integration/constants'
 
 import type { App } from '../../types'
-import ActionsPlatformTemplatesFilters from '../ActionsPlatformTemplatesFilters'
+import { ActionsPlatformTemplatesFilters } from '../ActionsPlatformTemplatesFilters'
 
 describe('<ActionsPlatformTemplatesFilters />', () => {
     it('should render app filter', () => {

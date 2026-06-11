@@ -20,12 +20,12 @@ import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useAddStoreApp } from 'pages/aiAgent/actions/hooks/useAddStoreApp'
+import { useThreeplIntegrations } from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
@@ -35,8 +35,8 @@ import {
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import type { RootState } from 'state/types'
 
-import CreateActionView from '../CreateActionView'
-import GuidanceReferenceProvider from '../providers/GuidanceReferenceProvider'
+import { CreateActionView } from '../CreateActionView'
+import { GuidanceReferenceProvider } from '../providers/GuidanceReferenceProvider'
 
 jest.mock('models/workflows/queries')
 jest.mock('models/knowledgeService/queries')
@@ -868,13 +868,13 @@ describe('<CreateActionView />', () => {
         const useValidateActionGraphSpy = jest
             .spyOn(
                 require('pages/aiAgent/actions/hooks/useValidateActionGraph'),
-                'default',
+                'useValidateActionGraph',
             )
             .mockReturnValue(() => visualBuilderGraph) // Return graph with no errors
         const useTouchActionGraphSpy = jest
             .spyOn(
                 require('pages/aiAgent/actions/hooks/useTouchActionGraph'),
-                'default',
+                'useTouchActionGraph',
             )
             .mockReturnValue(() => visualBuilderGraph)
         // Mock that server errors were successfully mapped to graph - use visual builder graph structure
@@ -1019,13 +1019,13 @@ describe('<CreateActionView />', () => {
         const useValidateActionGraphSpy = jest
             .spyOn(
                 require('pages/aiAgent/actions/hooks/useValidateActionGraph'),
-                'default',
+                'useValidateActionGraph',
             )
             .mockReturnValue(() => visualBuilderGraph) // Return graph with no errors
         const useTouchActionGraphSpy = jest
             .spyOn(
                 require('pages/aiAgent/actions/hooks/useTouchActionGraph'),
-                'default',
+                'useTouchActionGraph',
             )
             .mockReturnValue(() => visualBuilderGraph)
         render(

@@ -7,12 +7,12 @@ import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import TextArea from 'pages/common/forms/TextArea'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { TicketPurpose } from 'state/billing/types'
 import { isTrialing } from 'state/currentAccount/selectors'
@@ -158,4 +158,4 @@ const ContactSupportModal = ({
     )
 }
 
-export default ContactSupportModal
+export { ContactSupportModal }

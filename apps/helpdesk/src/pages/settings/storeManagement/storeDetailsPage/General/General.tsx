@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import {
     isBigCommerceIntegration,
@@ -9,19 +9,19 @@ import {
 } from 'models/integration/types'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
-import BigCommerceSettings from './BigCommerceSettings/BigCommerceSettings'
-import getStoreTypeName from './helpers/getStoreTypeName'
-import useStoreDeleter from './hooks/useStoreDeleter'
-import MagentoSettings from './MagentoSettings/MagentoSettings'
-import DeleteIntegrationConfirmationModal from './ShopifySettings/DeleteIntegrationConfirmationModal'
-import ShopifySettings from './ShopifySettings/ShopifySettings'
+import { BigCommerceSettings } from './BigCommerceSettings/BigCommerceSettings'
+import { getStoreTypeName } from './helpers/getStoreTypeName'
+import { useStoreDeleter } from './hooks/useStoreDeleter'
+import { MagentoSettings } from './MagentoSettings/MagentoSettings'
+import { DeleteIntegrationConfirmationModal } from './ShopifySettings/DeleteIntegrationConfirmationModal'
+import { ShopifySettings } from './ShopifySettings/ShopifySettings'
 
 interface GeneralProps {
     store: StoreIntegration
     refetchStore: () => void
 }
 
-export default function General({ store, refetchStore }: GeneralProps) {
+export function General({ store, refetchStore }: GeneralProps) {
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
     const [integrationToDelete, setIntegrationToDelete] =

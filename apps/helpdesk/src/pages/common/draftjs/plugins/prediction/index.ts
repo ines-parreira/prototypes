@@ -6,8 +6,8 @@ import type { Map } from 'immutable'
 import { debounce } from 'lodash'
 
 import type { Plugin, PluginMethods } from '../types'
-import client from './client'
-import decorators from './decorators'
+import { phrasePredictionClient as client } from './client'
+import { predictionDecorators as decorators } from './decorators'
 import { cachedSelection, predictionKey } from './state'
 import {
     createPrediction,
@@ -260,4 +260,4 @@ const predictionPlugin = (config: {
     }
 }
 
-export default predictionPlugin
+export { predictionPlugin }

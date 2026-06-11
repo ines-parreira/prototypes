@@ -153,4 +153,4 @@ const DeleteCard = ({
     )
 }
 
-export default DeleteCard
+export { DeleteCard }

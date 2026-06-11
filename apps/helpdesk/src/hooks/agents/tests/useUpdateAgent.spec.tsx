@@ -25,7 +25,9 @@ const usePureUpdateAgentMock = assumeMock(usePureUpdateAgent)
 jest.mock('../errorHandler')
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 
 describe('useUpdateAgent', () => {

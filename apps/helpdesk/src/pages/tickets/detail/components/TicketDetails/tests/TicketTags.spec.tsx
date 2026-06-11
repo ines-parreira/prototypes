@@ -11,11 +11,13 @@ import thunk from 'redux-thunk'
 import { getWrappedElementCount } from 'common/utils'
 import { agents } from 'fixtures/agents'
 
-import TicketTags from '../TicketTags'
+import { TicketTags } from '../TicketTags'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('common/utils/getWrappedElementCount', () => jest.fn())
+jest.mock('common/utils/getWrappedElementCount', () => ({
+    getWrappedElementCount: jest.fn(),
+}))
 jest.mock('lodash/uniqueId', () => () => '42')
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
@@ -25,13 +27,13 @@ jest.mock('@gorgias/toolkit-react', () => ({
 
 const getWrappedElementCountMock = assumeMock(getWrappedElementCount)
 
-jest.mock(
-    '../TagDropdown',
-    () =>
-        ({ addTag }: { addTag: ({ name }: { name: string }) => void }) => (
-            <div onClick={() => addTag({ name: 'mock' })}>TagDropdownMock</div>
-        ),
-)
+jest.mock('../TagDropdown', () => ({
+    TagDropdown: ({
+        addTag,
+    }: {
+        addTag: ({ name }: { name: string }) => void
+    }) => <div onClick={() => addTag({ name: 'mock' })}>TagDropdownMock</div>,
+}))
 
 describe('<TicketTags />', () => {
     const user = fromJS(fromJS(agents[0])) as Map<any, any>

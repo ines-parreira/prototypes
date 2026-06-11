@@ -5,8 +5,8 @@ import { List, Map } from 'immutable'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { ShowMoreFieldsDropdown } from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
 import { setFieldVisibility } from 'state/views/actions'
 
 jest.mock('@repo/logging', () => ({

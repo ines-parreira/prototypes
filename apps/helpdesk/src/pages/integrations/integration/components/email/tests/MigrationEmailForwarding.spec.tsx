@@ -5,7 +5,7 @@ import { cleanup, fireEvent, screen } from '@testing-library/react'
 
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 
-import MigrationEmailForwarding from '../EmailMigration/MigrationEmailForwarding'
+import { MigrationEmailForwarding } from '../EmailMigration/MigrationEmailForwarding'
 
 const migration = {
     integration: { meta: {} },

@@ -2,13 +2,13 @@ import { Col, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
-import SettingsContent from 'pages/settings/SettingsContent'
+import { useWhatsAppMigration } from 'hooks/useWhatsAppMigration'
+import { SettingsContent } from 'pages/settings/SettingsContent'
 
-import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
-import WhatsAppMigrationSteppedNavBar from './WhatsAppMigrationSteppedNavBar'
+import { WhatsAppMigrationButtons } from './WhatsAppMigrationButtons'
+import { WhatsAppMigrationSteppedNavBar } from './WhatsAppMigrationSteppedNavBar'
 
-export default function WhatsAppMigrationConnect(): JSX.Element {
+export function WhatsAppMigrationConnect(): JSX.Element {
     const migration = useWhatsAppMigration()
     return (
         <SettingsContent>

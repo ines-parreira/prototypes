@@ -5,11 +5,11 @@ import { useGetWorkflowConfiguration } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 
-import ActionEventsContent from './ActionEventsContent'
+import { ActionEventsContent } from './ActionEventsContent'
 
 import css from './ActionEventsView.less'
 
-export default function ActionExecutionsView() {
+export function ActionExecutionsView() {
     const actionsLabel = useActionsLabel()
     const { shopName, id: configurationId } = useParams<{
         id: string

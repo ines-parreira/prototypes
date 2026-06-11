@@ -6,7 +6,7 @@ import _omit from 'lodash/omit'
 
 import { views } from 'config/views'
 import { ticket } from 'fixtures/ticket'
-import Cell from 'pages/common/components/ViewTable/Table/Cell'
+import { Cell } from 'pages/common/components/ViewTable/Table/Cell'
 
 describe('ViewTable::Table::Cell', () => {
     const viewConfig = views.first() as Map<any, any>

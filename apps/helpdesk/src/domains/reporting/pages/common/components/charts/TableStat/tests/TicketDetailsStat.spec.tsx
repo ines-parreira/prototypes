@@ -11,9 +11,9 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
-import TicketDetailsStat from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
-import type ViewLink from 'domains/reporting/pages/common/ViewLink'
-import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
+import { TicketDetailsStat } from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
+import type { ViewLink } from 'domains/reporting/pages/common/ViewLink'
+import { DefaultExportStatsFiltersContext as StatsFiltersContext } from 'domains/reporting/pages/StatsFiltersContext'
 import { channels } from 'fixtures/channels'
 import { integrationsState } from 'fixtures/integrations'
 import * as channelsService from 'services/channels'
@@ -24,24 +24,20 @@ const logEventMock = logEvent as jest.Mock
 const reportErrorMock = reportError as jest.Mock
 
 jest.mock('@repo/logging')
-jest.mock(
-    'domains/reporting/pages/common/ViewLink',
-    () =>
-        ({
-            filters,
-            viewName,
-            children,
-            ...linkProps
-        }: ComponentProps<typeof ViewLink>) => (
-            <a data-testid="view-link" {...linkProps}>
-                <span aria-label="view name">{viewName}</span>
-                <span aria-label="filters">
-                    {JSON.stringify(filters, null, 2)}
-                </span>
-                <span aria-label="children">{children}</span>
-            </a>
-        ),
-)
+jest.mock('domains/reporting/pages/common/ViewLink', () => ({
+    ViewLink: ({
+        filters,
+        viewName,
+        children,
+        ...linkProps
+    }: ComponentProps<typeof ViewLink>) => (
+        <a data-testid="view-link" {...linkProps}>
+            <span aria-label="view name">{viewName}</span>
+            <span aria-label="filters">{JSON.stringify(filters, null, 2)}</span>
+            <span aria-label="children">{children}</span>
+        </a>
+    ),
+}))
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
 describe('TicketDetailsStat', () => {

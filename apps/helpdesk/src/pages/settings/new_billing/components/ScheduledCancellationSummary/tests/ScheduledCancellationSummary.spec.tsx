@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ScheduledCancellationSummary from '../ScheduledCancellationSummary'
+import { ScheduledCancellationSummary } from '../ScheduledCancellationSummary'
 
 describe('ScheduledCancellationSummary component', () => {
     const cancelledProducts = ['product1', 'product2', 'product3']

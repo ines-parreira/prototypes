@@ -5,16 +5,16 @@ import type routerDom from 'react-router-dom'
 import { Route, useParams } from 'react-router-dom'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useGetCampaignsForStore } from 'domains/reporting/pages/convert/hooks/useGetCampaignsForStore'
-import ConvertCampaignsStats from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignsStats'
-import CampaignStatsPaywallView from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import { CampaignStatsOrPaywallPage as ConvertCampaignsStats } from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignsStats'
+import { DefaultExportCampaignStatsPaywallView as CampaignStatsPaywallView } from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import { campaign } from 'fixtures/campaign'
 import { convertStatusOk } from 'fixtures/convert'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 import { IntegrationType } from 'models/integration/constants'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 
@@ -24,12 +24,11 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-jest.mock(
-    'domains/reporting/pages/convert/components/RequestABTest',
-    () => () => {
+jest.mock('domains/reporting/pages/convert/components/RequestABTest', () => ({
+    RequestABTest: () => {
         return <div>RequestABTest</div>
     },
-)
+}))
 
 jest.mock(
     'domains/reporting/pages/convert/containers/RevenueStatsContent',

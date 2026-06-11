@@ -8,7 +8,7 @@ import {
     isVoiceChannel,
 } from './isIntegration'
 
-export default function deriveTypeFromIntegration(integration: Integration) {
+export function deriveTypeFromIntegration(integration: Integration) {
     if (isHelpCenterChannel(integration)) {
         return 'help-center'
     }

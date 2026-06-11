@@ -33,16 +33,16 @@ import ReactPlayer from 'react-player'
 
 import type { UploadType } from 'common/types'
 import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
-import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
+import { createWorkflowVariablesPlugin } from 'pages/automate/workflows/draftjs/plugins/variables'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
-import createAutoBlockPlugin from 'pages/common/draftjs/plugins/autoBlock'
-import createClearFormattingPlugin from 'pages/common/draftjs/plugins/clearFormatting'
-import createFindReplacePlugin from 'pages/common/draftjs/plugins/findReplace'
-import createGuidanceVariablesPlugin from 'pages/common/draftjs/plugins/guidance-variables'
-import createGuidanceActionsPlugin from 'pages/common/draftjs/plugins/guidanceActions'
-import createHorizontalRulePlugin from 'pages/common/draftjs/plugins/horizontalRule'
+import { createAutoBlockPlugin } from 'pages/common/draftjs/plugins/autoBlock'
+import { createClearFormattingPlugin } from 'pages/common/draftjs/plugins/clearFormatting'
+import { createFindReplacePlugin } from 'pages/common/draftjs/plugins/findReplace'
+import { createGuidanceVariablesPlugin } from 'pages/common/draftjs/plugins/guidance-variables'
+import { createGuidanceActionsPlugin } from 'pages/common/draftjs/plugins/guidanceActions'
+import { createHorizontalRulePlugin } from 'pages/common/draftjs/plugins/horizontalRule'
 import { handleListReturn } from 'pages/common/draftjs/plugins/listReturn'
-import createSlashCommandPlugin from 'pages/common/draftjs/plugins/slashCommand'
+import { createSlashCommandPlugin } from 'pages/common/draftjs/plugins/slashCommand'
 import {
     addVideo,
     linkifyWithTemplate,
@@ -62,25 +62,25 @@ import {
     removeMentions,
 } from '../../../../utils/editor'
 import { scrollToReactNode } from '../../../common/utils/keyboard'
-import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
-import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
-import createMentionPlugin from '../../draftjs/plugins/mentions'
-import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
-import createPredictionPlugin from '../../draftjs/plugins/prediction'
+import { connectedLinksPlugin as createConnectedLinksPlugin } from '../../draftjs/plugins/connectedLinks'
+import { dndUploadPlugin as createDndUploadPlugin } from '../../draftjs/plugins/dndUpload'
+import { createMentionPlugin } from '../../draftjs/plugins/mentions'
+import { pasteImagePlugin as createPasteImagePlugin } from '../../draftjs/plugins/pasteImage'
+import { predictionPlugin as createPredictionPlugin } from '../../draftjs/plugins/prediction'
 import { predictionKey } from '../../draftjs/plugins/prediction/state'
 import { createQuotesPlugin } from '../../draftjs/plugins/quotes/quotesPlugin'
-import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
+import { Toolbar } from '../../draftjs/plugins/toolbar/Toolbar'
 import { ActionName } from '../../draftjs/plugins/toolbar/types'
 import type { ImagePluginConfig, Plugin } from '../../draftjs/plugins/types'
-import createVariablesPlugin from '../../draftjs/plugins/variables/index'
+import { variablesPlugin as createVariablesPlugin } from '../../draftjs/plugins/variables/index'
 import { DraftJsErrorBoundary } from './DraftJsErrorBoundary'
-import EmailExtraButton from './EmailExtraButton'
+import { DefaultExportEmailExtraButton as EmailExtraButton } from './EmailExtraButton'
 import type { InjectedProps as MentionFilteredSuggestionsProps } from './provideMentionSearchResults'
-import provideMentionFilteredSuggestions from './provideMentionSearchResults'
+import { provideMentionSearchResults as provideMentionFilteredSuggestions } from './provideMentionSearchResults'
 import type { InjectedProps as ToolbarPluginProps } from './provideToolbarPlugin'
-import provideToolbarPlugin from './provideToolbarPlugin'
+import { provideToolbarPlugin } from './provideToolbarPlugin'
 import type { InjectedProps as GrammarlyUsageTrackingProps } from './withGrammarlyUsageTracking'
-import withGrammarlyUsageTracking from './withGrammarlyUsageTracking'
+import { withGrammarlyUsageTracking } from './withGrammarlyUsageTracking'
 
 import css from './RichFieldEditor.less'
 
@@ -1449,6 +1449,8 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 }
 
-export default withGrammarlyUsageTracking(
+const DefaultExportRichFieldEditor = withGrammarlyUsageTracking(
     provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor)),
 )
+
+export { DefaultExportRichFieldEditor }

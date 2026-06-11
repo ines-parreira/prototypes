@@ -8,28 +8,29 @@ import { Container } from 'reactstrap'
 import { useWorkflowDataset } from 'domains/reporting/hooks/automate/useWorkflowDataset'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import type { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
-import PeriodStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
+import { DEPRECATED_PeriodStatsFilter as PeriodStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import PageHeader from 'pages/common/components/PageHeader'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getTimezone } from 'state/currentUser/selectors'
 import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 
-import useWorkflowChannelSupport, {
+import {
+    useWorkflowChannelSupport,
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
 import { useWorkflowEditorContext } from '../hooks/useWorkflowEditor'
 import { WorkflowToggle } from '../models/workflowConfiguration.types'
 import { getWorkflowAnalyticsDateRange } from './visualBuilder/utils'
-import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+import { DefaultExportWorkflowVisualBuilder as WorkflowVisualBuilder } from './visualBuilder/WorkflowVisualBuilder'
 import { WorkflowAnalyticsActionButtons } from './WorkflowAnalyticsActionButtons'
-import WorkflowAnalyticsBanner from './WorkflowAnalyticsBanner'
+import { WorkflowAnalyticsBanner } from './WorkflowAnalyticsBanner'
 import { WorkflowOverviewMetrics } from './WorkflowOverviewMetrics'
 
 import css from './WorkflowAnalytics.less'
@@ -42,7 +43,7 @@ type WorkflowAnalyticsProps = {
     goToWorkflowEditorPage: () => void
 }
 
-export default function WorkflowAnalytics({
+export function WorkflowAnalytics({
     workflowId,
     shopName,
     shopType,

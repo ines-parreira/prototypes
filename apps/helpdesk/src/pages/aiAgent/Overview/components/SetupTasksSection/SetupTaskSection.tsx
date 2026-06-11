@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 
 import { ProgressIcon } from '../AiAgentTasks/ProgressIcon'

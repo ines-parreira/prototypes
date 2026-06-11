@@ -1,10 +1,10 @@
 import { Route, Switch } from 'react-router-dom'
 
-import LegacyPage from 'pages/LegacyPage'
-import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
-import TicketList from 'pages/tickets/list/TicketList'
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
-import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
+import { DefaultExportLegacyPage as LegacyPage } from 'pages/LegacyPage'
+import { DefaultExportTicketInfobarContainer as TicketInfobarContainer } from 'pages/tickets/detail/TicketInfobarContainer'
+import { TicketList } from 'pages/tickets/list/TicketList'
+import { DefaultExportTicketNavbar as TicketNavbar } from 'pages/tickets/navbar/TicketNavbar'
+import { TicketWrapper } from 'split-ticket-view/components/TicketWrapper'
 
 export function MobileRoutes() {
     return (

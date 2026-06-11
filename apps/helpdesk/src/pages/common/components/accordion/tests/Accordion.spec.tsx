@@ -3,10 +3,10 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import Accordion from '../Accordion'
-import AccordionBody from '../AccordionBody'
-import AccordionHeader from '../AccordionHeader'
-import AccordionItem from '../AccordionItem'
+import { Accordion } from '../Accordion'
+import { AccordionBody } from '../AccordionBody'
+import { AccordionHeader } from '../AccordionHeader'
+import { AccordionItem } from '../AccordionItem'
 
 const COLLAPSE_TRANSITION_DURATION_MS = 350
 

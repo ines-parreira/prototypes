@@ -8,9 +8,9 @@ import ReactList from 'react-list'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
-import Search from 'pages/common/components/Search'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
+import { DEPRECATED_Modal } from 'pages/common/components/DEPRECATED_Modal'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 
 import { AGENT_ADDED_FONTS } from '../../constants'
 import { useGoogleFonts } from '../../hooks'

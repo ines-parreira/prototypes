@@ -3,7 +3,7 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Main from '../Main'
+import { Main } from '../Main'
 
 jest.mock('common/notifications', () => ({
     NotificationsProvider: ({ children }: { children?: React.ReactNode }) => (
@@ -45,7 +45,7 @@ jest.mock(
     'pages/integrations/integration/components/voice/VoiceDeviceProvider',
     () => ({
         __esModule: true,
-        default: ({ children }: { children?: React.ReactNode }) => (
+        VoiceDeviceProvider: ({ children }: { children?: React.ReactNode }) => (
             <div data-testid="voice-device-provider">{children}</div>
         ),
     }),
@@ -57,13 +57,11 @@ jest.mock('react-cookie', () => ({
     ),
 }))
 
-jest.mock(
-    'providers/realtime-ably/AblyRealtimeProviders',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => (
-            <div data-testid="ably-realtime-app-provider">{children}</div>
-        ),
-)
+jest.mock('providers/realtime-ably/AblyRealtimeProviders', () => ({
+    AblyRealtimeProviders: ({ children }: { children?: React.ReactNode }) => (
+        <div data-testid="ably-realtime-app-provider">{children}</div>
+    ),
+}))
 
 jest.mock('providers/standalone-ai/StandaloneAiProvider', () => ({
     StandaloneAiProvider: ({ children }: { children?: React.ReactNode }) => (
@@ -91,7 +89,7 @@ jest.mock('common/navigation/components/NavBarProvider', () => ({
 
 jest.mock('../App', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
+    App: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="app">{children}</div>
     ),
 }))

@@ -1,13 +1,13 @@
 import { Heading, Text } from '@gorgias/axiom'
 
-import ImportAction from './MetafieldsTable/ImportAction'
+import { ImportAction } from './MetafieldsTable/ImportAction'
 
 import styles from './EmptyMetafieldsState.less'
 
 type EmptyMetafieldsStateProps = {
     handleOpenCategoriesModal: () => void
 }
-export default function EmptyMetafieldsState({
+export function EmptyMetafieldsState({
     handleOpenCategoriesModal,
 }: EmptyMetafieldsStateProps) {
     return (

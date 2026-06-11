@@ -43,4 +43,4 @@ const chatsApplicationAutomationSettingsReducer =
                 ),
     )
 
-export default chatsApplicationAutomationSettingsReducer
+export { chatsApplicationAutomationSettingsReducer }

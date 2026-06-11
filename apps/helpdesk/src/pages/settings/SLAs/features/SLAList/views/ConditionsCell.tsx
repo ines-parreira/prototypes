@@ -4,18 +4,18 @@ import React, { useMemo, useState } from 'react'
 import { Button, Tag, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import useResolveConditions from 'pages/settings/SLAs/features/SLAForm/controllers/useResolveConditions'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { useResolveConditions } from 'pages/settings/SLAs/features/SLAForm/controllers/useResolveConditions'
 import { getShortLabel } from 'pages/settings/SLAs/features/SLAForm/views/ConditionsSelect/types'
 
 import type { UISLAPolicy } from '../types'
-import CellLinkWrapper from './CellLinkWrapper'
+import { CellLinkWrapper } from './CellLinkWrapper'
 
 import css from './ConditionsCell.less'
 
 const CONDITIONS_LIMIT = 2
 
-export default function ConditionsCell({
+export function ConditionsCell({
     policy,
     bodyCellProps,
 }: {

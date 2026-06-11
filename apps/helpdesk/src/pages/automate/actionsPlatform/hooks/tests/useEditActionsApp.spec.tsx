@@ -14,7 +14,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type { ActionsApp } from '../../types'
-import useEditActionsApp from '../useEditActionsApp'
+import { useEditActionsApp } from '../useEditActionsApp'
 
 jest.mock('models/workflows/queries')
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Subtitle from '../Subtitle'
+import { Subtitle } from '../Subtitle'
 
 describe('Subtitle', () => {
     it('should render given children', () => {

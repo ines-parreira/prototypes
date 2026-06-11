@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import type { Call } from '@twilio/voice-sdk'
 import { Popover, PopoverBody } from 'reactstrap'
 
-import IconButtonTooltip from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/IconButtonTooltip'
-import DialPad from 'pages/integrations/integration/components/phone/DialPad'
+import { DefaultExportIconButtonTooltip as IconButtonTooltip } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/IconButtonTooltip'
+import { DialPad } from 'pages/integrations/integration/components/phone/DialPad'
 
 import css from './InCallDialPad.less'
 
@@ -14,7 +14,7 @@ type Props = {
 
 const MAX_OUTPUT_LENGTH = 10
 
-export default function InCallDialPad({ call }: Props): JSX.Element {
+export function InCallDialPad({ call }: Props): JSX.Element {
     const [isOpen, setIsOpen] = useState(false)
     const [output, setOutput] = useState('')
 

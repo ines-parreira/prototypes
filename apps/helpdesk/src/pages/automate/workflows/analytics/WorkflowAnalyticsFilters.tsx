@@ -2,7 +2,7 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { withSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { getWorkflowAnalyticsDateRange } from 'pages/automate/workflows/analytics/visualBuilder/utils'
@@ -53,6 +53,9 @@ function WorkflowAnalyticsFiltersWrapped({
     return <> {hasCheckedInitialDateRange ? children : notReadyFallback}</>
 }
 
-export default withSelfServiceStoreIntegrationContext(
-    withWorkflowEditorContext(WorkflowAnalyticsFiltersWrapped),
-)
+const DefaultExportWorkflowAnalyticsFilters =
+    withSelfServiceStoreIntegrationContext(
+        withWorkflowEditorContext(WorkflowAnalyticsFiltersWrapped),
+    )
+
+export { DefaultExportWorkflowAnalyticsFilters }

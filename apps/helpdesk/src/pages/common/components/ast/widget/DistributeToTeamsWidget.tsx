@@ -251,4 +251,6 @@ const connector = connect((state: RootState) => ({
     teams: teamSelectors.getTeams(state),
 }))
 
-export default connector(DistributeToTeamsWidget)
+const DefaultExportDistributeToTeamsWidget = connector(DistributeToTeamsWidget)
+
+export { DefaultExportDistributeToTeamsWidget }

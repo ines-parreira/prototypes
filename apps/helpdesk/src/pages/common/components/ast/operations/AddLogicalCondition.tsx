@@ -9,7 +9,7 @@ import {
 
 import { RuleOperation } from '../../../../../state/rules/types'
 import type { RuleItemActions } from '../../../../settings/rules/types'
-import useHoverable from '../../../hooks/useHoverable'
+import { useHoverable } from '../../../hooks/useHoverable'
 
 type Props = {
     rule: Map<any, any>
@@ -19,7 +19,7 @@ type Props = {
     hoverableClassName: string
 }
 
-export default function AddLogicalCondition({
+export function AddLogicalCondition({
     title,
     actions,
     parent,

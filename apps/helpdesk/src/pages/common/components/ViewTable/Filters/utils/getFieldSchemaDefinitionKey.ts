@@ -1,8 +1,6 @@
 import type { CustomField } from 'custom-fields/types'
 
-export default function getFieldSchemaDefinitionKey(
-    customField?: CustomField | null,
-) {
+export function getFieldSchemaDefinitionKey(customField?: CustomField | null) {
     if (!customField) return undefined
     const {
         data_type: fieldDataType,

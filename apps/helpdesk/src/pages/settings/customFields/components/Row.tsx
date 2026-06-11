@@ -14,13 +14,13 @@ import {
     isCustomFieldAIManagedType,
     isCustomFieldSystemReadOnly,
 } from 'custom-fields/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { BodyCellContent } from 'pages/common/components/table/cells/BodyCellContent'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
 import type { Callbacks } from 'pages/common/hooks/useReorderDnD'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
+import { ArchiveConfirmationModal } from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import css from './Row.less'
@@ -32,7 +32,7 @@ export type Props = {
     onMoveEntity: Callbacks['onHover']
     onDropEntity: Callbacks['onDrop']
 }
-export default function Row({
+export function Row({
     position,
     customField,
     canReorder,

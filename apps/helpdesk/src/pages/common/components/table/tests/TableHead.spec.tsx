@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TableHead from '../TableHead'
+import { TableHead } from '../TableHead'
 
 describe('<TableHead/>', () => {
     it('should render', () => {

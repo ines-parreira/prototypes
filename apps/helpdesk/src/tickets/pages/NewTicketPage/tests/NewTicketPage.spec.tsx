@@ -65,9 +65,9 @@ jest.mock('tickets/pages/NewTicketPage/hooks/useNewTicketPageSync', () => ({
     useNewTicketPageSync: jest.fn(),
 }))
 
-jest.mock('pages/tickets/detail/hooks/useDraftTicketActivityTracking', () =>
-    jest.fn(),
-)
+jest.mock('pages/tickets/detail/hooks/useDraftTicketActivityTracking', () => ({
+    useDraftTicketActivityTracking: jest.fn(),
+}))
 
 jest.mock('state/integrations/selectors', () => ({
     ...jest.requireActual('state/integrations/selectors'),
@@ -99,17 +99,17 @@ jest.mock(
 
 jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
     __esModule: true,
-    default: jest.fn(() => null),
+    IntegrationTabContent: jest.fn(() => null),
 }))
 
 jest.mock('pages/tickets/detail/WooCommerceTabContent', () => ({
     __esModule: true,
-    default: jest.fn(() => null),
+    WooCommerceTabContent: jest.fn(() => null),
 }))
 
 jest.mock('pages/tickets/detail/CustomIntegrationsTabContent', () => ({
     __esModule: true,
-    default: jest.fn(() => null),
+    CustomIntegrationsTabContent: jest.fn(() => null),
 }))
 
 jest.mock('state/widgets/selectors', () => ({

@@ -6,22 +6,22 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Editor from 'pages/common/editor/Editor'
-import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
-import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Editor } from 'pages/common/editor/Editor'
+import { useInitialMacroFilters } from 'pages/common/editor/hooks/useInitialMacroFilters'
+import { useCollisionDetection } from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket, getTicketState } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
 import { TicketThread } from '../TicketThread'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',
-    () => jest.fn(),
+    () => ({ useCollisionDetection: jest.fn() }),
 )
 
 const mockUseParams = jest.fn()
@@ -96,8 +96,8 @@ jest.mock('@repo/ticket-thread', () => {
     }
 })
 
-jest.mock('pages/common/editor/Editor', () =>
-    jest.fn(
+jest.mock('pages/common/editor/Editor', () => ({
+    Editor: jest.fn(
         ({ onFocus, onBlur }: { onFocus: () => void; onBlur: () => void }) => (
             <div>
                 <button type="button" onClick={onFocus}>
@@ -109,18 +109,21 @@ jest.mock('pages/common/editor/Editor', () =>
             </div>
         ),
     ),
-)
-jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => jest.fn())
+}))
+jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => ({
+    useInitialMacroFilters: jest.fn(),
+}))
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
 jest.mock('state/ui/editor/actions', () => ({ editorFocused: jest.fn() }))
 jest.mock(
     'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider',
-    () =>
-        jest.fn(({ children }: { children?: ReactNode }) => (
-            <div>{children}</div>
-        )),
+    () => ({
+        WhatsAppEditorProvider: jest.fn(
+            ({ children }: { children?: ReactNode }) => <div>{children}</div>,
+        ),
+    }),
 )
 
 const mockUseAppDispatch = useAppDispatch as jest.Mock

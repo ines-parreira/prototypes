@@ -17,12 +17,12 @@ import {
     formatMetricValue,
 } from 'domains/reporting/pages/common/utils'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import { useGetCostPerAutomatedInteraction } from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import { useGetCostPerBillableTicket } from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { getAvailableAutomatePlans } from 'state/billing/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 
@@ -540,4 +540,4 @@ const ROICalculator = () => {
     )
 }
 
-export default ROICalculator
+export { ROICalculator }

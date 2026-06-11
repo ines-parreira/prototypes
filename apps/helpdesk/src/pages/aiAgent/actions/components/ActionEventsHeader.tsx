@@ -4,15 +4,15 @@ import _noop from 'lodash/noop'
 import moment from 'moment'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getPageStatsFilters } from 'domains/reporting/state/stats/selectors'
 import { setStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import BackToActionFormButton from './BackToActionFormButton'
+import { BackToActionFormButton } from './BackToActionFormButton'
 
 import css from './ActionEventsHeader.less'
 
@@ -43,7 +43,7 @@ const statusFilters = [
         value: 'partial_success',
     },
 ]
-export default function ActionEventsHeader({
+export function ActionEventsHeader({
     onChange,
     initialEndDate,
     initialStartDate,

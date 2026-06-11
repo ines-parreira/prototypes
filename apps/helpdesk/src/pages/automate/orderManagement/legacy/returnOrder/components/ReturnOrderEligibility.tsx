@@ -3,12 +3,13 @@ import React, { useRef, useState } from 'react'
 import { ReturnsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
 import type { SelfServiceConfigurationFilter } from 'models/selfServiceConfiguration/types'
 import { FilterOperatorEnum } from 'models/selfServiceConfiguration/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import SelectInputBox, {
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -117,4 +118,4 @@ const ReturnOrderEligibility = ({ eligibility, onChange }: Props) => {
     )
 }
 
-export default ReturnOrderEligibility
+export { ReturnOrderEligibility }

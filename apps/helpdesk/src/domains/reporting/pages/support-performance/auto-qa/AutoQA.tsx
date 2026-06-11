@@ -3,10 +3,10 @@ import { useGridSize } from '@gorgias/toolkit-react'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { AutoQADownloadDataButton } from 'domains/reporting/pages/support-performance/auto-qa/AutoQADownloadDataButton'
 import {
@@ -15,7 +15,7 @@ import {
     AutoQAReportConfig,
 } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 
-export default function AutoQA() {
+export function AutoQA() {
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
 

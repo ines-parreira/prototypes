@@ -3,24 +3,24 @@ import React, { useCallback } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EmailProvider } from 'models/integration/constants'
 import type {
     EmailIntegration,
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { fetchIntegration } from 'state/integrations/actions'
 import { hasRole } from 'utils'
 
 import { getDomainFromEmailAddress, isBaseEmailAddress } from '../helpers'
-import EmailDomainVerificationForm from './components/EmailDomainVerificationForm'
-import RecordsTable from './components/RecordsTable'
+import { EmailDomainVerificationForm } from './components/EmailDomainVerificationForm'
+import { RecordsTable } from './components/RecordsTable'
 import { DEPRECATED_useDomainVerification } from './DEPRECATED_useDomainVerification'
 
 import css from './EmailDomainVerification.less'
@@ -36,7 +36,7 @@ export type Props = {
  * @date 2024-11-08
  * @type feature-component
  */
-export default function DEPRECATED_EmailDomainVerification({
+export function DEPRECATED_EmailDomainVerification({
     integration,
     loading,
     onDeleteDomain,

@@ -7,9 +7,9 @@ import { MemoryRouter } from 'react-router-dom'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { Intent } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import {
     BodyCellWrapper,
@@ -24,16 +24,12 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 
 const mockHistoryPush = jest.fn()
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            useHistory: () => ({
-                push: mockHistoryPush,
-            }),
-        }) as Record<string, unknown>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}))
 
 const renderTableCell = (cellContent: React.ReactNode) => {
     render(

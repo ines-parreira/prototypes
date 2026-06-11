@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor, within } from '@testing-library/react'
 
-import HelpCenterEditModalFooter from '../HelpCenterEditModalFooter'
+import { HelpCenterEditModalFooter } from '../HelpCenterEditModalFooter'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),

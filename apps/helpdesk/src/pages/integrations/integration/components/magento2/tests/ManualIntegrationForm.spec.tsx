@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import * as actions from 'state/integrations/actions'
 
-import ManualIntegrationForm from '../ManualIntegrationForm'
+import { ManualIntegrationForm } from '../ManualIntegrationForm'
 
 jest.spyOn(actions, 'deleteIntegration')
 jest.spyOn(actions, 'updateOrCreateIntegrationRequest').mockImplementation(

@@ -5,7 +5,7 @@ import { useGridSize, useLocalStorage } from '@gorgias/toolkit-react'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 import { IntentsPerformance } from './IntentsPerformance'
 
@@ -15,7 +15,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useGridSize: jest.fn(),
     useLocalStorage: jest.fn(),
 }))
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 
 const mockUseStatsFilters = useStatsFilters as jest.Mock
 const mockUseGridSize = assumeMock(useGridSize) as jest.Mock

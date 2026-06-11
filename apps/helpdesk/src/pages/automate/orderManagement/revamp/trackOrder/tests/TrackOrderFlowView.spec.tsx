@@ -6,10 +6,10 @@ import { useParams } from 'react-router-dom'
 import { TicketChannel } from 'business/types/ticket'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
-import useTrackOrderFlow from '../../../legacy/trackOrder/hooks/useTrackOrderFlow'
+import { useTrackOrderFlow } from '../../../legacy/trackOrder/hooks/useTrackOrderFlow'
 import { TrackOrderFlowView } from '../TrackOrderFlowView'
 
 jest.mock('react-router-dom', () => ({

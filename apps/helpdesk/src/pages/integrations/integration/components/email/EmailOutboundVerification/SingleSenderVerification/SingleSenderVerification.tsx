@@ -4,31 +4,28 @@ import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { EmailIntegration } from 'models/integration/types'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
 import { getVerification } from 'models/singleSenderVerification/resources'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'
 import { getSingleSenderVerification } from 'state/entities/singleSenderVerification/selectors'
 import { fetchIntegration, fetchIntegrations } from 'state/integrations/actions'
 
-import useCreateSingleSenderVerification from '../../hooks/useCreateSingleSenderVerification'
-import BackButton from '../BackButton'
-import DeleteVerificationButton from '../DeleteVerificationButton'
-import VerificationForm from '../VerificationForm/VerificationForm'
-import VerificationEmailSent from './VerificationEmailSent'
+import { useCreateSingleSenderVerification } from '../../hooks/useCreateSingleSenderVerification'
+import { BackButton } from '../BackButton'
+import { DeleteVerificationButton } from '../DeleteVerificationButton'
+import { VerificationForm } from '../VerificationForm/VerificationForm'
+import { VerificationEmailSent } from './VerificationEmailSent'
 
 export type Props = {
     baseURL: string
     integration: EmailIntegration
 }
 
-export default function SingleSenderVerification({
-    baseURL,
-    integration,
-}: Props) {
+export function SingleSenderVerification({ baseURL, integration }: Props) {
     const { createVerification, isLoading } =
         useCreateSingleSenderVerification()
     const verification = useAppSelector(

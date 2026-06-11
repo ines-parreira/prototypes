@@ -6,11 +6,11 @@ import type { EditorState } from 'draft-js'
 import { Col, Container, Row } from 'reactstrap'
 
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import type RichField from 'pages/common/forms/RichField/RichField'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
+import { DefaultExportTicketRichField as TicketRichField } from 'pages/common/forms/RichField/TicketRichField'
 import { convertToHTML } from 'utils/editor'
 
-import TextArea from '../../../../../../../common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from '../../../../../../../common/forms/TextArea'
 
 import css from './GorgiasTranslateText.less'
 
@@ -142,4 +142,4 @@ const GorgiasTranslateInputField = ({
     )
 }
 
-export default GorgiasTranslateInputField
+export { GorgiasTranslateInputField }

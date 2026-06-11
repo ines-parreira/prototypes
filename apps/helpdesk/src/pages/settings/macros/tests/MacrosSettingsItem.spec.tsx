@@ -9,7 +9,7 @@ import { useLocation, useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
 
@@ -49,7 +49,7 @@ jest.mock(
 
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('@tanstack/react-query', () => ({

@@ -1,7 +1,7 @@
 import { assumeMock, getLastMockCall, render, userEvent } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 
-import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
+import { CustomFieldInput } from 'custom-fields/components/CustomFieldInput'
 import { useUpdateOrDeleteCustomerFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
 import {
     customerDropdownFieldDefinition,
@@ -9,7 +9,7 @@ import {
     customerNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import CustomerField from '../CustomerField'
+import { CustomerField } from '../CustomerField'
 
 jest.mock(
     'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue',
@@ -20,9 +20,11 @@ jest.mock(
     },
 )
 jest.mock('custom-fields/components/CustomFieldInput', () => {
-    return jest.fn(({ id }: { id: string }) => (
-        <div id={id}>CustomFieldInput</div>
-    ))
+    return {
+        CustomFieldInput: jest.fn(({ id }: { id: string }) => (
+            <div id={id}>CustomFieldInput</div>
+        )),
+    }
 })
 
 const mockedUsedUpdateOrDeleteCustomerFieldValue = assumeMock(

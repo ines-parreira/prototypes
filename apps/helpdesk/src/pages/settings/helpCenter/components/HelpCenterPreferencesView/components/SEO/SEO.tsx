@@ -5,8 +5,8 @@ import type {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
 } from 'models/helpCenter/types'
-import InputField from 'pages/common/forms/input/InputField'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import { useHelpCenterPreferencesSettings } from 'pages/settings/helpCenter/providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import {
     getAbsoluteUrl,

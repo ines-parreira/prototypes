@@ -7,11 +7,11 @@ import { LegacyButton as Button, Separator } from '@gorgias/axiom'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegrationDisplayName } from 'state/integrations/helpers'
 
-import Dropdown from '../dropdown/Dropdown'
-import DropdownBody from '../dropdown/DropdownBody'
-import DropdownItem from '../dropdown/DropdownItem'
-import DropdownSearch from '../dropdown/DropdownSearch'
-import SourceIcon from '../SourceIcon'
+import { Dropdown } from '../dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from '../dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from '../dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from '../dropdown/DropdownSearch'
+import { DefaultExportSourceIcon as SourceIcon } from '../SourceIcon'
 
 import css from './ChannelFilter.less'
 
@@ -36,7 +36,7 @@ const mapChannelToIntegrationType = (
     return [channel]
 }
 
-export default function ChannelFilter({
+export function ChannelFilter({
     channels,
     onChange,
     withSearch = false,

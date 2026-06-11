@@ -40,7 +40,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
-        default: () => null,
+        SaveChangesPrompt: () => null,
     }),
 )
 

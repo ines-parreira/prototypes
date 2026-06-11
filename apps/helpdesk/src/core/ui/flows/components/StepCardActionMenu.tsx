@@ -2,7 +2,7 @@ import { useRef } from 'react'
 
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { UncontrolledDropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 import css from './StepCardActionMenu.less'
 

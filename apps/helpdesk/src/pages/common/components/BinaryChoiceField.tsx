@@ -24,7 +24,7 @@ type Props = {
  * Only one value can be picked from each source
  * ex: used in merge customers feature for merging names
  */
-export default function BinaryChoiceField({
+export function BinaryChoiceField({
     label,
     options,
     tooltip,

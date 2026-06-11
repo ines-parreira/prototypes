@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getPhoneChannelsForSmsSource } from 'state/integrations/selectors'
 
 import type { SmsPhoneNumber } from '../types'

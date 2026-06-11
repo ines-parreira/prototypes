@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ColorPicker from '../ColorPicker'
+import { ColorPicker } from '../ColorPicker'
 
 const minProps = {
     onChange: jest.fn(),

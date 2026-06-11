@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import PendingChangesModal from '../PendingChangesModal'
+import { PendingChangesModal } from '../PendingChangesModal'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

@@ -5,17 +5,17 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { BusinessHoursCreate } from '@gorgias/helpdesk-queries'
 import { queryKeys, useCreateBusinessHours } from '@gorgias/helpdesk-queries'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { SectionHeader } from 'pages/common/components/SectionHeader/SectionHeader'
 
-import AddCustomBusinessHoursModalGeneralSection from './AddCustomBusinessHoursModalGeneralSection'
-import CreateCustomBusinessHoursForm from './CreateCustomBusinessHoursForm'
-import CustomBusinessHoursIntegrationsTable from './CustomBusinessHoursIntegrationsTable'
-import CustomBusinessHoursProvider from './CustomBusinessHoursProvider'
-import FormSectionCard from './FormSectionCard'
+import { AddCustomBusinessHoursModalGeneralSection } from './AddCustomBusinessHoursModalGeneralSection'
+import { CreateCustomBusinessHoursForm } from './CreateCustomBusinessHoursForm'
+import { CustomBusinessHoursIntegrationsTable } from './CustomBusinessHoursIntegrationsTable'
+import { CustomBusinessHoursProvider } from './CustomBusinessHoursProvider'
+import { FormSectionCard } from './FormSectionCard'
 
 import css from './AddCustomBusinessHoursModal.less'
 
@@ -25,7 +25,7 @@ type Props = {
     onCreateSuccess?: (id: number) => void
 }
 
-export default function AddCustomBusinessHoursModal({
+export function AddCustomBusinessHoursModal({
     isOpen,
     onClose,
     onCreateSuccess,

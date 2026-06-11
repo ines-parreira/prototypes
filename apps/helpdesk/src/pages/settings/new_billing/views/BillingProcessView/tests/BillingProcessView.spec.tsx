@@ -31,9 +31,9 @@ import { ProductType } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import type { RootState } from 'state/types'
 
-import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
-import SummaryTotal from '../../../components/SummaryTotal'
-import useProductCancellations from '../../../hooks/useProductCancellations'
+import { ScheduledCancellationSummary } from '../../../components/ScheduledCancellationSummary'
+import { SummaryTotal } from '../../../components/SummaryTotal'
+import { useProductCancellations } from '../../../hooks/useProductCancellations'
 import { BillingProcessView } from '../BillingProcessView'
 
 jest.mock('@repo/billing', () => ({
@@ -44,7 +44,9 @@ jest.mock('@repo/billing', () => ({
 const mockUseBillingState = assumeMock(useBillingState)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')
@@ -52,14 +54,17 @@ const useFlagMock = assumeMock(useFlag)
 const logEventMock = assumeMock(logEvent)
 jest.mock(
     '../../../components/ScheduledCancellationSummary/ScheduledCancellationSummary',
-    () =>
-        jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>),
+    () => ({
+        ScheduledCancellationSummary: jest.fn(() => (
+            <div data-testid="scheduled-cancellation-summary"></div>
+        )),
+    }),
 )
 jest.mock('pages/settings/new_billing/hooks/useProductCancellations')
 jest.mock('pages/settings/new_billing/hooks/useIsPaymentEnabled')
-jest.mock('../../../components/SummaryTotal/SummaryTotal', () =>
-    jest.fn(() => <div data-testid="summary-total"></div>),
-)
+jest.mock('../../../components/SummaryTotal/SummaryTotal', () => ({
+    SummaryTotal: jest.fn(() => <div data-testid="summary-total"></div>),
+}))
 
 const ScheduledCancellationSummaryMock = assumeMock(
     ScheduledCancellationSummary,
@@ -73,11 +78,12 @@ const ineligiblePlanMessage =
 // Mock PendingChangesModal to capture props
 jest.mock(
     'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal',
-    () => jest.fn(() => null),
+    () => ({ PendingChangesModal: jest.fn(() => null) }),
 )
 
 const mockPendingChangesModal = jest.mocked(
-    require('pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'),
+    require('pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal')
+        .PendingChangesModal,
 )
 
 const LocationPath = () => {

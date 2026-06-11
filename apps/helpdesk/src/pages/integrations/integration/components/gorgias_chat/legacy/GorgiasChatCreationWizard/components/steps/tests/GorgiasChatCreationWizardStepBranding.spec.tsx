@@ -10,15 +10,14 @@ import thunk from 'redux-thunk'
 
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
-import GorgiasChatCreationWizardStepBranding from '../GorgiasChatCreationWizardStepBranding'
+import { GorgiasChatCreationWizardStepBranding } from '../GorgiasChatCreationWizardStepBranding'
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 
 const mockStore = configureMockStore([thunk])
 

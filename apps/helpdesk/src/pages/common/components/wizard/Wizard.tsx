@@ -22,7 +22,7 @@ export type WizardContextState = {
 
 export const WizardContext = createContext<WizardContextState | null>(null)
 
-export default function Wizard({
+export function Wizard({
     children,
     steps,
     startAt = steps[0],

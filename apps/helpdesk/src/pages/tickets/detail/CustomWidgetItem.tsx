@@ -4,7 +4,7 @@ import type { Source, Template as TemplateType } from 'models/widget/types'
 import { STANDALONE_WIDGET_TYPE } from 'state/widgets/constants'
 import { getWidgetSourcePath } from 'state/widgets/utils'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
-import Template from 'Widgets/modules/Template'
+import { Template } from 'Widgets/modules/Template'
 
 type Props = {
     widget: Map<string, unknown>
@@ -13,7 +13,7 @@ type Props = {
     fallbackIndex: number
 }
 
-export default function CustomWidgetItem({
+export function CustomWidgetItem({
     widget,
     sources,
     widgetIndex,

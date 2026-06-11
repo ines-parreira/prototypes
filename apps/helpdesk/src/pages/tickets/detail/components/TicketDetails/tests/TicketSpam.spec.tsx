@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TicketSpam from '../TicketSpam'
+import { TicketSpam } from '../TicketSpam'
 
 describe('TicketSpam', () => {
     describe('props', () => {

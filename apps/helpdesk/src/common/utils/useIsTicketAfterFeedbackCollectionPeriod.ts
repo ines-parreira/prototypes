@@ -3,7 +3,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 import { getTicketState } from 'state/ticket/selectors'

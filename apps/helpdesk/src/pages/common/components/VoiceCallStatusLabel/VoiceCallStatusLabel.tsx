@@ -41,4 +41,4 @@ const VoiceCallStatusLabel = ({ displayStatus }: Props) => {
     )
 }
 
-export default VoiceCallStatusLabel
+export { VoiceCallStatusLabel }

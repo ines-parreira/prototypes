@@ -10,7 +10,7 @@ import { Box, PanelHeader } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
-import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
+import { CampaignsTable } from 'AIJourney/components/CampaignsTable/CampaignsTable'
 import {
     actionColumns,
     columns,
@@ -31,7 +31,7 @@ import { useJourneyContext } from 'AIJourney/providers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 
 import { getCampaignStateLabelAndColor } from '../../utils'
 import { filterImpersonatedColumns } from '../../utils/filterImpersonatedColumns'

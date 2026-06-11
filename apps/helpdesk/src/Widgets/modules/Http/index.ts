@@ -1,1 +1,1 @@
-export { default } from './components/Http'
+export { HttpWidget } from './components/Http'

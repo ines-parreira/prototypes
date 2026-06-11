@@ -6,7 +6,7 @@ import type { GorgiasApiError } from 'models/api/types'
 import type { EmailProvider } from 'models/integration/constants'
 import { createDomainVerification as createDomainVerificationRequest } from 'models/integration/resources/email'
 
-export default function useCreateDomainVerification() {
+export function useCreateDomainVerification() {
     const [isLoading, setIsLoading] = useState(false)
 
     const createDomainVerification = async (payload: {

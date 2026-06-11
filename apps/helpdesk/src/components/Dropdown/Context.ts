@@ -19,7 +19,9 @@ type ContextState = {
     wrapperRef?: RefObject<HTMLDivElement>
 }
 
-export default createContext<ContextState>({
+const DefaultExportContext = createContext<ContextState>({
     data: [],
     shouldRender: true,
 })
+
+export { DefaultExportContext }

@@ -9,13 +9,13 @@ import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/s
 import { AiAgentStatsDownloadButton } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsDownloadButton'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { saveZippedFiles } from 'utils/file'
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentReportMetrics')
 const useAIAgentReportMetricsMock = assumeMock(useAIAgentReportMetrics)
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 jest.mock('utils/file')

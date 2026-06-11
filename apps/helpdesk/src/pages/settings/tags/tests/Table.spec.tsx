@@ -9,26 +9,24 @@ import configureMockStore from 'redux-mock-store'
 
 import { tags } from 'fixtures/tag'
 
-import type Row from '../Row'
-import Table from '../Table'
+import type { Row } from '../Row'
+import { Table } from '../Table'
 
 const mockStore = configureMockStore()
 
-jest.mock(
-    'pages/settings/tags/Row',
-    () =>
-        ({ meta, row, refresh }: ComponentProps<typeof Row>) => (
-            <div>
-                RowMock
-                <div onClick={refresh}>{row.name}</div>
-                <div>{JSON.stringify(meta.toJS())}</div>
-            </div>
-        ),
-)
+jest.mock('pages/settings/tags/Row', () => ({
+    Row: ({ meta, row, refresh }: ComponentProps<typeof Row>) => (
+        <div>
+            RowMock
+            <div onClick={refresh}>{row.name}</div>
+            <div>{JSON.stringify(meta.toJS())}</div>
+        </div>
+    ),
+}))
 
-jest.mock('pages/settings/tags/TableActions/TableActions', () => () => (
-    <div>TableActionsMock</div>
-))
+jest.mock('pages/settings/tags/TableActions/TableActions', () => ({
+    TableActions: () => <div>TableActionsMock</div>,
+}))
 
 describe('<Table />', () => {
     const minProps: Omit<ComponentProps<typeof Table>, 'columns'> = {

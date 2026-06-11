@@ -114,4 +114,4 @@ const phrasePredictionClient = new PhrasePredictionClient(
     window.PHRASE_FEEDBACK_URL,
 )
 
-export default phrasePredictionClient
+export { phrasePredictionClient }

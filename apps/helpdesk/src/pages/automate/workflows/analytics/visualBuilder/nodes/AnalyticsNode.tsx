@@ -7,10 +7,10 @@ import classNames from 'classnames'
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { toPercentage } from 'pages/automate/automate-metrics/utils'
-import VisualBuilderActionIconCondensed from 'pages/automate/workflows/components/VisualBuilderActionIconCondensed'
+import { VisualBuilderActionIconCondensed } from 'pages/automate/workflows/components/VisualBuilderActionIconCondensed'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
+import { useWorkflowDropoffMetricTiers } from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import { getDropoffColor } from 'pages/automate/workflows/utils/getDropOffColor'
 
@@ -26,7 +26,7 @@ import type {
     TextReplyNodeType,
     VisualBuilderNode,
 } from '../../../models/visualBuilderGraph.types'
-import EdgeBlock from '../components/EdgeBlock'
+import { EdgeBlock } from '../components/EdgeBlock'
 import {
     displayMetric,
     displayPercentMetric,
@@ -170,7 +170,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
     )
 })
 
-export default function AnalyticsNodeWrapper(node: NodeProps<NodeType>) {
+export function AnalyticsNodeWrapper(node: NodeProps<NodeType>) {
     const nodeType = node.type as Exclude<
         NonNullable<VisualBuilderNode['type']>,
         | 'channel_trigger'

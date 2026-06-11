@@ -6,8 +6,8 @@ import Skeleton from 'react-loading-skeleton'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
 import css from './ThankYouModal.less'
 
@@ -92,4 +92,4 @@ const ThankYouModal: React.FC<Props> = ({
     )
 }
 
-export default ThankYouModal
+export { ThankYouModal }

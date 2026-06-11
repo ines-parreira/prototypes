@@ -11,12 +11,12 @@ import {
     useUpdateSlaPolicy,
 } from '@gorgias/helpdesk-queries'
 
-import handleApiError from 'pages/settings/SLAs/utils/handleApiError'
+import { handleApiError } from 'pages/settings/SLAs/utils/handleApiError'
 
-import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
+import { makeCreateSLAPolicyBody } from './makeCreateSLAPolicyBody'
 import type { SLAFormValues } from './useFormValues'
 
-export default function useSubmitPolicy() {
+export function useSubmitPolicy() {
     const queryClient = useQueryClient()
 
     const { policyId } = useParams<{ policyId?: string }>()

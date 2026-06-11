@@ -14,7 +14,7 @@ import * as useGetCostPerBillableTicket from 'pages/automate/common/hooks/useGet
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ROICalculator from '../ROICalculator'
+import { ROICalculator } from '../ROICalculator'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<RootState, StoreDispatch>(middlewares)

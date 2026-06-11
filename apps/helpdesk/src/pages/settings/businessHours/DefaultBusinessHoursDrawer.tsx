@@ -18,9 +18,9 @@ import type { AccountSettingsItem } from '@gorgias/helpdesk-types'
 import { validateUpdateAccountSettingBody } from '@gorgias/helpdesk-validators'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
-import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
-import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
+import { TimeScheduleField } from 'pages/common/components/TimeScheduleField/TimeScheduleField'
+import { SelectDropdownField } from 'pages/common/forms/SelectDropdownField'
 import { getMomentTimezoneNames } from 'utils/date'
 
 import css from './DefaultBusinessHours.less'

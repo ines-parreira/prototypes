@@ -8,7 +8,7 @@ import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
 
-import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
+import { EmailIntegrationListVerificationStatus } from '../EmailIntegrationListVerificationStatus'
 import {
     EmailVerificationStatus,
     getEmailVerificationStatus,

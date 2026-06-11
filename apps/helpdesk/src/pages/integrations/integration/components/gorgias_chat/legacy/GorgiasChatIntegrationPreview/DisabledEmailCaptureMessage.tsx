@@ -6,7 +6,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 
-import AgentMessages from './AgentMessages'
+import { AgentMessages } from './AgentMessages'
 
 type DisabledEmailCaptureMessageProps = {
     mainColor: string
@@ -50,4 +50,4 @@ const DisabledEmailCaptureMessage = ({
     )
 }
 
-export default DisabledEmailCaptureMessage
+export { DisabledEmailCaptureMessage }

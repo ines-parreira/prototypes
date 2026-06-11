@@ -1,7 +1,7 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Filters } from 'models/macro/types'
 import type { RootState } from 'state/types'
 import { hasRole } from 'utils'
@@ -35,4 +35,4 @@ const MacroNoResults = ({ searchParams, newAction }: Props) => {
     )
 }
 
-export default MacroNoResults
+export { MacroNoResults }

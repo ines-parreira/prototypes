@@ -3,12 +3,12 @@ import React, { useMemo } from 'react'
 import { getDefaultConvertPlanIndex } from '@repo/billing'
 import { useLocation } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ConvertPlan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 import css from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal.less'
-import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
-import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
+import { CanduActionInfobar } from 'pages/settings/new_billing/components/CanduActionInfobar'
+import { SubscriptionModal } from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
 import {
     getAvailableConvertPlans,
     getCheapestConvertPlan,
@@ -103,4 +103,4 @@ const ConvertSubscriptionModal = ({
     )
 }
 
-export default ConvertSubscriptionModal
+export { ConvertSubscriptionModal }

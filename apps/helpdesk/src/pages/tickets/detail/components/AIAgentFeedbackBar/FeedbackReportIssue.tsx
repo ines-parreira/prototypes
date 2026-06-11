@@ -10,9 +10,10 @@ import {
 
 import type { ReportIssueOption } from 'models/aiAgentFeedback/constants'
 import { ReportIssueLabels } from 'models/aiAgentFeedback/constants'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -151,4 +152,4 @@ const ReportIssueSelect: React.FC<Props> = ({
     )
 }
 
-export default ReportIssueSelect
+export { ReportIssueSelect }

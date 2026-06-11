@@ -13,7 +13,7 @@ import {
 } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'

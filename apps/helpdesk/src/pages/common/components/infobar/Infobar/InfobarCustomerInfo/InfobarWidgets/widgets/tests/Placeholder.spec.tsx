@@ -5,15 +5,15 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Template } from 'models/widget/types'
 import type { Widget } from 'state/widgets/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
-import Placeholder from '../Placeholder'
+import { Placeholder } from '../Placeholder'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 

@@ -2,11 +2,11 @@ import { memo } from 'react'
 
 import cn from 'classnames'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import RelativeTime from 'pages/common/components/RelativeTime'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { RelativeTime } from 'pages/common/components/RelativeTime'
 
 import type { Notification } from '../types'
-import getNotificationConfig from '../utils/getNotificationConfig'
+import { getNotificationConfig } from '../utils/getNotificationConfig'
 
 import css from './FeedItem.less'
 
@@ -16,7 +16,7 @@ export type Props = {
     onToggleRead?: () => void
 }
 
-export default memo(function FeedItem({
+const DefaultExportFeedItem = memo(function FeedItem({
     notification,
     onClick,
     onToggleRead,
@@ -61,3 +61,5 @@ export default memo(function FeedItem({
         </div>
     )
 })
+
+export { DefaultExportFeedItem }

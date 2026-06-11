@@ -3,26 +3,28 @@ import React from 'react'
 import { render } from '@repo/testing'
 import NotificationsSystem, { dismissNotification } from 'reapop'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { NotificationIcon } from 'pages/common/components/NotificationIcon'
 import { createNotificationsTheme } from 'pages/common/components/Notifications'
 
-import useAlertNotifications from '../../hooks/useAlertNotifications'
-import AlertNotifications from '../AlertNotifications'
+import { useAlertNotifications } from '../../hooks/useAlertNotifications'
+import { Notifications as AlertNotifications } from '../AlertNotifications'
 
 jest.mock('reapop', () => ({
     __esModule: true,
     default: jest.fn(),
     dismissNotification: jest.fn(),
 }))
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('pages/common/components/NotificationIcon', () => ({
     NotificationIcon: jest.fn(),
 }))
 jest.mock('pages/common/components/Notifications', () => ({
     createNotificationsTheme: jest.fn(),
 }))
-jest.mock('../../hooks/useAlertNotifications', () => jest.fn())
+jest.mock('../../hooks/useAlertNotifications', () => ({
+    useAlertNotifications: jest.fn(),
+}))
 
 const dismissNotificationMock = dismissNotification as jest.Mock
 const NotificationsSystemMock = NotificationsSystem as jest.Mock

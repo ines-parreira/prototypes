@@ -2,8 +2,8 @@ import type { Map } from 'immutable'
 
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
-import GorgiasChatCreationWizardLegacy from './legacy/GorgiasChatCreationWizard/GorgiasChatCreationWizard'
-import GorgiasChatCreationWizardRevamp from './revamp/CreationWizard/GorgiasChatCreationWizard'
+import { GorgiasChatCreationWizard as GorgiasChatCreationWizardLegacy } from './legacy/GorgiasChatCreationWizard/GorgiasChatCreationWizard'
+import { GorgiasChatCreationWizard as GorgiasChatCreationWizardRevamp } from './revamp/CreationWizard/GorgiasChatCreationWizard'
 import { GorgiasChatCreationWizardSkeleton } from './revamp/CreationWizard/GorgiasChatCreationWizardSkeleton'
 
 type Props = {

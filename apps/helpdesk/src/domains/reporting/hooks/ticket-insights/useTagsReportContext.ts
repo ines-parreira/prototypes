@@ -8,7 +8,7 @@ import {
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { getTagsOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 
 export const useTagsReportContext = () => {

@@ -4,7 +4,7 @@ import React from 'react'
 import classNames from 'classnames'
 
 import type { Props as CheckBoxProps } from 'pages/common/forms/CheckBox'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 type CheckBoxItem = CheckBoxProps & {
     additionalContent?: ReactNode
@@ -17,7 +17,7 @@ export type Props = {
     className?: string
 }
 
-export default function CheckBoxFieldSet(props: Props) {
+export function CheckBoxFieldSet(props: Props) {
     const { title, subtitle, checkboxes, className } = props
 
     return (

@@ -19,7 +19,7 @@ type Props = {
     value: string
 }
 
-export default function ActionSelect({ actions, parent, rule, value }: Props) {
+export function ActionSelect({ actions, parent, rule, value }: Props) {
     const handleClick = (value: string) => {
         actions.modifyCodeAST(parent, value, RuleOperation.Update)
     }

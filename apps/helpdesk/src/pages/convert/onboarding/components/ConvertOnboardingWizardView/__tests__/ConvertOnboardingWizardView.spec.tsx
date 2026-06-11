@@ -30,7 +30,7 @@ import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hoo
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
+import { ConvertOnboardingWizardView } from '../ConvertOnboardingWizardView'
 
 const queryClient = mockQueryClient()
 
@@ -57,9 +57,11 @@ const useInstallBundleMock = assumeMock(useInstallBundle)
 jest.mock(
     'pages/convert/onboarding/components/ConvertSimplifiedEditorModal',
     () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-simplified-editor-modal" />
-        })
+        return {
+            ConvertSimplifiedEditorModal: jest.fn(() => {
+                return <div data-testid="mock-simplified-editor-modal" />
+            }),
+        }
     },
 )
 

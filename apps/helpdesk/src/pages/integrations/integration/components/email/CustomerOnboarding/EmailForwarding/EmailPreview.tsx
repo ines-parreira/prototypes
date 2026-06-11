@@ -49,4 +49,4 @@ const EmailPreview = ({ displayName = '', emailAddress = '' }) => {
     )
 }
 
-export default EmailPreview
+export { EmailPreview }

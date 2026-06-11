@@ -10,7 +10,7 @@ import {
 } from 'models/workflows/queries'
 
 import { handleError } from '../errorHandler'
-import useUpsertAction from '../useUpsertAction'
+import { useUpsertAction } from '../useUpsertAction'
 import { actionConfigurationFixture } from './actions.fixtures'
 
 jest.mock('models/workflows/queries', () => ({

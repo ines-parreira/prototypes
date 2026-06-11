@@ -9,8 +9,8 @@ import thunk from 'redux-thunk'
 
 import type { HelpCenter } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {
     HelpCenterApiBrandingFixture,
     HelpCenterUiBrandingFixture,
@@ -18,7 +18,7 @@ import {
 import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
-import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
+import { HelpCenterCreationWizardStepBranding } from '../HelpCenterCreationWizardStepBranding'
 
 jest.mock('@repo/feature-flags')
 

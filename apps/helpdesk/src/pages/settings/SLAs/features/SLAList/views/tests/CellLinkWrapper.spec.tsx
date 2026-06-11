@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
-import CellLinkWrapper from '../CellLinkWrapper'
+import { CellLinkWrapper } from '../CellLinkWrapper'
 
 describe('<CellLinkWrapper />', () => {
     it('renders a link', () => {

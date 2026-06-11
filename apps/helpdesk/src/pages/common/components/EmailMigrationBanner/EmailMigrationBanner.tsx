@@ -2,14 +2,14 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EmailMigrationStatus } from 'models/integration/types'
 import { getEmailMigrationStatus } from 'state/integrations/selectors'
 
 import { computeEmailMigrationStatusBanner } from './helpers'
-import useMigrationBannerStatus from './hooks/useMigrationBannerStatus'
+import { useMigrationBannerStatus } from './hooks/useMigrationBannerStatus'
 
-export default function EmailMigrationBanner() {
+export function EmailMigrationBanner() {
     const fetchMigrationStatus = useMigrationBannerStatus()
     const migrationStatus = useAppSelector(getEmailMigrationStatus)
     const history = useHistory()

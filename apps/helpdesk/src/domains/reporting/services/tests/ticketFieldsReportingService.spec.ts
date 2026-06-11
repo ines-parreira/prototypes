@@ -21,7 +21,7 @@ import {
     useCustomFieldsReportData,
 } from 'domains/reporting/services/ticketFieldsReportingService'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import * as files from 'utils/file'
 import { saveZippedFiles } from 'utils/file'

@@ -1,13 +1,13 @@
 import { render } from '@repo/testing'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { changeHelpCenterId, changeViewLanguage } from 'state/ui/helpCenter'
 
 import { useHelpCenterApi } from '../../hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from '../../hooks/useHelpCenterIdParam'
-import CurrentHelpCenter from './CurrentHelpCenter'
+import { CurrentHelpCenter } from './CurrentHelpCenter'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')

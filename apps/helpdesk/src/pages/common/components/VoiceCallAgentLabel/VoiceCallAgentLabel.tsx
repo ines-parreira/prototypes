@@ -19,7 +19,7 @@ type AgentLabelProps = {
     interactable?: boolean
 }
 
-export default function VoiceCallAgentLabel({
+export function VoiceCallAgentLabel({
     agentId,
     phoneNumber,
     className,

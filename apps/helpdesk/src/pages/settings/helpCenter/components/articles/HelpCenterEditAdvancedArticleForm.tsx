@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     ArticleTranslationSeoMeta,
     CreateArticleTranslationDto,
     CustomerVisibility,
     LocalArticleTranslation,
 } from 'models/helpCenter/types'
-import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import InputField from 'pages/common/forms/input/InputField'
-import TextArea from 'pages/common/forms/TextArea'
+import { AutoPopulateInput } from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import settingsCss from 'pages/settings/settings.less'
 import { getCategories } from 'state/entities/helpCenter/categories'
 import { notify } from 'state/notifications/actions'
@@ -29,8 +29,8 @@ import {
 } from '../../utils/helpCenter.utils'
 import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
 import { SearchEnginePreview } from '../SearchEnginePreview'
-import SelectCustomerVisibility from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import ArticleCategorySelect from './ArticleCategorySelect'
+import { SelectCustomerVisibility } from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import { ArticleCategorySelect } from './ArticleCategorySelect'
 import { HelpCenterArticleAIAgentBanner } from './HelpCenterArticleAIAgentBanner'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
@@ -259,5 +259,3 @@ export const HelpCenterEditAdvancedArticleForm = ({
         </div>
     )
 }
-
-export default HelpCenterEditAdvancedArticleForm

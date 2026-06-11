@@ -26,4 +26,4 @@ const useCancellationFlowStepsStateMachine = () => {
     return { cancellationStep, switchToNextStep, resetCancellationFlow }
 }
 
-export default useCancellationFlowStepsStateMachine
+export { useCancellationFlowStepsStateMachine }

@@ -14,7 +14,7 @@ import {
     IntegrationDataItemType,
 } from 'models/integration/types'
 import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { assetsUrl } from 'utils'
 

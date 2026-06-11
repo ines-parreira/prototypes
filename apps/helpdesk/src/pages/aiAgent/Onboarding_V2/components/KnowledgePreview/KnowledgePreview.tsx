@@ -5,7 +5,7 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { getRGB } from 'gorgias-design-system/utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import {
     Card,
@@ -13,9 +13,9 @@ import {
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding_V2/components/Card'
-import TopElementsCard from 'pages/aiAgent/Onboarding_V2/components/TopElementsCard'
-import TopProductsCard from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard'
-import TrackerCircleCard from 'pages/aiAgent/Onboarding_V2/components/TrackerCircleCard/TrackerCircleCard'
+import { TopElementsCard } from 'pages/aiAgent/Onboarding_V2/components/TopElementsCard'
+import { TopProductsCard } from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard'
+import { TrackerCircleCard } from 'pages/aiAgent/Onboarding_V2/components/TrackerCircleCard/TrackerCircleCard'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgePreviewData'
 import { useTopLocations } from 'pages/aiAgent/Onboarding_V2/hooks/useTopLocations'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import {
     customerSatisfactionForAIAgentTicketsQueryFactory,
@@ -15,7 +15,7 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import type { KpiMetric } from 'pages/aiAgent/Overview/types'

@@ -8,7 +8,7 @@ import {
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
 
-import OrderStatus, { ReturnsBadge } from '../OrderStatus'
+import { OrderStatus, ReturnsBadge } from '../OrderStatus'
 
 describe('ReturnsBadge:', () => {
     it('should return null when returnsStatus is null', () => {

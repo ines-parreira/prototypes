@@ -4,7 +4,7 @@ import { Route } from 'react-router'
 
 import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 
-import CreateActionViewContainer from './CreateActionViewContainer'
+import { CreateActionViewContainer } from './CreateActionViewContainer'
 
 jest.mock('hooks/integrations/useActionCentralizedLibraryEnabled', () => {
     const actual = jest.requireActual(
@@ -18,22 +18,28 @@ jest.mock('hooks/integrations/useActionCentralizedLibraryEnabled', () => {
 
 jest.mock('pages/aiAgent/actionsV2/ActionCreateWizardView', () => ({
     __esModule: true,
-    default: () => <div>Wizard View Mock</div>,
+    ActionCreateWizardView: () => <div>Wizard View Mock</div>,
 }))
 
 jest.mock('./CreateActionView', () => ({
     __esModule: true,
-    default: () => <div>Legacy View Mock</div>,
+    CreateActionView: () => <div>Legacy View Mock</div>,
 }))
 
 jest.mock('./providers/GuidanceReferenceProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    GuidanceReferenceProvider: ({
+        children,
+    }: {
+        children: React.ReactNode
+    }) => <>{children}</>,
 }))
 
 jest.mock('./providers/StoreTrackstarProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    StoreTrackstarProvider: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 const mockUseActionCentralizedLibraryEnabled = jest.mocked(

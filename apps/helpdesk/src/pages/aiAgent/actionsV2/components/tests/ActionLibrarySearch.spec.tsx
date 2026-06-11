@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ActionLibrarySearch from '../ActionLibrarySearch'
+import { ActionLibrarySearch } from '../ActionLibrarySearch'
 
 describe('ActionLibrarySearch', () => {
     it('renders the search input with the current value', () => {

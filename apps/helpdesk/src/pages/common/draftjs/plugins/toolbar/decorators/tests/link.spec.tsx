@@ -3,8 +3,8 @@ import * as React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { ContentState } from 'draft-js'
 
-import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'
-import createLink from 'pages/common/draftjs/plugins/toolbar/decorators/link'
+import { LinkPopover } from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'
+import { link as createLink } from 'pages/common/draftjs/plugins/toolbar/decorators/link'
 import type { DecoratorComponentProps } from 'pages/common/draftjs/plugins/types'
 import { convertFromHTML } from 'utils/editor'
 

@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 import { EditorState } from 'draft-js'
 
 import { mockPluginMethods, typeText } from '../../../tests/draftTestUtils'
-import createFindReplacePlugin from '../index'
+import { createFindReplacePlugin } from '../index'
 
 function createCtrlFEvent() {
     return {

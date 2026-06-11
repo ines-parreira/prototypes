@@ -2,16 +2,16 @@ import React, { memo } from 'react'
 
 import type { NodeProps } from '@xyflow/react'
 
-import useSplitLLMPromptTriggerInputs from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
+import { useSplitLLMPromptTriggerInputs } from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import LLMPromptTriggerNodeBadge from './LLMPromptTriggerNodeBadge'
-import LLMPromptTriggerNodeLabel from './LLMPromptTriggerNodeLabel'
-import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeIconContent from './VisualBuilderNodeIconContent'
+import { LLMPromptTriggerNodeBadge } from './LLMPromptTriggerNodeBadge'
+import { LLMPromptTriggerNodeLabel } from './LLMPromptTriggerNodeLabel'
+import { VisualBuilderNode } from './VisualBuilderNode'
+import { VisualBuilderNodeIconContent } from './VisualBuilderNodeIconContent'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -44,7 +44,7 @@ const LLMPromptTriggerNode = memo(function LLMPromptTriggerNode({
     )
 })
 
-export default function LLMPromptTriggerNodeWrapper(
+export function LLMPromptTriggerNodeWrapper(
     node: NodeProps<LLMPromptTriggerNodeType>,
 ) {
     const { visualBuilderGraph } = useVisualBuilderContext()

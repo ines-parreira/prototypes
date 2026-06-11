@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import ImportPhoneNumber from '../ImportPhoneNumber'
+import { ImportPhoneNumber } from '../ImportPhoneNumber'
 
 const mockedServer = new MockAdapter(client)
 

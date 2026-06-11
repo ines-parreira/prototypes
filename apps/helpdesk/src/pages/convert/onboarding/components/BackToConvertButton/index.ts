@@ -1,1 +1,1 @@
-export { default } from './BackToConvertButton'
+export { BackToConvertButton } from './BackToConvertButton'

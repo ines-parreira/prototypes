@@ -11,15 +11,15 @@ import {
 } from '@gorgias/axiom'
 import type { BusinessHoursList } from '@gorgias/helpdesk-types'
 
-import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import StoreDisplayName from 'pages/common/components/StoreDisplayName'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { useDeleteCustomBusinessHours } from 'hooks/businessHours/useDeleteCustomBusinessHours'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { StoreDisplayName } from 'pages/common/components/StoreDisplayName'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
-import BusinessHoursScheduleDisplay from './BusinessHoursScheduleDisplay'
+import { BusinessHoursScheduleDisplay } from './BusinessHoursScheduleDisplay'
 import { DeleteModal } from './DeleteModal'
-import LinkedIntegrationsList from './LinkedIntegrationsList'
+import { LinkedIntegrationsList } from './LinkedIntegrationsList'
 
 import css from './ListCustomBusinessHours.less'
 
@@ -27,9 +27,7 @@ type Props = {
     businessHours: BusinessHoursList
 }
 
-export default function ListCustomBusinessHoursTableRow({
-    businessHours,
-}: Props) {
+export function ListCustomBusinessHoursTableRow({ businessHours }: Props) {
     const [isModalOpen, setModalOpen] = useState(false)
     const { mutate: deleteBusinessHours, isLoading: isDeleting } =
         useDeleteCustomBusinessHours(businessHours)

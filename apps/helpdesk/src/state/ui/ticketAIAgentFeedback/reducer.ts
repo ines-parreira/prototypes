@@ -1,7 +1,8 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit'
 
-import knowledgeSourceArticleEditorReducer, {
+import {
     initialState as knowledgeSourceArticleEditorInitialState,
+    DefaultExportKnowledgeSourceArticleEditorSlice as knowledgeSourceArticleEditorReducer,
 } from 'state/ui/knowledgeSourceArticleEditor/knowledgeSourceArticleEditorSlice'
 
 import { changeTicketMessage } from './actions'
@@ -25,7 +26,9 @@ export const initialState: TicketAIAgentFeedbackState = {
     knowledgeSourceArticleEditor: knowledgeSourceArticleEditorInitialState,
 }
 
-export default combineReducers({
+const DefaultExportReducer = combineReducers({
     feedback: feedbackReducer,
     knowledgeSourceArticleEditor: knowledgeSourceArticleEditorReducer,
 })
+
+export { DefaultExportReducer }

@@ -6,27 +6,29 @@ import moment from 'moment'
 import { AccountSettingType } from 'state/currentAccount/types'
 
 import type { OwnProps } from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
-import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
+import { TwoFactorAuthenticationSection } from '../TwoFactorAuthenticationSection'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
-    () => (props: OwnProps) => {
-        return (
-            props.isOpen && (
-                <div>
-                    TwoFactorAuthenticationModal mocked
-                    {props.initialBannerText ? (
-                        <p data-testid="banner-text">
-                            {props.initialBannerText}
-                        </p>
-                    ) : null}
-                    <button type="button" onClick={props.onFinish}>
-                        Finish action mocked
-                    </button>
-                </div>
+    () => ({
+        TwoFactorAuthenticationModal: (props: OwnProps) => {
+            return (
+                props.isOpen && (
+                    <div>
+                        TwoFactorAuthenticationModal mocked
+                        {props.initialBannerText ? (
+                            <p data-testid="banner-text">
+                                {props.initialBannerText}
+                            </p>
+                        ) : null}
+                        <button type="button" onClick={props.onFinish}>
+                            Finish action mocked
+                        </button>
+                    </div>
+                )
             )
-        )
-    },
+        },
+    }),
 )
 describe('<TwoFactorAuthenticationSection />', () => {
     beforeAll(() => {

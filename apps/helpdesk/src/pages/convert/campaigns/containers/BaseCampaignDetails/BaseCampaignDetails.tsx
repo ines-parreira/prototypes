@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 type OwnProps = {
     children: ReactNode

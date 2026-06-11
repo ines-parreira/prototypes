@@ -3,29 +3,32 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { TicketChannel } from 'business/types/ticket'
-import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
+import { useHelpCentersAutomationSettings } from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
 import type { SelfServiceHelpCenterChannel } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import ChannelBlock from '../../helper/ChannelBlock'
-import useOnlySupportedChannels from '../../helper/useOnlySupportedChannels'
-import ChannelToggle from '../ChannelToggle'
-import HelpCenterChannels from '../HelpCenterChannels'
+import { ChannelBlock } from '../../helper/ChannelBlock'
+import { useOnlySupportedChannels } from '../../helper/useOnlySupportedChannels'
+import { ChannelToggle } from '../ChannelToggle'
+import { HelpCenterChannels } from '../HelpCenterChannels'
 
 // Mock the necessary hooks and components
 jest.mock(
     'pages/automate/common/hooks/useHelpCentersAutomationSettings',
     () => ({
         __esModule: true,
-        default: jest.fn(),
         useHelpCentersAutomationSettings: jest.fn(),
     }),
 )
-jest.mock('../../helper/useOnlySupportedChannels', () => jest.fn())
-jest.mock('../ChannelToggle', () => jest.fn(() => <div>ChannelToggle</div>))
-jest.mock('../../helper/ChannelBlock', () =>
-    jest.fn(({ children }) => <div>{children}</div>),
-)
+jest.mock('../../helper/useOnlySupportedChannels', () => ({
+    useOnlySupportedChannels: jest.fn(),
+}))
+jest.mock('../ChannelToggle', () => ({
+    ChannelToggle: jest.fn(() => <div>ChannelToggle</div>),
+}))
+jest.mock('../../helper/ChannelBlock', () => ({
+    ChannelBlock: jest.fn(({ children }) => <div>{children}</div>),
+}))
 
 const defaultSelfServiceHelpCenterChannel = {
     type: TicketChannel.HelpCenter,

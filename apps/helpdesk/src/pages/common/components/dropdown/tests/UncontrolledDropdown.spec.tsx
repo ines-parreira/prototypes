@@ -4,7 +4,7 @@ import React, { useRef } from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import UncontrolledDropdown from '../UncontrolledDropdown'
+import { UncontrolledDropdown } from '../UncontrolledDropdown'
 
 function MockedImplementation(
     props: Partial<ComponentProps<typeof UncontrolledDropdown>>,

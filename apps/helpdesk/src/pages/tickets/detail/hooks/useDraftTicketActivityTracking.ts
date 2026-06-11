@@ -6,9 +6,7 @@ import {
     registerActivityTrackerHooks,
 } from '@repo/activity-tracker'
 
-export default function useDraftTicketActivityTracking(
-    draftTicketId: string | null,
-) {
+export function useDraftTicketActivityTracking(draftTicketId: string | null) {
     useEffect(() => {
         let unregisterBrowserHooks: (() => void) | undefined
 

@@ -12,13 +12,13 @@ import { Button, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import { ProductSearchInput } from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import {
     addCustomRow,
@@ -33,11 +33,11 @@ import {
 import { getEditOrderState } from 'state/infobarActions/shopify/editOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
-import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
-import DraftOrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
+import { AddCustomItemPopover } from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
+import { DefaultExportOrderTable as DraftOrderTable } from 'Widgets/modules/Shopify/modules/OrderTable'
 import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import EditOrderForm from './EditOrderForm'
+import { EditOrderForm } from './EditOrderForm'
 
 import css from './EditOrderModal.less'
 
@@ -345,4 +345,6 @@ const connector = connect(
     },
 )
 
-export default connector(EditOrderModalContainer)
+const DefaultExportEditOrderModal = connector(EditOrderModalContainer)
+
+export { DefaultExportEditOrderModal }

@@ -3,9 +3,9 @@ import React, { useContext } from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import Wizard, { WizardContext } from '../Wizard'
-import WizardProgressHeader from '../WizardProgressHeader'
-import WizardStep from '../WizardStep'
+import { Wizard, WizardContext } from '../Wizard'
+import { WizardProgressHeader } from '../WizardProgressHeader'
+import { WizardStep } from '../WizardStep'
 
 const MockNextStepComponent = () => {
     const context = useContext(WizardContext)

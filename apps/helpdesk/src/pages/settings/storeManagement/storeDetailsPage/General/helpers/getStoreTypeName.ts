@@ -1,9 +1,7 @@
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
-export default function getStoreTypeName(
-    integration?: StoreIntegration | null,
-) {
+export function getStoreTypeName(integration?: StoreIntegration | null) {
     if (integration?.type === IntegrationType.Shopify) {
         return 'Shopify'
     }

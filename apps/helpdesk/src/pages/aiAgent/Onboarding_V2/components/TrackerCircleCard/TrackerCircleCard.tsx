@@ -7,7 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding_V2/components/Card'
-import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
+import { TrackerCircle } from 'pages/common/components/ProgressTracker/TrackerCircle'
 
 import css from './TrackerCircleCard.less'
 
@@ -46,4 +46,4 @@ const TrackerCircleCard = ({
     )
 }
 
-export default TrackerCircleCard
+export { TrackerCircleCard }

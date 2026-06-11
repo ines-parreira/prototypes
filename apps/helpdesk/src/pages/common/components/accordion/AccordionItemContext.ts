@@ -16,4 +16,4 @@ const AccordionItemContext = createContext<AccordionItemContextType>({
 
 export const useAccordionItemContext = () => useContext(AccordionItemContext)
 
-export default AccordionItemContext
+export { AccordionItemContext }

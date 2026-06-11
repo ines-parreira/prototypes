@@ -23,4 +23,4 @@ const ProductFeaturesFOMOFooter = ({
     )
 }
 
-export default ProductFeaturesFOMOFooter
+export { ProductFeaturesFOMOFooter }

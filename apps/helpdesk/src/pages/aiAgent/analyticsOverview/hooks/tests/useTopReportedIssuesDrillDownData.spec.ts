@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'

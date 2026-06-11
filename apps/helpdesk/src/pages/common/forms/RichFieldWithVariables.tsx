@@ -21,8 +21,8 @@ import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variable
 import { getVariables } from 'tickets/common/utils'
 import { insertText } from 'utils'
 
-import type RichField from './RichField/RichField'
-import TicketRichField from './RichField/TicketRichField'
+import type { RichField } from './RichField/RichField'
+import { DefaultExportTicketRichField as TicketRichField } from './RichField/TicketRichField'
 
 import css from './RichFieldWithVariables.less'
 
@@ -40,7 +40,7 @@ type Props = {
     'isRequired' | 'placeholder' | 'uploadType'
 >
 
-export default class RichFieldWithVariables extends Component<Props> {
+export class RichFieldWithVariables extends Component<Props> {
     id?: string
     richArea?: RichField | null
 

@@ -3,9 +3,9 @@ import React, { useRef, useState } from 'react'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
-import EdgeIconButton from './EdgeIconButton'
-import EdgeLabel from './EdgeLabel'
-import NodeMenu from './NodeMenu'
+import { DefaultExportEdgeIconButton as EdgeIconButton } from './EdgeIconButton'
+import { EdgeLabel } from './EdgeLabel'
+import { DefaultExportNodeMenu as NodeMenu } from './NodeMenu'
 
 import css from './EdgeBlock.less'
 
@@ -78,7 +78,7 @@ export type VisualBuilderEdgeProps = {
     }
 } & Pick<VisualBuilderContextType, 'dispatch'>
 
-export default function EdgeBlock({
+export function EdgeBlock({
     nodeId,
     incomingChoice,
     incomingCondition,

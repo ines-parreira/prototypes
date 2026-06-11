@@ -10,7 +10,7 @@ import { dummyAppListData as appData } from 'fixtures/apps'
 import { IntegrationType } from 'models/integration/types'
 
 import { CARD_LINK_TEST_ID } from '../../Card'
-import Mine, { LOCAL_STORAGE_KEY } from '../Mine'
+import { LOCAL_STORAGE_KEY, Mine } from '../Mine'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({

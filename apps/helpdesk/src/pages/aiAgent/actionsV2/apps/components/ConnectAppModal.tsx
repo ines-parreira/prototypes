@@ -16,7 +16,7 @@ import {
 
 import { IntegrationType } from 'models/integration/constants'
 import type { StoreIntegration } from 'models/integration/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { IntegrationIcon } from 'pages/common/components/IntegrationIcon/IntegrationIcon'
 
 // TODO: extend SUPPORTED_STORE_TYPES once BigCommerce / Magento2 are wired up

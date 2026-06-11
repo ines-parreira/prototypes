@@ -6,7 +6,7 @@ import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,
 } from '../../constants'
-import OpenChatButton from './components/OpenChatButton'
+import { OpenChatButton } from './components/OpenChatButton'
 
 import css from './MaxArticleBanner.less'
 
@@ -61,4 +61,4 @@ const MaxArticleBanner = ({
     ) : null
 }
 
-export default MaxArticleBanner
+export { MaxArticleBanner }

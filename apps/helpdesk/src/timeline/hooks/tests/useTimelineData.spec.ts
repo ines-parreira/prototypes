@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useListTickets } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 import { useTimelineData } from 'timeline/hooks/useTimelineData'

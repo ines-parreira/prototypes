@@ -25,4 +25,4 @@ const ArticleTemplatesBanner = () => {
     )
 }
 
-export default ArticleTemplatesBanner
+export { ArticleTemplatesBanner }

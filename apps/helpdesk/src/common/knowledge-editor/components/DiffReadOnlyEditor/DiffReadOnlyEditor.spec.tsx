@@ -35,7 +35,7 @@ jest.mock(
     'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag',
     () => ({
         __esModule: true,
-        default: ({
+        GuidanceVariableTag: ({
             value,
             children,
         }: {
@@ -53,7 +53,7 @@ jest.mock(
     'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag',
     () => ({
         __esModule: true,
-        default: ({
+        GuidanceActionTag: ({
             value,
             children,
         }: {
@@ -69,7 +69,7 @@ jest.mock(
 
 jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarProvider', () => ({
     __esModule: true,
-    default: ({
+    ToolbarProvider: ({
         children,
         guidanceVariables,
         guidanceActions,

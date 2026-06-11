@@ -7,9 +7,9 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
 import { ActionTemplateExecution } from 'config'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import { useOptions } from 'pages/common/components/ast/widget/hooks'
-import Select from 'pages/common/components/ast/widget/ReactSelect'
+import { Select } from 'pages/common/components/ast/widget/ReactSelect'
 import { fetchAllMacros, getMacro } from 'state/macro/actions'
 import type { Macro } from 'state/macro/types'
 import type { RootState } from 'state/types'
@@ -117,4 +117,6 @@ const connector = connect(
     },
 )
 
-export default connector(MacroSelect)
+const DefaultExportMacroSelect = connector(MacroSelect)
+
+export { DefaultExportMacroSelect }

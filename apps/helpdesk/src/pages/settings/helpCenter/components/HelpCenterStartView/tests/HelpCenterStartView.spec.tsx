@@ -12,7 +12,7 @@ import { useSupportedLocales } from 'pages/settings/helpCenter/providers/Support
 import type { RootState } from 'state/types'
 
 import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
-import HelpCenterStartView from '../HelpCenterStartView'
+import { HelpCenterStartView } from '../HelpCenterStartView'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {

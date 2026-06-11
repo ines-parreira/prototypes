@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 
-import FacebookLoginButton from '../FacebookLoginButton'
+import { FacebookLoginButton } from '../FacebookLoginButton'
 
 describe('FacebookLoginButton component', () => {
     afterEach(cleanup)

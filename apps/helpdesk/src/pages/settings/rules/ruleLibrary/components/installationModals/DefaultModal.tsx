@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { RuleTemplateRecipeSlugs } from '../../constants'
 import type { DefaultModalProps } from '../InstallRuleModalBody'
 import { AiAgentRequirements } from './components/AiAgentRequirement'
-import TargetCount from './components/TargetCount'
+import { TargetCount } from './components/TargetCount'
 
 import css from '../RuleRecipeModal.less'
 

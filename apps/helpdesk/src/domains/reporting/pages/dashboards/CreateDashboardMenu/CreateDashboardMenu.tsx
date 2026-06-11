@@ -8,7 +8,7 @@ import {
     LIMIT_REACHED_MESSAGE,
     MAX_DASHBOARDS_ALLOWED,
 } from 'domains/reporting/pages/dashboards/constants'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
 
 const CREATE_NEW_DASHBOARD = 'Create new dashboard'

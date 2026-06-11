@@ -9,7 +9,7 @@ import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import {
     ChatPreviewPanelContext,
@@ -30,10 +30,10 @@ import { GorgiasChatIntegrationLanguages } from './GorgiasChatIntegrationLanguag
 import { GorgiasChatIntegrationList } from './GorgiasChatIntegrationList'
 import { GorgiasChatIntegrationPreferences } from './GorgiasChatIntegrationPreferences'
 import { GorgiasChatTranslateText } from './GorgiasChatTranslateText'
-import GorgiasChatIntegrationCampaignsLegacy from './legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
-import GorgiasChatIntegrationQuickRepliesLegacy from './legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
-import useIsQuickRepliesEnabled from './legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
-import useSelfServiceConfiguration from './legacy/hooks/useSelfServiceConfiguration'
+import { GorgiasChatIntegrationCampaignsComponent as GorgiasChatIntegrationCampaignsLegacy } from './legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
+import { GorgiasChatIntegrationQuickRepliesWithHook as GorgiasChatIntegrationQuickRepliesLegacy } from './legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
+import { useIsQuickRepliesEnabled } from './legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import { useSelfServiceConfiguration } from './legacy/hooks/useSelfServiceConfiguration'
 
 type Props = {
     actions: typeof IntegrationsActions

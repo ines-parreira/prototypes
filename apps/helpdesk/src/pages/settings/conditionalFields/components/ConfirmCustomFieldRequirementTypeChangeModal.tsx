@@ -7,10 +7,10 @@ import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import type { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import css from './ConfirmCustomFieldRequirementTypeChangeModal.less'
@@ -122,4 +122,4 @@ const SeeObjectLink = ({
     )
 }
 
-export default ConfirmRequirementTypeChangeModal
+export { ConfirmRequirementTypeChangeModal }

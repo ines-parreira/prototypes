@@ -11,4 +11,4 @@ const SummaryHeader = ({ periodEnd }: SummaryHeaderProps) => {
     )
 }
 
-export default SummaryHeader
+export { SummaryHeader }

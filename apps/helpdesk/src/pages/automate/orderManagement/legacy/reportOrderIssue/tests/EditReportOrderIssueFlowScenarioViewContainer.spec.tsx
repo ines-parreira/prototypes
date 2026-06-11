@@ -13,10 +13,10 @@ import {
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { RootState } from 'state/types'
 
-import EditReportOrderIssueFlowScenarioViewContainer from '../EditReportOrderIssueFlowScenarioViewContainer'
+import { EditReportOrderIssueFlowScenarioViewContainer } from '../EditReportOrderIssueFlowScenarioViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock(
@@ -29,7 +29,7 @@ jest.mock(
         }),
     }),
 )
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),

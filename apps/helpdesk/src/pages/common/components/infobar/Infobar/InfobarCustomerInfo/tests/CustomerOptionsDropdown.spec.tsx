@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
-import CustomerOptionsDropdownButton from '../CustomerOptionsDropdown'
+import { CustomerOptionsDropdownButton } from '../CustomerOptionsDropdown'
 
 const state = {
     integrations: fromJS({

@@ -7,7 +7,7 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'

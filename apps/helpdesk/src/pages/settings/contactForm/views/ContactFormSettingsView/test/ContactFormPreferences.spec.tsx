@@ -24,7 +24,7 @@ import { useSupportedLocales } from '../../../../helpCenter/providers/SupportedL
 import { CONTACT_FORM_PREFERENCES_PATH } from '../../../constants'
 import { ContactFormFixture } from '../../../fixtures/contacForm'
 import { insertContactFormIdParam } from '../../../utils/navigation'
-import ContactFormPreferences from '../ContactFormPreferences'
+import { ContactFormPreferences } from '../ContactFormPreferences'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi')

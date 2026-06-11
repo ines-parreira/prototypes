@@ -10,7 +10,7 @@ import { fromAST } from 'common/utils'
 import { emptyRule as rule } from '../../../../../fixtures/rule'
 import type { RuleDraft } from '../../../../../models/rule/types'
 import type { CodeASTType } from '../../types'
-import RuleEditor from '../RuleEditor'
+import { RuleEditor } from '../RuleEditor'
 
 const getCondition = (path: List<any>) =>
     fromAST(_getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>

@@ -11,7 +11,7 @@ import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
 
 jest.mock('pages/automate/common/components/AutomatePaywallView', () => ({
     __esModule: true,
-    default: ({
+    AutomatePaywallView: ({
         automateFeature,
         customCta,
     }: {

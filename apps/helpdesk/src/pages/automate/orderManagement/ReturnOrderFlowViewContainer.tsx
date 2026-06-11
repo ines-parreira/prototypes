@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
-import LegacyReturnOrderFlowViewContainer from './legacy/returnOrder/ReturnOrderFlowViewContainer'
+import { ReturnOrderFlowViewContainer as LegacyReturnOrderFlowViewContainer } from './legacy/returnOrder/ReturnOrderFlowViewContainer'
 import { ReturnOrderFlowViewContainerRevamp } from './revamp/returnOrder/ReturnOrderFlowViewContainer'
 
 export const ReturnOrderFlowViewContainer = () => {

@@ -2,14 +2,14 @@ import type { ReactNode } from 'react'
 
 import { LegacyThemeProvider as UIKitThemeProvider } from '@gorgias/axiom'
 
-import ThemeContext from './ThemeContext'
-import useThemeContext from './useThemeContext'
+import { DefaultExportThemeContext as ThemeContext } from './ThemeContext'
+import { useThemeContext } from './useThemeContext'
 
 type Props = {
     children?: ReactNode
 }
 
-export default function ThemeProvider({ children }: Props) {
+export function ThemeProvider({ children }: Props) {
     const ctx = useThemeContext()
     const iconSpriteUrl =
         document.getElementById('icons')?.getAttribute('data') ?? undefined

@@ -12,7 +12,7 @@ type Props = {
     onDismiss: () => void
 }
 
-export default function AiAgentUpsellBanner({
+export function AiAgentUpsellBanner({
     ctaHref,
     learnMoreHref,
     onDismiss,

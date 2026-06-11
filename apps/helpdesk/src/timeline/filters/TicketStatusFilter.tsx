@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import FilterName from 'pages/common/forms/FilterInput/FilterName'
-import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { FilterName } from 'pages/common/forms/FilterInput/FilterName'
+import { DefaultExportFilterValue as FilterValue } from 'pages/common/forms/FilterInput/FilterValue'
 
 import { STATUS_FILTERS } from '../constants'
 import type { FilterKey } from '../types'

@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { queryKeys, useCreateCustomField } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

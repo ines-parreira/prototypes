@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import { OrderManagementViewContainer } from '../OrderManagementViewContainer'
@@ -13,7 +13,7 @@ jest.mock(
 
 jest.mock('../legacy/OrderManagementView', () => ({
     __esModule: true,
-    default: () => <div>LegacyOrderManagementView</div>,
+    OrderManagementView: () => <div>LegacyOrderManagementView</div>,
 }))
 
 jest.mock('../revamp/OrderManagementView', () => ({

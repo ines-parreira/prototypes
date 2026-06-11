@@ -19,7 +19,7 @@ import { IntegrationType } from 'models/integration/types'
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
 import * as channelsService from 'services/channels'
 
-import DatetimeLabel from '../DatetimeLabel'
+import { DatetimeLabel } from '../DatetimeLabel'
 import * as labels from '../labels'
 
 jest.mock('@repo/feature-flags', () => ({
@@ -56,14 +56,14 @@ jest.mock('@gorgias/axiom', () => {
         ...jest.requireActual('@gorgias/axiom'),
         LegacyTooltip: () => 'TooltipMock',
         LegacyBadge: jest.fn(({ children }) => <div>{children}</div>),
-    } as Record<string, unknown>
+    }
 })
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationChannel: () => () => mockChannels[0],
 }))
 jest.spyOn(channelsService, 'toChannel').mockReturnValue(mockChannels[0])
 
-const AvatarSpy = jest.spyOn(Avatar, 'default')
+const AvatarSpy = jest.spyOn(Avatar, 'Avatar')
 
 describe('components utils: labels', () => {
     beforeEach(() => {

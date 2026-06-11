@@ -10,7 +10,7 @@ import {
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
 
-import SummaryTotal from '../SummaryTotal'
+import { SummaryTotal } from '../SummaryTotal'
 
 jest.mock('@repo/feature-flags')
 jest.mock('@repo/billing', () => ({

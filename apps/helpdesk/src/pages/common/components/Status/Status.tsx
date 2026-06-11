@@ -16,7 +16,7 @@ export enum StatusType {
     Info = 'info',
 }
 
-export default function Status({ children, type, id }: Props) {
+export function Status({ children, type, id }: Props) {
     return (
         <div className={css.status} id={id}>
             <div

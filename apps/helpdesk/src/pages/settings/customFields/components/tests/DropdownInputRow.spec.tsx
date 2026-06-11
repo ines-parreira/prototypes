@@ -8,7 +8,7 @@ import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
-import DropdownInputRow from '../DropdownInputRow'
+import { DefaultExportDropdownInputRow as DropdownInputRow } from '../DropdownInputRow'
 
 const commonProps = {
     position: 0,

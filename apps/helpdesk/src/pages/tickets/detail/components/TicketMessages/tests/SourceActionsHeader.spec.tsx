@@ -15,21 +15,21 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
 import type { Source, TicketMessage } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
 
-import SourceActionsHeader from '../SourceActionsHeader'
+import { SourceActionsHeader } from '../SourceActionsHeader'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
     useDebouncedValue: jest.fn(),
     useElementSize: jest.fn(),
 }))
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('models/ticket/predicates', () => ({
     isTicketMessageDeleted: jest.fn(),
 }))
@@ -41,31 +41,29 @@ jest.mock('@repo/tickets', () => ({
     useTicketMessageTranslation: jest.fn(),
     useFlag: jest.fn(),
 }))
-jest.mock(
-    '../CollapsedSourceActions/CollapsedSourceActions',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => (
-            <div>
-                <span>collapsed-actions</span>
-                {children}
-            </div>
-        ),
-)
-jest.mock(
-    '../IntentsFeedback/IntentsFeedback',
-    () => (): ReactElement => (
+jest.mock('../CollapsedSourceActions/CollapsedSourceActions', () => ({
+    CollapsedSourceActions: ({ children }: { children?: React.ReactNode }) => (
+        <div>
+            <span>collapsed-actions</span>
+            {children}
+        </div>
+    ),
+}))
+jest.mock('../IntentsFeedback/IntentsFeedback', () => ({
+    IntentsFeedback: (): ReactElement => (
         <div data-testid="intents-feedback">intents-feedback</div>
     ),
-)
+}))
 jest.mock(
     'pages/common/components/PrivateReplyToFBComment/PrivateReply',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => (
+    () => ({
+        PrivateReply: ({ children }: { children?: React.ReactNode }) => (
             <div>
                 <span>private-reply</span>
                 {children}
             </div>
         ),
+    }),
 )
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

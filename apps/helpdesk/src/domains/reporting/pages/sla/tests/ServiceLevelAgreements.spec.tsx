@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { AchievedAndBreachedTicketsChart } from 'domains/reporting/pages/sla/components/AchievedAndBreachedTicketsChart'
 import { AchievementRateTrendCard } from 'domains/reporting/pages/sla/components/AchievementRateTrendCard'
 import { BreachedTicketsRateTrendCard } from 'domains/reporting/pages/sla/components/BreachedTicketsRateTrendCard'
@@ -60,11 +60,15 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
-        return props.optionalFilters?.map((optionalFilter) => (
-            <div key={optionalFilter}>{optionalFilter}</div>
-        ))
-    },
+    () => ({
+        FiltersPanelWrapper: (
+            props: ComponentProps<typeof FiltersPanelWrapper>,
+        ) => {
+            return props.optionalFilters?.map((optionalFilter) => (
+                <div key={optionalFilter}>{optionalFilter}</div>
+            ))
+        },
+    }),
 )
 
 const createInitialState = (hasAutomate: boolean) =>

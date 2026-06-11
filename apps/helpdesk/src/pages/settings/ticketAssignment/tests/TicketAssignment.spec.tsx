@@ -14,22 +14,22 @@ import { TicketChannel } from 'business/types/ticket'
 import { account } from 'fixtures/account'
 import { teams } from 'fixtures/teams'
 import { user } from 'fixtures/users'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import type MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import type { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import { fetchChats } from 'state/chats/actions'
 import { submitSetting } from 'state/currentAccount/actions'
 import type { AccountSettingTicketAssignment } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { RootState } from 'state/types'
 
-import TicketAssignment from '../TicketAssignment'
+import { TicketAssignment } from '../TicketAssignment'
 
 jest.mock('state/chats/actions')
 jest.mock('state/currentAccount/actions')
 jest.mock(
     'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField',
-    () =>
-        ({
+    () => ({
+        MultiSelectOptionsField: ({
             selectedOptions,
             onChange,
         }: ComponentProps<typeof MultiSelectOptionsField>) => {
@@ -57,6 +57,7 @@ jest.mock(
                 </ul>
             )
         },
+    }),
 )
 
 const fetchChatsMock = (
@@ -67,9 +68,9 @@ const submitSettingMock = (
     submitSetting as jest.MockedFunction<typeof submitSetting>
 ).mockReturnValue(() => Promise.resolve())
 
-jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
-    jest.fn().mockReturnValue(null),
-)
+jest.mock('pages/common/components/UnsavedChangesPrompt', () => ({
+    UnsavedChangesPrompt: jest.fn().mockReturnValue(null),
+}))
 const UnsavedChangesPromptMock = UnsavedChangesPrompt as jest.Mock
 
 const ticketAssignmentSetting: AccountSettingTicketAssignment = {

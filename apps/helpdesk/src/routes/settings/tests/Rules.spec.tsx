@@ -5,9 +5,9 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { AGENT_ROLE } from 'config/user'
-import RuleDetailForm from 'pages/settings/rules/accountRules/RuleDetailForm'
-import RulesLibrary from 'pages/settings/rules/RulesLibrary'
-import RulesView from 'pages/settings/rules/RulesList'
+import { DefaultExportRuleDetailForm as RuleDetailForm } from 'pages/settings/rules/accountRules/RuleDetailForm'
+import { RulesLibraryContainer as RulesLibrary } from 'pages/settings/rules/RulesLibrary'
+import { RulesList as RulesView } from 'pages/settings/rules/RulesList'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { Rules } from '../Rules'

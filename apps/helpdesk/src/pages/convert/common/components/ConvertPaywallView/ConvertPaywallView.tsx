@@ -1,16 +1,16 @@
 import { Redirect } from 'react-router-dom'
 
 import convertIcon from 'assets/img/convert/convert-logo.svg'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import PageHeader from 'pages/common/components/PageHeader'
-import PaywallView from 'pages/common/components/PaywallView/PaywallView'
-import PaywallViewActionButtons from 'pages/common/components/PaywallView/PaywallViewActionButtons'
-import PaywallViewChecklist from 'pages/common/components/PaywallView/PaywallViewChecklist'
-import PaywallViewChecklistItem from 'pages/common/components/PaywallView/PaywallViewChecklistItem'
-import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHeader'
-import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
-import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { HeroImageCarousel } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { PaywallView } from 'pages/common/components/PaywallView/PaywallView'
+import { PaywallViewActionButtons } from 'pages/common/components/PaywallView/PaywallViewActionButtons'
+import { PaywallViewChecklist } from 'pages/common/components/PaywallView/PaywallViewChecklist'
+import { PaywallViewChecklistItem } from 'pages/common/components/PaywallView/PaywallViewChecklistItem'
+import { PaywallViewHeader } from 'pages/common/components/PaywallView/PaywallViewHeader'
+import { PaywallViewLeftContainer } from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
+import { PaywallViewRightContainer } from 'pages/common/components/PaywallView/PaywallViewRightContainer'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'
 
@@ -79,4 +79,4 @@ const ConvertPaywallView = ({
         </div>
     )
 }
-export default ConvertPaywallView
+export { ConvertPaywallView }

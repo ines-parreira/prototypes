@@ -1,12 +1,12 @@
 import React, { useCallback, useRef } from 'react'
 
 import type { ShopifyIntegration } from 'models/integration/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { useQueryNotify } from 'pages/integrations/integration/hooks/useQueryNotify'
 
 import { useConfirmationModal } from '../hooks/useConfirmationModal'
 import { useShopifySettingsForm } from '../hooks/useShopifySettingsForm'
-import ConfirmCustomerMatchingModal from './ConfirmCustomerMatchingModal'
+import { ConfirmCustomerMatchingModal } from './ConfirmCustomerMatchingModal'
 import { ShopifyActionButtons } from './ShopifyActionButtons'
 import { StoreInformationForm } from './StoreInformationForm'
 
@@ -19,7 +19,7 @@ export type ShopifySettingsProps = {
     refetchStore: () => void
 }
 
-export default function ShopifySettings({
+export function ShopifySettings({
     integration,
     onDeleteIntegration,
     redirectUri,

@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import CurrentHelpCenterContext from '../../../../../contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from '../../../../../contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { useFileUpload } from '../../../../../hooks/useFileUpload'
 import type { CategoryImageEditProps } from '../CategoryImageEdit'

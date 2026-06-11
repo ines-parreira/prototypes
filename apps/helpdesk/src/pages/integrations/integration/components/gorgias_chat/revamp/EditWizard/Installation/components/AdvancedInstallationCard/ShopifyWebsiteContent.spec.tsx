@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ShopifyWebsiteContent from './ShopifyWebsiteContent'
+import { ShopifyWebsiteContent } from './ShopifyWebsiteContent'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
@@ -43,7 +43,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CodeSnippet',
     () => ({
         __esModule: true,
-        default: ({ codeSnippet, withCopyButton }: any) => (
+        CodeSnippet: ({ codeSnippet, withCopyButton }: any) => (
             <div data-testid="code-snippet">
                 <div data-testid="code-snippet-content">{codeSnippet}</div>
                 <div data-testid="code-snippet-copy-button">

@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { hasRole } from 'utils'
 
-import MultiLevelSelect, { EmptyHelper } from '../MultiLevelSelect'
+import { EmptyHelper, MultiLevelSelect } from '../MultiLevelSelect'
 
 jest.mock('utils', () => {
     {
@@ -16,7 +16,9 @@ jest.mock('utils', () => {
         } as Record<string, unknown>
     }
 })
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(() => ({
         role: { name: 'admin' },

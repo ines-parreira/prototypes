@@ -5,7 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useChannel } from '@gorgias/realtime'
 import type { UseChannelProps } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 

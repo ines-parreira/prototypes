@@ -6,12 +6,12 @@ import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisua
 import type { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
 
-import TextInputWithVariables from '../components/variables/TextInputWithVariables'
-import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
+import { DefaultExportTextInputWithVariables as TextInputWithVariables } from '../components/variables/TextInputWithVariables'
+import { NodeEditorDrawerHeader } from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 
-export default function UpdateShippingAddressEditor({
+export function UpdateShippingAddressEditor({
     nodeInEdition,
 }: {
     nodeInEdition: UpdateShippingAddressNodeType

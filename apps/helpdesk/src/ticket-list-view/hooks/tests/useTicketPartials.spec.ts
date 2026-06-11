@@ -4,9 +4,9 @@ import { act } from '@testing-library/react'
 
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import TicketUpdatesManager from '../../TicketUpdatesManager'
+import { TicketUpdatesManager } from '../../TicketUpdatesManager'
 import type { TicketPartial } from '../../types'
-import useTicketPartials from '../useTicketPartials'
+import { useTicketPartials } from '../useTicketPartials'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -14,7 +14,9 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('../../TicketUpdatesManager', () => jest.fn())
+jest.mock('../../TicketUpdatesManager', () => ({
+    TicketUpdatesManager: jest.fn(),
+}))
 const TicketUpdatesManagerMock = TicketUpdatesManager as jest.Mock
 
 type Listener = (

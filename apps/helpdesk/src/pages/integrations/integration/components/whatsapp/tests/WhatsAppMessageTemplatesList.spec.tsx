@@ -6,7 +6,7 @@ import { cleanup, screen } from '@testing-library/react'
 import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 
-import WhatsAppMessageTemplatesList from '../WhatsAppMessageTemplatesList'
+import { WhatsAppMessageTemplatesList } from '../WhatsAppMessageTemplatesList'
 
 jest.mock('models/whatsAppMessageTemplates/queries', () => ({
     useListWhatsAppMessageTemplates: jest.fn(),

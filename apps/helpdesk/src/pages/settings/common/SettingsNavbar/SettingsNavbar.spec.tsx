@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import SettingsNavbar from './SettingsNavbar'
+import { SettingsNavbar } from './SettingsNavbar'
 
 jest.mock('@repo/agent-status', () => ({
     ...jest.requireActual('@repo/agent-status'),
@@ -28,7 +28,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStoreIntegrations: jest.fn(),
 }))
 
 jest.mock(
@@ -40,12 +40,12 @@ jest.mock(
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(() => jest.fn()),
+    useAppDispatch: jest.fn(() => jest.fn()),
 }))
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 
 jest.mock('common/navigation', () => ({
@@ -81,7 +81,7 @@ jest.mock('components/Navigation/Navigation', () => ({
 
 jest.mock('./Item', () => ({
     __esModule: true,
-    default: ({ to, text, shouldRender, extra }: any) => {
+    Item: ({ to, text, shouldRender, extra }: any) => {
         if (shouldRender === false) return null
         return (
             <div data-testid={`item-${to}`}>
@@ -94,7 +94,7 @@ jest.mock('./Item', () => ({
 
 jest.mock('./Section', () => ({
     __esModule: true,
-    default: ({ children, id, value }: any) => (
+    Section: ({ children, id, value }: any) => (
         <div data-testid={`section-${id}`}>
             <h2>{value}</h2>
             {children}
@@ -117,7 +117,8 @@ const mockUseAiAgentAccess = jest.mocked(
     require('hooks/aiAgent/useAiAgentAccess').useAiAgentAccess,
 )
 const mockUseStoreIntegrations = jest.mocked(
-    require('pages/automate/common/hooks/useStoreIntegrations').default,
+    require('pages/automate/common/hooks/useStoreIntegrations')
+        .useStoreIntegrations,
 )
 const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.mocked(
     require('pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset')

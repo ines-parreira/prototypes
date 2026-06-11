@@ -5,9 +5,7 @@ import css from './RecommendationFilterNoResults.less'
 type Props = {
     onResetButtonClick: () => void
 }
-export default function RecommendationFilterNoResults({
-    onResetButtonClick,
-}: Props) {
+export function RecommendationFilterNoResults({ onResetButtonClick }: Props) {
     return (
         <div className={css.container}>
             <span className={css.header}>No results</span>

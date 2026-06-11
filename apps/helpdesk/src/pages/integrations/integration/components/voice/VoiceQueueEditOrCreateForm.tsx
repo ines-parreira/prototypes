@@ -1,8 +1,8 @@
 import type { VoiceQueue } from '@gorgias/helpdesk-client'
 
-import VoiceQueueSettingsFormCallFlowSection from './VoiceQueueSettingsFormCallFlowSection'
-import VoiceQueueSettingsFormGeneralSection from './VoiceQueueSettingsFormGeneralSection'
-import VoiceQueueSettingsLinkedIntegrations from './VoiceQueueSettingsLinkedIntegrations'
+import { VoiceQueueSettingsFormCallFlowSection } from './VoiceQueueSettingsFormCallFlowSection'
+import { VoiceQueueSettingsFormGeneralSection } from './VoiceQueueSettingsFormGeneralSection'
+import { VoiceQueueSettingsLinkedIntegrations } from './VoiceQueueSettingsLinkedIntegrations'
 
 import css from './VoiceQueueEditOrCreateForm.less'
 
@@ -10,7 +10,7 @@ type VoiceQueueEditOrCreateFormProps = {
     queue?: VoiceQueue
 }
 
-export default function VoiceQueueEditOrCreateForm({
+export function VoiceQueueEditOrCreateForm({
     queue,
 }: VoiceQueueEditOrCreateFormProps) {
     return (

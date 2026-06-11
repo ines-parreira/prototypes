@@ -2,9 +2,9 @@ import React from 'react'
 
 import { renderHook } from '@repo/testing'
 
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
-import useOrdersPagePreview from '../useOrdersPagePreview'
+import { useOrdersPagePreview } from '../useOrdersPagePreview'
 
 describe('useOrdersPagePreview', () => {
     it('should return preview steps', () => {

@@ -12,7 +12,7 @@ import thunk from 'redux-thunk'
 
 import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 
-import FacebookIntegrationList from '../FacebookIntegrationList'
+import { FacebookIntegrationList } from '../FacebookIntegrationList'
 
 const RouterWrapper = ({
     history,

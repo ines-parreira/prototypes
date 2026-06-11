@@ -43,4 +43,4 @@ const CancelCampaignConfirmation = ({ isOpen, onClose, onConfirm }: Props) => {
     )
 }
 
-export default CancelCampaignConfirmation
+export { CancelCampaignConfirmation }

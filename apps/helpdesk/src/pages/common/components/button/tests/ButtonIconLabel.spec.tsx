@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ButtonIconLabel from '../ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from '../ButtonIconLabel'
 
 describe('<ButtonIconLabel />', () => {
     it('should render an icon label', () => {

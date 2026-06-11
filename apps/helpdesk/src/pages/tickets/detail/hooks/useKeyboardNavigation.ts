@@ -7,7 +7,7 @@ interface Options {
     previous: () => void
 }
 
-export default function useKeyboardNavigation({ next, previous }: Options) {
+export function useKeyboardNavigation({ next, previous }: Options) {
     useEffect(() => {
         shortcutManager.bind('TicketDetailContainer', {
             GO_NEXT_MESSAGE: { action: next },

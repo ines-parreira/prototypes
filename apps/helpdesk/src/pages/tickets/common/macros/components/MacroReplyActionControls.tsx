@@ -5,7 +5,7 @@ import _upperFirst from 'lodash/upperFirst'
 import { UncontrolledTooltip } from 'reactstrap'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import ReceiversSelectField from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField'
+import { DefaultExportReceiversSelectField as ReceiversSelectField } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField'
 import type { Receiver } from 'state/ticket/utils'
 
 import css from './MacroReplyActionControls.less'
@@ -195,4 +195,4 @@ const MacroReplyActionControls: React.FC<MacroReplyActionControlsProps> = ({
     )
 }
 
-export default MacroReplyActionControls
+export { MacroReplyActionControls }

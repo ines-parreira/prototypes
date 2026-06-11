@@ -73,4 +73,7 @@ export const getIsConsideredMissingKnowledge = (state: RootState) =>
     state.ui.ticketAIAgentFeedback.knowledgeSourceArticleEditor
         .isConsideredMissingKnowledge
 
-export default knowledgeSourceArticleEditorSlice.reducer
+const DefaultExportKnowledgeSourceArticleEditorSlice =
+    knowledgeSourceArticleEditorSlice.reducer
+
+export { DefaultExportKnowledgeSourceArticleEditorSlice }

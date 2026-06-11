@@ -2,8 +2,8 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import UncontrolledPeopleSearchInput from 'pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { UncontrolledPeopleSearchInput } from 'pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 
 import css from './SharedBody.less'
@@ -19,7 +19,7 @@ type Props = {
     onRemoveUser: (user: Map<any, any>) => void
 }
 
-export default function SharedBody({
+export function SharedBody({
     availableTeams,
     availableUsers,
     selectedTeams,

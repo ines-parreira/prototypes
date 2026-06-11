@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import ConvertCampaignsNewHomeInfobar from '../ConvertCampaignsNewHomeInfobar'
+import { ConvertCampaignsNewHomeInfobar } from '../ConvertCampaignsNewHomeInfobar'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

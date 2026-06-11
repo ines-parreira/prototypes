@@ -23,16 +23,16 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
-import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import type { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import type { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
 import { getDefaultMacro } from 'state/macro/utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import MacrosSettingsForm from '../MacrosSettingsForm'
+import { MacrosSettingsForm } from '../MacrosSettingsForm'
 
 const queryClient = mockQueryClient()
 const server = setupServer()
@@ -44,13 +44,14 @@ jest.mock('@repo/routing', () => ({
         goBack: jest.fn(),
     },
 }))
-jest.mock(
-    'pages/common/components/button/ConfirmButton',
-    () =>
-        ({ children, onConfirm }: ComponentProps<typeof ConfirmButton>) => (
-            <div onClick={onConfirm}>{children}</div>
-        ),
-)
+jest.mock('pages/common/components/button/ConfirmButton', () => ({
+    ConfirmButton: ({
+        children,
+        onConfirm,
+    }: ComponentProps<typeof ConfirmButton>) => (
+        <div onClick={onConfirm}>{children}</div>
+    ),
+}))
 const mockActions = fromJS([
     {
         name: MacroActionName.Http,
@@ -65,9 +66,9 @@ const mockActions = fromJS([
         name: MacroActionName.AddAttachments,
     },
 ])
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>LoaderMock</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>LoaderMock</div>,
+}))
 jest.mock('pages/tickets/common/macros/components/MacroEdit', () => ({
     MacroEdit: ({ actions, setActions }: ComponentProps<typeof MacroEdit>) => (
         <div onClick={() => setActions(mockActions)}>
@@ -88,10 +89,10 @@ jest.mock(
             useParams: jest.fn(),
         }) as Record<string, any>,
 )
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<

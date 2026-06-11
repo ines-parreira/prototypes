@@ -1,5 +1,5 @@
 import type { ChannelWithMetadata } from '../../../../types'
-import determineChannelLabels from '../determineChannelLabels'
+import { determineChannelLabels } from '../determineChannelLabels'
 
 describe('determineChannelLabels', () => {
     it('should return voice-specific labels when channel type is voice', () => {

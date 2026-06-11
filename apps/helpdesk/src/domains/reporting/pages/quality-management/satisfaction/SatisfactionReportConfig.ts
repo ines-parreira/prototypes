@@ -8,14 +8,15 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AverageScorePerDimensionTrendChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
-import AverageSurveyScoreDonutChart from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
-import CommentHighlightsChart, {
+import { AverageSurveyScoreDonutChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+import {
     COMMENT_HIGHLIGHTS,
+    CommentHighlightsChart,
 } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
 import { ResponseRateTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/ResponseRateTrendCard'
 import { SatisfactionMetricConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { SatisfactionScoreTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionScoreTrendCard'
-import ScoredSurveysChart from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
+import { ScoredSurveysChart } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
 import { SCORED_SURVEYS } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/utils'
 import { SurveysSentTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/SurveysSentTrendCard'
 import {

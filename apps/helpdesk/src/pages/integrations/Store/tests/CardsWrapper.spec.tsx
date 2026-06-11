@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CardsWrapper from '../CardsWrapper'
+import { Category as CardsWrapper } from '../CardsWrapper'
 
 describe('<Category />', () => {
     it('should render correctly with a header', () => {

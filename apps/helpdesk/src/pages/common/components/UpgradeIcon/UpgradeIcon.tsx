@@ -17,4 +17,4 @@ const UpgradeIcon = ({ iconRef, onMouseEnter }: Props) => {
     )
 }
 
-export default UpgradeIcon
+export { UpgradeIcon }

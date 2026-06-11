@@ -4,7 +4,7 @@ import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import ActionFormInput from '../ActionFormInput'
+import { ActionFormInput } from '../ActionFormInput'
 
 jest.mock('@repo/feature-flags')
 

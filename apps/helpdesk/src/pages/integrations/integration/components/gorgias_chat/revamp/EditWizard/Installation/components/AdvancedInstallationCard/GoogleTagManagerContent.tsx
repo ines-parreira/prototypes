@@ -1,6 +1,6 @@
 import { Heading, HeadingSize, Skeleton, Text } from '@gorgias/axiom'
 
-import CopyButton from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CopyButton'
+import { CopyButton } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CopyButton'
 
 import css from './AdvancedInstallationSidePanel.less'
 
@@ -78,4 +78,4 @@ const GoogleTagManagerContent = ({
     )
 }
 
-export default GoogleTagManagerContent
+export { GoogleTagManagerContent }

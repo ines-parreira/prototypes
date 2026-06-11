@@ -11,7 +11,9 @@ jest.mock('state/currentAccount/actions')
 const mockedUpdateAccountOwner = assumeMock(updateAccountOwner)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 describe('OwnershipModal', () => {
     const props = {

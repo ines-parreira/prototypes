@@ -65,4 +65,8 @@ const DropdownItemLabel = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(DropdownItemLabel)
+const DefaultExportDropdownItemLabel = forwardRef<HTMLDivElement, Props>(
+    DropdownItemLabel,
+)
+
+export { DefaultExportDropdownItemLabel }

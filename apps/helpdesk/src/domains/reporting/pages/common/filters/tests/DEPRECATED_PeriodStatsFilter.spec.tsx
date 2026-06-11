@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import DEPRECATED_PeriodStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
+import { DEPRECATED_PeriodStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
 import { CALENDAR_ICON } from 'domains/reporting/pages/common/PeriodPicker'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
 import {

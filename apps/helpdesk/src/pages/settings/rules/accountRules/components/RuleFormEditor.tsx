@@ -8,12 +8,12 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { createRule, deleteRule, updateRule } from 'models/rule/resources'
 import { ErrorsCollector } from 'pages/common/components/ast/Errors'
-import PageHeader from 'pages/common/components/PageHeader'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 import settingsCss from 'pages/settings/settings.less'
 import {
     ruleCreated,
@@ -29,12 +29,13 @@ import type {
 } from 'state/rules/types'
 import { RuleType } from 'state/rules/types'
 
-import AutoresponderViewButton from '../../components/AutoresponderViewButton'
-import TrackedRuleLibraryLink, {
+import { AutoresponderViewButton } from '../../components/AutoresponderViewButton'
+import {
     Source,
+    TrackedRuleLibraryLink,
 } from '../../components/TrackedRuleLibraryLink'
-import DefaultRuleEditor from './ruleEditors/DefaultRuleEditor'
-import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
+import { DefaultExportDefaultRuleEditor as DefaultRuleEditor } from './ruleEditors/DefaultRuleEditor'
+import { DefaultExportManagedRuleEditor as ManagedRuleEditor } from './ruleEditors/ManagedRuleEditor'
 import { RuleTicketList } from './RuleTicketList'
 
 import css from './RuleFormEditor.less'

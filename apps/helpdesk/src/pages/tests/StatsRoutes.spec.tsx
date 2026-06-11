@@ -24,45 +24,46 @@ const useFlagMock = assumeMock(useFlag)
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
-jest.mock(
-    'pages/LegacyPage',
-    () =>
-        ({
-            content: Content,
-            navbar: Navbar,
-        }: {
-            content: ComponentType<any>
-            navbar: ComponentType<any>
-        }) => (
-            <>
-                <Navbar />
-                <Content />
-            </>
-        ),
-)
+jest.mock('pages/LegacyPage', () => ({
+    DefaultExportLegacyPage: ({
+        content: Content,
+        navbar: Navbar,
+    }: {
+        content: ComponentType<any>
+        navbar: ComponentType<any>
+    }) => (
+        <>
+            <Navbar />
+            <Content />
+        </>
+    ),
+}))
 
-jest.mock('domains/reporting/pages/common/StatsNavbarContainer', () => () => (
-    <div>Navbar</div>
-))
+jest.mock('domains/reporting/pages/common/StatsNavbarContainer', () => ({
+    StatsNavbarContainer: () => <div>Navbar</div>,
+}))
 jest.mock(
     'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner',
-    () => () => <div>ScriptTagMigrationBanner</div>,
+    () => ({
+        ScriptTagMigrationBanner: () => <div>ScriptTagMigrationBanner</div>,
+    }),
 )
-jest.mock('domains/reporting/pages/voice/pages/VoiceOverview', () => () => (
-    <div>Voice Overview</div>
-))
-jest.mock('domains/reporting/pages/voice/pages/VoiceAgents', () => () => (
-    <div>Voice Agents</div>
-))
+jest.mock('domains/reporting/pages/voice/pages/VoiceOverview', () => ({
+    DefaultExportVoiceOverview: () => <div>Voice Overview</div>,
+}))
+jest.mock('domains/reporting/pages/voice/pages/VoiceAgents', () => ({
+    DefaultExportVoiceAgents: () => <div>Voice Agents</div>,
+}))
 jest.mock(
     'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport',
-    () => () => <div>AI Agent Stats</div>,
+    () => ({ AutomateAiAgentStatsReport: () => <div>AI Agent Stats</div> }),
 )
 jest.mock(
     'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters',
-    () =>
-        ({ children }: { children?: ReactNode }) =>
+    () => ({
+        AiAgentStatsFilters: ({ children }: { children?: ReactNode }) =>
             children,
+    }),
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 

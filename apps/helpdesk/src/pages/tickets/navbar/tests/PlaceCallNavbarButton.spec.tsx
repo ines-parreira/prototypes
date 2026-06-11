@@ -8,10 +8,10 @@ import {
     DEFAULT_ERROR_MESSAGE,
     MICROPHONE_PERMISSION_ERROR_MESSAGE,
 } from 'business/twilio'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useHasPhone from 'hooks/useHasPhone'
-import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
-import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useHasPhone } from 'hooks/useHasPhone'
+import { PhoneDevice } from 'pages/integrations/integration/components/phone/PhoneDevice'
+import { useMicrophonePermissions } from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 import { PlaceCallNavbarButton } from '../PlaceCallNavbarButton'
 
@@ -28,11 +28,9 @@ jest.mock('@repo/utils', () => ({
 jest.mock('@repo/voice', () => ({
     isDeviceReady: jest.fn(),
 }))
-jest.mock(
-    'pages/common/components/DeactivatedViewIcon',
-    () =>
-        ({ tooltipText }: any) => <div>{tooltipText}</div>,
-)
+jest.mock('pages/common/components/DeactivatedViewIcon', () => ({
+    DeactivatedViewIcon: ({ tooltipText }: any) => <div>{tooltipText}</div>,
+}))
 jest.mock('pages/integrations/integration/components/phone/PhoneDevice')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('hooks/useHasPhone')

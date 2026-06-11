@@ -15,9 +15,9 @@ import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useIntegrationBusinessHours } from 'hooks/businessHours/useIntegrationBusinessHours'
-import PrefilledTimeScheduleField from 'pages/common/components/TimeScheduleField/PrefilledTimeScheduleField'
-import RadioButtonField from 'pages/common/forms/RadioButtonField'
-import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
+import { PrefilledTimeScheduleField } from 'pages/common/components/TimeScheduleField/PrefilledTimeScheduleField'
+import { RadioButtonField } from 'pages/common/forms/RadioButtonField'
+import { SelectDropdownField } from 'pages/common/forms/SelectDropdownField'
 import {
     BUSINESS_HOURS_BASE_URL,
     DAYS_OPTIONS,

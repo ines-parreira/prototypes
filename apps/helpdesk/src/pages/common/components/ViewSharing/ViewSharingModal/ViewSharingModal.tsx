@@ -14,15 +14,15 @@ import {
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
 import { syncActiveViewSharing } from 'state/views/actions'
 
-import ViewSharingModalBody from './ViewSharingModalBody'
+import { DefaultExportViewSharingModalBody as ViewSharingModalBody } from './ViewSharingModalBody'
 
 import css from './ViewSharingModal.less'
 
@@ -112,7 +112,7 @@ function ViewSharingModal({ view, isOpen, toggle }: Props) {
     )
 }
 
-export default ViewSharingModal
+export { ViewSharingModal }
 
 function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
     const user = useRef(currentUser)

@@ -6,7 +6,7 @@ import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEdit
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { mockPluginMethods, typeText } from '../../../tests/draftTestUtils'
-import createSlashCommandPlugin from '../index'
+import { createSlashCommandPlugin } from '../index'
 
 jest.mock('../../toolbar/ToolbarContext', () => ({
     useToolbarContext: () => ({ guidanceActions: [] }),
@@ -17,59 +17,63 @@ jest.mock('../../guidanceActions/utils', () => ({
 }))
 
 jest.mock('../SlashCommandSuggestions', () => {
-    return function MockSlashCommandSuggestions(props: any) {
-        return (
-            <div data-testid="slash-suggestions">
-                <button
-                    data-testid="trigger-select"
-                    onClick={() =>
-                        props.onSelect({
-                            label: 'Order ID',
-                            value: '{{order.id}}',
-                            type: 'variable',
-                            category: 'order',
-                        })
-                    }
-                />
-                <button
-                    data-testid="trigger-interaction-start"
-                    onClick={() => props.onInteractionStart()}
-                />
-                <button
-                    data-testid="trigger-search-focus-true"
-                    onClick={() => props.onSearchFocusChange(true)}
-                />
-                <button
-                    data-testid="trigger-search-focus-false"
-                    onClick={() => props.onSearchFocusChange(false)}
-                />
-                <button
-                    data-testid="trigger-provider-view-true"
-                    onClick={() => props.onProviderViewChange(true)}
-                />
-                <button
-                    data-testid="trigger-provider-view-false"
-                    onClick={() => props.onProviderViewChange(false)}
-                />
-                <button
-                    data-testid="trigger-can-navigate-right-true"
-                    onClick={() => props.onCanNavigateRightChange(true)}
-                />
-                <button
-                    data-testid="trigger-can-navigate-right-false"
-                    onClick={() => props.onCanNavigateRightChange(false)}
-                />
-                <button
-                    data-testid="trigger-item-count"
-                    onClick={() => props.onItemCountChange(5)}
-                />
-                <span data-testid="is-open">{String(props.isOpen)}</span>
-                <span data-testid="search-text">{props.searchText}</span>
-                <span data-testid="highlighted-index">
-                    {String(props.highlightedIndex)}
-                </span>
-            </div>
-        )
+    return {
+        SlashCommandSuggestions: function MockSlashCommandSuggestions(
+            props: any,
+        ) {
+            return (
+                <div data-testid="slash-suggestions">
+                    <button
+                        data-testid="trigger-select"
+                        onClick={() =>
+                            props.onSelect({
+                                label: 'Order ID',
+                                value: '{{order.id}}',
+                                type: 'variable',
+                                category: 'order',
+                            })
+                        }
+                    />
+                    <button
+                        data-testid="trigger-interaction-start"
+                        onClick={() => props.onInteractionStart()}
+                    />
+                    <button
+                        data-testid="trigger-search-focus-true"
+                        onClick={() => props.onSearchFocusChange(true)}
+                    />
+                    <button
+                        data-testid="trigger-search-focus-false"
+                        onClick={() => props.onSearchFocusChange(false)}
+                    />
+                    <button
+                        data-testid="trigger-provider-view-true"
+                        onClick={() => props.onProviderViewChange(true)}
+                    />
+                    <button
+                        data-testid="trigger-provider-view-false"
+                        onClick={() => props.onProviderViewChange(false)}
+                    />
+                    <button
+                        data-testid="trigger-can-navigate-right-true"
+                        onClick={() => props.onCanNavigateRightChange(true)}
+                    />
+                    <button
+                        data-testid="trigger-can-navigate-right-false"
+                        onClick={() => props.onCanNavigateRightChange(false)}
+                    />
+                    <button
+                        data-testid="trigger-item-count"
+                        onClick={() => props.onItemCountChange(5)}
+                    />
+                    <span data-testid="is-open">{String(props.isOpen)}</span>
+                    <span data-testid="search-text">{props.searchText}</span>
+                    <span data-testid="highlighted-index">
+                        {String(props.highlightedIndex)}
+                    </span>
+                </div>
+            )
+        },
     }
 })
 

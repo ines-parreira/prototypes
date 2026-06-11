@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'

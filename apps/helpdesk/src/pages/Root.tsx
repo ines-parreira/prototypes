@@ -18,7 +18,7 @@ import { Main } from 'main/app'
 import { UsersRealtimeUpdates } from 'pages/common/components/UsersRealtimeUpdates'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import RoutesWrapper from 'routes'
+import { RoutesWrapper } from 'routes'
 import { useCanduRouter } from 'routes/hooks/useCanduRouter'
 import type { RootState } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
@@ -72,4 +72,4 @@ const Root = ({ store }: Props) => {
     )
 }
 
-export default Root
+export { Root }

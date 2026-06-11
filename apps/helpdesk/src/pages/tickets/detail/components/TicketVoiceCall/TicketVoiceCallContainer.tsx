@@ -9,9 +9,9 @@ import {
     canMonitorCall,
     getCallMonitorability,
 } from 'hooks/integrations/phone/monitoring.utils'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { useRecentItems } from 'hooks/useRecentItems/useRecentItems'
 import type { Customer } from 'models/customer/types'
 import type { VoiceCall } from 'models/voiceCall/types'
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
@@ -19,19 +19,19 @@ import {
     getInCallAgentId,
     isFinalVoiceCallStatus,
 } from 'models/voiceCall/utils'
-import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
-import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
+import { Avatar as DEPRECATED_Avatar } from 'pages/common/components/Avatar/Avatar'
+import { MonitorCallButton } from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { getAgentJS } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
-import TicketVoiceCallAudios from './TicketVoiceCallAudios'
-import TicketVoiceCallDuration from './TicketVoiceCallDuration'
-import TicketVoiceCallSource from './TicketVoiceCallSource'
-import TicketVoiceCallSummary from './TicketVoiceCallSummary'
+import { ControlledCollapsibleDetails } from './ControlledCollapsibleDetails'
+import { TicketVoiceCallAudios } from './TicketVoiceCallAudios'
+import { TicketVoiceCallDuration } from './TicketVoiceCallDuration'
+import { TicketVoiceCallSource } from './TicketVoiceCallSource'
+import { TicketVoiceCallSummary } from './TicketVoiceCallSummary'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -45,7 +45,7 @@ type Props = {
     source: Pick<ComponentProps<typeof TicketVoiceCallSource>, 'from' | 'to'>
 }
 
-export default function TicketVoiceCallContainer({
+export function TicketVoiceCallContainer({
     header,
     user,
     callStatus,

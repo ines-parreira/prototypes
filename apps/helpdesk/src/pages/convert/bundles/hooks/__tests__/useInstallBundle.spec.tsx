@@ -6,7 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import MockAdapter from 'axios-mock-adapter'
 
 import { convertBundleActionResponse } from 'fixtures/convertBundle'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { BundleInstallationMethod } from 'models/convert/bundle/types'
 import { notify } from 'state/notifications/actions'
 import {
@@ -17,7 +17,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useInstallBundle } from '../useInstallBundle'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('@repo/api-resources')
 jest.mock('state/notifications/actions')
 

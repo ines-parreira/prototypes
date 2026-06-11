@@ -7,9 +7,9 @@ import {
     getPlanUnitsPerCadence,
     getProductName,
 } from 'models/billing/utils'
-import useScheduledChangesNotifications from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
+import { useScheduledChangesNotifications } from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
 
-export default function BillingScheduledUpdates() {
+export function BillingScheduledUpdates() {
     const { error, loading, scheduledUpdates } =
         useScheduledChangesNotifications()
 

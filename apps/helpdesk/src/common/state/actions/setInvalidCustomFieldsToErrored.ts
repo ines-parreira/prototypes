@@ -2,7 +2,7 @@ import type { CustomFieldState } from 'custom-fields/types'
 
 import { SET_INVALID_CUSTOM_FIELDS_TO_ERRORED } from '../constants'
 
-export default function setInvalidCustomFieldsToErrored(
+export function setInvalidCustomFieldsToErrored(
     erroredCustomFields: CustomFieldState['id'][],
 ) {
     return {

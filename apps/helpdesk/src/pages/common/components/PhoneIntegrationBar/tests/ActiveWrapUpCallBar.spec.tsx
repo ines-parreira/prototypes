@@ -1,10 +1,10 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 
-import ActiveWrapUpCallBar from '../ActiveWrapUpCallBar'
+import { ActiveWrapUpCallBar } from '../ActiveWrapUpCallBar'
 
 jest.mock('services/socketManager')
 

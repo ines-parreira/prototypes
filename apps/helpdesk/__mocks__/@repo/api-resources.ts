@@ -8,4 +8,4 @@ export const initializeNewReleaseHandler = jest.fn()
 
 export const gorgiasAppsAuthInterceptor = jest.fn((config) => config)
 
-export default axios
+export { axios }

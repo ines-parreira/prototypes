@@ -2,12 +2,12 @@ import { identifyUser } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import userActivityManager from 'services/userActivityManager'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { userActivityManager } from 'services/userActivityManager'
 import { handle2FAEnforced } from 'state/currentUser/actions'
 
-import useSharedLogic from '../useSharedLogic'
+import { useSharedLogic } from '../useSharedLogic'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')

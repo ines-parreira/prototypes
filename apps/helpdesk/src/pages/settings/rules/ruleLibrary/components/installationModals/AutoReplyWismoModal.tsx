@@ -1,11 +1,11 @@
 import classnames from 'classnames'
 
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 import { FakeOrderTracking } from 'pages/settings/rules/components/FakeOrderTracking'
 import { assetsUrl } from 'utils'
 
 import type { ManagedRuleModalProps } from '../InstallRuleModalBody'
-import TargetCount from './components/TargetCount'
+import { TargetCount } from './components/TargetCount'
 
 import defaultModalCss from '../RuleRecipeModal.less'
 import css from './ManagedRuleModal.less'

@@ -25,4 +25,8 @@ function TableBody(
     )
 }
 
-export default forwardRef<HTMLTableSectionElement, Props>(TableBody)
+const DefaultExportTableBody = forwardRef<HTMLTableSectionElement, Props>(
+    TableBody,
+)
+
+export { DefaultExportTableBody }

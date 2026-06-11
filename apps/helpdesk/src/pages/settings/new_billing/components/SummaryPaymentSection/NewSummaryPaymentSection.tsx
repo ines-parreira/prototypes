@@ -12,7 +12,7 @@ import type {
     BillingState,
     CreditCard as CreditCardType,
 } from 'models/billing/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 import css from './SummaryPaymentSection.less'

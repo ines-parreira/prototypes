@@ -192,4 +192,4 @@ function CustomerListActionsWithViewCount(
     return <ConnectedCustomerListActions {...props} viewCount={viewCount} />
 }
 
-export default CustomerListActionsWithViewCount
+export { CustomerListActionsWithViewCount }

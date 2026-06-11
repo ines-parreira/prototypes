@@ -7,7 +7,7 @@ import {
     OrderConversionDimension,
     OrderConversionMeasure,
 } from 'domains/reporting/pages/convert/clients/constants'
-import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import { useGetCampaignRevenueTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import { getDataFromResult } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 
 jest.mock('domains/reporting/models/queries')

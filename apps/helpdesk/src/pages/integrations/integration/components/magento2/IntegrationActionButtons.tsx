@@ -2,8 +2,8 @@ import type { Map } from 'immutable'
 
 import { Box, Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import { deleteIntegration } from 'state/integrations/actions'
 
@@ -85,5 +85,3 @@ export const IntegrationActionButtons = ({
         </Box>
     )
 }
-
-export default IntegrationActionButtons

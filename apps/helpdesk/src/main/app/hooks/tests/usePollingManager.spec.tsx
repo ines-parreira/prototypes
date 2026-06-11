@@ -2,14 +2,14 @@ import { renderHook } from '@repo/testing'
 import { useHasNewViewCountScheduler } from '@repo/views'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
-import pollingManager from 'services/pollingManager'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { pollingManager } from 'services/pollingManager'
 import { EqualityOperator } from 'state/rules/types'
 import { getViewFilters } from 'state/views/utils'
 
-import usePollingManager from '../usePollingManager'
+import { usePollingManager } from '../usePollingManager'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('@repo/views', () => ({
     useHasNewViewCountScheduler: jest.fn(),
 }))
@@ -18,9 +18,11 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 const useHasNewViewCountSchedulerMock = useHasNewViewCountScheduler as jest.Mock
 
 jest.mock('services/pollingManager', () => ({
-    start: jest.fn(),
-    stop: jest.fn(),
-    stopRecentViewCountsInterval: jest.fn(),
+    pollingManager: {
+        start: jest.fn(),
+        stop: jest.fn(),
+        stopRecentViewCountsInterval: jest.fn(),
+    },
 }))
 
 jest.mock('state/views/utils')

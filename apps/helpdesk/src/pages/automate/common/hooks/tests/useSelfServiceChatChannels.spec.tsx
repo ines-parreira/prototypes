@@ -8,10 +8,12 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import type { StoreIntegration } from 'models/integration/types'
 import { AiAgentOverviewRootStateFixture } from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
 
-import useSelfServiceChatChannels, {
+import {
+    useSelfServiceChatChannels,
     useSelfServiceChatChannelsMultiStore,
 } from '../useSelfServiceChatChannels'
-import useSelfServiceStoreIntegration, {
+import {
+    useSelfServiceStoreIntegration,
     useSelfServiceStoreIntegrationMultiStore,
 } from '../useSelfServiceStoreIntegration'
 

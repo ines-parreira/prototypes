@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import EmptyTicket from '../EmptyTicket'
+import { EmptyTicket } from '../EmptyTicket'
 
 describe('EmptyTicket', () => {
     it('applies custom className', () => {

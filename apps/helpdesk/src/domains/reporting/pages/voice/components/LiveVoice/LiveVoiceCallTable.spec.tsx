@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
-import LiveVoiceCallTable from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
+import { LiveVoiceCallTable } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
 import {
     filterLiveCallsByStatus,
@@ -15,9 +15,9 @@ import {
     orderLiveVoiceCallsByOngoingTime,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
-import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
+import { VoiceCallTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 
 const renderComponent = () => {

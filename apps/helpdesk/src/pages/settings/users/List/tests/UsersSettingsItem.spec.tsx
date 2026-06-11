@@ -13,8 +13,8 @@ import {
     UserRole,
 } from 'config/types/user'
 import { agents } from 'fixtures/agents'
-import useAppSelector from 'hooks/useAppSelector'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 import { RoleLabel } from 'pages/common/utils/labels'
 import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
@@ -26,9 +26,16 @@ jest.mock('react-router-dom', () => ({
     Link: jest.fn(({ children }) => <div data-testid="link">{children}</div>),
 }))
 
-jest.mock('pages/common/components/Avatar/Avatar', () =>
-    jest.fn(() => <div data-testid="avatar" />),
-)
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacyBadge: jest.fn(({ children, type }) => (
+        <div data-testid={`badge-${type}`}>{children}</div>
+    )),
+}))
+
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    Avatar: jest.fn(() => <div data-testid="avatar" />),
+}))
 
 jest.mock('pages/common/utils/labels', () => ({
     RoleLabel: jest.fn(() => <div data-testid="role-label" />),

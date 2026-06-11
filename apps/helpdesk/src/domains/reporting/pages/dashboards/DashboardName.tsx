@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import css from 'domains/reporting/pages/dashboards/DashboardName.less'
 import { EmojiInput } from 'domains/reporting/pages/dashboards/EmojiInput'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 export type DashboardNameValue = {
     name: string

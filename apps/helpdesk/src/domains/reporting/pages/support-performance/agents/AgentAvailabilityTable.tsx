@@ -29,13 +29,13 @@ import {
     pageSet,
     sortingSet,
 } from 'domains/reporting/state/ui/stats/agentAvailabilitySlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 /**
  * Agent availability data with system and custom status columns

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HttpIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { AVAILABLE_3PL_INTEGRATIONS } from 'pages/automate/workflows/models/variables.types'
@@ -12,7 +12,7 @@ type ValidIntegration = HttpIntegration & {
     application_id: (typeof AVAILABLE_3PL_INTEGRATIONS)[number]
 }
 
-export default function useThreeplIntegrations() {
+export function useThreeplIntegrations() {
     const are3plObjectsEnabled = useFlag(FeatureFlagKey.Actions3plObjects)
     const integrations = useAppSelector(getIntegrations)
 

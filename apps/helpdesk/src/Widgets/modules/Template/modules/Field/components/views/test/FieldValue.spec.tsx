@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FieldValue from '../FieldValue'
+import { FieldValue } from '../FieldValue'
 
 describe('<FieldValue/>', () => {
     it('should add the `fieldValue` class while preserving provided one', () => {

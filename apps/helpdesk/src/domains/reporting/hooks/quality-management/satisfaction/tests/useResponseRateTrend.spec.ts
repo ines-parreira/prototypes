@@ -5,8 +5,9 @@ import {
     fetchResponseRateTrend,
     useResponseRateTrend,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useResponseRateTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { responseRateQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/responseRateQueryFactory'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

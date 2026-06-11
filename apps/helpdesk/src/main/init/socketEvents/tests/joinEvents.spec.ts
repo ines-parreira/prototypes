@@ -1,7 +1,7 @@
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import joinEvents from '../joinEvents'
+import { joinEvents } from '../joinEvents'
 
 describe('joinEvents', () => {
     it('is array', () => {

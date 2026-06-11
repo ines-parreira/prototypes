@@ -7,7 +7,7 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './FeatureSettings.less'
 

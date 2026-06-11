@@ -3,9 +3,9 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import CampaignLibrarySection from 'pages/convert/campaigns/components/CampaignLibrarySection'
-import TemplateNotFoundBanner from 'pages/convert/campaigns/components/TemplateNotFoundBanner'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { CampaignLibrarySection } from 'pages/convert/campaigns/components/CampaignLibrarySection'
+import { TemplateNotFoundBanner } from 'pages/convert/campaigns/components/TemplateNotFoundBanner'
 import { CAMPAIGN_SECTIONS } from 'pages/convert/campaigns/templates'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import type { ConvertRouteParams } from 'pages/convert/common/types'
@@ -52,5 +52,3 @@ export const CampaginLibaryView = () => {
         </div>
     )
 }
-
-export default CampaginLibaryView

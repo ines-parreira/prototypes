@@ -3,7 +3,7 @@ import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import AdvancedInstallationSidePanel from './AdvancedInstallationSidePanel'
+import { AdvancedInstallationSidePanel } from './AdvancedInstallationSidePanel'
 
 HTMLElement.prototype.getAnimations = jest.fn().mockReturnValue([])
 
@@ -31,7 +31,10 @@ jest.mock(
 
 jest.mock('./ShopifyWebsiteContent', () => ({
     __esModule: true,
-    default: ({ isLoadingInstallationCode, installationCode }: any) => (
+    ShopifyWebsiteContent: ({
+        isLoadingInstallationCode,
+        installationCode,
+    }: any) => (
         <section aria-label="Shopify Website content">
             <p>Loading: {isLoadingInstallationCode.toString()}</p>
             <pre>{installationCode}</pre>
@@ -41,7 +44,10 @@ jest.mock('./ShopifyWebsiteContent', () => ({
 
 jest.mock('./AnyOtherWebsiteContent', () => ({
     __esModule: true,
-    default: ({ isLoadingInstallationCode, installationCode }: any) => (
+    AnyOtherWebsiteContent: ({
+        isLoadingInstallationCode,
+        installationCode,
+    }: any) => (
         <section aria-label="Any Other Website content">
             <p>Loading: {isLoadingInstallationCode.toString()}</p>
             <pre>{installationCode}</pre>
@@ -51,7 +57,10 @@ jest.mock('./AnyOtherWebsiteContent', () => ({
 
 jest.mock('./GoogleTagManagerContent', () => ({
     __esModule: true,
-    default: ({ isLoadingApplicationKey, applicationKey }: any) => (
+    GoogleTagManagerContent: ({
+        isLoadingApplicationKey,
+        applicationKey,
+    }: any) => (
         <section aria-label="Google Tag Manager content">
             <p>Loading: {isLoadingApplicationKey.toString()}</p>
             <pre>{applicationKey}</pre>

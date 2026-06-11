@@ -6,13 +6,13 @@ import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
-import SecondaryNavbar from '../../../../../common/components/SecondaryNavbar/SecondaryNavbar'
-import GorgiasChatIntegrationConnectedChannel from './GorgiasChatIntegrationConnectedChannel'
-import useIsQuickRepliesEnabled from './GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import { SecondaryNavbar } from '../../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import { GorgiasChatIntegrationConnectedChannel } from './GorgiasChatIntegrationConnectedChannel'
+import { useIsQuickRepliesEnabled } from './GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 
 import css from './GorgiasChatIntegrationNavigation.less'
 
@@ -104,4 +104,4 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
     )
 }
 
-export default GorgiasChatIntegrationNavigation
+export { GorgiasChatIntegrationNavigation }

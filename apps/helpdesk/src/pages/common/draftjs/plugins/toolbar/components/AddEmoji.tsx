@@ -5,11 +5,11 @@ import type { EmojiData } from 'emoji-mart'
 
 import 'emoji-mart/css/emoji-mart.css'
 
-import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
+import { EmojiPicker } from 'pages/common/components/EmojiPicker/EmojiPicker'
 import { insertText } from 'utils'
 
 import type { ActionInjectedProps } from '../types'
-import Popover from './ButtonPopover'
+import { ButtonPopover as Popover } from './ButtonPopover'
 
 import './AddEmoji.less'
 
@@ -19,7 +19,7 @@ type State = {
     isOpen: boolean
 }
 
-export default class AddEmoji extends Component<Props, State> {
+export class AddEmoji extends Component<Props, State> {
     state: State = {
         isOpen: false,
     }

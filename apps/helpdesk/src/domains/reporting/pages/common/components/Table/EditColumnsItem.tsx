@@ -6,7 +6,7 @@ import { DropdownItem } from 'reactstrap'
 
 import css from 'domains/reporting/pages/common/components/Table/EditColumns.less'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 type Props = {
     title: string

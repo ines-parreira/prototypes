@@ -22,7 +22,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
-import AiAgentScrapedDomainQuestionsContainer from '../AiAgentScrapedDomainQuestionsContainer'
+import { AiAgentScrapedDomainQuestionsContainer } from '../AiAgentScrapedDomainQuestionsContainer'
 import { IngestedResourceStatus, IngestionLogStatus } from '../constant'
 import { useIngestedResourceMutation } from '../hooks/useIngestedResourceMutation'
 import { usePaginatedIngestedResources } from '../hooks/usePaginatedIngestedResources'

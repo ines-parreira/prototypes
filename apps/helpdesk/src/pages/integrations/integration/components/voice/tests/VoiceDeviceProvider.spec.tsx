@@ -8,12 +8,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import { connectDevice, disconnectDevice } from 'hooks/integrations/phone/utils'
-import useHasPhone from 'hooks/useHasPhone'
+import { useHasPhone } from 'hooks/useHasPhone'
 
 import type { VoiceDeviceContextState } from '../VoiceDeviceContext'
-import VoiceDeviceProvider from '../VoiceDeviceProvider'
+import { VoiceDeviceProvider } from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')
 jest.mock('hooks/useHasPhone')

@@ -15,7 +15,7 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(() => jest.fn()),
+    useAppDispatch: jest.fn(() => jest.fn()),
 }))
 
 jest.mock(
@@ -40,7 +40,7 @@ jest.mock(
     'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames',
     () => ({
         __esModule: true,
-        default: jest.fn(() => ({
+        useHelpCenterCustomDomainHostnames: jest.fn(() => ({
             customDomainHostnames: [],
         })),
     }),

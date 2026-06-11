@@ -11,7 +11,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { KnowledgeEditorTopBarTitle } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarTitle'
 
 import css from './SkillEditorHeader.less'

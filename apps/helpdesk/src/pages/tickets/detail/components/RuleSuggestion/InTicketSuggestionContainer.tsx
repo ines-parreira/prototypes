@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar as DEPRECATED_Avatar } from 'pages/common/components/Avatar/Avatar'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assetsUrl } from 'utils'
 
@@ -12,7 +12,7 @@ type Props = {
     isAIAgent?: boolean
 }
 
-export default function InTicketSuggestionContainer({
+export function InTicketSuggestionContainer({
     children,
     isAIAgent = false,
 }: Props) {

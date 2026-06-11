@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import MultiSelectField from '../MultiSelectField'
+import { MultiSelectField } from '../MultiSelectField'
 
 describe('MultiSelectField', () => {
     const minProps: Pick<ComponentProps<typeof MultiSelectField>, 'options'> = {

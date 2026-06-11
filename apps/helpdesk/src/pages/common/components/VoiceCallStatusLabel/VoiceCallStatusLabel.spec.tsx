@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
-import VoiceCallStatusLabel from './VoiceCallStatusLabel'
+import { VoiceCallStatusLabel } from './VoiceCallStatusLabel'
 
 describe('VoiceCallStatusLabel', () => {
     it.each([

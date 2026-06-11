@@ -72,7 +72,9 @@ const useThemeMock = jest.mocked(useTheme)
 const logEventMock = assumeMock(logEvent)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const mockedCreateJobTicket = assumeMock(createJobTicket)
 const mockedCreateJobView = assumeMock(createJobView)
@@ -87,24 +89,27 @@ const shortcutEventMock = {
 
 const mockStore = configureMockStore()
 
-jest.mock(
-    'tags/TagDropdownMenu',
-    () =>
-        ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
-            <div onClick={() => onClick({ name: 'tag added' })}>
-                TagDropdownMenuMock
-            </div>
-        ),
-)
+jest.mock('tags/TagDropdownMenu', () => ({
+    TagDropdownMenu: ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
+        <div onClick={() => onClick({ name: 'tag added' })}>
+            TagDropdownMenuMock
+        </div>
+    ),
+}))
 
 jest.mock(
     'ticket-list-view/components/bulk-actions/PriorityDropdownMenu',
-    () =>
-        ({ onClick }: { onClick: (item: { name: string }) => void }) => (
+    () => ({
+        PriorityDropdownMenu: ({
+            onClick,
+        }: {
+            onClick: (item: { name: string }) => void
+        }) => (
             <div onClick={() => onClick({ name: 'high' })}>
                 PriorityDropdownMenuMock
             </div>
         ),
+    }),
 )
 
 describe('TicketListActions component', () => {

@@ -43,12 +43,12 @@ import {
 import type { RootState } from 'state/types'
 
 import { ConfirmChangesModal } from '../../../components/ConfirmChangesModal'
-import useProductCancellations from '../../../hooks/useProductCancellations'
+import { useProductCancellations } from '../../../hooks/useProductCancellations'
 import type {
     PlanByProductType,
     PlansByProductType,
 } from '../BillingFrequencyView'
-import BillingFrequencyView from '../BillingFrequencyView'
+import { BillingFrequencyView } from '../BillingFrequencyView'
 
 jest.mock('../../../components/ConfirmChangesModal', () => ({
     ConfirmChangesModal: jest
@@ -76,7 +76,9 @@ const mockUseBillingState = assumeMock(useBillingState)
 jest.mock('../../../hooks/useProductCancellations')
 const mockUseProductCancellations = assumeMock(useProductCancellations)
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 const billingFrequencyRoute = `${BILLING_BASE_PATH}/manage/helpdesk`
 const LocationPath = () => {

@@ -44,4 +44,4 @@ const rechargeEvent = ({
     }
 }
 
-export default rechargeEvent
+export { rechargeEvent }

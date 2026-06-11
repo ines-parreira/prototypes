@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
-import OutOfRecoveryCodesModal from '../OutOfRecoveryCodesModal'
+import { OutOfRecoveryCodesModal } from '../OutOfRecoveryCodesModal'
 
 const LocationPath = () => {
     const location = useLocation()

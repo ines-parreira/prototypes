@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import {
     linkToContactFormPreferences,
     linkToShopifyIntegration,
@@ -95,4 +95,4 @@ const ContactFormIntegrationWarningBanner = (
     return null
 }
 
-export default ContactFormIntegrationWarningBanner
+export { ContactFormIntegrationWarningBanner }

@@ -16,7 +16,7 @@ import type {
 } from 'models/billing/types'
 import { Cadence, HelpdeskPlanTier, ProductType } from 'models/billing/types'
 
-import CancelProductModal from './CancelProductModal'
+import { CancelProductModal } from './CancelProductModal'
 
 // Mock plans
 const mockHelpdeskPlan: HelpdeskPlan = {

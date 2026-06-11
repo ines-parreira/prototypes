@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Status, { StatusType } from './Status'
+import { Status, StatusType } from './Status'
 
 const meta: Meta<typeof Status> = {
     title: 'Common/Status',

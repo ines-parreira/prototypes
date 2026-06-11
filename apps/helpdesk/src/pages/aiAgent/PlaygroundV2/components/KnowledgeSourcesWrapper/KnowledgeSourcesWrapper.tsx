@@ -10,7 +10,7 @@ import type { TicketOutcome } from 'models/aiAgentPlayground/types'
 import { ticketOutcomeToLabel } from 'pages/aiAgent/components/TicketEvent/TicketEvent'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
-import KnowledgeSourceRenderer from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
+import { KnowledgeSourceRenderer } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import type { KnowledgeResource } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useEnrichFeedbackData } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useEnrichFeedbackData'
@@ -207,4 +207,4 @@ const KnowledgeSourcesWrapper: React.FC<KnowledgeSourcesWrapperProps> = ({
     )
 }
 
-export default KnowledgeSourcesWrapper
+export { KnowledgeSourcesWrapper }

@@ -1,4 +1,4 @@
-import resolvePunctuators from '../resolvePunctuators'
+import { resolvePunctuators } from '../resolvePunctuators'
 
 describe('resolvePunctuators', () => {
     it("should return '.param' when type is Identifier", () => {

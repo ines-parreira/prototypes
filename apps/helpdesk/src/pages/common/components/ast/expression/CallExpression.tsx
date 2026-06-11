@@ -4,15 +4,15 @@ import type { Map } from 'immutable'
 import { List } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
-import Action from 'pages/common/components/ast/actions/Action'
+import { Action } from 'pages/common/components/ast/actions/Action'
 import {
     actionsConfig,
     isValidActionKey,
 } from 'pages/common/components/ast/actions/config'
-import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
-import DeleteBinaryExpression from 'pages/common/components/ast/operations/DeleteBinaryExpression'
+import { ObjectExpression } from 'pages/common/components/ast/expression/ObjectExpression'
+import { DeleteBinaryExpression } from 'pages/common/components/ast/operations/DeleteBinaryExpression'
 import { getSyntaxTreeLeaves } from 'pages/common/components/ast/utils'
-import useHoverable from 'pages/common/hooks/useHoverable'
+import { useHoverable } from 'pages/common/hooks/useHoverable'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { OBJECT_DEFINITIONS } from 'state/rules/constants'
@@ -28,7 +28,7 @@ type Props = {
     depth: number
 }
 
-export default function CallExpression({
+export function CallExpression({
     actions,
     callee,
     rule,

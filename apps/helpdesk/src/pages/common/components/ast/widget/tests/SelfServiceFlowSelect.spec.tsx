@@ -14,7 +14,7 @@ import type {
 } from '../../../../../../models/selfServiceConfiguration/types'
 import { initialState as helpCenterInitialState } from '../../../../../../state/entities/helpCenter/reducer'
 import type { SelfServiceConfigurationsState } from '../../../../../../state/entities/selfServiceConfigurations/types'
-import SelfServiceFlowSelect from '../SelfServiceFlowSelect'
+import { SelfServiceFlowSelect } from '../SelfServiceFlowSelect'
 
 const mockStore = configureMockStore([thunk])
 

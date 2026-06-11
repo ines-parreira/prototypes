@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
-import Context from '../Context'
+import { DefaultExportContext as Context } from '../Context'
 
-export default function useSplitTicketView() {
+export function useSplitTicketView() {
     const ctx = useContext(Context)
     if (ctx === null) {
         throw new Error(

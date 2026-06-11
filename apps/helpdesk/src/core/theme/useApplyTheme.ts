@@ -2,11 +2,11 @@ import { useEffect } from 'react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
 
-import useTheme from './useTheme'
+import { useTheme } from './useTheme'
 
 const themeClassNames = Object.values(THEME_NAME)
 
-export default function useApplyTheme() {
+export function useApplyTheme() {
     const theme = useTheme()
 
     useEffect(() => {

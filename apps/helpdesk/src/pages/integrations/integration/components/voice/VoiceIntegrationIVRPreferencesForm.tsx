@@ -6,8 +6,8 @@ import { useFormContext } from 'react-hook-form'
 import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences.less'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
@@ -15,13 +15,13 @@ import {
     useDeletePhoneIntegration,
     useFormSubmit,
 } from './useVoiceSettingsForm'
-import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
+import { VoiceIntegrationSettingsFormGeneralSection } from './VoiceIntegrationSettingsFormGeneralSection'
 
 type Props = {
     integration: PhoneIntegration
 }
 
-export default function VoiceIntegrationIVRPreferencesForm({
+export function VoiceIntegrationIVRPreferencesForm({
     integration,
 }: Props): JSX.Element {
     const { onSubmit } = useFormSubmit(integration)

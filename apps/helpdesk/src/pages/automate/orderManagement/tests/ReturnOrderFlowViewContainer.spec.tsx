@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import { ReturnOrderFlowViewContainer } from '../ReturnOrderFlowViewContainer'
@@ -13,7 +13,9 @@ jest.mock(
 
 jest.mock('../legacy/returnOrder/ReturnOrderFlowViewContainer', () => ({
     __esModule: true,
-    default: () => <div>LegacyReturnOrderFlowViewContainer</div>,
+    ReturnOrderFlowViewContainer: () => (
+        <div>LegacyReturnOrderFlowViewContainer</div>
+    ),
 }))
 
 jest.mock('../revamp/returnOrder/ReturnOrderFlowViewContainer', () => ({

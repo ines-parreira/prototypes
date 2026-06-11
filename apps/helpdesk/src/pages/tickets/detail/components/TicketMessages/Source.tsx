@@ -14,8 +14,8 @@ import type {
     SourceAddress,
     Source as SourceType,
 } from 'models/ticket/types'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
 import { toChannel } from 'services/channels'
 import { humanizeChannel } from 'state/ticket/utils'
@@ -31,7 +31,7 @@ type Props = {
     meta?: Meta
 }
 
-export default function Source({
+export function Source({
     createdDatetime,
     isForwarded,
     source,

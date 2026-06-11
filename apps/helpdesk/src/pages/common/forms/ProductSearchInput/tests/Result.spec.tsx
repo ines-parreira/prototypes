@@ -13,7 +13,7 @@ import {
 import type { IntegrationDataItem } from 'models/integration/types'
 
 import { shopifyDataMappers } from '../Mappings'
-import Result from '../Result'
+import { Result } from '../Result'
 
 describe('<Result/>', () => {
     describe('render()', () => {

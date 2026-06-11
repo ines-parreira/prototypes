@@ -11,12 +11,12 @@ import classNames from 'classnames'
 
 import type { CreateSLAPolicy } from '@gorgias/helpdesk-types'
 
-import Caption from 'pages/common/forms/Caption/Caption'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 
-import TimeUnitSelectBox from './DEPRECATED_TimeUnitSelectBox'
-import NumberInputField from './NumberInputField'
+import { DefaultExportDEPRECATED_TimeUnitSelectBox as TimeUnitSelectBox } from './DEPRECATED_TimeUnitSelectBox'
+import { DefaultExportNumberInputField as NumberInputField } from './NumberInputField'
 
 import css from './MetricsFieldArray.less'
 
@@ -38,7 +38,7 @@ const fieldTexts: Record<string, { label: string; tooltip: string }> = {
  * @date 2025-12-29
  * @type sla-config-form-migration
  */
-export default function MetricsFieldArray() {
+export function MetricsFieldArray() {
     const { fields } = useFieldArray<Pick<CreateSLAPolicy, 'metrics'>>({
         name: 'metrics',
     })

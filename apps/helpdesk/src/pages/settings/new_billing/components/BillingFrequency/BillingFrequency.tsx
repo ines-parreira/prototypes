@@ -87,4 +87,4 @@ const BillingFrequency = ({
     )
 }
 
-export default BillingFrequency
+export { BillingFrequency }

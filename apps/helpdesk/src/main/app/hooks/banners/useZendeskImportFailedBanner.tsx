@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ZendeskIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'

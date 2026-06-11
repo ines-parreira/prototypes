@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import { TableBodyRowDraggable } from '../TableBodyRowDraggable'
@@ -19,7 +19,7 @@ jest.mock('pages/common/hooks/useReorderDnD', () => ({
 
 jest.mock('pages/common/components/table/TableBodyRow', () => ({
     __esModule: true,
-    default: jest.fn(({ children }) => (
+    DefaultExportTableBodyRow: jest.fn(({ children }) => (
         <table>
             <tbody>
                 <tr>{children}</tr>

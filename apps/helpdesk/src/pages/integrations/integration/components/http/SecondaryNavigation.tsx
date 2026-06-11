@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom'
 
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import { BASE_PATH, EVENTS_PATH, INTEGRATIONS_LIST_PATH } from './constants'
 import { useRouteParser } from './useRouteParser'
 
-export default function SecondaryNavigation() {
+export function SecondaryNavigation() {
     const { integration, integrationId } = useRouteParser()
     if (!integration) {
         return (

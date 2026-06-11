@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import Alert from 'pages/common/components/Alert/Alert'
+import { Alert } from 'pages/common/components/Alert/Alert'
 
 import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
 

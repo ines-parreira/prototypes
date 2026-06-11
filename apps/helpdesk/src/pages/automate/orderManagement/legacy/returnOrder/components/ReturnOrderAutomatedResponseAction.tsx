@@ -5,8 +5,8 @@ import { fromJS } from 'immutable'
 
 import { UploadType } from 'common/types'
 import type { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'
 
 import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from '../../constants'
@@ -70,4 +70,4 @@ const ReturnOrderAutomatedResponseAction = ({
     )
 }
 
-export default ReturnOrderAutomatedResponseAction
+export { ReturnOrderAutomatedResponseAction }

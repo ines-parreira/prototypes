@@ -6,8 +6,8 @@ import { getMoneySymbol } from '@repo/utils'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { BigCommerceCustomProduct } from 'models/integration/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import InputField from 'pages/common/forms/input/InputField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { PopoverContainer } from './components/popover-container/PopoverContainer'
 

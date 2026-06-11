@@ -1,6 +1,6 @@
 import type { Chart } from 'chart.js'
 
-import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
+import { GreyArea } from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
 
 describe('GreyArea plugin', () => {
     let mockChart: Chart

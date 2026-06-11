@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import Button from 'gorgias-design-system/Buttons/Button'
+import { Button } from 'gorgias-design-system/Buttons/Button'
 import { gorgiasColors } from 'gorgias-design-system/styles'
 
 export const Wrapper = styled.div`

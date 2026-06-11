@@ -4,12 +4,12 @@ import { act } from '@testing-library/react'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
 
 import { customToneOfVoicePreviewFixture } from '../../fixtures/customToneOfVoicePreview.fixture'
 import { createCustomToneOfVoicePreviewBody } from '../../utils/custom-tone-of-voice-preview.utils'
-import useCustomToneOfVoicePreview from '../useCustomToneOfVoicePreview'
+import { useCustomToneOfVoicePreview } from '../useCustomToneOfVoicePreview'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('@gorgias/toolkit-react', () => ({

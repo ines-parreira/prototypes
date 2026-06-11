@@ -2,7 +2,7 @@ import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useContactFormManualEmbedInstructionsCardState } from '../useContactFormManualEmbedTabs'
 

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
 import { compactInteger } from 'utils'
 
-import DeactivatedViewIcon from '../DeactivatedViewIcon'
+import { DeactivatedViewIcon } from '../DeactivatedViewIcon'
 
 type OwnProps = {
     isDeactivated: boolean
@@ -53,4 +53,6 @@ export function ViewCount({
     )
 }
 
-export default React.memo(ViewCount)
+const DefaultExportViewCount = React.memo(ViewCount)
+
+export { DefaultExportViewCount }

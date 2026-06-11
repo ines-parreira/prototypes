@@ -7,6 +7,6 @@ type Props = {
     onResizeStart: (ev: MouseEvent) => void
 }
 
-export default function Handle({ onResizeStart }: Props) {
+export function Handle({ onResizeStart }: Props) {
     return <div className={css.handle} onMouseDown={onResizeStart} />
 }

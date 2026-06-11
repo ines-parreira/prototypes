@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import type { TicketCompact } from '../../types'
-import useSelection from '../useSelection'
+import { useSelection } from '../useSelection'
 
 describe('useSelection', () => {
     const dummyTickets = [

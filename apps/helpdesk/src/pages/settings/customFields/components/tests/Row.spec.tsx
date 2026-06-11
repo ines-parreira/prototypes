@@ -11,7 +11,7 @@ import {
 } from 'fixtures/customField'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
 
-import Row from '../Row'
+import { Row } from '../Row'
 
 jest.mock(
     '@repo/logging',
@@ -21,13 +21,11 @@ jest.mock(
             logEvent: jest.fn(),
         }) as Record<string, unknown>,
 )
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => (
-            <div data-testid="DatetimeLabel">{dateTime}</div>
-        ),
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div data-testid="DatetimeLabel">{dateTime}</div>
+    ),
+}))
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock('pages/common/components/table/TableBodyRowDraggable')

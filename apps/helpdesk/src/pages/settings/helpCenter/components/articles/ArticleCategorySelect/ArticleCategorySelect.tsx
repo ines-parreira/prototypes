@@ -10,7 +10,7 @@ import {
 
 import type { LocaleCode } from 'models/helpCenter/types'
 
-import useCategoriesOptions from './hooks/useCategoriesOptions'
+import { useCategoriesOptions } from './hooks/useCategoriesOptions'
 import type { CategoryOption } from './hooks/useCategoriesOptions'
 
 import css from './ArticleCategorySelect.less'
@@ -78,4 +78,4 @@ const ArticleCategorySelect = ({
     )
 }
 
-export default ArticleCategorySelect
+export { ArticleCategorySelect }

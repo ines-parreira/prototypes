@@ -17,16 +17,16 @@ import {
 } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { PAGE_TITLE_AUTOMATE_PAYWALL } from 'domains/reporting/pages/self-service/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
-export default function AutomateOverviewContent() {
+export function AutomateOverviewContent() {
     useLast28daysForAutomateRedirect()
     useCleanStatsFilters()
     const { statsFilters, userTimezone } = useAutomateFilters()

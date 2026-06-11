@@ -13,11 +13,11 @@ import {
 } from '../../../../../utils/editor'
 import type { Plugin, PluginMethods } from '../types'
 import { removeLink } from '../utils'
-import Image from './components/Image'
-import Video from './components/Video'
-import discountCodeLink from './decorators/discountCodeLink'
-import foundUrl from './decorators/foundUrl'
-import link from './decorators/link'
+import { Image } from './components/Image'
+import { Video } from './components/Video'
+import { discountCodeLink } from './decorators/discountCodeLink'
+import { foundUrl } from './decorators/foundUrl'
+import { link } from './decorators/link'
 import type { Config } from './types'
 import { ActionName } from './types'
 
@@ -39,7 +39,7 @@ export const isDisplayedAction = (
     return displayedActions.indexOf(name) !== -1
 }
 
-export default function toolbarPlugin(config: Config): Plugin {
+export function toolbarPlugin(config: Config): Plugin {
     const isLinkDisplayed = () =>
         isDisplayedAction(ActionName.Link, config.getDisplayedActions())
 

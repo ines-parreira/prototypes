@@ -18,7 +18,7 @@ type Props = {
     >
 }
 
-export default function TrackstarConnectButton({ app, actionApp }: Props) {
+export function TrackstarConnectButton({ app, actionApp }: Props) {
     const { storeName, storeType, connections, invalidate } =
         useStoreTrackstarContext()
     const { mutateAsync: linkTrackstar } = useLinkTrackstar()

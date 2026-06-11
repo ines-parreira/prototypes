@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
-import CurrentHelpCenterContext from '../contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from '../contexts/CurrentHelpCenterContext'
 
-export default function useCurrentHelpCenter() {
+export function useCurrentHelpCenter() {
     const helpCenter = useContext(CurrentHelpCenterContext)
 
     if (!helpCenter) {

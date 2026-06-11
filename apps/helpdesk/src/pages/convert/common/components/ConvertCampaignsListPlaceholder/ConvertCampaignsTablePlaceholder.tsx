@@ -4,11 +4,11 @@ import classnames from 'classnames'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { SkeletonLoader } from 'pages/common/components/SkeletonLoader'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { useSortedCampaigns } from '../../../campaigns/hooks/useSortedCampaigns'
 import type { Campaign } from '../../../campaigns/types/Campaign'
@@ -74,4 +74,4 @@ const ConvertCampaignsTablePlaceholder = ({
     )
 }
 
-export default ConvertCampaignsTablePlaceholder
+export { ConvertCampaignsTablePlaceholder }

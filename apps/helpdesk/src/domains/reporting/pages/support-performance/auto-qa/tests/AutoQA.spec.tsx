@@ -6,11 +6,11 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AccuracyTrendCard } from 'domains/reporting/pages/support-performance/auto-qa/AccuracyTrendCard'
-import AutoQA from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'
+import { AutoQA } from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'
 import { AutoQAAgentPerformanceHeatmapSwitch } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
 import { AutoQAAgentsTable } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTable'
 import { AutoQADownloadDataButton } from 'domains/reporting/pages/support-performance/auto-qa/AutoQADownloadDataButton'
@@ -103,14 +103,15 @@ jest.mock(
 const AutoQADownloadButtonMock = assumeMock(AutoQADownloadDataButton)
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: (
+        props: ComponentProps<typeof FiltersPanelWrapper>,
+    ) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
     },
-)
+}))
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )

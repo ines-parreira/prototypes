@@ -11,7 +11,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
-import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
+import { KnowledgeSourceSidebarWrapper } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import { TicketDetailPanel } from 'tickets/ticket-detail'
 import { TicketInfobarPanel } from 'tickets/ticket-infobar'
 
@@ -74,7 +74,7 @@ jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper',
     () => ({
         __esModule: true,
-        default: jest.fn(() => (
+        KnowledgeSourceSidebarWrapper: jest.fn(() => (
             <div role="complementary" aria-label="Knowledge Source Sidebar">
                 Knowledge Source Wrapper
             </div>
@@ -88,7 +88,9 @@ jest.mock('tickets/navigation', () => ({
 
 jest.mock('pages/tickets/detail/TicketInfobarContainer', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>TicketInfobarContainer</div>),
+    DefaultExportTicketInfobarContainer: jest.fn(() => (
+        <div>TicketInfobarContainer</div>
+    )),
 }))
 
 jest.mock('tickets/ticket-detail', () => ({

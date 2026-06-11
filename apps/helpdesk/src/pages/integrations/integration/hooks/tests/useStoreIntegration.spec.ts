@@ -1,13 +1,13 @@
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 
 import { useStoreIntegration } from '../useStoreIntegration'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 
 const useAppSelectorMock = useAppSelector as jest.Mock

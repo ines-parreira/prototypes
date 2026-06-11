@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useExpandedMessages from '../useExpandedMessages'
+import { useExpandedMessages } from '../useExpandedMessages'
 
 describe('useExpandedMessages', () => {
     it('should return an empty array of messages initially', () => {

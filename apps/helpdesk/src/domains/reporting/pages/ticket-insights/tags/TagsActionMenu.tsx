@@ -20,7 +20,7 @@ import {
     ActionMenuSeparator,
 } from 'domains/reporting/pages/common/components/ActionMenu'
 import { useDownloadTagsReportData } from 'domains/reporting/services/tagsReportingService'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 export const TAGS_LABEL = 'Set Tag Results'
 export const TAGS_REFERENCE_LABEL = 'Set Reference Timeframe'

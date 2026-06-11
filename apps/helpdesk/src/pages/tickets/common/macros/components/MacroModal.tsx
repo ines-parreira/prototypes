@@ -21,24 +21,24 @@ import {
     useDeleteMacro,
     useUpdateMacro,
 } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { JobParams } from 'models/job/types'
 import { JobType } from 'models/job/types'
 import type { Filters } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
 
 import { MacroEdit } from './MacroEdit'
-import MacroModalList from './MacroModalList'
-import MacroNoResults from './MacroNoResults'
-import MacroPreview from './MacroPreview'
+import { MacroModalList } from './MacroModalList'
+import { MacroNoResults } from './MacroNoResults'
+import { MacroPreview } from './MacroPreview'
 
 import css from './MacroModal.less'
 
@@ -508,4 +508,4 @@ const MacroModal = ({
     )
 }
 
-export default MacroModal
+export { MacroModal }

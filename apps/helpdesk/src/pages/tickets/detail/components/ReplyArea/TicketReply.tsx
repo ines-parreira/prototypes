@@ -8,10 +8,10 @@ import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { canReply } from 'business/ticket'
 import { UserRole } from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
-import type RichField from 'pages/common/forms/RichField/RichField'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { deleteAttachment } from 'state/newMessage/actions'
 import {
@@ -20,9 +20,9 @@ import {
 } from 'state/newMessage/selectors'
 import { deleteActionOnApplied } from 'state/ticket/actions'
 
-import TicketAttachments from './TicketAttachments'
-import TicketReplyActions from './TicketReplyActions'
-import TicketReplyEditor from './TicketReplyEditor'
+import { DefaultExportTicketAttachments as TicketAttachments } from './TicketAttachments'
+import { TicketReplyActions } from './TicketReplyActions'
+import { DefaultExportTicketReplyEditor as TicketReplyEditor } from './TicketReplyEditor'
 
 import css from './TicketReply.less'
 
@@ -109,5 +109,3 @@ export function TicketReply({
         </div>
     )
 }
-
-export default TicketReply

@@ -3,9 +3,9 @@ import { act } from '@testing-library/react'
 
 import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceChannels } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 import { useArticleRecommendation } from '../useArticleRecommendation'
@@ -19,14 +19,17 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () =>
-    jest.fn(),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
+    useSelfServiceConfiguration: jest.fn(),
+}))
 
-jest.mock('pages/automate/common/hooks/useSelfServiceChannels', () => jest.fn())
+jest.mock('pages/automate/common/hooks/useSelfServiceChannels', () => ({
+    useSelfServiceChannels: jest.fn(),
+}))
 
-jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings', () =>
-    jest.fn(),
+jest.mock(
+    'pages/automate/common/hooks/useApplicationsAutomationSettings',
+    () => ({ useApplicationsAutomationSettings: jest.fn() }),
 )
 
 jest.mock('models/helpCenter/queries', () => ({

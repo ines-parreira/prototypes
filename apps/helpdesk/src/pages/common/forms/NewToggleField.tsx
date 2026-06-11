@@ -29,4 +29,6 @@ function NewToggleField(
     )
 }
 
-export default forwardRef(NewToggleField)
+const DefaultExportNewToggleField = forwardRef(NewToggleField)
+
+export { DefaultExportNewToggleField }

@@ -18,7 +18,7 @@ type Props = {
     valueLabel: ReactNode | string | null
 }
 
-export default function RuleSelect({
+export function RuleSelect({
     children,
     className,
     dropdownClassName,

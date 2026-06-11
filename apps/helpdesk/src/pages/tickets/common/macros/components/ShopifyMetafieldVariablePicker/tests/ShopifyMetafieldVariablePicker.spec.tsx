@@ -3,7 +3,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { useMetafieldDefinitions } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldDefinitions'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'

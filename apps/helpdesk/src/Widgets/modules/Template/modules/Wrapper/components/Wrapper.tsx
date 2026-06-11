@@ -6,12 +6,12 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _last from 'lodash/last'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { Source, Template, WrapperTemplate } from 'models/widget/types'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { DragWrapper } from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {
     getWidgetId,
     getWidgetTitle,
@@ -35,9 +35,9 @@ import {
 import type { WidgetType } from 'state/widgets/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import { EXPAND_CONTAINER_MARKER } from 'Widgets/modules/Template/config/template'
-import WidgetPanel from 'Widgets/modules/WidgetPanel'
+import { WidgetPanel } from 'Widgets/modules/WidgetPanel'
 
-import WrapperEditActions from './views/WrapperEditActions'
+import { WrapperEditActions } from './views/WrapperEditActions'
 
 import css from './Wrapper.less'
 
@@ -57,7 +57,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function Wrapper({ template, source, children }: Props) {
+export function Wrapper({ template, source, children }: Props) {
     const dispatch = useAppDispatch()
     const widget = useContext(WidgetContext)
     const { isEditing } = useContext(EditionContext)

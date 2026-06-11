@@ -4,7 +4,7 @@ import type {
 } from '@repo/ticket-thread/legacy-bridge'
 
 import type { Actor, Source } from 'models/ticket/types'
-import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
+import { DefaultExportPrivateReplyModal as PrivateReplyModal } from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
 
 type CommentPrivateReplyModalProps = {
     data: FacebookCommentPrivateReplyData | InstagramCommentPrivateReplyData

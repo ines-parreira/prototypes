@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import type { ShopifyIntegration } from 'models/integration/types'
 
 import type { ShopifySettingsProps } from '../ShopifySettings'
-import ShopifySettings from '../ShopifySettings'
+import { ShopifySettings } from '../ShopifySettings'
 
 const findToggle = (name: string) =>
     screen

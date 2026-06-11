@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import type { CurrentAccountState } from 'state/currentAccount/types'
@@ -45,4 +45,4 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
     )
 }
 
-export default SelfServiceStatsPagePaywallCustomCta
+export { SelfServiceStatsPagePaywallCustomCta }

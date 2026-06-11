@@ -1,8 +1,8 @@
 import type { ComponentType } from 'react'
 import React, { useEffect, useState } from 'react'
 
-import Loader from '../../Loader/Loader'
-import loadAce from './loadAce'
+import { Loader } from '../../Loader/Loader'
+import { load as loadAce } from './loadAce'
 import type { ACEProps, EditorProps, WindowWithACE } from './types'
 
 function withACEEditor(Component: ComponentType<any>) {
@@ -25,4 +25,4 @@ function withACEEditor(Component: ComponentType<any>) {
     return WrappedComponent
 }
 
-export default withACEEditor
+export { withACEEditor }

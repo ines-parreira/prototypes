@@ -23,4 +23,4 @@ const StatsHelpIcon = forwardRef<HTMLElement, HTMLProps<HTMLElement>>(
     },
 )
 
-export default StatsHelpIcon
+export { StatsHelpIcon }

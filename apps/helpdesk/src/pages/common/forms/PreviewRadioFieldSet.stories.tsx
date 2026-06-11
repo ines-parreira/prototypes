@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import previewDark from 'assets/img/help-center/preview-dark.svg'
 import previewLight from 'assets/img/help-center/preview-light.svg'
 
-import PreviewRadioFieldSet from './PreviewRadioFieldSet'
+import { PreviewRadioFieldSet } from './PreviewRadioFieldSet'
 
 const meta: Meta = {
     title: 'Common/Forms/PreviewRadioFieldSet',

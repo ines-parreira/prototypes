@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
 import type { ChannelTypes, ChannelWithMetadata } from '../../../../types'
-import UnselectableItems from '../UnselectableItems'
+import { UnselectableItems } from '../UnselectableItems'
 
 const mockStores = [
     {

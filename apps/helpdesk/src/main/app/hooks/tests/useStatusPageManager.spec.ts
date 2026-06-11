@@ -1,12 +1,14 @@
 import { renderHook } from '@repo/testing'
 
-import statusPageManager from 'services/statusPageManager/statusPageManager'
+import { statusPageManager } from 'services/statusPageManager/statusPageManager'
 
 import { useStatusPageManager } from '../useStatusPageManager'
 
 jest.mock('services/statusPageManager/statusPageManager', () => ({
-    startPolling: jest.fn(),
-    stopPolling: jest.fn(),
+    statusPageManager: {
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+    },
 }))
 
 describe('useStatusPageManager', () => {

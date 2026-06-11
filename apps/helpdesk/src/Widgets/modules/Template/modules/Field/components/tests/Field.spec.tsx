@@ -3,7 +3,7 @@ import type React from 'react'
 
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 
-import CopyButton from 'components/CopyButton/CopyButton'
+import { CopyButton } from 'components/CopyButton/CopyButton'
 import { idTemplate } from 'fixtures/widgets'
 import { LEAF_TYPES } from 'models/widget/constants'
 import {
@@ -13,22 +13,24 @@ import {
     updateEditedWidget,
 } from 'state/widgets/actions'
 
-import Field from '../Field'
-import UIField from '../views'
+import { Field } from '../Field'
+import { Field as UIField } from '../views'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
-jest.mock('components/CopyButton/CopyButton', () =>
-    jest.fn(() => <span>copy button</span>),
-)
+jest.mock('components/CopyButton/CopyButton', () => ({
+    CopyButton: jest.fn(() => <span>copy button</span>),
+}))
 const CopyButtonMock = assumeMock(CopyButton)
 
-jest.mock('../views', () =>
-    jest.fn(({ copyButton }: { copyButton: React.ReactNode }) => {
+jest.mock('../views', () => ({
+    Field: jest.fn(({ copyButton }: { copyButton: React.ReactNode }) => {
         return <span>ui field {copyButton}</span>
     }),
-)
+}))
 const UIFieldMock = assumeMock(UIField)
 
 describe('Field', () => {

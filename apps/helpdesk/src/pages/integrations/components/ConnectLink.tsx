@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './ConnectLink.less'
@@ -40,7 +40,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function ConnectLink({
+export function ConnectLink({
     connectUrl,
     isExternal,
     integrationTitle,

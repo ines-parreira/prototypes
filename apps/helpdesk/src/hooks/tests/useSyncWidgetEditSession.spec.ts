@@ -1,12 +1,12 @@
 import { renderHook } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as widgetActions from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
 
-import useSyncWidgetEditSession from '../useSyncWidgetEditSession'
+import { useSyncWidgetEditSession } from '../useSyncWidgetEditSession'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('state/widgets/actions', () => ({
     startEditionMode: jest.fn(),
     stopEditionMode: jest.fn(),

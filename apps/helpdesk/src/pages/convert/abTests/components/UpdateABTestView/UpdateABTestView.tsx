@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useListABTests } from 'models/convert/abTest/queries'
 import type {
     ABTest,
     ABTestListOptions as ABTestListOptionsParams,
 } from 'models/convert/abTest/types'
-import UpdateReportLinkModal from 'pages/convert/abTests/components/UpdateReportLinkModal'
+import { UpdateReportLinkModal } from 'pages/convert/abTests/components/UpdateReportLinkModal'
 import { useUpdateABTest } from 'pages/convert/abTests/hooks/useUpdateABTest'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
@@ -112,4 +112,4 @@ const UpdateABTestView = () => {
     )
 }
 
-export default UpdateABTestView
+export { UpdateABTestView }

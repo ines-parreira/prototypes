@@ -7,12 +7,12 @@ import moment from 'moment'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { DatePicker } from 'pages/common/forms/DatePicker'
-import TextInput from 'pages/common/forms/input/TextInput'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
+import { TwoFactorAuthenticationModal } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import {
     TWO_FA_REQUIRED_AFTER_DAYS,
     TWO_FA_WARN_LESS_THAN_DAYS,
@@ -50,7 +50,7 @@ type OwnProps = {
     on2FAEnforced: (val: string | null) => void
 }
 
-export default function TwoFactorAuthenticationEnforcement({
+export function TwoFactorAuthenticationEnforcement({
     twoFAEnforcedDatetime,
     loading,
     disabled,

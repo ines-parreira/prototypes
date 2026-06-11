@@ -7,16 +7,16 @@ import { Form } from 'reactstrap'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Caption from 'pages/common/forms/Caption/Caption'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import { getMagento2IntegrationByStoreUrl } from 'state/integrations/selectors'
 
-import IntegrationActionButtons from './IntegrationActionButtons'
+import { IntegrationActionButtons } from './IntegrationActionButtons'
 import {
     STORE_ADMIN_URL_INPUT_ID,
     StoreAdminNewUrlInput,
@@ -146,4 +146,4 @@ const OneClickIntegrationForm = ({
     )
 }
 
-export default OneClickIntegrationForm
+export { OneClickIntegrationForm }

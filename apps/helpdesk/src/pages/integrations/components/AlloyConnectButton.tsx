@@ -4,8 +4,8 @@ import { fromJS } from 'immutable'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { loadIntegration } from 'models/integration/resources/alloy'
 import type { AlloyIntegration, AlloySdk } from 'models/integration/types/alloy'
@@ -44,11 +44,7 @@ type Props = {
     integrationId: string
 }
 
-export default function AlloyConnectButton({
-    name,
-    appId,
-    integrationId,
-}: Props) {
+export function AlloyConnectButton({ name, appId, integrationId }: Props) {
     const dispatch = useAppDispatch()
     const [isInstalling, setIsInstalling] = useState(false)
 

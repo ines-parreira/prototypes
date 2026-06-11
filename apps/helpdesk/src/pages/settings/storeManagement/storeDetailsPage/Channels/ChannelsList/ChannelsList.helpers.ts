@@ -5,7 +5,7 @@ import {
     isHelpCenterChannel,
 } from '../../../helpers/isIntegration'
 import type { ChannelWithMetadata } from '../../../types'
-import isChannelAlreadyMapped from '../helpers/isChannelAlreadyMapped'
+import { isChannelAlreadyMapped } from '../helpers/isChannelAlreadyMapped'
 
 export const shouldShowDeleteButton = (
     activeChannel: ChannelWithMetadata,

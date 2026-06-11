@@ -6,14 +6,14 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { AIArticle } from 'models/helpCenter/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import IconButton from 'pages/common/components/button/IconButton'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
 
-import AIArticlesLibraryPreviewEmptyState from './AIArticlesLibraryPreviewEmptyState'
+import { AIArticlesLibraryPreviewEmptyState } from './AIArticlesLibraryPreviewEmptyState'
 
 import css from './AIArticlesLibraryPreview.less'
 
@@ -119,4 +119,4 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
     )
 }
 
-export default AIArticlesLibraryPreview
+export { AIArticlesLibraryPreview }

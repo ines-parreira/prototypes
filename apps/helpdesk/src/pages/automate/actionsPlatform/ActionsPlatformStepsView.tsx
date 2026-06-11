@@ -5,16 +5,16 @@ import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import useOrderBy from 'hooks/useOrderBy'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import AutomateListView from 'pages/automate/common/components/AutomateListView'
+import { AutomateListView } from 'pages/automate/common/components/AutomateListView'
 
-import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
-import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'
-import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTemplatesTableRow'
-import useApps from './hooks/useApps'
-import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
-import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
+import { ActionsPlatformTemplatesFilters } from './components/ActionsPlatformTemplatesFilters'
+import { ActionsPlatformTemplatesTable } from './components/ActionsPlatformTemplatesTable'
+import { ActionsPlatformTemplatesTableRow } from './components/ActionsPlatformTemplatesTableRow'
+import { useApps } from './hooks/useApps'
+import { useDeleteActionTemplate } from './hooks/useDeleteActionTemplate'
+import { useGetAppFromTemplateApp } from './hooks/useGetAppFromTemplateApp'
 import type { App } from './types'
 
 import css from './ActionsPlatformTemplatesView.less'
@@ -155,4 +155,4 @@ const ActionsPlatformStepsView = () => {
     )
 }
 
-export default ActionsPlatformStepsView
+export { ActionsPlatformStepsView }

@@ -22,7 +22,7 @@ import {
     AUTOMATION_RATE_LABEL,
 } from 'domains/reporting/pages/self-service/constants'
 import type { AutomatedInteractionByFeatures } from 'domains/reporting/pages/types'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 export function getGreyAreaHint(showGreyArea: GreyArea | null) {
     return (

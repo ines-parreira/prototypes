@@ -1,1 +1,1 @@
-export { default } from './ContactFormCreateView'
+export { ContactFormCreateView } from './ContactFormCreateView'

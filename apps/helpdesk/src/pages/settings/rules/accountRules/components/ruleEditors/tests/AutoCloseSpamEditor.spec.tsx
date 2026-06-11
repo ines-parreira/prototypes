@@ -10,7 +10,7 @@ import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { ManagedRulesSlugs } from 'state/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AutoCloseSpamEditor from '../AutoCloseSpamEditor'
+import { AutoCloseSpamEditor } from '../AutoCloseSpamEditor'
 
 describe('<AutoCloseSpamEditor/>', () => {
     const minProps: ComponentProps<typeof AutoCloseSpamEditor> = {

@@ -11,13 +11,13 @@ import { omit } from 'lodash'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import css from './KeyboardHelp.less'
 
-export default function KeyboardHelp() {
+export function KeyboardHelp() {
     const [isOpen, setisOpen] = useState(false)
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 

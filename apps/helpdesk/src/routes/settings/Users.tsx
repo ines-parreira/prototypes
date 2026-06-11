@@ -5,11 +5,11 @@ import { UsersListPage } from '@repo/users'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
-import Page from 'pages/Page'
-import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
-import AgentDetail from 'pages/settings/users/Detail'
-import AgentList from 'pages/settings/users/List'
+import { memoizedWithUserRoleRequired as withUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
+import { DefaultExportPage as Page } from 'pages/Page'
+import { SettingsNavbar } from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
+import { Detail as AgentDetail } from 'pages/settings/users/Detail'
+import { UserList as AgentList } from 'pages/settings/users/List'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

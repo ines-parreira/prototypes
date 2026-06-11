@@ -3,11 +3,13 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useCount from 'common/notifications/hooks/useCount'
+import { useCount } from 'common/notifications/hooks/useCount'
 
 import { GlobalNavigationNotificationBadge } from '../GlobalNavigationNotificationBadge'
 
-jest.mock('common/notifications/hooks/useCount', () => jest.fn())
+jest.mock('common/notifications/hooks/useCount', () => ({
+    useCount: jest.fn(),
+}))
 const useCountMock = assumeMock(useCount)
 
 jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')

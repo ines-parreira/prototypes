@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
-import DatePicker from 'pages/common/forms/DatePicker'
+import { DatePicker } from 'pages/common/forms/DatePicker'
 
 type TimespanSelectorProps = {
     children?: ReactNode

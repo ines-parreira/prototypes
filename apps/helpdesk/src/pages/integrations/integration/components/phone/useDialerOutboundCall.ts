@@ -1,15 +1,15 @@
 import { parsePhoneNumber } from 'libphonenumber-js'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types'
 import type { UserSearchResult } from 'models/search/types'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getTicket } from 'state/ticket/selectors'
 
-import usePhoneNumbers from './usePhoneNumbers'
+import { usePhoneNumbers } from './usePhoneNumbers'
 
-export default function useDialerOutboundCall({
+export function useDialerOutboundCall({
     inputValue,
     selectedCustomer,
     selectedIntegration,

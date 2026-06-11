@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
 type Props = {
     onChange: (storeId: number | null) => void
 }
 
-export default function StoreFilter({ onChange }: Props) {
+export function StoreFilter({ onChange }: Props) {
     const integrations = useAppSelector(getStoreIntegrations)
     const [selectedIntegration, setSelectedIntegration] =
         useState<StoreIntegration | null>(null)

@@ -26,9 +26,9 @@ import {
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 
-import CancelProductModal from '../../CancelProductModal/CancelProductModal'
+import { CancelProductModal } from '../../CancelProductModal/CancelProductModal'
 import type { ProductPlanSelectionProps } from '../ProductPlanSelection'
-import ProductPlanSelection from '../ProductPlanSelection'
+import { ProductPlanSelection } from '../ProductPlanSelection'
 
 const mockStore = configureMockStore()
 const store = mockStore({

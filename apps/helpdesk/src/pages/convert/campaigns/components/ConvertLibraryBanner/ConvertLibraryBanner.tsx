@@ -44,4 +44,4 @@ const ConvertLibraryBanner = ({ integrationId }: Props) => {
     )
 }
 
-export default ConvertLibraryBanner
+export { ConvertLibraryBanner }

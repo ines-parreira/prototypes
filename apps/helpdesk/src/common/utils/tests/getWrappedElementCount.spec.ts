@@ -1,4 +1,4 @@
-import getWrappedElementCount from '../getWrappedElementCount'
+import { getWrappedElementCount } from '../getWrappedElementCount'
 
 const child1 = document.createElement('button')
 jest.spyOn(child1, 'getBoundingClientRect').mockReturnValue({

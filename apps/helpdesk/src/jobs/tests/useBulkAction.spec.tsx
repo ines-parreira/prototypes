@@ -16,9 +16,9 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import useBulkAction from '../useBulkAction'
-import useCancelJob from '../useCancelJob'
-import useNotificationPayload from '../useNotificationPayload'
+import { useBulkAction } from '../useBulkAction'
+import { useCancelJob } from '../useCancelJob'
+import { useNotificationPayload } from '../useNotificationPayload'
 
 jest.mock('reapop')
 const updateNotificationMock = assumeMock(updateNotification)
@@ -30,7 +30,9 @@ jest.mock('../useNotificationPayload')
 const useNotificationPayloadMock = assumeMock(useNotificationPayload)
 jest.mock('state/notifications/actions')
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const mutateCreateJobMock = jest.fn()
 const createJobResponse = () =>

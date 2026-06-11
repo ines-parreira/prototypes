@@ -6,10 +6,11 @@ import {
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
 
-import useWhatsAppMigration, {
+import {
     privateFunctions,
     WhatsAppMigrationStatus as Status,
     WhatsAppMigrationStep as Step,
+    useWhatsAppMigration,
 } from '../useWhatsAppMigration'
 
 describe('useWhatsAppMigration()', () => {

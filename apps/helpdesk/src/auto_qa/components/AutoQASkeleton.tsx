@@ -2,7 +2,7 @@ import { Skeleton } from '@gorgias/axiom'
 
 import css from './AutoQASkeleton.less'
 
-export default function AutoQASkeleton() {
+export function AutoQASkeleton() {
     return (
         <div className={css.container}>
             <Skeleton height={20} />

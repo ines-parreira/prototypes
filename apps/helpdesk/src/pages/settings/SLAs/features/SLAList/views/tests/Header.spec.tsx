@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Header from '../Header'
+import { Header } from '../Header'
 
 describe('</Header>', () => {
     it('should render', () => {

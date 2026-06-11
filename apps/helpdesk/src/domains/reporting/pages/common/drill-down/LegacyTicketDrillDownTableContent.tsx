@@ -18,7 +18,7 @@ import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
-import TruncateMultilineCellContent from 'domains/reporting/pages/common/components/TruncateMultilineCellContent'
+import { TruncateMultilineCellContent } from 'domains/reporting/pages/common/components/TruncateMultilineCellContent'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTable.less'
@@ -56,12 +56,12 @@ import {
     KnowledgeMetric,
     SatisfactionMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',

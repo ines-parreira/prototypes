@@ -26,7 +26,7 @@ jest.mock('@repo/logging', () => ({
 
 jest.mock('common/navigation/components/AvailabilityToggle', () => ({
     __esModule: true,
-    default: () => <div>AvailabilityToggle</div>,
+    AvailabilityToggle: () => <div>AvailabilityToggle</div>,
 }))
 
 const {

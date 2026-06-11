@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import { IntegrationType } from 'models/integration/constants'
 
-import OneClickInstall from './OneClickInstall'
+import { OneClickInstall } from './OneClickInstall'
 
 const mockSkeletonLoader = jest.fn((__props: any) => null)
 const mockVisibilityControls = jest.fn((__props: any) => null)
@@ -27,7 +27,7 @@ const mockUseShopifyThemeAppExtension = jest.fn(
 
 jest.mock('pages/common/components/SkeletonLoader', () => ({
     __esModule: true,
-    default: (props: any) => mockSkeletonLoader(props),
+    SkeletonLoader: (props: any) => mockSkeletonLoader(props),
 }))
 
 jest.mock(
@@ -36,22 +36,24 @@ jest.mock(
         const { forwardRef: reactForwardRef } = jest.requireActual('react')
         return {
             __esModule: true,
-            default: reactForwardRef((props: any, __ref: any) => {
-                mockVisibilityControls(props)
-                return null
-            }),
+            DefaultExportVisibilityControls: reactForwardRef(
+                (props: any, __ref: any) => {
+                    mockVisibilityControls(props)
+                    return null
+                },
+            ),
         }
     },
 )
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockUseAppDispatch(),
+    useAppDispatch: () => mockUseAppDispatch(),
 }))
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: (selector: any) => mockUseAppSelector(selector),
+    useAppSelector: (selector: any) => mockUseAppSelector(selector),
 }))
 
 jest.mock('@repo/feature-flags', () => ({
@@ -70,7 +72,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation',
     () => ({
         __esModule: true,
-        default: (storeIntegration: any) =>
+        useThemeAppExtensionInstallation: (storeIntegration: any) =>
             mockUseThemeAppExtensionInstallation(storeIntegration),
         getGorgiasMainThemeAppExtensionId: jest.fn(() => 'test-app-uuid'),
     }),
@@ -80,7 +82,8 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension',
     () => ({
         __esModule: true,
-        default: (params: any) => mockUseShopifyThemeAppExtension(params),
+        useShopifyThemeAppExtension: (params: any) =>
+            mockUseShopifyThemeAppExtension(params),
     }),
 )
 

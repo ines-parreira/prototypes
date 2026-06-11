@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import pluralize from 'pluralize'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 import css from './SatisfactionSurvey.less'
 
@@ -14,7 +14,7 @@ type Props = {
     isLast: boolean
 }
 
-export default class SatisfactionSurvey extends Component<Props> {
+export class SatisfactionSurvey extends Component<Props> {
     _renderDatetime() {
         const { satisfactionSurvey } = this.props
         let scoredDatetime = satisfactionSurvey.get('scored_datetime')

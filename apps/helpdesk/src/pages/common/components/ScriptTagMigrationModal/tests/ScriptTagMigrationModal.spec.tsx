@@ -11,8 +11,8 @@ import thunk from 'redux-thunk'
 import { UserRole } from 'config/types/user'
 import { integrationsState } from 'fixtures/integrations'
 
-import useStoresRequiringScriptTagMigration from '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
-import ScriptTagMigrationModal from '../ScriptTagMigrationModal'
+import { useStoresRequiringScriptTagMigration } from '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
+import { ScriptTagMigrationModal } from '../ScriptTagMigrationModal'
 
 jest.mock(
     '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration',

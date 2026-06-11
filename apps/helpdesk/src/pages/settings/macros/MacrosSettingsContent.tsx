@@ -12,17 +12,17 @@ import { useListMacros } from '@gorgias/helpdesk-queries'
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
 import type { GorgiasApiError, OrderDirection } from 'models/api/types'
 import type { MacroSortableProperties } from 'models/macro/types'
-import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Video from 'pages/common/components/Video/Video'
+import { MacroFilters } from 'pages/common/components/MacroFilters/MacroFilters'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { Video } from 'pages/common/components/Video/Video'
 import settingsCss from 'pages/settings/settings.less'
 
 import { useMacroListSearchParams } from './hooks/useMacroListSearchParams'
 import { MacrosCreateDropdown } from './MacrosCreateDropdown'
-import MacrosSettingsTable from './MacrosSettingsTable'
+import { MacrosSettingsTable } from './MacrosSettingsTable'
 
 import css from './MacrosSettingsContent.less'
 
@@ -251,5 +251,3 @@ export function MacrosSettingsContent() {
         </div>
     )
 }
-
-export default MacrosSettingsContent

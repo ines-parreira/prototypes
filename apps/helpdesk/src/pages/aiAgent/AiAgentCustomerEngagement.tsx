@@ -10,8 +10,8 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 

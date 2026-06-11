@@ -4,7 +4,7 @@ import { Panels } from '@repo/layout'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import GlobalNavigationPanel from '../GlobalNavigationPanel'
+import { GlobalNavigationPanel } from '../GlobalNavigationPanel'
 
 jest.mock('common/navigation', () => ({
     GlobalNavigation: () => <div>GlobalNavigation</div>,

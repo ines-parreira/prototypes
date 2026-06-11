@@ -6,7 +6,7 @@ import { act } from 'react-dom/test-utils'
 import { submitSetting } from 'state/currentAccount/actions'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 
-import BusinessHoursLegacy from '../BusinessHoursLegacy'
+import { BusinessHoursLegacy } from '../BusinessHoursLegacy'
 import { DEPRECATED_DAYS_OPTIONS } from '../constants'
 
 jest.mock('state/currentAccount/actions')

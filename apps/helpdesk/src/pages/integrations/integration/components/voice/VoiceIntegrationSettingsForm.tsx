@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 import {
     SettingsCard,
     SettingsCardContent,
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { usePhoneNumbers } from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
@@ -20,12 +20,12 @@ import {
     useDeletePhoneIntegration,
     useFormSubmit,
 } from './useVoiceSettingsForm'
-import GenericVoiceFormSubmitButton from './VoiceFormSubmitButton'
-import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallRecording'
-import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
-import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
-import VoiceIntegrationSettingSpamPrevention from './VoiceIntegrationSettingSpamPrevention'
-import TextToSpeechProvider from './VoiceMessageTTS/TextToSpeechProvider'
+import { VoiceFormSubmitButton as GenericVoiceFormSubmitButton } from './VoiceFormSubmitButton'
+import { VoiceIntegrationSettingCallRecording } from './VoiceIntegrationSettingCallRecording'
+import { VoiceIntegrationSettingCallTranscription } from './VoiceIntegrationSettingCallTranscription'
+import { VoiceIntegrationSettingsFormGeneralSection } from './VoiceIntegrationSettingsFormGeneralSection'
+import { VoiceIntegrationSettingSpamPrevention } from './VoiceIntegrationSettingSpamPrevention'
+import { TextToSpeechProvider } from './VoiceMessageTTS/TextToSpeechProvider'
 
 import css from './VoiceIntegrationSettingsForm.less'
 
@@ -140,4 +140,4 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
     )
 }
 
-export default VoiceIntegrationSettingsForm
+export { VoiceIntegrationSettingsForm }

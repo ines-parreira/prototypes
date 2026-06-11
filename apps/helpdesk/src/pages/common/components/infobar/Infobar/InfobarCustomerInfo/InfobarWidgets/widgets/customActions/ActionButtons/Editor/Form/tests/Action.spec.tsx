@@ -5,7 +5,7 @@ import { userEvent } from '@testing-library/user-event'
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { HttpMethod } from 'models/api/types'
 
-import Action from '../Action'
+import { Action } from '../Action'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

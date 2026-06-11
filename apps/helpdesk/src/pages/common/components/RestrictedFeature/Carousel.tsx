@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react'
 
-import Slider from 'utils/wrappers/Slider'
+import { Slider } from 'utils/wrappers/Slider'
 
 import css from './Carousel.less'
 
@@ -12,7 +12,7 @@ type Props = {
     onImageClick?: (img: { url: string; index: number; e: MouseEvent }) => void
 }
 
-export default function Carousel({
+export function Carousel({
     imagesUrl,
     onImageClick,
     arrows = false,

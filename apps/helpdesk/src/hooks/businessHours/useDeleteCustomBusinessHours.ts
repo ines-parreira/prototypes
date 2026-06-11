@@ -4,7 +4,7 @@ import { toast } from '@gorgias/axiom'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 import { queryKeys, useDeleteBusinessHours } from '@gorgias/helpdesk-queries'
 
-export default function useDeleteCustomBusinessHours(
+export function useDeleteCustomBusinessHours(
     businessHours: BusinessHoursDetails,
     onSuccess?: () => void,
 ) {

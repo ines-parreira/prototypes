@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import SyncNotification from '../SyncNotificationNew'
+import { SyncNotification } from '../SyncNotificationNew'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

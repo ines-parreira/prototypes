@@ -10,19 +10,19 @@ import {
 import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
+import { useViewTickets } from 'ticket-list-view/hooks/useViewTickets'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
-import useTicketIds from '../hooks/useTicketIds'
+import { useTicketIds } from '../hooks/useTicketIds'
 import type { TicketPartial } from '../types'
-import usePrevNextTicketId from './usePrevNextTicketId'
-import useScrollOffset from './useScrollOffset'
-import useStaleTickets from './useStaleTickets'
-import useTicketData from './useTicketData'
-import useTicketPartials from './useTicketPartials'
+import { usePrevNextTicketId } from './usePrevNextTicketId'
+import { useScrollOffset } from './useScrollOffset'
+import { useStaleTickets } from './useStaleTickets'
+import { useTicketData } from './useTicketData'
+import { useTicketPartials } from './useTicketPartials'
 
-export default function useTickets(
+export function useTickets(
     viewId: number,
     sortOrder: SearchTicketsOrderBy,
     ticketId?: number,

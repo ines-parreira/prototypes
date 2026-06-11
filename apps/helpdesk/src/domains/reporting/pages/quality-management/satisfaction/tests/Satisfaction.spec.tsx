@@ -6,17 +6,17 @@ import { fromJS } from 'immutable'
 
 import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AverageScorePerDimensionTrendChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
-import AverageSurveyScoreDonutChart from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
-import CommentHighlightsChart from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
+import { AverageSurveyScoreDonutChart } from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+import { CommentHighlightsChart } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
 import { ResponseRateTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/ResponseRateTrendCard'
 import { SatisfactionDownloadDataButton } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionDownloadDataButton'
-import SatisfactionReport from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
+import { SatisfactionReport } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
 import {
     SATISFACTION_OPTIONAL_FILTERS,
     SATISFACTION_TITLE,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import { SatisfactionScoreTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionScoreTrendCard'
-import ScoredSurveyChart from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
+import { ScoredSurveysChart as ScoredSurveyChart } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
 import { SurveysSentTrendCard } from 'domains/reporting/pages/quality-management/satisfaction/SurveysSentTrendCard'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
@@ -43,11 +43,15 @@ const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
-        return props.optionalFilters?.map((optionalFilter) => (
-            <div key={optionalFilter}>{optionalFilter}</div>
-        ))
-    },
+    () => ({
+        FiltersPanelWrapper: (
+            props: ComponentProps<typeof FiltersPanelWrapper>,
+        ) => {
+            return props.optionalFilters?.map((optionalFilter) => (
+                <div key={optionalFilter}>{optionalFilter}</div>
+            ))
+        },
+    }),
 )
 
 jest.mock(

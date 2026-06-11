@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'

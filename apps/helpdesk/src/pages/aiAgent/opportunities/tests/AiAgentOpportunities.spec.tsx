@@ -214,7 +214,7 @@ jest.mock(
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn((selector) => {
+    useAppSelector: jest.fn((selector) => {
         // Return empty integrations array for getStoreIntegrations selector
         if (selector && typeof selector === 'function') {
             return []

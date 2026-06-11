@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import colorTokens from '@gorgias/design-tokens/tokens/colors'
 
-import Legend from 'domains/reporting/pages/common/components/Legend/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/Legend/Legend'
 
 describe('Legend', () => {
     const minProps: ComponentProps<typeof Legend> = {

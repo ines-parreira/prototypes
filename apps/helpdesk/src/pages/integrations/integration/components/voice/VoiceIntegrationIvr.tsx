@@ -6,20 +6,20 @@ import { Col, Container, Form, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import type {
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
 } from 'models/integration/types'
 import { isPhoneIntegration } from 'models/integration/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 import { updatePhoneIvrConfiguration } from 'pages/integrations/integration/components/phone/actions'
-import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/DEPRECATED_IvrMenuActionsFieldArray'
+import { DEPRECATED_IvrMenuActionsFieldArray as IvrMenuActionsFieldArray } from 'pages/integrations/integration/components/voice/DEPRECATED_IvrMenuActionsFieldArray'
 import settingsCss from 'pages/settings/settings.less'
 
-import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
-import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+import { DEPRECATED_VoiceMessageField } from './DEPRECATED_VoiceMessageField'
+import { useVoiceMessageValidation } from './hooks/useVoiceMessageValidation'
 
 import css from './VoiceIntegrationIvr.less'
 
@@ -27,7 +27,7 @@ type Props = {
     integration: Maybe<PhoneIntegration>
 }
 
-export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
+export function VoiceIntegrationIvr(props: Props): JSX.Element | null {
     const { integration } = props
     const dispatch = useAppDispatch()
     const [payload, setPayload] = useState<

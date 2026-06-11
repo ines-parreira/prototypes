@@ -1,9 +1,10 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PromptModal, {
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import {
+    PromptModal,
     PromptModalContext,
 } from 'pages/common/components/PromptModal'
 import css from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt.less'
@@ -12,7 +13,7 @@ type Props = {
     when: boolean
 }
 
-export default function OnboardingDomainVerificationPrompt({ when }: Props) {
+export function OnboardingDomainVerificationPrompt({ when }: Props) {
     return (
         <PromptModal when={when}>
             <PromptModalContext.Consumer>

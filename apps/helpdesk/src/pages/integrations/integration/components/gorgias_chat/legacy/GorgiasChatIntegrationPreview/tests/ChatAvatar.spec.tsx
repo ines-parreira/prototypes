@@ -7,7 +7,7 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
-import ChatAvatar from '../ChatAvatar'
+import { ChatAvatar } from '../ChatAvatar'
 
 const agentName = 'Agent Name'
 const agentAvatarUrl = 'agent-avatar-url.jpg'

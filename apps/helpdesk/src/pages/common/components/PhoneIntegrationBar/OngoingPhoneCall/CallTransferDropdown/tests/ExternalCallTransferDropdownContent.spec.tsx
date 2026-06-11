@@ -5,14 +5,14 @@ import { act, cleanup, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { UserSearchResult } from 'models/search/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import ExternalCallTransferDropdownContent from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { ExternalCallTransferDropdownContent } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent'
 
 jest.mock(
     'pages/integrations/integration/components/phone/usePhoneNumbers',
     () => ({
         __esModule: true,
-        default: () => ({
+        usePhoneNumbers: () => ({
             getCountryFromPhoneNumberId: (id: number) => {
                 const phoneNumbers: Record<number, string> = {
                     1: 'US',
@@ -28,7 +28,7 @@ jest.mock(
     'pages/integrations/integration/components/phone/PhoneDeviceDialerInput',
     () => ({
         __esModule: true,
-        default: ({
+        PhoneDeviceDialerInput: ({
             value,
             onValueChange,
             onConfirm,

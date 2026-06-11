@@ -4,7 +4,7 @@ import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { IngestedResourceStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { CONTENT_TYPE } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import ScrapedDomainSelectedContent from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent'
+import { ScrapedDomainSelectedContent } from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent'
 import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 
 type Props = {
@@ -57,4 +57,4 @@ const AiAgentSelectedArticleContentWrapper = ({
     )
 }
 
-export default AiAgentSelectedArticleContentWrapper
+export { AiAgentSelectedArticleContentWrapper }

@@ -19,12 +19,12 @@ import {
 } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useChatMigrationBanner from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useChatMigrationBanner'
-import useShopifyCheckoutChatInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyCheckoutChatInstallation'
-import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
-import OneClickInstall from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/OneClickInstall'
-import StoreController from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/StoreController'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useChatMigrationBanner } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useChatMigrationBanner'
+import { useShopifyCheckoutChatInstallation } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyCheckoutChatInstallation'
+import { useThemeAppExtensionInstallation } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
+import { OneClickInstall } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/OneClickInstall'
+import { StoreController } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/StoreController'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
 import css from './InstallationCard.less'
@@ -175,4 +175,4 @@ const InstallationCard = ({ integration }: Props) => {
     )
 }
 
-export default InstallationCard
+export { InstallationCard }

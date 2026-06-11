@@ -3,18 +3,17 @@ import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import AssignIntegrationsModal from '../AssignIntegrationsModal'
+import { AssignIntegrationsModal } from '../AssignIntegrationsModal'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
 import type { EditCustomBusinessHoursFormValues } from '../types'
 
-jest.mock(
-    '../CustomBusinessHoursIntegrationsTable',
-    () => (props: { name: string }) => (
+jest.mock('../CustomBusinessHoursIntegrationsTable', () => ({
+    CustomBusinessHoursIntegrationsTable: (props: { name: string }) => (
         <div>CustomBusinessHoursIntegrationsTable {props.name}</div>
     ),
-)
+}))
 
 const baseValues: Partial<EditCustomBusinessHoursFormValues> = {
     previous_assigned_integrations: [],

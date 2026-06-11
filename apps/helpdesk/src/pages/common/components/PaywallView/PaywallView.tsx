@@ -7,6 +7,6 @@ type Props = {
     children: ReactNode
 }
 
-export default function PaywallView({ children }: Props) {
+export function PaywallView({ children }: Props) {
     return <div className={css.container}>{children}</div>
 }

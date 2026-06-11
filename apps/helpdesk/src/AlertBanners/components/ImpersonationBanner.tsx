@@ -3,7 +3,7 @@ import { getEnvironment } from '@repo/utils'
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 
-import useAppSelector from '../../hooks/useAppSelector'
+import { useAppSelector } from '../../hooks/useAppSelector'
 import { getCurrentAccountState } from '../../state/currentAccount/selectors'
 import { getCurrentUser } from '../../state/currentUser/selectors'
 
@@ -35,4 +35,4 @@ const ImpersonationBanner = () => {
     return null
 }
 
-export default ImpersonationBanner
+export { ImpersonationBanner }

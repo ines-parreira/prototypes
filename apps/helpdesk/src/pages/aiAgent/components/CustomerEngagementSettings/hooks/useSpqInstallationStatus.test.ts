@@ -8,15 +8,16 @@ import type {
 import { IntegrationType } from 'models/integration/types'
 import { getInstallationStatuses } from 'state/integrations/actions'
 
-import useSpqInstallationStatus from './useSpqInstallationStatus'
+import { useSpqInstallationStatus } from './useSpqInstallationStatus'
 
 jest.mock('state/integrations/actions', () => ({
     getInstallationStatuses: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
-const mockUseAppSelector = jest.requireMock('hooks/useAppSelector') as jest.Mock
+const mockUseAppSelector = jest.requireMock('hooks/useAppSelector')
+    .useAppSelector as jest.Mock
 
 const mockGetInstallationStatuses = jest.mocked(getInstallationStatuses)
 

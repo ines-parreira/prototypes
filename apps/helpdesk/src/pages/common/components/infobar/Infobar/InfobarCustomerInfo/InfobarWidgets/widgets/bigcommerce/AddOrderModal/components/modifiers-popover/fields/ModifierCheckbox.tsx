@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import type { BigCommerceProductCheckboxModifier } from 'models/integration/types'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import type { FieldProps } from './types'
 

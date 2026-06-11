@@ -8,14 +8,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 
-import GorgiasChatCreationWizardStepAutomate from './GorgiasChatCreationWizardStepAutomate'
+import { GorgiasChatCreationWizardStepAutomate } from './GorgiasChatCreationWizardStepAutomate'
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 
 jest.mock('models/selfServiceConfiguration/queries', () => ({
     useGetSelfServiceConfiguration: () => ({

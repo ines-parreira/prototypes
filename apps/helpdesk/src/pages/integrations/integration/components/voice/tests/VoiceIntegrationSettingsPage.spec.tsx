@@ -13,14 +13,14 @@ import { integrationsState } from 'fixtures/integrations'
 import type { RootState } from 'state/types'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceIntegrationSettingsPage from '../VoiceIntegrationSettingsPage'
+import { VoiceIntegrationSettingsPage } from '../VoiceIntegrationSettingsPage'
 
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
-jest.mock('../VoiceIntegrationSettingsForm', () => () => (
-    <div>VoiceIntegrationSettingsForm</div>
-))
+jest.mock('../VoiceIntegrationSettingsForm', () => ({
+    VoiceIntegrationSettingsForm: () => <div>VoiceIntegrationSettingsForm</div>,
+}))
 jest.mock('@gorgias/helpdesk-queries')
 const useGetIntegrationMock = assumeMock(useGetIntegration)
 useGetIntegrationMock.mockReturnValue({

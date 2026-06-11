@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AISalesAgentGMVInfluencedQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'

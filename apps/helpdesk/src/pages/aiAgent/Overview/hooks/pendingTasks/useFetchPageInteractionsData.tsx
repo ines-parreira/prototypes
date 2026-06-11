@@ -6,7 +6,7 @@ import moment from 'moment'
 import { usePostReporting } from 'domains/reporting/models/queries'
 import { getPageInteractionsCountAfterDate } from 'domains/reporting/pages/convert/clients/PageInteractionsCubeQueries'
 import type { CubeData } from 'domains/reporting/pages/convert/clients/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 
 type Args = {

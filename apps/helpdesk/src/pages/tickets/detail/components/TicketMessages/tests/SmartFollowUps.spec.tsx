@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 
 import { SmartFollowUpType } from 'models/ticket/types'
 
-import SmartFollowUps from '../SmartFollowUps'
+import { SmartFollowUps } from '../SmartFollowUps'
 
 jest.mock(
     'pages/settings/conditionalFields/components/ExpressionField/Pill',

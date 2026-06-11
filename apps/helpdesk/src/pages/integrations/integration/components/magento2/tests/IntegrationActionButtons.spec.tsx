@@ -9,7 +9,9 @@ import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integ
 import { deleteIntegration } from 'state/integrations/actions'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 jest.mock('state/integrations/actions')
 const mockedDeleteIntegration = assumeMock(deleteIntegration)

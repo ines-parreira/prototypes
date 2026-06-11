@@ -6,9 +6,11 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { authenticatorData } from 'fixtures/authenticatorData'
 import type { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 
-import QRCodeStep from '../QRCodeStep'
+import { QRCodeStep } from '../QRCodeStep'
 
-jest.mock('../CantScanQRCode', () => () => <div>Can't scan QR code mocked</div>)
+jest.mock('../CantScanQRCode', () => ({
+    CantScanQRCode: () => <div>Can't scan QR code mocked</div>,
+}))
 
 describe('<QRCodeStep />', () => {
     const setErrorTextMock = jest.fn()

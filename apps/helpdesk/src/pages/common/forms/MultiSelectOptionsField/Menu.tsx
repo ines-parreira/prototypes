@@ -1,7 +1,7 @@
 import _noop from 'lodash/noop'
 import { DropdownItem } from 'reactstrap'
 
-import MenuItem from 'pages/common/forms/MultiSelectOptionsField/MenuItem'
+import { MenuItem } from 'pages/common/forms/MultiSelectOptionsField/MenuItem'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
     onSelect: (option: Option) => void
 }
 
-export default function Menu({
+export function Menu({
     isLoading,
     options,
     activeIndex,

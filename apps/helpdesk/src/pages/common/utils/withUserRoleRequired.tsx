@@ -7,8 +7,8 @@ import type { RouteComponentProps } from 'react-router-dom'
 
 import type { PageSection } from 'config/pages'
 import type { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import RestrictedPage from 'pages/common/components/RestrictedPage'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { RestrictedPage } from 'pages/common/components/RestrictedPage'
 import { getCurrentUserState } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
@@ -46,5 +46,3 @@ export function rootWithUserRoleRequired<
 export const memoizedWithUserRoleRequired = _memoize(
     rootWithUserRoleRequired,
 ) as typeof rootWithUserRoleRequired
-
-export default memoizedWithUserRoleRequired

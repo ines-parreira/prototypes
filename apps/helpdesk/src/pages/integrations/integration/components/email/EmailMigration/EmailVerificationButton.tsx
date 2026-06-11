@@ -11,7 +11,7 @@ type Props = {
     onRetryClick?: () => void
 }
 
-export default function EmailVerificationButton({
+export function EmailVerificationButton({
     isLoading,
     status,
     onLinkButtonClick,

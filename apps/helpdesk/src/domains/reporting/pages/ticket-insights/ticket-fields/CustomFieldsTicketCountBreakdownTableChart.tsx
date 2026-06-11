@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -12,7 +12,7 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import { TicketInsightsValueModeSwitch } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const CustomFieldsTicketCountBreakdownTableChart = ({
     chartId,

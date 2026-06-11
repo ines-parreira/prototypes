@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
-import DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import { DEPRECATED_TagsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import {
     initialState,
     mergeStatsFilters,
@@ -20,22 +20,23 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { tags as tagsFixtures } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
-import type InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import type { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import * as tagsActions from 'state/entities/tags/actions'
 import type { RootState } from 'state/types'
 
 jest.mock('models/tag/resources')
-jest.mock(
-    'pages/common/components/InfiniteScroll/InfiniteScroll',
-    () =>
-        ({ onLoad, children }: ComponentProps<typeof InfiniteScroll>) => {
-            return (
-                <div onClick={onLoad} data-testid="infinite-container">
-                    {children}
-                </div>
-            )
-        },
-)
+jest.mock('pages/common/components/InfiniteScroll/InfiniteScroll', () => ({
+    InfiniteScroll: ({
+        onLoad,
+        children,
+    }: ComponentProps<typeof InfiniteScroll>) => {
+        return (
+            <div onClick={onLoad} data-testid="infinite-container">
+                {children}
+            </div>
+        )
+    },
+}))
 
 const mockStore = configureMockStore([thunk])
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>

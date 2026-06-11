@@ -8,8 +8,8 @@ import type { UpdateViewItemsOrderBy } from '@gorgias/helpdesk-types'
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { getConfigByName } from 'config/views'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketSearchSortableProperties } from 'models/search/types'
 import { EntityType } from 'models/view/types'
 import { fetchViewItems, setOrderDirection } from 'state/views/actions'
@@ -158,4 +158,4 @@ const HeaderCell = ({
     )
 }
 
-export default HeaderCell
+export { HeaderCell }

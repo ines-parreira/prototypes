@@ -6,8 +6,8 @@ import type {
 } from 'estree'
 import type { List, Map } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getHumanAndAutomationBotAgents } from 'state/agents/selectors'
 import { getSchemas } from 'state/schemas/selectors'
 import { getTeams } from 'state/teams/selectors'
@@ -18,13 +18,13 @@ import {
 } from 'state/views/actions'
 import { getActiveView } from 'state/views/selectors'
 
-import CallExpression from './CallExpression'
+import { DefaultExportCallExpression as CallExpression } from './CallExpression'
 
 type ViewFiltersProps = {
     menuContainer?: HTMLElement
 }
 
-export default function ViewFilters({ menuContainer }: ViewFiltersProps) {
+export function ViewFilters({ menuContainer }: ViewFiltersProps) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getHumanAndAutomationBotAgents)
     const schemas = useAppSelector(getSchemas)

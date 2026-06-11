@@ -8,11 +8,11 @@ import thunk from 'redux-thunk'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/constants'
-import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
+import { ReplyForm } from 'pages/tickets/detail/components/ReplyForm'
 
-jest.mock('../ReplyArea/PhoneTicketSubmitButtons', () => () => (
-    <div>PhoneTicketSubmitButtons</div>
-))
+jest.mock('../ReplyArea/PhoneTicketSubmitButtons', () => ({
+    PhoneTicketSubmitButtons: () => <div>PhoneTicketSubmitButtons</div>,
+}))
 
 const mockStore = configureMockStore([thunk])
 

@@ -10,8 +10,8 @@ import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import settingsCss from 'pages/settings/settings.less'
 
-import ManualIntegrationForm from './ManualIntegrationForm'
-import OneClickIntegrationForm from './OneClickIntegrationForm'
+import { ManualIntegrationForm } from './ManualIntegrationForm'
+import { OneClickIntegrationForm } from './OneClickIntegrationForm'
 
 import css from './Create.less'
 
@@ -103,4 +103,4 @@ function Create({ integration, loading, redirectUri }: Props) {
     )
 }
 
-export default Create
+export { Create }

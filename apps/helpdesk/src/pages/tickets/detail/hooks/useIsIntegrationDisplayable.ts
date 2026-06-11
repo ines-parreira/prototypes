@@ -5,7 +5,7 @@ import type { List, Map } from 'immutable'
 
 import type { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Source, Template } from 'models/widget/types'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -17,7 +17,7 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { itemsWithContext } from 'state/widgets/utils'
 
-export default function useIsIntegrationDisplayable(type: IntegrationType) {
+export function useIsIntegrationDisplayable(type: IntegrationType) {
     const customerIntegrations = useAppSelector(getIntegrationsData)
     const integrations = useAppSelector(getIntegrationsByType(type))
     const widgets = useAppSelector(getWidgetsState)

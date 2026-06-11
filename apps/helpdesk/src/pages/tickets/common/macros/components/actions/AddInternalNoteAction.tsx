@@ -11,19 +11,19 @@ import {
 } from 'reactstrap'
 
 import { UploadType } from 'common/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/constants'
 import { MacroActionName } from 'models/macroAction/types'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
-import type RichField from 'pages/common/forms/RichField/RichField'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
+import { DefaultExportTicketRichField as TicketRichField } from 'pages/common/forms/RichField/TicketRichField'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { getVariables } from 'tickets/common/utils'
 import { insertText } from 'utils'
 import { convertToHTML, getPlainText } from 'utils/editor'
 
 import type { MacroMessageActionsHeaderProps } from '../MacroMessageActionsHeader'
-import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
+import { MacroMessageActionsHeader } from '../MacroMessageActionsHeader'
 
 import css from './AddInternalNoteAction.less'
 
@@ -36,7 +36,7 @@ type Props = {
     convertAction?: MacroMessageActionsHeaderProps['onSelect']
 }
 
-export default function AddInternalNoteAction({
+export function AddInternalNoteAction({
     action,
     actions,
     updateActionArgs,

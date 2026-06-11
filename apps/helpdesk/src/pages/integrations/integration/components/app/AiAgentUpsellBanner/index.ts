@@ -1,1 +1,1 @@
-export { default } from './AiAgentUpsellBanner'
+export { AiAgentUpsellBanner } from './AiAgentUpsellBanner'

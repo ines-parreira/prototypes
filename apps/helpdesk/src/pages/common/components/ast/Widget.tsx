@@ -24,13 +24,13 @@ import {
     collectionOperators,
     deprecatedOperators,
 } from 'config/rules'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import DatePicker from 'pages/common/forms/DatePicker'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
-import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
+import { DatePicker } from 'pages/common/forms/DatePicker'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { MultiSelectField } from 'pages/common/forms/MultiSelectField'
+import { RichFieldWithVariables } from 'pages/common/forms/RichFieldWithVariables'
+import { TimedeltaPicker } from 'pages/common/forms/TimedeltaPicker'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import {
@@ -56,21 +56,21 @@ import {
     getIntegrationIdFromPath,
     getMetafieldKeyFromPath,
 } from './utils'
-import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
-import AssigneeUserSelect from './widget/AssigneeUserSelect'
+import { DefaultExportAssigneeTeamSelect as AssigneeTeamSelect } from './widget/AssigneeTeamSelect'
+import { DefaultExportAssigneeUserSelect as AssigneeUserSelect } from './widget/AssigneeUserSelect'
 import { CustomDropdownInput } from './widget/CustomDropdownInput'
-import CustomFieldIdInput from './widget/CustomFieldIdInput'
-import CustomFieldSelect from './widget/CustomFieldSelect'
-import DistributeToTeamsWidget from './widget/DistributeToTeamsWidget'
-import IntegrationSelect from './widget/IntegrationSelect'
+import { CustomFieldIdInput } from './widget/CustomFieldIdInput'
+import { CustomFieldSelect } from './widget/CustomFieldSelect'
+import { DefaultExportDistributeToTeamsWidget as DistributeToTeamsWidget } from './widget/DistributeToTeamsWidget'
+import { DefaultExportIntegrationSelect as IntegrationSelect } from './widget/IntegrationSelect'
 import { IntentsSentimentsSelect } from './widget/IntentsSentimentsSelect'
-import MacroSelect from './widget/MacroSelect'
-import PrioritySelect from './widget/PrioritySelect'
-import Select from './widget/ReactSelect'
-import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
-import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrationSelect'
-import StatusSelect from './widget/StatusSelect'
-import TagsSelect from './widget/TagsSelect'
+import { DefaultExportMacroSelect as MacroSelect } from './widget/MacroSelect'
+import { PrioritySelect } from './widget/PrioritySelect'
+import { Select } from './widget/ReactSelect'
+import { SelfServiceFlowSelect } from './widget/SelfServiceFlowSelect'
+import { SelfServiceStoreIntegrationSelect } from './widget/SelfServiceStoreIntegrationSelect'
+import { DefaultExportStatusSelect as StatusSelect } from './widget/StatusSelect'
+import { TagsSelectContainer as TagsSelect } from './widget/TagsSelect'
 import { useGetCustomFieldById } from './widget/useGetCustomFieldById'
 import { useGetMetafieldByKey } from './widget/useGetMetafieldByKey'
 
@@ -895,4 +895,4 @@ const Widget = ({
     }
 }
 
-export default Widget
+export { Widget }

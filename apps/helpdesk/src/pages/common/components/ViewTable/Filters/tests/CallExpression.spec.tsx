@@ -15,14 +15,14 @@ import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 import { OBJECT_PATHS } from 'custom-fields/constants'
 import type { CustomField } from 'custom-fields/types'
 import { view as viewFixture } from 'fixtures/views'
-import useAppSelector from 'hooks/useAppSelector'
-import useQAScoreFilters from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
-import Left from 'pages/common/components/ViewTable/Filters/Left'
-import Right from 'pages/common/components/ViewTable/Filters/Right'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useQAScoreFilters } from 'pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters'
+import { Left } from 'pages/common/components/ViewTable/Filters/Left'
+import { DefaultExportRight as Right } from 'pages/common/components/ViewTable/Filters/Right'
 import { getAST, getFirstExpressionOfAST } from 'utils'
 
 import { CallExpression } from '../CallExpression'
-import useCustomFieldsFilters from '../hooks/useCustomFieldsFilters'
+import { useCustomFieldsFilters } from '../hooks/useCustomFieldsFilters'
 import { QaScoreDimensions } from '../utils/qaScoreDimensions'
 
 jest.mock('state/views/actions')
@@ -48,8 +48,8 @@ const LeftMock = assumeMock(Left)
 jest.mock('pages/common/components/ViewTable/Filters/hooks/useQAScoreFilters')
 const useQAScoreFiltersMock = assumeMock(useQAScoreFilters)
 
-jest.mock('../Right', () =>
-    jest.fn((props: ComponentProps<typeof Right>) => (
+jest.mock('../Right', () => ({
+    DefaultExportRight: jest.fn((props: ComponentProps<typeof Right>) => (
         <div
             onClick={() => {
                 props.updateFieldFilter(props.index, 'open')
@@ -58,7 +58,7 @@ jest.mock('../Right', () =>
             Right
         </div>
     )),
-)
+}))
 
 const RightMock = assumeMock(Right)
 

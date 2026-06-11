@@ -4,7 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 
-import MacroEditLanguage from '../../../../tickets/common/macros/components/MacroEditLanguage'
+import { MacroEditLanguage } from '../../../../tickets/common/macros/components/MacroEditLanguage'
 
 import css from './AiLanguageSettings.less'
 
@@ -86,4 +86,4 @@ const AiLanguageSettings: React.FC<AiLanguageSettingsProps> = ({
     )
 }
 
-export default AiLanguageSettings
+export { AiLanguageSettings }

@@ -27,7 +27,7 @@ export const initialState: EditOrderState = fromJS({
     calculatedEditOrder: new Map(),
 })
 
-export default function reducer(
+export function reducer(
     state: EditOrderState = initialState,
     action: GorgiasAction,
 ): EditOrderState {

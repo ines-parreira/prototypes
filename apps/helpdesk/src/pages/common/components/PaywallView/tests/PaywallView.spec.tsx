@@ -5,13 +5,13 @@ import { screen } from '@testing-library/react'
 
 import { assetsUrl } from 'utils'
 
-import PaywallView from '../PaywallView'
-import PaywallViewActionButtons from '../PaywallViewActionButtons'
-import PaywallViewChecklist from '../PaywallViewChecklist'
-import PaywallViewChecklistItem from '../PaywallViewChecklistItem'
-import PaywallViewHeader from '../PaywallViewHeader'
-import PaywallViewLeftContainer from '../PaywallViewLeftContainer'
-import PaywallViewRightContainer from '../PaywallViewRightContainer'
+import { PaywallView } from '../PaywallView'
+import { PaywallViewActionButtons } from '../PaywallViewActionButtons'
+import { PaywallViewChecklist } from '../PaywallViewChecklist'
+import { PaywallViewChecklistItem } from '../PaywallViewChecklistItem'
+import { PaywallViewHeader } from '../PaywallViewHeader'
+import { PaywallViewLeftContainer } from '../PaywallViewLeftContainer'
+import { PaywallViewRightContainer } from '../PaywallViewRightContainer'
 
 describe('PaywallView', () => {
     it('should render all components', () => {

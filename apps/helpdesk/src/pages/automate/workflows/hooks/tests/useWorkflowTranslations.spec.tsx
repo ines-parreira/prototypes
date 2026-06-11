@@ -19,7 +19,7 @@ import {
     WorkflowConfigurationBuilder,
 } from '../../models/workflowConfiguration.model'
 import type { LanguageCode } from '../../models/workflowConfiguration.types'
-import useWorkflowTranslations from '../useWorkflowTranslations'
+import { useWorkflowTranslations } from '../useWorkflowTranslations'
 
 let mockStore: Record<string, Record<string, string>> = {}
 

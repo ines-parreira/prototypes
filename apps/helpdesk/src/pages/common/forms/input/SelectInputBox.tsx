@@ -23,7 +23,7 @@ import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
 import { InputGroupContext } from './InputGroup'
 
@@ -238,4 +238,8 @@ const SelectInputBox = (
  * @date 2026-01-13
  * @type ui-kit-migration
  */
-export default forwardRef<HTMLDivElement, Props>(SelectInputBox)
+const DefaultExportSelectInputBox = forwardRef<HTMLDivElement, Props>(
+    SelectInputBox,
+)
+
+export { DefaultExportSelectInputBox }

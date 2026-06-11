@@ -121,17 +121,19 @@ jest.mock(
 
 jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>IntegrationTabContent</div>),
+    IntegrationTabContent: jest.fn(() => <div>IntegrationTabContent</div>),
 }))
 
 jest.mock('pages/tickets/detail/WooCommerceTabContent', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>WooCommerceTabContent</div>),
+    WooCommerceTabContent: jest.fn(() => <div>WooCommerceTabContent</div>),
 }))
 
 jest.mock('pages/tickets/detail/CustomIntegrationsTabContent', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>CustomIntegrationsTabContent</div>),
+    CustomIntegrationsTabContent: jest.fn(() => (
+        <div>CustomIntegrationsTabContent</div>
+    )),
 }))
 
 jest.mock('state/integrations/selectors', () => ({

@@ -3,12 +3,12 @@ import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
 import css from 'common/navigation/components/GlobalNavigation.less'
-import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
+import { GlobalNavigationItem } from 'common/navigation/components/GlobalNavigationItem'
 import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
 import { NavBarButtonTooltip } from 'common/navigation/components/NavBarButtonTooltip'
-import NotificationsItem from 'common/navigation/components/NotificationsItem'
-import UserItem from 'common/navigation/components/UserItem'
-import useActiveItem from 'common/navigation/hooks/useActiveItem'
+import { NotificationsItem } from 'common/navigation/components/NotificationsItem'
+import { UserItem } from 'common/navigation/components/UserItem'
+import { useActiveItem } from 'common/navigation/hooks/useActiveItem'
 import { MenuItemName } from 'common/navigation/hooks/useMainNavigationItems'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { useNavBarMenuIcon } from 'common/navigation/hooks/useNavBarMenuIcon'
@@ -16,7 +16,7 @@ import { useNavBarShortcuts } from 'common/navigation/hooks/useNavBarShortcuts'
 import { UserRole } from 'config/types/user'
 import { useTheme } from 'core/theme'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
@@ -27,7 +27,7 @@ import {
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
-export default function GlobalNavigation() {
+export function GlobalNavigation() {
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()

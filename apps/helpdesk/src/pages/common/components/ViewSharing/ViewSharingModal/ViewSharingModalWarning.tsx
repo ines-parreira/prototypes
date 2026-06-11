@@ -1,7 +1,7 @@
 import type { List } from 'immutable'
 import { UncontrolledTooltip } from 'reactstrap'
 
-import Alert, { AlertType } from '../../Alert/Alert'
+import { Alert, AlertType } from '../../Alert/Alert'
 
 import css from './ViewSharingModalWarning.less'
 
@@ -12,7 +12,7 @@ type Props = {
     selectedUsers: List<any>
 }
 
-export default function ViewSharingModalWarning({
+export function ViewSharingModalWarning({
     initialTeams,
     initialUsers,
     selectedTeams,

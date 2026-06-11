@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { TicketStatus } from 'business/types/ticket'
 import type { ChannelLike } from 'models/channel/types'
-import TicketIcon from 'pages/common/components/TicketIcon'
+import { TicketIcon } from 'pages/common/components/TicketIcon'
 
 import css from './NotificationContent.less'
 
@@ -30,7 +30,7 @@ export type ParentProps = Omit<
     'children' | 'icon' | 'title' | 'url'
 >
 
-export default function NotificationContent({
+export function NotificationContent({
     children,
     headerExtra,
     icon,

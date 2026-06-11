@@ -15,9 +15,9 @@ import type { Direction } from 'reactstrap/lib/Dropdown'
 
 import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
-import PeopleSearchResults from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { PeopleSearchInput } from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
+import { PeopleSearchResults } from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
 import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import { getHumanAgentsExceptGorgiasSupport } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -365,4 +365,4 @@ const TicketAssignee = ({
     )
 }
 
-export default TicketAssignee
+export { TicketAssignee }

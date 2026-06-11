@@ -66,4 +66,4 @@ const ReactMarkdown = ({
     )
 }
 
-export default ReactMarkdown
+export { ReactMarkdown }

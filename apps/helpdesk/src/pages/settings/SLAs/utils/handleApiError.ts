@@ -1,6 +1,6 @@
 import { isGorgiasApiError } from 'models/api/types'
 
-export default function handleApiError(error: Error) {
+export function handleApiError(error: Error) {
     if (isGorgiasApiError(error) && error.response.status === 400) {
         if (error.response.data.error?.msg) {
             if (error.response.data.error.data) {

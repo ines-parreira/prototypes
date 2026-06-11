@@ -2,11 +2,11 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import type { OrderDirection } from 'models/api/types'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 type Props = {
     orderDirection: OrderDirection
@@ -41,4 +41,4 @@ const ActionsPlatformTemplatesTable = ({
     )
 }
 
-export default ActionsPlatformTemplatesTable
+export { ActionsPlatformTemplatesTable }

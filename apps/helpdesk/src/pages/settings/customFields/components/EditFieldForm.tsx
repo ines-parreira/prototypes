@@ -6,13 +6,13 @@ import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useU
 import type { CustomField, CustomFieldInput } from 'custom-fields/types'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import FieldForm from './FieldForm'
+import { FieldForm } from './FieldForm'
 
 interface EditFieldFormProps {
     field: CustomField
 }
 
-export default function EditFieldForm(props: EditFieldFormProps) {
+export function EditFieldForm(props: EditFieldFormProps) {
     const { mutateAsync } = useUpdateCustomFieldDefinition()
 
     const close = () =>

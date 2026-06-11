@@ -2,7 +2,7 @@ import {
     DateFormattingSetting,
     TimeFormattingSetting,
 } from 'models/agents/types'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 
 import css from './DateAndTimeFormatting.less'
 
@@ -13,7 +13,7 @@ type Props = {
     onSelectTimeFormat: (value: string) => void
 }
 
-export default function DateAndTimeFormatting({
+export function DateAndTimeFormatting({
     dateFormat,
     timeFormat,
     onSelectDateFormat,

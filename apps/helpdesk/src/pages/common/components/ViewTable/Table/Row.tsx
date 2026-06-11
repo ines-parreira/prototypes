@@ -4,17 +4,17 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAgentsViewing } from 'hooks/realtime/useAgentsViewing'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { EntityType } from 'models/view/types'
-import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
+import { ViewingIndicator } from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import css from 'pages/common/components/ViewTable/Table.less'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import * as viewsActions from 'state/views/actions'
 import * as viewsUtils from 'state/views/utils'
 
-import Cell from './Cell'
+import { Cell } from './Cell'
 
 type Props = {
     onItemClick?: (item: Map<any, any>) => void
@@ -28,7 +28,7 @@ type Props = {
     shouldEnlargeLastCell?: boolean
 }
 
-export default function Row({
+export function Row({
     fields,
     item,
     isSelected,

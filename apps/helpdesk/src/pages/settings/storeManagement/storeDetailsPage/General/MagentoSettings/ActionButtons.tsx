@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { Magento2Integration } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 
 import { useMagentoSettings } from './hooks/useMagentoSettings'
 
@@ -18,7 +18,7 @@ interface ActionButtonsProps {
     isSubmitting: boolean
 }
 
-export default function ActionButtons({
+export function ActionButtons({
     onDelete,
     integration,
     redirectUri,

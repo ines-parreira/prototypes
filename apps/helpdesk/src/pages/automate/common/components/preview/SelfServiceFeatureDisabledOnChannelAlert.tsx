@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import css from './SelfServiceFeatureDisabledOnChannelAlert.less'
@@ -35,4 +35,4 @@ const SelfServiceFeatureDisabledOnChannelAlert = ({
     )
 }
 
-export default SelfServiceFeatureDisabledOnChannelAlert
+export { SelfServiceFeatureDisabledOnChannelAlert }

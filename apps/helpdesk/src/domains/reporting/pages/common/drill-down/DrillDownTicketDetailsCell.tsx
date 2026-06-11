@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import type { TicketDetails } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell.less'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 const TICKET_LABEL = 'Ticket'
 

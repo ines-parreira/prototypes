@@ -5,7 +5,7 @@ import type { List } from 'immutable'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { Tag } from '@gorgias/helpdesk-queries'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 export type Props = {
     selectedTagsText: string
@@ -60,4 +60,4 @@ const MergeButton = ({
     )
 }
 
-export default MergeButton
+export { MergeButton }

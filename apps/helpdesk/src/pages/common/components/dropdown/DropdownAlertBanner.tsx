@@ -72,5 +72,3 @@ export const DropdownAlertBanner = ({
         </div>
     )
 }
-
-export default DropdownAlertBanner

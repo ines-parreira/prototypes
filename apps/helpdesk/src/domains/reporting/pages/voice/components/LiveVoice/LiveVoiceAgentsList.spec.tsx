@@ -6,7 +6,7 @@ import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { useAllAvailableUserIds } from '@repo/users'
-import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
+import { LiveVoiceAgentsList } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import {
     AgentStatusCategory,
     groupAgentsByStatus,
@@ -29,7 +29,7 @@ jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({
 }))
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow',
-    () => () => <div>LiveVoiceAgentRow</div>,
+    () => ({ LiveVoiceAgentRow: () => <div>LiveVoiceAgentRow</div> }),
 )
 const useAgentsOnlineStatusMock = assumeMock(useAgentsOnlineStatus)
 const groupAgentsByStatusMock = assumeMock(groupAgentsByStatus)

@@ -1,12 +1,12 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import type { StoreIntegration } from 'models/integration/types'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 
-import useShouldShowChatSettingsRevamp from '../useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from '../useShouldShowChatSettingsRevamp'
 
 jest.mock('hooks/useAppSelector')
 

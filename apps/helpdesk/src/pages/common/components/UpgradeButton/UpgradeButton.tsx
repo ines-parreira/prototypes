@@ -9,7 +9,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 import type { ButtonIconPosition } from 'pages/common/components/button/ButtonIconLabel'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './UpgradeButton.less'
 
@@ -90,4 +90,4 @@ const UpgradeButton = ({
     )
 }
 
-export default UpgradeButton
+export { UpgradeButton }

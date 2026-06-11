@@ -1,13 +1,13 @@
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
+import { VoicePaywall } from 'domains/reporting/pages/voice/VoicePaywall'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 jest.mock('state/integrations/helpers')
 jest.mock(
     'pages/common/components/HeroImageCarousel/HeroImageCarousel',
-    () => () => <div>HeroImageCarousel</div>,
+    () => ({ HeroImageCarousel: () => <div>HeroImageCarousel</div> }),
 )
 
 const getIntegrationConfigMock = assumeMock(getIntegrationConfig)

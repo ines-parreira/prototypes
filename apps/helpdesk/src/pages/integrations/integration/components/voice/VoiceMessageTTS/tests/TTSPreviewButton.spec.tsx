@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import TTSPreviewButton, { AudioState } from '../TTSPreviewButton'
+import { AudioState, TTSPreviewButton } from '../TTSPreviewButton'
 
 // Mock the replaceAttachmentURL utility
 jest.mock('utils', () => ({

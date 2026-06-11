@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ActionLibraryEmptyState from '../ActionLibraryEmptyState'
+import { ActionLibraryEmptyState } from '../ActionLibraryEmptyState'
 
 describe('ActionLibraryEmptyState', () => {
     it('renders the empty-state heading and description', () => {

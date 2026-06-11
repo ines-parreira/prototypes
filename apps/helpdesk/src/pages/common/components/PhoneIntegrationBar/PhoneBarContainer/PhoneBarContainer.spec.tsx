@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { LegacyThemeContext as ThemeContext } from '@gorgias/axiom'
 
-import PhoneBarContainer from './PhoneBarContainer'
+import { PhoneBarContainer } from './PhoneBarContainer'
 
 const mockTheme = {
     resolvedName: 'light',

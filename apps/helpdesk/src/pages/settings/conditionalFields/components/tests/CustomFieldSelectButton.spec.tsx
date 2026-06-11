@@ -11,7 +11,7 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import CustomFieldSelectButton from '../CustomFieldSelectButton'
+import { CustomFieldSelectButton } from '../CustomFieldSelectButton'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)

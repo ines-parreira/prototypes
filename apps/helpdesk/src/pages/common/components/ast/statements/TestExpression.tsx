@@ -2,10 +2,10 @@ import type { List, Map } from 'immutable'
 
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import Expression from '../expression/Expression'
+import { Expression } from '../expression/Expression'
 import type { ExpressionProps } from '../expression/expressionReference'
-import AddLogicalCondition from '../operations/AddLogicalCondition'
-import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
+import { AddLogicalCondition } from '../operations/AddLogicalCondition'
+import { DeleteBlockStatementItem } from '../operations/DeleteBlockStatementItem'
 import { computeLeftPadding } from '../utils'
 
 const TestExpression = ({
@@ -68,4 +68,4 @@ type TestExpressionProps = {
     onMouseLeave: () => void
     isHovered: boolean
 }
-export default TestExpression
+export { TestExpression }

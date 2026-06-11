@@ -6,11 +6,11 @@ import { Link, useParams } from 'react-router-dom'
 
 import { useGetCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import ConditionForm from '../components/ConditionForm'
-import ConditionalField from '../ConditionalField'
+import { EditConditionForm as ConditionForm } from '../components/ConditionForm'
+import { ConditionalField } from '../ConditionalField'
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock(
@@ -23,9 +23,9 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 jest.mock('pages/common/components/Loader/Loader')
-jest.mock('../components/ConditionForm', () =>
-    jest.fn(() => <div>ConditionForm</div>),
-)
+jest.mock('../components/ConditionForm', () => ({
+    EditConditionForm: jest.fn(() => <div>ConditionForm</div>),
+}))
 
 const useGetCustomFieldConditionMock = assumeMock(useGetCustomFieldCondition)
 

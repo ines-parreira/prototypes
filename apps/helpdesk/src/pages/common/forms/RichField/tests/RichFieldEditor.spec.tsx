@@ -26,8 +26,8 @@ import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import { convertFromHTML } from 'utils/editor'
 
-import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
-import provideToolbarPlugin from '../provideToolbarPlugin'
+import { toolbarPlugin } from '../../../draftjs/plugins/toolbar/index'
+import { provideToolbarPlugin } from '../provideToolbarPlugin'
 import { RichFieldEditor } from '../RichFieldEditor'
 
 const mockStore = configureMockStore([thunk])

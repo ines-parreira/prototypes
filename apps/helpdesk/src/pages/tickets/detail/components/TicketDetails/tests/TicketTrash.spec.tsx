@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TicketTrash from '../TicketTrash'
+import { TicketTrash } from '../TicketTrash'
 
 describe('TicketTrash', () => {
     describe('props', () => {

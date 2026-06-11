@@ -3,7 +3,7 @@ import type { Map } from 'immutable'
 import _rangeRight from 'lodash/rangeRight'
 
 import type { DistributionStatVariant } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
-import DistributionVariantStat from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
+import { DistributionVariantStat } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat.less'
 
 type Props = {
@@ -11,10 +11,7 @@ type Props = {
     formattedValue: Map<any, any>
 }
 
-export default function DistributionKeyMetricStat({
-    config,
-    formattedValue,
-}: Props) {
+export function DistributionKeyMetricStat({ config, formattedValue }: Props) {
     const maxValue = config.get('maxValue') as number
     const minValue = config.get('minValue') as number
     const variant = config.get('variant') as DistributionStatVariant

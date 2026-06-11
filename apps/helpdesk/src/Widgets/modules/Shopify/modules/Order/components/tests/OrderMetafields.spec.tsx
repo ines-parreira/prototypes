@@ -15,7 +15,7 @@ import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import WrappedOrderMetafields, { OrderMetafields } from '../OrderMetafields'
+import { OrderMetafields, WrappedOrderMetafields } from '../OrderMetafields'
 
 jest.mock('@gorgias/helpdesk-queries')
 

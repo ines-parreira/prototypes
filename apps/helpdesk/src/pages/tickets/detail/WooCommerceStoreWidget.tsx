@@ -2,7 +2,7 @@ import type { Map } from 'immutable'
 
 import type { Source, Template } from 'models/widget/types'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
-import WooCommerceWidget from 'Widgets/modules/WooCommerce'
+import { WooCommerceWidget } from 'Widgets/modules/WooCommerce'
 
 export type WooCommercePair = {
     widget: Map<string, unknown>
@@ -12,7 +12,7 @@ export type WooCommercePair = {
     template: Template
 }
 
-export default function WooCommerceStoreWidget({
+export function WooCommerceStoreWidget({
     widget,
     widgetIndex,
     storeUuid,

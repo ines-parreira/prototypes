@@ -1,12 +1,12 @@
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
+import { TimeScheduleField } from 'pages/common/components/TimeScheduleField/TimeScheduleField'
 
-import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'
+import { CustomBusinessHoursGeneralFields } from './CustomBusinessHoursGeneralFields'
 
 import css from './AddCustomBusinessHoursModalGeneralSection.less'
 
-export default function AddCustomBusinessHoursModalGeneralSection() {
+export function AddCustomBusinessHoursModalGeneralSection() {
     return (
         <div className={css.container}>
             <CustomBusinessHoursGeneralFields />

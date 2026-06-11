@@ -4,10 +4,10 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 import { HelpCenterReport } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport'
 import { HelpCenterReportConfig } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { HelpCenterStatsEmptyState } from 'domains/reporting/pages/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
-import HelpCenterStatsLoading from 'domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
+import { HelpCenterStatsLoading } from 'domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
 import { useSelectedHelpCenter } from 'domains/reporting/pages/help-center/hooks/useSelectedHelpCenter'
 import { isHelpCenterStatsFiltersValid } from 'domains/reporting/pages/help-center/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isNotEmptyArray } from 'utils'
@@ -49,4 +49,4 @@ const HelpCenterStats = () => {
     )
 }
 
-export default HelpCenterStats
+export { HelpCenterStats }

@@ -2,11 +2,11 @@ import type { PropsWithRef } from 'react'
 
 import { useTheme } from 'core/theme'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
-import GaugeAddon from 'domains/reporting/pages/common/components/charts/GaugeAddon'
+import { GaugeAddon } from 'domains/reporting/pages/common/components/charts/GaugeAddon'
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
 import { TICKET_CUSTOM_FIELDS_NEW_SEPARATOR } from 'domains/reporting/pages/utils'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 type Props = {
     category: string

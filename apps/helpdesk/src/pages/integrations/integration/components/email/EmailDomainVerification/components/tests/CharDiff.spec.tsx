@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { diffChars } from '@repo/utils'
 import { screen } from '@testing-library/react'
 
-import CharDiff from '../CharDiff'
+import { CharDiff } from '../CharDiff'
 
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),

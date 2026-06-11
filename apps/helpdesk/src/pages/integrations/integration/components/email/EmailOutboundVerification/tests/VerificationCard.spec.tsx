@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup } from '@testing-library/react'
 
-import VerificationCard from '../VerificationCard/VerificationCard'
+import { VerificationCard } from '../VerificationCard/VerificationCard'
 
 describe('Verification Card', () => {
     afterEach(cleanup)

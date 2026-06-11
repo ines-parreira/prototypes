@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 
 import type { AlertBannerCTATypes } from 'AlertBanners'
 import { AlertBannerTypes } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import * as helpers from 'pages/common/components/EmailMigrationBanner/helpers'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import { getEmailMigrationStatus } from 'state/integrations/selectors'
@@ -18,17 +18,13 @@ const mockHistoryPush = jest.fn()
 
 const mockLocation = '/app/settings/channels/email/migration'
 
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            useHistory: () => ({
-                push: mockHistoryPush,
-            }),
-            useLocation: jest.fn(),
-        }) as Record<string, unknown>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+    useLocation: jest.fn(),
+}))
 const mockUseLocation = assumeMock(useLocation)
 
 jest.mock('state/integrations/selectors', () => ({
@@ -36,26 +32,22 @@ jest.mock('state/integrations/selectors', () => ({
 }))
 
 const mockFetchMigrationStatus = jest.fn()
-jest.spyOn(migrationBannerHook, 'default').mockImplementation(
+jest.spyOn(migrationBannerHook, 'useMigrationBannerStatus').mockImplementation(
     () => mockFetchMigrationStatus,
 )
 
 const mockedAddBanner = jest.fn()
 const mockedRemoveBanner = jest.fn()
 
-jest.mock(
-    'AlertBanners',
-    () =>
-        ({
-            ...jest.requireActual('AlertBanners'),
-            useBanners: () => ({
-                addBanner: mockedAddBanner,
-                removeBanner: mockedRemoveBanner,
-            }),
-        }) as Record<string, unknown>,
-)
+jest.mock('AlertBanners', () => ({
+    ...jest.requireActual('AlertBanners'),
+    useBanners: () => ({
+        addBanner: mockedAddBanner,
+        removeBanner: mockedRemoveBanner,
+    }),
+}))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const computeBannerSpy = jest.spyOn(
     helpers,

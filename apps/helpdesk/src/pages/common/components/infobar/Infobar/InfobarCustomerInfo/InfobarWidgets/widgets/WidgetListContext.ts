@@ -4,6 +4,8 @@ type WidgetListContextType = {
     currentListIndex: number | null
 }
 
-export default createContext<WidgetListContextType>({
+const DefaultExportWidgetListContext = createContext<WidgetListContextType>({
     currentListIndex: null,
 })
+
+export { DefaultExportWidgetListContext }

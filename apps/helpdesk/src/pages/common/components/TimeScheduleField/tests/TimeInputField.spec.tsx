@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TimeInputField from '../TimeInputField'
+import { TimeInputField } from '../TimeInputField'
 
 describe('TimeInputField', () => {
     it('should render', () => {

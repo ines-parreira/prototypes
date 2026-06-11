@@ -1,8 +1,8 @@
 import type { Integration } from 'models/integration/types'
 
 import type { ChannelWithMetadata } from '../../../types'
-import ChannelItem from './ChannelItem'
-import ContactFormTooltip from './ContactFormTooltip'
+import { ChannelItem } from './ChannelItem'
+import { ContactFormTooltip } from './ContactFormTooltip'
 
 import css from '../ChannelsDrawer/ChannelsDrawer.less'
 
@@ -13,7 +13,7 @@ interface AssignedChannelsListProps {
     activeChannel: ChannelWithMetadata
 }
 
-export default function ChannelsList({
+export function ChannelsList({
     listLabel,
     channels,
     onDelete,

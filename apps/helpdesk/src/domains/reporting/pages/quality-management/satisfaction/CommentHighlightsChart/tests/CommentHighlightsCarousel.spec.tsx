@@ -3,7 +3,8 @@ import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import CommentHighlightsCarousel, {
+import {
+    CommentHighlightsCarousel,
     UNASSIGNED_TICKET_LABEL,
 } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
 

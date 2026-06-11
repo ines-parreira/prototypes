@@ -1,6 +1,6 @@
 import type { ReplyMetaTicketMessage } from 'models/ticket/types'
 
-import MetaLabel from './MetaLabel'
+import { MetaLabel } from './MetaLabel'
 
 import css from './MetaRepliedToLabel.less'
 
@@ -8,7 +8,7 @@ type Props = {
     reply: ReplyMetaTicketMessage
 }
 
-export default function MetaRepliedToLabel({ reply }: Props) {
+export function MetaRepliedToLabel({ reply }: Props) {
     return (
         <MetaLabel>
             responded via Messenger to

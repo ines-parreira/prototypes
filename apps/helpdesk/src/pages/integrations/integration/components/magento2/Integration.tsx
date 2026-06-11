@@ -1,15 +1,15 @@
 import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import Loader from 'pages/common/components/Loader/Loader'
-import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { useAuthenticationPolling } from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import { useQueryNotify } from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 
-import ManualIntegrationForm from './ManualIntegrationForm'
-import OneClickIntegrationForm from './OneClickIntegrationForm'
+import { ManualIntegrationForm } from './ManualIntegrationForm'
+import { OneClickIntegrationForm } from './OneClickIntegrationForm'
 
 type Props = {
     integration: Map<any, any>
@@ -76,4 +76,4 @@ function Integration({ integration, loading, redirectUri }: Props) {
     )
 }
 
-export default Integration
+export { Integration }

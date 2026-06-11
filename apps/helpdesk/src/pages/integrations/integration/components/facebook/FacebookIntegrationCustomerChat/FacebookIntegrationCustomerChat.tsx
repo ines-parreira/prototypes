@@ -4,9 +4,9 @@ import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import PageHeader from 'pages/common/components/PageHeader'
-import CustomInstallationCard from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
-import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { CustomInstallationCard } from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
+import { FacebookIntegrationNavigation } from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
 import settingsCss from 'pages/settings/settings.less'
 import { assetsUrl } from 'utils'
 
@@ -121,4 +121,4 @@ const FacebookIntegrationCustomerChat = ({
     </div>
 )
 
-export default FacebookIntegrationCustomerChat
+export { FacebookIntegrationCustomerChat }

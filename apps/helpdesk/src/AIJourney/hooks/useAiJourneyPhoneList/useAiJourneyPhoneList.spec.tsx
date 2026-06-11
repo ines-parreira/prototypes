@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { useSmsIntegrations } from 'AIJourney/queries'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useAiJourneyPhoneList } from './useAiJourneyPhoneList'
 
@@ -13,7 +13,7 @@ jest.mock('AIJourney/queries', () => ({
     useSmsIntegrations: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const mockUseSmsIntegrations = useSmsIntegrations as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock

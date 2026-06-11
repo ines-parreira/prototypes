@@ -16,7 +16,7 @@ type Props = {
     children: ReactNode
 }
 
-export default class MentionSuggestionsPortal extends Component<Props> {
+export class MentionSuggestionsPortal extends Component<Props> {
     key!: string
     searchPortal!: HTMLSpanElement | null
 

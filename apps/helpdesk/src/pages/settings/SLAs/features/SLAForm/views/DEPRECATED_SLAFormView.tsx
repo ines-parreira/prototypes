@@ -8,17 +8,17 @@ import { Redirect } from 'react-router'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { ToggleInputField } from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
-import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
+import { PageHeader } from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 import { DeleteModal } from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'
 
 import type { MappedFormSLAPolicy } from '../controllers/makeMappedFormSLAPolicy'
 import type { SLAFormValues } from '../controllers/useFormValues'
-import ChannelSelectBox from './DEPRECATED_ChannelSelectBox'
-import MetricsFieldArray from './DEPRECATED_MetricsFieldArray'
-import FormSection from './FormSection'
+import { DefaultExportDEPRECATED_ChannelSelectBox as ChannelSelectBox } from './DEPRECATED_ChannelSelectBox'
+import { MetricsFieldArray } from './DEPRECATED_MetricsFieldArray'
+import { FormSection } from './FormSection'
 
 import css from './SLAFormView.less'
 
@@ -36,7 +36,7 @@ type SLAFormViewProps = {
  * @date 2025-12-29
  * @type sla-config-form-migration
  */
-export default function SLAFormView({
+export function SLAFormView({
     policy,
     defaultValues,
     values,

@@ -7,7 +7,7 @@ import type { AILibraryArticleItem } from 'models/helpCenter/types'
 import { AIArticlesListFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 
 import type { AIArticleRowProps } from '../AIArticleRow'
-import AIArticleRow from '../AIArticleRow'
+import { AIArticleRow } from '../AIArticleRow'
 
 describe('AIArticleRow', () => {
     const article: AILibraryArticleItem = {

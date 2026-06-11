@@ -3,8 +3,8 @@ import { fromJS } from 'immutable'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import intercomSchema from 'pages/standalone/assets/httpSchemas/ticket-intercom.json'
 import zendeskSchema from 'pages/standalone/assets/httpSchemas/ticket-zendesk.json'
 import {
@@ -19,8 +19,8 @@ import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationById } from 'state/integrations/selectors'
 
 // Mock dependencies
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(),
 }))

@@ -9,9 +9,9 @@ import { NavLink, useHistory } from 'react-router-dom'
 import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
 import { useHasAccessToAILibrary } from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 

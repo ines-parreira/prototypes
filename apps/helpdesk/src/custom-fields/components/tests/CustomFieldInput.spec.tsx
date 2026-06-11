@@ -3,8 +3,8 @@ import React from 'react'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import StealthInput from 'custom-fields/components/StealthInput'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
+import { DefaultExportStealthInput as StealthInput } from 'custom-fields/components/StealthInput'
 import type { CustomField, CustomFieldPrediction } from 'custom-fields/types'
 import {
     ticketDropdownFieldDefinition,
@@ -12,13 +12,15 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import CustomFieldInput from '../CustomFieldInput'
+import { CustomFieldInput } from '../CustomFieldInput'
 
 jest.mock('custom-fields/components/StealthInput', () => {
-    return jest.fn(() => <div>stealth input</div>)
+    return {
+        DefaultExportStealthInput: jest.fn(() => <div>stealth input</div>),
+    }
 })
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
-    return jest.fn(() => <div>multiselect</div>)
+    return { MultiLevelSelect: jest.fn(() => <div>multiselect</div>) }
 })
 
 const mockedStealthInput = assumeMock(StealthInput)

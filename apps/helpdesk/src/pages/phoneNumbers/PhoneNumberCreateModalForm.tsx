@@ -11,7 +11,7 @@ import {
 } from '@gorgias/axiom'
 
 import { PhoneUseCase } from 'business/twilio'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     createPhoneNumber,
     fetchNewPhoneNumber,
@@ -22,18 +22,18 @@ import type {
     PhoneNumberMeta,
 } from 'models/phoneNumber/types'
 import { AddressType, PhoneType } from 'models/phoneNumber/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
 
-import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
+import { useCreatePhoneNumberNotifications } from './hooks/useCreatePhoneNumberNotifications'
 import { useShowPhoneUseCase } from './hooks/useShowPhoneUseCase'
-import PhoneAddressFields from './PhoneAddressFields'
-import PhoneMetaFields from './PhoneMetaFields'
-import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
+import { PhoneAddressFields } from './PhoneAddressFields'
+import { PhoneDetailsFields as PhoneMetaFields } from './PhoneMetaFields'
+import { PhoneNumberCapabilitiesAlert } from './PhoneNumberCapabilitiesAlert'
 import {
     getAddressValidationAlertMessage,
     shouldValidateAddress,
@@ -50,7 +50,7 @@ enum Step {
     AddressVerfication,
 }
 
-export default function PhoneNumberCreateModalForm({
+export function PhoneNumberCreateModalForm({
     isOpen,
     onClose,
     onCreate,

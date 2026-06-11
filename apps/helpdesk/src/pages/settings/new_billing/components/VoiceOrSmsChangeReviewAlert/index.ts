@@ -1,1 +1,1 @@
-export { default } from './VoiceOrSmsChangeReviewAlert'
+export { VoiceOrSmsChangeReviewAlert } from './VoiceOrSmsChangeReviewAlert'

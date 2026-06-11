@@ -7,7 +7,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import WrappedCustomerMetafields from '../WrappedCustomerMetafields'
+import { WrappedCustomerMetafields } from '../WrappedCustomerMetafields'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)

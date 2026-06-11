@@ -1,6 +1,6 @@
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import FormLabel from './FormLabel'
+import { FormLabel } from './FormLabel'
 
 type Props = {
     value: string
@@ -38,4 +38,4 @@ const ActionsPlatformTemplateName = ({
     )
 }
 
-export default ActionsPlatformTemplateName
+export { ActionsPlatformTemplateName }

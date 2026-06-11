@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Shoutout from 'domains/reporting/pages/common/components/Shoutout/Shoutout'
+import { Shoutout } from 'domains/reporting/pages/common/components/Shoutout/Shoutout'
 import { personNames } from 'fixtures/personNames'
 
 const storyConfig: Meta<typeof Shoutout> = {

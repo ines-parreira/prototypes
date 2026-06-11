@@ -13,7 +13,7 @@ import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFo
 import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
 import type { RootState } from 'state/types'
 
-import ContactFormCustomization from './ContactFormCustomization'
+import { ContactFormCustomization } from './ContactFormCustomization'
 
 // Mock the hooks and components
 jest.mock('@repo/feature-flags')
@@ -21,53 +21,59 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi')
 jest.mock(
     'pages/settings/contactForm/components/ContactFormDisplayModeToggle',
     () => {
-        return function MockContactFormDisplayModeToggle({
-            title,
-            description,
-            isToggled,
-            handleToggleClick,
-            toggleLabel,
-        }: {
-            title: string
-            description: string
-            isToggled: boolean
-            handleToggleClick: () => void
-            toggleLabel: string
-        }) {
-            return (
-                <div data-testid="contact-form-display-toggle">
-                    <h3>{title}</h3>
-                    <p>{description}</p>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={isToggled}
-                            onChange={handleToggleClick}
-                            data-testid="expand-contact-form-checkbox"
-                        />
-                        {toggleLabel}
-                    </label>
-                </div>
-            )
+        return {
+            ContactFormDisplayModeToggle:
+                function MockContactFormDisplayModeToggle({
+                    title,
+                    description,
+                    isToggled,
+                    handleToggleClick,
+                    toggleLabel,
+                }: {
+                    title: string
+                    description: string
+                    isToggled: boolean
+                    handleToggleClick: () => void
+                    toggleLabel: string
+                }) {
+                    return (
+                        <div data-testid="contact-form-display-toggle">
+                            <h3>{title}</h3>
+                            <p>{description}</p>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={isToggled}
+                                    onChange={handleToggleClick}
+                                    data-testid="expand-contact-form-checkbox"
+                                />
+                                {toggleLabel}
+                            </label>
+                        </div>
+                    )
+                },
         }
     },
 )
 jest.mock(
     'pages/settings/contactForm/components/ContactFormEntrypointPreview',
     () => {
-        return function MockContactFormEntrypointPreview({
-            contactForm,
-            isFormHidden,
-        }: {
-            contactForm: ContactForm
-            isFormHidden: boolean
-        }) {
-            return (
-                <div data-testid="contact-form-preview">
-                    <p>Contact Form: {contactForm.name}</p>
-                    <p>Hidden: {isFormHidden ? 'Yes' : 'No'}</p>
-                </div>
-            )
+        return {
+            ContactFormEntrypointPreview:
+                function MockContactFormEntrypointPreview({
+                    contactForm,
+                    isFormHidden,
+                }: {
+                    contactForm: ContactForm
+                    isFormHidden: boolean
+                }) {
+                    return (
+                        <div data-testid="contact-form-preview">
+                            <p>Contact Form: {contactForm.name}</p>
+                            <p>Hidden: {isFormHidden ? 'Yes' : 'No'}</p>
+                        </div>
+                    )
+                },
         }
     },
 )
@@ -129,107 +135,118 @@ jest.mock('pages/common/components/ExtraHtmlSection/ExtraHtmlSection', () => ({
 jest.mock(
     'pages/settings/helpCenter/components/SubjectLines/SubjectLines',
     () => {
-        return function MockSubjectLines({
-            title,
-            description,
-            subjectLines,
-            updateSubjectLines,
-            setIsDirty,
-        }: {
-            title: string
-            description: string
-            subjectLines: any
-            updateSubjectLines: (payload: any) => void
-            setIsDirty: (dirty: boolean) => void
-        }) {
-            const addSubjectLine = () => {
-                setIsDirty(true)
-                updateSubjectLines({
-                    options: [...(subjectLines?.options || []), 'New Subject'],
-                    allow_other: subjectLines?.allow_other || false,
-                })
-            }
-            const toggleAllowOther = () => {
-                setIsDirty(true)
-                updateSubjectLines({
-                    options: subjectLines?.options || [],
-                    allow_other: !subjectLines?.allow_other,
-                })
-            }
-            return (
-                <div data-testid="subject-lines">
-                    <h3>{title}</h3>
-                    <p>{description}</p>
-                    <div>
-                        Subject options: {subjectLines?.options?.length || 0}
+        return {
+            SubjectLines: function MockSubjectLines({
+                title,
+                description,
+                subjectLines,
+                updateSubjectLines,
+                setIsDirty,
+            }: {
+                title: string
+                description: string
+                subjectLines: any
+                updateSubjectLines: (payload: any) => void
+                setIsDirty: (dirty: boolean) => void
+            }) {
+                const addSubjectLine = () => {
+                    setIsDirty(true)
+                    updateSubjectLines({
+                        options: [
+                            ...(subjectLines?.options || []),
+                            'New Subject',
+                        ],
+                        allow_other: subjectLines?.allow_other || false,
+                    })
+                }
+                const toggleAllowOther = () => {
+                    setIsDirty(true)
+                    updateSubjectLines({
+                        options: subjectLines?.options || [],
+                        allow_other: !subjectLines?.allow_other,
+                    })
+                }
+                return (
+                    <div data-testid="subject-lines">
+                        <h3>{title}</h3>
+                        <p>{description}</p>
+                        <div>
+                            Subject options:{' '}
+                            {subjectLines?.options?.length || 0}
+                        </div>
+                        <div>
+                            Allow other:{' '}
+                            {subjectLines?.allow_other ? 'Yes' : 'No'}
+                        </div>
+                        <button
+                            onClick={addSubjectLine}
+                            data-testid="add-subject-line"
+                        >
+                            Add Subject Line
+                        </button>
+                        <button
+                            onClick={toggleAllowOther}
+                            data-testid="toggle-allow-other"
+                        >
+                            Toggle Allow Other
+                        </button>
                     </div>
-                    <div>
-                        Allow other: {subjectLines?.allow_other ? 'Yes' : 'No'}
-                    </div>
-                    <button
-                        onClick={addSubjectLine}
-                        data-testid="add-subject-line"
-                    >
-                        Add Subject Line
-                    </button>
-                    <button
-                        onClick={toggleAllowOther}
-                        data-testid="toggle-allow-other"
-                    >
-                        Toggle Allow Other
-                    </button>
-                </div>
-            )
+                )
+            },
         }
     },
 )
 jest.mock('pages/settings/helpCenter/components/PendingChangesModal', () => {
-    return function MockPendingChangesModal({
-        when,
-        show,
-        onSave,
-        onDiscard,
-        onContinueEditing,
-    }: {
-        when: boolean
-        show: boolean
-        onSave: () => void
-        onDiscard: () => void
-        onContinueEditing: () => void
-    }) {
-        if (!show || !when) return null
-        return (
-            <div data-testid="pending-changes-modal">
-                <h3>Pending Changes</h3>
-                <button onClick={onSave} data-testid="modal-save">
-                    Save
-                </button>
-                <button onClick={onDiscard} data-testid="modal-discard">
-                    Discard
-                </button>
-                <button
-                    onClick={onContinueEditing}
-                    data-testid="modal-continue"
-                >
-                    Continue Editing
-                </button>
-            </div>
-        )
+    return {
+        PendingChangesModal: function MockPendingChangesModal({
+            when,
+            show,
+            onSave,
+            onDiscard,
+            onContinueEditing,
+        }: {
+            when: boolean
+            show: boolean
+            onSave: () => void
+            onDiscard: () => void
+            onContinueEditing: () => void
+        }) {
+            if (!show || !when) return null
+            return (
+                <div data-testid="pending-changes-modal">
+                    <h3>Pending Changes</h3>
+                    <button onClick={onSave} data-testid="modal-save">
+                        Save
+                    </button>
+                    <button onClick={onDiscard} data-testid="modal-discard">
+                        Discard
+                    </button>
+                    <button
+                        onClick={onContinueEditing}
+                        data-testid="modal-continue"
+                    >
+                        Continue Editing
+                    </button>
+                </div>
+            )
+        },
     }
 })
 jest.mock('./ContactFormFlowsBanner', () => {
-    return function MockContactFormFlowsBanner({
-        contactFormId,
-        shopName,
-    }: {
-        contactFormId: number
-        shopName: string
-    }) {
-        return (
-            <div data-testid="contact-form-flows-banner">
-                Flows Banner for {shopName} (ID: {contactFormId})
-            </div>
-        )
+    return {
+        ContactFormFlowsBanner: function MockContactFormFlowsBanner({
+            contactFormId,
+            shopName,
+        }: {
+            contactFormId: number
+            shopName: string
+        }) {
+            return (
+                <div data-testid="contact-form-flows-banner">
+                    Flows Banner for {shopName} (ID: {contactFormId})
+                </div>
+            )
+        },
     }
 })
 const mockedUseContactFormApi = jest.mocked(useContactFormApi)

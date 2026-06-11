@@ -6,7 +6,7 @@ import { render, userEvent } from '@repo/testing'
 
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import TaxesPopover from '../TaxesPopover'
+import { TaxesPopover } from '../TaxesPopover'
 
 jest.mock('@repo/logging', () => {
     const segmentTracker: Record<string, unknown> =

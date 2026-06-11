@@ -1,1 +1,1 @@
-export { default } from './TemplateNotFoundBanner'
+export { TemplateNotFoundBanner } from './TemplateNotFoundBanner'

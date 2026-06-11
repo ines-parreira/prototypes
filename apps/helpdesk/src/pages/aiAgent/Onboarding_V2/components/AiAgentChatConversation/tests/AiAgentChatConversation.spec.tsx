@@ -10,7 +10,7 @@ import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
 
 import type { ConversationMessage } from '../AiAgentChatConversation'
-import AiAgentChatConversation from '../AiAgentChatConversation'
+import { AiAgentChatConversation } from '../AiAgentChatConversation'
 
 const defaultState = {
     currentAccount: fromJS(account),

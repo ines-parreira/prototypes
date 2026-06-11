@@ -1,10 +1,10 @@
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { TrialPaywallMiddleware } from '../TrialPaywallMiddleware'

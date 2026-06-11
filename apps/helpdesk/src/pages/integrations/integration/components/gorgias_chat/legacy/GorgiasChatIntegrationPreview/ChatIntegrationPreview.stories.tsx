@@ -18,8 +18,8 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
-import ChatIntegrationPreview from './ChatIntegrationPreview'
-import MessageContent from './MessageContent'
+import { ChatIntegrationPreview } from './ChatIntegrationPreview'
+import { MessageContent } from './MessageContent'
 
 import css from './ChatIntegrationPreview.less'
 

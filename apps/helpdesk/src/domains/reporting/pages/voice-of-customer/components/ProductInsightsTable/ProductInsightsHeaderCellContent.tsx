@@ -22,8 +22,8 @@ import {
     sortingSet,
 } from 'domains/reporting/state/ui/stats/productInsightsSlice'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OrderDirection } from 'models/api/types'
 import { opposite } from 'models/api/types'
 

@@ -29,8 +29,9 @@ import {
 import type { ChannelIdentifier } from 'services/channels'
 import { getChannelBySlug } from 'services/channels'
 
-import useOutboundChannels, {
+import {
     privateFunctions,
+    useOutboundChannels,
     useSendersForSelectedChannel,
 } from '../useOutboundChannels'
 

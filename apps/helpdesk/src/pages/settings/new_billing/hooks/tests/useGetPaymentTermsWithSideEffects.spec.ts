@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 import { useBillingStateWithSideEffects } from '../useBillingStateWithSideEffects'
 import { useGetPaymentTermsWithSideEffects } from '../useGetPaymentTermsWithSideEffects'

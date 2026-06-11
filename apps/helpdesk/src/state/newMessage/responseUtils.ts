@@ -25,7 +25,7 @@ import {
 } from './emailExtraUtils'
 import * as selectors from './selectors'
 import type { TopRankMacroState } from './ticketReplyCache'
-import ticketReplyCache from './ticketReplyCache'
+import { ticketReplyCache } from './ticketReplyCache'
 import type { NewMessage, ReplyAreaState } from './types'
 
 export type MessageContext = {

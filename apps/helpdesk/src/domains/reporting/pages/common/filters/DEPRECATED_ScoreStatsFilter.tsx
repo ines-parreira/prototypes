@@ -2,9 +2,9 @@ import type { ComponentProps } from 'react'
 import React, { useCallback, useMemo } from 'react'
 
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 type Props = {
     value: LegacyStatsFilters['score']

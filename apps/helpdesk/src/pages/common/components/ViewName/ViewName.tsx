@@ -18,4 +18,6 @@ const ViewName = ({ viewName = '', emoji }: Props) => {
     )
 }
 
-export default memo(ViewName)
+const DefaultExportViewName = memo(ViewName)
+
+export { DefaultExportViewName }

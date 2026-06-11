@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
-import KeyboardHelp from '../KeyboardHelp'
+import { KeyboardHelp } from '../KeyboardHelp'
 
 jest.mock('@repo/tickets/feature-flags')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)

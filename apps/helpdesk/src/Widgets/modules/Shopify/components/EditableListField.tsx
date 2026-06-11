@@ -7,11 +7,11 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useSaveTagsInTicketDraft from 'hooks/useSaveTagsInTicketDraft'
+import { useSaveTagsInTicketDraft } from 'hooks/useSaveTagsInTicketDraft'
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

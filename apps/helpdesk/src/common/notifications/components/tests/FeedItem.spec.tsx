@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import type { Notification } from '../../types'
-import FeedItem from '../FeedItem'
+import { DefaultExportFeedItem as FeedItem } from '../FeedItem'
 
 jest.mock('../../data', () => ({
     notifications: {

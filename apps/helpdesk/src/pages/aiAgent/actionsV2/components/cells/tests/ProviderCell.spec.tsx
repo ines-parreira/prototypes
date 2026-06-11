@@ -6,10 +6,10 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 
-import ProviderCell from '../ProviderCell'
+import { ProviderCell } from '../ProviderCell'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurationTemplates: jest.fn(),
@@ -17,15 +17,15 @@ jest.mock('models/workflows/queries', () => ({
 }))
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useApps: jest.fn(),
 }))
 jest.mock(
     'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp',
-    () => ({ __esModule: true, default: jest.fn() }),
+    () => ({ __esModule: true, useGetAppFromTemplateApp: jest.fn() }),
 )
 jest.mock('pages/automate/actionsPlatform/components/AppIcon', () => ({
     __esModule: true,
-    default: ({ name, icon }: { name?: string; icon?: string }) => (
+    AppIcon: ({ name, icon }: { name?: string; icon?: string }) => (
         <span
             aria-label={`app-icon ${name ?? ''}`}
             data-icon={icon}

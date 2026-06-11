@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import { submitCustomer } from 'state/customers/actions'
 
-import CustomerNote from '../CustomerNote'
+import { CustomerNote } from '../CustomerNote'
 
 jest.mock('state/customers/actions')
 const submitCustomerMock = assumeMock(submitCustomer)

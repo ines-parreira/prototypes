@@ -4,13 +4,13 @@ import { toast } from '@gorgias/axiom'
 import type { HttpResponse } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
 
-import Loader from 'pages/settings/SLAs/features/Loader/Loader'
+import { Loader } from 'pages/settings/SLAs/features/Loader/Loader'
 
-import LandingPage from '../../LandingPage/LandingPage'
-import SLAListView from '../views/SLAListView'
-import useGetSLAPolicies from './useGetSLAPolicies'
+import { LandingPage } from '../../LandingPage/LandingPage'
+import { SLAListView } from '../views/SLAListView'
+import { useGetSLAPolicies } from './useGetSLAPolicies'
 
-export default function SLAListController() {
+export function SLAListController() {
     const { data, isLoading, refetch: refetchSLAPolicies } = useGetSLAPolicies()
     const queryClient = useQueryClient()
 

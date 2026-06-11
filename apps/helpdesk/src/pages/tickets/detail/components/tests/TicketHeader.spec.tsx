@@ -30,16 +30,16 @@ import { UserRole } from 'config/types/user'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import * as ticketActions from 'state/ticket/actions'
 import * as ticketSelectors from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
-import type Snooze from '../Snooze'
-import TicketHeader from '../TicketHeader'
-import useIsTicketNavigationAvailable from '../TicketNavigation/hooks/useIsTicketNavigationAvailable'
+import type { Snooze } from '../Snooze'
+import { TicketHeader } from '../TicketHeader'
+import { useIsTicketNavigationAvailable } from '../TicketNavigation/hooks/useIsTicketNavigationAvailable'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
@@ -48,7 +48,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
 
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',
-    () => () => <div>TicketAssigneeMock</div>,
+    () => ({ TicketAssignee: () => <div>TicketAssigneeMock</div> }),
 )
 
 jest.mock('@repo/utils', () => {
@@ -73,11 +73,13 @@ jest.mock('@repo/utils', () => {
     }
 })
 
-jest.mock('../TicketDetails/TicketTags', () => () => 'TicketTagsMock')
+jest.mock('../TicketDetails/TicketTags', () => ({
+    TicketTags: () => 'TicketTagsMock',
+}))
 
 jest.mock('../TicketSummaryPopover', () => ({
     __esModule: true,
-    default: () => <button>Summarize ticket</button>,
+    TicketSummaryPopover: () => <button>Summarize ticket</button>,
 }))
 
 jest.mock('state/ticket/selectors', () => ({
@@ -130,10 +132,14 @@ jest.mock('@repo/logging')
 
 const mockMoment = moment
 
-jest.mock('../Snooze', () => ({ onUpdate }: ComponentProps<typeof Snooze>) => (
-    <div onClick={() => onUpdate(mockMoment())}>Snooze</div>
-))
-jest.mock('../TicketDetails/TicketSnooze', () => () => <div>TicketSnooze</div>)
+jest.mock('../Snooze', () => ({
+    Snooze: ({ onUpdate }: ComponentProps<typeof Snooze>) => (
+        <div onClick={() => onUpdate(mockMoment())}>Snooze</div>
+    ),
+}))
+jest.mock('../TicketDetails/TicketSnooze', () => ({
+    TicketSnooze: () => <div>TicketSnooze</div>,
+}))
 
 // Get the mocked shortcutManager from the module
 const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
@@ -148,13 +154,13 @@ jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
-jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () =>
-    jest.fn().mockReturnValue([true]),
-)
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () => ({
+    useSplitTicketView: jest.fn().mockReturnValue([true]),
+}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

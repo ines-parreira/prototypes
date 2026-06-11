@@ -2,14 +2,15 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
-import WizardFooter, {
+import {
     FOOTER_BUTTONS,
+    WizardFooter,
 } from 'pages/common/components/wizard/WizardFooter'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import ColorField from 'pages/common/forms/ColorField'
+import { WizardStepSkeleton } from 'pages/common/components/wizard/WizardStepSkeleton'
+import { ColorField } from 'pages/common/forms/ColorField'
 import { FontSelectField } from 'pages/settings/common/FontSelectField/FontSelectField'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
@@ -23,8 +24,8 @@ import type { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.en
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
-import HelpCenterPreviewHomePage from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
+import { HelpCenterPreview } from '../../../HelpCenterPreview/HelpCenterPreview'
+import { HelpCenterPreviewHomePage } from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
 import { ImageUpload } from '../../../ImageUpload'
 import { LayoutSwitch } from '../../../LayoutSwitch'
 import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
@@ -200,4 +201,4 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     )
 }
 
-export default HelpCenterCreationWizardStepBranding
+export { HelpCenterCreationWizardStepBranding }

@@ -9,7 +9,7 @@ import { ScenarioFormContext } from '../ScenarioFormContext'
 
 jest.mock('pages/common/components/accordion/SortableAccordion', () => ({
     __esModule: true,
-    default: ({
+    SortableAccordion: ({
         children,
         onReorder,
         onChange,
@@ -35,7 +35,7 @@ jest.mock('pages/common/components/accordion/SortableAccordion', () => ({
 
 jest.mock('pages/common/components/accordion/SortableAccordionItem', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
+    SortableAccordionItem: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))
@@ -78,7 +78,7 @@ jest.mock('../reasonEditor/ScenarioReasonItem', () => ({
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     __esModule: true,
-    default: ({
+    Dropdown: ({
         isOpen,
         children,
     }: {
@@ -89,26 +89,30 @@ jest.mock('pages/common/components/dropdown/Dropdown', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    DefaultExportDropdownBody: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div>{children}</div>,
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownSearch', () => ({
     __esModule: true,
-    default: () => <input placeholder="Search" />,
+    DefaultExportDropdownSearch: () => <input placeholder="Search" />,
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownSection', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    DefaultExportDropdownSection: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div>{children}</div>,
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
     __esModule: true,
-    default: ({
+    DefaultExportDropdownItem: ({
         option,
         onClick,
     }: {

@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { AiAgentSidebar } from '../sidebars/AiAgentSidebar'
 

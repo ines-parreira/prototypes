@@ -10,7 +10,7 @@ import {
     aiJourneyReplyRateQueryFactory,
     aiJourneyReplyRateTimeSeriesQuery,
 } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'

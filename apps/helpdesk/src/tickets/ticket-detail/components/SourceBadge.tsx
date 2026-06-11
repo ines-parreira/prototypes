@@ -4,7 +4,7 @@ import { useId } from '@gorgias/toolkit-react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { humanize } from 'business/format'
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 
 import css from './SourceBadge.less'
 

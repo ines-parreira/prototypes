@@ -17,11 +17,11 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
-import SettingsCard from 'pages/common/components/SettingsCard/SettingsCard'
+import { SettingsCard } from 'pages/common/components/SettingsCard/SettingsCard'
 import type { Value } from 'pages/common/forms/SelectField/types'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
-import AiLanguageSettings from './AiLanguageSettings'
+import { AiLanguageSettings } from './AiLanguageSettings'
 import { ToneOfVoiceComponent } from './ToneOfVoiceComponent'
 
 import css from './ToneOfVoiceFormComponent.less'

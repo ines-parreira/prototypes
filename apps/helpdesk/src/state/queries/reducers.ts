@@ -8,7 +8,7 @@ export const initialState: QueriesState = {
     timestamp: {},
 }
 
-export default function reducer(
+export function reducer(
     state: QueriesState = initialState,
     action: GorgiasAction,
 ): QueriesState {

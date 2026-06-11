@@ -9,9 +9,9 @@ import { genKey } from 'draft-js'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import Entry from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry'
-import DefaultEntryComponent from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry/DefaultEntryComponent'
-import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
+import { Entry } from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry'
+import { DefaultEntryComponent } from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry/DefaultEntryComponent'
+import { addMention } from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import type {
     MentionPluginStore,
     MentionPluginTheme,
@@ -53,7 +53,7 @@ type State = {
     focusedOptionIndex: number
 }
 
-export default class MentionSuggestions extends Component<Props, State> {
+export class MentionSuggestions extends Component<Props, State> {
     key = genKey()
     activeOffsetKey!: string
     lastSearchValue!: string

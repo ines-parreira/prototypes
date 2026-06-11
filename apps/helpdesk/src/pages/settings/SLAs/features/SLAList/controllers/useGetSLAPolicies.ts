@@ -8,12 +8,12 @@ import type {
 import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import type { UISLAPolicy } from '../types'
-import makeUISLAPolicy from './makeUISLAPolicy'
+import { makeUISLAPolicy } from './makeUISLAPolicy'
 
 export const STALE_TIME_MS = Duration.minutes(5)
 export const CACHE_TIME_MS = Duration.minutes(20)
 
-export default function useGetSLAPolicies() {
+export function useGetSLAPolicies() {
     const transformData = useCallback(
         (data: HttpResponse<ListSlaPolicies200>) =>
             data?.data?.data

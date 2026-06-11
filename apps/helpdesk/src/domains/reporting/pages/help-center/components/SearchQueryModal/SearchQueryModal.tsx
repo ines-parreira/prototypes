@@ -3,11 +3,12 @@ import React, { useState } from 'react'
 import { ModalHeader } from 'reactstrap'
 
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import HelpCenterStatsTable, {
+import {
+    HelpCenterStatsTable,
     TableCellType,
 } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { useSearchQueryMetrics } from 'domains/reporting/pages/help-center/hooks/useSearchQueryMetrics'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
 const ITEMS_PER_PAGE = 10
 
@@ -82,4 +83,4 @@ const SearchQueryModal = ({
     )
 }
 
-export default SearchQueryModal
+export { SearchQueryModal }

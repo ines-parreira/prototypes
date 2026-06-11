@@ -2,19 +2,19 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import EmojiTextInput from '../EmojiTextInput'
+import { EmojiTextInput } from '../EmojiTextInput'
 
-jest.mock('../../input/TextInput', () =>
-    jest.fn(() => (
+jest.mock('../../input/TextInput', () => ({
+    DefaultExportTextInput: jest.fn(() => (
         <div>
             <p>TextInput</p>
             <input />
         </div>
     )),
-)
-jest.mock('pages/common/components/ViewTable/EmojiSelect/EmojiSelect', () =>
-    jest.fn(() => <div>EmojiSelect</div>),
-)
+}))
+jest.mock('pages/common/components/ViewTable/EmojiSelect/EmojiSelect', () => ({
+    EmojiSelect: jest.fn(() => <div>EmojiSelect</div>),
+}))
 
 describe('<EmojiTextInput/>', () => {
     let onChange: jest.MockedFunction<any>

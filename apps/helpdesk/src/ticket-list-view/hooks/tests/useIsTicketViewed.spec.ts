@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 
-import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
+import { useAgentsViewing } from 'hooks/realtime/useAgentsViewing'
 import * as viewUtils from 'state/views/utils'
 
-import useIsTicketViewed from '../useIsTicketViewed'
+import { useIsTicketViewed } from '../useIsTicketViewed'
 
 jest.mock('hooks/useAppSelector')
 

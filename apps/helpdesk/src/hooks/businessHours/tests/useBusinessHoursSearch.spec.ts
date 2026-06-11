@@ -9,7 +9,7 @@ import type {
 } from '@gorgias/helpdesk-client'
 import type { BusinessHoursList } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

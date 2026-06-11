@@ -8,17 +8,17 @@ import { Link } from 'react-router-dom'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { BodyCellContent } from 'pages/common/components/table/cells/BodyCellContent'
 import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import type { Callbacks } from 'pages/common/hooks/useReorderDnD'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
-import useCreateCustomFieldCondition from '../hooks/useCreateCustomFieldCondition'
-import useUpdateCustomFieldCondition from '../hooks/useUpdateCustomFieldCondition'
+import { useCreateCustomFieldCondition } from '../hooks/useCreateCustomFieldCondition'
+import { useUpdateCustomFieldCondition } from '../hooks/useUpdateCustomFieldCondition'
 import { DeletionPopover } from './DeletionPopover'
 
 import css from './ConditionalFieldRow.less'
@@ -31,7 +31,7 @@ type ConditionalFieldRowProps = {
     onDropEntity: Callbacks['onDrop']
 }
 
-export default function ConditionalFieldRow({
+export function ConditionalFieldRow({
     condition,
     canDuplicate,
     position,

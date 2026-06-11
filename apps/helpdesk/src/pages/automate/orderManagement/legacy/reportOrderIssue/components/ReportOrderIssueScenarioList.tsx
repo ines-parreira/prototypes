@@ -5,7 +5,7 @@ import _uniqueId from 'lodash/uniqueId'
 
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
-import ReportOrderIssueScenarioItem from './ReportOrderIssueScenarioItem'
+import { ReportOrderIssueScenarioItem } from './ReportOrderIssueScenarioItem'
 
 type Props = {
     items: SelfServiceReportIssueCase[]
@@ -78,4 +78,4 @@ const ReportOrderIssueScenarioList = ({
     )
 }
 
-export default ReportOrderIssueScenarioList
+export { ReportOrderIssueScenarioList }

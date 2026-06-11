@@ -16,7 +16,7 @@ export const initialState: InfobarState = fromJS({
     pendingActionsCallbacks: [],
 })
 
-export default function reducer(
+export function reducer(
     state: InfobarState = initialState,
     action: GorgiasAction,
 ): InfobarState {

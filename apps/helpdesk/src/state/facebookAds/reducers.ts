@@ -21,7 +21,7 @@ const getActivePath = (
     { integrationId, id }: { integrationId: number; id: string },
 ) => ['internals', integrationId.toString(), key, id, 'is_active']
 
-export default function reducer(
+export function reducer(
     state: Map<any, any> = initialState,
     action: GorgiasAction,
 ) {

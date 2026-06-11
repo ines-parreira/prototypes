@@ -51,5 +51,3 @@ export const InstallRuleModalBody = (props: Props) => {
             : DefaultModal
     return <Component {...props} />
 }
-
-export default InstallRuleModalBody

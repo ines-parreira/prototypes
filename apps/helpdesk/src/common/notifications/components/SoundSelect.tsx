@@ -2,10 +2,11 @@ import React, { useMemo, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import type { SoundValue } from 'services/NotificationSounds'
@@ -22,7 +23,7 @@ type Props = {
 
 const emptyOption = { label: '- No sound -', value: '' } as const
 
-export default function SoundSelect({
+export function SoundSelect({
     addEmptyValue = false,
     disabled = false,
     value,

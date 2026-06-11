@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     BigCommerceIntegration,
     GorgiasChatIntegration,
@@ -72,4 +72,4 @@ const SelectStore = (props: {
     )
 }
 
-export default SelectStore
+export { SelectStore }

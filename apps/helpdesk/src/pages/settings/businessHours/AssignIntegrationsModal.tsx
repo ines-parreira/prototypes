@@ -5,13 +5,13 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import { useCustomBusinessHoursContext } from './CustomBusinessHoursContext'
-import CustomBusinessHoursIntegrationsTable from './CustomBusinessHoursIntegrationsTable'
+import { CustomBusinessHoursIntegrationsTable } from './CustomBusinessHoursIntegrationsTable'
 import type { EditCustomBusinessHoursFormValues } from './types'
 
 import css from './AssignIntegrationsModal.less'
@@ -21,7 +21,7 @@ type Props = {
     onClose: () => void
 }
 
-export default function AssignIntegrationsModal({ isOpen, onClose }: Props) {
+export function AssignIntegrationsModal({ isOpen, onClose }: Props) {
     const { setValue, resetField, watch } =
         useFormContext<EditCustomBusinessHoursFormValues>()
     const { integrationsToOverride, resetIntegrationsToOverride } =

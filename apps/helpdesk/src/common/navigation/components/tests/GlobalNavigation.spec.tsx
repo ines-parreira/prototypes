@@ -2,8 +2,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import GlobalNavigation from 'common/navigation/components/GlobalNavigation'
-import useActiveItem from 'common/navigation/hooks/useActiveItem'
+import { GlobalNavigation } from 'common/navigation/components/GlobalNavigation'
+import { useActiveItem } from 'common/navigation/hooks/useActiveItem'
 import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
 import {
     NavBarContext,
@@ -24,19 +24,23 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
 const getHasAutomateMock = assumeMock(getHasAutomate)
 
-jest.mock('../../hooks/useActiveItem', () => jest.fn())
+jest.mock('../../hooks/useActiveItem', () => ({ useActiveItem: jest.fn() }))
 const useActiveItemMock = assumeMock(useActiveItem)
 
 jest.mock('../GlobalNavigationSpotlight', () => ({
     GlobalNavigationSpotlight: () => <div>GlobalNavigationSpotlight</div>,
 }))
-jest.mock('../NotificationsItem', () => () => <div>NotificationsItem</div>)
-jest.mock('../UserItem', () => () => <div>UserItem</div>)
+jest.mock('../NotificationsItem', () => ({
+    NotificationsItem: () => <div>NotificationsItem</div>,
+}))
+jest.mock('../UserItem', () => ({ UserItem: () => <div>UserItem</div> }))
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock

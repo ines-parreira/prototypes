@@ -18,13 +18,13 @@ import {
     GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityMethod,
 } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Collapse from 'pages/common/components/Collapse/Collapse'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
-import GorgiasChatIntegrationVisibilityCondition from './GorgiasChatIntegrationVisibilityCondition'
+import { GorgiasChatIntegrationVisibilityCondition } from './GorgiasChatIntegrationVisibilityCondition'
 import type { UrlValidationResult } from './utils/validateUrl'
-import validateUrl from './utils/validateUrl'
+import { validateUrl } from './utils/validateUrl'
 
 import css from './GorgiasChatIntegrationVisibilityControls.less'
 
@@ -324,7 +324,9 @@ const GorgiasChatIntegrationVisibilityControls = (
     )
 }
 
-export default forwardRef<
+const DefaultExportGorgiasChatIntegrationVisibilityControls = forwardRef<
     GorgiasChatIntegrationVisibilityControlsHandle,
     Props
 >(GorgiasChatIntegrationVisibilityControls)
+
+export { DefaultExportGorgiasChatIntegrationVisibilityControls }

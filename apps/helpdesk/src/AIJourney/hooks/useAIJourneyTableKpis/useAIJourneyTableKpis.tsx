@@ -17,7 +17,7 @@ import {
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export type Metrics<T> = {
     recipients: T

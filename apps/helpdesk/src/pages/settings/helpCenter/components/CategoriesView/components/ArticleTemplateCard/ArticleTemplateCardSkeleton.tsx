@@ -21,4 +21,4 @@ const ArticleTemplateCardSkeleton = () => {
     )
 }
 
-export default ArticleTemplateCardSkeleton
+export { ArticleTemplateCardSkeleton }

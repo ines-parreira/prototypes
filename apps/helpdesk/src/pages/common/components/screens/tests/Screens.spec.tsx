@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import { render } from '@repo/testing'
 
-import Screens, { ScreensContext } from '../Screens'
+import { Screens, ScreensContext } from '../Screens'
 
 describe('<Screens />', () => {
     const MockSetActiveScreenComponent = () => {

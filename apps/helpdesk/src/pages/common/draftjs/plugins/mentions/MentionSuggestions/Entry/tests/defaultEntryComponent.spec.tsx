@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import DefaultEntryComponent from '../DefaultEntryComponent'
+import { DefaultEntryComponent } from '../DefaultEntryComponent'
 
 describe('DefaultEntryComponent', () => {
     it('should render', () => {

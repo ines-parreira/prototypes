@@ -2,7 +2,7 @@ import cn from 'classnames'
 
 import type { MacroAction } from '@gorgias/helpdesk-types'
 
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
 import css from './Preview.less'
 

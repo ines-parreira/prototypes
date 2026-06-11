@@ -1,21 +1,21 @@
 import React, { useMemo } from 'react'
 
 import { defaultNodeNames } from 'pages/automate/workflows/editor/visualBuilder/nodes/constants'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import { useGetAppImageUrl } from '../hooks/useGetAppImageUrl'
 import type {
     ActionStepItem,
     ParentActionConfiguration,
     TemplateConfiguration,
 } from '../types'
-import ActionEventTitle from './ActionEventTitle'
-import HttpRequestLogsView from './HttpRequestLogsView'
-import NoHttpRequestLogsView from './NoHttpRequestLogsView'
-import TransitionConditionsAccordion from './TransitionConditionsAccordion'
+import { ActionEventTitle } from './ActionEventTitle'
+import { HttpRequestLogsView } from './HttpRequestLogsView'
+import { NoHttpRequestLogsView } from './NoHttpRequestLogsView'
+import { TransitionConditionsAccordion } from './TransitionConditionsAccordion'
 
 import css from './ActionStepAccordionItem.less'
 
@@ -202,4 +202,4 @@ const ActionStepAccordionItem = ({
     )
 }
 
-export default ActionStepAccordionItem
+export { ActionStepAccordionItem }

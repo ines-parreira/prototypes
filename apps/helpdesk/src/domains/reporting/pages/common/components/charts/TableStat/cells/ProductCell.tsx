@@ -51,4 +51,4 @@ const ProductCell = ({ name, imageUrl }: Props) => {
     )
 }
 
-export default ProductCell
+export { ProductCell }

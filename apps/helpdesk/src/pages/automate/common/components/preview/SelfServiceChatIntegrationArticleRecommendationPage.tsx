@@ -3,10 +3,10 @@ import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import type { AgentMessage } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AgentMessages'
-import MessageContent from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
+import { MessageContent } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './SelfServiceChatIntegrationArticleRecommendationPage.less'
@@ -82,4 +82,4 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
     )
 }
 
-export default SelfServiceChatIntegrationArticleRecommendationPage
+export { SelfServiceChatIntegrationArticleRecommendationPage }

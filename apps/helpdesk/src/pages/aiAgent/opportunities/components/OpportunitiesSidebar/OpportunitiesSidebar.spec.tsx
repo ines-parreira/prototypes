@@ -6,7 +6,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Virtuoso } from 'react-virtuoso'
 
-import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
+import { DefaultExportOpportunitiesSidebarContext as OpportunitiesSidebarContext } from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
 import { State } from '../../hooks/useOpportunityPageState'
 import type { OpportunityPageState } from '../../hooks/useOpportunityPageState'

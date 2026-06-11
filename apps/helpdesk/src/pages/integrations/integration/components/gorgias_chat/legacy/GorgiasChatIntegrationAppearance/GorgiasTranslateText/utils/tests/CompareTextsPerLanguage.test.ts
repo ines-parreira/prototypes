@@ -1,6 +1,6 @@
 import type { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
-import isEqualTextsPerLanguage from '../CompareTextsPerLanguage'
+import { isEqualTextsPerLanguage } from '../CompareTextsPerLanguage'
 
 describe('isEqualTextsPerLanguage', () => {
     it('should treat objects as equal', () => {

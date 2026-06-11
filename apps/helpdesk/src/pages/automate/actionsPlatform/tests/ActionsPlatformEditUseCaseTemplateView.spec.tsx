@@ -12,8 +12,8 @@ import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/wo
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import type { RootState } from 'state/types'
 
-import ActionsPlatformEditUseCaseTemplateView from '../ActionsPlatformEditUseCaseTemplateView'
-import useEditActionTemplate from '../hooks/useEditActionTemplate'
+import { ActionsPlatformEditUseCaseTemplateView } from '../ActionsPlatformEditUseCaseTemplateView'
+import { useEditActionTemplate } from '../hooks/useEditActionTemplate'
 import type { ActionTemplate } from '../types'
 
 jest.mock('models/workflows/queries')

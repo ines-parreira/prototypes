@@ -3,16 +3,18 @@ import { cleanup, fireEvent, screen } from '@testing-library/react'
 
 import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
 
-import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
+import { LiveVoiceAgentsSection } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
 
 jest.mock('@gorgias/helpdesk-queries')
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 const useListLiveCallQueueAgentsMock = assumeMock(useListLiveCallQueueAgents)
 
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList',
-    () => () => <div>LiveVoiceAgentsList</div>,
+    () => ({ LiveVoiceAgentsList: () => <div>LiveVoiceAgentsList</div> }),
 )
 
 describe('LiveVoiceAgentsSection', () => {

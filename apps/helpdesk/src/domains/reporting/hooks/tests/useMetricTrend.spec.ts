@@ -2,8 +2,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'

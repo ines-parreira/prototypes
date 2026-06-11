@@ -8,7 +8,7 @@ import type {
     VoiceMessageTextToSpeech,
 } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
-import Textarea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as Textarea } from 'pages/common/forms/TextArea'
 
 import css from './VoiceMessageField.less'
 
@@ -68,4 +68,4 @@ const TextToSpeechRecordingInput = ({
     )
 }
 
-export default TextToSpeechRecordingInput
+export { TextToSpeechRecordingInput }

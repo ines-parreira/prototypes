@@ -19,13 +19,15 @@ import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import type { RootState } from 'state/types'
 
-import CampaignDetailsFactory from '../CampaignDetailsFactory'
+import { CampaignDetailsFactory } from '../CampaignDetailsFactory'
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion

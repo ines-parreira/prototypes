@@ -35,5 +35,3 @@ export const newPhoneNumbersReducer = createReducer<NewPhoneNumbersState>(
                 })
             }),
 )
-
-export default newPhoneNumbersReducer

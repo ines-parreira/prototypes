@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import SyncNotification from '../SyncNotification'
+import { SyncNotification } from '../SyncNotification'
 
 describe('<SyncNotification/>', () => {
     afterEach(() => {

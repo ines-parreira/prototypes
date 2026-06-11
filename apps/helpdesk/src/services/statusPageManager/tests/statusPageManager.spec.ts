@@ -15,7 +15,7 @@ import {
     MAINTENANCE_NOTIFICATION_ID,
     MAINTENANCE_STATUSES,
 } from '../constants'
-import statusPageManager from '../statusPageManager'
+import { statusPageManager } from '../statusPageManager'
 import type {
     StatusPageIncidentsResponseData,
     StatusPageScheduledMaintenanceResponseData,

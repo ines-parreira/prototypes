@@ -23,7 +23,7 @@ import {
 } from '../../../../state/ticket/selectors'
 import type { RootState } from '../../../../state/types'
 import { convertFromHTML } from '../../../../utils/editor'
-import Ellipsis from '../../components/Ellipsis'
+import { Ellipsis } from '../../components/Ellipsis'
 
 type OwnProps = {
     editorState: EditorState
@@ -106,4 +106,6 @@ const connector = connect(
     },
 )
 
-export default connector(EmailExtraButtonContainer)
+const DefaultExportEmailExtraButton = connector(EmailExtraButtonContainer)
+
+export { DefaultExportEmailExtraButton }

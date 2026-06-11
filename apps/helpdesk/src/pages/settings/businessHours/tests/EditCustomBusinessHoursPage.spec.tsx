@@ -6,11 +6,11 @@ import { setupServer } from 'msw/node'
 
 import { mockGetBusinessHoursDetailsHandler } from '@gorgias/helpdesk-mocks'
 
-import EditCustomBusinessHoursPage from '../EditCustomBusinessHoursPage'
+import { EditCustomBusinessHoursPage } from '../EditCustomBusinessHoursPage'
 
-jest.mock('../EditCustomBusinessHoursForm', () => () => (
-    <div>EditCustomBusinessHoursForm</div>
-))
+jest.mock('../EditCustomBusinessHoursForm', () => ({
+    EditCustomBusinessHoursForm: () => <div>EditCustomBusinessHoursForm</div>,
+}))
 
 const mockedGetBusinessHoursDetails = mockGetBusinessHoursDetailsHandler(
     async ({ request: __req, data }) =>

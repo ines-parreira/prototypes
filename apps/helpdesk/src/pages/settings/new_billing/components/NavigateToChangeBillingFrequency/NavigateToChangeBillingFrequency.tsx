@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import type { PlanId } from 'models/billing/types'
 import {
@@ -37,7 +37,7 @@ export type NavigateToChangeBillingFrequencyProps = {
     cancellationsByPlanId?: Map<PlanId, string>
 }
 
-export default function NavigateToChangeBillingFrequency({
+export function NavigateToChangeBillingFrequency({
     buttonText,
     tooltipPlacement,
     contactBilling,

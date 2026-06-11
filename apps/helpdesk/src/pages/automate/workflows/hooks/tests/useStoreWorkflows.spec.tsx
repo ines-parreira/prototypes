@@ -15,7 +15,7 @@ import { selfServiceConfigurationKeys } from 'models/selfServiceConfiguration/qu
 import { selfServiceConfigurationFixture } from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
 import type { RootState } from 'state/types'
 
-import useStoreWorkflows from '../useStoreWorkflows'
+import { useStoreWorkflows } from '../useStoreWorkflows'
 import { getIntegration } from './fixtures/utils'
 
 const shopName = 'ShopName'
@@ -54,7 +54,7 @@ jest.mock('state/entities/selfServiceConfigurations/selectors')
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     // default export
     __esModule: true,
-    default: () => ({
+    useSelfServiceConfiguration: () => ({
         selfServiceConfiguration: {
             id: 1,
             type: 'shopify' as any,

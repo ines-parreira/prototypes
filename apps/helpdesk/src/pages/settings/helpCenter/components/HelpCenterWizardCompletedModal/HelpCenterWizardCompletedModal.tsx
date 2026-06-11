@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import SuccessModal, {
+import {
+    SuccessModal,
     SuccessModalIcon,
 } from 'pages/common/components/SuccessModal/SuccessModal'
 
@@ -71,4 +72,4 @@ const HelpCenterWizardCompletedModal = () => {
     )
 }
 
-export default HelpCenterWizardCompletedModal
+export { HelpCenterWizardCompletedModal }

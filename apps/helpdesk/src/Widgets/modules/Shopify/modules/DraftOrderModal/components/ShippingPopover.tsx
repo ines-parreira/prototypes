@@ -16,10 +16,10 @@ import { fromJS, List } from 'immutable'
 import { Button, Form, Input, Popover, PopoverBody } from 'reactstrap'
 
 import { formatPrice } from 'business/shopify/number'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import RadioButton from 'pages/common/components/RadioButton'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
+import { AmountInput } from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import popoverCss from './Popover.less'
@@ -45,7 +45,7 @@ type State = {
     price?: number
 }
 
-export default class ShippingPopover extends Component<Props, State> {
+export class ShippingPopover extends Component<Props, State> {
     static _FREE_SHIPPING_TITLE = 'Free shipping'
 
     static defaultProps: Pick<Props, 'placement'> = {

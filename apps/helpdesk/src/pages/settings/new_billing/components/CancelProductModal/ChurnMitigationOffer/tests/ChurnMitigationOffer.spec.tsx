@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ChurnMitigationOffer from '../ChurnMitigationOffer'
+import { ChurnMitigationOffer } from '../ChurnMitigationOffer'
 
 describe('ChurnMitigationOffer', () => {
     it('should render with candu content contents', () => {

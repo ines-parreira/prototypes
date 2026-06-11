@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { AutoQAAgentsCardExtra } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsCardExtra'

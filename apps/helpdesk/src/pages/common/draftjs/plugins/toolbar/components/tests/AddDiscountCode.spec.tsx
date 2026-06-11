@@ -8,8 +8,8 @@ import thunk from 'redux-thunk'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 
-import ToolbarProvider from '../../ToolbarProvider'
-import AddDiscountCode from '../AddDiscountCode'
+import { ToolbarProvider } from '../../ToolbarProvider'
+import { AddDiscountCode } from '../AddDiscountCode'
 
 const minProps = {
     getEditorState: jest.fn(),

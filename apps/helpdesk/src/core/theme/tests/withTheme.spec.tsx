@@ -4,9 +4,9 @@ import { render } from '@repo/testing'
 
 import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 
-import ThemeProvider from '../ThemeProvider'
+import { ThemeProvider } from '../ThemeProvider'
 import type { SetTheme, Theme } from '../types'
-import withTheme from '../withTheme'
+import { withTheme } from '../withTheme'
 import type { WithThemeProps } from '../withTheme'
 
 describe('withTheme', () => {

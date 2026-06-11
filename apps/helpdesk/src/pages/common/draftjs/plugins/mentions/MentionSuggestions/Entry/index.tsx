@@ -29,7 +29,7 @@ type Props = {
     id?: string
 }
 
-export default class Entry extends Component<Props> {
+export class Entry extends Component<Props> {
     mouseDown: boolean
 
     constructor(props: Props) {

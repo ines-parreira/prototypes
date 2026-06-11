@@ -6,11 +6,11 @@ import copy from 'copy-to-clipboard'
 
 import { toast } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 import css from './CopyButton.less'
 
-export default function CopyButton({
+export function CopyButton({
     value,
     onCopyMessage = 'Copied!',
 }: {

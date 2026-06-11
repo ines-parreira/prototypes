@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import AiAgentScrapedDomainContentHeader from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentHeader'
+import { AiAgentScrapedDomainContentHeader } from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentHeader'
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 
 const mockStoreDomain = 'test-store.com'

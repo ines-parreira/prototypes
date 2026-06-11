@@ -19,7 +19,7 @@ const mockedUpdateArticleTranslationMutateAsync = jest.fn()
 const mockedOnKnowledgeContentCreated = jest.fn()
 
 jest.mock('hooks/useAppSelector')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('models/helpCenter/queries', () => ({
     useCreateArticle: () => ({
         mutateAsync: mockedCreateArticleMutateAsync,

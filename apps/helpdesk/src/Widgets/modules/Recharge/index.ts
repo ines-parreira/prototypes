@@ -1,1 +1,1 @@
-export { default } from './components/Recharge'
+export { RechargeWidget } from './components/Recharge'

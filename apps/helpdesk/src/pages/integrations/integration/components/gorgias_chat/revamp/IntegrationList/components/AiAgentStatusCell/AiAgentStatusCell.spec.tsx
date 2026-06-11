@@ -12,7 +12,7 @@ jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 const mockUseAiAgentAccess = jest.requireMock('hooks/aiAgent/useAiAgentAccess')
     .useAiAgentAccess as jest.MockedFunction<any>
 const mockUseAppSelector = jest.requireMock('hooks/useAppSelector')
-    .default as jest.MockedFunction<any>
+    .useAppSelector as jest.MockedFunction<any>
 const mockUseStoreConfiguration = jest.requireMock(
     'pages/aiAgent/hooks/useStoreConfiguration',
 ).useStoreConfiguration as jest.MockedFunction<any>

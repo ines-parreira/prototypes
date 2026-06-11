@@ -66,4 +66,4 @@ const VisualBuilderNode = ({
     )
 }
 
-export default VisualBuilderNode
+export { VisualBuilderNode }

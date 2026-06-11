@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import LanguageDropdown from '../LanguageDropdown'
+import { LanguageDropdown } from '../LanguageDropdown'
 
 describe('LanguageDropdown', () => {
     const mockOnClose = jest.fn()

@@ -11,7 +11,7 @@ import { fetchPhoneCapabilities } from 'models/phoneNumber/resources'
 import * as apiCalls from 'models/phoneNumber/resources'
 import type { RootState } from 'state/types'
 
-import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
+import { PhoneNumberCreateForm } from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'
 
 const mockUseFlag = assumeMock(useFlag)

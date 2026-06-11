@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'

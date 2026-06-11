@@ -14,14 +14,15 @@ import {
     JsonLogicOperator,
     ReportIssueVariable,
 } from 'models/selfServiceConfiguration/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import css from './ReportOrderIssueScenarioConditionRule.less'
@@ -191,4 +192,4 @@ const ReportOrderIssueScenarioConditionRule = <
     )
 }
 
-export default ReportOrderIssueScenarioConditionRule
+export { ReportOrderIssueScenarioConditionRule }

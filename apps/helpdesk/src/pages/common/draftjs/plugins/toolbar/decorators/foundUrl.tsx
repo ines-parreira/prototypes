@@ -10,7 +10,7 @@ import type {
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
 
-import LinkPopover from '../components/LinkPopover'
+import { LinkPopover } from '../components/LinkPopover'
 
 const foundUrl = (): Decorator => ({
     strategy: (
@@ -58,4 +58,4 @@ const foundUrl = (): Decorator => ({
     },
 })
 
-export default foundUrl
+export { foundUrl }

@@ -11,10 +11,10 @@ import type {
 } from 'models/integration/types'
 
 import { isBigCommerceCartLineItem, isBigCommerceProduct } from '../../utils'
-import useEditModifiersPopover from '../modifiers-popover/useEditModifiersPopover'
+import { useEditModifiersPopover } from '../modifiers-popover/useEditModifiersPopover'
 import { modifierValuesToOptionSelections } from '../modifiers-popover/utils'
-import PriceComponent from './PriceComponent'
-import ProductComponent from './ProductComponent'
+import { PriceComponent } from './PriceComponent'
+import { ProductComponent } from './ProductComponent'
 import { QuantityComponent } from './QuantityComponent'
 import { TotalPriceComponent } from './TotalPriceComponent'
 
@@ -46,7 +46,7 @@ type Props = {
     setDiscounts: (value: Map<string, number>) => void
 }
 
-export default function OrderLineItemRow({
+export function OrderLineItemRow({
     index,
     lineItem,
     product,

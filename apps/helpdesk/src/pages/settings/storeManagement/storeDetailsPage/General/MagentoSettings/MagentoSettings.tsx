@@ -3,8 +3,8 @@ import React, { useCallback } from 'react'
 import type { Magento2Integration } from 'models/integration/types'
 
 import { useMagentoSettings } from './hooks/useMagentoSettings'
-import ManualForm from './ManualForm'
-import OneClickForm from './OneClickForm'
+import { ManualForm } from './ManualForm'
+import { OneClickIntegrationForm as OneClickForm } from './OneClickForm'
 
 import css from './MagentoSettings.less'
 
@@ -15,7 +15,7 @@ export type ShopifySettingsProps = {
     redirectUri: string
 }
 
-export default function MagentoSettings({
+export function MagentoSettings({
     integration,
     onDeleteIntegration,
     refetchStore,

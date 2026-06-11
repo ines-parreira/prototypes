@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import useLoopReturnsIntegrations from '../useLoopReturnsIntegrations'
+import { useLoopReturnsIntegrations } from '../useLoopReturnsIntegrations'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 

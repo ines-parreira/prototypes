@@ -19,7 +19,7 @@ jest.mock('@repo/routing', () => ({
 }))
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(() => jest.fn()),
+    useAppDispatch: jest.fn(() => jest.fn()),
 }))
 
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import AgentCard from './AgentCard'
+import { AgentCard } from './AgentCard'
 
 const meta: Meta<typeof AgentCard> = {
     title: 'Common/AgentCard',

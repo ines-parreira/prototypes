@@ -6,21 +6,21 @@ import { Redirect, useParams } from 'react-router-dom'
 import { useGridSize } from '@gorgias/toolkit-react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { CampaignsLegacyReportConfig } from 'domains/reporting/pages/convert/campaigns/CampaignsLegacyReportConfig'
 import { CAMPAIGNS_REPORT_TITLE } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
-import DownloadOverviewData from 'domains/reporting/pages/convert/components/DownloadOverviewData'
-import RequestABTest from 'domains/reporting/pages/convert/components/RequestABTest'
+import { DownloadOverviewData } from 'domains/reporting/pages/convert/components/DownloadOverviewData'
+import { RequestABTest } from 'domains/reporting/pages/convert/components/RequestABTest'
 import { RevenueStatsContent } from 'domains/reporting/pages/convert/containers/RevenueStatsContent'
 import { useShopifyIntegrations } from 'domains/reporting/pages/convert/hooks/useShopifyIntegrations'
 import css from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignsStats.less'
 import { CampaignStatsFilters } from 'domains/reporting/pages/convert/providers/CampaignStatsFilters'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
+import { ConvertLimitBanner } from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import type { ConvertRouteParams } from 'pages/convert/common/types'
@@ -124,4 +124,4 @@ function CampaignStatsOrPaywallPage() {
     return <CampaignsStats isConvertSubscriber={isConvertSubscriber} />
 }
 
-export default CampaignStatsOrPaywallPage
+export { CampaignStatsOrPaywallPage }

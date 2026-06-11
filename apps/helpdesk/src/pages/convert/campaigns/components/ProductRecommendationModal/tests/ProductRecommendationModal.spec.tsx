@@ -7,7 +7,7 @@ import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/Cam
 import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
-import ProductRecommendationModal from '../ProductRecommendationModal'
+import { ProductRecommendationModal } from '../ProductRecommendationModal'
 
 describe('<ProductRecommendationModal />', () => {
     const onSubmit = jest.fn()

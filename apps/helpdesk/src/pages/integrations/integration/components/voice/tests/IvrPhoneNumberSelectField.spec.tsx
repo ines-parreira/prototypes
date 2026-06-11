@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import IvrPhoneNumberSelectField from '../IvrPhoneNumberSelectField'
+import { IvrPhoneNumberSelectField } from '../IvrPhoneNumberSelectField'
 
 const mockStore = configureMockStore([thunk])
 jest.mock('react-router-dom', () => ({

@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import css from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.less'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
@@ -81,4 +81,4 @@ const EmailIntegrationButtons: React.FC<EmailIntegrationButtonsProps> = ({
     )
 }
 
-export default EmailIntegrationButtons
+export { EmailIntegrationButtons }

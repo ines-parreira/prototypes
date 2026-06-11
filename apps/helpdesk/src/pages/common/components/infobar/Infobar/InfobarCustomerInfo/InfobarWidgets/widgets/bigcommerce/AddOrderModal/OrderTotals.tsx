@@ -6,8 +6,8 @@ import type {
     BigCommerceCheckout,
     BigCommerceConsignment,
 } from 'models/integration/types'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Loader from 'pages/common/components/Loader/Loader'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 import { Coupon } from './Coupon'
 import { Discount } from './Discount'
@@ -82,7 +82,7 @@ const TotalLine = ({
     </>
 )
 
-export default function OrderTotals({
+export function OrderTotals({
     checkout,
     cart,
     consignment,

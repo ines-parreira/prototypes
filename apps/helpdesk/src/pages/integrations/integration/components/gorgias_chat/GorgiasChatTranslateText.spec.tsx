@@ -35,7 +35,9 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText',
     () => ({
         __esModule: true,
-        default: () => <div data-testid="legacy-translate-text" />,
+        DefaultExportGorgiasTranslateText: () => (
+            <div data-testid="legacy-translate-text" />
+        ),
     }),
 )
 

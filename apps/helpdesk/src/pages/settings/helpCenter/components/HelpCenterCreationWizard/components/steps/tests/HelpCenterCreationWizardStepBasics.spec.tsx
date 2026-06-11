@@ -11,7 +11,7 @@ import {
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
 import type { Integration } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import { NEXT_ACTION } from 'pages/settings/helpCenter/constants'
 import {
     HelpCenterApiBasicsFixture,
@@ -21,7 +21,7 @@ import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/Su
 import type { StoreState } from 'state/types'
 
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
-import HelpCenterCreationWizardStepBasics from '../HelpCenterCreationWizardStepBasics'
+import { HelpCenterCreationWizardStepBasics } from '../HelpCenterCreationWizardStepBasics'
 
 const defaultHelpCenter = HelpCenterUiBasicsFixture
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({

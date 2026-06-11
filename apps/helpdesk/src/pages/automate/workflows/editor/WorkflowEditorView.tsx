@@ -8,29 +8,30 @@ import { Container } from 'reactstrap'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
-import useAppSelector from 'hooks/useAppSelector'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { useSearch } from 'hooks/useSearch'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {
     useSelfServiceStoreIntegrationContext,
     withSelfServiceStoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getTimezone } from 'state/currentUser/selectors'
 import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { DraftBadge } from '../components/DraftBadge'
-import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
+import { WorkflowLanguageSelect } from '../components/WorkflowLanguageSelect'
 import { MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD } from '../constants'
 import { useStoreWorkflowsApi } from '../hooks/useStoreWorkflowsApi'
-import useWorkflowChannelSupport, {
+import {
+    useWorkflowChannelSupport,
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
 import {
@@ -48,7 +49,7 @@ import {
     WorkflowToggle,
 } from '../models/workflowConfiguration.types'
 import { WORKFLOW_TEMPLATES } from '../workflowTemplates'
-import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+import { DefaultExportWorkflowVisualBuilder as WorkflowVisualBuilder } from './visualBuilder/WorkflowVisualBuilder'
 import { WorkflowEditorActionButtons } from './WorkflowEditorActionButtons'
 
 import css from './WorkflowEditorView.less'
@@ -546,6 +547,8 @@ function WorkflowEditorViewWrapped({
     )
 }
 
-export default withSelfServiceStoreIntegrationContext(
+const DefaultExportWorkflowEditorView = withSelfServiceStoreIntegrationContext(
     withWorkflowEditorContext(WorkflowEditorViewWrapped),
 )
+
+export { DefaultExportWorkflowEditorView }

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import WorkflowVariableTag from '../WorkflowVariableTag'
+import { WorkflowVariableTag } from '../WorkflowVariableTag'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('react', () => ({

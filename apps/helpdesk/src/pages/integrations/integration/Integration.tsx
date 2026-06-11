@@ -17,7 +17,7 @@ import {
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { EmailProvider } from 'models/integration/constants'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -39,46 +39,46 @@ import {
 import type { RootState } from 'state/types'
 import { compare } from 'utils'
 
-import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
-import AircallIntegrationList from './components/aircall/AircallIntegrationList'
-import BigCommerce from './components/bigcommerce/BigCommerce'
-import EmailIntegrationOnboarding from './components/email/CustomerOnboarding/EmailIntegrationOnboarding'
-import DEPRECATED_EmailDomainVerificationContainer from './components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer'
-import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
-import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
+import { DefaultExportAircallIntegrationCreate as AircallIntegrationCreate } from './components/aircall/AircallIntegrationCreate'
+import { AircallIntegrationList } from './components/aircall/AircallIntegrationList'
+import { BigCommerce } from './components/bigcommerce/BigCommerce'
+import { EmailIntegrationOnboarding } from './components/email/CustomerOnboarding/EmailIntegrationOnboarding'
+import { DEPRECATED_EmailDomainVerificationContainer } from './components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer'
+import { EmailDomainVerification } from './components/email/EmailDomainVerification/EmailDomainVerification'
+import { EmailIntegrationCreate } from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
 // oxlint-disable-next-line no-named-as-default
-import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
+import { DefaultExportEmailIntegrationCreateForwarding as EmailIntegrationCreateForwarding } from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
 // oxlint-disable-next-line no-named-as-default
-import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
-import EmailIntegrationList from './components/email/EmailIntegrationList'
-import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
-import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
-import EmailMigration from './components/email/EmailMigration/EmailMigration'
-import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
-import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
+import { DefaultExportEmailIntegrationCreateVerification as EmailIntegrationCreateVerification } from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
+import { EmailIntegrationList } from './components/email/EmailIntegrationList'
+import { EmailIntegrationUpdate } from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
+import { EmailIntegrationUpdateLayout as EmailIntegrationLayout } from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
+import { EmailMigration } from './components/email/EmailMigration/EmailMigration'
+import { EmailOutboundVerification } from './components/email/EmailOutboundVerification/EmailOutboundVerification'
+import { FacebookIntegrationCustomerChat } from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 // oxlint-disable-next-line no-named-as-default
-import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
-import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
+import { DefaultExportFacebookIntegrationDetail as FacebookIntegrationDetail } from './components/facebook/FacebookIntegrationDetail'
+import { FacebookIntegrationList } from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
 // oxlint-disable-next-line no-named-as-default
-import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
-import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
+import { DefaultExportFacebookIntegrationPreferences as FacebookIntegrationPreferences } from './components/facebook/FacebookIntegrationPreferences'
+import { DefaultExportFacebookIntegrationSetup as FacebookIntegrationSetup } from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
 import { GorgiasChatIntegration } from './components/gorgias_chat/GorgiasChatIntegration'
-import HTTP from './components/http/HTTP'
-import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
-import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
-import Magento2 from './components/magento2/Magento2'
-import Recharge from './components/recharge/Recharge'
-import Shopify from './components/shopify/Shopify'
-import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
-import SmileIntegrationList from './components/smile/SmileIntegrationList'
-import SmsIntegration from './components/sms/SmsIntegration'
-import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
+import { Http as HTTP } from './components/http/HTTP'
+import { KlaviyoIntegrationDetail } from './components/klaviyo/KlaviyoIntegrationDetail'
+import { KlaviyoIntegrationList } from './components/klaviyo/KlaviyoIntegrationList'
+import { Magento2 } from './components/magento2/Magento2'
+import { Recharge } from './components/recharge/Recharge'
+import { Shopify } from './components/shopify/Shopify'
+import { DefaultExportSmileIntegrationDetail as SmileIntegrationDetail } from './components/smile/SmileIntegrationDetail'
+import { SmileIntegrationList } from './components/smile/SmileIntegrationList'
+import { SmsIntegration } from './components/sms/SmsIntegration'
+import { TwitterIntegrationDetail } from './components/twitter/TwitterIntegrationDetail'
 // oxlint-disable-next-line no-named-as-default
-import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
-import VoiceIntegration from './components/voice/VoiceIntegration'
-import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
-import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail'
-import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList'
+import { DefaultExportTwitterIntegrationList as TwitterIntegrationList } from './components/twitter/TwitterIntegrationList'
+import { VoiceIntegration } from './components/voice/VoiceIntegration'
+import { WhatsAppIntegration } from './components/whatsapp/WhatsAppIntegration'
+import { DefaultExportYotpoIntegrationDetail as YotpoIntegrationDetail } from './components/yotpo/YotpoIntegrationDetail'
+import { YotpoIntegrationList } from './components/yotpo/YotpoIntegrationList'
 import { Tab } from './types'
 
 export const IntegrationDetail = ({
@@ -554,4 +554,6 @@ const connector = connect(
     }),
 )
 
-export default connector(IntegrationDetail)
+const DefaultExportIntegration = connector(IntegrationDetail)
+
+export { DefaultExportIntegration }

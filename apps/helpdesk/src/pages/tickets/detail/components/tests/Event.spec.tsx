@@ -12,13 +12,15 @@ import {
     getIntegrationDataByIntegrationId,
 } from 'state/ticket/selectors'
 
-import EventContainer from '../Event'
+import { EventContainer } from '../Event'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
-jest.mock('pages/common/utils/DatetimeLabel', () => () => (
-    <div>MockedDatetimeLabel</div>
-))
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: () => <div>MockedDatetimeLabel</div>,
+}))
 
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationById: jest.fn(),

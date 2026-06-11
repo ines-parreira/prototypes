@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
+import { ViewingIndicator } from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 
 describe('<ViewingIndicator />', () => {
     it('should render the component', () => {

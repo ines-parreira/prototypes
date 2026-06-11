@@ -4,7 +4,7 @@ import React from 'react'
 import classnames from 'classnames'
 import { Button } from 'reactstrap'
 
-import PopoverModal from 'pages/common/components/PopoverModal'
+import { PopoverModal } from 'pages/common/components/PopoverModal'
 
 import css from './HeaderTitle.less'
 
@@ -15,12 +15,7 @@ type Props = {
     className?: string
 }
 
-export default function HeaderTitle({
-    title,
-    description,
-    helpUrl,
-    className,
-}: Props) {
+export function HeaderTitle({ title, description, helpUrl, className }: Props) {
     return (
         <h1 className={classnames('align-items-center', className)}>
             <span>{title}</span>

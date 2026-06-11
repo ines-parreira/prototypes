@@ -11,10 +11,10 @@ import React, {
 import _isEqual from 'lodash/isEqual'
 
 import type { AccordionProps } from './Accordion'
-import Accordion from './Accordion'
+import { Accordion } from './Accordion'
 import type { SortableAccordionContextType } from './SortableAccordionContext'
-import SortableAccordionContext from './SortableAccordionContext'
-import type SortableAccordionItem from './SortableAccordionItem'
+import { SortableAccordionContext } from './SortableAccordionContext'
+import type { SortableAccordionItem } from './SortableAccordionItem'
 
 type Props<T extends string | string[] | null> = {
     type?: string
@@ -105,4 +105,4 @@ const SortableAccordion = <T extends string | string[] | null>({
     )
 }
 
-export default SortableAccordion
+export { SortableAccordion }

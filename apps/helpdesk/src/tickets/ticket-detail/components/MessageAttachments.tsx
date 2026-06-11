@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import { DefaultExportTicketAttachments as TicketAttachments } from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 
 import css from './MessageAttachments.less'
 

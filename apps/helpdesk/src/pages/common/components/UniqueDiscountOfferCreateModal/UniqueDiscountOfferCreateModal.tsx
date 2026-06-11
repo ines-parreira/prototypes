@@ -19,7 +19,7 @@ import {
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import type {
     UniqueDiscountOffer,
@@ -27,17 +27,17 @@ import type {
     UniqueDiscountOfferTypeEnum,
 } from 'models/convert/discountOffer/types'
 import { UNIQUE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import InputField from 'pages/common/forms/input/InputField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import {
     AppliesTypeEnum,
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
-import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
+import { CustomerSegmentSelector } from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
 import { useCreateDiscountOffer } from 'pages/convert/discountOffer/hooks/useCreateDiscountOffer'
 import { useUpdateDiscountOffer } from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

@@ -16,7 +16,7 @@ import {
     getGreyAreaHint,
     getTimeSeriesFormattedData,
 } from 'domains/reporting/pages/automate/overview/utils'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL } from 'domains/reporting/pages/self-service/constants'

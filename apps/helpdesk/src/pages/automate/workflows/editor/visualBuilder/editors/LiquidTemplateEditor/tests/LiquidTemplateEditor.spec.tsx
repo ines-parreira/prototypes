@@ -7,7 +7,7 @@ import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { TranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
@@ -16,7 +16,7 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import LiquidTemplateEditor from '..'
+import { LiquidTemplateEditor } from '..'
 
 // Mock the workflows API client
 const mockValidateStep = jest.fn(() =>

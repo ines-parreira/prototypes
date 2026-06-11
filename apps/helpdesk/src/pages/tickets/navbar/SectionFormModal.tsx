@@ -5,13 +5,13 @@ import { Form } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { SectionDraft } from 'models/section/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { EmojiSelect } from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './SectionFormModal.less'
 
@@ -28,7 +28,7 @@ type Props = {
     sectionForm: Maybe<SectionDraft>
 }
 
-export default function SectionFormModal({
+export function SectionFormModal({
     isNewSection,
     isOpen,
     isSubmitting,

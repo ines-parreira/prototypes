@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
-import ThemeContext from './ThemeContext'
+import { DefaultExportThemeContext as ThemeContext } from './ThemeContext'
 
-export default function useSetTheme() {
+export function useSetTheme() {
     const ctx = useContext(ThemeContext)
     if (ctx === null) {
         throw new Error(

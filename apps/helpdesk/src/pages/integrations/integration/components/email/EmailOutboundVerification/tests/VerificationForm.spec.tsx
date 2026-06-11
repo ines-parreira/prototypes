@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { Props } from '../VerificationForm/VerificationForm'
-import VerificationForm from '../VerificationForm/VerificationForm'
+import { VerificationForm } from '../VerificationForm/VerificationForm'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const store = mockStore({} as RootState)

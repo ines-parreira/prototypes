@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import type { GetProductRecommendationRules } from '@gorgias/knowledge-service-client'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useGetEcommerceLookupValues,
     useGetEcommerceProductCollections,
@@ -13,15 +13,17 @@ import {
 } from 'models/ecommerce/queries'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
-import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
+import { usePaginatedProductIntegration } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import { AiAgentProductRecommendationsExclude } from '../AiAgentProductRecommendationsExclude'
-import usePaginatedProductCollectionsByIds from '../hooks/usePaginatedProductCollectionsByIds'
-import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
+import { usePaginatedProductCollectionsByIds } from '../hooks/usePaginatedProductCollectionsByIds'
+import { usePaginatedProductsByIds } from '../hooks/usePaginatedProductsByIds'
 import { allCollections, allProducts, allTags, allVendors } from './data'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: jest.fn(() => jest.fn()),
+}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

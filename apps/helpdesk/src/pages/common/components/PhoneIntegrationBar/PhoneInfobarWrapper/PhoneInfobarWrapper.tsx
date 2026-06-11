@@ -11,10 +11,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function PhoneInfobarWrapper({
-    primary,
-    children,
-}: Props): JSX.Element {
+export function PhoneInfobarWrapper({ primary, children }: Props): JSX.Element {
     const [savedSizes] = useSavedSizes()
     const width = (savedSizes.current.infobar || DEFAULT_WIDTH) + 9
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)

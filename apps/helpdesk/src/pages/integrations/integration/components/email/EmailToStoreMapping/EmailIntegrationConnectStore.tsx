@@ -5,13 +5,13 @@ import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
@@ -205,4 +205,4 @@ const EmailIntegrationConnectStore = ({ integration }: Props) => {
     )
 }
 
-export default EmailIntegrationConnectStore
+export { EmailIntegrationConnectStore }

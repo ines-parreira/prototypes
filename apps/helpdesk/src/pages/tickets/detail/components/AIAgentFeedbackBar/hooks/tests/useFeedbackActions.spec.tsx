@@ -6,7 +6,9 @@ import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useFeedbackActions } from '../useFeedbackActions'
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 
 // Base types for cleaner mocking
 type MockFeedback = {

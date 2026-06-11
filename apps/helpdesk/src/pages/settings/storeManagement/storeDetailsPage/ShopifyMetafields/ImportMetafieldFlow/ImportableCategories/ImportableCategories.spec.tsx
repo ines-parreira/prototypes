@@ -5,7 +5,7 @@ import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { SupportedCategories } from '../../types'
-import ImportableCategories from './ImportableCategories'
+import { ImportableCategories } from './ImportableCategories'
 
 describe('ImportableCategories', () => {
     const mockCategories = [

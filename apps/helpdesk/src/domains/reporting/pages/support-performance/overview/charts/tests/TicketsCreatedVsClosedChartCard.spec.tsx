@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useCreatedVsClosedTicketsTimeSeries } from 'domains/reporting/hooks/useCreatedVsClosedTicketsTimeSeries'
-import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
+import { DefaultExportBarChart as BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { TicketsCreatedVsClosedChart } from 'domains/reporting/pages/support-performance/overview/charts/TicketsCreatedVsClosedChart'
 import { CREATED_VS_CLOSED_TICKETS_LABEL } from 'domains/reporting/services/constants'
 

@@ -8,11 +8,11 @@ import { useChannel } from '@gorgias/realtime'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
-import LiveVoiceCallTable from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
-import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
+import { LiveVoiceAgentsSection } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
+import { LiveVoiceCallTable } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
+import { LiveVoiceMetrics } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
-import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
+import { DefaultExportLiveVoice as LiveVoice } from 'domains/reporting/pages/voice/pages/LiveVoice'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
@@ -24,7 +24,7 @@ jest.mock('@gorgias/realtime')
 jest.mock('domains/reporting/pages/voice/hooks/useLiveVoiceUpdates')
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters',
-    () => () => <div>LiveVoiceFilters</div>,
+    () => ({ LiveVoiceFilters: () => <div>LiveVoiceFilters</div> }),
 )
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics')
 jest.mock(
@@ -33,20 +33,22 @@ jest.mock(
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable',
 )
-jest.mock(
-    'domains/reporting/pages/common/layout/StatsPage',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
-)
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('domains/reporting/pages/common/layout/StatsPage', () => ({
+    StatsPage: ({ children }: { children?: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+}))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/currentAccount/selectors')
-jest.mock(
-    'pages/common/utils/withProductEnabledPaywall',
-    () => () => (Component: ComponentType<Record<string, unknown>>) =>
-        Component,
-)
+jest.mock('pages/common/utils/withProductEnabledPaywall', () => ({
+    withProductEnabledPaywall:
+        () => (Component: ComponentType<Record<string, unknown>>) =>
+            Component,
+}))
 const getTimezoneMock = assumeMock(getTimezone)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 

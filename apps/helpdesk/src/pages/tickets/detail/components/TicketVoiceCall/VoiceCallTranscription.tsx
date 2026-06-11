@@ -3,11 +3,11 @@ import {
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 
-import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
-import TranscriptionData from './TranscriptionData'
+import { ControlledCollapsibleDetails } from './ControlledCollapsibleDetails'
+import { TranscriptionData } from './TranscriptionData'
 
 import css from './TranscriptionData.less'
 
@@ -16,7 +16,7 @@ type Props = {
     type: VoiceCallRecordingType
 }
 
-export default function VoiceCallTranscription({ audio, type }: Props) {
+export function VoiceCallTranscription({ audio, type }: Props) {
     const { isTranscriptionOpened, toggleTranscriptionOpened } =
         useVoiceRecordingsContext()
 

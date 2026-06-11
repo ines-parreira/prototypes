@@ -2,12 +2,12 @@ import type React from 'react'
 import { useCallback, useRef, useState } from 'react'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import type { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 import css from './NodeDeleteIcon.less'
 
@@ -23,7 +23,7 @@ type ConfirmationPopoverBaseProps =
     | 'showCancelButton'
     | 'cancelButtonProps'
 
-export default function NodeDeleteIcon({
+export function NodeDeleteIcon({
     nodeId,
     dispatch,
     hasMultipleChildren,

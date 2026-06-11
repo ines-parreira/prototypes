@@ -1,7 +1,7 @@
 import type { RefObject } from 'react'
 import { useEffect, useState } from 'react'
 
-import useIntersectionObserver from './useIntersectionObserver'
+import { useIntersectionObserver } from './useIntersectionObserver'
 
 const useIsIntersectingWithElement = (
     ref: RefObject<Element>,
@@ -23,4 +23,4 @@ const useIsIntersectingWithElement = (
     return isIntersecting
 }
 
-export default useIsIntersectingWithElement
+export { useIsIntersectingWithElement }

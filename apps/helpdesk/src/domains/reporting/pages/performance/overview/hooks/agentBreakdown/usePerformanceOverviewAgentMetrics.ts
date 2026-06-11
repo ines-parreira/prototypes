@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
-import store from 'common/store/store'
+import { DefaultExportStore as store } from 'common/store/store'
 import type { User } from 'config/types/user'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -33,7 +33,7 @@ import {
     useMetricPerAgent,
 } from 'domains/reporting/pages/performance/utils/useMetricPerAgent'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createCsv } from 'utils/file'
 
 const PERFORMANCE_OVERVIEW_AGENT_METRICS_CONFIG = Object.fromEntries(

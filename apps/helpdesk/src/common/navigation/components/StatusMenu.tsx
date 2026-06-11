@@ -11,13 +11,13 @@ import cn from 'classnames'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import css from './UserMenu.less'
 
-export default function StatusMenu({
+export function StatusMenu({
     onUpdateStatusStart,
 }: {
     onUpdateStatusStart: () => void

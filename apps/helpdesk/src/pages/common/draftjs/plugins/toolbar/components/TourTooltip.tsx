@@ -26,4 +26,4 @@ const TourTooltip = ({ isOpen, text, children }: Props) => {
     )
 }
 
-export default TourTooltip
+export { TourTooltip }

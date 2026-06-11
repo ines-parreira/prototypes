@@ -7,7 +7,7 @@ import css from 'domains/reporting/pages/common/HintTooltip.less'
 import type { TooltipData } from 'domains/reporting/pages/types'
 import { DOCUMENTATION_LINK_TEXT } from 'domains/reporting/services/constants'
 import type { IconTooltipProps } from 'pages/common/forms/IconTooltip/IconTooltip'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 type Props = Omit<TooltipData, 'title'> & {
     title: string | ReactNode | ReactElement

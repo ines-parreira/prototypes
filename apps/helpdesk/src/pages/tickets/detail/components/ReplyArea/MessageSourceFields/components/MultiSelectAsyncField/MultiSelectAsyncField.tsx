@@ -511,4 +511,4 @@ class MultiSelectAsyncField extends Component<Props, State> {
     }
 }
 
-export default MultiSelectAsyncField
+export { MultiSelectAsyncField }

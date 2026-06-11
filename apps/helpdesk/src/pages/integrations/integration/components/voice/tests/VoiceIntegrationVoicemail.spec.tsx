@@ -11,7 +11,7 @@ import {
 } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
+import { VoiceIntegrationVoicemail } from '../VoiceIntegrationVoicemail'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('@repo/api-resources')

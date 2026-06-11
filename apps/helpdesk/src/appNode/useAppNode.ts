@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
-import AppNodeContext from './AppNodeContext'
+import { DefaultExportAppNodeContext as AppNodeContext } from './AppNodeContext'
 
-export default function useAppNode() {
+export function useAppNode() {
     return useContext(AppNodeContext)
 }

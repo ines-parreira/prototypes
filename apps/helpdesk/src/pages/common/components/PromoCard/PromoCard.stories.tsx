@@ -9,7 +9,7 @@ import aiAgentPreviewVideo from 'assets/video/ai-agent-sales-video.mp4'
 
 import { PromoCard } from './PromoCard'
 
-export default {
+const DefaultExportPromoCard = {
     title: 'Components/PromoCard',
     component: PromoCard,
     parameters: {
@@ -17,6 +17,8 @@ export default {
     },
     tags: ['autodocs'],
 } as Meta
+
+export default DefaultExportPromoCard
 
 export const VideoThumbnailSingleCallToAction: StoryFn = () => (
     <>

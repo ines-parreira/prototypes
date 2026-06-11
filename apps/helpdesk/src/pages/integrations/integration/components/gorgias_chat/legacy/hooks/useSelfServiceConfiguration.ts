@@ -51,4 +51,4 @@ const useSelfServiceConfiguration = (
     }
 }
 
-export default useSelfServiceConfiguration
+export { useSelfServiceConfiguration }

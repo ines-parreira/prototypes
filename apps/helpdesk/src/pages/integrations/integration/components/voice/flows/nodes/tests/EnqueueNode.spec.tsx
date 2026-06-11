@@ -25,7 +25,11 @@ jest.mock(
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceMessageTTS/VoiceMessageTTSPreviewFields',
-    () => () => <div>VoiceMessageTTSPreviewFields</div>,
+    () => ({
+        VoiceMessageTTSPreviewFields: () => (
+            <div>VoiceMessageTTSPreviewFields</div>
+        ),
+    }),
 )
 
 const useDeleteNodeMock = assumeMock(useDeleteNode)

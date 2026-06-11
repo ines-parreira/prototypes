@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { PhoneCountry, PhoneType, PhoneUseCase } from 'business/twilio'
 import type { PhoneNumberMeta } from 'models/phoneNumber/types'
 
-import PhoneMetaFields from '../PhoneMetaFields'
+import { PhoneDetailsFields as PhoneMetaFields } from '../PhoneMetaFields'
 import { shouldDisplayType } from '../utils'
 
 jest.mock('../utils', () => ({

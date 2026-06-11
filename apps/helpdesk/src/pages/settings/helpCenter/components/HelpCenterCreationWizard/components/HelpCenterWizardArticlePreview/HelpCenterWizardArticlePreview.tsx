@@ -21,4 +21,4 @@ const HelpCenterWizardArticlePreview: React.FC<Props> = ({
     )
 }
 
-export default HelpCenterWizardArticlePreview
+export { HelpCenterWizardArticlePreview }

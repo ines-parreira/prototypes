@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
@@ -111,5 +111,3 @@ export const useAiAgentTrialBanner = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldDisplay, addBanner, removeBanner, routes, eventData])
 }
-
-export default useAiAgentTrialBanner

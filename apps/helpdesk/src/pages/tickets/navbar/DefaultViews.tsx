@@ -9,7 +9,7 @@ import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { activeViewIdSet } from 'state/ui/views/actions'
 
 import { TicketNavbarViewLinkItem } from './TicketNavbarViewLinkItem'

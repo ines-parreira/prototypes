@@ -3,11 +3,11 @@ import { useMemo } from 'react'
 import { TicketChannel } from 'business/types/ticket'
 
 import type { SelfServiceChatChannel } from './useSelfServiceChatChannels'
-import useSelfServiceChatChannels from './useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from './useSelfServiceChatChannels'
 import type { SelfServiceHelpCenterChannel } from './useSelfServiceHelpCenterChannels'
-import useSelfServiceHelpCenterChannels from './useSelfServiceHelpCenterChannels'
+import { useSelfServiceHelpCenterChannels } from './useSelfServiceHelpCenterChannels'
 import type { SelfServiceStandaloneContactFormChannel } from './useSelfServiceStandaloneContactFormChannels'
-import useSelfServiceStandaloneContactFormChannels from './useSelfServiceStandaloneContactFormChannels'
+import { useSelfServiceStandaloneContactFormChannels } from './useSelfServiceStandaloneContactFormChannels'
 
 export type SelfServiceChannel =
     | SelfServiceHelpCenterChannel
@@ -41,4 +41,4 @@ const useSelfServiceChannels = (shopType: string, shopName: string) => {
     }, [chatIntegrations, helpCenters, standaloneContactForms])
 }
 
-export default useSelfServiceChannels
+export { useSelfServiceChannels }

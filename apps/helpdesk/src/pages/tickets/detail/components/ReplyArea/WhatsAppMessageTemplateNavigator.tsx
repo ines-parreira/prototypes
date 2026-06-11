@@ -3,24 +3,24 @@ import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import { ReactCountryFlag } from 'react-country-flag'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isWhatsAppIntegration } from 'models/integration/types'
 import type { SourceAddress } from 'models/ticket/types'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import Loader from 'pages/common/components/Loader/Loader'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { whatsAppFlagCodes } from 'pages/integrations/integration/components/whatsapp/constants'
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { WhatsAppMessageTemplateMessage } from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
 import { getNewPhoneNumberByNumber } from 'state/entities/phoneNumbers/selectors'
 import { getIntegrations } from 'state/integrations/selectors'
 import { makeGetNewMessageSourceProperty } from 'state/newMessage/selectors'
 
 import css from './WhatsAppMessageTemplateNavigator.less'
 
-export default function WhatsAppMessageTemplateNavigator() {
+export function WhatsAppMessageTemplateNavigator() {
     const [currentTemplate, setCurrentTemplate] =
         useState<WhatsAppMessageTemplate>()
 

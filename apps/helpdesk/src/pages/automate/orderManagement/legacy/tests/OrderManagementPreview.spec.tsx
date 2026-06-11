@@ -13,7 +13,7 @@ import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasCha
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { RootState } from 'state/types'
 
-import OrderManagementPreview from '../OrderManagementPreview'
+import { OrderManagementPreview } from '../OrderManagementPreview'
 
 const mockOnChannelChange = jest.fn()
 
@@ -45,7 +45,7 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServicePreviewContainer',
     () => ({
         __esModule: true,
-        default: ({ channel, onChange, children }: any) => {
+        SelfServicePreviewContainer: ({ channel, onChange, children }: any) => {
             captured.onChange = onChange
             return <div>{children(channel)}</div>
         },
@@ -56,7 +56,7 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServicePreview',
     () => ({
         __esModule: true,
-        default: () => <div>SelfServicePreview</div>,
+        SelfServicePreview: () => <div>SelfServicePreview</div>,
     }),
 )
 
@@ -64,7 +64,9 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert',
     () => ({
         __esModule: true,
-        default: () => <div>SelfServiceFeatureDisabledOnChannelAlert</div>,
+        SelfServiceFeatureDisabledOnChannelAlert: () => (
+            <div>SelfServiceFeatureDisabledOnChannelAlert</div>
+        ),
     }),
 )
 

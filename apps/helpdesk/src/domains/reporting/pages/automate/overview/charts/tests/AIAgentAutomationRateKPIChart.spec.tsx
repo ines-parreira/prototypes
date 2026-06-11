@@ -8,9 +8,9 @@ import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomate
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AIAgentAutomationRateKPIChart } from 'domains/reporting/pages/automate/overview/charts/AIAgentAutomationRateKPIChart'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import {
     AI_AGENT_AUTOMATION_RATE_LABEL,
     AI_AGENT_AUTOMATION_RATE_TOOLTIP,

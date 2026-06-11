@@ -34,4 +34,4 @@ const macrosReducer = createReducer<MacrosState>(initialState, (builder) =>
         }),
 )
 
-export default macrosReducer
+export { macrosReducer }

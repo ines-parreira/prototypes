@@ -5,7 +5,7 @@ import { IntegrationType } from 'models/integration/constants'
 import type { StoreIntegration } from 'models/integration/types'
 import type { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import WorkflowRow, { getLink } from '../WorkflowRow'
+import { getLink, WorkflowRow } from '../WorkflowRow'
 
 describe('<WorkflowsRow />', () => {
     const duplicateFunction = jest.fn()

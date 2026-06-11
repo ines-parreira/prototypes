@@ -4,9 +4,9 @@ import { renderHook } from '@repo/testing'
 import { desktopNotify } from '../../desktopNotify'
 import { requestNotificationPermission } from '../../requestNotificationPermission'
 import type { Notification } from '../../types'
-import getNotificationConfig from '../../utils/getNotificationConfig'
+import { getNotificationConfig } from '../../utils/getNotificationConfig'
 import { useDesktopNotifications } from '../useDesktopNotifications'
-import useNotifications from '../useNotifications'
+import { useNotifications } from '../useNotifications'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -18,8 +18,10 @@ jest.mock('../../desktopNotify', () => ({
 jest.mock('../../requestNotificationPermission', () => ({
     requestNotificationPermission: jest.fn(),
 }))
-jest.mock('../../utils/getNotificationConfig', () => jest.fn())
-jest.mock('../useNotifications', () => jest.fn())
+jest.mock('../../utils/getNotificationConfig', () => ({
+    getNotificationConfig: jest.fn(),
+}))
+jest.mock('../useNotifications', () => ({ useNotifications: jest.fn() }))
 
 const getNotificationConfigMock = getNotificationConfig as jest.Mock
 const requestNotificationPermissionMock =

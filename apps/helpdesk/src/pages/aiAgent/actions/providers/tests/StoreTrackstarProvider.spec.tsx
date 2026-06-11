@@ -6,8 +6,8 @@ import { setupServer } from 'msw/node'
 import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
 import type { ListTrackstarConnectionsResponseItem } from '@gorgias/workflows-types'
 
-import StoreTrackstarContext from '../StoreTrackstarContext'
-import StoreTrackstarProvider from '../StoreTrackstarProvider'
+import { StoreTrackstarContext } from '../StoreTrackstarContext'
+import { StoreTrackstarProvider } from '../StoreTrackstarProvider'
 
 const server = setupServer()
 

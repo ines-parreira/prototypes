@@ -8,7 +8,7 @@ import {
     AIJourneyDiscountCodesOfferedQueryFactory,
     AIJourneyDiscountCodesUsedQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 const useDiscountCodesRateAppliedTrend = (

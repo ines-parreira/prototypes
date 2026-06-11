@@ -3,16 +3,18 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useNotificationsOverlay from '../../hooks/useNotificationsOverlay'
-import Overlay from '../Overlay'
+import { useNotificationsOverlay } from '../../hooks/useNotificationsOverlay'
+import { Overlay } from '../Overlay'
 
 import css from '../Overlay.less'
 
-jest.mock('../../hooks/useNotificationsOverlay', () => jest.fn())
+jest.mock('../../hooks/useNotificationsOverlay', () => ({
+    useNotificationsOverlay: jest.fn(),
+}))
 
 const useNotificationsOverlayMock = assumeMock(useNotificationsOverlay)
 
-jest.mock('../Feed', () => () => <div>Feed</div>)
+jest.mock('../Feed', () => ({ Feed: () => <div>Feed</div> }))
 
 describe('Overlay', () => {
     let onToggle: jest.Mock

@@ -22,8 +22,8 @@ import {
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -51,18 +51,18 @@ import {
     ConnectAppModal,
     InstallSuccessModal,
 } from 'pages/aiAgent/actionsV2/apps/components'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import Loader from 'pages/common/components/Loader/Loader'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PageHeader from 'pages/common/components/PageHeader'
-import Detail from 'pages/common/components/ProductDetail'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import AppAdvanced from 'pages/integrations/Advanced'
-import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Detail } from 'pages/common/components/ProductDetail'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { AppAdvanced } from 'pages/integrations/Advanced'
+import { AlloyConnectButton } from 'pages/integrations/components/AlloyConnectButton'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { mapDefaults } from 'pages/integrations/mappers/mapDefaults'
 import { getApplicationById } from 'services/applications'
@@ -70,13 +70,13 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByAppId } from 'state/integrations/selectors'
 
-import AppActionsConnections from './AppActionsConnections'
-import AppActionsTab from './AppActionsTab'
+import { AppActionsConnections } from './AppActionsConnections'
+import { AppActionsTab } from './AppActionsTab'
 import { useAppActionSteps } from './hooks/useAppActionSteps'
-import IntegrationsList from './IntegrationsList'
-import InboundConnectionCard from './SetupCards/InboundConnectionCard'
-import OutboundConnectionCard from './SetupCards/OutboundConnectionCard'
-import SetupCards from './SetupCards/SetupCards'
+import { IntegrationsList } from './IntegrationsList'
+import { InboundConnectionCard } from './SetupCards/InboundConnectionCard'
+import { OutboundConnectionCard } from './SetupCards/OutboundConnectionCard'
+import { SetupCards } from './SetupCards/SetupCards'
 
 export enum Tab {
     Details = 'details',
@@ -102,7 +102,7 @@ function authValueFromCredentials(
     return ''
 }
 
-export default function AppDetail() {
+export function AppDetail() {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const queryClient = useQueryClient()

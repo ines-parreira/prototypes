@@ -14,10 +14,10 @@ import * as viewsConfig from 'config/views'
 import { mockSearchRank } from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
 import { EntityType } from 'models/view/types'
-import type BlankState from 'pages/common/components/BlankState/BlankState'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import Table from 'pages/common/components/ViewTable/Table'
-import type Row from 'pages/common/components/ViewTable/Table/Row'
+import type { BlankState } from 'pages/common/components/BlankState/BlankState'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { DefaultExportTable as Table } from 'pages/common/components/ViewTable/Table'
+import type { Row } from 'pages/common/components/ViewTable/Table/Row'
 import type { RootState, StoreDispatch } from 'state/types'
 import { ViewNavDirection } from 'state/views/types'
 
@@ -26,43 +26,39 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
     middlewares,
 )
 
-jest.mock(
-    '../Table/Row',
-    () =>
-        ({
-            isSelected,
-            selectable,
-            item,
-            onItemClick,
-        }: ComponentProps<typeof Row>) => (
-            <tr>
-                <td>
-                    Row:
-                    <div>selectable: {selectable?.toString()}</div>
-                    <div>isSelected: {isSelected?.toString()}</div>
-                    {item && (
-                        <button
-                            data-testid={`click-item-${
-                                item?.get('id') as string
-                            }`}
-                            onClick={() => onItemClick?.(item)}
-                        />
-                    )}
-                </td>
-            </tr>
-        ),
-)
-jest.mock('../Table/HeaderCell', () => () => <td>HeaderCell</td>)
-jest.mock(
-    '../../BlankState/BlankState',
-    () =>
-        ({ message }: ComponentProps<typeof BlankState>) => (
-            <div>
-                BlankState
-                <div>{message}</div>
-            </div>
-        ),
-)
+jest.mock('../Table/Row', () => ({
+    Row: ({
+        isSelected,
+        selectable,
+        item,
+        onItemClick,
+    }: ComponentProps<typeof Row>) => (
+        <tr>
+            <td>
+                Row:
+                <div>selectable: {selectable?.toString()}</div>
+                <div>isSelected: {isSelected?.toString()}</div>
+                {item && (
+                    <button
+                        data-testid={`click-item-${item?.get('id') as string}`}
+                        onClick={() => onItemClick?.(item)}
+                    />
+                )}
+            </td>
+        </tr>
+    ),
+}))
+jest.mock('../Table/HeaderCell', () => ({
+    HeaderCell: () => <td>HeaderCell</td>,
+}))
+jest.mock('../../BlankState/BlankState', () => ({
+    BlankState: ({ message }: ComponentProps<typeof BlankState>) => (
+        <div>
+            BlankState
+            <div>{message}</div>
+        </div>
+    ),
+}))
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
     shortcutManager: {
@@ -71,9 +67,9 @@ jest.mock('@repo/utils', () => ({
     },
 }))
 
-jest.mock('../ShowMoreFieldsDropdown', () => () => (
-    <div>ShowMoreFieldsDropdown</div>
-))
+jest.mock('../ShowMoreFieldsDropdown', () => ({
+    ShowMoreFieldsDropdown: () => <div>ShowMoreFieldsDropdown</div>,
+}))
 
 describe('<Table />', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>

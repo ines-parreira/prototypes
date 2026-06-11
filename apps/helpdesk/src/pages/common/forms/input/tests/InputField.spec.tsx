@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import InputField from '../InputField'
+import { DefaultExportInputField as InputField } from '../InputField'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 jest.mock('@gorgias/toolkit-react', () => ({

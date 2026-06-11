@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { getTranslationLanguageOptionsData } from '@repo/utils'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTicket } from 'state/ticket/selectors'
 
 export function useLanguageDropdown() {

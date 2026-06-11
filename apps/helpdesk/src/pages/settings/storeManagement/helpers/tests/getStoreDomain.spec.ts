@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/constants'
 import type { StoreIntegration } from 'models/integration/types'
 
-import getStoreDomain from '../getStoreDomain'
+import { getStoreDomain } from '../getStoreDomain'
 
 describe('getStoreDomain', () => {
     it('should return store_url for Magento2 stores', () => {

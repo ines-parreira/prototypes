@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
-import useScreenSize from '../useScreenSize'
+import { useScreenSize } from '../useScreenSize'
 
 describe('useScreenSize', () => {
     beforeEach(() => {

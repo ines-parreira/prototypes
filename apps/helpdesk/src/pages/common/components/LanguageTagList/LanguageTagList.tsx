@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import BadgeItem from 'pages/common/components/BadgetItem'
+import { BadgeItem } from 'pages/common/components/BadgetItem'
 
 import type { Locale } from '../../../../models/helpCenter/types'
 import { moveLocaleToBack } from '../../utils/locale'

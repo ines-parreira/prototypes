@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import VoiceCallFilter from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
+import { VoiceCallFilter } from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'
 import { CALL_LIST_TITLE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import type { VoiceCallFilterOptions } from 'domains/reporting/pages/voice/models/types'

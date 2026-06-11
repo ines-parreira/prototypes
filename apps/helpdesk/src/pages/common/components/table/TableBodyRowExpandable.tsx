@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/common/components/table/TableBodyRowExpandable.less'
 
 export type WithChildren<T> = T & { children: WithChildren<T>[] }

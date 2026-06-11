@@ -7,7 +7,7 @@ import { act, waitFor } from '@testing-library/react'
 
 // import {assumeMock} from 'utils/testing'
 
-import NoticeableIndicator from '../NoticeableIndicator'
+import { NoticeIndicator as NoticeableIndicator } from '../NoticeableIndicator'
 
 jest.mock('@sentry/react', () => ({ addBreadcrumb: jest.fn() }))
 

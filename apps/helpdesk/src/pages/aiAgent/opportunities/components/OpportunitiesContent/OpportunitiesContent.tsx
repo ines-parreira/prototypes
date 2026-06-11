@@ -15,7 +15,7 @@ import type {
     Opportunity,
     SidebarOpportunityItem,
 } from 'pages/aiAgent/opportunities/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 import { OpportunityType } from '../../enums'
 import { useOpportunityCTAs } from '../../hooks/useOpportunityCTAs'

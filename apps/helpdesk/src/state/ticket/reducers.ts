@@ -17,7 +17,7 @@ import { MacroActionName } from 'models/macroAction/types'
 import type { Ticket } from 'models/ticket/types'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
-import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import { ticketReplyCache } from 'state/newMessage/ticketReplyCache'
 import type { GorgiasAction } from 'state/types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
@@ -96,7 +96,7 @@ export const initialState: TicketState = fromJS({
     is_unread: false,
 })
 
-export default function reducer(
+export function reducer(
     state: TicketState = initialState,
     action: GorgiasAction,
 ): TicketState {

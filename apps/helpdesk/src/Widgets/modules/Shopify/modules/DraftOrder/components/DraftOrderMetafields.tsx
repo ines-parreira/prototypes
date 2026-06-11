@@ -14,7 +14,7 @@ type Props = {
     metafields?: ShopifyMetafield[]
 }
 
-export default function WrappedDraftOrderMetafields({ metafields }: Props) {
+export function WrappedDraftOrderMetafields({ metafields }: Props) {
     const onOpened = () => {
         logEvent(SegmentEvent.ShopifyMetafieldsOpenDraftOrder)
     }

@@ -3,7 +3,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 
-export default function useHighlightedElements() {
+export function useHighlightedElements() {
     const state = useState<HighlightedElements | null>(null)
     const [elements, setElements] = state
 

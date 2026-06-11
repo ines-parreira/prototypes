@@ -119,4 +119,4 @@ const useRecentItems = <T extends { id: number }>(
     )
 }
 
-export default useRecentItems
+export { useRecentItems }

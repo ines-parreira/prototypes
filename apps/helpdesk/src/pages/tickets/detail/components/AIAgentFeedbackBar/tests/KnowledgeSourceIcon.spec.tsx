@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { KnowledgeSourceType } from '../constants'
-import KnowledgeSourceIcon from '../KnowledgeSourceIcon'
+import { KnowledgeSourceIcon } from '../KnowledgeSourceIcon'
 
 describe('KnowledgeSourceIcon', () => {
     it('renders Shopify icon if type is "order"', () => {

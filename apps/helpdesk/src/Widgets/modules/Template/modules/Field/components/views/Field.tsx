@@ -10,11 +10,11 @@ import { useAppNode } from 'appNode'
 import type { LeafType } from 'models/widget/types'
 
 import type { FieldEditFormData, HiddenFields } from '../../types'
-import FieldContainer from './FieldContainer'
+import { FieldContainer } from './FieldContainer'
 import type { TypeOption } from './FieldEditForm'
-import FieldEditForm from './FieldEditForm'
-import FieldLabel from './FieldLabel'
-import FieldValue from './FieldValue'
+import { FieldEditForm } from './FieldEditForm'
+import { FieldLabel } from './FieldLabel'
+import { FieldValue } from './FieldValue'
 
 import css from './Field.less'
 
@@ -36,7 +36,7 @@ type Props<T extends LeafType> = {
     onDelete: () => void
 }
 
-export default function Field<T extends LeafType>({
+export function Field<T extends LeafType>({
     title,
     value,
     type,

@@ -24,10 +24,10 @@ import {
 import { toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import { RecentItems } from 'hooks/useRecentItems/constants'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { useRecentItems } from 'hooks/useRecentItems/useRecentItems'
 import { ProductType } from 'models/billing/types'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import type {

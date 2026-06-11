@@ -11,7 +11,7 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import Caption from './Caption/Caption'
+import { Caption } from './Caption/Caption'
 
 import css from './CheckBox.less'
 
@@ -99,4 +99,6 @@ function CheckBox(
  * @date 2025-04-01
  * @type ui-kit-migration
  */
-export default forwardRef<HTMLInputElement, Props>(CheckBox)
+const DefaultExportCheckBox = forwardRef<HTMLInputElement, Props>(CheckBox)
+
+export { DefaultExportCheckBox }

@@ -9,7 +9,7 @@ import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from './constants'
 import { useTextToSpeechContext } from './TextToSpeechContext'
-import TTSPreviewButton, { AudioState } from './TTSPreviewButton'
+import { AudioState, TTSPreviewButton } from './TTSPreviewButton'
 
 type Props = {
     fieldName: string
@@ -76,4 +76,4 @@ const VoiceMessageTTSPreviewButton = ({ fieldName }: Props): JSX.Element => {
     )
 }
 
-export default VoiceMessageTTSPreviewButton
+export { VoiceMessageTTSPreviewButton }

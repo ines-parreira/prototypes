@@ -29,4 +29,6 @@ function Label(
     )
 }
 
-export default forwardRef<HTMLLabelElement, Props>(Label)
+const DefaultExportLabel = forwardRef<HTMLLabelElement, Props>(Label)
+
+export { DefaultExportLabel }

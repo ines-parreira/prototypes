@@ -1,7 +1,7 @@
 import { NavbarPanel } from 'core/navigation'
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import { DefaultExportTicketNavbar as TicketNavbar } from 'pages/tickets/navbar/TicketNavbar'
 
-export default function TicketsNavbarPanel() {
+export function TicketsNavbarPanel() {
     return (
         <NavbarPanel>
             <TicketNavbar disableResize />

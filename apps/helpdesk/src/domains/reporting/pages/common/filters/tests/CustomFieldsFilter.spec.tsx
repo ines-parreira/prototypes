@@ -14,7 +14,8 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-import CustomFieldsFilter, {
+import {
+    CustomFieldsFilter,
     CustomFieldsFilterWithSavedState,
     CustomFieldsFilterWithState,
 } from 'domains/reporting/pages/common/filters/CustomFieldsFilter'

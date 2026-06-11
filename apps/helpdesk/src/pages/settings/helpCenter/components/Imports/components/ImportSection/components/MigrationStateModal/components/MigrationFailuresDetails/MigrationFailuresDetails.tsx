@@ -5,7 +5,7 @@ import cn from 'classnames'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
 
 import css from './MigrationFailuresDetails.less'
 
@@ -102,4 +102,4 @@ const MigrationFailuresDetails: React.FC<Props> = ({ title, sections }) => {
     )
 }
 
-export default MigrationFailuresDetails
+export { MigrationFailuresDetails }

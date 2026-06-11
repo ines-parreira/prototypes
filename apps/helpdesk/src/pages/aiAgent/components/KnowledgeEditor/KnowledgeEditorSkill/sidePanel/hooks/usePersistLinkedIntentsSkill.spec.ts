@@ -14,7 +14,7 @@ jest.mock('reapop', () => ({
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockAppDispatch,
+    useAppDispatch: () => mockAppDispatch,
 }))
 
 jest.mock('state/notifications/actions', () => ({

@@ -9,7 +9,7 @@ import {
 
 import { createOnErrorHandler } from 'custom-fields/helpers/createOnErrorHandler'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const useUpdateOrDeleteCustomerFieldValue = ({
     isDisabled = false,

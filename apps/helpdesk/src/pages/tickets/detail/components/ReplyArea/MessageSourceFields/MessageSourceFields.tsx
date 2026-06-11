@@ -7,8 +7,8 @@ import _upperFirst from 'lodash/upperFirst'
 import _xor from 'lodash/xor'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SourceAddress } from 'models/ticket/types'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
@@ -26,8 +26,8 @@ import { getTicket } from 'state/ticket/selectors'
 import type { Receiver } from 'state/ticket/utils'
 import type { RootState } from 'state/types'
 
-import ReceiversSelectField from './components/ReceiversSelectField'
-import SenderSelectField from './components/SenderSelectField/SenderSelectField'
+import { DefaultExportReceiversSelectField as ReceiversSelectField } from './components/ReceiversSelectField'
+import { SenderSelectField } from './components/SenderSelectField/SenderSelectField'
 
 import css from './MessageSourceFields.less'
 
@@ -56,9 +56,7 @@ type Props = {
     onRecipientsChange?: (prop: string, recipients: Receiver[]) => void
 }
 
-export default function MessageSourceFields({
-    onRecipientsChange,
-}: Props = {}) {
+export function MessageSourceFields({ onRecipientsChange }: Props = {}) {
     const dispatch = useAppDispatch()
     const sourceType = useAppSelector(getNewMessageType)
     const ticket = useAppSelector(getTicket)

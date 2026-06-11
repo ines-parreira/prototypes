@@ -4,11 +4,11 @@ import _keyBy from 'lodash/keyBy'
 import { useHistory } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
+import { AutomateFormView } from 'pages/automate/common/components/AutomateFormView'
 
-import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
-import useApps from './hooks/useApps'
-import useCreateActionsApp from './hooks/useCreateActionsApp'
+import { ActionsPlatformAppForm } from './components/ActionsPlatformAppForm'
+import { useApps } from './hooks/useApps'
+import { useCreateActionsApp } from './hooks/useCreateActionsApp'
 
 const ActionsPlatformCreateAppFormView = () => {
     const history = useHistory()
@@ -64,4 +64,4 @@ const ActionsPlatformCreateAppFormView = () => {
     )
 }
 
-export default ActionsPlatformCreateAppFormView
+export { ActionsPlatformCreateAppFormView }

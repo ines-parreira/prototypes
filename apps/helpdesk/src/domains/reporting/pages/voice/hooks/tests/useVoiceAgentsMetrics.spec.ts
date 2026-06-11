@@ -15,7 +15,7 @@ import {
 } from 'domains/reporting/pages/voice/hooks/metricsPerDimension'
 import { useVoiceAgentsMetrics } from 'domains/reporting/pages/voice/hooks/useVoiceAgentsMetrics'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)

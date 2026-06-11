@@ -8,7 +8,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function Category({ header, children }: Props) {
+export function Category({ header, children }: Props) {
     return (
         <section>
             {header && <header className={css.header}>{header}</header>}

@@ -7,9 +7,9 @@ import {
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_SETTINGS_PATH,
 } from 'pages/settings/contactForm/constants'
-import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView'
-import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView'
-import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView'
+import { ContactFormCreateView } from 'pages/settings/contactForm/views/ContactFormCreateView'
+import { ContactFormSettingsView } from 'pages/settings/contactForm/views/ContactFormSettingsView'
+import { ContactFormStartView } from 'pages/settings/contactForm/views/ContactFormStartView'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import { renderAppSettings } from './helpers/settingsRenderer'

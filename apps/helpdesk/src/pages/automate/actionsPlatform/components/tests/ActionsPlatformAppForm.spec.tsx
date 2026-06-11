@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom'
 import { IntegrationType } from 'models/integration/constants'
 
 import type { App } from '../../types'
-import ActionsPlatformAppForm from '../ActionsPlatformAppForm'
+import { ActionsPlatformAppForm } from '../ActionsPlatformAppForm'
 
 const LocationPath = () => {
     const location = useLocation()

@@ -1,6 +1,7 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'

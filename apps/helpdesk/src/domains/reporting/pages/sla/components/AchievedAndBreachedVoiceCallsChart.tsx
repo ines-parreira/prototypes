@@ -2,7 +2,7 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { useSatisfiedOrBreachedVoiceCallsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedVoiceCallsTimeSeries'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'

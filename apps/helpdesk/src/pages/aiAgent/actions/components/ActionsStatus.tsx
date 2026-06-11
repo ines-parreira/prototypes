@@ -6,7 +6,7 @@ const success = <Badge type={'light-success'}>SUCCESS</Badge>
 const error = <Badge type={'light-error'}>ERROR</Badge>
 const partial_success = <Badge type={'light-warning'}>PARTIAL SUCCESS</Badge>
 
-export default function ActionStatus({
+export function ActionStatus({
     status,
 }: {
     status: LlmTriggeredExecution['status']

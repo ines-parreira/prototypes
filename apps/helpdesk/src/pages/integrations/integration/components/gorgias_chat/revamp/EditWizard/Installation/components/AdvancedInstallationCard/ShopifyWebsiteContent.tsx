@@ -10,7 +10,7 @@ import {
 import editCode from 'assets/img/chat-settings/edit-code.png'
 import findBody from 'assets/img/chat-settings/find-body.png'
 import searchForThemes from 'assets/img/chat-settings/search-for-themes.png'
-import CodeSnippet from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CodeSnippet'
+import { CodeSnippet } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CodeSnippet'
 
 import css from './AdvancedInstallationSidePanel.less'
 
@@ -101,4 +101,4 @@ const ShopifyWebsiteContent = ({
     )
 }
 
-export default ShopifyWebsiteContent
+export { ShopifyWebsiteContent }

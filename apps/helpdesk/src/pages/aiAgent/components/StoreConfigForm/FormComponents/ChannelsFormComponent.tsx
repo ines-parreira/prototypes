@@ -15,7 +15,7 @@ import type { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
 import { useSocialsIntegrations } from '../hooks/useSocialsIntegrations'

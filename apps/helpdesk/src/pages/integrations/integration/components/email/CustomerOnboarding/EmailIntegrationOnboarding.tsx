@@ -7,28 +7,28 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isEnterprise } from 'models/billing/utils'
-import PageHeader from 'pages/common/components/PageHeader'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import EmailIntegrationConnectForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
-import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
-import EmailDomainVerificationSupportContentSidebar from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
+import { EmailIntegrationConnectForm } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
+import { DomainVerificationProvider } from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
+import { EmailDomainVerificationSupportContentSidebar } from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
 import { getDomainFromEmailAddress } from 'pages/integrations/integration/components/email/helpers'
-import SettingsContent from 'pages/settings/SettingsContent'
+import { SettingsContent } from 'pages/settings/SettingsContent'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
-import EmailGenericModal from '../components/EmailGenericModal'
+import { EmailGenericModal } from '../components/EmailGenericModal'
 import {
     EmailIntegrationOnboardingStep,
     forwardingVerificationStorageKey,
     useEmailOnboarding,
 } from '../hooks/useEmailOnboarding'
-import EmailIntegrationForwardingSetupForm from './EmailForwarding/EmailIntegrationForwardingSetupForm'
-import EmailIntegrationOnboardingBreadcrumbs from './EmailIntegrationOnboardingBreadcrumbs'
-import EmailIntegrationOnboardingDomainVerification from './EmailIntegrationOnboardingDomainVerification'
+import { EmailIntegrationForwardingSetupForm } from './EmailForwarding/EmailIntegrationForwardingSetupForm'
+import { EmailIntegrationOnboardingBreadcrumbs } from './EmailIntegrationOnboardingBreadcrumbs'
+import { EmailIntegrationOnboardingDomainVerification } from './EmailIntegrationOnboardingDomainVerification'
 
 import css from './EmailIntegrationOnboarding.less'
 
@@ -36,7 +36,7 @@ type Props = {
     integration?: EmailIntegration | undefined
 }
 
-export default function EmailIntegrationOnboarding({ integration }: Props) {
+export function EmailIntegrationOnboarding({ integration }: Props) {
     const { currentStep, deleteIntegration } = useEmailOnboarding({
         integration,
     })

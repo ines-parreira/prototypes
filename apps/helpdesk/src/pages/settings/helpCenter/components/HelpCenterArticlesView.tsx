@@ -8,8 +8,8 @@ import { useLocation } from 'react-router-dom'
 import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useLimitations } from 'hooks/helpCenter/useLimitations'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { Event, useModalManager } from 'hooks/useModalManager'
 import { useSearchParam } from 'hooks/useSearchParam'
 import type {
@@ -40,7 +40,7 @@ import {
     MODALS,
 } from '../constants'
 import { useArticlesActions } from '../hooks/useArticlesActions'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterActions } from '../hooks/useHelpCenterActions'
 import { useAbilityChecker, useHelpCenterApi } from '../hooks/useHelpCenterApi'
 import { useEditionManager } from '../providers/EditionManagerContext'
@@ -64,17 +64,17 @@ import {
 } from '../utils/helpCenter.utils'
 import type { ActionType, OptionItem } from './articles/ArticleLanguageSelect'
 import { CloseModal } from './articles/CloseModal'
-import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
-import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
+import { HelpCenterArticleModalAdvancedViewContent } from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
+import { HelpCenterArticleModalBasicViewContent } from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
 import { HelpCenterArticleModalView } from './articles/HelpCenterEditArticleModalContent/types'
-import HelpCenterEditModal from './articles/HelpCenterEditModal'
+import { HelpCenterEditModal } from './articles/HelpCenterEditModal'
 import { ArticlesTable } from './ArticlesTable'
 import { CategoriesViews } from './CategoriesView'
 import { CategoryDrawer } from './CategoryDrawer'
 import { ConfirmationModal } from './ConfirmationModal'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import HelpCenterWizardCompletedModal from './HelpCenterWizardCompletedModal/HelpCenterWizardCompletedModal'
-import MaxArticleBanner from './Paywalls/MaxArticleBanner'
+import { HelpCenterPageWrapper } from './HelpCenterPageWrapper'
+import { HelpCenterWizardCompletedModal } from './HelpCenterWizardCompletedModal/HelpCenterWizardCompletedModal'
+import { MaxArticleBanner } from './Paywalls/MaxArticleBanner'
 import { SearchView } from './SearchView'
 
 import css from './HelpCenterArticlesView.less'
@@ -1194,5 +1194,3 @@ export const HelpCenterArticlesView: React.FC = () => {
         </HelpCenterPageWrapper>
     )
 }
-
-export default HelpCenterArticlesView

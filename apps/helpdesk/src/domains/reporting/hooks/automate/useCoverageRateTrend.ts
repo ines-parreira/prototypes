@@ -1,5 +1,6 @@
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { coverageRateQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentCoverageRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

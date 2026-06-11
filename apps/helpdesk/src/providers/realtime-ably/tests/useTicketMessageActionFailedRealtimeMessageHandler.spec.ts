@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
 
 import { useTicketMessageActionFailedRealtimeMessageHandler } from '../useTicketMessageActionFailedRealtimeMessageHandler'

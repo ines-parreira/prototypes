@@ -9,7 +9,7 @@ type UnreadCountChangedPayload = {
     }
 }
 
-export default function NoticeIndicator() {
+export function NoticeIndicator() {
     const [count, setCount] = useState(0)
 
     useEffect(() => {

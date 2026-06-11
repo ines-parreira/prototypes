@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ReportOrderIssueScenarioConditions from '../ReportOrderIssueScenarioConditions'
+import { ReportOrderIssueScenarioConditions } from '../ReportOrderIssueScenarioConditions'
 
 describe('<ReportOrderIssueScenarioConditions />', () => {
     it('should render component', () => {

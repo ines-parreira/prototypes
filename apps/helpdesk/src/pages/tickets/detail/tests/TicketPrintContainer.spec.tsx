@@ -4,10 +4,14 @@ import { render } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
+import { TicketPrintContainerWithSidebar as TicketPrintContainer } from 'pages/tickets/detail/TicketPrintContainer'
 
 jest.mock('pages/tickets/detail/components/TicketBodyNonVirtualized', () => {
-    return () => <div>TicketBodyNonVirtualized</div>
+    return {
+        DefaultExportTicketBodyNonVirtualized: () => (
+            <div>TicketBodyNonVirtualized</div>
+        ),
+    }
 })
 
 jest.mock(

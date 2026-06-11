@@ -54,4 +54,4 @@ const useOrdersPagePreview = () => {
     return { previewStep }
 }
 
-export default useOrdersPagePreview
+export { useOrdersPagePreview }

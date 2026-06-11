@@ -6,7 +6,7 @@ import {
 } from 'fixtures/shopify'
 
 import * as constants from '../constants'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 
 describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_LOADING', () => {

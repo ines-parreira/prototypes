@@ -5,7 +5,7 @@ import type { VoiceCallSubject } from 'models/voiceCall/types'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
-import VoiceCallSubjectLabel from './VoiceCallSubjectLabel'
+import { VoiceCallSubjectLabel } from './VoiceCallSubjectLabel'
 
 const useAgentDetailsSpy = jest.spyOn(voiceCallHooks, 'useAgentDetails')
 const useCustomerDetailsSpy = jest.spyOn(voiceCallHooks, 'useCustomerDetails')

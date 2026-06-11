@@ -2,9 +2,9 @@ import type { ComponentProps, ComponentType } from 'react'
 import React from 'react'
 
 import type { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ProductType } from 'models/billing/types'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import { FeaturePaywall } from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 import type { AccountFeature } from 'state/currentAccount/types'
 
@@ -33,5 +33,3 @@ export const withProductEnabledPaywall = (
         }
     }
 }
-
-export default withProductEnabledPaywall

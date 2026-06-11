@@ -1,1 +1,1 @@
-export { default as TicketEmptyPanel } from './components/TicketEmptyPanel'
+export { TicketEmptyPanel } from './components/TicketEmptyPanel'

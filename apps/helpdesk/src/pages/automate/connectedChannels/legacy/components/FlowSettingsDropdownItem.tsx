@@ -1,4 +1,4 @@
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import css from './FlowsSettingsDropdownItem.less'
 

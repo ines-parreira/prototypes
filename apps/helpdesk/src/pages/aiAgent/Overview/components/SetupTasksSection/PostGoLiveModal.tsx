@@ -1,9 +1,9 @@
 import { LegacyButton as Button, Heading, Icon, Text } from '@gorgias/axiom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 
 import css from './PostGoLiveModal.less'
 

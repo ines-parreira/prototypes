@@ -12,7 +12,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import CopyButton from 'components/CopyButton/CopyButton'
+import { CopyButton } from 'components/CopyButton/CopyButton'
 
 import type { ExtendedShopifyMetafield } from './Metafield'
 import { getMetafieldTitleLabel } from './utils/getMetafieldTitleLabel'

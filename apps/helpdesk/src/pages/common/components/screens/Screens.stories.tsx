@@ -4,8 +4,8 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { Button } from '@gorgias/axiom'
 
-import Screen from './Screen'
-import Screens from './Screens'
+import { Screen } from './Screen'
+import { Screens } from './Screens'
 
 const storyConfig: Meta = {
     title: 'General/screens/Screens',

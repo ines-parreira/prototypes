@@ -1,4 +1,4 @@
-export { default as clamp } from './clamp'
-export { default as computeDefaultWidths } from './computeDefaultWidths'
-export { default as mutatePanels } from './mutatePanels'
-export { default as createConfig } from './createConfig'
+export { clamp } from './clamp'
+export { computeDefaultWidths } from './computeDefaultWidths'
+export { mutatePanels } from './mutatePanels'
+export { createConfig } from './createConfig'

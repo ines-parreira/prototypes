@@ -20,4 +20,4 @@ const ModalFooter = ({ children, className }: Props) => (
     <div className={classnames(css.wrapper, className)}>{children}</div>
 )
 
-export default ModalFooter
+export { ModalFooter }

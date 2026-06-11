@@ -30,4 +30,4 @@ const AutomateStatsPaywall: React.FC = () => {
     )
 }
 
-export default AutomateStatsPaywall
+export { AutomateStatsPaywall }

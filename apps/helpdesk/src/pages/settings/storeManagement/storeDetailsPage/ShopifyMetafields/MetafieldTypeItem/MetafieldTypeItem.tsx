@@ -12,7 +12,7 @@ export interface MetafieldTypeItemProps {
     disabled?: boolean
 }
 
-export default function MetafieldTypeItem({
+export function MetafieldTypeItem({
     type,
     disabled = false,
 }: MetafieldTypeItemProps) {

@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 
 import classNames from 'classnames'
 
-import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
+import { useScrollActiveItemIntoView } from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import type { AILibraryArticleItem } from 'models/helpCenter/types'
 
 import css from './AIArticleRow.less'
@@ -48,4 +48,4 @@ const AIArticleRow = ({
     )
 }
 
-export default AIArticleRow
+export { AIArticleRow }

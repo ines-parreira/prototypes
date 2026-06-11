@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
 
 type SyncNotificationProps = {
     platform: string
@@ -47,4 +47,4 @@ const SyncNotification = ({
     )
 }
 
-export default SyncNotification
+export { SyncNotification }

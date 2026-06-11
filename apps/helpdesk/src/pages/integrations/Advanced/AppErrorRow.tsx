@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import JSONPretty from 'react-json-pretty'
 
 import type { AppErrorLog } from 'models/integration/types/app'
-import IconButton from 'pages/common/components/button/IconButton'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 import css from './AppErrorRow.less'
 
-export default function AppErrorRow(props: AppErrorLog) {
+export function AppErrorRow(props: AppErrorLog) {
     const hasDetails = props.payload != null
     const [showDetails, setShowDetails] = useState(false)
 

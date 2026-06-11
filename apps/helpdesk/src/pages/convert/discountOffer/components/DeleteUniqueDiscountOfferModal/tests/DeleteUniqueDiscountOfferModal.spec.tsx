@@ -9,7 +9,7 @@ import type { MockStore } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { useModalManagerApi } from 'hooks/useModalManager'
 import { useModalManager } from 'hooks/useModalManager'
 import { useDeleteDiscountOffer } from 'models/convert/discountOffer/queries'

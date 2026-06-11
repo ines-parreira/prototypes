@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useOptOutSalesTrialUpgradeMutation } from 'models/aiAgent/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'

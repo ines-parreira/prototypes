@@ -11,8 +11,8 @@ import type {
     ServiceConnectionApiDTO,
     StoreForServiceConnectionApiDTO,
 } from 'models/integration/types/serviceConnection'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import AppActionsConnections from 'pages/integrations/integration/components/app/AppActionsConnections'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
+import { AppActionsConnections } from 'pages/integrations/integration/components/app/AppActionsConnections'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
 const mockedUseStoreIntegrations = useStoreIntegrations as jest.Mock

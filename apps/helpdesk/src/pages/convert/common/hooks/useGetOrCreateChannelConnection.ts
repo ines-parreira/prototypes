@@ -15,7 +15,7 @@ import type {
 import { ChannelConnectionChannel } from 'models/convert/channelConnection/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
+import { useGetChatInstallationStatus } from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 
 const READ_RETRIES = 3
 

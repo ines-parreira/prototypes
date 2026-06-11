@@ -16,7 +16,7 @@ const authenticatorDataKeyLabelMapper: Record<keyof AuthenticatorData, string> =
         uri: 'URL',
     }
 
-export default function CantScanQRCode({ authenticatorData }: OwnProps) {
+export function CantScanQRCode({ authenticatorData }: OwnProps) {
     const [displayAuthenticatorData, setDisplayAuthenticatorData] =
         useState(false)
 

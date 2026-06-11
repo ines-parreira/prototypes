@@ -1,22 +1,25 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceChannels } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { useOrderManagement } from '../useOrderManagement'
 
 const mockHandleChatApplicationAutomationSettingsUpdate = jest.fn()
 
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () =>
-    jest.fn(),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
+    useSelfServiceConfiguration: jest.fn(),
+}))
 
-jest.mock('pages/automate/common/hooks/useSelfServiceChannels', () => jest.fn())
+jest.mock('pages/automate/common/hooks/useSelfServiceChannels', () => ({
+    useSelfServiceChannels: jest.fn(),
+}))
 
-jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings', () =>
-    jest.fn(),
+jest.mock(
+    'pages/automate/common/hooks/useApplicationsAutomationSettings',
+    () => ({ useApplicationsAutomationSettings: jest.fn() }),
 )
 
 const mockedUseSelfServiceConfiguration =

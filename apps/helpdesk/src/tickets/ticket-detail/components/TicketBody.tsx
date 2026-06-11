@@ -4,7 +4,7 @@ import { Virtuoso } from 'react-virtuoso'
 
 import type { Ticket } from '@gorgias/helpdesk-types'
 
-import useExpandedMessages from 'pages/tickets/detail/hooks/useExpandedMessages'
+import { useExpandedMessages } from 'pages/tickets/detail/hooks/useExpandedMessages'
 
 import { MessageExpansionContext } from '../context/MessageExpansionContext'
 import type { TicketElement as TicketElementType } from '../types'

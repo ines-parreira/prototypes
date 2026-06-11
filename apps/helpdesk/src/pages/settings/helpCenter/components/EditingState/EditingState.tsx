@@ -40,4 +40,4 @@ const EditingState = ({ state }: EditingStateProps) => {
     )
 }
 
-export default EditingState
+export { EditingState }

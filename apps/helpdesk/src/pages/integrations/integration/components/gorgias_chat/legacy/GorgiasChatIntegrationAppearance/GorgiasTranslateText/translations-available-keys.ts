@@ -160,4 +160,4 @@ const translationsAvailableKeys = {
     },
 }
 
-export default translationsAvailableKeys
+export { translationsAvailableKeys }

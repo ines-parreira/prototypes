@@ -66,7 +66,7 @@ export const sortOrderOptions = [
 
 const initialSortOrders: Record<number, ListViewItemsUpdatesOrderBy> = {}
 
-export default function useSortOrder(
+export function useSortOrder(
     viewId: number,
     viewSortOrder: ListViewItemsUpdatesOrderBy,
 ) {

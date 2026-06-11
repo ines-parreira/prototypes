@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 import type { FindOpportunitiesByTicketIdOpportunity200Item } from '@gorgias/knowledge-service-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'

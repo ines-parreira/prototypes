@@ -48,4 +48,4 @@ const RemoveMetafieldConfirmation = ({ isOpen, onClose, onConfirm }: Props) => {
     )
 }
 
-export default RemoveMetafieldConfirmation
+export { RemoveMetafieldConfirmation }

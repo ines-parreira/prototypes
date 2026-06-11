@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
+import { SubscriptionModalFooter } from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
 
 describe('SubscriptionModalFooter', () => {
     const confirmLabel = 'Confirm'

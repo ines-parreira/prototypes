@@ -7,8 +7,9 @@ import { DefaultDraftBlockRenderMap } from 'draft-js'
 
 import { EditorBlockType } from '../../../../../utils/editor'
 import { getQuoteDepth } from './quotesEditorUtils'
-import QuotesWrapper, {
+import {
     QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX,
+    QuotesWrapper,
 } from './QuotesWrapper'
 
 import styles from './quotesBlockStyle.less'

@@ -6,13 +6,13 @@ import type { Moment } from 'moment'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { getTimezone } from 'state/currentUser/selectors'
 
-import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
+import { TicketSnoozePicker } from './TicketDetails/TicketSnoozePicker'
 
 import css from './Snooze.less'
 
@@ -22,7 +22,7 @@ type Props = {
     disabled?: boolean
 }
 
-export default function Snooze({ disabled = false, until, onUpdate }: Props) {
+export function Snooze({ disabled = false, until, onUpdate }: Props) {
     const [showDropdown, setShowDropdown] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const timezone = useAppSelector(getTimezone)

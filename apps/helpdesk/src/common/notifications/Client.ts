@@ -5,9 +5,9 @@ import type {
 } from '@knocklabs/client'
 
 import type { Notification, RawNotification } from './types'
-import transformKnockNotification from './utils/transformKnockNotification'
+import { transformKnockNotification } from './utils/transformKnockNotification'
 
-export default class Client {
+export class Client {
     private feedClient: Feed
     private listeners: ((notification: Notification) => void)[]
 

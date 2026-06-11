@@ -20,8 +20,8 @@ import type {
 } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketDraft } from 'hooks/useTicketDraft'
 import { DRAFT_TICKET_STORE, isTicketDraftEmpty } from 'hooks/useTicketDraft'
 import type { Ticket } from 'models/ticket/types'

@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { ticketsCreatedDataItem } from 'fixtures/chart'
 
 const storyConfig: Meta = {

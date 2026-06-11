@@ -9,7 +9,7 @@ import { toast } from '@gorgias/axiom'
 
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import CopyButton from './CopyButton'
+import { CopyButton } from './CopyButton'
 
 jest.mock('copy-to-clipboard', () => jest.fn())
 const copyMock = copy as jest.MockedFunction<typeof copy>

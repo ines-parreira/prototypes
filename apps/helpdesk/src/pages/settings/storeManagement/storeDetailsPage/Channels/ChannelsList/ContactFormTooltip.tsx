@@ -1,4 +1,4 @@
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import type { ChannelWithMetadata } from '../../../types'
 
@@ -8,9 +8,7 @@ interface ContactFormTooltipProps {
     activeChannel: ChannelWithMetadata
 }
 
-export default function ContactFormTooltip({
-    activeChannel,
-}: ContactFormTooltipProps) {
+export function ContactFormTooltip({ activeChannel }: ContactFormTooltipProps) {
     if (activeChannel.type !== 'contactForm') {
         return null
     }

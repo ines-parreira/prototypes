@@ -11,10 +11,10 @@ import moment from 'moment'
 
 import noise from 'assets/img/integrations/noise.svg'
 import type { ConversationHeaderVariant } from 'gorgias-design-system/Header/ConversationHeader'
-import ConversationHeader from 'gorgias-design-system/Header/ConversationHeader'
-import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
-import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
-import useAppSelector from 'hooks/useAppSelector'
+import { ConversationHeader } from 'gorgias-design-system/Header/ConversationHeader'
+import { WidgetHeader } from 'gorgias-design-system/Header/WidgetHeader'
+import { ChatMessageInput } from 'gorgias-design-system/Input/ChatMessageInput'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatPosition,
@@ -26,7 +26,7 @@ import {
     GorgiasChatLauncherType,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
 import type { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/types'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
@@ -45,9 +45,9 @@ import {
     getTextColorBasedOnBackground,
     getThemeBasedOnContrast,
 } from './color-utils'
-import CustomizedChatLauncher from './CustomizedChatLauncher'
+import { CustomizedChatLauncher } from './CustomizedChatLauncher'
 import { AddIcon, PlaneIcon } from './icon-utils'
-import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
+import { PrivacyPolicyDisclaimer } from './PrivacyPolicyDisclaimer'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -393,4 +393,4 @@ const ChatIntegrationPreview = (props: Props) => {
         </ChatIntegrationPreviewContext.Provider>
     )
 }
-export default ChatIntegrationPreview
+export { ChatIntegrationPreview }

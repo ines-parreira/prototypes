@@ -4,7 +4,7 @@ export type GreyArea = {
     start: string
     end: string
 }
-const GreyArea = {
+export const GreyArea = {
     id: 'greyArea',
     beforeDraw(chart: Chart) {
         if (
@@ -102,5 +102,3 @@ const GreyArea = {
         ctx.restore()
     },
 }
-
-export default GreyArea

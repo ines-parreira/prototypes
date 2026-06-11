@@ -1,5 +1,5 @@
 import { useAIIntentsForProductTimeSeries } from 'domains/reporting/hooks/voice-of-customer/useAIIntentsTimeSeries'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { LINES_COLORS } from 'domains/reporting/pages/constants'
 

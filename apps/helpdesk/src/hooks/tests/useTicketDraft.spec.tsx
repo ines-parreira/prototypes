@@ -11,7 +11,7 @@ import configureMockStore from 'redux-mock-store'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import useTicketDraft from '../useTicketDraft'
+import { useTicketDraft } from '../useTicketDraft'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

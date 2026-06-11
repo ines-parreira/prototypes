@@ -9,7 +9,7 @@ import type {
     LegacyButtonProps as ButtonProps,
 } from '@gorgias/axiom'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 /**
  * @deprecated This component is deprecated and will be removed in future versions.
@@ -33,7 +33,7 @@ type Props = {
     >['containerElement']
 } & ButtonComponentProps
 
-export default function ConfirmButton({
+export function ConfirmButton({
     children,
     confirmationContent,
     confirmationTitle = 'Are you sure?',

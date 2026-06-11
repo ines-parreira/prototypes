@@ -1,6 +1,6 @@
 import type { Map } from 'immutable'
 
-import Badge from 'gorgias-design-system/Badge/Badge'
+import { Badge } from 'gorgias-design-system/Badge/Badge'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
@@ -23,4 +23,4 @@ const LightCampaignBadge = ({
     return <Badge label={'light'} color="accessoryBlue" className={className} />
 }
 
-export default LightCampaignBadge
+export { LightCampaignBadge }

@@ -4,10 +4,10 @@ import classNames from 'classnames'
 
 import type { CustomField } from '@gorgias/helpdesk-types'
 
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
 import type { CustomFieldValue } from 'custom-fields/types'
-import InputField from 'pages/common/forms/input/InputField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 type Props = {
     customField: CustomField
@@ -124,4 +124,4 @@ function CustomFieldInput({
     return <div>Coming soon</div>
 }
 
-export default CustomFieldInput
+export { CustomFieldInput }

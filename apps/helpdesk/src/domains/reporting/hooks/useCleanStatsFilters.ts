@@ -8,8 +8,8 @@ import {
     getCleanStatsFilters,
     isCleanStatsDirty,
 } from 'domains/reporting/state/ui/stats/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export function useCleanStatsFilters() {
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)

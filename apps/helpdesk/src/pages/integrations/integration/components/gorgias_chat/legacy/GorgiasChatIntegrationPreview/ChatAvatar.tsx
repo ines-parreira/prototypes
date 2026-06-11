@@ -1,4 +1,4 @@
-import Avatar from 'gorgias-design-system/Avatar/Avatar'
+import { Avatar } from 'gorgias-design-system/Avatar/Avatar'
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
@@ -55,4 +55,4 @@ const ChatAvatar: React.FC<Props> = ({
     )
 }
 
-export default ChatAvatar
+export { ChatAvatar }

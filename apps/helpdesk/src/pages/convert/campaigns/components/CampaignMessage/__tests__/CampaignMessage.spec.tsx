@@ -40,7 +40,7 @@ jest.mock(
     'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm',
     () => ({
         __esModule: true,
-        default: ({ onSubmit }: AddContactCaptureFormProps) => {
+        AddContactCaptureForm: ({ onSubmit }: AddContactCaptureFormProps) => {
             const data = {
                 steps: [],
                 on_success_content: { message: 'test' },

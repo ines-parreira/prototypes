@@ -10,7 +10,7 @@ import {
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import {
     ArticleTemplatesGroupedByCategoryFixture,
     HelpCenterArticleItemFixture,
@@ -19,13 +19,13 @@ import {
     HelpCenterApiArticlesFixture,
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 
 import { useGetHelpCenterArticles } from '../../../hooks/useGetHelpCenterArticles'
 import { useHelpCenterArticlesForm } from '../../../hooks/useHelpCenterArticlesForm'
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
-import HelpCenterWizardArticleEditor from '../../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
-import HelpCenterCreationWizardStepArticles from '../HelpCenterCreationWizardStepArticles'
+import { ArticleEditor as HelpCenterWizardArticleEditor } from '../../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
+import { HelpCenterCreationWizardStepArticles } from '../HelpCenterCreationWizardStepArticles'
 
 jest.mock('../../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor')
 ;(HelpCenterWizardArticleEditor as jest.Mock).mockReturnValue(<></>)

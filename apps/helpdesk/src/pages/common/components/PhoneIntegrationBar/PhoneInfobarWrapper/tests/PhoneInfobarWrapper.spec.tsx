@@ -3,7 +3,7 @@ import React from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 
-import PhoneInfobarWrapper from '../PhoneInfobarWrapper'
+import { PhoneInfobarWrapper } from '../PhoneInfobarWrapper'
 
 jest.mock('@repo/feature-flags')
 

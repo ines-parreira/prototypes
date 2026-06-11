@@ -1,5 +1,5 @@
 import { linkEditionEnded, linkEditionStarted } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, DefaultExportReducer as reducer } from '../reducer'
 
 describe('editor reducer', () => {
     describe('linkEditionStarted action', () => {

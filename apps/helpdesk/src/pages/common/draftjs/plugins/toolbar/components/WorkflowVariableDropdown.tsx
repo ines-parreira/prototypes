@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
+import { VisualBuilderActionIcon } from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import {
     filterManyVariables,
     findManyVariables,
@@ -13,12 +13,12 @@ import type {
     WorkflowVariable,
     WorkflowVariableGroup,
 } from 'pages/automate/workflows/models/variables.types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Search from 'pages/common/components/Search'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 
 import { useToolbarContext } from '../ToolbarContext'
 
@@ -242,4 +242,4 @@ const WorkflowVariableDropdown = ({
     )
 }
 
-export default WorkflowVariableDropdown
+export { WorkflowVariableDropdown }

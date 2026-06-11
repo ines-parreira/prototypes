@@ -2,7 +2,7 @@ import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import { LegacyBadge as Badge, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 
 import css from './TicketSnooze.less'
 
@@ -38,4 +38,4 @@ const TicketSnooze = ({ datetime, timezone, disabled = false }: Props) => {
     )
 }
 
-export default TicketSnooze
+export { TicketSnooze }

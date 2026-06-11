@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 export const useReportOrderIssueFlow = () => {
     const { shopName } = useParams<{ shopName: string }>()

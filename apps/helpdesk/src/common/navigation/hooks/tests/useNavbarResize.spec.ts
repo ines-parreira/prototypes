@@ -4,7 +4,7 @@ import { useSavedSizes } from '@repo/layout'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
-import useNavbarResize, { DEFAULT_WIDTH } from '../useNavbarResize'
+import { DEFAULT_WIDTH, useNavbarResize } from '../useNavbarResize'
 
 jest.mock('@repo/layout', () => ({ useSavedSizes: jest.fn() }))
 const useSavedSizesMock = assumeMock(useSavedSizes)

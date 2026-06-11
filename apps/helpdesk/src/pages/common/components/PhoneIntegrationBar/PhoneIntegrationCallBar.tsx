@@ -3,14 +3,14 @@ import { useCallback } from 'react'
 import { useConditionalShortcuts } from '@repo/utils'
 import { useBeforeUnload } from '@gorgias/toolkit-react'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import MonitoringPhoneCall from 'pages/common/components/PhoneIntegrationBar/MonitoringPhoneCall/MonitoringPhoneCall'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { MonitoringPhoneCall } from 'pages/common/components/PhoneIntegrationBar/MonitoringPhoneCall/MonitoringPhoneCall'
 
-import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
-import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
-import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
+import { IncomingPhoneCall } from './IncomingPhoneCall/IncomingPhoneCall'
+import { DefaultExportOngoingPhoneCall as OngoingPhoneCall } from './OngoingPhoneCall/OngoingPhoneCall'
+import { OutgoingPhoneCall } from './OutgoingPhoneCall/OutgoingPhoneCall'
 
-export default function PhoneIntegrationCallBar(): JSX.Element | null {
+export function PhoneIntegrationCallBar(): JSX.Element | null {
     const { call, isDialing, isRinging } = useVoiceDevice()
 
     const isInProgress = useCallback(

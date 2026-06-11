@@ -3,9 +3,9 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
-import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
+import { AiAgentUrlSourcesArticleContainer } from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 
 jest.mock('react-router-dom', () => ({
@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))

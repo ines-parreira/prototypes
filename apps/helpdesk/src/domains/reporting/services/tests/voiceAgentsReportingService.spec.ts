@@ -22,7 +22,7 @@ import {
     useVoiceAgentsReportData,
 } from 'domains/reporting/services/voiceAgentsReportingService'
 import { agents } from 'fixtures/agents'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import * as files from 'utils/file'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')

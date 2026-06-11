@@ -4,13 +4,21 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as actions from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
 
-import WidgetEditionTools from '../WidgetEditionTools'
+import { WidgetEditionTools } from '../WidgetEditionTools'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Button: ({ children, onClick, isDisabled, isLoading, ...rest }: any) => (
+        <button onClick={onClick} disabled={isDisabled || isLoading} {...rest}>
+            {children}
+        </button>
+    ),
+}))
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('state/widgets/actions', () => ({
     submitWidgets: jest.fn(),
     startEditionMode: jest.fn(),

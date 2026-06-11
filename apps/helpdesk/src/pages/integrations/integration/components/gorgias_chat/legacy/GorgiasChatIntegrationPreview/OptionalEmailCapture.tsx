@@ -1,5 +1,5 @@
-import BotMessages from './BotMessages'
-import EmailCaptureMessage from './EmailCaptureMessage'
+import { BotMessages } from './BotMessages'
+import { EmailCaptureMessage } from './EmailCaptureMessage'
 
 type Props = {
     mainColor: string
@@ -15,4 +15,4 @@ const OptionalEmailCapture: React.FC<Props> = ({ chatTitle, language }) => {
     )
 }
 
-export default OptionalEmailCapture
+export { OptionalEmailCapture }

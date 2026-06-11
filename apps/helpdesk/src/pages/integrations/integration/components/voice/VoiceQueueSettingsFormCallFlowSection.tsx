@@ -15,8 +15,8 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import RadioButtonField from 'pages/common/forms/RadioButtonField'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
+import { RadioButtonField } from 'pages/common/forms/RadioButtonField'
 
 import {
     RING_TIME_MAX_VALUE,
@@ -26,13 +26,13 @@ import {
     WRAP_UP_TIME_MAX_VALUE,
     WRAP_UP_TIME_MIN_VALUE,
 } from './constants'
-import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
-import VoiceSettingAccordionItem from './VoiceSettingAccordionItem'
-import WaitMusicField from './WaitMusicField'
+import { VoiceIntegrationPreferencesTeamSelect } from './VoiceIntegrationPreferencesTeamSelect'
+import { VoiceSettingAccordionItem } from './VoiceSettingAccordionItem'
+import { WaitMusicField } from './WaitMusicField'
 
 import css from './VoiceQueueSettingsFormCallFlowSection.less'
 
-export default function VoiceQueueSettingsFormCallFlowSection() {
+export function VoiceQueueSettingsFormCallFlowSection() {
     const { watch, setValue } = useFormContext()
 
     const [linkedTargets, ring_time, wait_time, is_wrap_up_time_enabled] =

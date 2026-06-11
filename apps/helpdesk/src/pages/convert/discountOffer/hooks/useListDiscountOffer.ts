@@ -1,4 +1,4 @@
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useListDiscountOffers as usePureListDiscountOffers } from 'models/convert/discountOffer/queries'
 import type { UniqueDiscountListParams } from 'models/convert/discountOffer/types'
 import { notify } from 'state/notifications/actions'

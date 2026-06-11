@@ -1,3 +1,3 @@
-export { default as OrderCard } from './OrderCard'
-export { default as OrderStatusBadge } from './OrderStatusBadge'
-export { default as CardHeaderIcon } from './CardHeaderIcon'
+export { OrderCard } from './OrderCard'
+export { OrderStatusBadge } from './OrderStatusBadge'
+export { CardHeaderIcon } from './CardHeaderIcon'

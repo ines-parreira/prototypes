@@ -18,7 +18,7 @@ import type {
     Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import { jsonToWidgets } from 'pages/common/components/infobar/utils'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

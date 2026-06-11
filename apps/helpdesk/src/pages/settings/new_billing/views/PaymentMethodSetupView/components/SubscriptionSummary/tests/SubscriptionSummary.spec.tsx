@@ -15,10 +15,12 @@ import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import type { ISubscriptionSummaryProps } from '../SubscriptionSummary'
 import { SubscriptionSummary } from '../SubscriptionSummary'
 
-jest.mock('hooks/useAppSelector', () => (selector: () => any) => selector())
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
     useSessionStorage: jest.fn(),
+}))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (selector: () => any) => selector(),
 }))
 jest.mock('pages/settings/new_billing/hooks/useBillingPlan')
 jest.mock('react-redux', () => ({

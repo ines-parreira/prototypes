@@ -3,8 +3,8 @@ import { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DEPRECATED_Modal } from 'pages/common/components/DEPRECATED_Modal'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { Draggable } from 'utils/wrappers/Draggable'
 
 import css from './ImageRepositioningModal.less'

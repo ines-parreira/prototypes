@@ -73,4 +73,4 @@ const BaseButton = ({
     )
 }
 
-export default BaseButton
+export { BaseButton }

@@ -2,7 +2,7 @@ import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
 import { aiJourneyOptedOutAfterReplyQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 type UseAIJourneyOptOutAfterReplyOptions = {

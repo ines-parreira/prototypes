@@ -15,7 +15,7 @@ import {
     saveArticles,
     updateArticle,
 } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, DefaultExportReducer as reducer } from '../reducer'
 import type { ArticlesAction } from '../types'
 
 const articlesResponse =

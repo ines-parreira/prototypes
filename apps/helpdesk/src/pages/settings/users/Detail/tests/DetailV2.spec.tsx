@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import { agents } from 'fixtures/agents'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
@@ -24,7 +24,7 @@ jest.mock('@repo/users', () => ({
     useCreateUser: () => ({ mutateAsync: mockCreateUser, isLoading: false }),
     useUpdateUser: () => ({ mutateAsync: mockUpdateUser, isLoading: false }),
 }))
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
@@ -34,7 +34,7 @@ jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentUser/selectors')
 jest.mock('pages/common/components/Loader/Loader', () => ({
     __esModule: true,
-    default: jest.fn(() => <div>loader</div>),
+    Loader: jest.fn(() => <div>loader</div>),
 }))
 jest.mock('../hooks/useGetAgentWithEffect')
 jest.mock('../Statuses')

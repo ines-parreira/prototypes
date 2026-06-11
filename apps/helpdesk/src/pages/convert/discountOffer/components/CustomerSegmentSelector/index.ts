@@ -1,1 +1,1 @@
-export { default } from './CustomerSegmentSelector'
+export { CustomerSegmentSelector } from './CustomerSegmentSelector'

@@ -26,7 +26,7 @@ import type {
     UserViewsOrderingSettingData,
 } from 'config/types/user'
 import { UserRole, UserSettingType } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { createAccountSetting, updateAccountSetting } from 'models/account'
 import {
@@ -40,10 +40,10 @@ import { createUserSetting, updateUserSetting } from 'models/user/resources'
 import { fetchViewsPaginated, updateView } from 'models/view/resources'
 import type { View, ViewCategoryNavbar } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
-import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
+import { useAutoScrollOnDragging } from 'pages/common/hooks/useAutoScrollOnDragging'
 import { InboxSidebarBlock } from 'pages/tickets/navbar/InboxSidebarBlock'
 import { TicketNavbarCreateMenu } from 'pages/tickets/navbar/TicketNavbarCreateMenu'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import {
     SplitTicketViewToggle,
     useSplitTicketViewSwitcher,
@@ -85,22 +85,23 @@ import { hasRole, isTicketPath } from 'utils'
 import { ViewCategories, ViewCategoriesIcons } from './constants'
 import { CreateTicketNavbarButton } from './CreateTicketNavbarButton'
 import { DefaultViews } from './DefaultViews'
-import DeleteSectionModal from './DeleteSectionModal'
+import { DeleteSectionModal } from './DeleteSectionModal'
 import { PlaceCallNavbarButton } from './PlaceCallNavbarButton'
 import { RecentChats } from './RecentChats'
-import SectionFormModal from './SectionFormModal'
+import { SectionFormModal } from './SectionFormModal'
 import { TicketNavbarBlock } from './TicketNavbarBlock'
 import { TicketNavbarBridgeContainer } from './TicketNavbarBridgeContainer'
 import type { TicketNavbarElement } from './TicketNavbarContent'
-import TicketNavbarContent from './TicketNavbarContent'
+import { DefaultExportTicketNavbarContent as TicketNavbarContent } from './TicketNavbarContent'
 import type {
     TicketNavbarDragObject,
     TicketNavbarDropResult,
 } from './TicketNavbarDropTarget'
-import TicketNavbarDropTarget, {
+import {
     TicketNavbarDropDirection,
+    TicketNavbarDropTarget,
 } from './TicketNavbarDropTarget'
-import TicketNavbarViewLink from './TicketNavbarViewLink'
+import { DefaultExportTicketNavbarViewLink as TicketNavbarViewLink } from './TicketNavbarViewLink'
 import { useStoredNavigationSections } from './useStoredNavigationSections'
 import { useTicketNavbarOrderingCacheSync } from './useTicketNavbarOrderingCacheSync'
 
@@ -762,4 +763,6 @@ const connector = connect(
     },
 )
 
-export default connector(TicketNavbarContainer)
+const DefaultExportTicketNavbar = connector(TicketNavbarContainer)
+
+export { DefaultExportTicketNavbar }

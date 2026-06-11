@@ -18,7 +18,7 @@ import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hoo
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ConvertBundleView from '../ConvertBundleView'
+import { ConvertBundleView } from '../ConvertBundleView'
 
 const mockedServer = new MockAdapter(client)
 
@@ -56,12 +56,12 @@ const useListBundlesMock = assumeMock(useListBundles)
 
 const useThemeAppExtensionInstallationSpy = jest.spyOn(
     useThemeAppExtensionInstallation,
-    'default',
+    'useThemeAppExtensionInstallation',
 )
 
 const useIsManualInstallationMethodRequiredSpy = jest.spyOn(
     useIsManualInstallationMethodRequired,
-    'default',
+    'useIsManualInstallationMethodRequired',
 )
 
 describe('ConvertBundleView Component', () => {

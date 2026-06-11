@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { SalesSettingsData } from 'models/aiAgent/types'
-import Card from 'pages/aiAgent/Onboarding_V2/components/Card/Card'
+import { Card } from 'pages/aiAgent/Onboarding_V2/components/Card/Card'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding_V2/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep.less'
 import type { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'

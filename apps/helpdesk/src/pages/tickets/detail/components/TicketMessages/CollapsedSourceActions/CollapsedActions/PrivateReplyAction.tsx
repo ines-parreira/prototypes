@@ -1,9 +1,9 @@
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
 import type { TicketMessage } from 'models/ticket/types'
-import PrivateReplyButton from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyButton'
+import { PrivateReplyButton } from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyButton'
 
-import CollapsedAction from './CollapsedAction'
+import { CollapsedAction } from './CollapsedAction'
 
 import css from './PrivateReplyAction.less'
 
@@ -69,4 +69,4 @@ const PrivateReplyAction: React.FC<PrivateReplyActionProps> = ({
     />
 )
 
-export default PrivateReplyAction
+export { PrivateReplyAction }

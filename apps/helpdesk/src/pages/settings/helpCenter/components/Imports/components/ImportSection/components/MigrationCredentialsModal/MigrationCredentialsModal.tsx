@@ -5,12 +5,12 @@ import { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import type { MigrationProvider } from '../../types'
-import MigrationBaseModal from '../MigrationBaseModal'
-import MigrationBaseModalBody from '../MigrationBaseModalBody'
-import ProviderInfo from '../ProviderInfo'
+import { MigrationBaseModal } from '../MigrationBaseModal'
+import { MigrationBaseModal as MigrationBaseModalBody } from '../MigrationBaseModalBody'
+import { ProviderInfo } from '../ProviderInfo'
 
 type Props = {
     isOpen: boolean
@@ -127,4 +127,4 @@ const MigrationCredentialsModal: React.FC<Props> = ({
     )
 }
 
-export default MigrationCredentialsModal
+export { MigrationCredentialsModal }

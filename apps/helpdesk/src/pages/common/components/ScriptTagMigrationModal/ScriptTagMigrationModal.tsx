@@ -7,17 +7,17 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 import { isAdmin } from 'utils'
 
-import ModalActionsFooter from '../modal/ModalActionsFooter'
-import useStoresRequiringScriptTagMigration from '../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
+import { ModalActionsFooter } from '../modal/ModalActionsFooter'
+import { useStoresRequiringScriptTagMigration } from '../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 
 /**
  * Shows a modal to update Shopify store permissions, if the user has store(s) that require it.
@@ -132,4 +132,4 @@ const ScriptTagMigrationModal = () => {
     )
 }
 
-export default ScriptTagMigrationModal
+export { ScriptTagMigrationModal }

@@ -12,7 +12,7 @@ jest.mock('pages/common/forms/FileField', () => {
     const { forwardRef, useImperativeHandle } = jest.requireActual('react')
     return {
         __esModule: true,
-        default: forwardRef(function MockFileField(
+        FileFieldContainer: forwardRef(function MockFileField(
             props: { onChange: (url?: string) => void },
             ref: React.Ref<unknown>,
         ) {
@@ -30,7 +30,7 @@ jest.mock('pages/common/forms/FileField', () => {
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: () =>
+    useAppSelector: () =>
         fromJS({
             id: 123,
         }),

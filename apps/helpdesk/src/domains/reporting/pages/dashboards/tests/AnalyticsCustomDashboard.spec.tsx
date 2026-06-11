@@ -4,7 +4,7 @@ import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilte
 import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AnalyticsCustomDashboard } from 'domains/reporting/pages/dashboards/AnalyticsCustomDashboard'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'

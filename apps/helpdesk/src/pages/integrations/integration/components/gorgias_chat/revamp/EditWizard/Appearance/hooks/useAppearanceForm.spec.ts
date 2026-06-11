@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,

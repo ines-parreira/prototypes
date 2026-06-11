@@ -9,7 +9,7 @@ import { Tag } from '@gorgias/axiom'
 import { Popover } from 'components/Popover'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
-import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
+import { KnowledgeSourceIcon } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover.less'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import {
@@ -160,4 +160,6 @@ const KnowledgeSourcePopover = ({
     )
 }
 
-export default memo(KnowledgeSourcePopover)
+const DefaultExportKnowledgeSourcePopover = memo(KnowledgeSourcePopover)
+
+export { DefaultExportKnowledgeSourcePopover }

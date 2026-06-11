@@ -1,9 +1,9 @@
 import { sanitizeHtmlDefault } from '@repo/utils'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { WHATSAPP_VARIABLE_REGEX, whatsAppMessageTemplateToHtml } from './utils'
-import WhatsAppVariablePreview from './WhatsAppVariablePreview'
+import { WhatsAppVariablePreview } from './WhatsAppVariablePreview'
 
 import css from './WhatsAppMessageTemplateMessage.less'
 
@@ -14,7 +14,7 @@ type Props = {
     onChange?: (value: string[]) => void
 }
 
-export default function WhatsAppMessageTemplateLine({
+export function WhatsAppMessageTemplateLine({
     line: rawLine,
     isPreview,
     value = [],

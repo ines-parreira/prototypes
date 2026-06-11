@@ -7,8 +7,8 @@ import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import AppActionsTab from 'pages/integrations/integration/components/app/AppActionsTab'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { AppActionsTab } from 'pages/integrations/integration/components/app/AppActionsTab'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurationTemplates: jest.fn(),

@@ -5,7 +5,7 @@ import { cleanup, screen } from '@testing-library/react'
 
 import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 
-import WhatsAppMessageTemplateDetailsDrawer from '../WhatsAppMessageTemplateDetailsDrawer'
+import { WhatsAppMessageTemplateDetailsDrawer } from '../WhatsAppMessageTemplateDetailsDrawer'
 
 describe('WhatsAppMessageTemplateDetailsDrawer', () => {
     const renderComponent = () =>

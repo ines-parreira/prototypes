@@ -9,10 +9,10 @@ import {
 } from '@gorgias/axiom'
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
-import CategoryChip from '../CategoryChip/CategoryChip'
-import MetafieldTypeItem from '../MetafieldTypeItem/MetafieldTypeItem'
+import { CategoryChip } from '../CategoryChip/CategoryChip'
+import { MetafieldTypeItem } from '../MetafieldTypeItem/MetafieldTypeItem'
 import type { SupportedCategories } from '../types'
-import VisibilityChip from '../VisibilityChip/VisibilityChip'
+import { VisibilityChip } from '../VisibilityChip/VisibilityChip'
 import type { Field, MetafieldsTableMeta } from './types'
 
 export const columns: ColumnDef<Field>[] = [

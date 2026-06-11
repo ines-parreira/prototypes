@@ -5,15 +5,15 @@ import pick from 'lodash/pick'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import FormRow from 'pages/common/forms/FormRow'
-import InputField from 'pages/common/forms/input/InputField'
-import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
+import { FormRow } from 'pages/common/forms/FormRow'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { FormSection } from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import { isEmail } from 'utils'
 
 import type { ConnectIntegrationPayload } from '../../hooks/useEmailOnboarding'
 import { useEmailOnboarding } from '../../hooks/useEmailOnboarding'
-import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
-import EmailPreview from './EmailPreview'
+import { EmailIntegrationOnboardingButtons } from '../EmailIntegrationOnboardingButtons'
+import { EmailPreview } from './EmailPreview'
 
 import css from '../EmailIntegrationOnboarding.less'
 
@@ -28,7 +28,7 @@ type Props = {
     handleCancel: () => void
 }
 
-export default function EmailIntegrationConnectForm(props: Props) {
+export function EmailIntegrationConnectForm(props: Props) {
     const { integration, errors, connectIntegration } =
         useEmailOnboarding(props)
 

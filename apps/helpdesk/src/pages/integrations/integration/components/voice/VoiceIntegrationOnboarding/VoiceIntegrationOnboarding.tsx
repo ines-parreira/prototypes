@@ -1,21 +1,21 @@
 import { useState } from 'react'
 
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
-import AddPhoneNumberStep from './AddPhoneNumberStep'
-import ConfigureRoutingBehaviorStep from './ConfigureRoutingBehaviorStep'
+import { AddPhoneNumberStep } from './AddPhoneNumberStep'
+import { ConfigureRoutingBehaviorStep } from './ConfigureRoutingBehaviorStep'
 import {
     onboardingStepsLabels,
     VoiceIntegrationOnboardingStep,
 } from './constants'
-import VoiceIntegrationOnboardingForm from './VoiceIntegrationOnboardingForm'
-import VoiceIntegrationOnboardingUnsavedChangesPrompt from './VoiceIntegrationOnboardingUnsavedChangesPrompt'
+import { VoiceIntegrationOnboardingForm } from './VoiceIntegrationOnboardingForm'
+import { VoiceIntegrationOnboardingUnsavedChangesPrompt } from './VoiceIntegrationOnboardingUnsavedChangesPrompt'
 
-export default function VoiceIntegrationOnboarding() {
+export function VoiceIntegrationOnboarding() {
     const [hasNewPhoneNumber, setHasNewPhoneNumber] = useState(false)
 
     return (

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Category,
     LocaleCode,
@@ -88,4 +88,4 @@ const useCategoriesOptions = ({
     return options
 }
 
-export default useCategoriesOptions
+export { useCategoriesOptions }

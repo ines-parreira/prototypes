@@ -22,13 +22,13 @@ import {
     getSavedFilterDraft,
     initialiseSavedFilterDraft,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import DropdownButton from 'pages/common/components/button/DropdownButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportDropdownButton as DropdownButton } from 'pages/common/components/button/DropdownButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownFooter as DropdownFooter } from 'pages/common/components/dropdown/DropdownFooter'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 type SavedFilterType = Pick<SavedFilter, 'id' | 'name'>
 
@@ -218,4 +218,4 @@ const ApplySavedFilters = ({
     )
 }
 
-export default ApplySavedFilters
+export { ApplySavedFilters }

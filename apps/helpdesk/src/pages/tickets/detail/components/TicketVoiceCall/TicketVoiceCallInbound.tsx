@@ -1,17 +1,17 @@
 import type { VoiceCall } from 'models/voiceCall/types'
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 
 import { useCustomerDetails } from './hooks'
-import TicketVoiceCallContainer from './TicketVoiceCallContainer'
+import { TicketVoiceCallContainer } from './TicketVoiceCallContainer'
 import { TicketVoiceCallInboundStatus } from './TicketVoiceCallInboundStatus'
 
 type Props = {
     voiceCall: VoiceCall
 }
 
-export default function TicketVoiceCallInbound({ voiceCall }: Props) {
+export function TicketVoiceCallInbound({ voiceCall }: Props) {
     const { customer } = useCustomerDetails({
         customerId: voiceCall.customer_id,
     })

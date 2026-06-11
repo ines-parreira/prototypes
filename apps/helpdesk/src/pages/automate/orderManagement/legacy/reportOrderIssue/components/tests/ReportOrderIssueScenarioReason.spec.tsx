@@ -9,7 +9,7 @@ import type { ShopifyIntegration } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { useReportOrderIssueScenarioFormContext } from '../ReportOrderIssueScenarioFormContext'
-import ReportOrderIssueScenarioReason from '../ReportOrderIssueScenarioReason'
+import { ReportOrderIssueScenarioReason } from '../ReportOrderIssueScenarioReason'
 
 jest.mock('../ReportOrderIssueScenarioFormContext')
 

@@ -2,7 +2,7 @@ import { Component } from 'react'
 import type { ComponentType, CSSProperties } from 'react'
 
 import type { DropdownMenuProps } from './MultiSelectOptionsField/dropdownMenuTypes'
-import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from './MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from './MultiSelectOptionsField/types'
 
 type Props = {
@@ -28,7 +28,7 @@ type Props = {
  * @date 2026-01-06
  * @type ui-kit-migration
  */
-export default class MultiSelectField extends Component<Props> {
+export class MultiSelectField extends Component<Props> {
     static defaultProps = {
         allowCustomValues: false,
         options: [],

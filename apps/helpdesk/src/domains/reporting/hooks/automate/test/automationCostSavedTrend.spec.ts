@@ -5,8 +5,9 @@ import {
     formatCostSavedData,
     useAutomationCostSavedTrend,
 } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import goToTicket from 'common/utils/goToTicket'
+import { goToTicket } from 'common/utils/goToTicket'
 
-import PhoneCustomerName from '../PhoneCustomerName'
+import { PhoneCustomerName } from '../PhoneCustomerName'
 
 jest.mock('libphonenumber-js')
 jest.mock('common/utils/goToTicket')

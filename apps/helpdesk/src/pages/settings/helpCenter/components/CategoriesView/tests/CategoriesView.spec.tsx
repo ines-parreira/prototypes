@@ -7,7 +7,7 @@ import { getSingleCategoryEnglish } from 'pages/settings/helpCenter/fixtures/get
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SearchContextProvider } from 'pages/settings/helpCenter/providers/SearchContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'

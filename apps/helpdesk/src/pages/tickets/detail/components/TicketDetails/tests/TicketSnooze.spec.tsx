@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { UserSettingType } from 'config/types/user'
 
-import TicketSnooze from '../TicketSnooze'
+import { TicketSnooze } from '../TicketSnooze'
 
 const mockStore = configureMockStore([thunk])
 

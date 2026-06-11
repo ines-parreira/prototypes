@@ -19,4 +19,4 @@ const ConnectedChannelsContext = createContext<ConnectedChannelsContextType>({
 export const useConnectedChannelsContext = () =>
     useContext(ConnectedChannelsContext)
 
-export default ConnectedChannelsContext
+export { ConnectedChannelsContext }

@@ -5,8 +5,8 @@ import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useU
 import { ticketNumberFieldDefinition } from 'fixtures/customField'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import EditFieldForm from '../EditFieldForm'
-import FieldForm from '../FieldForm'
+import { EditFieldForm } from '../EditFieldForm'
+import { FieldForm } from '../FieldForm'
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinition')
 
@@ -17,7 +17,9 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock('../FieldForm', () => jest.fn(() => <div>FieldForm</div>))
+jest.mock('../FieldForm', () => ({
+    FieldForm: jest.fn(() => <div>FieldForm</div>),
+}))
 
 const useUpdateCustomFieldDefinitionMock = assumeMock(
     useUpdateCustomFieldDefinition,

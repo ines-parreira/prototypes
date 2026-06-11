@@ -13,7 +13,7 @@ import type {
     TicketMessageTranslation,
 } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
 

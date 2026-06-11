@@ -1,7 +1,7 @@
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
-import getEligibleChannels from '../getEligibleChannel'
+import { getEligibleChannels } from '../getEligibleChannel'
 
 describe('getEligibleChannels', () => {
     const mockIntegrations: Integration[] = [

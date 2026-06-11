@@ -8,13 +8,13 @@ import type { UpdateCustomerBodyChannelsItem } from '@gorgias/helpdesk-queries'
 import { useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { SUBMIT_CUSTOMER_SUCCESS } from 'state/customers/constants'
 
 import css from './CustomerChannels.less'
@@ -23,7 +23,7 @@ type Props = {
     customerId: number
 }
 
-export default function NewPhoneNumber({ customerId }: Props) {
+export function NewPhoneNumber({ customerId }: Props) {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [phoneNumber, setPhoneNumber] = useState('')
     const [error, setError] = useState<string>()

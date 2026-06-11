@@ -1,6 +1,6 @@
 import type { Expression } from 'estree'
 
-export default function resolvePunctuators(
+export function resolvePunctuators(
     type: Expression['type'],
     string: string,
 ): string {

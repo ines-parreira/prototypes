@@ -5,7 +5,7 @@ import cs from 'classnames'
 
 import css from './FieldValue.less'
 
-export default function FieldValue({
+export function FieldValue({
     isDisabled = false,
     isNotBold = false,
     canOverflow = false,

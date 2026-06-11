@@ -6,22 +6,22 @@ import { Form } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { VOICEMAIL_DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import type {
     PhoneIntegration,
     PhoneIntegrationVoicemailSettings,
 } from 'models/integration/types'
 import { isPhoneIntegration } from 'models/integration/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { updatePhoneVoicemailConfiguration } from 'pages/integrations/integration/components/phone/actions'
-import useVoiceMessageValidation from 'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { useVoiceMessageValidation } from 'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 import { fetchIntegrations } from 'state/integrations/actions'
 
-import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
+import { DEPRECATED_VoiceMessageField } from './DEPRECATED_VoiceMessageField'
 
 import css from './VoiceIntegrationVoicemail.less'
 
@@ -31,7 +31,7 @@ type Props = {
     integration: Maybe<PhoneIntegration>
 }
 
-export default function VoiceIntegrationVoicemail({
+export function VoiceIntegrationVoicemail({
     integration,
 }: Props): JSX.Element | null {
     const dispatch = useAppDispatch()

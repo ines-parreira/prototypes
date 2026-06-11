@@ -30,4 +30,4 @@ const VoiceIntegrationOnboardingForm = ({
     )
 }
 
-export default VoiceIntegrationOnboardingForm
+export { VoiceIntegrationOnboardingForm }

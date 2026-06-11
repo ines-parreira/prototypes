@@ -10,7 +10,7 @@ import type { BusinessHoursConfig } from '@gorgias/helpdesk-types'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import BusinessHoursDisplay from '../BusinessHoursDisplay'
+import { BusinessHoursDisplay } from '../BusinessHoursDisplay'
 
 const mockBusinessHoursData = {
     id: 1,

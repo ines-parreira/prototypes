@@ -4,7 +4,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import FilterDropdownItemLabel from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
+import { FilterDropdownItemLabel } from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import { LABEL_MAX_WIDTH } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 

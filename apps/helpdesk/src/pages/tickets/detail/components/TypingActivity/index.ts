@@ -1,1 +1,1 @@
-export { default } from './TypingActivity'
+export { TypingActivity } from './TypingActivity'

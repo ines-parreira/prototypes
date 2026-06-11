@@ -11,22 +11,22 @@ import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
 
-import VoiceMessageField from '../VoiceMessageField'
+import { VoiceMessageField } from '../VoiceMessageField'
 
-jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => () => (
-    <div>VoiceMessageTTSPreviewFields</div>
-))
+jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => ({
+    VoiceMessageTTSPreviewFields: () => <div>VoiceMessageTTSPreviewFields</div>,
+}))
 
 jest.mock('@gorgias/helpdesk-queries')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('../utils', () => ({
     getAudioFileDuration: jest
         .fn()
         .mockRejectedValue(new Error('Invalid format')),
 }))
-jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => () => (
-    <div>VoiceMessageTTSPreviewFields</div>
-))
+jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => ({
+    VoiceMessageTTSPreviewFields: () => <div>VoiceMessageTTSPreviewFields</div>,
+}))
 
 const mutateUploadMock = jest.fn()
 

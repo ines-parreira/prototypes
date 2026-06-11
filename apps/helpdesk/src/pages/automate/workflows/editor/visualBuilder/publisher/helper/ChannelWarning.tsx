@@ -11,7 +11,7 @@ import type {
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import { getChannelName } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 
-import ChannelsLink from './ChannelLink'
+import { ChannelsLink } from './ChannelLink'
 
 import css from '../WorkflowsPublisher.less'
 
@@ -92,4 +92,4 @@ const ChannelWarning = ({
         </div>
     )
 }
-export default ChannelWarning
+export { ChannelWarning }

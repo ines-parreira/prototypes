@@ -5,9 +5,9 @@ import { ModalHeader } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 
 import css from './ConfirmationModal.less'
 
@@ -23,7 +23,7 @@ type ConfirmationModalProps = {
     confirmButtonIntent?: 'primary' | 'secondary' | 'destructive'
 }
 
-export default function ConfirmationModal({
+export function ConfirmationModal({
     isOpen,
     setIsOpen,
     onConfirm,

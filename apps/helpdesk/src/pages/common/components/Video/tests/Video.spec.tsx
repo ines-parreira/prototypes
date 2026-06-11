@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import Video from '../Video'
+import { Video } from '../Video'
 
 describe('Video component', () => {
     it('should render the given preview image', () => {

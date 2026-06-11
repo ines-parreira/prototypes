@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
 import type { CustomTypeDefinitionNumber } from 'custom-fields/types'
 import {
     ticketBooleanFieldDefinition,
@@ -13,23 +13,23 @@ import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import { CustomDropdownInput } from '../CustomDropdownInput'
 import { ValueField } from '../ValueField'
 
 jest.mock('custom-fields/components/MultiLevelSelect')
-jest.mock(
-    '@gorgias/axiom',
-    () =>
-        ({
-            ...jest.requireActual('@gorgias/axiom'),
-            LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
-        }) as Record<string, unknown>,
-)
-jest.mock('pages/common/forms/input/NumberInput', () => jest.fn(() => <div />))
-jest.mock('pages/common/forms/input/TextInput', () => jest.fn(() => <div />))
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
+}))
+jest.mock('pages/common/forms/input/NumberInput', () => ({
+    DefaultExportNumberInput: jest.fn(() => <div />),
+}))
+jest.mock('pages/common/forms/input/TextInput', () => ({
+    DefaultExportTextInput: jest.fn(() => <div />),
+}))
 jest.mock('../CustomDropdownInput')
 
 const MultiLevelSelectMock = assumeMock(MultiLevelSelect)

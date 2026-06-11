@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ConfirmationModal from '../ConfirmationModal'
+import { ConfirmationModal } from '../ConfirmationModal'
 
 describe('<ConfirmationModal />', () => {
     const defaultProps = {

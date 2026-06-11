@@ -63,7 +63,7 @@ import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
 } from 'domains/reporting/utils/reporting'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import type { Props as ImpactProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'

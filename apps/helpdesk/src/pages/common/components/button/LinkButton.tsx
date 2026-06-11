@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ComponentProps } from 'react'
 import React, { forwardRef } from 'react'
 
-import BaseButton from './BaseButton'
+import { BaseButton } from './BaseButton'
 
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> &
     Omit<ComponentProps<typeof BaseButton>, 'children' | 'isLoading'>
@@ -50,4 +50,4 @@ const LinkButton = forwardRef<HTMLAnchorElement, Props>(function (
     )
 })
 
-export default LinkButton
+export { LinkButton }

@@ -10,7 +10,7 @@ import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enu
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import CampaignScheduleSummary from '../CampaignScheduleSummary'
+import { CampaignScheduleSummary } from '../CampaignScheduleSummary'
 import { SCHEDULE_RULE_LABELS } from '../constants'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])

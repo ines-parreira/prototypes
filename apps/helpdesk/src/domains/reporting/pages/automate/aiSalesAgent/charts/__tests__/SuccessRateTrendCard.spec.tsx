@@ -5,7 +5,7 @@ import {
     AiSalesAgentChart,
     AiSalesAgentMetricConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import SuccessRateTrendCard from 'domains/reporting/pages/automate/aiSalesAgent/charts/SuccessRateTrendCard'
+import { SuccessRateTrendCard } from 'domains/reporting/pages/automate/aiSalesAgent/charts/SuccessRateTrendCard'
 import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import { TREND_BADGE_FORMAT } from 'domains/reporting/pages/common/components/TrendBadge'

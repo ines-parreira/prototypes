@@ -13,7 +13,7 @@ type Props = {
     isHighlighted?: boolean
 }
 
-export default function PhoneBarContainer({
+export function PhoneBarContainer({
     children,
     onClick,
     isHighlighted = false,

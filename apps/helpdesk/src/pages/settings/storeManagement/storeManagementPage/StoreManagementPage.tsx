@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 
-import NoStoresPage from '../noStoresPage/NoStoresPage'
+import { NoStoresPage } from '../noStoresPage/NoStoresPage'
 import { useStoreManagementState } from '../StoreManagementProvider'
 import { StoreManagementTable } from '../storeManagementTable/storeManagementTable'
 
@@ -40,4 +40,4 @@ const StoreManagementPage = () => {
     )
 }
 
-export default StoreManagementPage
+export { StoreManagementPage }

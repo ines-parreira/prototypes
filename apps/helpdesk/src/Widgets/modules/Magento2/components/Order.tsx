@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
 import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'

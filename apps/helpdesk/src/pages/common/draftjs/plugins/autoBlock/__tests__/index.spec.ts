@@ -8,7 +8,7 @@ import {
     ORDERED_LIST_ITEM,
     UNORDERED_LIST_ITEM,
 } from '../../toolbar/constants'
-import createAutoBlockPlugin from '../index'
+import { createAutoBlockPlugin } from '../index'
 
 function createSpaceKeyEvent() {
     return {

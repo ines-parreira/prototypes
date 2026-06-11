@@ -7,10 +7,10 @@ import { useLocation } from 'react-router-dom'
 import { AppContextProvider } from 'pages/AppContext'
 
 import { AppLayout } from './layout/AppLayout'
-import PanelRoutes, { panelRoutesRegexps } from './PanelRoutes'
-import Routes from './Routes'
+import { PanelRoutes, panelRoutesRegexps } from './PanelRoutes'
+import { Routes } from './Routes'
 
-export default function RoutesWrapper() {
+export function RoutesWrapper() {
     const { pathname } = useLocation()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 

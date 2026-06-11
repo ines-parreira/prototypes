@@ -11,17 +11,17 @@ import {
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 
 import { EditionManagerContextProvider } from '../../providers/EditionManagerContext'
-import HelpCenterCreationWizardStepArticles from './components/steps/HelpCenterCreationWizardStepArticles'
-import HelpCenterCreationWizardStepAutomate from './components/steps/HelpCenterCreationWizardStepAutomate'
-import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
-import HelpCenterCreationWizardStepBranding from './components/steps/HelpCenterCreationWizardStepBranding'
-import useGetAutomateType from './hooks/useGetAutomateType'
+import { HelpCenterCreationWizardStepArticles } from './components/steps/HelpCenterCreationWizardStepArticles'
+import { HelpCenterCreationWizardStepAutomate } from './components/steps/HelpCenterCreationWizardStepAutomate'
+import { HelpCenterCreationWizardStepBasics } from './components/steps/HelpCenterCreationWizardStepBasics'
+import { HelpCenterCreationWizardStepBranding } from './components/steps/HelpCenterCreationWizardStepBranding'
+import { useGetAutomateType } from './hooks/useGetAutomateType'
 
 import css from './HelpCenterCreationWizard.less'
 
@@ -158,4 +158,4 @@ const HelpCenterCreationWizard = (props: Props) => (
     </ErrorBoundary>
 )
 
-export default HelpCenterCreationWizard
+export { HelpCenterCreationWizard }

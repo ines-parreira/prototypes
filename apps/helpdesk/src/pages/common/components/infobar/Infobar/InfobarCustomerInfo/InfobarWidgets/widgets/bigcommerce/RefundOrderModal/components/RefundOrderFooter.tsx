@@ -7,14 +7,15 @@ import { useDebouncedEffect } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { OrderStatusList } from 'models/integration/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownFooter as DropdownFooter } from 'pages/common/components/dropdown/DropdownFooter'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
 import { BigCommerceRefundActionType } from '../types'

@@ -29,4 +29,6 @@ const Page = ({ navbar: Navbar, children }: Props) => (
     </AppFrame>
 )
 
-export default memo(Page, _isEqual)
+const DefaultExportPage = memo(Page, _isEqual)
+
+export { DefaultExportPage }

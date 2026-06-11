@@ -2,8 +2,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { voiceCallSlaAchievementRateQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import { voiceCallsSlaAchievementRateQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'

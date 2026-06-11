@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Item from '../Item'
+import { Item } from '../Item'
 
 describe('Item', () => {
     it('should render its name with an empty label because it has no value and children', () => {

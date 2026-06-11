@@ -35,7 +35,7 @@ import {
 
 import { store } from 'common/store'
 import type { EditableUserProfile } from 'config/types/user'
-import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
+import { GreyArea } from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
 import { initClarity } from 'main/init/initClarity'
 import {
     getCurrentAutomatePlan,

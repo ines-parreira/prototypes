@@ -5,10 +5,10 @@ import { history } from '@repo/routing'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import useDeleteCustomFieldCondition from '../hooks/useDeleteCustomFieldCondition'
+import { useDeleteCustomFieldCondition } from '../hooks/useDeleteCustomFieldCondition'
 
 type Props = {
     children: ComponentProps<typeof ConfirmationPopover>['children']

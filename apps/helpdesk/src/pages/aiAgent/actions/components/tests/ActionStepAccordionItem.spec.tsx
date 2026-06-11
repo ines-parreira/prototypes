@@ -4,7 +4,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
 import type { ActionStepAccordionItemProps } from '../ActionStepAccordionItem'
-import ActionStepAccordionItem from '../ActionStepAccordionItem'
+import { ActionStepAccordionItem } from '../ActionStepAccordionItem'
 
 describe('<ActionStepAccordionItem />', () => {
     const defaultProps = {

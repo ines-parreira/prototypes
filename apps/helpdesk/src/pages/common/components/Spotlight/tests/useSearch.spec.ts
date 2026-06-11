@@ -8,7 +8,7 @@ import { useLocalStorageWithExpiry } from '@gorgias/toolkit-react'
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
 import { voiceCall } from 'fixtures/voiceCalls'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
 import { ViewType } from 'models/view/types'
@@ -23,7 +23,7 @@ jest.mock('models/ticket/resources')
 const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 jest.mock('models/voiceCall/resources')
 const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('@repo/logging', () => ({
     __esModule: true,
     ...jest.requireActual<Record<string, unknown>>('@repo/logging'),
@@ -35,7 +35,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorageWithExpiry: jest.fn(),
 }))
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 const useLocalStorageWithExpiryMock = useLocalStorageWithExpiry as jest.Mock

@@ -3,7 +3,7 @@ import { useId } from '@gorgias/toolkit-react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
-import Status, { StatusType } from 'pages/common/components/Status/Status'
+import { Status, StatusType } from 'pages/common/components/Status/Status'
 
 import { templateAlertContent } from './constants'
 
@@ -12,7 +12,7 @@ type Props = {
     showTooltip?: boolean
 }
 
-export default function WhatsAppMessageTemplateStatusLabel({
+export function WhatsAppMessageTemplateStatusLabel({
     status,
     showTooltip,
 }: Props) {

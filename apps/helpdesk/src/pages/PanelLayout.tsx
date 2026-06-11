@@ -4,8 +4,8 @@ import React, { useCallback, useMemo } from 'react'
 import type { PanelConfig } from 'panels'
 import { Panel, Panels } from 'panels'
 import type { LayoutKeys } from 'split-ticket-view/constants'
-import createInitialConfig from 'split-ticket-view/utils/createInitialConfig'
-import storePanelWidths from 'split-ticket-view/utils/storePanelWidths'
+import { createInitialConfig } from 'split-ticket-view/utils/createInitialConfig'
+import { storePanelWidths } from 'split-ticket-view/utils/storePanelWidths'
 
 export type PanelLayoutConfig = {
     key: string
@@ -20,7 +20,7 @@ type Props = {
     layoutKey: LayoutKeys
 }
 
-export default function PanelLayout({
+export function PanelLayout({
     config,
     fallbackComponent,
     fallbackWidth,

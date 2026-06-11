@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { toast } from '@gorgias/axiom'
 import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
-import useStoreDeleter from '../useStoreDeleter'
+import { useStoreDeleter } from '../useStoreDeleter'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -20,7 +20,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockDispatch,
+    useAppDispatch: () => mockDispatch,
 }))
 
 jest.mock('pages/settings/storeManagement/StoreManagementProvider', () => ({

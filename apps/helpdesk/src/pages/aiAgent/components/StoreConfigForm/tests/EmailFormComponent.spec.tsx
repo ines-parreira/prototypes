@@ -8,7 +8,7 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { RootState } from 'state/types'
 
 import {
@@ -17,7 +17,7 @@ import {
 } from '../FormComponents/EmailFormComponent'
 
 // Mock dependencies
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 type EmailItem = {
     id: number
     email: string

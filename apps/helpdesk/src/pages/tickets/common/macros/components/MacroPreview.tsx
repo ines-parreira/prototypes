@@ -22,4 +22,4 @@ const MacroPreview = ({ currentMacro }: { currentMacro?: Macro }) =>
         </div>
     )
 
-export default MacroPreview
+export { MacroPreview }

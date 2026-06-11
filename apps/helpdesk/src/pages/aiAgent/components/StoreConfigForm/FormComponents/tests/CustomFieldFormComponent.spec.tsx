@@ -16,7 +16,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 jest.mock('@repo/logging')
 jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 describe('CustomFieldsFormComponent', () => {
     const updateValueMock = jest.fn()
     const useCustomFieldDefinitionsMock = jest.mocked(useCustomFieldDefinitions)

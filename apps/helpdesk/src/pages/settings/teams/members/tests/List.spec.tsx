@@ -27,19 +27,17 @@ jest.mock('models/team/resources', () => ({
     deleteTeamMembers: jest.fn(),
     addTeamMember: jest.fn(),
 }))
-jest.mock(
-    '../AddMember',
-    () =>
-        ({
-            addTeamMember,
-        }: {
-            addTeamMember: (userId: number) => Promise<void>
-        }) => (
-            <button type="button" onClick={() => void addTeamMember(42)}>
-                Add Member Trigger
-            </button>
-        ),
-)
+jest.mock('../AddMember', () => ({
+    DefaultExportAddMember: ({
+        addTeamMember,
+    }: {
+        addTeamMember: (userId: number) => Promise<void>
+    }) => (
+        <button type="button" onClick={() => void addTeamMember(42)}>
+            Add Member Trigger
+        </button>
+    ),
+}))
 
 const mockFetchTeamSuccess = jest.fn()
 const mockFetchTeamMembersSuccess = jest.fn()

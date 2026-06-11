@@ -7,21 +7,21 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { ARTICLE_RECOMMENDATION } from '../common/components/constants'
-import HelpCenterSelect from '../common/components/HelpCenterSelect'
+import { HelpCenterSelect } from '../common/components/HelpCenterSelect'
 import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
 import { getArticleRecommendationNavItems } from '../common/utils/getArticleRecommendationNavItems'
-import TrainMyAiViewContainer from '../trainMyAi/TrainMyAiViewContainer'
-import ArticleRecommendationPreview from './ArticleRecommendationPreview'
+import { TrainMyAiViewContainer } from '../trainMyAi/TrainMyAiViewContainer'
+import { ArticleRecommendationPreview } from './ArticleRecommendationPreview'
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
@@ -167,4 +167,4 @@ const ArticleRecommendationView = ({ basePath: overrideBasePath }: Props) => {
     )
 }
 
-export default ArticleRecommendationView
+export { ArticleRecommendationView }

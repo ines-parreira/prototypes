@@ -5,7 +5,7 @@ import {
     sectionsFetched,
     sectionUpdated,
 } from '../actions'
-import reducer from '../reducer'
+import { sectionsReducer as reducer } from '../reducer'
 
 describe('sections reducer', () => {
     describe('sectionsFetched action', () => {

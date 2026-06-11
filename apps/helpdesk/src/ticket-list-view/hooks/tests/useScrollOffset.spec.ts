@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useScrollOffset from '../useScrollOffset'
+import { useScrollOffset } from '../useScrollOffset'
 
 describe('useScrollOffset', () => {
     it('should return the scroll offset for the given element', () => {

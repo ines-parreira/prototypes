@@ -12,21 +12,21 @@ import {
     GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { GorgiasChatPosition } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LauncherPositionPicker'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/GorgiasChatCreationWizardStep'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import { GorgiasChatCreationWizardFooter } from '../../components/GorgiasChatCreationWizardFooter'
-import SaveChangesPrompt from '../../components/SaveChangesPrompt'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { SaveChangesPrompt } from '../../components/SaveChangesPrompt'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
 import { BrandColorPicker } from './BrandColorPicker'
 import { BrandLogoUploader } from './BrandLogoUploader'
 
@@ -257,4 +257,4 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepBranding
+export { GorgiasChatCreationWizardStepBranding }

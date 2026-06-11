@@ -5,15 +5,15 @@ import {
     useUpdateEffect,
 } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Loader from 'pages/common/components/Loader/Loader'
-import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportTicketBodyNonVirtualized as TicketBodyNonVirtualized } from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
 import { fetchTicket } from 'state/ticket/actions'
 import { getBody } from 'state/ticket/selectors'
 
 import { KnowledgeSourceSideBarProvider } from './components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
-import useTicketActivityTracking from './hooks/useTicketActivityTracking'
+import { useTicketActivityTracking } from './hooks/useTicketActivityTracking'
 
 import css from './TicketPrintContainer.less'
 
@@ -72,4 +72,4 @@ function TicketPrintContainerWithSidebar() {
     )
 }
 
-export default TicketPrintContainerWithSidebar
+export { TicketPrintContainerWithSidebar }

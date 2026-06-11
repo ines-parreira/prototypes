@@ -8,7 +8,7 @@ const initialState: LayoutState = fromJS({
     openedPanel: null,
 })
 
-export default function reducer(
+export function reducer(
     state: LayoutState = initialState,
     action: GorgiasAction,
 ): LayoutState {

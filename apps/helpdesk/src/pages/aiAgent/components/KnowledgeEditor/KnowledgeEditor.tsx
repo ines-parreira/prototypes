@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { SidePanel } from '@gorgias/axiom'
 
-import useScreenSize from 'panels/hooks/useScreenSize'
+import { useScreenSize } from 'panels/hooks/useScreenSize'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance/KnowledgeEditorGuidance'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle'

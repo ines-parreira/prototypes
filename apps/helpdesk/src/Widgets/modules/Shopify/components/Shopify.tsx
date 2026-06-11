@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { TemplateCustomization } from 'Widgets/modules/Template'
-import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { CustomizationContext, Template } from 'Widgets/modules/Template'
 import type { WidgetProps } from 'Widgets/modules/Widget'
 
 import { customerCustomization } from './Customer'
@@ -43,7 +43,7 @@ export const customization: TemplateCustomization = {
     field: [editableListCustomization, orderNotesCustomization],
 }
 
-export default function ShopifyWidget(props: WidgetProps) {
+export function ShopifyWidget(props: WidgetProps) {
     const hideActionsForCustomer = useFlag(
         FeatureFlagKey.ShopifyHideActionButtons,
     )

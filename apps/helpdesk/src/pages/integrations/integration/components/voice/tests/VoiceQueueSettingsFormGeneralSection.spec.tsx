@@ -2,7 +2,7 @@ import { Form, FormSubmitButton } from '@repo/forms'
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import VoiceQueueSettingsFormGeneralSection from '../VoiceQueueSettingsFormGeneralSection'
+import { VoiceQueueSettingsFormGeneralSection } from '../VoiceQueueSettingsFormGeneralSection'
 
 describe('VoiceQueueSettingsFormGeneralSection', () => {
     const renderComponent = ({

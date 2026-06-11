@@ -22,7 +22,7 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { countryOptions, PhoneUseCase } from 'business/twilio'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { GorgiasApiError } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -31,8 +31,8 @@ import {
 } from 'models/phoneNumber/resources'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { PhoneCountry } from 'models/phoneNumber/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import {
     countryCode,
@@ -424,5 +424,3 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
         </Form>
     )
 }
-
-export default PhoneNumberDetails

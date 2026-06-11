@@ -4,8 +4,8 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, within } from '@testing-library/react'
 
 import { IntegrationType } from 'models/integration/constants'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import type {
     ActionsApp,
     ActionTemplate,
@@ -29,7 +29,7 @@ jest.mock(
         } = require('pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext')
         return {
             __esModule: true,
-            default: () => {
+            ReusableLLMPromptCallEditor: () => {
                 // eslint-disable-next-line react-hooks/rules-of-hooks, @typescript-eslint/no-unsafe-call
                 const { onClose } = useNodeEditorDrawerContext()
                 return (
@@ -48,7 +48,9 @@ jest.mock(
 )
 jest.mock('../../providers/StoreAppsProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => <>{children}</>,
+    StoreAppsProvider: ({ children }: { children?: React.ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 const mockUseApps = useApps as jest.MockedFunction<typeof useApps>
 const mockUseGetAppFromTemplateApp =

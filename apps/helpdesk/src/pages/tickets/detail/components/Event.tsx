@@ -9,10 +9,10 @@ import JSONPretty from 'react-json-pretty'
 import { Card, CardBody } from 'reactstrap'
 
 import { getActionByName } from 'config/actions'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/constants'
-import IconButton from 'pages/common/components/button/IconButton'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { getIntegrationById } from 'state/integrations/selectors'
 import {
@@ -21,7 +21,7 @@ import {
 } from 'state/ticket/selectors'
 import { humanizeString, stripErrorMessage } from 'utils'
 
-import getEvent from './Events'
+import { getEvent } from './Events'
 
 import css from './Event.less'
 
@@ -81,7 +81,7 @@ type Props = {
     isLast: boolean
 }
 
-export default function EventContainer({ event, isLast = false }: Props) {
+export function EventContainer({ event, isLast = false }: Props) {
     const [showDetails, setShowDetails] = useState(false)
 
     const appData = useAppSelector(

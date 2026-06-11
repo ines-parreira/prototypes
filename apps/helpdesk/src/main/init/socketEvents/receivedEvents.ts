@@ -962,4 +962,4 @@ const receivedEvents: ReceivedEvent[] = [
     },
 ]
 
-export default receivedEvents
+export { receivedEvents }

@@ -6,11 +6,11 @@ import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDat
 import type { NestedTableColumnConfig } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import css from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable.less'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 export const TableFallbackDisplay = ({
     isLoading,

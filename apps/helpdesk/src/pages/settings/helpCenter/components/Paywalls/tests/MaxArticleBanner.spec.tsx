@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import MaxArticleBanner from '../MaxArticleBanner'
+import { MaxArticleBanner } from '../MaxArticleBanner'
 
 describe('MaxArticleBanner', () => {
     it('should not render the banner', () => {

@@ -17,7 +17,7 @@ type FormSectionProps = {
     className?: string
 }
 
-export default function FormSection({
+export function FormSection({
     title,
     description,
     children,

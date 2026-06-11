@@ -3,7 +3,7 @@ import type React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import WizardFooter, { FOOTER_BUTTONS } from '../WizardFooter'
+import { FOOTER_BUTTONS, WizardFooter } from '../WizardFooter'
 
 const mockOnClick = jest.fn()
 

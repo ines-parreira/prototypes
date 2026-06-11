@@ -1,4 +1,4 @@
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 type RemoveCallExpressionProps = {
     index: number

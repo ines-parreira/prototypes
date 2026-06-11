@@ -13,7 +13,7 @@ import {
     getShouldTicketHaveReasoning,
 } from 'pages/tickets/detail/components/TicketMessages/aiAgentReasoningDisplay'
 import { AiAgentReasoningHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AiAgentReasoningHelpdeskV2'
-import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
+import { SimplifiedAIAgentBanner } from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 
 export function TicketThreadAiAgentReasoning({
     message,

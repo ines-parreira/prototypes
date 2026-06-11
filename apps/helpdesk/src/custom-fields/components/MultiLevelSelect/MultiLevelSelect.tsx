@@ -14,7 +14,7 @@ import {
 } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import StealthInput from 'custom-fields/components/StealthInput'
+import { DefaultExportStealthInput as StealthInput } from 'custom-fields/components/StealthInput'
 import {
     getShortValueLabel,
     getValueLabel,
@@ -25,12 +25,12 @@ import type {
     CustomFieldState,
     CustomFieldValue,
 } from 'custom-fields/types'
-import useAppSelector from 'hooks/useAppSelector'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownFooter as DropdownFooter } from 'pages/common/components/dropdown/DropdownFooter'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
@@ -39,7 +39,7 @@ import { buildTreeOfChoices, fromTreeKey } from './helpers/buildTreeOfChoices'
 import { getCurrentPathFromFullValue } from './helpers/getCurrentPathFromFullValue'
 import { getFullValueFromCurrentPath } from './helpers/getFullValueFromCurrentPath'
 import { isMultiValueAllowed } from './helpers/isMultiValue'
-import isMultiValueEmpty from './helpers/isMultiValueEmpty'
+import { isMultiValueEmpty } from './helpers/isMultiValueEmpty'
 import { isOutdatedValue } from './helpers/isOutdatedValue'
 import { useA11yDropdown } from './hooks/useA11yDropdown'
 import { useActiveState } from './hooks/useActiveState'
@@ -90,7 +90,7 @@ export type MultiLevelSelectProps<
     showCheckboxes?: boolean
 }
 
-export default function MultiLevelSelect<
+export function MultiLevelSelect<
     AllowMultiValues extends boolean | undefined = false,
 >({
     id,

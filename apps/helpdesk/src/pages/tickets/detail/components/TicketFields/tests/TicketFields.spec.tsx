@@ -30,7 +30,7 @@ import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import TicketFields from '../TicketFields'
+import { DefaultExportTicketFields as TicketFields } from '../TicketFields'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
     useCustomFieldConditions: jest.fn(() => ({

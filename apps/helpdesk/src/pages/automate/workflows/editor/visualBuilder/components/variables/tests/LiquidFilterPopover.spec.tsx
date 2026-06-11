@@ -7,7 +7,7 @@ import { EditorState } from 'draft-js'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
-import LiquidFilterPopover from '../LiquidFilterPopover'
+import { LiquidFilterPopover } from '../LiquidFilterPopover'
 
 const createMockEditorState = (value: string) => {
     return EditorState.createWithContent(contentStateFromTextOrHTML(value))

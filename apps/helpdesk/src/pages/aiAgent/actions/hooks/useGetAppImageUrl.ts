@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import type { ActionAppConfiguration } from '../types'
 
-export default function useGetAppImageUrl(
+export function useGetAppImageUrl(
     actionAppConfiguration?: ActionAppConfiguration,
 ) {
     const { apps } = useApps()

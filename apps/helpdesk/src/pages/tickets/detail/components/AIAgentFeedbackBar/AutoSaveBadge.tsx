@@ -12,7 +12,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
@@ -111,4 +111,4 @@ const AutoSaveBadge = ({
     )
 }
 
-export default AutoSaveBadge
+export { AutoSaveBadge }

@@ -367,4 +367,6 @@ const connector = connect((state: RootState) => ({
     userTimezone: getTimezone(state),
 }))
 
-export default connector(PeriodPickerContainer)
+const DefaultExportPeriodPicker = connector(PeriodPickerContainer)
+
+export { DefaultExportPeriodPicker }

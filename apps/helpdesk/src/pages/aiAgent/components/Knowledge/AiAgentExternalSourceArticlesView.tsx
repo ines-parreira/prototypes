@@ -12,16 +12,16 @@ import {
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
-import AiAgentScrapedDomainContentLayout from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentLayout'
+import { AiAgentScrapedDomainContentLayout } from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainContentLayout'
 import {
     HeaderType,
     IngestedResourceStatus,
     PAGE_NAME,
     VisibilityStatus,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import ScrapedDomainContentView from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainContentView'
+import { ScrapedDomainContentView } from 'pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainContentView'
 import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import AiAgentSelectedArticleContentWrapper from 'pages/aiAgent/components/Knowledge/AiAgentSelectedArticleContentWrapper'
+import { AiAgentSelectedArticleContentWrapper } from 'pages/aiAgent/components/Knowledge/AiAgentSelectedArticleContentWrapper'
 import {
     convertArticleIngestionStatus,
     mapArticleIngestionLogsToSourceItem,
@@ -382,4 +382,4 @@ const AiAgentExternalSourceArticlesView = ({
     )
 }
 
-export default AiAgentExternalSourceArticlesView
+export { AiAgentExternalSourceArticlesView }

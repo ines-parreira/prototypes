@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 import { handleError } from 'pages/aiAgent/actions/hooks/errorHandler'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
-import ActionLibraryView from '../ActionLibraryView'
+import { ActionLibraryView } from '../ActionLibraryView'
 
 jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
     AiAgentLayout: ({
@@ -31,22 +31,28 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
 
 jest.mock('pages/aiAgent/actions/providers/StoreTrackstarProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    StoreTrackstarProvider: ({ children }: { children?: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 jest.mock('pages/aiAgent/actions/providers/StoreAppsProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    StoreAppsProvider: ({ children }: { children?: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    GuidanceReferenceProvider: ({ children }: { children?: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock(
     'pages/aiAgent/actionsV2/components/ActionLibraryUpdatesBanner/ActionLibraryUpdatesBanner',
     () => ({
         __esModule: true,
-        default: () => null,
+        ActionLibraryUpdatesBanner: () => null,
     }),
 )
 
@@ -93,18 +99,18 @@ jest.mock('models/integration/queries', () => ({
 }))
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
-    default: () => ({ apps: [], actionsApps: [] }),
+    useApps: () => ({ apps: [], actionsApps: [] }),
 }))
 jest.mock(
     'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp',
     () => ({
         __esModule: true,
-        default: () => () => undefined,
+        useGetAppFromTemplateApp: () => () => undefined,
     }),
 )
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction', () => ({
     __esModule: true,
-    default: () => ({ mutate: jest.fn(), isLoading: false }),
+    useDeleteAction: () => ({ mutate: jest.fn(), isLoading: false }),
 }))
 
 const {

@@ -1,15 +1,15 @@
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ContactForm } from 'models/contactForm/types'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServiceStandaloneContactFormHomePage } from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
+import { useContactFormAutomationSettings } from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
+import { StandaloneContactFormPreview } from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
 
 export type ContactFormEntrypointPreviewProps = {
     contactForm: ContactForm
@@ -103,4 +103,4 @@ export const ContactFormWithShopIntegration = ({
     )
 }
 
-export default ContactFormEntrypointPreview
+export { ContactFormEntrypointPreview }

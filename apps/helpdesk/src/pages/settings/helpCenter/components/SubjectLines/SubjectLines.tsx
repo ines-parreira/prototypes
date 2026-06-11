@@ -5,10 +5,10 @@ import _uniqueId from 'lodash/uniqueId'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { UpdateSubjectLinesProps } from 'models/contactForm/types'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import type { SubjectLineProps } from '../SubjectLine/SubjectLine'
-import SubjectLine from '../SubjectLine/SubjectLine'
+import { SubjectLine } from '../SubjectLine/SubjectLine'
 import {
     LINE_HEIGHT,
     MAX_CHARACTERS,
@@ -199,4 +199,4 @@ const SubjectLines = ({
     )
 }
 
-export default SubjectLines
+export { SubjectLines }

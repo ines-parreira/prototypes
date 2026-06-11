@@ -1,13 +1,13 @@
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, queryByDisplayValue, within } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import type { Props } from '../TicketTagsFormComponent'
 import { TicketTagsFormComponent } from '../TicketTagsFormComponent'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 describe('TicketTagsFormComponent', () => {

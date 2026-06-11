@@ -6,7 +6,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Icon } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import {
     aiAgentRoutes,
@@ -20,7 +20,7 @@ import { useShopifyStepForm } from 'pages/aiAgent/Onboarding_V2/components/steps
 import { useShopifyStepNavigation } from 'pages/aiAgent/Onboarding_V2/components/steps/ShopifyIntegrationStep/hooks/useShopifyStepNavigation'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
-import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
+import { useCheckOnboardingCompleted } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding_V2/hooks/useOnboardingIntegrationRedirection'

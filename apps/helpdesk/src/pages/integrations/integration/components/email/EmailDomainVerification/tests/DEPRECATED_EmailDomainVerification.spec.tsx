@@ -16,15 +16,15 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import * as helpers from '../../helpers'
-import RecordsTable from '../components/RecordsTable'
-import DEPRECATED_EmailDomainVerification from '../DEPRECATED_EmailDomainVerification'
+import { RecordsTable } from '../components/RecordsTable'
+import { DEPRECATED_EmailDomainVerification } from '../DEPRECATED_EmailDomainVerification'
 import * as hook from '../DEPRECATED_useDomainVerification'
 
 const queryClient = mockQueryClient()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock(
     'pages/integrations/integration/components/email/EmailDomainVerification/components/RecordsTable',
 )

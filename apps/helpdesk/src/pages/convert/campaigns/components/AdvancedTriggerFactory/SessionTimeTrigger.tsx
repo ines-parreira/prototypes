@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import type { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
 

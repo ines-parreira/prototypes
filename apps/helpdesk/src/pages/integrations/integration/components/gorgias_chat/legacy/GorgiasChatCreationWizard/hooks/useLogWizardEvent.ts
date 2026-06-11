@@ -6,7 +6,7 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { DEPRECATED_getIntegrations } from 'state/integrations/selectors'
@@ -48,4 +48,4 @@ const useLogWizardEvent = () => {
     return logWizardEvent
 }
 
-export default useLogWizardEvent
+export { useLogWizardEvent }

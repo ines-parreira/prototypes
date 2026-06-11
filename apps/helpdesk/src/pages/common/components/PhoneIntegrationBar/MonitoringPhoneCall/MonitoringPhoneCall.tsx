@@ -18,14 +18,14 @@ import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageL
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { DynamicSoundWaveIcon } from 'pages/common/components/PhoneIntegrationBar/DynamicSoundWaveIcon/DynamicSoundWaveIcon'
 import { useAudioLevel } from 'pages/common/components/PhoneIntegrationBar/hooks'
-import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
-import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { PhoneBarCallerDetailsContainer } from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
+import { PhoneInfobarWrapper } from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
+import { DefaultExportPhoneIntegrationName as PhoneIntegrationName } from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
-import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
-import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
+import { PhoneBarContainer } from '../PhoneBarContainer/PhoneBarContainer'
+import { PhoneBarInnerContent } from '../PhoneBarInnerContent/PhoneBarInnerContent'
 
 import css from './MonitoringPhoneCall.less'
 
@@ -33,7 +33,7 @@ type Props = {
     call: Call
 }
 
-export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
+export function MonitoringPhoneCall({ call }: Props): JSX.Element {
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
     const {

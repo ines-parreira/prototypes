@@ -100,4 +100,4 @@ const HelpCenterPreviewAutomation = ({
     )
 }
 
-export default HelpCenterPreviewAutomation
+export { HelpCenterPreviewAutomation }

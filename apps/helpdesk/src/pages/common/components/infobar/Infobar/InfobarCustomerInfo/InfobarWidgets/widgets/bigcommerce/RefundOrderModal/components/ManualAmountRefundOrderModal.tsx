@@ -11,7 +11,7 @@ import type {
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 import { BigCommerceRefundableItemType } from 'models/integration/types'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
 import { BigCommerceRefundActionType } from '../types'

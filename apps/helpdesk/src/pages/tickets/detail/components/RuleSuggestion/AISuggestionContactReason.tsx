@@ -6,13 +6,13 @@ import { Collapse } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Ticket } from 'models/ticket/types'
 import { createInputId } from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
 import { updateCustomFieldState } from 'state/ticket/actions'
 
-import InTicketSuggestionContainer from './InTicketSuggestionContainer'
-import SuggestionHeader from './SuggestionHeader'
+import { InTicketSuggestionContainer } from './InTicketSuggestionContainer'
+import { SuggestionHeader } from './SuggestionHeader'
 
 import css from './AISuggestionContactReason.less'
 
@@ -20,7 +20,7 @@ type Props = {
     ticket: Ticket
 }
 
-export default function ContactReasonSuggestion({ ticket }: Props) {
+export function ContactReasonSuggestion({ ticket }: Props) {
     const dispatch = useAppDispatch()
     const { mutate } = useUpdateOrDeleteTicketFieldValue()
     const [isConfirmed, setConfirmed] = useState(false)

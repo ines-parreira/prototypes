@@ -5,10 +5,10 @@ import { ulid } from 'ulidx'
 
 import { Box, Button, Heading, Icon, Tag } from '@gorgias/axiom'
 
-import GuidanceReferenceProvider from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
-import StoreAppsProvider from 'pages/aiAgent/actions/providers/StoreAppsProvider'
-import StoreTrackstarProvider from 'pages/aiAgent/actions/providers/StoreTrackstarProvider'
-import WorkflowVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
+import { GuidanceReferenceProvider } from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
+import { StoreAppsProvider } from 'pages/aiAgent/actions/providers/StoreAppsProvider'
+import { StoreTrackstarProvider } from 'pages/aiAgent/actions/providers/StoreTrackstarProvider'
+import { WorkflowVisualBuilder } from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
 import {
     useVisualBuilder,
     VisualBuilderContext,

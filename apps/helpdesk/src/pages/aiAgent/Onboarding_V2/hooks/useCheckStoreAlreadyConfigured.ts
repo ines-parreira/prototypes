@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 

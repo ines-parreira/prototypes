@@ -36,4 +36,4 @@ const ViewsReducer = createReducer<TicketNavbarState>(initialState, (builder) =>
         }),
 )
 
-export default ViewsReducer
+export { ViewsReducer }

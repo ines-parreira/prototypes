@@ -2,4 +2,6 @@ import { createContext } from 'react'
 
 export type AppNodeContextType = HTMLDivElement | null
 
-export default createContext<AppNodeContextType>(null)
+const DefaultExportAppNodeContext = createContext<AppNodeContextType>(null)
+
+export { DefaultExportAppNodeContext }

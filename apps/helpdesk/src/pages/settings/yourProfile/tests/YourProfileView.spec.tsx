@@ -28,7 +28,7 @@ import { YourProfileView } from '../components/YourProfileView'
 import * as useYourProfileFormModule from '../hooks/useYourProfileForm'
 import * as useYourProfileMutationsModule from '../hooks/useYourProfileMutations'
 import type { CurrentUser } from '../types'
-import YourProfileContainer from '../YourProfileContainer'
+import { YourProfileContainer } from '../YourProfileContainer'
 
 const server = setupServer()
 

@@ -16,7 +16,7 @@ import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/prov
 import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
 import * as editorUtils from 'utils/editor'
 
-import ToolbarProvider from '../../ToolbarProvider'
+import { ToolbarProvider } from '../../ToolbarProvider'
 import { AddLinkContainer } from '../AddLink'
 
 jest.mock('@repo/feature-flags')

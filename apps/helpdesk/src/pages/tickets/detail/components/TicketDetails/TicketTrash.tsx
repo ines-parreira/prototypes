@@ -7,7 +7,7 @@ type Props = {
     trashed?: boolean
 }
 
-export default class TicketTrash extends Component<Props> {
+export class TicketTrash extends Component<Props> {
     static defaultProps: Pick<Props, 'trashed'> = {
         trashed: false,
     }

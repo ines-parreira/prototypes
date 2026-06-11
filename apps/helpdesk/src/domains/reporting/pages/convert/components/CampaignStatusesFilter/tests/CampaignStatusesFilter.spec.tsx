@@ -11,7 +11,8 @@ import {
     FILTER_SELECT_ALL_LABEL,
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import CampaignStatusesFilter, {
+import {
+    CampaignStatusesFilter,
     CampaignStatusesFilterFromContext,
     CampaignStatusesFilterFromSavedContext,
 } from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'

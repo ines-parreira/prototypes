@@ -1,7 +1,7 @@
 import type { TicketMessage } from 'models/ticket/types'
 import { SYSTEM_SOURCE_TYPES } from 'tickets/common/config'
 
-import lastNonSystemTypeMessage from '../lastNonSystemTypeMessage'
+import { lastNonSystemTypeMessage } from '../lastNonSystemTypeMessage'
 
 describe('lastNonSystemTypeMessage', () => {
     it('falsy if no message', () => {

@@ -32,7 +32,7 @@ import type {
     StepProps,
 } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import { KnowledgeStatus } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
-import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
+import { useCheckOnboardingCompleted } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetKnowledgeSourceStatuses } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgeSourceStatuses'

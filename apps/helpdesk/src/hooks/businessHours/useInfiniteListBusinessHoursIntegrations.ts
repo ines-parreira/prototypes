@@ -10,7 +10,7 @@ import type {
 import { listBusinessHoursIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-export default function useInfiniteListBusinessHoursIntegrations<
+export function useInfiniteListBusinessHoursIntegrations<
     TData = HttpResponse<ListBusinessHoursIntegrations200>,
     TError = HttpError<unknown>,
 >(

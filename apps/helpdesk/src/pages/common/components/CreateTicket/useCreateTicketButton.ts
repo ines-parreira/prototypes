@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { getCreateTicketPathWithPreviousURL } from '@repo/tickets/utils/routing'
 import { useHistory } from 'react-router-dom'
 
-import useHandleTicketDraft from './useHandleTicketDraft'
+import { useHandleTicketDraft } from './useHandleTicketDraft'
 
 export function useCreateTicketButton() {
     const history = useHistory()

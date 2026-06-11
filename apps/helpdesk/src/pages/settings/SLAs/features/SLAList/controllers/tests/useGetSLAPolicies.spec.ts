@@ -8,8 +8,8 @@ import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
-import makeUISLAPolicy from '../makeUISLAPolicy'
-import useGetSLAPolicies from '../useGetSLAPolicies'
+import { makeUISLAPolicy } from '../makeUISLAPolicy'
+import { useGetSLAPolicies } from '../useGetSLAPolicies'
 
 jest.mock('@gorgias/helpdesk-queries')
 const mockUseListSlaPolicies = useListSlaPolicies as jest.Mock

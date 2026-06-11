@@ -6,14 +6,14 @@ import { cleanup, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 
-import TemplateTypeFilterDropdown from '../TemplateTypeFilterDropdown'
+import { TemplateTypeFilterDropdown } from '../TemplateTypeFilterDropdown'
 import { TemplateTypeFilterOption } from '../types'
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
-    () => jest.fn(),
+    () => ({ useWhatsAppEditor: jest.fn() }),
 )
 
 const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock

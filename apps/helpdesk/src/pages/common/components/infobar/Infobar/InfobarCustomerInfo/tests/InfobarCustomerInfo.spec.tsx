@@ -23,7 +23,7 @@ import {
 import type { RootState, StoreDispatch } from 'state/types'
 import { isCurrentlyOnCustomerPage } from 'utils'
 
-import InfobarCustomerInfo from '../InfobarCustomerInfo'
+import { InfobarCustomerInfo } from '../InfobarCustomerInfo'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
@@ -53,14 +53,18 @@ const isCurrentlyOnCustomerPageMock = assumeMock(isCurrentlyOnCustomerPage)
 jest.mock('../CustomerTimelineWidget', () => ({
     CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
 }))
-jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
-jest.mock('../CustomerFields', () => () => <div>CustomerFields</div>)
-jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
-    <div>InfobarWidgets</div>
-))
-jest.mock('../CustomerOptionsDropdown', () => () => (
-    <div>CustomerOptionsDropdown</div>
-))
+jest.mock('../AddAppSuggestion', () => ({
+    AddAppSuggestion: () => <div>Add app</div>,
+}))
+jest.mock('../CustomerFields', () => ({
+    CustomerFields: () => <div>CustomerFields</div>,
+}))
+jest.mock('../InfobarWidgets/InfobarWidgets', () => ({
+    InfobarWidgets: () => <div>InfobarWidgets</div>,
+}))
+jest.mock('../CustomerOptionsDropdown', () => ({
+    CustomerOptionsDropdownButton: () => <div>CustomerOptionsDropdown</div>,
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

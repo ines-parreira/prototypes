@@ -13,9 +13,9 @@ import {
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import type { RootState } from 'state/types'
 
-import ActionsPlatformCreateUseCaseTemplateView from '../ActionsPlatformCreateUseCaseTemplateView'
-import useApps from '../hooks/useApps'
-import useCreateActionTemplate from '../hooks/useCreateActionTemplate'
+import { ActionsPlatformCreateUseCaseTemplateView } from '../ActionsPlatformCreateUseCaseTemplateView'
+import { useApps } from '../hooks/useApps'
+import { useCreateActionTemplate } from '../hooks/useCreateActionTemplate'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useApps')

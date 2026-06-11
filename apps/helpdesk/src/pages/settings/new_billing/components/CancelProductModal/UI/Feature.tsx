@@ -33,4 +33,4 @@ const Feature = ({
     )
 }
 
-export default Feature
+export { Feature }

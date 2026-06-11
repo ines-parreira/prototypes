@@ -8,7 +8,7 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import {
     DEFAULT_BADGE_TEXT,
@@ -28,10 +28,10 @@ import {
 } from 'domains/reporting/pages/ticket-insights/tags/TagsMetricConfig'
 import css from 'domains/reporting/pages/ticket-insights/tags/TopUsedTagsChart.less'
 import { TagsMetric } from 'domains/reporting/state/ui/stats/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 export const LoadingTable = () => {
     return (

@@ -16,10 +16,10 @@ import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import * as billingFixtures from 'fixtures/billing'
 import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/plans'
-import EmailIntegrationOnboarding from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding'
-import EmailIntegrationOnboardingDomainVerification from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
-import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
-import EmailDomainVerificationSupportContentSidebar from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
+import { EmailIntegrationOnboarding } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding'
+import { EmailIntegrationOnboardingDomainVerification } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
+import { DomainVerificationProvider } from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'
+import { EmailDomainVerificationSupportContentSidebar } from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
 import { getDomainFromEmailAddress } from 'pages/integrations/integration/components/email/helpers'
 import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
@@ -45,7 +45,10 @@ jest.mock(
 )
 jest.mock(
     'pages/integrations/integration/components/email/BaseEmailIntegrationInputField',
-    () => () => '<BaseEmailIntegrationInputField />',
+    () => ({
+        BaseEmailIntegrationInputField: () =>
+            '<BaseEmailIntegrationInputField />',
+    }),
 )
 jest.mock('pages/integrations/integration/components/email/helpers')
 jest.mock(

@@ -13,11 +13,11 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { MetafieldOwnerType } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
-import ImportMetafieldFlow from './ImportMetafieldFlow'
+import { ImportMetafieldFlow } from './ImportMetafieldFlow'
 import { mockImportableFields } from './MetafieldsImportList/data'
 
 jest.mock('./hooks/useImportWizard')

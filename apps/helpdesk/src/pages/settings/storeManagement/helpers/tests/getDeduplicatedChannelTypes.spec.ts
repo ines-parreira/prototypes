@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 
-import deduplicateChannelTypes from '../getDeduplicatedChannelTypes'
+import { getDeduplicatedChannelTypes as deduplicateChannelTypes } from '../getDeduplicatedChannelTypes'
 
 describe('deduplicateChannelTypes', () => {
     it('should return empty array when no channels provided', () => {

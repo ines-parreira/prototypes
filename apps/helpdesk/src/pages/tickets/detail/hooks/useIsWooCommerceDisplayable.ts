@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Source, Template } from 'models/widget/types'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
 import { WOOCOMMERCE_WIDGET_TYPE } from 'state/widgets/constants'
@@ -14,7 +14,7 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { itemsWithContext } from 'state/widgets/utils'
 
-export default function useIsWooCommerceDisplayable() {
+export function useIsWooCommerceDisplayable() {
     const widgets = useAppSelector(getWidgetsState)
     const sources = useAppSelector(getSourcesWithCustomer)
 

@@ -3,10 +3,10 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
-import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
+import { usePhoneNumbers } from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 
 import { useInfiniteListVoiceIntegrations } from '../hooks/useInfiniteListVoiceIntegrations'
-import VoiceIntegrationSelectField from '../VoiceIntegrationSelectField'
+import { VoiceIntegrationSelectField } from '../VoiceIntegrationSelectField'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),

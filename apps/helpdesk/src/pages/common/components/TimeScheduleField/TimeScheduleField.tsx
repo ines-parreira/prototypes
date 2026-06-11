@@ -4,7 +4,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from 'pages/settings/businessHours/constants'
 
-import TimeScheduleRow from './TimeScheduleRow'
+import { TimeScheduleRow } from './TimeScheduleRow'
 
 import css from './TimeScheduleField.less'
 
@@ -15,7 +15,7 @@ type Props = {
     withCaption?: boolean
 }
 
-export default function TimeScheduleField({
+export function TimeScheduleField({
     isRemovable = false,
     name,
     root,

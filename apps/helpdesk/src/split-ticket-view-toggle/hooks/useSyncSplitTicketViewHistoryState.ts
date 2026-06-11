@@ -11,7 +11,7 @@ type Props = {
     setSplitTicketView: (value: boolean) => void
 }
 
-export default function useSyncSplitTicketViewHistoryState({
+export function useSyncSplitTicketViewHistoryState({
     isSplitTicketViewEnabled,
     setSplitTicketView,
 }: Props) {

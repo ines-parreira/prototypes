@@ -5,7 +5,7 @@ import {
     useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import useGetAppImageUrl from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
+import { useGetAppImageUrl } from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
 import type {
     ActionStepItem,
     LlmTriggeredExecution,
@@ -101,7 +101,7 @@ function PartialSuccessMessageWrapper({
     return <>{originalMessage}</>
 }
 
-export default FailedWorkflowMessage
+export { FailedWorkflowMessage }
 
 interface PartialSuccessMessageProps {
     execution: LlmTriggeredExecution

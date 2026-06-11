@@ -3,7 +3,7 @@ import { useState } from 'react'
 import type { SearchRank } from '@repo/logging'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { ApiListResponseLegacyPagination } from 'models/api/types'
 import type { Customer } from 'models/customer/types'
 import { fetchPreviewCustomer } from 'state/infobar/actions'

@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import RowNumberCell from '../RowNumberCell'
+import { RowNumberCell } from '../RowNumberCell'
 
 describe('<RowNumberCell />', () => {
     it('should render the 1-based row number for the first row', () => {

@@ -15,7 +15,8 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-import CampaignsFilter, {
+import {
+    CampaignsFilter,
     CampaignsFilterFromContext,
     CampaignsFilterFromSavedContext,
 } from 'domains/reporting/pages/common/filters/CampaignsFilter'

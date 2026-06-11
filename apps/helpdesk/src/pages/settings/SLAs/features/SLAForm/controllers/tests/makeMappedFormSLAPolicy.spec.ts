@@ -7,7 +7,7 @@ import {
 
 import { slaPolicy3 } from 'pages/settings/SLAs/fixtures/fixtures'
 
-import makeMappedFormSLAPolicy from '../makeMappedFormSLAPolicy'
+import { makeMappedFormSLAPolicy } from '../makeMappedFormSLAPolicy'
 
 describe('makeMappedFormSLAPolicy', () => {
     it('should map SLAPolicy to MappedFormSLAPolicy correctly', () => {

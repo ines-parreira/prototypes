@@ -4,7 +4,7 @@ import { Button } from '@gorgias/axiom'
 
 import icon from 'assets/img/slas/no-slas-icon.png'
 import css from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState.less'
-import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
+import { ImageContainer } from 'pages/common/components/EmptyState/ImageContainer'
 
 export const SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH = '/app/settings/sla'
 export const NO_BANNER_ALT_TEXT = 'No SLAs banner'

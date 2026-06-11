@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect, useState } from 'react'
 
-export default function useHoverable(): {
+export function useHoverable(): {
     hovered: boolean
     setRef: Dispatch<SetStateAction<HTMLElement | null>>
 } {

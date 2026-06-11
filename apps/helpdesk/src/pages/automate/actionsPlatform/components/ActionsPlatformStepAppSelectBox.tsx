@@ -3,15 +3,16 @@ import React, { useCallback, useRef, useState } from 'react'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import useGetAppFromTemplateApp from '../hooks/useGetAppFromTemplateApp'
+import { useGetAppFromTemplateApp } from '../hooks/useGetAppFromTemplateApp'
 import type { ActionTemplateApp, App } from '../types'
 
 import css from './ActionsPlatformAppSelectBox.less'
@@ -109,4 +110,4 @@ const ActionsPlatformStepAppSelectBox = ({
     )
 }
 
-export default ActionsPlatformStepAppSelectBox
+export { ActionsPlatformStepAppSelectBox }

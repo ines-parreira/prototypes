@@ -13,7 +13,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { customer } from 'fixtures/customer'
 import { user } from 'fixtures/users'
 
-import SpotlightCustomerRow from '../SpotlightCustomerRow'
+import { SpotlightCustomerRow } from '../SpotlightCustomerRow'
 
 const mockStore = configureMockStore([thunk])
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import EmailPreview from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailPreview'
+import { EmailPreview } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailPreview'
 
 describe('<EmailPreview />', () => {
     const validProps = {

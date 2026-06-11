@@ -8,7 +8,7 @@ import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
 
 import type { TicketPayload } from '../../types'
-import UserMentionedNotification from '../UserMentionedNotification'
+import { UserMentionedNotification } from '../UserMentionedNotification'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

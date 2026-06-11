@@ -3,7 +3,7 @@ import type React from 'react'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'

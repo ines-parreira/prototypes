@@ -68,7 +68,7 @@ type StoreSelectorSection = {
     items: StoreSelectorItem[]
 }
 
-export default function StoreSelector({
+export function StoreSelector({
     integrations,
     selected,
     onChange,

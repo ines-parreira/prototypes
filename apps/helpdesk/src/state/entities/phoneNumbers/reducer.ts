@@ -36,4 +36,4 @@ const phoneNumbersReducer = createReducer<PhoneNumbersState>(
             }),
 )
 
-export default phoneNumbersReducer
+export { phoneNumbersReducer }

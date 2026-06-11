@@ -7,13 +7,13 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { supportedLanguages } from 'pages/automate/workflows/models/workflowConfiguration.types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import css from './TranslationPreviewHeader.less'
 
-export default function TranslationPreviewHeader() {
+export function TranslationPreviewHeader() {
     const { previewLanguageList, previewLanguage, setPreviewLanguage } =
         useTranslationsPreviewContext()
     const targetRef = useRef<HTMLDivElement>(null)

@@ -12,7 +12,7 @@ import { queryKeys as workflowsQueryKeys } from '@gorgias/workflows-queries'
 import type { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
 import type { Notification } from 'common/notifications'
 
-import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
+import { WorkflowConfigurationUpdatedNotification } from '../WorkflowConfigurationUpdatedNotification'
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),

@@ -11,7 +11,7 @@ import {
     mockUpdateCustomUserAvailabilityStatusHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import AgentUnavailabilityStatuses from '../AgentStatuses'
+import { AgentUnavailabilityStatuses } from '../AgentStatuses'
 
 const server = setupServer()
 

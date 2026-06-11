@@ -5,7 +5,7 @@ import { toast } from '@gorgias/axiom'
 
 import { TicketPurpose } from 'state/billing/types'
 
-import useDispatchBillingError from '../useDispatchBillingError'
+import { useDispatchBillingError } from '../useDispatchBillingError'
 
 describe('useDispatchBillingError', () => {
     const mockContactBilling = jest.fn()

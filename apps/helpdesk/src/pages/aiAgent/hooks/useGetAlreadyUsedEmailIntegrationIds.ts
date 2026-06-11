@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { uniq } from 'lodash'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { useGetOnboardings } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardings'
 import { getCurrentDomain } from 'state/currentAccount/selectors'

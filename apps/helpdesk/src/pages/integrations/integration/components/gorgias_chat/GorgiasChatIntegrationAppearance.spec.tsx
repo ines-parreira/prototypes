@@ -64,7 +64,9 @@ const mockUseStoreIntegration = useStoreIntegration as jest.MockedFunction<
     typeof useStoreIntegration
 >
 
-jest.mock('hooks/useAppSelector', () => jest.fn(() => fromJS({})))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn(() => fromJS({})),
+}))
 
 jest.mock('pages/common/forms/FileField', () => {
     type MockedProps = {
@@ -81,22 +83,26 @@ jest.mock('pages/common/forms/FileField', () => {
 
     return {
         __esModule: true,
-        default: FileFieldMocked,
+        FileFieldContainer: FileFieldMocked,
     }
 })
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationConnectedChannel',
-    () => () => {
-        return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-    },
+    () => ({
+        GorgiasChatIntegrationConnectedChannel: () => {
+            return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+        },
+    }),
 )
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
-    () => () => {
-        return <div data-testid="GorgiasChatIntegrationHeader" />
-    },
+    () => ({
+        GorgiasChatIntegrationHeader: () => {
+            return <div data-testid="GorgiasChatIntegrationHeader" />
+        },
+    }),
 )
 
 jest.mock(

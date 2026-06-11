@@ -4,10 +4,10 @@ import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilte
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { DownloadOverviewData } from 'domains/reporting/pages/support-performance/overview/DownloadOverviewData'
 import { useTipsVisibility } from 'domains/reporting/pages/support-performance/overview/hooks/useTipsVisibility'
@@ -16,14 +16,14 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import TipsToggle from 'pages/common/components/TipsToggle/TipsToggle'
+import { TipsToggle } from 'pages/common/components/TipsToggle/TipsToggle'
 
 const WORKLOAD_SECTION_KPI_GRID_CELL_SIZE = 3
 const PRODUCTIVITY_SECTION_KPI_GRID_CELL_SIZE = 4
 const CX_LAYOUT_BASE = [3, 3, 3, 3, 3]
 const CX_LAYOUT_WITH_HRT_AI = [4, 4, 4, 6, 6]
 
-export default function SupportPerformanceOverviewReport() {
+export function SupportPerformanceOverviewReport() {
     const [areTipsVisible, setAreTipsVisible] = useTipsVisibility()
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()

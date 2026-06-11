@@ -5,7 +5,7 @@ import { LegacyButton as Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { AutomatePlan, Cadence, Plan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
+import { PlanSubscriptionDescription } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 
 import css from './AutomateSubscriptionModal.less'
 
@@ -171,4 +171,4 @@ const AutomateModalStep = ({
     </>
 )
 
-export default AutomateModalStep
+export { AutomateModalStep }

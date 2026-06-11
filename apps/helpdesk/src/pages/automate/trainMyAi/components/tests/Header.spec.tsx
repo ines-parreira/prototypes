@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import MessageCard from '../MessageCard'
+import { MessageCard } from '../MessageCard'
 
 describe('<MessageCard />', () => {
     it('should render component', () => {

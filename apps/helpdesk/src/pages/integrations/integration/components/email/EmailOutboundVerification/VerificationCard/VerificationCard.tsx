@@ -13,7 +13,7 @@ type Props = {
     isDisabled?: boolean
 }
 
-export default function VerificationCard({
+export function VerificationCard({
     header,
     body,
     bodyActions,

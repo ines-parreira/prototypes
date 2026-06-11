@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import css from './FormLabel.less'
 
@@ -36,4 +36,4 @@ const FormLabel = ({
     )
 }
 
-export default FormLabel
+export { FormLabel }

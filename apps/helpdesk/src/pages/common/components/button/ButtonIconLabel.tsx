@@ -47,7 +47,11 @@ function ButtonIconLabel(
     )
 }
 
-export default forwardRef<HTMLButtonElement, Props>(ButtonIconLabel)
+const DefaultExportButtonIconLabel = forwardRef<HTMLButtonElement, Props>(
+    ButtonIconLabel,
+)
+
+export { DefaultExportButtonIconLabel }
 
 type IconProps = {
     className?: string

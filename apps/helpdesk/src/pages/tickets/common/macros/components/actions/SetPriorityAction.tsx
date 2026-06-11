@@ -4,7 +4,7 @@ import _upperFirst from 'lodash/upperFirst'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 type Props = {
     action: Map<string, any>
@@ -42,4 +42,4 @@ const SetPriorityAction = ({
     )
 }
 
-export default SetPriorityAction
+export { SetPriorityAction }

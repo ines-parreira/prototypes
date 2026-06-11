@@ -6,11 +6,11 @@ import classnames from 'classnames'
 import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import css from 'pages/settings/settings.less'
-import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import { TwoFactorAuthenticationModal } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {
     getTwoFAEnforcedDatetime,
@@ -22,9 +22,9 @@ import {
 } from 'state/currentUser/selectors'
 
 import { isRecentLogin } from '../utils'
-import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
+import { TwoFactorAuthenticationDisableModal } from './TwoFactorAuthenticationDisableModal'
 
-export default function TwoFactorAuthenticationSection() {
+export function TwoFactorAuthenticationSection() {
     const [is2FASetupModalOpen, setIs2FASetupModalOpen] = useState(false)
     const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
     const currentUser = useAppSelector(getCurrentUser)

@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { TrackerCircleCardProps } from '../TrackerCircleCard'
-import TrackerCircleCard from '../TrackerCircleCard'
+import { TrackerCircleCard } from '../TrackerCircleCard'
 
 const defaultProps = {
     title: 'Test',

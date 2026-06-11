@@ -6,7 +6,7 @@ import { act, waitFor } from '@testing-library/react'
 
 import * as ecommerceResources from 'models/ecommerce/resources'
 
-import usePaginatedProductCollectionsByIds from '../usePaginatedProductCollectionsByIds'
+import { usePaginatedProductCollectionsByIds } from '../usePaginatedProductCollectionsByIds'
 
 jest.mock('models/ecommerce/resources', () => ({
     fetchEcommerceProductCollections: jest.fn(),

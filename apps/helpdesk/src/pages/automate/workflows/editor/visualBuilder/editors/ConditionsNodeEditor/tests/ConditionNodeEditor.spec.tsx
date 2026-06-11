@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
-import ConditionsNodeEditor from '../ConditionsNodeEditor'
+import { ConditionsNodeEditor } from '../ConditionsNodeEditor'
 
 jest.mock('pages/automate/workflows/hooks/useVisualBuilder', () => ({
     useVisualBuilderContext: jest.fn(),
@@ -13,12 +13,12 @@ jest.mock('pages/automate/workflows/hooks/useVisualBuilder', () => ({
 
 jest.mock('pages/common/components/accordion/SortableAccordion', () => ({
     __esModule: true,
-    default: ({ children }: any) => <div>{children}</div>,
+    SortableAccordion: ({ children }: any) => <div>{children}</div>,
 }))
 
 jest.mock('pages/common/components/accordion/SortableAccordionItem', () => ({
     __esModule: true,
-    default: ({ children }: any) => <div>{children}</div>,
+    SortableAccordionItem: ({ children }: any) => <div>{children}</div>,
 }))
 
 jest.mock('../utils', () => ({

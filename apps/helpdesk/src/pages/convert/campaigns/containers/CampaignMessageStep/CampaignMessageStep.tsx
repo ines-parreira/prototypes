@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import type { EditorState } from 'draft-js'
 
 import type { User } from 'config/types/user'
-import type RichField from 'pages/common/forms/RichField/RichField'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { CampaignMessage } from 'pages/convert/campaigns/components/CampaignMessage'
 import { StatefulAccordion } from 'pages/convert/campaigns/components/StatefulAccordion'
@@ -13,7 +13,7 @@ import { useStepState } from 'pages/convert/campaigns/hooks/useStepState'
 import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import { editorStateWithReplacedText } from 'utils/editor'
 
-import InventoryScopeMissingBanner from '../../components/InventoryScopeMissingBanner'
+import { InventoryScopeMissingBanner } from '../../components/InventoryScopeMissingBanner'
 
 type Props = {
     agents: User[]

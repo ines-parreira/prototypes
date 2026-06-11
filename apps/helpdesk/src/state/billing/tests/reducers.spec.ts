@@ -2,7 +2,7 @@ import { currentProductsUsage } from 'fixtures/plans'
 import type { StoreAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 
 describe('billing reducers', () => {
     it('initial state', () => {

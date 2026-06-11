@@ -2,11 +2,13 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
-import ToggleInputField from '../ToggleInputField'
+import { ToggleInputField } from '../ToggleInputField'
 
-jest.mock('pages/common/forms/ToggleInput', () => jest.fn(() => null))
+jest.mock('pages/common/forms/ToggleInput', () => ({
+    ToggleInput: jest.fn(() => null),
+}))
 
 const ToggleInputMock = assumeMock(ToggleInput)
 

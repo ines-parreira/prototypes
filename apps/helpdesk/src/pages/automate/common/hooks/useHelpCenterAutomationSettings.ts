@@ -4,8 +4,8 @@ import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
@@ -161,4 +161,4 @@ const useHelpCentersAutomationSettings = (
     )
 }
 
-export default useHelpCentersAutomationSettings
+export { useHelpCentersAutomationSettings }

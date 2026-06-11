@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Panel from '../Panel'
+import { Panel } from '../Panel'
 
 describe('Panel', () => {
     it('should render a panel and its contents', () => {

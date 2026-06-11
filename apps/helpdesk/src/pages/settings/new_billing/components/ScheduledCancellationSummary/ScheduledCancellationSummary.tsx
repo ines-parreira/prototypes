@@ -75,4 +75,4 @@ const ScheduledCancellationSummary = ({
     )
 }
 
-export default ScheduledCancellationSummary
+export { ScheduledCancellationSummary }

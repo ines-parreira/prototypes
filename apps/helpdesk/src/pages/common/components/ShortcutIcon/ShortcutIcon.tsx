@@ -37,4 +37,4 @@ const ShortcutIcon = ({
     </div>
 )
 
-export default ShortcutIcon
+export { ShortcutIcon }

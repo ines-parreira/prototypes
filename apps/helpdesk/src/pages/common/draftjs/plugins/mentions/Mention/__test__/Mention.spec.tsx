@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { ContentState } from 'draft-js'
 
-import Mention from '../index'
+import { Mention } from '../index'
 
 describe('Mention', () => {
     it('can render when mention is an Object', () => {

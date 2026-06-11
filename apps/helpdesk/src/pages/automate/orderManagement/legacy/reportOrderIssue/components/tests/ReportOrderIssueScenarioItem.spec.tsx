@@ -3,7 +3,7 @@ import { MemoryRouter, useLocation } from 'react-router-dom'
 
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
-import ReportOrderIssueScenarioItem from '../ReportOrderIssueScenarioItem'
+import { ReportOrderIssueScenarioItem } from '../ReportOrderIssueScenarioItem'
 
 const mockHistoryPush = jest.fn()
 const mockHistoryGoBack = jest.fn()

@@ -3,10 +3,10 @@ import React from 'react'
 import { reportError } from '@repo/logging'
 import { render } from '@repo/testing'
 
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
-import GroupAddon from '../GroupAddon'
+import { GroupAddon } from '../GroupAddon'
 
 jest.mock('@repo/logging')
 const reportErrorMock = reportError as jest.Mock

@@ -1,7 +1,7 @@
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { _goToNextOrPrevTicket, clearTicket } from 'state/ticket/actions'
 
-export default function usePrevNextTicketNavigation(
+export function usePrevNextTicketNavigation(
     direction: 'prev' | 'next',
     ticketId?: string,
 ) {

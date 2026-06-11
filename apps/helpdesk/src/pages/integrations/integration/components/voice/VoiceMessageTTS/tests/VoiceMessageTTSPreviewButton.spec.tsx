@@ -9,10 +9,10 @@ import { mockSynthesizeSpeechPreviewHandler } from '@gorgias/helpdesk-mocks'
 import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-queries'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import TextToSpeechProvider from '../TextToSpeechProvider'
-import VoiceMessageTTSPreviewButton from '../VoiceMessageTTSPreviewButton'
+import { TextToSpeechProvider } from '../TextToSpeechProvider'
+import { VoiceMessageTTSPreviewButton } from '../VoiceMessageTTSPreviewButton'
 
 // Mock the replaceAttachmentURL utility
 jest.mock('utils', () => ({

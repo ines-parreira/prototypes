@@ -24,7 +24,7 @@ type AddModifiersPopoverState = {
     modifierValues?: ModifierValues
 }
 
-export default function useAddModifiersPopover(
+export function useAddModifiersPopover(
     storeHash: string,
     onApply: (props: {
         product: BigCommerceProduct

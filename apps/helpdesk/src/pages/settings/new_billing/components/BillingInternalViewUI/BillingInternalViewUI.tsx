@@ -10,8 +10,8 @@ import { SubscriptionStatus } from 'models/billing/types'
 import { useDeactivateAccountWithSideEffects } from '../../hooks/useDeactivateAccountWithSideEffects'
 import { useReactivateAccountWithSideEffects } from '../../hooks/useReactivateAccountWithSideEffects'
 import { useSetIsVettedWithSideEffects } from '../../hooks/useSetIsVettedWithSideEffects'
-import ProductCardForCoupon from '../ProductCardForCoupon/ProductCardForCoupon'
-import UpcomingInvoiceCard from '../UpcomingInvoiceCard/UpcomingInvoiceCard'
+import { ProductCardForCoupon } from '../ProductCardForCoupon/ProductCardForCoupon'
+import { UpcomingInvoiceCard } from '../UpcomingInvoiceCard/UpcomingInvoiceCard'
 
 import css from './BillingInternalViewUI.less'
 

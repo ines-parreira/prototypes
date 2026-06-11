@@ -8,7 +8,7 @@ import _get from 'lodash/get'
 import _keyBy from 'lodash/keyBy'
 import _set from 'lodash/set'
 
-import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
+import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
 import type { App } from 'pages/automate/actionsPlatform/types'
 import { validateJSON } from 'utils'
 

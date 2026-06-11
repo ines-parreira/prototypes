@@ -9,7 +9,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { setViewEditMode } from 'state/views/actions'
 
-import TicketsListPanel from '../TicketsListPanel'
+import { TicketsListPanel } from '../TicketsListPanel'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -62,7 +62,7 @@ const mockTicketListComponent = jest.fn(
 
 jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
     __esModule: true,
-    default: ({
+    ApplyMacro: ({
         setIsOpen,
         onApplyMacro,
     }: {
@@ -106,26 +106,26 @@ jest.mock('ticket-list-view', () => ({
 jest.mock('tickets/core/hooks', () => ({ useViewId: () => 123456 }))
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useSplitTicketView: jest.fn(),
 }))
 const setSplitTicketViewMock = jest.fn()
 const useSplitTicketViewMock = jest.requireMock(
     'split-ticket-view-toggle/hooks/useSplitTicketView',
-).default as jest.Mock
+).useSplitTicketView as jest.Mock
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppDispatch: jest.fn(),
 }))
 const dispatchMock = jest.fn()
 const historyPushMock = jest.fn()
 const historyReplaceMock = jest.fn()
 const useAppDispatchMock = jest.requireMock('hooks/useAppDispatch')
-    .default as jest.Mock
+    .useAppDispatch as jest.Mock
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => null),
+    useAppSelector: jest.fn(() => null),
 }))
 
 describe('TicketsListPanel', () => {

@@ -10,7 +10,7 @@ import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
@@ -19,7 +19,7 @@ import { AiAgentRedirect } from '../AiAgentRedirect'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 const mockUseAppSelector = useAppSelector as jest.Mock
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')

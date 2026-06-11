@@ -8,7 +8,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { ManagedRulesSlugs } from 'state/rules/types'
 
-import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
+import { AutoReplyWismoEditor } from '../AutoReplyWismoEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 jest.mock('models/selfServiceConfiguration/queries')

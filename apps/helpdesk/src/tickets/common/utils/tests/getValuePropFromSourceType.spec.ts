@@ -1,6 +1,6 @@
 import { TicketMessageSourceType } from 'business/types/ticket'
 
-import getValuePropFromSourceType from '../getValuePropFromSourceType'
+import { getValuePropFromSourceType } from '../getValuePropFromSourceType'
 
 describe('getValuePropFromSourceType()', () => {
     it('returns "address" for TicketMessageSourceTypes', () => {

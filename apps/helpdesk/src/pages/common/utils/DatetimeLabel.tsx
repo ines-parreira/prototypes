@@ -6,7 +6,7 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     getDateAndTimeFormatter,
     getTimezone,
@@ -78,4 +78,4 @@ const DatetimeLabel = ({
     )
 }
 
-export default DatetimeLabel
+export { DatetimeLabel }

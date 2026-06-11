@@ -11,48 +11,44 @@ import { JobType } from '@gorgias/helpdesk-types'
 import { UserRole } from 'config/types/user'
 import type { TagDropdownMenu } from 'tags'
 
-import type ApplyMacro from '../ApplyMacro'
-import MoreActions from '../MoreActions'
-import type PriorityDropdownMenu from '../PriorityDropdownMenu'
-import type TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
+import type { ApplyMacro } from '../ApplyMacro'
+import { MoreActions } from '../MoreActions'
+import type { PriorityDropdownMenu } from '../PriorityDropdownMenu'
+import type { TeamAssigneeDropdownMenu } from '../TeamAssigneeDropdownMenu'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock(
-    'tags/TagDropdownMenu',
-    () =>
-        ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
-            <button onClick={() => onClick({ name: 'tag' })}>
-                TagDropdownMenuMock
-            </button>
-        ),
-)
-jest.mock(
-    '../TeamAssigneeDropdownMenu',
-    () =>
-        ({ onClick }: ComponentProps<typeof TeamAssigneeDropdownMenu>) => (
-            <button onClick={() => onClick({ id: 8 })}>
-                TeamAssigneeDropdownMenuMock
-            </button>
-        ),
-)
-jest.mock(
-    '../PriorityDropdownMenu',
-    () =>
-        ({ onClick }: ComponentProps<typeof PriorityDropdownMenu>) => (
-            <button onClick={() => onClick({ name: 'high' })}>
-                PriorityDropdownMenuMock
-            </button>
-        ),
-)
-jest.mock(
-    '../ApplyMacro',
-    () =>
-        ({ onApplyMacro }: ComponentProps<typeof ApplyMacro>) => (
-            <button onClick={() => onApplyMacro()}>ApplyMacroMock</button>
-        ),
-)
+jest.mock('tags/TagDropdownMenu', () => ({
+    TagDropdownMenu: ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
+        <button onClick={() => onClick({ name: 'tag' })}>
+            TagDropdownMenuMock
+        </button>
+    ),
+}))
+jest.mock('../TeamAssigneeDropdownMenu', () => ({
+    TeamAssigneeDropdownMenu: ({
+        onClick,
+    }: ComponentProps<typeof TeamAssigneeDropdownMenu>) => (
+        <button onClick={() => onClick({ id: 8 })}>
+            TeamAssigneeDropdownMenuMock
+        </button>
+    ),
+}))
+jest.mock('../PriorityDropdownMenu', () => ({
+    PriorityDropdownMenu: ({
+        onClick,
+    }: ComponentProps<typeof PriorityDropdownMenu>) => (
+        <button onClick={() => onClick({ name: 'high' })}>
+            PriorityDropdownMenuMock
+        </button>
+    ),
+}))
+jest.mock('../ApplyMacro', () => ({
+    ApplyMacro: ({ onApplyMacro }: ComponentProps<typeof ApplyMacro>) => (
+        <button onClick={() => onApplyMacro()}>ApplyMacroMock</button>
+    ),
+}))
 
 const defaultStore = {
     currentUser: fromJS({

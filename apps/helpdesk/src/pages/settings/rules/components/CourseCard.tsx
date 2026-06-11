@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 
 import academy from 'assets/img/academy.png'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './CourseCard.less'
@@ -36,4 +36,4 @@ const CourseCard = () => {
     )
 }
 
-export default CourseCard
+export { CourseCard }

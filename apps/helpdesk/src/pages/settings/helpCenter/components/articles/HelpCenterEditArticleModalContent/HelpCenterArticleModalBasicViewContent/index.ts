@@ -1,1 +1,1 @@
-export { default } from './HelpCenterArticleModalBasicViewContent'
+export { HelpCenterArticleModalBasicViewContent } from './HelpCenterArticleModalBasicViewContent'

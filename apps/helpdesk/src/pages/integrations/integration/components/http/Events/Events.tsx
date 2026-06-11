@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom'
 import { HTTP_METHOD_GET } from 'config'
 import { useGetHTTPEvents } from 'models/integration/queries/http'
 import type { HTTPIntegrationEvent } from 'models/integration/types'
-import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
-import Loader from 'pages/common/components/Loader/Loader'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { HTTPStatusLabel } from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 import { BASE_PATH, EVENTS_PATH } from '../constants'
 
@@ -116,5 +116,3 @@ export function Events({ integrationId }: Props) {
         </>
     )
 }
-
-export default Events

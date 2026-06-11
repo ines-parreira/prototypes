@@ -66,7 +66,7 @@ const getVariant = (variant: DistributionStatVariant) => {
     }
 }
 
-export default function DistributionVariantStat({
+export function DistributionVariantStat({
     currentValue,
     maxValue,
     minValue,

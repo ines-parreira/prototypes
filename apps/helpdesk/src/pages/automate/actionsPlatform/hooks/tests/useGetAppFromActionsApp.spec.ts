@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { IntegrationType } from 'models/integration/constants'
 
 import type { App } from '../../types'
-import useGetAppFromActionsApp from '../useGetAppFromActionsApp'
+import { useGetAppFromActionsApp } from '../useGetAppFromActionsApp'
 
 describe('useGetAppFromActionsApp()', () => {
     const shopifyApp: App = {

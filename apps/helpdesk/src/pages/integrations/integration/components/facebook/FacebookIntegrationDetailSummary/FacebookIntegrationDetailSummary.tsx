@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { truncate } from 'lodash'
 
-import FacebookIntegrationLoginButton from '../FacebookLoginButton/FacebookIntegrationLoginButton'
+import { FacebookIntegrationLoginButton } from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
 import css from './FacebookIntegrationDetailSummary.less'
 
@@ -11,7 +11,7 @@ type Props = {
     description: Maybe<string>
 }
 
-export default function FacebookIntegrationDetailSummary(props: Props) {
+export function FacebookIntegrationDetailSummary(props: Props) {
     const { icon, name, description } = props
 
     return (

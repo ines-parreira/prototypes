@@ -8,7 +8,7 @@ import { TicketVia } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 import { AiAgentReasoningHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AiAgentReasoningHelpdeskV2'
-import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
+import { SimplifiedAIAgentBanner } from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 
 import { TicketThreadAiAgentReasoning } from '../TicketThreadAiAgentReasoning'
 
@@ -34,7 +34,11 @@ jest.mock(
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner',
-    () => jest.fn(() => <div>SimplifiedAIAgentBanner</div>),
+    () => ({
+        SimplifiedAIAgentBanner: jest.fn(() => (
+            <div>SimplifiedAIAgentBanner</div>
+        )),
+    }),
 )
 
 jest.mock('@repo/activity-tracker/utils', () => ({

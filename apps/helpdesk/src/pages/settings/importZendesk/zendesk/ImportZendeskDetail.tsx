@@ -22,11 +22,11 @@ import {
 } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import type { ZendeskIntegration } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import { getTimezone } from 'state/currentUser/selectors'
 import {
@@ -36,8 +36,8 @@ import {
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import EditCredentialsForm from './EditCredentialsForm'
-import ImportStatusAlert from './ImportStatusAlert'
+import { EditCredentialsForm } from './EditCredentialsForm'
+import { ImportStatusAlert } from './ImportStatusAlert'
 import { ImportStatus } from './types'
 import { getImportCompletionDate } from './utils'
 
@@ -315,4 +315,6 @@ const mapDispatchToProps = (dispatch: StoreDispatch) =>
     )
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
-export default connector(ImportZendeskDetail)
+const DefaultExportImportZendeskDetail = connector(ImportZendeskDetail)
+
+export { DefaultExportImportZendeskDetail }

@@ -10,7 +10,7 @@ import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     EmailIntegration as DEPRECATED_EmailIntegration,
     OutlookIntegration,
@@ -20,8 +20,8 @@ import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
 import { getIconFromType } from 'state/integrations/helpers'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
-import DefaultIntegrationBadge from './DefaultIntegrationBadge'
-import EmailIntegrationListVerificationStatus from './EmailIntegrationListVerificationStatus'
+import { DefaultIntegrationBadge } from './DefaultIntegrationBadge'
+import { EmailIntegrationListVerificationStatus } from './EmailIntegrationListVerificationStatus'
 import {
     canIntegrationDomainBeVerified,
     getDomainFromEmailAddress,
@@ -39,7 +39,7 @@ type Props = {
     storeMappings?: Record<string, number>
 }
 
-export default function EmailIntegrationListItem({
+export function EmailIntegrationListItem({
     integration,
     verifiedDomains,
     integrations,

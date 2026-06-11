@@ -35,7 +35,7 @@ export const GroupPositionContext =
  * @date 2025-09-02
  * @type ui-kit-migration
  */
-export default function Group({
+export function Group({
     children,
     className,
     isDisabled,

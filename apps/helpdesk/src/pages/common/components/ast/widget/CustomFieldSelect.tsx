@@ -5,8 +5,8 @@ import type { ObjectType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 type Props = Pick<
     ComponentProps<typeof SelectField>,
@@ -110,4 +110,4 @@ const CustomFieldSelect = ({
     )
 }
 
-export default CustomFieldSelect
+export { CustomFieldSelect }

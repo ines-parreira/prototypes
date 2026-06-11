@@ -4,7 +4,7 @@ import React from 'react'
 import { useSearchRankScenario } from '@repo/logging'
 import type { SearchRankSource } from '@repo/logging'
 
-import SearchRankScenarioContext from './SearchRankScenarioContext'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from './SearchRankScenarioContext'
 
 type Props = {
     source: SearchRankSource
@@ -12,7 +12,7 @@ type Props = {
     children?: ReactNode
 }
 
-export default function SearchRankScenarioProvider({
+export function SearchRankScenarioProvider({
     source,
     scenarioTimeout,
     children,

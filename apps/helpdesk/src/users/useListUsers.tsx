@@ -6,10 +6,10 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchAgents } from 'models/agents/resources'
 
-export default function useListUsers(
+export function useListUsers(
     params?: Parameters<typeof fetchAgents>[0],
     query?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof fetchAgents>>,

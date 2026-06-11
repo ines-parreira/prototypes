@@ -8,7 +8,7 @@ import type { Meta, StoryFn, StoryObj } from 'storybook-react-rsbuild'
 import { userEvent } from 'storybook/test'
 
 import { ThemeProvider } from 'core/theme'
-import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
+import { DefaultExportPeriodPicker as PeriodPicker } from 'domains/reporting/pages/common/PeriodPicker'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
 
 const defaultState = {}

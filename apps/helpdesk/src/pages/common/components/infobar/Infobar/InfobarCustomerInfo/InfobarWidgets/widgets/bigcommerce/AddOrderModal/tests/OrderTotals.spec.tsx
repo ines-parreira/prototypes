@@ -9,7 +9,7 @@ import {
 } from 'fixtures/bigcommerce'
 import { BigCommerceActionType } from 'models/integration/types'
 
-import OrderTotals from '../OrderTotals'
+import { OrderTotals } from '../OrderTotals'
 
 jest.mock('../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../utils'),

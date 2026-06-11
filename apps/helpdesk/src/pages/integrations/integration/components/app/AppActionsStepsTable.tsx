@@ -20,7 +20,7 @@ type Props = {
     appIcon?: string
 }
 
-export default function AppActionsStepsTable({ steps, appIcon }: Props) {
+export function AppActionsStepsTable({ steps, appIcon }: Props) {
     return (
         <Table withBorder>
             <TableHeader>

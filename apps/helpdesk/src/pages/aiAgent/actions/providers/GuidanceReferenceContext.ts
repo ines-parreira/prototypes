@@ -16,4 +16,4 @@ const GuidanceReferenceContext = createContext<GuidanceReferenceContextType>({
 export const useGuidanceReferenceContext = () =>
     useContext(GuidanceReferenceContext)
 
-export default GuidanceReferenceContext
+export { GuidanceReferenceContext }

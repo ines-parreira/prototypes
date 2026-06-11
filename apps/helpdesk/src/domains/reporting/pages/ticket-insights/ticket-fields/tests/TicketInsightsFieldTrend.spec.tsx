@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 import { useTicketsFieldTimeSeries } from 'domains/reporting/hooks/ticket-insights/useTicketsFieldTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { TicketInsightsFieldTrend } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 jest.mock(
     '@gorgias/axiom',

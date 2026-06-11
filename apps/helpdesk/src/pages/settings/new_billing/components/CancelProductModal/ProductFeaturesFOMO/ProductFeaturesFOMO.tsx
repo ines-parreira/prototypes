@@ -2,7 +2,7 @@ import { Text } from '@gorgias/axiom'
 
 import { ProductType } from 'models/billing/types'
 
-import Feature from '../UI/Feature'
+import { Feature } from '../UI/Feature'
 import type { ProductFeature } from './types'
 
 import css from './ProductFeaturesFOMO.less'
@@ -83,4 +83,4 @@ const ProductFeaturesFOMO = (props: ProductFOMOProps) => {
     )
 }
 
-export default ProductFeaturesFOMO
+export { ProductFeaturesFOMO }

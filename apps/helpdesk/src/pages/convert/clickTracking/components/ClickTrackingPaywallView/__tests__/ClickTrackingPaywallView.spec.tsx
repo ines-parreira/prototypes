@@ -5,12 +5,14 @@ import { render } from '@repo/testing'
 import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 
-import ClickTrackingPaywallView from '../ClickTrackingPaywallView'
+import { DefaultExportClickTrackingPaywallView as ClickTrackingPaywallView } from '../ClickTrackingPaywallView'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 
 jest.mock('react-router-dom', () => ({

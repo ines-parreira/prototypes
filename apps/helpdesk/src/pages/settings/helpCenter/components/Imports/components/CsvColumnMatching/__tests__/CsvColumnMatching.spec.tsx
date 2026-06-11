@@ -7,7 +7,7 @@ import { analyseCsvResponse } from '../../../../../fixtures/analyseCsvResponse.f
 import { getSingleHelpCenterResponseFixture as helpCenter } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'
 import type { Props as CsvColumnMatchingProps } from '../CsvColumnMatching'
-import CsvColumnMatching from '../CsvColumnMatching'
+import { CsvColumnMatching } from '../CsvColumnMatching'
 
 const props: CsvColumnMatchingProps = {
     helpCenter,

@@ -15,7 +15,7 @@ type Props = {
     'data-testid'?: string
 }
 
-export default function Loader({
+export function Loader({
     className,
     message,
     inline = false,

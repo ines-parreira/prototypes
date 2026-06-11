@@ -4,7 +4,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import WrappedOrderMetafields from './OrderMetafields'
+import { WrappedOrderMetafields } from './OrderMetafields'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),

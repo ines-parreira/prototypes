@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { EditorState, RichUtils } from 'draft-js'
 
-import InlineStyle from '../InlineStyle'
+import { InlineStyle } from '../InlineStyle'
 
 jest.mock('draft-js', () => ({
     ...jest.requireActual('draft-js'),

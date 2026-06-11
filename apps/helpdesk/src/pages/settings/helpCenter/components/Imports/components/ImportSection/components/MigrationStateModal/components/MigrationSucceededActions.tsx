@@ -28,4 +28,4 @@ const MigrationSucceededActions: React.FC<Props> = ({
     )
 }
 
-export default MigrationSucceededActions
+export { MigrationSucceededActions }

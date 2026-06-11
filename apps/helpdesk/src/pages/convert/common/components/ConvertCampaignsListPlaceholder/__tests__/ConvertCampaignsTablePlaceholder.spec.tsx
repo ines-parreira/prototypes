@@ -4,7 +4,7 @@ import { useSearch } from 'hooks/useSearch'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import ConvertCampaignsTablePlaceholder from '../ConvertCampaignsTablePlaceholder'
+import { ConvertCampaignsTablePlaceholder } from '../ConvertCampaignsTablePlaceholder'
 
 jest.mock('hooks/useSearch')
 

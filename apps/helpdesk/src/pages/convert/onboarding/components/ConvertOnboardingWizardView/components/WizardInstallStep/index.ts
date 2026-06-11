@@ -1,1 +1,1 @@
-export { default } from './WizardInstallStep'
+export { WizardInstallStep } from './WizardInstallStep'

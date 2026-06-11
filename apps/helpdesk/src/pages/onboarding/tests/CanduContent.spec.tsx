@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CanduContent from '../CanduContent'
+import { CanduContent } from '../CanduContent'
 
 describe('<CanduContent />', () => {
     it('should display an empty container', () => {

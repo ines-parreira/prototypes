@@ -12,13 +12,13 @@ import {
 } from 'models/billing/queries'
 import { Cadence, SubscriptionStatus } from 'models/billing/types'
 import type { SubscriptionSummary } from 'models/billing/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { InternalConfirmModal } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalConfirmModal'
 import { InternalSelectPlans } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSelectPlans/InternalSelectPlans'
 import { InternalSummary } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSummary'
 import { useApplyInternalPlanChanges } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useApplyInternalPlanChanges'
 import { useInternalPlanEditor } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
-import BillingScheduledUpdates from 'pages/settings/new_billing/components/BillingScheduledUpdates/BillingScheduledUpdates'
+import { BillingScheduledUpdates } from 'pages/settings/new_billing/components/BillingScheduledUpdates/BillingScheduledUpdates'
 
 function getSubscriptionStatusTag(subscription: SubscriptionSummary) {
     if (subscription.is_paused) return { label: 'PAUSED', color: Color.Orange }

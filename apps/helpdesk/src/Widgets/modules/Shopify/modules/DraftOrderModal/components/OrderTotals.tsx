@@ -9,16 +9,16 @@ import { connect } from 'react-redux'
 
 import { getDraftOrderTotalLineItemsPrice } from 'business/shopify/lineItem'
 import { formatPrice } from 'business/shopify/number'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { onPayloadChange } from 'state/infobarActions/shopify/createOrder/actions'
 import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
 import type { RootState } from 'state/types'
-import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
+import { DiscountPopover } from 'Widgets/modules/Shopify/modules/DiscountPopover'
 import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import ShippingPopover from './ShippingPopover'
-import TaxesPopover from './TaxesPopover'
+import { ShippingPopover } from './ShippingPopover'
+import { TaxesPopover } from './TaxesPopover'
 
 import css from './OrderTotals.less'
 
@@ -224,7 +224,9 @@ const mapDispatchToProps = {
     onPayloadChange,
 }
 
-export default connect(
+const DefaultExportOrderTotals = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(OrderTotalsComponent)
+
+export { DefaultExportOrderTotals }

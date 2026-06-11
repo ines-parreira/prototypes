@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { ReactFlowProvider } from '@xyflow/react'
 
-import VisualBuilderNode from '../VisualBuilderNode'
+import { VisualBuilderNode } from '../VisualBuilderNode'
 
 describe('<VisualBuilderNode />', () => {
     it('should stop propagation if node is not clickable', () => {

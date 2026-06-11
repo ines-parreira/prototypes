@@ -18,7 +18,7 @@ jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
     () => ({
         __esModule: true,
-        default: () => {
+        DefaultExportLineChart: () => {
             return <div>LineChart</div>
         },
     }),

@@ -4,11 +4,11 @@ import { act, screen, waitFor } from '@testing-library/react'
 
 import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 
-import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
+import { useDeleteEmailIntegration } from '../useDeleteEmailIntegration'
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppDispatch')

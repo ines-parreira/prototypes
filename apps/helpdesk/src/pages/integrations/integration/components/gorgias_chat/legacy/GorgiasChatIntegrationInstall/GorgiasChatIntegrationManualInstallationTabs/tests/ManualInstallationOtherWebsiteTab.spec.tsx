@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ManualInstallationOtherWebsiteTab from '../ManualInstallationOtherWebsiteTab'
+import { ManualInstallationOtherWebsiteTab } from '../ManualInstallationOtherWebsiteTab'
 
 describe('ManualInstallationOtherWebsiteTab', () => {
     it('should render the component', () => {

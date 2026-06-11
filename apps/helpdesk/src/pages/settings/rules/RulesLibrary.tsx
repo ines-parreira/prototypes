@@ -14,15 +14,15 @@ import {
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { fetchRules } from 'models/rule/resources'
 import { fetchRuleRecipes } from 'models/ruleRecipe/resources'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { ruleRecipesFetched } from 'state/entities/ruleRecipes/actions'
@@ -34,8 +34,8 @@ import {
 } from 'state/entities/rules/selectors'
 import { RuleLimitStatus } from 'state/rules/types'
 
-import CreateCustomRuleFooter from './components/CreateCustomRuleFooter'
-import RuleLibrary from './ruleLibrary/RuleLibrary'
+import { CreateCustomRuleFooter } from './components/CreateCustomRuleFooter'
+import { RuleLibrary } from './ruleLibrary/RuleLibrary'
 
 import css from './RulesView.less'
 
@@ -195,5 +195,3 @@ export function RulesLibraryContainer() {
         </div>
     )
 }
-
-export default RulesLibraryContainer

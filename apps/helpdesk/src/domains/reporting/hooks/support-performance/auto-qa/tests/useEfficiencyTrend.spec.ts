@@ -5,8 +5,9 @@ import {
     fetchEfficiencyTrend,
     useEfficiencyTrend,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useEfficiencyTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { efficiencyQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/efficiencyQueryFactory'
 import { efficiencyQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'

@@ -20,16 +20,16 @@ import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useAddStoreApp } from 'pages/aiAgent/actions/hooks/useAddStoreApp'
+import { useThreeplIntegrations } from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import type { RootState } from 'state/types'
 
-import ActionCreateWizardView from './ActionCreateWizardView'
+import { ActionCreateWizardView } from './ActionCreateWizardView'
 
 jest.mock('models/workflows/queries')
 jest.mock('models/knowledgeService/queries')

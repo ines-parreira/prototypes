@@ -10,7 +10,7 @@ import { resendVerificationEmail } from 'models/singleSenderVerification/resourc
 import type { SenderVerification } from 'models/singleSenderVerification/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import VerificationEmailSent from '../SingleSenderVerification/VerificationEmailSent'
+import { VerificationEmailSent } from '../SingleSenderVerification/VerificationEmailSent'
 
 jest.mock('models/singleSenderVerification/resources')
 jest.useFakeTimers()

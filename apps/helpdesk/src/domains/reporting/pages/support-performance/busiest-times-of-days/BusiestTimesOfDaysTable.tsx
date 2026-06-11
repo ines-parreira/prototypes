@@ -21,12 +21,12 @@ import {
     get24Hours,
     getWorkingHoursInTimeZone,
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
-import useAppSelector from 'hooks/useAppSelector'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 export const hours = get24Hours()

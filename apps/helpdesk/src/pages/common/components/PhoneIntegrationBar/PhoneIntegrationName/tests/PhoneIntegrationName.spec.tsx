@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from '../../../../../../state/types'
-import PhoneIntegrationName from '../PhoneIntegrationName'
+import { DefaultExportPhoneIntegrationName as PhoneIntegrationName } from '../PhoneIntegrationName'
 
 jest.mock('@repo/feature-flags')
 

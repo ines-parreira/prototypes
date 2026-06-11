@@ -71,4 +71,4 @@ const CheckboxCard: React.FC<CheckboxCardProps> = ({
     )
 }
 
-export default CheckboxCard
+export { CheckboxCard }

@@ -6,7 +6,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 
-export default function VoiceIntegrationOnboardingCancelButton() {
+export function VoiceIntegrationOnboardingCancelButton() {
     return (
         <Button
             intent="secondary"

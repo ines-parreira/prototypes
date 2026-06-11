@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SmsIntegration } from 'models/integration/types'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { getSmsIntegrations } from 'state/integrations/selectors'
 
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
@@ -11,7 +11,7 @@ type Props = {
     integration?: SmsIntegration
 }
 
-export default function SmsIntegrationSecondaryNavigation({
+export function SmsIntegrationSecondaryNavigation({
     integration,
 }: Props): JSX.Element | null {
     const smsIntegrations = useAppSelector(getSmsIntegrations)

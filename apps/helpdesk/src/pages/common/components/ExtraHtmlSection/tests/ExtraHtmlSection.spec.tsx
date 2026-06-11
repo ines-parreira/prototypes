@@ -11,45 +11,47 @@ import { ExtraHtmlSection } from '../ExtraHtmlSection'
 
 // Mock the CodeEditor component
 jest.mock('../../CodeEditor/CodeEditor', () => {
-    return function MockCodeEditor({
-        value,
-        onChange,
-        mode,
-        __highlightActiveLine,
-        __width,
-        __height,
-        ...props
-    }: {
-        value?: string
-        onChange?: (value: string) => void
-        mode?: string
-        __highlightActiveLine?: boolean
-        __width?: string
-        __height?: string
-        className?: string
-        [key: string]: any
-    }) {
-        // Filter out non-DOM props
-        const domProps = Object.keys(props).reduce(
-            (acc: Record<string, any>, key) => {
-                if (!key.startsWith('data-') && key !== 'className') {
-                    return acc
-                }
-                return { ...acc, [key]: props[key] }
-            },
-            {},
-        )
+    return {
+        CodeEditor: function MockCodeEditor({
+            value,
+            onChange,
+            mode,
+            __highlightActiveLine,
+            __width,
+            __height,
+            ...props
+        }: {
+            value?: string
+            onChange?: (value: string) => void
+            mode?: string
+            __highlightActiveLine?: boolean
+            __width?: string
+            __height?: string
+            className?: string
+            [key: string]: any
+        }) {
+            // Filter out non-DOM props
+            const domProps = Object.keys(props).reduce(
+                (acc: Record<string, any>, key) => {
+                    if (!key.startsWith('data-') && key !== 'className') {
+                        return acc
+                    }
+                    return { ...acc, [key]: props[key] }
+                },
+                {},
+            )
 
-        return (
-            <textarea
-                data-testid="code-editor"
-                value={value || ''}
-                onChange={(e) => onChange?.(e.target.value)}
-                data-mode={mode}
-                className={props.className}
-                {...domProps}
-            />
-        )
+            return (
+                <textarea
+                    data-testid="code-editor"
+                    value={value || ''}
+                    onChange={(e) => onChange?.(e.target.value)}
+                    data-mode={mode}
+                    className={props.className}
+                    {...domProps}
+                />
+            )
+        },
     }
 })
 

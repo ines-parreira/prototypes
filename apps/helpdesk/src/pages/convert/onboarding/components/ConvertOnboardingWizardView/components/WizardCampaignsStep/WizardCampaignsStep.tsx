@@ -9,7 +9,7 @@ import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import ConvertOnboardingCampaignTemplate from 'pages/convert/onboarding/components/ConvertOnboardingCampaignTemplate'
+import { ConvertOnboardingCampaignTemplate } from 'pages/convert/onboarding/components/ConvertOnboardingCampaignTemplate'
 import { toJS } from 'utils'
 
 import css from './WizardCampaignsStep.less'
@@ -80,4 +80,4 @@ const WizardCampaignsStep = ({ integration }: Props) => {
     )
 }
 
-export default WizardCampaignsStep
+export { WizardCampaignsStep }

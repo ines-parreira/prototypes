@@ -10,9 +10,9 @@ import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/
 import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
 import type { AlertNotification } from 'state/notifications/types'
 
-import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from '../useSelfServiceConfiguration'
 import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfigurationUpdate'
-import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegration } from '../useSelfServiceStoreIntegration'
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),

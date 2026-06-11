@@ -17,7 +17,7 @@ interface TicketVoiceCallDurationProps {
     voiceCall: VoiceCall
 }
 
-export default function TicketVoiceCallDuration({
+export function TicketVoiceCallDuration({
     voiceCall,
 }: TicketVoiceCallDurationProps) {
     const [ongoingCallDuration, setOngoingCallDuration] = useState(

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Editor from '../Editor'
+import { Editor } from '../Editor'
 
 const mockStore = configureMockStore([thunk])
 

@@ -3,9 +3,9 @@ import { useState } from 'react'
 
 import { tryLocalStorage } from '@repo/browser-storage'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Props as LinkAlertProps } from 'pages/common/components/Alert/LinkAlert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 type Props = {
@@ -40,4 +40,4 @@ const Tip: React.FC<Props> = ({ storageKey, children, ...linkAlertProps }) => {
     )
 }
 
-export default Tip
+export { Tip }

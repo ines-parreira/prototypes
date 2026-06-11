@@ -2,11 +2,11 @@ import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import type { ActionTemplate, App } from '../types'
 
@@ -82,4 +82,4 @@ const ActionsPlatformUseCaseTemplatesTableRow = ({
     )
 }
 
-export default ActionsPlatformUseCaseTemplatesTableRow
+export { ActionsPlatformUseCaseTemplatesTableRow }

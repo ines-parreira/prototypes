@@ -12,7 +12,7 @@ import thunk from 'redux-thunk'
 import { PageSection } from 'config/pages'
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
-import type RestrictedPage from 'pages/common/components/RestrictedPage'
+import type { RestrictedPage } from 'pages/common/components/RestrictedPage'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { rootWithUserRoleRequired } from '../withUserRoleRequired'
@@ -21,15 +21,14 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const AnyComponent = () => <div>OK</div>
 
-jest.mock(
-    'pages/common/components/RestrictedPage',
-    () => (props: ComponentProps<typeof RestrictedPage>) => (
+jest.mock('pages/common/components/RestrictedPage', () => ({
+    RestrictedPage: (props: ComponentProps<typeof RestrictedPage>) => (
         <div>
             <span>Required role: {props.requiredRole}</span>
             <span>Page: {props.page}</span>
         </div>
     ),
-)
+}))
 
 describe('rootWithUserRoleRequired', () => {
     const stateWithAdequateRole: Partial<RootState> = {

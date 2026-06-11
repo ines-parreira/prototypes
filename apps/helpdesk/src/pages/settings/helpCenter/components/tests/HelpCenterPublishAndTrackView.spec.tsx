@@ -5,12 +5,12 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from '../../contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'
 import { HelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { useGetPageEmbedments } from '../../queries'
-import HelpCenterPublishAndTrackView from '../HelpCenterPublishAndTrackView'
+import { HelpCenterInstallationView as HelpCenterPublishAndTrackView } from '../HelpCenterPublishAndTrackView'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 // Mock the useStoreIntegrationByShopName hook

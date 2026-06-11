@@ -7,7 +7,7 @@ import { createEvent, fireEvent, waitFor } from '@testing-library/react'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 
-import SenderSelectField from '../SenderSelectField'
+import { SenderSelectField } from '../SenderSelectField'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

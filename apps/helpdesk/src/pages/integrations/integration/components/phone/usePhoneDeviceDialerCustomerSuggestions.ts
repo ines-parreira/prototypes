@@ -16,7 +16,7 @@ type UseCustomerSuggestionsArgs = {
     onCustomerSelect: (customer: UserSearchResult) => void
 }
 
-export default function usePhoneDeviceDialerCustomerSuggestions({
+export function usePhoneDeviceDialerCustomerSuggestions({
     onEnter,
     minSearchInputLength,
     onCustomerSelect,

@@ -12,7 +12,7 @@ import { StorePicker } from '../StorePicker'
 
 jest.mock('../../hooks/useThemeAppExtensionInstallation', () => ({
     __esModule: true,
-    default: jest.fn(() => ({
+    useThemeAppExtensionInstallation: jest.fn(() => ({
         shouldUseThemeAppExtensionInstallation: false,
     })),
 }))

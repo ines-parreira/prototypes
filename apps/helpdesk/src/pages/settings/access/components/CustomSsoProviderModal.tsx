@@ -1,9 +1,9 @@
 import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import { useCustomSsoProviderModal } from '../hooks'
 import type { CustomSSOProviderData, ModalMode } from '../types'
@@ -118,4 +118,4 @@ const CustomSsoProviderModal = ({
     )
 }
 
-export default CustomSsoProviderModal
+export { CustomSsoProviderModal }

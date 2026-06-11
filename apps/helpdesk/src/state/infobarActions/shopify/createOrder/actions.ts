@@ -23,7 +23,7 @@ import type {
     Variant,
 } from 'constants/integrations/types/shopify'
 import { DiscountType } from 'constants/integrations/types/shopify'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { executeAction } from 'state/infobar/actions'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 import { notify } from 'state/notifications/actions'

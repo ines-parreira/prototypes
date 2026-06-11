@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { AlloySdk } from 'models/integration/types/alloy'
-import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'
+import { AlloyConnectButton } from 'pages/integrations/components/AlloyConnectButton'
 import * as actions from 'state/integrations/actions'
 
 jest.spyOn(actions, 'deleteIntegration')

@@ -2,7 +2,7 @@ import type { EditorChangeType } from 'draft-js'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
 
-import addMention from '../addMention'
+import { addMention } from '../addMention'
 
 describe('addMention', () => {
     it('should add a mention', () => {

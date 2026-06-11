@@ -6,11 +6,13 @@ import { defaultSound } from 'services/NotificationSounds'
 import { getNotificationSettings } from 'state/currentUser/selectors'
 
 import type { Notification } from '../../types'
-import getNotificationConfig from '../../utils/getNotificationConfig'
-import useNotifications from '../useNotifications'
-import useToasts from '../useToasts'
+import { getNotificationConfig } from '../../utils/getNotificationConfig'
+import { useNotifications } from '../useNotifications'
+import { useToasts } from '../useToasts'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('services', () => ({
     notificationSounds: {
@@ -24,10 +26,12 @@ jest.mock('state/currentUser/selectors', () => ({
 const getNotificationSettingsMock =
     getNotificationSettings as unknown as jest.Mock
 
-jest.mock('../../utils/getNotificationConfig', () => jest.fn())
+jest.mock('../../utils/getNotificationConfig', () => ({
+    getNotificationConfig: jest.fn(),
+}))
 const getNotificationConfigMock = getNotificationConfig as jest.Mock
 
-jest.mock('../useNotifications', () => jest.fn())
+jest.mock('../useNotifications', () => ({ useNotifications: jest.fn() }))
 const useNotificationsMock = useNotifications as jest.Mock
 
 describe('useToasts', () => {

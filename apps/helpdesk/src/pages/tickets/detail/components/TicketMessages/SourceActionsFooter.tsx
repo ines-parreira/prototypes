@@ -23,7 +23,7 @@ import type {
     Meta,
     Source,
 } from 'models/ticket/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import * as infobarActions from 'state/infobar/actions'
 
 import css from './SourceActionsFooter.less'
@@ -349,4 +349,6 @@ export class SourceActionsFooter extends Component<Props> {
 
 const connector = connect(null, { executeAction: infobarActions.executeAction })
 
-export default connector(SourceActionsFooter)
+const DefaultExportSourceActionsFooter = connector(SourceActionsFooter)
+
+export { DefaultExportSourceActionsFooter }

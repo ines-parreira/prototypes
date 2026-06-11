@@ -4,20 +4,20 @@ import _noop from 'lodash/noop'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import ActionFormInputs from 'pages/aiAgent/actions/components/ActionFormInputs'
+import { ActionFormInputs } from 'pages/aiAgent/actions/components/ActionFormInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
-import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
+import { NodeEditorDrawerHeader } from '../NodeEditorDrawerHeader'
 import { ConditionsBranchBody } from './ConditionsNodeEditor/ConditionsBranchBody'
 import { buildConditionSchemaByVariableType } from './ConditionsNodeEditor/utils'
 
 import css from './NodeEditor.less'
 
-export default function ReusableLLMPromptTriggerEditor({
+export function ReusableLLMPromptTriggerEditor({
     nodeInEdition,
 }: {
     nodeInEdition: ReusableLLMPromptTriggerNodeType

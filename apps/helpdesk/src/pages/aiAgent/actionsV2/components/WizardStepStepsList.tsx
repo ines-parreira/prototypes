@@ -1,4 +1,4 @@
-import ActionsPlatformTemplateSteps from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
+import { ActionsPlatformTemplateSteps } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'

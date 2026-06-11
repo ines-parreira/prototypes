@@ -13,7 +13,7 @@ import {
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import type { ColumnSorting } from 'domains/reporting/state/ui/stats/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 
 type ItemType = Record<string, string | null>

@@ -4,16 +4,16 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 
-import CreateCustomBusinessHoursForm from '../CreateCustomBusinessHoursForm'
+import { CreateCustomBusinessHoursForm } from '../CreateCustomBusinessHoursForm'
 import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
 
-jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => () => (
-    <div>Form Unsaved Changes Prompt</div>
-))
+jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => ({
+    FormUnsavedChangesPrompt: () => <div>Form Unsaved Changes Prompt</div>,
+}))
 
 const onSubmit = jest.fn()
 

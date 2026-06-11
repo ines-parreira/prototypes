@@ -11,7 +11,7 @@ export type TypingActivityProps = {
     handleTypingActivity: () => void
 }
 
-export default function withTypingActivity<P>(
+export function withTypingActivity<P>(
     WrappedComponent: React.ComponentType<P & TypingActivityProps>,
 ) {
     return function WithTypingActivityWrapper(props: P) {

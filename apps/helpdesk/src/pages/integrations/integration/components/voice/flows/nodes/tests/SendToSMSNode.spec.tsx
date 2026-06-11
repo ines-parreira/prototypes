@@ -21,9 +21,9 @@ import { FlowProvider } from 'core/ui/flows'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
-import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
+import { TextToSpeechContext } from '../../../VoiceMessageTTS/TextToSpeechContext'
 import type { VoiceFlowFormValues } from '../../types'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { SendToSMSNode } from '../SendToSMSNode'
 
 const server = setupServer()

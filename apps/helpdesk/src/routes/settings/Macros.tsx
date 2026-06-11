@@ -2,8 +2,8 @@ import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { AGENT_ROLE } from 'config/user'
-import MacrosSettingsContent from 'pages/settings/macros/MacrosSettingsContent'
-import MacrosSettingsForm from 'pages/settings/macros/MacrosSettingsForm'
+import { MacrosSettingsContent } from 'pages/settings/macros/MacrosSettingsContent'
+import { MacrosSettingsForm } from 'pages/settings/macros/MacrosSettingsForm'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

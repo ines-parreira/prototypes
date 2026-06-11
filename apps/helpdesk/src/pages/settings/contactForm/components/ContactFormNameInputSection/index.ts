@@ -1,1 +1,1 @@
-export { default } from 'pages/settings/contactForm/components/ContactFormNameInputSection/ContactFormNameInputSection'
+export { ContactFormNameInputSection } from 'pages/settings/contactForm/components/ContactFormNameInputSection/ContactFormNameInputSection'

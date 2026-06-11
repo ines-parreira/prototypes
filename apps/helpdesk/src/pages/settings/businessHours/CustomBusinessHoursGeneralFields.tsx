@@ -1,8 +1,8 @@
 import { FormField } from '@repo/forms'
 import classNames from 'classnames'
 
-import InputField from 'pages/common/forms/input/InputField'
-import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectDropdownField } from 'pages/common/forms/SelectDropdownField'
 import { getMomentTimezoneNames } from 'utils/date'
 
 import css from './CustomBusinessHoursGeneralFields.less'
@@ -11,7 +11,7 @@ type Props = {
     horizontal?: boolean
 }
 
-export default function CustomBusinessHoursGeneralFields({
+export function CustomBusinessHoursGeneralFields({
     horizontal = false,
 }: Props) {
     return (

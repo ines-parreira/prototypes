@@ -8,10 +8,10 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { CreateABTestInfoModal } from 'pages/convert/abVariants/components/CreateABTestInfoModal'
 import { ABVariantModalType } from 'pages/convert/abVariants/types/enums'
-import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
+import { LightCampaignModal } from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 

@@ -109,5 +109,3 @@ export const withToolbarContext = <T extends Partial<ToolbarContextType>>(
         return <WrappedComponent {...toolbarContextProps} {...(props as T)} />
     }
 }
-
-export default ToolbarContext

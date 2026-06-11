@@ -4,8 +4,8 @@ import moment from 'moment'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import {
     AdjustedPeriodFilter,
@@ -13,7 +13,7 @@ import {
     subtractsPeriodWithoutDataIfNeeded,
 } from './AdjustedPeriodFilter'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('domains/reporting/pages/common/filters/PeriodFilter', () => ({
     PeriodFilter: jest.fn(() => <>Date</>),
 }))

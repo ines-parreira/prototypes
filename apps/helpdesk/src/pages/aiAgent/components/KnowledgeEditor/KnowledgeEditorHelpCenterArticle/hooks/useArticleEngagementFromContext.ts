@@ -10,7 +10,7 @@ import { withLogicalOperator } from 'domains/reporting/models/queryFactories/uti
 import { helpCenterPerformancePerArticleQueryFactoryV2 } from 'domains/reporting/models/scopes/helpCenter'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetHelpCenterStatistics } from 'models/helpCenter/queries'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'

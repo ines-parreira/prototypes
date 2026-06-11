@@ -11,10 +11,12 @@ import { useGetHTTPEvent } from 'models/integration/queries/http'
 import type { HTTPIntegrationEvent } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import Events from '../Event'
+import { Event as Events } from '../Event'
 
 jest.mock('models/integration/queries/http')
-jest.mock('pages/common/utils/DatetimeLabel', () => () => null)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: () => null,
+}))
 
 const mockUseGetHTTPEvent = assumeMock(useGetHTTPEvent)
 

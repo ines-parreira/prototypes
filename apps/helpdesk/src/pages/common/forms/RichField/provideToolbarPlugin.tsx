@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import React, { Component } from 'react'
 
-import createToolbarPlugin from '../../draftjs/plugins/toolbar/index'
+import { toolbarPlugin as createToolbarPlugin } from '../../draftjs/plugins/toolbar/index'
 import type { ActionName } from '../../draftjs/plugins/toolbar/types'
 import type { Plugin } from '../../draftjs/plugins/types'
 
@@ -29,7 +29,7 @@ export type InjectedProps = {
     onLinkClose: () => void
 } & State
 
-export default function provideToolbarPlugin<Props extends RequiredProps>(
+export function provideToolbarPlugin<Props extends RequiredProps>(
     WrappedComponent: ComponentType<Props & InjectedProps>,
 ): ComponentType<Props> {
     class Wrapper extends Component<Props, State> {

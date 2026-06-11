@@ -8,8 +8,8 @@ import { toast } from '@gorgias/axiom'
 import type { Language } from '@gorgias/helpdesk-queries'
 import { useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider/OutboundTranslationProvider'
 import { clearTranslationState } from 'state/newMessage/actions'
 import {

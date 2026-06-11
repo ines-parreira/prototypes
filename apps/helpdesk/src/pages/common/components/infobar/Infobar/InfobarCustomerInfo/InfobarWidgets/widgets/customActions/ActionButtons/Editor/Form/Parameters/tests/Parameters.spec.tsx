@@ -2,10 +2,12 @@ import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import Parameter from '../Parameter'
-import Parameters from '../Parameters'
+import { DefaultExportParameter as Parameter } from '../Parameter'
+import { DefaultExportParameters as Parameters } from '../Parameters'
 
-jest.mock('../Parameter', () => jest.fn(() => null))
+jest.mock('../Parameter', () => ({
+    DefaultExportParameter: jest.fn(() => null),
+}))
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
     return fn

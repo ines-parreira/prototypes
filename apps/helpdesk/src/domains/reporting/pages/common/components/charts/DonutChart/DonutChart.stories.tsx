@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
+import { DonutChart } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 
 const meta: Meta<typeof DonutChart> = {
     title: 'Stats/DonutChart ',

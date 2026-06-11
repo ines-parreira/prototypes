@@ -2,7 +2,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import moment from 'moment/moment'
 
-import TopProductRecommendationTable from 'domains/reporting/pages/automate/aiSalesAgent/charts/TopProductRecommendationTable'
+import { TopProductRecommendationTable } from 'domains/reporting/pages/automate/aiSalesAgent/charts/TopProductRecommendationTable'
 import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'

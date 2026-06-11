@@ -3,7 +3,7 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import RadioButton from '../RadioButton'
+import { DefaultExportRadioButton as RadioButton } from '../RadioButton'
 
 import css from './PreviewRadioButton.less'
 

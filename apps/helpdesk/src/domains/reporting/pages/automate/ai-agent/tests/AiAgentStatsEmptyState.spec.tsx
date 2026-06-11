@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { AiAgentStatsEmptyState } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsEmptyState'
 import { IntegrationType } from 'models/integration/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
 const useStoreIntegrationsMock = useStoreIntegrations as jest.Mock

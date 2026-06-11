@@ -23,11 +23,11 @@ import {
     getDrillDownMetric,
     getDrillDownModalState,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import LegacyModal from 'pages/common/components/modal/Modal'
-import LegacyModalBody from 'pages/common/components/modal/ModalBody'
-import LegacyModalHeader from 'pages/common/components/modal/ModalHeader'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportModal as LegacyModal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as LegacyModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader as LegacyModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 const getTableContent = (
     metricData: DrillDownMetric,

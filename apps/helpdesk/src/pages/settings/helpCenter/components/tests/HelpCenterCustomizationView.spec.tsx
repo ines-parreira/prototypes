@@ -5,11 +5,11 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import * as helpCenterApi from '../../hooks/useHelpCenterApi'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
 import { useHasAccessToAILibrary } from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
+import { HelpCenterCustomizationView } from '../HelpCenterCustomizationView'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
@@ -32,7 +32,7 @@ jest.mock('../../hooks/useHelpCenterIdParam', () => {
 })
 jest.mock('pages/settings/billing/automate/AutomateSubscriptionModal', () => ({
     __esModule: true,
-    default: () => null,
+    AutomateSubscriptionModal: () => null,
 }))
 describe('<HelpCenterCustomizationView />', () => {
     beforeEach(() => {

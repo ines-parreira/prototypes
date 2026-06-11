@@ -53,4 +53,4 @@ const ActivityCard = ({
     )
 }
 
-export default ActivityCard
+export { ActivityCard }

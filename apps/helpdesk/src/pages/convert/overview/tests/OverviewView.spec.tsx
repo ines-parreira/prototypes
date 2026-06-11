@@ -2,7 +2,9 @@ import { render } from '@repo/testing'
 
 import { OverviewView } from '../OverviewView'
 
-jest.mock('hooks/candu/useInjectStyleToCandu', () => jest.fn())
+jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
+    useInjectStyleToCandu: jest.fn(),
+}))
 
 describe('OverviewView', () => {
     test('renders with title "Overview"', () => {

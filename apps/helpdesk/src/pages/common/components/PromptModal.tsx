@@ -6,7 +6,7 @@ import type { Location } from 'history'
 import _noop from 'lodash/noop'
 import { Prompt } from 'react-router-dom'
 
-import Modal from 'pages/common/components/modal/Modal'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
 type PromptModalContextType = {
     redirectToOriginalLocation: () => void
@@ -81,4 +81,4 @@ const PromptModal: React.FC<Props> = ({ when, children }) => {
     )
 }
 
-export default PromptModal
+export { PromptModal }

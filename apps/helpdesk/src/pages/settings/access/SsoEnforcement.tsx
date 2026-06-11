@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { ConfirmationModal } from '../helpCenter/components/ConfirmationModal'
@@ -17,7 +17,7 @@ type OwnProps = {
     onSsoEnforced: (val: string | null) => void
 }
 
-export default function SsoEnforcement({
+export function SsoEnforcement({
     ssoEnforcedDatetime,
     loading,
     disabled,

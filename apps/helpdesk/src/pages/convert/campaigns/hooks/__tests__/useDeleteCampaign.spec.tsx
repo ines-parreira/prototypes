@@ -22,7 +22,9 @@ jest.mock('models/convert/campaign/queries')
 const usePureDeleteCampaignMock = assumeMock(usePureDeleteCampaign)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 
 describe('useDeleteCampaign', () => {

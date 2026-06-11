@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import type { RecentChatTicket } from '../../../business/types/recentChats'
 import type { Ticket } from '../../../models/ticket/types'
-import browserNotification from '../../../services/browserNotification'
+import { browserNotification } from '../../../services/browserNotification'
 import type { StoreDispatch } from '../../types'
 import * as actions from '../actions'
 import { initialState } from '../reducers'
@@ -23,7 +23,9 @@ jest.mock('../../notifications/actions', () => {
 
 jest.mock('../../../services/browserNotification', () => {
     return {
-        newMessageThrottled: jest.fn(),
+        browserNotification: {
+            newMessageThrottled: jest.fn(),
+        },
     }
 })
 

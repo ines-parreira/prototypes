@@ -6,7 +6,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
-import IntegrationDetail from 'pages/integrations/integration/Integration'
+import { DefaultExportIntegration as IntegrationDetail } from 'pages/integrations/integration/Integration'
 
 import { Channels } from '../Channels'
 import { renderAppSettings } from '../helpers/settingsRenderer'

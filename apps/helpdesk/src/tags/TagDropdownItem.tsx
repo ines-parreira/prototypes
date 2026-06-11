@@ -8,7 +8,7 @@ import type { Item } from 'components/Dropdown'
 
 import css from './TagDropdownItem.less'
 
-export default function TagDropdownItem({ item }: { item: Item & Tag }) {
+export function TagDropdownItem({ item }: { item: Item & Tag }) {
     const [isItemOverflowing, setIsItemOverflowing] = useState(false)
     const [itemRef, setItemRef] = useState<HTMLDivElement | null>(null)
 

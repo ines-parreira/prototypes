@@ -18,24 +18,24 @@ import type {
 import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import { CursorDirection } from 'models/api/types'
 import { fetchTags } from 'models/tag/resources'
 import type { OrderBy, OrderByOrderDir } from 'models/tag/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
-import Video from 'pages/common/components/Video/Video'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { Video } from 'pages/common/components/Video/Video'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'
 import { bulkDelete, create, merge, selectAll } from 'state/tags/actions'
 import { getIsCreating, getMeta, getSelectAll } from 'state/tags/selectors'
 
-import Table from './Table'
+import { Table } from './Table'
 
 import css from './ManageTags.less'
 
@@ -300,4 +300,4 @@ const ManageTags = () => {
     )
 }
 
-export default ManageTags
+export { ManageTags }

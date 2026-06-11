@@ -6,7 +6,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { useSearchParam } from 'hooks/useSearchParam'
 
 import { HELP_CENTER_WIZARD_COMPLETED_STATE } from '../../../constants'
-import HelpCenterWizardCompletedModal from '../HelpCenterWizardCompletedModal'
+import { HelpCenterWizardCompletedModal } from '../HelpCenterWizardCompletedModal'
 
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(() => []),

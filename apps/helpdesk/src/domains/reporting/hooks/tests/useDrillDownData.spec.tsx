@@ -67,7 +67,7 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { agents } from 'fixtures/agents'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
@@ -86,7 +86,7 @@ const initialState = {
 } as RootState
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 let dispatch: jest.Mock
 const useAppDispatchMock = useAppDispatch as jest.Mock
 

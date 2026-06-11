@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useOptOutAiAgentTrialUpgradeMutation,
     useOptOutSalesTrialUpgradeMutation,
@@ -207,4 +207,4 @@ const TrialOptOutModal = ({
     )
 }
 
-export default TrialOptOutModal
+export { TrialOptOutModal }

@@ -6,7 +6,7 @@ import { TicketChannel } from 'business/types/ticket'
 import type { Channel } from 'models/channel/types'
 import { getChannels } from 'services/channels'
 
-import ChannelSelectBox from '../DEPRECATED_ChannelSelectBox'
+import { DefaultExportDEPRECATED_ChannelSelectBox as ChannelSelectBox } from '../DEPRECATED_ChannelSelectBox'
 
 /* the channels query doesn't seem to be available in the sdk */
 jest.mock('services/channels')

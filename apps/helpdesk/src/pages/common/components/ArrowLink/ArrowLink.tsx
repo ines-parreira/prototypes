@@ -10,13 +10,7 @@ type Props = {
     className?: string
 } & HTMLProps<HTMLAnchorElement>
 
-export default function ArrowLink({
-    className,
-    children,
-    href,
-    ref,
-    ...props
-}: Props) {
+export function ArrowLink({ className, children, href, ref, ...props }: Props) {
     const arrow = (
         <span className={`material-icons ${css.arrow}`}>arrow_forward</span>
     )

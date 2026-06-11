@@ -16,7 +16,7 @@ import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/t
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ArticleRecommendationPreview from '../ArticleRecommendationPreview'
+import { ArticleRecommendationPreview } from '../ArticleRecommendationPreview'
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

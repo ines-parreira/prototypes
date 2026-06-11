@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 const TOOLTIP_CONTENT = 'Open ticket in new tab'
 
@@ -14,7 +14,7 @@ export type Props = Omit<BodyCellProps, 'children' | 'ref'> & {
     ticketId: string | null
 }
 
-export default function TicketIdBodyCell({
+export function TicketIdBodyCell({
     ticketId,
     width,
     height,

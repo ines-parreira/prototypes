@@ -2,7 +2,7 @@ import _truncate from 'lodash/truncate'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 const MAX_COMMENT_LENGTH = 250
 
@@ -10,7 +10,7 @@ export type Props = Omit<BodyCellProps, 'children' | 'ref'> & {
     comment: string | null
 }
 
-export default function CommentBodyCell({
+export function CommentBodyCell({
     comment,
     width,
     height,

@@ -115,4 +115,4 @@ const TrackerCircle = ({
     )
 }
 
-export default TrackerCircle
+export { TrackerCircle }

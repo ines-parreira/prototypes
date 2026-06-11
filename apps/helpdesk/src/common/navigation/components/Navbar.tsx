@@ -6,18 +6,18 @@ import cn from 'classnames'
 
 import { NotificationsButton } from 'common/notifications'
 import { useTheme } from 'core/theme'
-import useAppSelector from 'hooks/useAppSelector'
-import HomePageLink from 'pages/common/components/HomePageLink'
-import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { HomePageLink } from 'pages/common/components/HomePageLink'
+import { SpotlightButton } from 'pages/common/components/Spotlight/SpotlightButton'
 import { isOpenedPanel as getIsOpenedPanel } from 'state/layout/selectors'
 
 import { NavBarDisplayMode } from '../hooks/useNavBar/context'
 import { useNavBar } from '../hooks/useNavBar/useNavBar'
-import useNavbarResize from '../hooks/useNavbarResize'
+import { useNavbarResize } from '../hooks/useNavbarResize'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../hooks/useShowGlobalNavFeatureFlag'
 import type { ActiveContent } from './MainNavigation'
-import MainNavigation from './MainNavigation'
-import UserMenuWithToggle from './UserMenuWithToggle'
+import { MainNavigation } from './MainNavigation'
+import { UserMenuWithToggle } from './UserMenuWithToggle'
 
 import css from './Navbar.less'
 
@@ -31,7 +31,7 @@ type Props = {
     splitTicketViewToggle?: ReactNode
 }
 
-export default function Navbar({
+export function Navbar({
     activeContent,
     children,
     disableResize,

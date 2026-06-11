@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { queryKeys, useListAllInvoices } from '@gorgias/helpdesk-queries'
 
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import type { Invoice } from 'state/billing/types'
 
 type UseInvoicePaymentReturn = {

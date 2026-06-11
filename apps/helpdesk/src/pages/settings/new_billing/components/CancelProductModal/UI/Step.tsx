@@ -1,5 +1,5 @@
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
 import css from './Step.less'
 
@@ -18,4 +18,4 @@ const Step = ({ body, footer }: StepProps) => {
     )
 }
 
-export default Step
+export { Step }

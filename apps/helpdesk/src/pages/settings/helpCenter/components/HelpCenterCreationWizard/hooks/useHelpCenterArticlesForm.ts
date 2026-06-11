@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { filter, flatMap, map, mapValues } from 'lodash'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     HelpCenter,
     HelpCenterArticleItem,

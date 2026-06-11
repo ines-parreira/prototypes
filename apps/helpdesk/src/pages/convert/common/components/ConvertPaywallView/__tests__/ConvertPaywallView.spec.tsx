@@ -6,7 +6,7 @@ import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 
 import { ConvertFeatures } from '../constants'
-import ConvertPaywallView from '../ConvertPaywallView'
+import { ConvertPaywallView } from '../ConvertPaywallView'
 
 describe('ConvertPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>) =>

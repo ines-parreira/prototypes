@@ -55,7 +55,7 @@ type Props = {
     tag?: keyof JSX.IntrinsicElements | FunctionComponent<any>
 }
 
-export default function Errors({
+export function Errors({
     belowInput = false,
     className,
     children,

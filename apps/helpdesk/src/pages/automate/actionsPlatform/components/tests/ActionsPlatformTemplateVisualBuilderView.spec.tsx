@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -10,20 +10,16 @@ import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } fr
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import ActionsPlatformTemplateVisualBuilderView from '../ActionsPlatformTemplateVisualBuilderView'
+import { ActionsPlatformTemplateVisualBuilderView } from '../ActionsPlatformTemplateVisualBuilderView'
 
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
-jest.mock(
-    'pages/automate/workflows/models/visualBuilderGraph.model',
-    () =>
-        ({
-            ...jest.requireActual(
-                'pages/automate/workflows/models/visualBuilderGraph.model',
-            ),
-            areGraphsEqual: jest.fn(),
-        }) as Record<string, unknown>,
-)
+jest.mock('pages/automate/workflows/models/visualBuilderGraph.model', () => ({
+    ...jest.requireActual(
+        'pages/automate/workflows/models/visualBuilderGraph.model',
+    ),
+    areGraphsEqual: jest.fn(),
+}))
 const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockAreGraphsEqual = jest.mocked(areGraphsEqual)
 mockUseAppDispatch.mockReturnValue(jest.fn())

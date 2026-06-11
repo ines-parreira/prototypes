@@ -13,7 +13,7 @@ type Props = {
     type?: PhoneType
 }
 
-export default function PhoneNumberCapabilitiesAlert({
+export function PhoneNumberCapabilitiesAlert({
     country,
     type,
 }: Props): JSX.Element | null {

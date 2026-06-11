@@ -5,14 +5,14 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import Badge from 'gorgias-design-system/Badge/Badge'
-import Button from 'gorgias-design-system/Buttons/Button'
+import { Badge } from 'gorgias-design-system/Badge/Badge'
+import { Button } from 'gorgias-design-system/Buttons/Button'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 
-import MousePointer from './components/MousePointer'
-import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
+import { MousePointer } from './components/MousePointer'
+import { SelfServiceChatIntegrationFooter } from './components/SelfServiceChatIntegrationFooter'
 import { LINE_ITEMS } from './constants'
-import useOrdersPagePreview, { PreviewStep } from './hooks/useOrdersPagePreview'
+import { PreviewStep, useOrdersPagePreview } from './hooks/useOrdersPagePreview'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationOrdersPage.less'
@@ -175,4 +175,4 @@ const SelfServiceChatIntegrationOrdersPage = ({ integration }: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationOrdersPage
+export { SelfServiceChatIntegrationOrdersPage }

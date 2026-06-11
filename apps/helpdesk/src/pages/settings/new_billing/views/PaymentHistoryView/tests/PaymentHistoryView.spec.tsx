@@ -14,7 +14,7 @@ import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import PaymentsHistoryView from '../PaymentsHistoryView'
+import { PaymentsHistoryView } from '../PaymentsHistoryView'
 
 jest.mock('@repo/logging')
 
@@ -30,10 +30,12 @@ const mockPayInvoice = jest.fn()
 const mockConfirmInvoicePayment = jest.fn()
 
 jest.mock('services/gorgiasApi', () => {
-    return jest.fn().mockImplementation(() => ({
-        payInvoice: mockPayInvoice,
-        confirmInvoicePayment: mockConfirmInvoicePayment,
-    }))
+    return {
+        GorgiasApi: jest.fn().mockImplementation(() => ({
+            payInvoice: mockPayInvoice,
+            confirmInvoicePayment: mockConfirmInvoicePayment,
+        })),
+    }
 })
 
 const defaultInvoice: Invoice = {

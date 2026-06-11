@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event'
 
 import type { UserSearchResult } from 'models/search/types'
 
-import PhoneSelectField from '../PhoneSelectField'
-import usePhoneDeviceDialerInput from '../usePhoneDeviceDialerInput'
+import { PhoneSelectField } from '../PhoneSelectField'
+import { usePhoneDeviceDialerInput } from '../usePhoneDeviceDialerInput'
 
 jest.mock('../usePhoneDeviceDialerInput')
 

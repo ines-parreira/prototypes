@@ -1,11 +1,11 @@
 import { renderHook } from '@repo/testing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 
 import { useCurrentPlanIds } from '../useGetCurrentPriceIds'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const mockUseAppSelector = useAppSelector as jest.Mock
 
 describe('useCurrentPlanIds', () => {

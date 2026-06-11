@@ -9,14 +9,14 @@ import {
     toast,
 } from '@gorgias/axiom'
 
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 type Props = {
     label?: string
 }
 
-export default function BaseEmailIntegrationInputField({ label }: Props) {
+export function BaseEmailIntegrationInputField({ label }: Props) {
     const baseAddress =
         window.GORGIAS_STATE?.integrations?.authentication?.email
             ?.forwarding_email_address ?? ''

@@ -2,7 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Button } from '@gorgias/axiom'
 
-import Card from '../../components/Card'
+import { Card } from '../../components/Card'
 
 import css from './BillingProcessView.less'
 

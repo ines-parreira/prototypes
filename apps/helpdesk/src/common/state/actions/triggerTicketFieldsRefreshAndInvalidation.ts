@@ -13,9 +13,9 @@ import { getTicket, getTicketFieldState } from 'state/ticket/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 import { getInvalidTicketFieldIds } from 'utils/customFields'
 
-import setInvalidCustomFieldsToErrored from './setInvalidCustomFieldsToErrored'
+import { setInvalidCustomFieldsToErrored } from './setInvalidCustomFieldsToErrored'
 
-export default function triggerTicketFieldsRefreshAndInvalidation() {
+export function triggerTicketFieldsRefreshAndInvalidation() {
     return async (dispatch: StoreDispatch, getState: () => RootState) => {
         const currentState = getState()
 

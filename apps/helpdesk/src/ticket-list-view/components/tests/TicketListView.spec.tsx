@@ -11,17 +11,17 @@ import configureMockStore from 'redux-mock-store'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { ticket } from 'fixtures/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { RootState, StoreDispatch } from 'state/types'
 import { setViewEditMode } from 'state/views/actions'
-import useSelection from 'ticket-list-view/hooks/useSelection'
-import useSortOrder from 'ticket-list-view/hooks/useSortOrder'
-import useTickets from 'ticket-list-view/hooks/useTickets'
+import { useSelection } from 'ticket-list-view/hooks/useSelection'
+import { useSortOrder } from 'ticket-list-view/hooks/useSortOrder'
+import { useTickets } from 'ticket-list-view/hooks/useTickets'
 import type { TicketPartial } from 'ticket-list-view/types'
 
-import Ticket from '../Ticket'
-import TicketListView, { listInfoProps } from '../TicketListView'
+import { Ticket } from '../Ticket'
+import { listInfoProps, TicketListView } from '../TicketListView'
 
 jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
 const VirtuosoMock = Virtuoso as jest.Mock
@@ -47,11 +47,15 @@ const useSelectionMock = assumeMock(useSelection)
 jest.mock('ticket-list-view/hooks/useSortOrder')
 const useSortOrderMock = useSortOrder as jest.Mock
 
-jest.mock('../Ticket', () => jest.fn())
+jest.mock('../Ticket', () => ({ Ticket: jest.fn() }))
 const TicketMock = Ticket as jest.Mock
 
-jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
-jest.mock('../bulk-actions/BulkActions', () => () => <div>BulkActions</div>)
+jest.mock('../InvalidFiltersAction', () => ({
+    InvalidFiltersAction: () => <div>Fix filters</div>,
+}))
+jest.mock('../bulk-actions/BulkActions', () => ({
+    BulkActions: () => <div>BulkActions</div>,
+}))
 
 jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')
 const useDesktopOnlyShowGlobalNavFeatureFlagMock =

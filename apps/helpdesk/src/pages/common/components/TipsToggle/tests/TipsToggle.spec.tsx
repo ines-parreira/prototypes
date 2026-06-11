@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import TipsToggle from '../TipsToggle'
+import { TipsToggle } from '../TipsToggle'
 
 describe('<TipsToggle />', () => {
     const defaultProps = {

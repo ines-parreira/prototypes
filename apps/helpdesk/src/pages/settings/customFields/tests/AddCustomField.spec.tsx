@@ -4,13 +4,13 @@ import { MemoryRouter } from 'react-router-dom'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import AddCustomField from '../AddCustomField'
-import AddFieldForm from '../components/AddFieldForm'
+import { AddCustomField } from '../AddCustomField'
+import { AddFieldForm } from '../components/AddFieldForm'
 
 const queryClient = mockQueryClient()
 
 jest.mock('../components/AddFieldForm', () => {
-    return jest.fn(() => <div>AddFieldForm</div>)
+    return { AddFieldForm: jest.fn(() => <div>AddFieldForm</div>) }
 })
 
 describe('<AddCustomField/>', () => {

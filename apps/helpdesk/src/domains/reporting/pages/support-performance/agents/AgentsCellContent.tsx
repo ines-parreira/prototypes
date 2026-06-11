@@ -18,7 +18,7 @@ import type { MetricQueryPerAgentQuery } from 'domains/reporting/pages/support-p
 import { METRIC_COLUMN_WIDTH } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export type AgentsCellContentProps = {
     agent: User

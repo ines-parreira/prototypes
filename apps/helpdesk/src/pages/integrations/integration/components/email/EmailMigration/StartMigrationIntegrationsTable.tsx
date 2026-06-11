@@ -2,21 +2,21 @@ import { fromJS } from 'immutable'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { EmailIntegration } from 'models/integration/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Pagination from 'pages/common/components/Pagination'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Pagination } from 'pages/common/components/Pagination'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { useClientSidePagination } from 'pages/common/hooks/useClientSidePagination'
 import { deleteIntegration } from 'state/integrations/actions'
 
-import EmptyMigrationTableRow from './EmptyMigrationTableRow'
+import { EmptyMigrationTableRow } from './EmptyMigrationTableRow'
 
 import css from './StartMigrationIntegrationsTable.less'
 
@@ -24,9 +24,7 @@ type Props = {
     integrations: EmailIntegration[]
 }
 
-export default function StartMigrationIntegrationsTable({
-    integrations,
-}: Props) {
+export function StartMigrationIntegrationsTable({ integrations }: Props) {
     const { paginatedItems, ...pagination } = useClientSidePagination({
         items: integrations,
         itemsPerPage: 5,

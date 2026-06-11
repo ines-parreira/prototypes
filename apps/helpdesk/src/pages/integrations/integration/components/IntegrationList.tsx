@@ -14,12 +14,12 @@ import { Button } from '@gorgias/axiom'
 
 import { isChannel } from 'config'
 import { IntegrationType } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import PageHeader from 'pages/common/components/PageHeader'
-import withRouter from 'pages/common/utils/withRouter'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { withRouter } from 'pages/common/utils/withRouter'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import NoIntegration from './NoIntegration'
+import { NoIntegration } from './NoIntegration'
 
 import css from '../../../settings/settings.less'
 
@@ -195,4 +195,6 @@ class IntegrationList extends Component<Props> {
 
 const connector = connect(null, {})
 
-export default withRouter(connector(IntegrationList))
+const DefaultExportIntegrationList = withRouter(connector(IntegrationList))
+
+export { DefaultExportIntegrationList }

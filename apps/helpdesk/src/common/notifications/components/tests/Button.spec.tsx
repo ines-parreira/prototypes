@@ -1,13 +1,13 @@
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useCount from '../../hooks/useCount'
-import Button from '../Button'
+import { useCount } from '../../hooks/useCount'
+import { NotificationsButton as Button } from '../Button'
 
-jest.mock('../../hooks/useCount', () => jest.fn())
+jest.mock('../../hooks/useCount', () => ({ useCount: jest.fn() }))
 const useCountMock = assumeMock(useCount)
 
-jest.mock('../Feed', () => () => <div>Feed</div>)
+jest.mock('../Feed', () => ({ Feed: () => <div>Feed</div> }))
 
 describe('Button', () => {
     beforeEach(() => {

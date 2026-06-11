@@ -8,7 +8,7 @@ import {
 } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import { logSegmentEvent } from 'domains/reporting/pages/common/filters/helpers'
@@ -29,8 +29,8 @@ import {
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { getCleanStatsFiltersWithLogicalOperators } from 'domains/reporting/state/ui/stats/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
 
 const filterOptions = [
@@ -61,7 +61,7 @@ type Props = {
 } & RemovableFilter &
     OptionalFilterProps
 
-export default function CampaignStatusesFilter({
+export function CampaignStatusesFilter({
     value,
     initializeAsOpen,
     onRemove,

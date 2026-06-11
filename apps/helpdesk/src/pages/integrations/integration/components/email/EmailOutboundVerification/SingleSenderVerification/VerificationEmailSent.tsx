@@ -12,9 +12,9 @@ import type { EmailProvider } from 'models/integration/constants'
 import { resendVerificationEmail } from 'models/singleSenderVerification/resources'
 import type { SenderVerification } from 'models/singleSenderVerification/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
-import Alert from 'pages/common/components/Alert/Alert'
+import { Alert } from 'pages/common/components/Alert/Alert'
 
-import DeleteVerificationButton from '../DeleteVerificationButton'
+import { DeleteVerificationButton } from '../DeleteVerificationButton'
 
 import css from './VerificationEmailSent.less'
 
@@ -27,7 +27,7 @@ export type Props = {
     provider: EmailProvider
 }
 
-export default function VerificationEmailSent({
+export function VerificationEmailSent({
     verification,
     onConfirmDeleteVerification,
     baseURL,

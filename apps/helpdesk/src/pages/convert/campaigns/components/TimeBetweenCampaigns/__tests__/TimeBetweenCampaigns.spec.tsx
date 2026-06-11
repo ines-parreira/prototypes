@@ -3,7 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import TimeBetweenCampaigns from '../TimeBetweenCampaigns'
+import { TimeBetweenCampaigns } from '../TimeBetweenCampaigns'
 
 describe('<MaximumCampaignDisplayed />', () => {
     const defaultProps = {

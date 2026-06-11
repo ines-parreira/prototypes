@@ -2,7 +2,7 @@ import React from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TrialFinishSetupModal from './TrialFinishSetupModal'
+import { TrialFinishSetupModal } from './TrialFinishSetupModal'
 
 const meta: Meta<typeof TrialFinishSetupModal> = {
     title: 'Overlays/TrialFinishSetupModal',

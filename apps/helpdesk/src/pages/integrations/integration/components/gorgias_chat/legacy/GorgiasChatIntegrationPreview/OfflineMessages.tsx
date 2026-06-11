@@ -4,8 +4,8 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
-import BotMessages from './BotMessages'
-import QuickReplies from './QuickReplies'
+import { BotMessages } from './BotMessages'
+import { QuickReplies } from './QuickReplies'
 
 type Props = {
     mainColor: string
@@ -50,4 +50,4 @@ const OfflineMessages: React.FC<Props> = ({
     )
 }
 
-export default OfflineMessages
+export { OfflineMessages }

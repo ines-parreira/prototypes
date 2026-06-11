@@ -1,4 +1,4 @@
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { articleViewQueryFactory } from 'domains/reporting/models/queryFactories/help-center/articleView'
 import { helpCenterArticleViewQueryFactoryV2 } from 'domains/reporting/models/scopes/helpCenter'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

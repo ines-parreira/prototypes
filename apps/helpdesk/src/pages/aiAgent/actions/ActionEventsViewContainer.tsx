@@ -3,9 +3,9 @@ import { Redirect, useParams } from 'react-router-dom'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 
-import ActionsExecutionsView from './ActionEventsView'
+import { ActionExecutionsView as ActionsExecutionsView } from './ActionEventsView'
 
-export default function ActionEventsViewContainer() {
+export function ActionEventsViewContainer() {
     const { shopName } = useParams<{
         shopName: string
     }>()

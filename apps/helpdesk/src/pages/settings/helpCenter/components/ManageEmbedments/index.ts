@@ -1,1 +1,1 @@
-export { default } from './ManageEmbedments'
+export { ManageEmbedments } from './ManageEmbedments'

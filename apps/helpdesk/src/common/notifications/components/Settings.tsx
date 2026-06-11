@@ -9,19 +9,19 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import { notificationSounds } from 'services'
 import type { SoundValue } from 'services/NotificationSounds'
 import { defaultSound } from 'services/NotificationSounds'
 
-import useSettings from '../hooks/useSettings'
-import EventSettings from './EventSettings'
-import VolumeControl from './VolumeControl'
+import { useSettings } from '../hooks/useSettings'
+import { EventSettings } from './EventSettings'
+import { VolumeControl } from './VolumeControl'
 
 import css from './Settings.less'
 
-export default function Settings() {
+export function Settings() {
     const {
         save,
         settings,

@@ -301,4 +301,6 @@ export function LineChart({
     )
 }
 
-export default withAnalyticsTheme<Props>(LineChart)
+const DefaultExportLineChart = withAnalyticsTheme<Props>(LineChart)
+
+export { DefaultExportLineChart }

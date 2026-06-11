@@ -9,7 +9,7 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { usePostReportingV2 } from 'domains/reporting/models/queries'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useAIJourneyTableKpis } from './useAIJourneyTableKpis'
 

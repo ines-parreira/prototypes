@@ -3,13 +3,13 @@ import React from 'react'
 
 import type { List, Map } from 'immutable'
 
-import Foldable from 'pages/common/components/ast/Foldable/Foldable'
-import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
+import { Foldable } from 'pages/common/components/ast/Foldable/Foldable'
+import { AddActionOrIfStatement } from 'pages/common/components/ast/operations/AddActionOrIfStatement'
 import type { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import type BlockStatement from './BlockStatement'
+import type { BlockStatement } from './BlockStatement'
 
 type AlternateStatementProps = {
     rule: Map<any, any>
@@ -20,7 +20,7 @@ type AlternateStatementProps = {
     depth: number
 }
 
-export default function AlternateStatement({
+export function AlternateStatement({
     actions,
     alternate,
     rule,

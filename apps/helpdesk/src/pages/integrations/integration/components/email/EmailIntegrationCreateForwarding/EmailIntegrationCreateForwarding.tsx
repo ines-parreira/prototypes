@@ -29,7 +29,7 @@ import { IntegrationType } from '../../../../../../models/integration/types'
 import { sendVerificationEmail } from '../../../../../../state/integrations/actions'
 import { getForwardingEmailAddress } from '../../../../../../state/integrations/selectors'
 import type { RootState } from '../../../../../../state/types'
-import PageHeader from '../../../../../common/components/PageHeader'
+import { PageHeader } from '../../../../../common/components/PageHeader'
 
 import settingsCss from '../../../../../settings/settings.less'
 import css from './EmailIntegrationCreateForwarding.less'
@@ -223,4 +223,8 @@ const connector = connect(
     },
 )
 
-export default connector(EmailIntegrationCreateForwarding)
+const DefaultExportEmailIntegrationCreateForwarding = connector(
+    EmailIntegrationCreateForwarding,
+)
+
+export { DefaultExportEmailIntegrationCreateForwarding }

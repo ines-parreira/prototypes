@@ -8,7 +8,7 @@ type Props = {
     type: IntegrationType | string
 }
 
-export default function StoreDisplayName({ name, type }: Props) {
+export function StoreDisplayName({ name, type }: Props) {
     return (
         <div className={css.container}>
             {isIntegrationType(type) && (

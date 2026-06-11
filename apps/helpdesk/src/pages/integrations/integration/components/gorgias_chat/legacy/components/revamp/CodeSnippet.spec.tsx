@@ -1,13 +1,13 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import CodeSnippet from './CodeSnippet'
+import { CodeSnippet } from './CodeSnippet'
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CopyButton',
     () => ({
         __esModule: true,
-        default: ({
+        CopyButton: ({
             value,
             displayText,
         }: {

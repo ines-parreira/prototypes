@@ -24,44 +24,38 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { CancelOrderModalContainer } from '../CancelOrderModal'
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => (
-            <div data-testid="DatetimeLabel">{dateTime}</div>
-        ),
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div data-testid="DatetimeLabel">{dateTime}</div>
+    ),
+}))
 
-jest.mock(
-    'pages/common/components/modal/ModalHeader',
-    () =>
-        ({ title }: { title: ReactNode }) => (
-            <div data-testid="Modal-Header">{title}</div>
-        ),
-)
+jest.mock('pages/common/components/modal/ModalHeader', () => ({
+    ModalHeader: ({ title }: { title: ReactNode }) => (
+        <div data-testid="Modal-Header">{title}</div>
+    ),
+}))
 
-jest.mock(
-    'pages/common/components/modal/Modal',
-    () =>
-        ({
-            isOpen,
-            children,
-            onClose,
-        }: {
-            isOpen: boolean
-            children: ReactNode
-            onClose: () => void
-        }) => {
-            if (isOpen) {
-                return (
-                    <div data-testid="Modal" onClick={onClose}>
-                        {children}
-                    </div>
-                )
-            }
-            return null
-        },
-)
+jest.mock('pages/common/components/modal/Modal', () => ({
+    DefaultExportModal: ({
+        isOpen,
+        children,
+        onClose,
+    }: {
+        isOpen: boolean
+        children: ReactNode
+        onClose: () => void
+    }) => {
+        if (isOpen) {
+            return (
+                <div data-testid="Modal" onClick={onClose}>
+                    {children}
+                </div>
+            )
+        }
+        return null
+    },
+}))
 
 describe('<CancelOrderContainer />', () => {
     const order = fromJS(

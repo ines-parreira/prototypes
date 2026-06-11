@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { List, Map } from 'immutable'
 import moment from 'moment'
 
-export default function useLastMessageDatetimeAfterMount(elements: List<any>) {
+export function useLastMessageDatetimeAfterMount(elements: List<any>) {
     return useMemo(() => {
         if (elements.isEmpty()) return null
         const datetime = (elements.last() as Map<any, any>).get(

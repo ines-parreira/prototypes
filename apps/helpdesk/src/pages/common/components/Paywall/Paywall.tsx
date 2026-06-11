@@ -10,8 +10,8 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { PaywallConfig } from 'config/paywalls'
 import { PLAN_NAME_TO_BADGE_COLOR } from 'models/billing/utils'
 
-import PageHeader from '../PageHeader'
-import UpgradeButton from '../UpgradeButton'
+import { PageHeader } from '../PageHeader'
+import { UpgradeButton } from '../UpgradeButton'
 
 import css from './Paywall.less'
 
@@ -252,4 +252,4 @@ const Paywall = ({
     )
 }
 
-export default Paywall
+export { Paywall }

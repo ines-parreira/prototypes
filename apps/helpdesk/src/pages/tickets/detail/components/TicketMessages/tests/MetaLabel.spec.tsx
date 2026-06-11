@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import MetaLabel from 'pages/tickets/detail/components/TicketMessages/MetaLabel'
+import { MetaLabel } from 'pages/tickets/detail/components/TicketMessages/MetaLabel'
 
 describe('MetaLabel', () => {
     it('should display a label and children', () => {

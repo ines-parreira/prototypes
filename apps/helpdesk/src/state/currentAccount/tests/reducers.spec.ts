@@ -12,7 +12,7 @@ import { AccountSettingType } from 'state/currentAccount/types'
 import type { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 
 describe('current account reducers', () => {
     it('initial state', () => {

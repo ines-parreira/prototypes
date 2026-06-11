@@ -12,7 +12,7 @@ import { getActionTemplate } from 'utils'
 
 import { ComplexActionPreview } from './ComplexActionPreview'
 import { SimpleActionPreview } from './SimpleActionPreview'
-import TagActionPreview from './TagActionPreview'
+import { TagActionPreview } from './TagActionPreview'
 
 import css from './ActionPreviews.less'
 

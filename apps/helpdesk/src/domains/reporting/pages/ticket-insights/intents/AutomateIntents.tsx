@@ -9,25 +9,25 @@ import {
     INTENTS_OVERVIEW,
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     LegacyStatsFilters,
     OneDimensionalChart,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
 import { BarStat } from 'domains/reporting/pages/common/components/charts/BarStat'
-import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
-import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
-import KeyMetricStatWrapper from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { KeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
+import { DefaultExportTableStat as TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
+import { KeyMetricStatWrapper } from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import { AutomateIntentsFilters } from 'domains/reporting/pages/ticket-insights/intents/AutomateIntentsFilters'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const AUTOMATION_INTENTS_STAT_NAME = 'automation-intents'
 
-export default function AutomateIntents() {
+export function AutomateIntents() {
     const { cleanStatsFilters: statsFilters } = useAppSelector(
         getCleanStatsFiltersWithTimezone,
     )

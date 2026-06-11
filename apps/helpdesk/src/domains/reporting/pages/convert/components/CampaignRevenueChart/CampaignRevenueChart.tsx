@@ -1,14 +1,14 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { OverviewMetricConfig } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { CAMPAIGN_REVENUE_LABEL } from 'domains/reporting/pages/convert/constants/labels'
-import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import { useGetCampaignRevenueTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetCurrencyForStore } from 'domains/reporting/pages/convert/hooks/useGetCurrencyForStore'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 
 const CampaignRevenueChart = ({ chartId, dashboard }: DashboardChartProps) => {
@@ -61,4 +61,4 @@ const CampaignRevenueChart = ({ chartId, dashboard }: DashboardChartProps) => {
     )
 }
 
-export default CampaignRevenueChart
+export { CampaignRevenueChart }

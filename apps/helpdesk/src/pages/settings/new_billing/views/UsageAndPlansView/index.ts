@@ -1,1 +1,1 @@
-export { default } from './UsageAndPlansView'
+export { UsageAndPlansView } from './UsageAndPlansView'

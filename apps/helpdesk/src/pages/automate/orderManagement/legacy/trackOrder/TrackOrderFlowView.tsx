@@ -5,19 +5,19 @@ import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import type { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import TrackOrderUnfulfilledMessage from './components/TrackOrderUnfulfilledMessage'
+import { TrackOrderUnfulfilledMessage } from './components/TrackOrderUnfulfilledMessage'
 import { DEFAULT_UNFULFILLED_MESSAGE } from './constants'
-import useTrackOrderFlow from './hooks/useTrackOrderFlow'
-import TrackOrderFlowPreview from './TrackOrderFlowPreviewTrack'
+import { useTrackOrderFlow } from './hooks/useTrackOrderFlow'
+import { TrackOrderFlowPreview } from './TrackOrderFlowPreviewTrack'
 import type { TrackOrderFlowViewContextType } from './TrackOrderFlowViewContext'
-import TrackOrderFlowViewContext from './TrackOrderFlowViewContext'
+import { TrackOrderFlowViewContext } from './TrackOrderFlowViewContext'
 
-export default function TrackOrderFlowView() {
+export function TrackOrderFlowView() {
     const { shopName } = useParams<{ shopName: string }>()
     const {
         isUpdatePending,

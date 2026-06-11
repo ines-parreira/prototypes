@@ -11,8 +11,8 @@ import {
     TicketSatisfactionSurveyMeasure,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { SatisfactionSurveyScore } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DonutChart } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AverageScoreTrend } from 'domains/reporting/pages/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
@@ -24,7 +24,7 @@ import {
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 type ChartData = {
     data: OneDimensionalDataItem[]
@@ -101,9 +101,7 @@ export const formatSurveyScores = (
     })
 }
 
-export default function AverageSurveyScoreDonutChart(
-    props: DashboardChartProps,
-) {
+export function AverageSurveyScoreDonutChart(props: DashboardChartProps) {
     const dispatch = useAppDispatch()
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 

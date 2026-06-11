@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { ShopifyIntegration } from 'models/integration/types/shopify'
 import { useOnboardingNotificationState } from 'pages/aiAgent/hooks/useOnboardingNotificationState'

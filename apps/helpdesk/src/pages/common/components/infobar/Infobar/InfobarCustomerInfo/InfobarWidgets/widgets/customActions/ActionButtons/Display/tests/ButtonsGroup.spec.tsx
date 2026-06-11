@@ -7,7 +7,7 @@ import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Inf
 import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
 
 import { Button } from '../Button'
-import ButtonsGroup from '../ButtonsGroup'
+import { DefaultExportButtonsGroup as ButtonsGroup } from '../ButtonsGroup'
 
 jest.mock('../Button')
 jest.mock(

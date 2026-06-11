@@ -13,7 +13,7 @@ import type { IvrSmsDeflection } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import IvrMenuActionSendToSMSField from '../IvrMenuActionSendToSMSField'
+import { IvrMenuActionSendToSMSField } from '../IvrMenuActionSendToSMSField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<IvrMenuActionSendToSMSField />', () => {

@@ -7,7 +7,7 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import { SkillReviewStep } from './SkillReviewStep'
 import { SkillWizardContext } from './SkillWizardContext'

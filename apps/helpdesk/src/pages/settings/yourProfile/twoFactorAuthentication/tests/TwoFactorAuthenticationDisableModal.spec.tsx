@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import type { User } from '../../../../../config/types/user'
 import { deleteTwoFASecret } from '../../../../../models/twoFactorAuthentication/resources'
-import TwoFactorAuthenticationDisableModal from '../TwoFactorAuthenticationDisableModal'
+import { TwoFactorAuthenticationDisableModal } from '../TwoFactorAuthenticationDisableModal'
 
 jest.mock('models/twoFactorAuthentication/resources')
 const deleteTwoFASecretMock = deleteTwoFASecret as jest.MockedFunction<

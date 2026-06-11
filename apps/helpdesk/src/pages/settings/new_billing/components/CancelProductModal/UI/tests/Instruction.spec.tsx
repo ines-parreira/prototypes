@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Instruction from '../Instruction'
+import { Instruction } from '../Instruction'
 
 describe('Instruction', () => {
     it('renders with required instruction', () => {

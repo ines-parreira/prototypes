@@ -6,7 +6,7 @@ import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useCl
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
@@ -32,8 +32,8 @@ import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 
 type Props = {
@@ -51,7 +51,7 @@ type Props = {
 } & RemovableFilter &
     OptionalFilterProps
 
-export default function CampaignsFilter({
+export function CampaignsFilter({
     value = emptyFilter,
     initializeAsOpen = false,
     campaigns,

@@ -12,11 +12,11 @@ import {
     getTotalQuantities,
     getTransactionToRefund,
 } from 'business/shopify/refund'
-import CheckBox from 'pages/common/forms/CheckBox'
-import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { AmountInput } from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import OrderTotals from './OrderTotals'
+import { OrderTotals } from './OrderTotals'
 
 import css from './OrderFooter.less'
 
@@ -234,4 +234,4 @@ const OrderFooter = ({
     )
 }
 
-export default OrderFooter
+export { OrderFooter }

@@ -7,8 +7,8 @@ import classnames from 'classnames'
 
 import { toast } from '@gorgias/axiom'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import PageHeader from 'pages/common/components/PageHeader'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import cssSettings from 'pages/settings/settings.less'
 
 const RemoveShopifyBilling = () => {
@@ -70,4 +70,4 @@ const RemoveShopifyBilling = () => {
     )
 }
 
-export default RemoveShopifyBilling
+export { RemoveShopifyBilling }

@@ -12,7 +12,7 @@ import { addSalesCoupon, deleteSalesCoupon } from 'models/billing/resources'
 import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import AddSalesCouponModal from '../AddSalesCouponModal'
+import { AddSalesCouponModal } from '../AddSalesCouponModal'
 
 const availableCoupons = ['sales-hd-year-05%-once', 'sales-hd-year-10%-once']
 

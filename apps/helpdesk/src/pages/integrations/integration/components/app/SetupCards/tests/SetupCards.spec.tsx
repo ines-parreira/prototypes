@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import SetupCards from 'pages/integrations/integration/components/app/SetupCards/SetupCards'
+import { SetupCards } from 'pages/integrations/integration/components/app/SetupCards/SetupCards'
 
 describe('<SetupCards />', () => {
     it('renders both inbound and outbound slots with a Setup heading', () => {

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 

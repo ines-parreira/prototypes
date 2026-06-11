@@ -5,32 +5,30 @@ import { render, userEvent } from '@repo/testing'
 import type { EmojiData } from 'emoji-mart'
 import _noop from 'lodash/noop'
 
-import type EmojiPicker from '../../../EmojiPicker/EmojiPicker'
-import EmojiSelect from '../EmojiSelect'
+import type { EmojiPicker } from '../../../EmojiPicker/EmojiPicker'
+import { EmojiSelect } from '../EmojiSelect'
 
 import css from '../EmojiSelect.less'
 
 const POPOVER_SELECTOR = '.popover'
 
-jest.mock(
-    '../../../EmojiPicker/EmojiPicker.tsx',
-    () =>
-        ({ onClick }: ComponentProps<typeof EmojiPicker>) => {
-            return (
-                <div data-testid="EmojiPicker">
-                    <div
-                        data-testid="EmojiPicker-new-emoji"
-                        onClick={() => {
-                            onClick!(
-                                { native: '1' } as EmojiData,
-                                {} as MouseEvent<HTMLElement>,
-                            )
-                        }}
-                    />
-                </div>
-            )
-        },
-)
+jest.mock('../../../EmojiPicker/EmojiPicker.tsx', () => ({
+    EmojiPicker: ({ onClick }: ComponentProps<typeof EmojiPicker>) => {
+        return (
+            <div data-testid="EmojiPicker">
+                <div
+                    data-testid="EmojiPicker-new-emoji"
+                    onClick={() => {
+                        onClick!(
+                            { native: '1' } as EmojiData,
+                            {} as MouseEvent<HTMLElement>,
+                        )
+                    }}
+                />
+            </div>
+        )
+    },
+}))
 
 const defaultProps = {
     emoji: '1',

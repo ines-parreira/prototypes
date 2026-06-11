@@ -15,7 +15,7 @@ import {
     filtersMock,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/tests/helpers.spec'
 import { initialiseSavedFilterDraftFromFilters } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isTeamLead } from 'utils'
 
 jest.mock('state/currentUser/selectors', () => ({
@@ -26,7 +26,7 @@ jest.mock('domains/reporting/state/stats/selectors', () => ({
     getPageStatsFiltersWithLogicalOperators: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)

@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 
 import type { StoreDispatch } from '../../../../state/types'
 import type { CancellableRequestInjectedProps } from '../withCancellableRequest'
-import withCancellableRequest from '../withCancellableRequest'
+import { withCancellableRequest } from '../withCancellableRequest'
 
 const mockStore = configureMockStore([thunk])
 const mockApi = new MockAdapter(client)

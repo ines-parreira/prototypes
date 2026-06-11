@@ -117,4 +117,4 @@ const MigrationQuickSummary: React.FC<Props> = ({
     )
 }
 
-export default MigrationQuickSummary
+export { MigrationQuickSummary }

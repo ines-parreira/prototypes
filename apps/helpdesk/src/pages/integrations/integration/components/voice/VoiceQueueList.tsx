@@ -14,14 +14,14 @@ import {
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
 
 import { PHONE_INTEGRATION_BASE_URL, QUEUE_LIST_PAGE_SIZE } from './constants'
-import SummaryBlock from './SummaryBlock'
+import { SummaryBlock } from './SummaryBlock'
 import { getVoiceQueueSummaryData } from './utils'
 
 import css from './VoiceQueueList.less'
@@ -31,10 +31,7 @@ type VoiceQueueListProps = {
     onScroll: () => {}
 }
 
-export default function VoiceQueueList({
-    queues,
-    onScroll,
-}: VoiceQueueListProps) {
+export function VoiceQueueList({ queues, onScroll }: VoiceQueueListProps) {
     const history = useHistory()
     const virtuosoRef = useRef<VirtuosoHandle>(null)
 

@@ -11,7 +11,7 @@ type Props = {
     show?: boolean
 }
 
-export default function GaugeAddon({
+export function GaugeAddon({
     className,
     style,
     progress,

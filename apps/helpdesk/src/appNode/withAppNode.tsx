@@ -2,7 +2,7 @@ import type { ComponentType } from 'react'
 import React from 'react'
 
 import type { AppNodeContextType } from './AppNodeContext'
-import useAppNode from './useAppNode'
+import { useAppNode } from './useAppNode'
 
 export type WithAppNodeProps = {
     appNode: AppNodeContextType
@@ -24,4 +24,4 @@ function withAppNode<T>(
     return ComponentWithAppNode
 }
 
-export default withAppNode
+export { withAppNode }

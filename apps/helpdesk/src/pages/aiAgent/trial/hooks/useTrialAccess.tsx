@@ -6,7 +6,7 @@ import {
     useFlagWithLoading,
 } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
 import type { Trial } from 'models/aiAgent/types'
 import type { AutomatePlan } from 'models/billing/types'

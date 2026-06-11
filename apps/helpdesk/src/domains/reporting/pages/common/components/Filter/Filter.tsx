@@ -7,9 +7,9 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import FilterDropdownItemLabel from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
+import { FilterDropdownItemLabel } from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
 import { FilterWarningIcon } from 'domains/reporting/pages/common/components/Filter/components/FilterWarning/FilterWarningIcon'
-import LogicalOperator from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator'
+import { LogicalOperator } from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator'
 import cssLogicalOperator from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -31,16 +31,16 @@ import type {
     DropdownOption,
     FilterOptionGroup,
 } from 'domains/reporting/pages/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
-import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import FilterName from 'pages/common/forms/FilterInput/FilterName'
-import FilterValue from 'pages/common/forms/FilterInput/FilterValue'
+import { DefaultExportDropdownQuickSelect as DropdownQuickSelect } from 'pages/common/components/dropdown/DropdownQuickSelect'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportDropdownSection as DropdownSection } from 'pages/common/components/dropdown/DropdownSection'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { FilterName } from 'pages/common/forms/FilterInput/FilterName'
+import { DefaultExportFilterValue as FilterValue } from 'pages/common/forms/FilterInput/FilterValue'
 
 type Props = {
     search?: string
@@ -316,7 +316,7 @@ const Filter = ({
     )
 }
 
-export default Filter
+export { Filter }
 
 export function getWarningTooltip(
     warningType: 'non-existent' | 'not-applicable',

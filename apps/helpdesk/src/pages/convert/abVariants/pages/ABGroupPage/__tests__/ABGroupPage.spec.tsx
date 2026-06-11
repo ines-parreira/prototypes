@@ -10,7 +10,7 @@ import {
 } from 'models/convert/campaign/queries'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import ABGroupPage from '../ABGroupPage'
+import { ABGroupPage } from '../ABGroupPage'
 
 jest.mock('models/convert/campaign/queries')
 const useGetCampaignMock = assumeMock(useGetCampaign)

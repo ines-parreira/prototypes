@@ -21,10 +21,7 @@ const getHTTPStatusColor = (status: HTTPStatus) => {
     }
 }
 
-export default function HTTPStatusLabel({
-    statusCode,
-    hasNoRequest = false,
-}: Props) {
+export function HTTPStatusLabel({ statusCode, hasNoRequest = false }: Props) {
     let desc = ''
     let color: ColorType = 'grey'
     if (hasNoRequest) {

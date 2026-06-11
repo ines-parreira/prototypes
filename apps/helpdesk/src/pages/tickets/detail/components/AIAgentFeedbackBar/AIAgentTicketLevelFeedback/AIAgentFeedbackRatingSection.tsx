@@ -8,7 +8,7 @@ import {
 } from '@gorgias/axiom'
 import type { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
-import AutoSaveBadge from '../AutoSaveBadge'
+import { AutoSaveBadge } from '../AutoSaveBadge'
 import { AutoSaveState, FeedbackRating } from '../types'
 
 import css from './AIAgentTicketLevelFeedback.less'

@@ -17,8 +17,8 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'
 
 import css from './SignatureFormComponent.less'

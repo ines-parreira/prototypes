@@ -1,6 +1,6 @@
 import type { EditorState } from 'draft-js'
 
-import decorators from './decorators'
+import { variableDecorators as decorators } from './decorators'
 import { attachEntitiesToVariables } from './utils'
 
 const variablesPlugin = () => {
@@ -12,4 +12,4 @@ const variablesPlugin = () => {
     }
 }
 
-export default variablesPlugin
+export { variablesPlugin }

@@ -7,7 +7,7 @@ import { UserRole } from 'config/types/user'
 import { IntegrationType } from 'models/integration/constants'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
 
-import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
+import { EmailDomainVerificationBanner } from '../EmailDomainVerificationBanner'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

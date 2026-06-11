@@ -2,7 +2,7 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import cssNavbar from 'assets/css/navbar.less'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 export function AutomateUpgradeBadge() {
     const { hasAccess } = useAiAgentAccess()

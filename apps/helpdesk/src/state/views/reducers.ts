@@ -39,7 +39,7 @@ export const initialState: ViewsState = fromJS({
     },
 })
 
-export default function reducer(
+export function reducer(
     state: ViewsState = initialState,
     action: GorgiasAction,
 ): ViewsState {

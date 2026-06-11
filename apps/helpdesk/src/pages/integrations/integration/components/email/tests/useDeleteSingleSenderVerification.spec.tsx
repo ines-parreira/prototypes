@@ -5,7 +5,7 @@ import { act } from '@testing-library/react'
 
 import { deleteVerification } from 'models/singleSenderVerification/resources'
 
-import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
+import { useDeleteSingleSenderVerification } from '../hooks/useDeleteSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 

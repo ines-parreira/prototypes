@@ -14,9 +14,9 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreview } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
-import AiAgentChatConversation from './AiAgentChatConversation'
+import { AiAgentChatConversation } from './AiAgentChatConversation'
 
 const storyConfig: Meta<typeof ChatIntegrationPreview> = {
     title: 'AI Agent/Onboarding_V2/ChatConversationPreview',

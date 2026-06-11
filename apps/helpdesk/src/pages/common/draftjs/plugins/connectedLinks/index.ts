@@ -9,4 +9,4 @@ const connectedLinksPlugin = () => {
     }
 }
 
-export default connectedLinksPlugin
+export { connectedLinksPlugin }

@@ -3,7 +3,7 @@ import React from 'react'
 
 import classnames from 'classnames'
 
-import DashboardGrid from 'domains/reporting/pages/common/layout/DashboardGrid'
+import { DefaultExportDashboardGrid as DashboardGrid } from 'domains/reporting/pages/common/layout/DashboardGrid'
 import css from 'domains/reporting/pages/common/layout/DashboardSection.less'
 
 type Props = {
@@ -17,7 +17,7 @@ export const DashboardSectionWrapper = ({ children, className }: Props) => {
     return <div className={classnames(css.wrapper, className)}>{children}</div>
 }
 
-export default function DashboardSection({
+export function DashboardSection({
     className,
     children,
     title,

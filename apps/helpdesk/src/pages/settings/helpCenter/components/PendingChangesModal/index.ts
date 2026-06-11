@@ -1,1 +1,1 @@
-export { default } from './PendingChangesModal'
+export { PendingChangesModal } from './PendingChangesModal'

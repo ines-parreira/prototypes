@@ -4,8 +4,8 @@ import cn from 'classnames'
 import logo from 'assets/img/infobar/shopify.svg'
 import type { Order } from 'constants/integrations/types/shopify'
 
-import CardHeaderIcon from './CardHeaderIcon'
-import OrderStatusBadge from './OrderStatusBadge'
+import { CardHeaderIcon } from './CardHeaderIcon'
+import { OrderStatusBadge } from './OrderStatusBadge'
 
 import css from './OrderCard.less'
 
@@ -45,4 +45,4 @@ const OrderCard = ({ className, order, displayedDate }: Props) => {
     )
 }
 
-export default OrderCard
+export { OrderCard }

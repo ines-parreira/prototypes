@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { useLocation, useParams } from 'react-router'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 
 import { useDisplayPlaygroundButtonInLayoutHeader } from '../usePlaygroundButtonInLayoutHeader'

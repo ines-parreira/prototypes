@@ -19,9 +19,7 @@ type State = {
     width: number
 }
 
-export default function useNavbarResize(
-    navbarRef: RefObject<HTMLDivElement | null>,
-) {
+export function useNavbarResize(navbarRef: RefObject<HTMLDivElement | null>) {
     const [savedSizes, persistSizes] = useSavedSizes()
     const [{ isResizing, width }, setState] = useState<State>({
         isResizing: false,

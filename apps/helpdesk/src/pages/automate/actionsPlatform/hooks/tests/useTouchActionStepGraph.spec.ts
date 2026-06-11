@@ -5,7 +5,7 @@ import {
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 
-import useTouchActionStepGraph from '../useTouchActionStepGraph'
+import { useTouchActionStepGraph } from '../useTouchActionStepGraph'
 
 describe('useTouchActionStepGraph()', () => {
     it('should touch action step graph', () => {

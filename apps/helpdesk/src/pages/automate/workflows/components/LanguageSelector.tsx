@@ -4,9 +4,9 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { ReactCountryFlag } from 'react-country-flag'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import type { LanguageCode } from '../models/workflowConfiguration.types'
 import { supportedLanguages } from '../models/workflowConfiguration.types'
@@ -20,11 +20,7 @@ type Props = {
 }
 
 const unsupportedLanguageCodes = ['en-GB', 'fi-FI', 'ja-JP', 'pt-BR']
-export default function LanguageSelector({
-    selected,
-    languages,
-    onSelect,
-}: Props) {
+export function LanguageSelector({ selected, languages, onSelect }: Props) {
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)

@@ -1,1 +1,1 @@
-export { default } from './ContactFormPublish'
+export { ContactFormPublish } from './ContactFormPublish'

@@ -3,7 +3,7 @@ import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 
 import type { BlockStatementItemProps } from '../types'
 
-export default function BlockStatementItem({
+export function BlockStatementItem({
     actions,
     body,
     rule,

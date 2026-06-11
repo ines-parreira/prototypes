@@ -3,8 +3,8 @@ import React from 'react'
 import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import { createContextConsumer, render } from '@repo/testing'
 
-import SearchRankScenarioContext from '../SearchRankScenarioContext'
-import SearchRankScenarioProvider from '../SearchRankScenarioProvider'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from '../SearchRankScenarioContext'
+import { SearchRankScenarioProvider } from '../SearchRankScenarioProvider'
 
 jest.mock('@repo/logging')
 const useSearchRankScenarioMock = useSearchRankScenario as jest.MockedFunction<

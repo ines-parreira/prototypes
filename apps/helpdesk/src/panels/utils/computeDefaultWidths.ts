@@ -1,12 +1,12 @@
 import type { Config, PanelConfig } from '../types'
-import clamp from './clamp'
+import { clamp } from './clamp'
 
 type Options = {
     config: Config
     totalWidth: number
 }
 
-export default function computeDefaultWidths({ config, totalWidth }: Options) {
+export function computeDefaultWidths({ config, totalWidth }: Options) {
     const widths = config.map(([w, min, max]) =>
         w === Infinity ? 0 : clamp(w, min || 0, max || Infinity),
     )

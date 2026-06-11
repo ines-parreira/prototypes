@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { Banner } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getHasAutomate } from 'state/billing/selectors'
 

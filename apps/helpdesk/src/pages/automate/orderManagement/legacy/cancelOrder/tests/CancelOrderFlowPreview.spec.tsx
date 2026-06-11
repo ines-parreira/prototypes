@@ -8,7 +8,7 @@ import { IntegrationType } from 'models/integration/types'
 import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import CancelOrderFlowPreview from '../CancelOrderFlowPreview'
+import { CancelOrderFlowPreview } from '../CancelOrderFlowPreview'
 
 const mockOnChannelChange = jest.fn()
 
@@ -42,7 +42,12 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServicePreviewContainer',
     () => ({
         __esModule: true,
-        default: ({ channels, channel, onChange, children }: any) => {
+        SelfServicePreviewContainer: ({
+            channels,
+            channel,
+            onChange,
+            children,
+        }: any) => {
             captured.onChange = onChange
             captured.channels = channels
             captured.channel = channel
@@ -55,7 +60,7 @@ jest.mock(
     'pages/automate/common/components/preview/SelfServicePreview',
     () => ({
         __esModule: true,
-        default: () => <div>SelfServicePreview</div>,
+        SelfServicePreview: () => <div>SelfServicePreview</div>,
     }),
 )
 

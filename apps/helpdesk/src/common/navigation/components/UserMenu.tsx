@@ -19,19 +19,19 @@ import cn from 'classnames'
 
 import { HelpdeskV2BetaToggle } from 'common/navigation/components/HelpdeskV2BetaToggle'
 import { THEME_CONFIGS, useTheme } from 'core/theme'
-import useAppSelector from 'hooks/useAppSelector'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
-import NoticeableIndicator from 'pages/common/components/NoticeableIndicator'
-import Screen from 'pages/common/components/screens/Screen'
-import Screens from 'pages/common/components/screens/Screens'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from 'pages/common/components/dropdown/DropdownItemLabel'
+import { NoticeIndicator as NoticeableIndicator } from 'pages/common/components/NoticeableIndicator'
+import { Screen } from 'pages/common/components/screens/Screen'
+import { Screens } from 'pages/common/components/screens/Screens'
 import { getCurrentUser, getCurrentUserId } from 'state/currentUser/selectors'
 
-import AvailabilityToggle from './AvailabilityToggle'
-import NavbarLink from './NavbarLink'
-import StatusMenu from './StatusMenu'
-import ThemeMenu from './ThemeMenu'
+import { AvailabilityToggle } from './AvailabilityToggle'
+import { NavbarLink } from './NavbarLink'
+import { StatusMenu } from './StatusMenu'
+import { ThemeMenu } from './ThemeMenu'
 
 import css from './UserMenu.less'
 
@@ -52,7 +52,7 @@ type Props = {
  * @date 2026-04-22
  * @type wayfinding-ms1
  */
-export default function UserMenu({ onClose }: Props) {
+export function UserMenu({ onClose }: Props) {
     const { hasUIVisionBetaBaselineFlag } = useHelpdeskV2BaselineFlag()
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)

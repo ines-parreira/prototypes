@@ -19,12 +19,12 @@ import { useAppNode } from 'appNode'
 import type { TicketMessageSourceType } from 'business/types/ticket'
 import { UserRole } from 'config/types/user'
 import { useDeleteMacro } from 'hooks/macros'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Filters } from 'models/macro/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import MacroList from 'pages/tickets/common/macros/components/MacroList'
-import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
-import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { MacroList } from 'pages/tickets/common/macros/components/MacroList'
+import { MacroNoResults } from 'pages/tickets/common/macros/components/MacroNoResults'
+import { MacroContainer } from 'pages/tickets/common/macros/MacroContainer'
 import { Preview } from 'pages/tickets/common/macros/Preview/Preview'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import type { CurrentUserState } from 'state/currentUser/types'
@@ -250,5 +250,3 @@ export function TicketMacros({
         </div>
     )
 }
-
-export default TicketMacros

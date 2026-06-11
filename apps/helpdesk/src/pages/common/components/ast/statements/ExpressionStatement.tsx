@@ -5,9 +5,9 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 
 import type { RuleItemActions } from '../../../../settings/rules/types'
-import useHoverable from '../../../hooks/useHoverable'
-import Expression from '../expression/Expression'
-import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
+import { useHoverable } from '../../../hooks/useHoverable'
+import { Expression } from '../expression/Expression'
+import { DeleteBlockStatementItem } from '../operations/DeleteBlockStatementItem'
 
 type Props = {
     rule: Map<any, any>
@@ -18,7 +18,7 @@ type Props = {
     depth: number
 }
 
-export default function ExpressionStatement({
+export function ExpressionStatement({
     expression,
     rule,
     actions,

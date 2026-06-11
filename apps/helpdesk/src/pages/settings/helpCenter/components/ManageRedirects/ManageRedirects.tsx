@@ -5,10 +5,10 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import Loader from '../../../../common/components/Loader/Loader'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { Loader } from '../../../../common/components/Loader/Loader'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import {
     helpCenterRedirectsKey,
     useCreateHelpCenterRedirect,

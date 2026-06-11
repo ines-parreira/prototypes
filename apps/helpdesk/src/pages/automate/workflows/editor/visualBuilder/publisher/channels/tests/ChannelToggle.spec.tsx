@@ -4,15 +4,15 @@ import { screen } from '@testing-library/react'
 
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
-import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ChannelToggle from '../ChannelToggle'
+import { ChannelToggle } from '../ChannelToggle'
 
-jest.mock('../../helper/ChannelWarning', () =>
-    jest.fn(() => <div>ChannelWarning</div>),
-)
+jest.mock('../../helper/ChannelWarning', () => ({
+    ChannelWarning: jest.fn(() => <div>ChannelWarning</div>),
+}))
 jest.mock('@repo/logging', () => ({
     SegmentEvent: {
         AutomateChannelUpdateFromFlows: 'AutomateChannelUpdateFromFlows',
@@ -24,7 +24,7 @@ jest.mock(
     'pages/automate/workflows/hooks/useLanguagesMismatchWarnings',
     () => ({
         __esModule: true,
-        default: jest.fn(() => ({
+        useLanguagesMismatchWarnings: jest.fn(() => ({
             getLanguagesMismatchWarning: () => undefined,
         })),
     }),

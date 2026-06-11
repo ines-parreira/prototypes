@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'

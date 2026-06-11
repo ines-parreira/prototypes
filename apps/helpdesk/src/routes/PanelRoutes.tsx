@@ -34,7 +34,7 @@ export const panelRoutesRegexps = [
     /^\/app\/views\/?/,
 ]
 
-export default function PanelRoutes() {
+export function PanelRoutes() {
     const areFlagsLoading = useAreFlagsLoading()
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMS1Dot5 = useHelpdeskV2MS1Dot5Flag()

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import type { Magento2Integration } from 'models/integration/types'
 
-import MagentoSettings from '../MagentoSettings'
+import { MagentoSettings } from '../MagentoSettings'
 
 const renderComponent = (element: React.ReactElement) =>
     render(

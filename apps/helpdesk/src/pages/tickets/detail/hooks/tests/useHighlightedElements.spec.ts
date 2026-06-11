@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useHighlightedElements from '../useHighlightedElements'
+import { useHighlightedElements } from '../useHighlightedElements'
 
 describe('useHighlightedElements', () => {
     beforeEach(() => {

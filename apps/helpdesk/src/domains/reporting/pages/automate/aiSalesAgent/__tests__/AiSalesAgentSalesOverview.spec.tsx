@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import AiSalesAgentSalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'
+import { AiSalesAgentSalesOverview } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
@@ -40,10 +40,9 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => () => <div>filters-panel</div>,
-)
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: () => <div>filters-panel</div>,
+}))
 
 jest.mock('domains/reporting/pages/common/AnalyticsFooter', () => ({
     AnalyticsFooter: () => <div>analytics-footer</div>,
@@ -55,17 +54,23 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/charts/GmvInfluencedOverTimeChart',
-    () => () => <div>gmv-influenced-over-time-chart</div>,
+    () => ({
+        GmvInfluencedOverTimeChart: () => (
+            <div>gmv-influenced-over-time-chart</div>
+        ),
+    }),
 )
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton',
-    () => () => <div>download-button</div>,
+    () => ({
+        AiSalesAgentOverviewDownloadButton: () => <div>download-button</div>,
+    }),
 )
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/charts/AiSalesAgentTrendCard',
-    () => () => <div>generic-trend-card</div>,
+    () => ({ AiSalesAgentTrendCard: () => <div>generic-trend-card</div> }),
 )
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({

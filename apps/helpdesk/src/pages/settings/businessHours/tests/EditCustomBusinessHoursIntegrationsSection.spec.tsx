@@ -3,24 +3,26 @@ import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import Modal from 'pages/common/components/modal/Modal'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import EditCustomBusinessHoursIntegrationsSection from '../EditCustomBusinessHoursIntegrationsSection'
+import { EditCustomBusinessHoursIntegrationsSection } from '../EditCustomBusinessHoursIntegrationsSection'
 import type { EditCustomBusinessHoursFormValues } from '../types'
 
-jest.mock('../AssignIntegrationsModal', () => (props: any) => (
-    <Modal {...props}>
-        <div>AssignIntegrationsModal</div>
-        <FormField
-            name="temporary_assigned_integrations"
-            label="Temporary assigned integrations"
-        >
-            {(field) => <InputField {...field} />}
-        </FormField>
-        <button onClick={props.onClose}>Close</button>
-    </Modal>
-))
+jest.mock('../AssignIntegrationsModal', () => ({
+    AssignIntegrationsModal: (props: any) => (
+        <Modal {...props}>
+            <div>AssignIntegrationsModal</div>
+            <FormField
+                name="temporary_assigned_integrations"
+                label="Temporary assigned integrations"
+            >
+                {(field) => <InputField {...field} />}
+            </FormField>
+            <button onClick={props.onClose}>Close</button>
+        </Modal>
+    ),
+}))
 
 const baseValues: Partial<EditCustomBusinessHoursFormValues> = {
     previous_assigned_integrations: [],

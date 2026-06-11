@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -28,4 +28,4 @@ const useStoreIntegrations = (types?: IntegrationType[]) => {
     return useAppSelector(getStoreIntegrations) as StoreIntegration[]
 }
 
-export default useStoreIntegrations
+export { useStoreIntegrations }

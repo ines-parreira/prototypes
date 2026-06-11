@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/constants'
-import PageHeader from 'pages/common/components/PageHeader'
-import ConvertCampaignsListPlaceholder from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { ConvertCampaignsListPlaceholder } from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 
 type Props = {
@@ -43,5 +43,3 @@ export const GorgiasChatIntegrationCampaignsComponent = ({
         </div>
     )
 }
-
-export default GorgiasChatIntegrationCampaignsComponent

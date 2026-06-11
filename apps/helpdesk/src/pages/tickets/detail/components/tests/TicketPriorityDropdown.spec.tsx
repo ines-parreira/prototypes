@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import TicketPriorityDropdown from '../TicketPriorityDropdown'
+import { TicketPriorityDropdown } from '../TicketPriorityDropdown'
 
 describe('TicketPriorityDropdown', () => {
     it('should open the dropdown and update the selected priority', async () => {

@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 type Props = {
     totalIntegrations: number
     maxIntegrations: number
 }
 
-export default function IntegrationListLimitAlert({
+export function IntegrationListLimitAlert({
     totalIntegrations,
     maxIntegrations,
 }: Props): JSX.Element | null {

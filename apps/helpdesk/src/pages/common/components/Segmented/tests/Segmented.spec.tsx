@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import Segmented from '../Segmented'
+import { Segmented } from '../Segmented'
 
 const options = [
     {

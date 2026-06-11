@@ -4,11 +4,11 @@ import { TicketThreadLegacyBridgeProvider } from '@repo/ticket-thread/legacy-bri
 import { fromJS } from 'immutable'
 
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { VoiceCallMonitorButton } from 'pages/common/components/VoiceCallMonitorButton'
-import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import { useRuleSuggestionForDemos } from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
+import { pendingMessageManager } from 'services/pendingMessageManager/pendingMessageManager'
 import * as NewMessageActions from 'state/newMessage/actions'
 import * as TicketActions from 'state/ticket/actions'
 

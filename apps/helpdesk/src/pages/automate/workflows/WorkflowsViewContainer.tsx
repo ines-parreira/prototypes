@@ -3,16 +3,16 @@ import { useCallback } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import AutomatePaywallView from '../common/components/AutomatePaywallView'
+import { AutomatePaywallView } from '../common/components/AutomatePaywallView'
 import { AutomateFeatures } from '../common/types'
-import WorkflowsView from './WorkflowsView'
+import { WorkflowsView } from './WorkflowsView'
 
-export default function WorkflowsViewContainer() {
+export function WorkflowsViewContainer() {
     const { shopName, shopType } = useParams<{
         shopType: string
         shopName: string

@@ -11,17 +11,17 @@ import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
 } from 'models/integration/types/gorgiasChat'
-import PageHeader from 'pages/common/components/PageHeader'
-import Wizard from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 import {
     ChatPreviewPanelContext,
     useChatPreviewPanel,
 } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
-import GorgiasChatCreationWizardStepAutomate from './steps/Automate/GorgiasChatCreationWizardStepAutomate'
-import GorgiasChatCreationWizardStepBasics from './steps/Basics/GorgiasChatCreationWizardStepBasics'
-import GorgiasChatCreationWizardStepBranding from './steps/Brand/GorgiasChatCreationWizardStepBranding'
+import { GorgiasChatCreationWizardStepAutomate } from './steps/Automate/GorgiasChatCreationWizardStepAutomate'
+import { GorgiasChatCreationWizardStepBasics } from './steps/Basics/GorgiasChatCreationWizardStepBasics'
+import { GorgiasChatCreationWizardStepBranding } from './steps/Brand/GorgiasChatCreationWizardStepBranding'
 import { GorgiasChatCreationWizardStepInstallation } from './steps/Installation/GorgiasChatCreationWizardStepInstallation'
 
 import css from './GorgiasChatCreationWizard.less'
@@ -156,4 +156,4 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizard
+export { GorgiasChatCreationWizard }

@@ -35,7 +35,7 @@ import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAg
 import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createCsv } from 'utils/file'
 
 export type AutoQAReportMetrics =

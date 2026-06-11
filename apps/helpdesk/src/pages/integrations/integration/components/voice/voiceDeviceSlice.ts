@@ -44,4 +44,4 @@ const slice = createSlice({
     },
 })
 
-export default slice
+export { slice }

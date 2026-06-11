@@ -1,14 +1,14 @@
 import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
-import Pagination from 'pages/common/components/Pagination'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
+import { Pagination } from 'pages/common/components/Pagination'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { useClientSidePagination } from 'pages/common/hooks/useClientSidePagination'
 
-import SingleSenderVerificationTableRow from './SingleSenderVerificationTableRow'
+import { SingleSenderVerificationTableRow } from './SingleSenderVerificationTableRow'
 
 import css from './SingleSenderVerificationTable.less'
 
@@ -18,7 +18,7 @@ export type Props = {
     refreshMigrationData: () => void
 }
 
-export default function SingleSenderVerificationTable({
+export function SingleSenderVerificationTable({
     integrations,
     hasSubmittedBulkVerification,
     refreshMigrationData,

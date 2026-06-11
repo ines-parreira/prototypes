@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import MetaRepliedToLabel from 'pages/tickets/detail/components/TicketMessages/MetaRepliedToLabel'
+import { MetaRepliedToLabel } from 'pages/tickets/detail/components/TicketMessages/MetaRepliedToLabel'
 
 describe('MetaRepliedToLabel', () => {
     const reply = {

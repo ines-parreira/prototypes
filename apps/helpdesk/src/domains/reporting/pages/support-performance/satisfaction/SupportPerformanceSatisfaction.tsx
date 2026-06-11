@@ -8,22 +8,22 @@ import {
     SATISFACTION_SURVEYS,
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     LegacyStatsFilters,
     OneDimensionalUnionChart,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
-import KeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
-import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
-import KeyMetricStatWrapper from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { KeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricStat'
+import { DefaultExportTableStat as TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
+import { KeyMetricStatWrapper } from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import { SupportPerformanceSatisfactionFilters } from 'domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfactionFilters'
 import { getMessagingAndAppIntegrationsStatsFilter } from 'domains/reporting/state/stats/selectors'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 const SUPPORT_PERFORMANCE_SATISFACTION_STAT_NAME =
@@ -108,6 +108,8 @@ How many surveys have been sent, response rate, average scores and more."
     )
 }
 
-export default withFeaturePaywall(AccountFeature.SatisfactionSurveys)(
-    SupportPerformanceSatisfaction,
-)
+const DefaultExportSupportPerformanceSatisfaction = withFeaturePaywall(
+    AccountFeature.SatisfactionSurveys,
+)(SupportPerformanceSatisfaction)
+
+export { DefaultExportSupportPerformanceSatisfaction }

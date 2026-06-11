@@ -9,10 +9,10 @@ import {
     NavBarContext,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../../hooks/useShowGlobalNavFeatureFlag'
-import Navbar from '../Navbar'
+import { Navbar } from '../Navbar'
 import { NavBarProvider } from '../NavBarProvider'
 
 import css from '../Navbar.less'
@@ -38,7 +38,7 @@ jest.mock('common/notifications', () => ({
 }))
 
 jest.mock('@repo/logging')
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 jest.mock('providers/ui/SpotlightContext', () => ({
@@ -48,18 +48,20 @@ jest.mock('providers/ui/SpotlightContext', () => ({
     })),
 }))
 
-jest.mock('pages/tickets/navbar/CreateTicketNavbarButton', () => () => (
-    <div>CreateTicketNavbarButton</div>
-))
-jest.mock('pages/tickets/navbar/PlaceCallNavbarButton', () => () => (
-    <div>PlaceCallNavbarButton</div>
-))
+jest.mock('pages/tickets/navbar/CreateTicketNavbarButton', () => ({
+    CreateTicketNavbarButton: () => <div>CreateTicketNavbarButton</div>,
+}))
+jest.mock('pages/tickets/navbar/PlaceCallNavbarButton', () => ({
+    PlaceCallNavbarButton: () => <div>PlaceCallNavbarButton</div>,
+}))
 jest.mock('../MainNavigation', () => ({
     __esModule: true,
     ...jest.requireActual('../MainNavigation'),
-    default: () => <div>MainNavigation</div>,
+    MainNavigation: () => <div>MainNavigation</div>,
 }))
-jest.mock('../UserMenuWithToggle', () => () => <div>UserMenuWithToggle</div>)
+jest.mock('../UserMenuWithToggle', () => ({
+    UserMenuWithToggle: () => <div>UserMenuWithToggle</div>,
+}))
 
 const mockNavBarContextValues: NavBarContextType = {
     navBarDisplay: NavBarDisplayMode.Open,

@@ -1,7 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { conversionRateQueryV2Factory } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

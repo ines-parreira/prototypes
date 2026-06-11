@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TrackerCircle from './TrackerCircle'
+import { TrackerCircle } from './TrackerCircle'
 
 const storyConfig: Meta<typeof TrackerCircle> = {
     title: 'General/ProgressTracker/TrackerCircle',

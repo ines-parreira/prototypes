@@ -11,16 +11,16 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Loader from 'pages/common/components/Loader/Loader'
-import HelpCenterAppearanceView from 'pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView'
-import HelpCenterArticlesView from 'pages/settings/helpCenter/components/HelpCenterArticlesView'
-import HelpCenterContactView from 'pages/settings/helpCenter/components/HelpCenterContactView'
-import HelpCenterCustomizationView from 'pages/settings/helpCenter/components/HelpCenterCustomizationView'
-import HelpCenterImportCsvColumnMatchingView from 'pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView'
-import HelpCenterPreferencesView from 'pages/settings/helpCenter/components/HelpCenterPreferencesView'
-import HelpCenterPublishAndTrackView from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { HelpCenterAppearanceView } from 'pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView'
+import { HelpCenterArticlesView } from 'pages/settings/helpCenter/components/HelpCenterArticlesView'
+import { HelpCenterContactView } from 'pages/settings/helpCenter/components/HelpCenterContactView'
+import { HelpCenterCustomizationView } from 'pages/settings/helpCenter/components/HelpCenterCustomizationView'
+import { HelpCenterImportCsvColumnMatchingView } from 'pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView'
+import { HelpCenterPreferencesView } from 'pages/settings/helpCenter/components/HelpCenterPreferencesView'
+import { HelpCenterInstallationView as HelpCenterPublishAndTrackView } from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import settingsCss from 'pages/settings/settings.less'
@@ -37,12 +37,12 @@ import {
     getViewLanguage,
 } from 'state/ui/helpCenter'
 
-import AILibraryView from '../../components/AIArticlesLibraryView'
+import { AIArticlesLibraryViewWithErrorBoundary as AILibraryView } from '../../components/AIArticlesLibraryView'
 import { useHasAccessToAILibrary } from '../../components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import { HelpCenterAutomateView } from '../../components/HelpCenterAutomateView'
-import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
+import { HelpCenterCreationWizard } from '../../components/HelpCenterCreationWizard'
 import { HelpCenterMaintenanceView } from '../../components/HelpCenterMaintenanceView'
-import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from '../../contexts/CurrentHelpCenterContext'
 import { EditionManagerContextProvider } from '../EditionManagerContext'
 import { HelpCenterPreferencesSettings } from '../HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { HelpCenterTranslationProvider } from '../HelpCenterTranslation/HelpCenterTranslation'
@@ -223,4 +223,4 @@ const CurrentHelpCenter: React.FC = () => {
     )
 }
 
-export default CurrentHelpCenter
+export { CurrentHelpCenter }

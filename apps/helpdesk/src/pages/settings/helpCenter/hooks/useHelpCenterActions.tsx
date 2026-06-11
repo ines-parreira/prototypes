@@ -2,12 +2,12 @@ import { useCallback } from 'react'
 
 import { reportError } from '@repo/logging'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'
 
 export const useHelpCenterActions = () => {

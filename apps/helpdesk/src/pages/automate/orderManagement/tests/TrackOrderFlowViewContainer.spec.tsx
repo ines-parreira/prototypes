@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
@@ -17,7 +17,9 @@ jest.mock(
 
 jest.mock('../legacy/trackOrder/TrackOrderFlowViewContainer', () => ({
     __esModule: true,
-    default: () => <div>LegacyTrackOrderFlowViewContainer</div>,
+    TrackOrderFlowViewContainer: () => (
+        <div>LegacyTrackOrderFlowViewContainer</div>
+    ),
 }))
 
 jest.mock('../revamp/trackOrder/TrackOrderFlowViewContainer', () => ({

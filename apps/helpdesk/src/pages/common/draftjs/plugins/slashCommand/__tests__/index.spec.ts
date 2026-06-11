@@ -1,7 +1,7 @@
 import { EditorState, SelectionState } from 'draft-js'
 
 import { mockPluginMethods, typeText } from '../../../tests/draftTestUtils'
-import createSlashCommandPlugin from '../index'
+import { createSlashCommandPlugin } from '../index'
 
 jest.mock('../../toolbar/ToolbarContext', () => ({
     useToolbarContext: () => ({ guidanceActions: [] }),

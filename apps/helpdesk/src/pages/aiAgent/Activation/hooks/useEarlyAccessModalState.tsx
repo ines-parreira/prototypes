@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'

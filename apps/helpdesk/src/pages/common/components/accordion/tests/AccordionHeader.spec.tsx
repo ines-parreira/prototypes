@@ -3,10 +3,10 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Accordion from '../Accordion'
-import AccordionBody from '../AccordionBody'
-import AccordionHeader from '../AccordionHeader'
-import AccordionItem from '../AccordionItem'
+import { Accordion } from '../Accordion'
+import { AccordionBody } from '../AccordionBody'
+import { AccordionHeader } from '../AccordionHeader'
+import { AccordionItem } from '../AccordionItem'
 
 describe('<AccordionHeader />', () => {
     it('should render toggle icon when isExpandable is true', () => {

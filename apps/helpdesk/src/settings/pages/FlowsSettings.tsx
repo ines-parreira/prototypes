@@ -7,9 +7,9 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import { isSelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import type { ConnectedChannelsContextType } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
-import ConnectedChannelsContext from 'pages/automate/connectedChannels/ConnectedChannelsContext'
+import { ConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
 import { ChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChannelSelector/ChannelSelector'
 import {
     ChatPreviewPanelContext,

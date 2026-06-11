@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import FindReplaceDialog from '../FindReplaceDialog'
+import { FindReplaceDialog } from '../FindReplaceDialog'
 import type { FindReplaceStore } from '../index'
 
 function createStore(

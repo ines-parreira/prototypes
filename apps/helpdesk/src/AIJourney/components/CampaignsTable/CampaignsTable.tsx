@@ -17,10 +17,10 @@ import { DateFormatToggle } from 'AIJourney/components/DateFormatToggle/DateForm
 import { useDateFormatPreference } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 
-import CancelCampaignConfirmation from './CancelCampaignConfirmation/CancelCampaignConfirmation'
-import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
-import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
-import SendCampaignConfirmation from './SendCampaignConfirmation/SendCampaignConfirmation'
+import { CancelCampaignConfirmation } from './CancelCampaignConfirmation/CancelCampaignConfirmation'
+import { EmptyCampaignsState } from './EmptyCampaignsState/EmptyCampaignsState'
+import { RemoveCampaignConfirmation } from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
+import { SendCampaignConfirmation } from './SendCampaignConfirmation/SendCampaignConfirmation'
 import type { CampaignsTableMeta } from './types'
 import { useCampaignActions } from './useCampaignActions'
 
@@ -35,7 +35,7 @@ type CampaignsTableProps<TData, TValue> = {
     emptyStateCta?: ReactNode
 }
 
-export default function CampaignsTable<TData, TValue>({
+export function CampaignsTable<TData, TValue>({
     columns,
     data,
     onEditColumns,

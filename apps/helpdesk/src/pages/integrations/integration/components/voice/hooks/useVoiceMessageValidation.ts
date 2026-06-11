@@ -19,7 +19,7 @@ import { getBase64 } from 'utils/file'
 
 import { getAudioFileDuration } from '../utils'
 
-export default function useVoiceMessageValidation() {
+export function useVoiceMessageValidation() {
     const validateVoiceRecordingUpload = async (
         event: React.ChangeEvent<HTMLInputElement>,
         maxRecordingDuration?: number,

@@ -16,7 +16,7 @@ import { IntegrationType } from 'models/integration/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import EmailIntegrationListItem from '../EmailIntegrationListItem'
+import { EmailIntegrationListItem } from '../EmailIntegrationListItem'
 import { canIntegrationDomainBeVerified } from '../helpers'
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 

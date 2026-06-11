@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { LlmTriggeredExecution } from '../types'
-import ActionEventSidePanel from './ActionEventSidePanel'
+import { ActionEventSidePanel } from './ActionEventSidePanel'
 
 jest.mock('pages/common/components/Drawer', () => ({
     Drawer: Object.assign(
@@ -19,7 +19,13 @@ jest.mock('pages/common/components/Drawer', () => ({
 }))
 jest.mock('./ActionEventTitle', () => ({
     __esModule: true,
-    default: ({ title, status }: { title?: string; status?: string }) => (
+    ActionEventTitle: ({
+        title,
+        status,
+    }: {
+        title?: string
+        status?: string
+    }) => (
         <div data-testid="action-event-title">
             {title} - {status}
         </div>
@@ -27,7 +33,7 @@ jest.mock('./ActionEventTitle', () => ({
 }))
 jest.mock('./ActionStepAccordionItem', () => ({
     __esModule: true,
-    default: ({ step }: { step: any }) => (
+    ActionStepAccordionItem: ({ step }: { step: any }) => (
         <div data-testid={`action-step-${step.stepId}`}>
             Step: {step.stepId}
             {step.transition && (
@@ -40,7 +46,7 @@ jest.mock('./ActionStepAccordionItem', () => ({
 }))
 jest.mock('./ActionEventsCollapsableVariables', () => ({
     __esModule: true,
-    default: ({ title, body }: { title: string; body: any }) => (
+    CollapsableVariables: ({ title, body }: { title: string; body: any }) => (
         <div data-testid={`variables-${title.toLowerCase()}`}>
             {title}: {JSON.stringify(body)}
         </div>
@@ -48,7 +54,7 @@ jest.mock('./ActionEventsCollapsableVariables', () => ({
 }))
 jest.mock('pages/common/components/accordion/Accordion', () => ({
     __esModule: true,
-    default: ({ children }: any) => <div>{children}</div>,
+    Accordion: ({ children }: any) => <div>{children}</div>,
 }))
 const renderComponent = (props: {
     isOpen: boolean

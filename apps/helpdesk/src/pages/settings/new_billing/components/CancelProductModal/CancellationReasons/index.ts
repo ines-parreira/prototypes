@@ -1,1 +1,1 @@
-export { default } from './CancellationReasons'
+export { CancellationReasons } from './CancellationReasons'

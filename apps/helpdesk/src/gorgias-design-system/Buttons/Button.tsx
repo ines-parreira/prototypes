@@ -12,7 +12,7 @@ import {
 } from 'gorgias-design-system/utils'
 import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview'
 
-import SpinnerIcon from './icons/SpinnerIcon'
+import { SpinnerIcon } from './icons/SpinnerIcon'
 
 const getButtonStylesByVariant = ({
     variant,
@@ -251,4 +251,4 @@ const Button: FC<HTMLAttributes<HTMLButtonElement> & ButtonProps> = ({
     )
 }
 
-export default Button
+export { Button }

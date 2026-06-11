@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import type { CustomerVisibility } from 'models/helpCenter/types'
 
 import type { SelectCustomerVisibilityProps } from './SelectVisibilityStatus'
-import SelectCustomerVisibility from './SelectVisibilityStatus'
+import { SelectCustomerVisibility } from './SelectVisibilityStatus'
 
 const storyConfig: Meta = {
     title: 'Help Center/SelectCustomerVisibility',

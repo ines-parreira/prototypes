@@ -63,4 +63,4 @@ const IconLink = ({
     )
 }
 
-export default IconLink
+export { IconLink }

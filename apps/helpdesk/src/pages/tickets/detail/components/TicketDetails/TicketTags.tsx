@@ -14,9 +14,9 @@ import {
 import type { Tag, TicketTag as TicketTagType } from '@gorgias/helpdesk-types'
 
 import { getWrappedElementCount } from 'common/utils'
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
-import TagDropdown from './TagDropdown'
+import { TagDropdown } from './TagDropdown'
 
 import css from './TicketTags.less'
 
@@ -177,4 +177,4 @@ const TicketTags = ({
     )
 }
 
-export default TicketTags
+export { TicketTags }

@@ -36,7 +36,7 @@ import {
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     SCOPED_BROADCAST_CHANNEL_NAME,
 } from './constants'
-import IncrementalBackoff from './incrementalBackoff'
+import { IncrementalBackoff } from './incrementalBackoff'
 import type { WSMessage } from './types'
 import { BroadcastChannelEvent, MessagePortEvent, SocketEvent } from './types'
 

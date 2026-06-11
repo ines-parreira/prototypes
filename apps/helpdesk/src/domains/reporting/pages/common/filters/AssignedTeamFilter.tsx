@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -35,7 +35,7 @@ import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getFilterTeamsJS } from 'state/teams/selectors'
 import type { RootState } from 'state/types'
 
@@ -53,7 +53,7 @@ type Props = {
 } & RemovableFilter &
     OptionalFilterProps
 
-export default function AssignedTeamFilter({
+export function AssignedTeamFilter({
     value = emptyFilter,
     warningType,
     dispatchUpdate,

@@ -27,14 +27,14 @@ import {
     useDeleteMacro,
     useUpdateMacro,
 } from 'hooks/macros'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { isGorgiasApiError } from 'models/api/types'
 import type { MacroDraft } from 'models/macro/types'
 import { MacroActionName } from 'models/macroAction/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
 import { getHumanAgents } from 'state/agents/selectors'
@@ -392,4 +392,4 @@ const MacrosSettingsForm = () => {
     )
 }
 
-export default MacrosSettingsForm
+export { MacrosSettingsForm }

@@ -7,16 +7,16 @@ import {
     REASONS_DROPDOWN_SECTIONS_WITH_OPTIONS,
 } from 'models/selfServiceConfiguration/constants'
 import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
-import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
-import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
+import { SortableAccordion } from 'pages/common/components/accordion/SortableAccordion'
+import { SortableAccordionItem } from 'pages/common/components/accordion/SortableAccordionItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportDropdownSection as DropdownSection } from 'pages/common/components/dropdown/DropdownSection'
 
 import { useReportOrderIssueScenarioFormContext } from './ReportOrderIssueScenarioFormContext'
-import ReportOrderIssueScenarioReason from './ReportOrderIssueScenarioReason'
+import { ReportOrderIssueScenarioReason } from './ReportOrderIssueScenarioReason'
 
 import css from './ReportOrderIssueScenarioReasons.less'
 
@@ -158,4 +158,4 @@ const ReportOrderIssueScenarioReasons = ({
     )
 }
 
-export default ReportOrderIssueScenarioReasons
+export { ReportOrderIssueScenarioReasons }

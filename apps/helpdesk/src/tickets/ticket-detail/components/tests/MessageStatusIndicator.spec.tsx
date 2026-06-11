@@ -5,9 +5,10 @@ import type { TicketMessage } from '@gorgias/helpdesk-types'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { message } from 'models/ticket/tests/mocks'
 
-import MessageStatusIndicator, {
+import {
     getMessageStatus,
     MessageStatus,
+    DefaultExportMessageStatusIndicator as MessageStatusIndicator,
 } from '../MessageStatusIndicator'
 
 describe('getMessageStatus', () => {

@@ -4,7 +4,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { AccordionValues } from 'components/Accordion/utils/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentLastSelectedShop } from 'pages/aiAgent/hooks/useAiAgentLastSelectedShop'

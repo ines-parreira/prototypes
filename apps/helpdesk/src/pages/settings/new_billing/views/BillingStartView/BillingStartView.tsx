@@ -24,17 +24,18 @@ import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { useProductsUsage } from 'models/billing/queries'
 import { isEnterprise } from 'models/billing/utils'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import useGetConvertStatus, {
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import {
     BundleOnboardingStatus,
     UsageStatus,
+    useGetConvertStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { isExceedingPlanLimit } from 'pages/convert/common/utils/isExceedingPlanLimit'
 import { InternalManagePlanView } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalManagePlanView'
@@ -53,16 +54,16 @@ import {
 } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
-import useDispatchBillingError from '../../hooks/useDispatchBillingError'
+import { ContactSupportModal } from '../../components/ContactSupportModal/ContactSupportModal'
+import { useDispatchBillingError } from '../../hooks/useDispatchBillingError'
 import { useUrlNotification } from '../../hooks/useUrlNotification'
 import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddressSetupView'
-import BillingFrequencyView from '../BillingFrequencyView'
-import BillingInternalView from '../BillingInternalView'
+import { BillingFrequencyView } from '../BillingFrequencyView'
+import { DefaultExportBillingInternalView as BillingInternalView } from '../BillingInternalView'
 import { BillingProcessView } from '../BillingProcessView'
-import PaymentsHistoryView from '../PaymentHistoryView'
-import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
-import UsageAndPlansView from '../UsageAndPlansView'
+import { PaymentsHistoryView } from '../PaymentHistoryView'
+import { PaymentInformationView } from '../PaymentInformationView/PaymentInformationView'
+import { UsageAndPlansView } from '../UsageAndPlansView'
 
 import css from './BillingStartView.less'
 
@@ -505,4 +506,4 @@ const BillingStartView = () => {
     )
 }
 
-export default BillingStartView
+export { BillingStartView }

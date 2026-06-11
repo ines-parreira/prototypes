@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ActivityCard from '../ActivityCard'
+import { ActivityCard } from '../ActivityCard'
 
 describe('<ActivityCard />', () => {
     const baseProps = {

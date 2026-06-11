@@ -20,7 +20,7 @@ jest.mock('models/ticket/predicates', () => {
     return {
         ...originalModule,
         shouldMessagesBeGrouped: jest.fn(() => false),
-    } as Record<any, any>
+    }
 })
 
 jest.mock(

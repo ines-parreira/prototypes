@@ -4,15 +4,15 @@ import { useDimensions, useWindowSize } from '@gorgias/toolkit-react'
 
 import { useAppNode } from 'appNode'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingContact } from 'models/billing/queries'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import Loader from 'pages/common/components/Loader/Loader'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import { BillingInformationSetupForm } from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
@@ -28,7 +28,7 @@ import { hasRole } from 'utils'
 
 import css from './MissingBillingInformationRow.less'
 
-export default function MissingBillingInformationRow() {
+export function MissingBillingInformationRow() {
     const [isModalOpened, setIsModalOpened] = useState(false)
     const currentUser = useAppSelector(getCurrentUser)
     const hasCreditCard = useAppSelector(getHasCreditCard)

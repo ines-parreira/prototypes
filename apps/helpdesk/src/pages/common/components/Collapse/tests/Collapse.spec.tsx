@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import Collapse from '../Collapse'
+import { Collapse } from '../Collapse'
 
 describe('<Collapse />', () => {
     beforeEach(() => {

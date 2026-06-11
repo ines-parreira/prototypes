@@ -1,7 +1,7 @@
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import FilterName from '../FilterName'
+import { FilterName } from '../FilterName'
 
 describe('FilterName', () => {
     it('renders the filter name correctly', () => {

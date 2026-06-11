@@ -12,7 +12,9 @@ import {
     STANDALONE_AI_AGENT_STATS_PATH,
 } from 'routes/constants'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
     useHasAiAgentMenu: jest.fn(),

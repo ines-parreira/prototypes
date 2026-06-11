@@ -22,8 +22,8 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import type { TicketMessage } from 'models/ticket/types'
 
-import MessageQuoteContext from '../../MessageQuoteContext'
-import Message from '../Message'
+import { MessageQuoteContext } from '../../MessageQuoteContext'
+import { Message } from '../Message'
 
 // Mock the feature flag hook
 jest.mock('@repo/feature-flags', () => ({
@@ -158,9 +158,9 @@ const createWrapper =
         </Provider>
     )
 
-jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
-    <div>AIBanner</div>
-))
+jest.mock('pages/common/components/AIBanner/AIBanner', () => ({
+    AIBanner: () => <div>AIBanner</div>,
+}))
 jest.mock('tickets/ticket-detail/components/MessageActions', () => ({
     MessageActions: () => <div>Actions</div>,
 }))
@@ -169,14 +169,20 @@ jest.mock('tickets/ticket-detail/components/MessageAttachments', () => ({
 }))
 
 const mockBodyComponent = jest.fn()
-jest.mock('../Body', () => (props: any) => {
-    mockBodyComponent(props)
-    return <div>Body</div>
-})
+jest.mock('../Body', () => ({
+    Body: (props: any) => {
+        mockBodyComponent(props)
+        return <div>Body</div>
+    },
+}))
 
-jest.mock('../Errors', () => () => <div>Errors</div>)
-jest.mock('../ReplyDetailsCard', () => () => <div>ReplyDetailsCard</div>)
-jest.mock('../SourceActionsHeader', () => () => <div>SourceActionsHeader</div>)
+jest.mock('../Errors', () => ({ Errors: () => <div>Errors</div> }))
+jest.mock('../ReplyDetailsCard', () => ({
+    ReplyDetailsCard: () => <div>ReplyDetailsCard</div>,
+}))
+jest.mock('../SourceActionsHeader', () => ({
+    SourceActionsHeader: () => <div>SourceActionsHeader</div>,
+}))
 jest.mock('../TranslationsDropdown/TranslationsDropdown', () => ({
     TranslationsDropdown: () => <div>TranslationsDropdown</div>,
 }))

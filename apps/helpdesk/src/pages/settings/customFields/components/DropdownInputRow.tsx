@@ -7,9 +7,9 @@ import type { CreateCustomField } from '@gorgias/helpdesk-types'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import type { CustomField, CustomFieldInput } from 'custom-fields/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './DropdownInputRow.less'
@@ -152,4 +152,6 @@ export function DropdownInputRow({
     )
 }
 
-export default memo(DropdownInputRow)
+const DefaultExportDropdownInputRow = memo(DropdownInputRow)
+
+export { DefaultExportDropdownInputRow }

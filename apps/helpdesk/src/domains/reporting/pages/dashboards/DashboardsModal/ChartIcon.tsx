@@ -3,7 +3,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { KpiIcon } from 'domains/reporting/pages/common/icons/KpiIcon'
 import css from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon.less'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 export const CHARTS_MODAL_ICONS: Record<
     ChartType,

@@ -6,20 +6,22 @@ import { fireEvent, screen } from '@testing-library/react'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { useToolbarContext } from '../../ToolbarContext'
-import GuidanceActionDropdown from '../GuidanceActionDropdown'
+import { GuidanceActionDropdown } from '../GuidanceActionDropdown'
 
 jest.mock('../../ToolbarContext', () => ({
     useToolbarContext: jest.fn(),
 }))
 
 jest.mock('pages/common/components/Search', () => {
-    return jest.fn(({ value, onChange }) => (
-        <input
-            data-testid="search-input"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-        />
-    ))
+    return {
+        DefaultExportSearch: jest.fn(({ value, onChange }) => (
+            <input
+                data-testid="search-input"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+            />
+        )),
+    }
 })
 
 describe('GuidanceActionDropdown', () => {

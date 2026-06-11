@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { tags } from 'fixtures/tag'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { RootState } from 'state/types'
 
 describe('useAppSelector', () => {

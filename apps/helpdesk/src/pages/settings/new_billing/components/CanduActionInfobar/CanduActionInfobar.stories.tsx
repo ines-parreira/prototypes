@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
+import { CanduActionInfobar } from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
 
 const storyConfig: Meta<typeof CanduActionInfobar> = {
     title: 'General/Bars/CanduActionInfobar',

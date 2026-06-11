@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
     HelpCenterTranslationProvider,
     useHelpCenterTranslation,

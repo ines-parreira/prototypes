@@ -70,4 +70,8 @@ export class InfobarWidgetsEditionTools extends Component<Props> {
 
 const connector = connect()
 
-export default connector(InfobarWidgetsEditionTools)
+const DefaultExportInfobarWidgetsEditionTools = connector(
+    InfobarWidgetsEditionTools,
+)
+
+export { DefaultExportInfobarWidgetsEditionTools }

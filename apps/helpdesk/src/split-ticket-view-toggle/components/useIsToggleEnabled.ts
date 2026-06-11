@@ -2,12 +2,12 @@ import { useMemo } from 'react'
 
 import { useLocation } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
 import { getActiveView } from 'state/views/selectors'
 import { isDirectTicketPath } from 'utils'
 
-export default function useIsToggleEnabled() {
+export function useIsToggleEnabled() {
     const { pathname: path } = useLocation()
     const activeView = useAppSelector(getActiveView)
 

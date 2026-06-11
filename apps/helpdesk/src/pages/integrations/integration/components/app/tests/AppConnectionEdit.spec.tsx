@@ -7,7 +7,7 @@ import type {
     ServiceConnectionApiDTO,
     ServiceConnectionAuthApiDTO,
 } from 'models/integration/types/serviceConnection'
-import AppConnectionEdit from 'pages/integrations/integration/components/app/AppConnectionEdit'
+import { AppConnectionEdit } from 'pages/integrations/integration/components/app/AppConnectionEdit'
 
 const APP_ID = '1234'
 const CONNECTION_ID = '01970000-0000-7000-8000-000000000001'

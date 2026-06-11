@@ -9,8 +9,8 @@ import {
 } from 'models/billing/utils'
 import type { ProductToPlan } from 'state/billing/types'
 
-import SummaryBody from '../UI/SummaryBody'
-import SummaryHeader from '../UI/SummaryHeader'
+import { SummaryBody } from '../UI/SummaryBody'
+import { SummaryHeader } from '../UI/SummaryHeader'
 import type { SummaryItemData } from '../UI/types'
 
 import css from './CancellationSummary.less'
@@ -83,4 +83,4 @@ const CancellationSummary = ({
     )
 }
 
-export default CancellationSummary
+export { CancellationSummary }

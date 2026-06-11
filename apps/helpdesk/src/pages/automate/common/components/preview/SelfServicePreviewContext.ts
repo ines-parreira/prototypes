@@ -36,4 +36,4 @@ export const useSelfServicePreviewContext = () => {
     return selfServicePreviewContext
 }
 
-export default SelfServicePreviewContext
+export { SelfServicePreviewContext }

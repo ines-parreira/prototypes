@@ -17,7 +17,7 @@ import { IntegrationType } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEmailIntegrations } from '../../../hooks/useEmailIntegrations'
-import ContactFormMailtoReplacementSection from '../ContactFormMailtoReplacementSection'
+import { ContactFormMailtoReplacementSection } from '../ContactFormMailtoReplacementSection'
 import { getMailtoReplacementConfig } from '../resources'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({

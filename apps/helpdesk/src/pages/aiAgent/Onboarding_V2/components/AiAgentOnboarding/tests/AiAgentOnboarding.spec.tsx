@@ -43,16 +43,18 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
         __esModule: true,
-        default: ({ children }: { children?: React.ReactNode }) => (
-            <div>{children}</div>
-        ),
+        ChatIntegrationPreview: ({
+            children,
+        }: {
+            children?: React.ReactNode
+        }) => <div>{children}</div>,
     }),
 )
 jest.mock(
     'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation',
     () => ({
         __esModule: true,
-        default: () => <div>AI Agent Preview</div>,
+        AiAgentChatConversation: () => <div>AI Agent Preview</div>,
     }),
 )
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData', () => ({

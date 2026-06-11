@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/types'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
-import IntegrationList from 'pages/integrations/integration/components/IntegrationList'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
+import { DefaultExportIntegrationList as IntegrationList } from 'pages/integrations/integration/components/IntegrationList'
 
 type IReceivedProps = {
     integrations: List<Map<string, string>>
@@ -12,7 +12,7 @@ type IReceivedProps = {
     redirectUri: string
 }
 
-export default function YotpoIntegrationList({
+export function YotpoIntegrationList({
     integrations,
     loading,
     redirectUri,

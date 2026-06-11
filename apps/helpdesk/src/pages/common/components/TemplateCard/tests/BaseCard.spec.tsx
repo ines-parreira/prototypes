@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 
-import BaseCard from '../BaseCard'
+import { BaseCard } from '../BaseCard'
 
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),

@@ -9,7 +9,7 @@ import {
 } from 'models/integration/types'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from '../constants'
-import SelfServiceChatIntegrationPreview from '../SelfServiceChatIntegrationPreview'
+import { DefaultExportSelfServiceChatIntegrationPreview as SelfServiceChatIntegrationPreview } from '../SelfServiceChatIntegrationPreview'
 import { useSelfServicePreviewContext } from '../SelfServicePreviewContext'
 
 jest.mock('../SelfServicePreviewContext', () => ({

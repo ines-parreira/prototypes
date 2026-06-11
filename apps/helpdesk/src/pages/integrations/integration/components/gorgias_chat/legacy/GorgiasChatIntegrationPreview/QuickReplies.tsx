@@ -26,4 +26,4 @@ const QuickReplies = ({ quickReplies, mainColor }: Props) => (
     </div>
 )
 
-export default QuickReplies
+export { QuickReplies }

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
+import { CanduActionInfobar } from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
 
 describe('CanduActionInfobar', () => {
     it('should render button and text', () => {

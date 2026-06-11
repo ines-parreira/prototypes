@@ -1,3 +1,3 @@
-import RestrictedFeature from './RestrictedFeature'
+import { RestrictedFeature } from './RestrictedFeature'
 
-export default RestrictedFeature
+export { RestrictedFeature }

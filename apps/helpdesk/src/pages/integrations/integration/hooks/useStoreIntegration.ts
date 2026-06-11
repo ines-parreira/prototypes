@@ -1,6 +1,6 @@
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 

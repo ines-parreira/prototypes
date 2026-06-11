@@ -5,11 +5,11 @@ import _isEqual from 'lodash/isEqual'
 
 import { Box, Button, Skeleton } from '@gorgias/axiom'
 
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
-import NodeMenu from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
-import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
+import { DefaultExportNodeMenu as NodeMenu } from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
+import { NodeEditorDrawer } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
 import type { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import { walkVisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type {
@@ -17,7 +17,7 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { isReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
 import { ActionStepRow } from './ActionStepRow'
 

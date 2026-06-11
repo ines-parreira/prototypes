@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { createEvent, fireEvent, screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import Input from 'pages/common/forms/MultiSelectOptionsField/Input'
+import { Input } from 'pages/common/forms/MultiSelectOptionsField/Input'
 
 describe('MultiSelectField Input', () => {
     const defaultProps = {

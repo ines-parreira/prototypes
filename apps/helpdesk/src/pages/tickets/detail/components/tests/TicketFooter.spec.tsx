@@ -7,28 +7,38 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Editor from 'pages/common/editor/Editor'
-import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Editor } from 'pages/common/editor/Editor'
+import { useInitialMacroFilters } from 'pages/common/editor/hooks/useInitialMacroFilters'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { editorFocused } from 'state/ui/editor/actions'
 
-import TicketFooter from '../TicketFooter'
-import TypingActivity from '../TypingActivity'
+import { TicketFooter } from '../TicketFooter'
+import { TypingActivity } from '../TypingActivity'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('pages/common/editor/Editor', () => jest.fn(() => <p>Editor</p>))
-jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
+jest.mock('pages/common/editor/Editor', () => ({
+    Editor: jest.fn(() => <p>Editor</p>),
+}))
+jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => ({
+    useInitialMacroFilters: jest.fn(),
+}))
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
 jest.mock('state/ui/editor/actions', () => ({ editorFocused: jest.fn() }))
-jest.mock('../TypingActivity', () => jest.fn(() => <p>TypingActivity</p>))
+jest.mock('../TypingActivity', () => ({
+    TypingActivity: jest.fn(() => <p>TypingActivity</p>),
+}))
 jest.mock(
     'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider',
-    () => jest.fn(({ children }: any) => <div>{children}</div>),
+    () => ({
+        WhatsAppEditorProvider: jest.fn(({ children }: any) => (
+            <div>{children}</div>
+        )),
+    }),
 )
 
 const mockEditor = Editor as jest.Mock

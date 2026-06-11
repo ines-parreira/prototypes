@@ -1,11 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
-import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
-import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
+import { HelpCenterCreationWizard } from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
+import { DefaultExportHelpCenterNewView as HelpCenterNewView } from 'pages/settings/helpCenter/components/HelpCenterNewView'
+import { HelpCenterStartView } from 'pages/settings/helpCenter/components/HelpCenterStartView'
 import { MigrationApiClientProvider } from 'pages/settings/helpCenter/hooks/useMigrationApi'
-import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import { CurrentHelpCenter } from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import { renderAppSettings } from './helpers/settingsRenderer'

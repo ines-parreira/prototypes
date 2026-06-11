@@ -17,13 +17,13 @@ import {
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useAddStoreApp } from 'pages/aiAgent/actions/hooks/useAddStoreApp'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import type { RootState } from 'state/types'
 
-import ActionsList from '../components/ActionsList'
+import { ActionsList } from '../components/ActionsList'
 import type { StoresWorkflowConfiguration } from '../types'
 
 jest.mock('@repo/feature-flags', () => ({

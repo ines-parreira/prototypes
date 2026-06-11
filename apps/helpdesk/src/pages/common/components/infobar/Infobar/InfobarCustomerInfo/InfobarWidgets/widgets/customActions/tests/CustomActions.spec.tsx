@@ -4,13 +4,15 @@ import { assumeMock, getLastMockCall, render } from '@repo/testing'
 
 import type { CardTemplate } from 'models/widget/types'
 
-import ActionButtons from '../ActionButtons/ActionButtons'
-import CustomActions from '../index'
-import Links from '../Links/Links'
+import { DefaultExportActionButtons as ActionButtons } from '../ActionButtons/ActionButtons'
+import { DefaultExportCustomActions as CustomActions } from '../index'
+import { DefaultExportLinks as Links } from '../Links/Links'
 import type { Action } from '../types'
 
-jest.mock('../Links/Links', () => jest.fn(() => null))
-jest.mock('../ActionButtons/ActionButtons', () => jest.fn(() => null))
+jest.mock('../Links/Links', () => ({ DefaultExportLinks: jest.fn(() => null) }))
+jest.mock('../ActionButtons/ActionButtons', () => ({
+    DefaultExportActionButtons: jest.fn(() => null),
+}))
 const LinksMock = assumeMock(Links)
 const ActionButtonsMock = assumeMock(ActionButtons)
 

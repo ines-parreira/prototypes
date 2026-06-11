@@ -5,8 +5,8 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'
 
@@ -134,4 +134,4 @@ const LightCampaignModal = (props: Props) => {
     )
 }
 
-export default LightCampaignModal
+export { LightCampaignModal }

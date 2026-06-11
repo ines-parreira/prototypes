@@ -12,13 +12,13 @@ import {
 } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
 
-import CustomIntegrationsTabContent from '../CustomIntegrationsTabContent'
+import { CustomIntegrationsTabContent } from '../CustomIntegrationsTabContent'
 
 const mockStore = configureMockStore([thunk])
 
 jest.mock('../WidgetEditionTools', () => ({
     __esModule: true,
-    default: () => <div>WidgetEditionTools</div>,
+    WidgetEditionTools: () => <div>WidgetEditionTools</div>,
 }))
 
 jest.mock('Widgets/contexts/WidgetContext', () => ({
@@ -27,7 +27,7 @@ jest.mock('Widgets/contexts/WidgetContext', () => ({
 
 jest.mock('Widgets/modules/Template', () => ({
     __esModule: true,
-    default: ({ source, template }: any) => (
+    Template: ({ source, template }: any) => (
         <div>
             MockTemplate source={JSON.stringify(source)} templatePath=
             {template.templatePath}

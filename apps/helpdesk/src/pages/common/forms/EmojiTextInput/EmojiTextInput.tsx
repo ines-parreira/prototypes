@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import React, { useCallback } from 'react'
 
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import Caption from 'pages/common/forms/Caption/Caption'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { EmojiSelect } from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './EmojiTextInput.less'
 
@@ -22,7 +22,7 @@ type Props = {
 /**
  * Text input, with an emoji picker next to it.
  */
-export default function EmojiTextInput({
+export function EmojiTextInput({
     id,
     emoji,
     value,

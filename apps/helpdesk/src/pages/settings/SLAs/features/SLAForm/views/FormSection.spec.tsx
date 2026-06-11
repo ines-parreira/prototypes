@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FormSection from './FormSection'
+import { FormSection } from './FormSection'
 
 describe('<FormSection />', () => {
     it('should render child fields', () => {

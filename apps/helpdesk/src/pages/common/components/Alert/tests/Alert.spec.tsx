@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import Alert, { AlertType } from '../Alert'
+import { Alert, AlertType } from '../Alert'
 
 const onClose = jest.fn()
 

@@ -66,4 +66,4 @@ const addMention = (
     )
 }
 
-export default addMention
+export { addMention }

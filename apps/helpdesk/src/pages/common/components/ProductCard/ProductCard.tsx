@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { darken, getLuminance, lighten } from 'color2k'
 import { useMeasure } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { updateCampaignProductPosition } from 'state/newMessage/actions'
 

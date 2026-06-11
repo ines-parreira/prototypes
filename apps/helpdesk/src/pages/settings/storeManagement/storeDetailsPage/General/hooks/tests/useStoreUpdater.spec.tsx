@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { useUpdateIntegration } from '@gorgias/helpdesk-queries'
 
-import useStoreUpdater from '../useStoreUpdater'
+import { useStoreUpdater } from '../useStoreUpdater'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useUpdateIntegration: jest.fn(),

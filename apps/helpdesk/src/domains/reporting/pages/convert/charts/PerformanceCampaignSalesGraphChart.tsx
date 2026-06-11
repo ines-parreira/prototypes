@@ -1,6 +1,6 @@
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { OverviewMetricConfig } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { ORDER_COUNT_LABEL } from 'domains/reporting/pages/convert/constants/labels'

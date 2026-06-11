@@ -4,7 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
-import SalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview'
+import { SalesOverview } from 'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview'
 import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { useFirstStoreWithAiSalesData } from 'domains/reporting/pages/convert/hooks/useFirstStoreWithAiSalesData'

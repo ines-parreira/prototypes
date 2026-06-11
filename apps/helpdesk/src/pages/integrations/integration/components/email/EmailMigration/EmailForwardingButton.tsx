@@ -5,20 +5,20 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { verifyMigrationIntegration } from 'models/integration/resources/email'
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
 
-import EmailVerificationButton from './EmailVerificationButton'
+import { EmailVerificationButton } from './EmailVerificationButton'
 import { computeMigrationInboundVerificationStatus } from './utils'
 
 type Props = {
     migration: EmailMigrationInboundVerification
 }
 
-export default function EmailForwardingButton({ migration }: Props) {
+export function EmailForwardingButton({ migration }: Props) {
     const dispatch = useAppDispatch()
     const [lastSubmittedVerification, setLastSubmittedVerification] =
         useState<EmailMigrationInboundVerification>()

@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 import type { ShopType } from 'models/selfServiceConfiguration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from '../useSelfServiceConfiguration'
 
 const initialSelfServiceConfiguration = {
     id: 1,

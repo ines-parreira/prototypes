@@ -40,4 +40,8 @@ function DropdownBody(
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(DropdownBody)
+const DefaultExportDropdownBody = forwardRef<HTMLDivElement, Props>(
+    DropdownBody,
+)
+
+export { DefaultExportDropdownBody }

@@ -6,7 +6,7 @@ import type {
     ReportsModalConfig,
 } from 'domains/reporting/pages/dashboards/types'
 import { getNumberOfSelections } from 'domains/reporting/pages/dashboards/utils'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 export const SelectableReports = ({
     config,

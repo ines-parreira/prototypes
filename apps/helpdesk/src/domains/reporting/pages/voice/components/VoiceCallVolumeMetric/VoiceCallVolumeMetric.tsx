@@ -4,10 +4,10 @@ import moment from 'moment'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import { comparedPeriodString } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -120,4 +120,4 @@ function VoiceCallVolumeMetric({
     )
 }
 
-export default VoiceCallVolumeMetric
+export { VoiceCallVolumeMetric }

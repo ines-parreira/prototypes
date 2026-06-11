@@ -6,10 +6,10 @@ import type { CountryCode } from 'libphonenumber-js'
 import type { PhoneIntegration } from 'models/integration/types'
 import type { UserSearchResult } from 'models/search/types'
 
-import PhoneDeviceDialer from '../PhoneDeviceDialer'
-import PhoneDeviceDialerInput from '../PhoneDeviceDialerInput'
-import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
-import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
+import { PhoneDeviceDialer } from '../PhoneDeviceDialer'
+import { PhoneDeviceDialerInput } from '../PhoneDeviceDialerInput'
+import { PhoneDeviceDialerIntegrationSelect } from '../PhoneDeviceDialerIntegrationSelect'
+import { usePhoneDeviceDialer } from '../usePhoneDeviceDialer'
 
 jest.mock('../usePhoneDeviceDialer')
 jest.mock('../PhoneDeviceDialerInput')

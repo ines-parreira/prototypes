@@ -4,7 +4,7 @@ import { Duration } from '@gorgias/toolkit'
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
 
 import type { ResourceSection } from './types'
@@ -74,4 +74,4 @@ const FeedbackStatusBadge = ({ status, resourceSection }: Props) => {
     )
 }
 
-export default FeedbackStatusBadge
+export { FeedbackStatusBadge }

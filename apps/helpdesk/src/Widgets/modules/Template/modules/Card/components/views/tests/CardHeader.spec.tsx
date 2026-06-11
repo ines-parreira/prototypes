@@ -4,8 +4,8 @@ import type React from 'react'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import CardEditForm from '../CardEditForm'
-import CardHeader, { DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT } from '../CardHeader'
+import { CardEdit as CardEditForm } from '../CardEditForm'
+import { CardHeader, DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT } from '../CardHeader'
 
 const CARD_HEADER_ICON_TEST_ID = 'card-header-icon'
 jest.mock('../CardHeaderIcon', () => ({
@@ -17,11 +17,11 @@ jest.mock('../CardHeaderIcon', () => ({
 }))
 
 const CARD_EDIT_FORM_TEST_ID = 'card-edit-form'
-jest.mock('../CardEditForm', () =>
-    jest.fn(() => {
+jest.mock('../CardEditForm', () => ({
+    CardEdit: jest.fn(() => {
         return <span data-testid={CARD_EDIT_FORM_TEST_ID}>field edit form</span>
     }),
-)
+}))
 const CardEditFormMock = assumeMock(CardEditForm)
 
 const TITLE_WRAPPER_TEST_ID = 'title-wrapper'

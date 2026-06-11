@@ -2,7 +2,7 @@ import type React from 'react'
 
 import classNames from 'classnames'
 
-import RadioButton from 'pages/common/components/RadioButton'
+import { DefaultExportRadioButton as RadioButton } from 'pages/common/components/RadioButton'
 
 import css from './ChatAvailabilitySelection.less'
 
@@ -42,4 +42,4 @@ const ChatAvailabilitySelection: React.FC<ChatAvailabilitySelectionProps> = (
     )
 }
 
-export default ChatAvailabilitySelection
+export { ChatAvailabilitySelection }

@@ -12,10 +12,12 @@ import {
 const MockDonutKeyMetricStat = jest.fn()
 jest.mock(
     'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat',
-    () => (props: any) => {
-        MockDonutKeyMetricStat(props)
-        return <div />
-    },
+    () => ({
+        DistributionKeyMetricStat: (props: any) => {
+            MockDonutKeyMetricStat(props)
+            return <div />
+        },
+    }),
 )
 
 beforeEach(() => {

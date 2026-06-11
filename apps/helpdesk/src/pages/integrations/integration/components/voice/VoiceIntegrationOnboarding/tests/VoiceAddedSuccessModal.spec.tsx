@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import { useSearchParam } from 'hooks/useSearchParam'
 
-import VoiceAddedSuccessModal from '../VoiceAddedSuccessModal'
+import { VoiceAddedSuccessModal } from '../VoiceAddedSuccessModal'
 
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
@@ -12,7 +12,7 @@ jest.mock('hooks/useSearchParam', () => ({
 
 jest.mock('../../flows/VoiceFlowPreview', () => ({
     __esModule: true,
-    default: ({ integrationId }: { integrationId: number }) => (
+    VoiceFlowPreview: ({ integrationId }: { integrationId: number }) => (
         <div
             data-testid="voice-flow-preview"
             data-integration-id={integrationId}
@@ -24,7 +24,7 @@ jest.mock('../../flows/VoiceFlowPreview', () => ({
 
 jest.mock('pages/integrations/components/ConnectLink', () => ({
     __esModule: true,
-    default: ({
+    ConnectLink: ({
         children,
         connectUrl,
     }: {

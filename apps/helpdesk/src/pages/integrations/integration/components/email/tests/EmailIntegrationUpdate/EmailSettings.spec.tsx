@@ -5,51 +5,58 @@ import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
-import EmailSettings from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings'
+import { EmailSettings } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings'
 
 jest.mock('state/integrations/actions', () => ({
     importEmails: jest.fn(),
 }))
 
 jest.mock('hooks/useAppDispatch', () => {
-    return () => jest.fn()
+    return { useAppDispatch: () => jest.fn() }
 })
 
 jest.mock('hooks/useAppSelector', () => {
-    return () => ({
-        tickets: {
-            suggestedResponses: [],
-        },
-        user: {
-            current: {
-                id: 1,
-                name: 'Test User',
+    return {
+        useAppSelector: () => ({
+            tickets: {
+                suggestedResponses: [],
             },
-        },
-    })
+            user: {
+                current: {
+                    id: 1,
+                    name: 'Test User',
+                },
+            },
+        }),
+    }
 })
 
 jest.mock('pages/common/forms/RichFieldWithVariables', () => {
-    return function MockRichFieldWithVariables({ onChange, label }: any) {
-        return (
-            <div>
-                <label>{label}</label>
-                <textarea
-                    aria-label="signature-editor"
-                    onChange={() => {
-                        const mockSetSignatureText = jest.fn()
-                        const mockSetSignatureHtml = jest.fn()
-                        mockSetSignatureText('test')
-                        mockSetSignatureHtml('<p>test</p>')
-                        onChange({
-                            getCurrentContent: () => ({
-                                getPlainText: () => 'test',
-                            }),
-                        })
-                    }}
-                />
-            </div>
-        )
+    return {
+        RichFieldWithVariables: function MockRichFieldWithVariables({
+            onChange,
+            label,
+        }: any) {
+            return (
+                <div>
+                    <label>{label}</label>
+                    <textarea
+                        aria-label="signature-editor"
+                        onChange={() => {
+                            const mockSetSignatureText = jest.fn()
+                            const mockSetSignatureHtml = jest.fn()
+                            mockSetSignatureText('test')
+                            mockSetSignatureHtml('<p>test</p>')
+                            onChange({
+                                getCurrentContent: () => ({
+                                    getPlainText: () => 'test',
+                                }),
+                            })
+                        }}
+                    />
+                </div>
+            )
+        },
     }
 })
 

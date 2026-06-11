@@ -4,7 +4,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import type { Customer } from 'models/customer/types'
 import type { Ticket } from 'models/ticket/types'
-import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
+import { DefaultExportWidgetListContext as WidgetListContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 import { AppContext } from 'providers/infobar/AppContext'
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -31,7 +31,7 @@ const defaultCurrentUser = {
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn((cb: (() => unknown) | undefined) => cb?.()),
+    useAppSelector: jest.fn((cb: (() => unknown) | undefined) => cb?.()),
 }))
 jest.mock('state/customers/selectors')
 jest.mock('state/ticket/selectors')

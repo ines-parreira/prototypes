@@ -18,7 +18,7 @@ import {
 } from 'fixtures/plans'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
+import { AutomatePaywallView } from 'pages/automate/common/components/AutomatePaywallView'
 import { usePaywallConfig } from 'pages/automate/common/hooks/usePaywallConfig'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

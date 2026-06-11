@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { EditorState, RichUtils } from 'draft-js'
 
-import HeadingPicker from '../HeadingPicker'
+import { HeadingPicker } from '../HeadingPicker'
 
 jest.mock('appNode', () => ({
     useAppNode: () => document.body,

@@ -7,7 +7,7 @@ import {
     useUpdateVoiceQueue,
 } from '@gorgias/helpdesk-queries'
 
-import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
+import { VoiceQueueBreadcrumbs } from '../VoiceQueueBreadcrumbs'
 
 jest.mock('@gorgias/helpdesk-client', () => ({
     getVoiceQueue: jest.fn(),

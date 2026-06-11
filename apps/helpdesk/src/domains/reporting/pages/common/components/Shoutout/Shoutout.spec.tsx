@@ -3,7 +3,8 @@ import React from 'react'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import Shoutout, {
+import {
+    Shoutout,
     SHOUTOUT_MAX_PERSONS,
     SHOUTOUT_NO_VALUE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/components/Shoutout/Shoutout'

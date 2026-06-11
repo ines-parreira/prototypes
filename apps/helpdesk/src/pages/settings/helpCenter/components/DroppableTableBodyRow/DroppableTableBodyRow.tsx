@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 import classNames from 'classnames'
 
 import type { Category } from 'models/helpCenter/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import type {
     Callbacks,
     DragItemRequired,

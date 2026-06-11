@@ -17,4 +17,4 @@ const ChatTitle = ({ isBot = false, title }: Props) => (
     </div>
 )
 
-export default ChatTitle
+export { ChatTitle }

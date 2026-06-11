@@ -15,13 +15,13 @@ import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { SETTINGS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { StoreConfigForm } from '../components/StoreConfigForm/StoreConfigForm'
-import AiAgentFormChangesProvider from '../providers/AiAgentFormChangesProvider'
+import { AiAgentFormChangesProvider } from '../providers/AiAgentFormChangesProvider'
 
 import css from './AiAgentConfigurationView.less'
 

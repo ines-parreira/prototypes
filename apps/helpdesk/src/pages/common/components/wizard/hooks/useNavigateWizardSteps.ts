@@ -15,4 +15,4 @@ const useNavigateWizardSteps = () => {
     }
 }
 
-export default useNavigateWizardSteps
+export { useNavigateWizardSteps }

@@ -7,9 +7,11 @@ import { act } from 'react-dom/test-utils'
 import { AdvancedTriggersSelect } from '../AdvancedTriggersSelect'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 
 describe('<AdvancedTriggersSelect />', () => {

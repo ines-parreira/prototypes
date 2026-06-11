@@ -1,2 +1,2 @@
-export { default } from './MaximumCampaignDisplayed'
+export { MaximumCampaignDisplayed } from './MaximumCampaignDisplayed'
 export * from './MaximumCampaignDisplayed'

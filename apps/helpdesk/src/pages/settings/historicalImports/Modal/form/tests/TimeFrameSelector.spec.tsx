@@ -4,56 +4,60 @@ import { screen } from '@testing-library/react'
 import { TimeFrameSelector } from '../TimeFrameSelector'
 
 jest.mock('pages/common/forms/DatePicker', () => {
-    return function MockDatePicker(props: any) {
-        return (
-            <div data-testid="mock-date-picker">
-                <div data-testid="picker-props">
-                    {JSON.stringify({
-                        isOpen: props.isOpen,
-                        rangesLabel: props.rangesLabel,
-                        unavailableDateMessage: props.unavailableDateMessage,
-                        hasRanges: !!props.initialSettings?.ranges,
-                        rangeCount: props.initialSettings?.ranges
-                            ? Object.keys(props.initialSettings.ranges).length
-                            : 0,
-                        minDate:
-                            props.initialSettings?.minDate?.format(
-                                'YYYY-MM-DD',
-                            ),
-                        maxDate:
-                            props.initialSettings?.maxDate?.format(
-                                'YYYY-MM-DD',
-                            ),
-                        timePicker: props.initialSettings?.timePicker,
-                        singleDatePicker:
-                            props.initialSettings?.singleDatePicker,
-                        opens: props.initialSettings?.opens,
-                        hasOnHide: typeof props.onHide === 'function',
-                        hasOnCancel: typeof props.onCancel === 'function',
-                        hasOnClear: typeof props.onClear === 'function',
-                    })}
+    return {
+        DatePicker: function MockDatePicker(props: any) {
+            return (
+                <div data-testid="mock-date-picker">
+                    <div data-testid="picker-props">
+                        {JSON.stringify({
+                            isOpen: props.isOpen,
+                            rangesLabel: props.rangesLabel,
+                            unavailableDateMessage:
+                                props.unavailableDateMessage,
+                            hasRanges: !!props.initialSettings?.ranges,
+                            rangeCount: props.initialSettings?.ranges
+                                ? Object.keys(props.initialSettings.ranges)
+                                      .length
+                                : 0,
+                            minDate:
+                                props.initialSettings?.minDate?.format(
+                                    'YYYY-MM-DD',
+                                ),
+                            maxDate:
+                                props.initialSettings?.maxDate?.format(
+                                    'YYYY-MM-DD',
+                                ),
+                            timePicker: props.initialSettings?.timePicker,
+                            singleDatePicker:
+                                props.initialSettings?.singleDatePicker,
+                            opens: props.initialSettings?.opens,
+                            hasOnHide: typeof props.onHide === 'function',
+                            hasOnCancel: typeof props.onCancel === 'function',
+                            hasOnClear: typeof props.onClear === 'function',
+                        })}
+                    </div>
+                    <button
+                        data-testid="trigger-onHide"
+                        onClick={() => props.onHide?.()}
+                    >
+                        Hide
+                    </button>
+                    <button
+                        data-testid="trigger-onCancel"
+                        onClick={() => props.onCancel?.()}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        data-testid="trigger-onClear"
+                        onClick={() => props.onClear?.()}
+                    >
+                        Clear
+                    </button>
+                    {props.children}
                 </div>
-                <button
-                    data-testid="trigger-onHide"
-                    onClick={() => props.onHide?.()}
-                >
-                    Hide
-                </button>
-                <button
-                    data-testid="trigger-onCancel"
-                    onClick={() => props.onCancel?.()}
-                >
-                    Cancel
-                </button>
-                <button
-                    data-testid="trigger-onClear"
-                    onClick={() => props.onClear?.()}
-                >
-                    Clear
-                </button>
-                {props.children}
-            </div>
-        )
+            )
+        },
     }
 })
 

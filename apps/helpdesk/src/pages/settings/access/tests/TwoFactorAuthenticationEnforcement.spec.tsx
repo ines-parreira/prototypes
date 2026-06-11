@@ -6,25 +6,27 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
+import { TwoFactorAuthenticationEnforcement } from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import type { OwnProps } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 import { TWO_FA_REQUIRED_AFTER_DAYS } from 'state/currentUser/constants'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
-    () => (props: OwnProps) => {
-        return (
-            props.isOpen && (
-                <div>
-                    TwoFactorAuthenticationModal mocked
-                    <button type="button" onClick={props.onFinish}>
-                        Finish action mocked
-                    </button>
-                </div>
+    () => ({
+        TwoFactorAuthenticationModal: (props: OwnProps) => {
+            return (
+                props.isOpen && (
+                    <div>
+                        TwoFactorAuthenticationModal mocked
+                        <button type="button" onClick={props.onFinish}>
+                            Finish action mocked
+                        </button>
+                    </div>
+                )
             )
-        )
-    },
+        },
+    }),
 )
 
 describe('<TwoFactorAuthenticationEnforcement />', () => {

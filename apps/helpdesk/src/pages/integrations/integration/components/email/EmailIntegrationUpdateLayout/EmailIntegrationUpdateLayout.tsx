@@ -4,8 +4,8 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { EmailProvider } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import {
     canIntegrationDomainBeVerified,
@@ -82,4 +82,4 @@ const EmailIntegrationUpdateLayout = ({ integration, children }: Props) => {
     )
 }
 
-export default EmailIntegrationUpdateLayout
+export { EmailIntegrationUpdateLayout }

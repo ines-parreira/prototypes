@@ -13,10 +13,10 @@ import { DropdownItem } from 'reactstrap'
 
 import { Icon } from '@gorgias/axiom'
 
-import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
+import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
+import { useEnabledActionStepsByApp } from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
+import { VisualBuilderActionIcon } from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import { labelByVisualBuilderNodeType } from 'pages/automate/workflows/constants'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
@@ -31,14 +31,14 @@ import type {
     ReusableLLMPromptTrigger,
     WorkflowConfiguration,
 } from 'pages/automate/workflows/models/workflowConfiguration.types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
 
 import type { Components } from '../../../../../../rest_api/workflows_api/client.generated'
 import type { App } from '../../../../actionsPlatform/types'
-import MenuCategoryItem from './MenuCategoryItem'
-import MenuItem from './MenuItem'
+import { MenuCategoryItem } from './MenuCategoryItem'
+import { MenuItem } from './MenuItem'
 
 import css from './NodeMenu.less'
 
@@ -1347,4 +1347,6 @@ const NodeMenu = (
     )
 }
 
-export default forwardRef<HTMLElement, Props>(NodeMenu)
+const DefaultExportNodeMenu = forwardRef<HTMLElement, Props>(NodeMenu)
+
+export { DefaultExportNodeMenu }

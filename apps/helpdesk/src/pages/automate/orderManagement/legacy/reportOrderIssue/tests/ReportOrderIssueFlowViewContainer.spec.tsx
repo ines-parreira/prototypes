@@ -12,10 +12,10 @@ import {
 } from 'fixtures/plans'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import { IntegrationType } from 'models/integration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { RootState } from 'state/types'
 
-import ReportOrderIssueFlowViewContainer from '../ReportOrderIssueFlowViewContainer'
+import { ReportOrderIssueFlowViewContainer } from '../ReportOrderIssueFlowViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock(

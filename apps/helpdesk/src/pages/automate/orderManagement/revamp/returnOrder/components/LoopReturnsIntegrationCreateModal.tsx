@@ -6,8 +6,8 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Box, Button, Heading, Modal, Text, TextField } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ContentType, HttpMethod } from 'models/api/types'
 import { HttpIntegrationTriggerType } from 'models/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'

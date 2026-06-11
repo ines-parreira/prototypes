@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     getBusinessHoursRangesByUserTimezone,
     getBusinessHoursSettings,

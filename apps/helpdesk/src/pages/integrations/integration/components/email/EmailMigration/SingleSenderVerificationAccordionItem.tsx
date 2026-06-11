@@ -8,12 +8,12 @@ import type {
     EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
 import { EmailMigrationOutboundVerificationStatus } from 'models/integration/types'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
 
-import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
-import SingleSenderVerificationTable from './SingleSenderVerificationTable'
+import { EmailVerificationStatusLabel } from '../EmailVerificationStatusLabel'
+import { SingleSenderVerificationTable } from './SingleSenderVerificationTable'
 import {
     computeDomainSingleSenderVerificationStatus,
     getSingleSenderUnverifiedIntegrations,
@@ -32,7 +32,7 @@ type Props = {
     refreshMigrationData: () => void
 }
 
-export default function SingleSenderVerificationAccordionItem({
+export function SingleSenderVerificationAccordionItem({
     verification,
     onVerificationMethodSwitch,
     onBulkSubmitClick,

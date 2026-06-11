@@ -5,7 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'

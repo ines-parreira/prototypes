@@ -9,7 +9,7 @@ import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 
 import css from './CampaignName.less'
 
-export default function CampaignName({
+export function CampaignName({
     name,
     storeName,
     journeyType,

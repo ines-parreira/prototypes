@@ -7,7 +7,7 @@ import {
     rulesReordered,
     ruleUpdated,
 } from '../actions'
-import reducer from '../reducer'
+import { rulesReducer as reducer } from '../reducer'
 
 describe('rule reducer', () => {
     describe('createRule action', () => {

@@ -5,7 +5,7 @@ import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useCurrentFilters from 'domains/reporting/hooks/useCurrentFilters'
+import { useCurrentFilters } from 'domains/reporting/hooks/useCurrentFilters'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
@@ -15,8 +15,8 @@ import {
     setStatsFiltersWithLogicalOperators,
 } from 'domains/reporting/state/stats/statsSlice'
 import { isCleanStatsDirty } from 'domains/reporting/state/ui/stats/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 
 type Props = {
@@ -24,10 +24,7 @@ type Props = {
     notReadyFallback?: ReactNode
 }
 
-export default function DefaultStatsFilters({
-    children,
-    notReadyFallback,
-}: Props) {
+export function DefaultStatsFilters({ children, notReadyFallback }: Props) {
     useCustomFieldDefinitions(activeParams)
     const dispatch = useAppDispatch()
     const reduxFilters = useAppSelector(getStatsFiltersWithLogicalOperators)

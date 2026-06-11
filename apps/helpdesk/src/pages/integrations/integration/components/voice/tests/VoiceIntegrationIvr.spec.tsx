@@ -11,12 +11,14 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 
-import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
+import { VoiceIntegrationIvr } from '../VoiceIntegrationIvr'
 
 const mockStore = configureMockStore([thunk])
 jest.mock(
     'pages/integrations/integration/components/voice/DEPRECATED_IvrMenuActionsFieldArray',
-    () => () => <div>test actions</div>,
+    () => ({
+        DEPRECATED_IvrMenuActionsFieldArray: () => <div>test actions</div>,
+    }),
 )
 
 const ivrIntegration = {

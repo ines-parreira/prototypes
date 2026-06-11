@@ -1,11 +1,11 @@
 import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
-import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
+import { PageHeader } from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 
-import Templates from './Templates'
+import { Templates } from './Templates'
 
 import css from './TemplateListView.less'
 
-export default function TemplateListView() {
+export function TemplateListView() {
     return (
         <div className={css.wrapper}>
             <div className={css.header}>

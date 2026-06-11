@@ -26,4 +26,4 @@ const ItemWithTooltip = ({
     )
 }
 
-export default ItemWithTooltip
+export { ItemWithTooltip }

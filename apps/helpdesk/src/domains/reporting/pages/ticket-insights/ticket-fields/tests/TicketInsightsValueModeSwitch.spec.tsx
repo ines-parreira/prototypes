@@ -10,12 +10,12 @@ import {
 import { TicketInsightsValueModeSwitch } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
 import { toggleValueMode } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('domains/reporting/state/ui/stats/ticketInsightsSlice')
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 const useAppDispatchMock = useAppDispatch as jest.Mock

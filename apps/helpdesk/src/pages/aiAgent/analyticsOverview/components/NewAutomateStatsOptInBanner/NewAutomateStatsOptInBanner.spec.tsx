@@ -3,7 +3,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ThemeProvider from 'core/theme/ThemeProvider'
+import { ThemeProvider } from 'core/theme/ThemeProvider'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
 import { NewAutomateStatsOptInBanner } from './NewAutomateStatsOptInBanner'

@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import AIAgentTrialSuccessModal from '../AIAgentTrialSuccessModal'
+import { AIAgentTrialSuccessModal } from '../AIAgentTrialSuccessModal'
 
 describe('<AIAgentTrialSuccessModal/>', () => {
     it('renders', () => {

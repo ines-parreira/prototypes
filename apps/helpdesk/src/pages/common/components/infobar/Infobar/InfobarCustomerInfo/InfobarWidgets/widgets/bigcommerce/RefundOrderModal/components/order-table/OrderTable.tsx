@@ -35,7 +35,7 @@ type Props = {
     isLoading: boolean
 }
 
-export default function OrderTable({
+export function OrderTable({
     orderLevelRefundData,
     refundItemsPayload,
     dispatchRefundOrderState,

@@ -1,1 +1,1 @@
-export { default } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization/ContactFormCustomization'
+export { ContactFormCustomization } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization/ContactFormCustomization'

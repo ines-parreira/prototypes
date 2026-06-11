@@ -18,7 +18,7 @@ import type { AccountFeatureMetadata } from 'state/currentAccount/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { IntegrationListItem } from 'state/integrations/types'
 
-import All, { addRequiredPlanToIntegrations } from '../All'
+import { addRequiredPlanToIntegrations, All } from '../All'
 import { CARD_LINK_TEST_ID, LOADING_TEST_ID } from '../Card'
 import {
     CATEGORY_URL_PARAM,

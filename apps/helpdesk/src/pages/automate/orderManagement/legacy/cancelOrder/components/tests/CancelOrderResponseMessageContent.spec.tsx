@@ -8,8 +8,8 @@ import configureMockStore from 'redux-mock-store'
 import type { ShopifyIntegration } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import CancelOrderFlowViewContext from '../../CancelOrderFlowViewContext'
-import CancelOrderResponseMessageContent from '../CancelOrderResponseMessageContent'
+import { CancelOrderFlowViewContext } from '../../CancelOrderFlowViewContext'
+import { CancelOrderResponseMessageContent } from '../CancelOrderResponseMessageContent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

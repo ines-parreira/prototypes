@@ -13,7 +13,7 @@ import {
     getColumnWidth,
 } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export function getColumnValue(
     columnData: number | StatusBreakdown | undefined,

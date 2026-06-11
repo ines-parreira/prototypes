@@ -5,7 +5,7 @@ import {
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
 import { useSmartFollowUps } from 'pages/tickets/detail/components/TicketMessages/hooks/useSmartFollowUps'
-import SmartFollowUps from 'pages/tickets/detail/components/TicketMessages/SmartFollowUps'
+import { SmartFollowUps } from 'pages/tickets/detail/components/TicketMessages/SmartFollowUps'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import { isErrorFlag } from '../helpers/isErrorFlag'

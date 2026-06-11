@@ -1,4 +1,4 @@
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
 import css from './ContactFormDisplayModeToggle.less'
 
@@ -28,4 +28,4 @@ const ContactFormDisplayModeToggle = ({
     )
 }
 
-export default ContactFormDisplayModeToggle
+export { ContactFormDisplayModeToggle }

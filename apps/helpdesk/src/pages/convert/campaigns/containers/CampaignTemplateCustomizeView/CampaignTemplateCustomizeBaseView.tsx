@@ -7,15 +7,15 @@ import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import type {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import { CampaignDetailsForm } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
@@ -261,4 +261,4 @@ const CampaignTemplateCustomizeBaseView = ({
     )
 }
 
-export default CampaignTemplateCustomizeBaseView
+export { CampaignTemplateCustomizeBaseView }

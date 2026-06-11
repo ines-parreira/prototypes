@@ -10,7 +10,7 @@ import {
     DEFAULT_BUSINESS_HOUR,
 } from 'pages/settings/businessHours/constants'
 
-import TimeScheduleRow from './TimeScheduleRow'
+import { TimeScheduleRow } from './TimeScheduleRow'
 
 import css from './TimeScheduleField.less'
 
@@ -21,7 +21,7 @@ type Props = {
     daysOptions?: { label: string; value: string }[]
 }
 
-export default function PrefilledTimeScheduleField({
+export function PrefilledTimeScheduleField({
     name,
     root,
     defaultValues = DEFAULT_BUSINESS_HOUR,

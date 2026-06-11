@@ -2,7 +2,7 @@ import { Redirect, useLocation, useParams } from 'react-router-dom'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getAiAgentBasePath } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -44,4 +44,4 @@ const AiAgentConfigurationContainer = () => {
     )
 }
 
-export default AiAgentConfigurationContainer
+export { AiAgentConfigurationContainer }

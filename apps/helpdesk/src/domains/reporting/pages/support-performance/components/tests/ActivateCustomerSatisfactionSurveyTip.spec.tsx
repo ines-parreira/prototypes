@@ -13,7 +13,7 @@ import {
 
 jest.mock('react-router-dom', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return jest.requireActual('react-router-dom')
+    return { ...jest.requireActual('react-router-dom') }
 })
 describe('<ActivateCustomerSatisfactionSurveyTip />', () => {
     it('should render a message with a link', () => {

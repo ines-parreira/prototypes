@@ -10,8 +10,9 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
-import useStatResource, {
+import {
     DEFAULT_ERROR_MESSAGE,
+    useStatResource,
 } from 'domains/reporting/hooks/useStatResource'
 import { fetchStat } from 'domains/reporting/models/stat/resources'
 import type {

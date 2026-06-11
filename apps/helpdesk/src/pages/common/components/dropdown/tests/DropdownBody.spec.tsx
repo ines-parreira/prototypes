@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import DropdownBody from '../DropdownBody'
+import { DefaultExportDropdownBody as DropdownBody } from '../DropdownBody'
 
 describe('<DropdownBody />', () => {
     it('should render', () => {

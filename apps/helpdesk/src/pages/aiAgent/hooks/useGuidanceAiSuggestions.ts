@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     aiGeneratedGuidanceKeys,
     useGetAIGeneratedGuidances,

@@ -5,18 +5,16 @@ import { screen, waitFor } from '@testing-library/react'
 
 import type { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 
-import RecordDiffStatus from '../components/RecordDiffStatus'
+import { RecordDiffStatus } from '../components/RecordDiffStatus'
 
-jest.mock(
-    '../components/CharDiff',
-    () =>
-        ({ string1, string2 }: { string1: string; string2: string }) => (
-            <div>
-                <p>{string1}</p>
-                <p>{string2}</p>
-            </div>
-        ),
-)
+jest.mock('../components/CharDiff', () => ({
+    CharDiff: ({ string1, string2 }: { string1: string; string2: string }) => (
+        <div>
+            <p>{string1}</p>
+            <p>{string2}</p>
+        </div>
+    ),
+}))
 
 const renderComponent = (record: EmailDNSRecord) => {
     return render(<RecordDiffStatus record={record} />)

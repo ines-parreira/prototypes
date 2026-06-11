@@ -10,7 +10,7 @@ import { channels as mockChannels } from 'fixtures/channels'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import type { Source as MessageSource } from 'models/ticket/types'
 
-import Source from '../Source'
+import { Source } from '../Source'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -18,11 +18,11 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div>{dateTime}</div>
+    ),
+}))
 
 beforeEach(() => {
     appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {

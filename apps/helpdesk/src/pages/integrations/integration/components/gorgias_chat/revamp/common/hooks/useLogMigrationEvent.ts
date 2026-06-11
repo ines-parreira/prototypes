@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIntegrations } from 'state/integrations/selectors'
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 import css from './AutomateViewContent.less'
 
@@ -70,4 +70,4 @@ const AutomateViewContent = ({
     )
 }
 
-export default AutomateViewContent
+export { AutomateViewContent }

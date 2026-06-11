@@ -30,4 +30,4 @@ const SecondaryNavbar = ({ className, children }: Props): JSX.Element => {
     )
 }
 
-export default SecondaryNavbar
+export { SecondaryNavbar }

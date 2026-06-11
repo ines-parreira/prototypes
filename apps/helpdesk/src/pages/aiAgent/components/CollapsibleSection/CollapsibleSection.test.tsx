@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import CollapsibleSection from './CollapsibleSection'
+import { CollapsibleSection } from './CollapsibleSection'
 
 describe('CollapsibleSection', () => {
     const defaultProps = {

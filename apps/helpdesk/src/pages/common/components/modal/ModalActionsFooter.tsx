@@ -4,7 +4,7 @@ import { Children } from 'react'
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
 
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 
 import css from './ModalActionsFooter.less'
 
@@ -51,4 +51,4 @@ const ModalActionsFooter = ({
     )
 }
 
-export default ModalActionsFooter
+export { ModalActionsFooter }

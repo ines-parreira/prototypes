@@ -19,7 +19,7 @@ import {
     updateCategoriesArticleCount,
     updateCategory,
 } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, DefaultExportReducer as reducer } from '../reducer'
 import type { CategoriesAction } from '../types'
 
 const categoriesResponse: Category[] = getCategoriesFlatSorted

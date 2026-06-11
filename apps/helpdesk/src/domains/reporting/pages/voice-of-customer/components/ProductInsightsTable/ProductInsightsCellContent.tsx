@@ -3,7 +3,7 @@ import _isNil from 'lodash/isNil'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useSentimentPerProduct } from 'domains/reporting/hooks/voice-of-customer/useSentimentPerProduct'
 import { Sentiment } from 'domains/reporting/models/stat/types'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import {
     formatMetricValue,

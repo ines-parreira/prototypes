@@ -20,7 +20,7 @@ export type VisualBuilderEdgeProps = {
     }
 }
 
-export default function EdgeBlock({
+export function EdgeBlock({
     incomingChoice,
     httpRequestCondition,
     incomingCondition,

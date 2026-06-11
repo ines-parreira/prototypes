@@ -3,7 +3,7 @@ import { useState } from 'react'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
 
-import UseCaseTemplateModal from './UseCaseTemplateModal'
+import { UseCaseTemplateModal } from './UseCaseTemplateModal'
 
 import css from './UseCaseTemplateCard.less'
 
@@ -36,7 +36,7 @@ const categoryTagStyleMap: {
     },
 }
 
-export default function UseCaseTemplateCard({
+export function UseCaseTemplateCard({
     template,
     isOpenDefault = false,
 }: Props) {

@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from 'pages/common/components/dropdown/DropdownItemLabel'
 
 type Props = {
     label: string
@@ -58,4 +58,4 @@ const MenuItem = ({
     )
 }
 
-export default MenuItem
+export { MenuItem }

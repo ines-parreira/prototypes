@@ -8,42 +8,40 @@ import userEvent from '@testing-library/user-event'
 import _noop from 'lodash/noop'
 import type { Moment } from 'moment'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import Snooze from '../Snooze'
+import { Snooze } from '../Snooze'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
     useShortcuts: jest.fn(),
 }))
 jest.mock('@repo/logging')
-jest.mock(
-    '../TicketDetails/TicketSnoozePicker',
-    () =>
-        ({
-            isOpen,
-            onSubmit,
-        }: {
-            isOpen: boolean
-            onSubmit: (until: Moment | null) => void
-        }) => {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const moment = require('moment')
-            const handleClick = () => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                onSubmit(moment('2024-01-01T00:00:00'))
-            }
-            return (
-                <div>
-                    <p>TicketSnoozePicker {isOpen ? 'open' : 'closed'}</p>
-                    <button type="button" onClick={handleClick}>
-                        update snooze time
-                    </button>
-                </div>
-            )
-        },
-)
+jest.mock('../TicketDetails/TicketSnoozePicker', () => ({
+    TicketSnoozePicker: ({
+        isOpen,
+        onSubmit,
+    }: {
+        isOpen: boolean
+        onSubmit: (until: Moment | null) => void
+    }) => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const moment = require('moment')
+        const handleClick = () => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            onSubmit(moment('2024-01-01T00:00:00'))
+        }
+        return (
+            <div>
+                <p>TicketSnoozePicker {isOpen ? 'open' : 'closed'}</p>
+                <button type="button" onClick={handleClick}>
+                    update snooze time
+                </button>
+            </div>
+        )
+    },
+}))
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 const useShortcutsMock = useShortcuts as jest.Mock

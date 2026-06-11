@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import HelpCenterEditModalFooter from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
+import { HelpCenterEditModalFooter } from 'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter'
 import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -8,7 +8,7 @@ import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/ge
 import type { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import type { RootState } from 'state/types'
 
-import HelpCenterArticleModalAdvancedViewContent from '../HelpCenterArticleModalAdvancedViewContent'
+import { HelpCenterArticleModalAdvancedViewContent } from '../HelpCenterArticleModalAdvancedViewContent'
 
 const mockUseEditionManager = jest.fn()
 const mockUseCurrentHelpCenter = jest.fn()
@@ -20,7 +20,7 @@ jest.mock('pages/settings/helpCenter/providers/EditionManagerContext', () => ({
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
     __esModule: true,
-    default: () => mockUseCurrentHelpCenter(),
+    useCurrentHelpCenter: () => mockUseCurrentHelpCenter(),
 }))
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({

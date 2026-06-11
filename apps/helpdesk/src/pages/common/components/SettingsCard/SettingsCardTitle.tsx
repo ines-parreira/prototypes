@@ -18,4 +18,4 @@ const SettingsCardTitle = forwardRef<
     </div>
 ))
 
-export default SettingsCardTitle
+export { SettingsCardTitle }

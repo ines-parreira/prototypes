@@ -1,6 +1,6 @@
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
 
 import css from './VoiceSettingAccordionItem.less'
 
@@ -10,7 +10,7 @@ type Props = {
     description: React.ReactNode
 }
 
-export default function VoiceSettingAccordionItem({
+export function VoiceSettingAccordionItem({
     children,
     subtitle,
     description,

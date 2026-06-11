@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     useUpsertWorkflowConfigurationTemplate,
     workflowsConfigurationTemplateDefinitionKeys,
@@ -32,4 +32,4 @@ const useEditActionTemplate = () => {
     return { isLoading, editActionTemplate: mutateAsync }
 }
 
-export default useEditActionTemplate
+export { useEditActionTemplate }

@@ -2,7 +2,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoreConfigurations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -26,7 +26,7 @@ import {
 } from './useCanUseAiSalesAgent'
 
 // Mock dependencies
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),

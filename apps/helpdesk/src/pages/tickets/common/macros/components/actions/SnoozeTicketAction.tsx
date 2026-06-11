@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
+import { TimedeltaPicker } from 'pages/common/forms/TimedeltaPicker'
 
 import css from './SnoozeTicketAction.less'
 
@@ -13,7 +13,7 @@ type Props = {
     action: Map<string, any>
 }
 
-export default function SnoozeTicketAction(props: Props) {
+export function SnoozeTicketAction(props: Props) {
     const units = [
         { label: 'minute(s)', value: 'm' },
         { label: 'hour(s)', value: 'h' },

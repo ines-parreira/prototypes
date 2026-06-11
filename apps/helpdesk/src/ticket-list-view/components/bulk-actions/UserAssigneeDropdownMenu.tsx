@@ -9,11 +9,11 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { Item } from 'components/Dropdown'
 import { Body, Context, focusOnNextItem } from 'components/Dropdown'
 import type { User } from 'config/types/user'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import useSearch from 'search/useSearch'
-import useListUsers from 'users/useListUsers'
+import { DefaultExportDropdownFooter as DropdownFooter } from 'pages/common/components/dropdown/DropdownFooter'
+import { useSearch } from 'search/useSearch'
+import { useListUsers } from 'users/useListUsers'
 
-import UserDropdownItem from './UserDropdownItem'
+import { UserDropdownItem } from './UserDropdownItem'
 
 import css from './style.less'
 
@@ -155,4 +155,4 @@ const UserAssigneeDropdownMenu = ({ onClick }: Props) => {
     )
 }
 
-export default UserAssigneeDropdownMenu
+export { UserAssigneeDropdownMenu }

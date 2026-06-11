@@ -7,8 +7,8 @@ import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import CreateNewQueueModal from '../CreateNewQueueModal'
-import VoiceQueueSelectField from '../VoiceQueueSelectField'
+import { CreateNewQueueModal } from '../CreateNewQueueModal'
+import { VoiceQueueSelectField } from '../VoiceQueueSelectField'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),

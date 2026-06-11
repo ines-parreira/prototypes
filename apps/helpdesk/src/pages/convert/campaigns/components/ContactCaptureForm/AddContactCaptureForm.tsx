@@ -9,12 +9,12 @@ import React, {
 
 import { Button } from 'reactstrap'
 
-import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
+import { EditorDrawerHeader } from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
 import { Drawer } from 'pages/common/components/Drawer'
 import type { WizardContextState } from 'pages/common/components/wizard/Wizard'
-import Wizard, { WizardContext } from 'pages/common/components/wizard/Wizard'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { Wizard, WizardContext } from 'pages/common/components/wizard/Wizard'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 import css from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm.less'
 import { STEPS } from 'pages/convert/campaigns/components/ContactCaptureForm/steps'
 import type { TransitoryAttachmentData } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
@@ -217,4 +217,4 @@ const AddContactCaptureForm = (props: AddContactCaptureFormProps) => (
     </>
 )
 
-export default AddContactCaptureForm
+export { AddContactCaptureForm }

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 
-import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
-import ConfirmButtonWithModal from 'pages/common/components/button/ConfirmButtonWithModal'
+import { useDeleteCustomBusinessHours } from 'hooks/businessHours/useDeleteCustomBusinessHours'
+import { ConfirmButtonWithModal } from 'pages/common/components/button/ConfirmButtonWithModal'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
 
@@ -15,7 +15,7 @@ type Props = {
     isLoading?: boolean
 }
 
-export default function EditCustomBusinessHoursActions({
+export function EditCustomBusinessHoursActions({
     businessHours,
     isLoading,
 }: Props) {

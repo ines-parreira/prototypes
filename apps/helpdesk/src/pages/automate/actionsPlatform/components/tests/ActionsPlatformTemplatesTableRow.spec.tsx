@@ -3,10 +3,10 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 
-import ActionsPlatformTemplatesTableRow from '../ActionsPlatformTemplatesTableRow'
+import { ActionsPlatformTemplatesTableRow } from '../ActionsPlatformTemplatesTableRow'
 
 jest.mock('hooks/useGetDateAndTimeFormat')
 

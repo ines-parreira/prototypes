@@ -31,4 +31,4 @@ const StoreName = ({ name, shopIntegrationId }: StoreNameType) => {
     )
 }
 
-export default StoreName
+export { StoreName }

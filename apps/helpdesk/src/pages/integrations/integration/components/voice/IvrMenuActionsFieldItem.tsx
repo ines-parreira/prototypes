@@ -7,7 +7,7 @@ import {
 } from '@gorgias/axiom'
 import type { BranchOptions } from '@gorgias/helpdesk-types'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './IvrMenuActionsFieldItem.less'
 

@@ -41,4 +41,4 @@ const BackToConvertButton = ({ integrationId }: Props) => {
     )
 }
 
-export default BackToConvertButton
+export { BackToConvertButton }

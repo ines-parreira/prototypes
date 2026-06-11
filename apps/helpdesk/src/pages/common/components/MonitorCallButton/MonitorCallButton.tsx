@@ -11,7 +11,7 @@ import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
 import type { VoiceCall } from 'models/voiceCall/types'
 import { MonitoringErrorCode } from 'models/voiceCall/types'
 import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
-import MonitoringCallSwitchModal from 'pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal'
+import { MonitoringCallSwitchModal } from 'pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal'
 
 type MonitorCallButtonProps = {
     voiceCallToMonitor: VoiceCall | VoiceCallSummary
@@ -20,7 +20,7 @@ type MonitorCallButtonProps = {
     reason?: string
 }
 
-export default function MonitorCallButton({
+export function MonitorCallButton({
     voiceCallToMonitor,
     agentId,
     isMonitorable = true,

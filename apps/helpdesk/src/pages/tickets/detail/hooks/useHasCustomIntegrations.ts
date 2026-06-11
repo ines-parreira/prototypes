@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { NAMED_INTEGRATION_WIDGET_TYPES } from 'state/widgets/constants'
 import {
     getSourcesWithCustomer,
@@ -11,7 +11,7 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { getWidgetSourcePath } from 'state/widgets/utils'
 
-export default function useHasCustomIntegrations() {
+export function useHasCustomIntegrations() {
     const widgets = useAppSelector(
         getWidgetsWithContext(WidgetEnvironment.Ticket),
     )

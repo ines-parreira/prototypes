@@ -9,7 +9,7 @@ import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilte
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { BusiestTimesOfDays } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import { BusiestTimesOfDaysDownloadDataButton } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
@@ -37,11 +37,15 @@ import type { RootState } from 'state/types'
 
 jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
-        return props.optionalFilters?.map((optionalFilter) => (
-            <div key={optionalFilter}>{optionalFilter}</div>
-        ))
-    },
+    () => ({
+        FiltersPanelWrapper: (
+            props: ComponentProps<typeof FiltersPanelWrapper>,
+        ) => {
+            return props.optionalFilters?.map((optionalFilter) => (
+                <div key={optionalFilter}>{optionalFilter}</div>
+            ))
+        },
+    }),
 )
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',

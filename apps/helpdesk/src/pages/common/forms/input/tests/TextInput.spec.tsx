@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import TextInput from '../TextInput'
+import { DefaultExportTextInput as TextInput } from '../TextInput'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 

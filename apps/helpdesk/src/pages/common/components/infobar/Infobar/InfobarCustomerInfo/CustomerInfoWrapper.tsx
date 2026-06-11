@@ -10,7 +10,7 @@ type Props = {
     displayedElementsCount?: number
 }
 
-export default function CustomerInfoWrapper({
+export function CustomerInfoWrapper({
     children,
     displayedElementsCount = 2,
 }: Props) {

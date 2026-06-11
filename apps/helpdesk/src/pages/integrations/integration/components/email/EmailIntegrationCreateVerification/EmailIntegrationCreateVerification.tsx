@@ -17,17 +17,17 @@ import {
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import {
     isBaseEmailAddress,
     isSendgridEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
-import socketManager from 'services/socketManager/socketManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 import { resendVerificationEmail } from 'state/currentAccount/actions'
 import {
@@ -299,4 +299,8 @@ const connector = connect(
     },
 )
 
-export default connector(EmailIntegrationCreateVerification)
+const DefaultExportEmailIntegrationCreateVerification = connector(
+    EmailIntegrationCreateVerification,
+)
+
+export { DefaultExportEmailIntegrationCreateVerification }

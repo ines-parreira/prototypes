@@ -6,12 +6,12 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import GaugeChart from 'domains/reporting/pages/common/components/charts/GaugeChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { GaugeChart } from 'domains/reporting/pages/common/components/charts/GaugeChart'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { WORKLOAD_BY_CHANNEL_HINT } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { TOTAL_WORKLOAD_BY_CHANNEL_LABEL } from 'domains/reporting/services/constants'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 export const WorkloadPerChannelChart = ({
     chartId,

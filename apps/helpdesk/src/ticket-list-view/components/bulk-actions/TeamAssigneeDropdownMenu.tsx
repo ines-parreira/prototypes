@@ -10,11 +10,11 @@ import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'
 import type { Item } from 'components/Dropdown'
 import { Body, Context, focusOnNextItem } from 'components/Dropdown'
 import type { Team } from 'models/team/types'
-import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
-import useSearch from 'search/useSearch'
+import { DefaultExportDropdownFooter as DropdownFooter } from 'pages/common/components/dropdown/DropdownFooter'
+import { useSearch } from 'search/useSearch'
 import { useListTeams } from 'teams/queries'
 
-import TeamDropdownItem from './TeamDropdownItem'
+import { TeamDropdownItem } from './TeamDropdownItem'
 
 import css from './style.less'
 
@@ -156,4 +156,4 @@ const TeamAssigneeDropdownMenu = ({ onClick }: Props) => {
     )
 }
 
-export default TeamAssigneeDropdownMenu
+export { TeamAssigneeDropdownMenu }

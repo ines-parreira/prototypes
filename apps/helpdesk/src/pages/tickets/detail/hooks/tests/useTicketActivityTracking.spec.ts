@@ -2,7 +2,7 @@ import * as activityTracker from '@repo/activity-tracker'
 import { ActivityEvents } from '@repo/activity-tracker'
 import { renderHook } from '@repo/testing'
 
-import useTicketActivityTracking from '../useTicketActivityTracking'
+import { useTicketActivityTracking } from '../useTicketActivityTracking'
 
 jest.mock('@repo/activity-tracker')
 

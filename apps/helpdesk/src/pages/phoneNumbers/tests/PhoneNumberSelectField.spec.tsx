@@ -10,7 +10,7 @@ import { IntegrationType } from 'models/integration/types'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PhoneNumberSelectField from '../PhoneNumberSelectField'
+import { PhoneNumberSelectField } from '../PhoneNumberSelectField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({

@@ -3,4 +3,4 @@ const rehypeRaw = () => ({
     name: 'rehype-raw-mock',
 })
 
-export default rehypeRaw
+export { rehypeRaw }

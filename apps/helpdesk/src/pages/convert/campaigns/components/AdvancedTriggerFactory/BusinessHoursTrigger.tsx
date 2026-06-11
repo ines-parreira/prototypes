@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import type { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import { isBusinessHoursValue } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'

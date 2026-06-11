@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import { getCampaignStatus } from 'domains/reporting/pages/convert/utils/getCampaignStatus'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useListCampaigns } from 'models/convert/campaign/queries'
 import type {
     CampaignListOptions as CampaignListOptionsParams,

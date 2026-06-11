@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { isTeamLead } from '@repo/permissions'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 export function useCopilotEnabled(): boolean {

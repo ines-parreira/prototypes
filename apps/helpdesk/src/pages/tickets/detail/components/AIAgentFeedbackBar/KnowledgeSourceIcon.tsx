@@ -34,4 +34,4 @@ const KnowledgeSourceIcon = ({
     )
 }
 
-export default KnowledgeSourceIcon
+export { KnowledgeSourceIcon }

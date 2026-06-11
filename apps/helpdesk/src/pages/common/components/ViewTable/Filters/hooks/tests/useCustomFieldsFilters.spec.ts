@@ -8,11 +8,11 @@ import {
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { getDefaultCustomFieldOperator } from 'pages/common/components/ViewTable/Filters/utils'
 import { updateCustomFieldFilterId } from 'state/views/actions'
 
-import useCustomFieldsFilters from '../useCustomFieldsFilters'
+import { useCustomFieldsFilters } from '../useCustomFieldsFilters'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock

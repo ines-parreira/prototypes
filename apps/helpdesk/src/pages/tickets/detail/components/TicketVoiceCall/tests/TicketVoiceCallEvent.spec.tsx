@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
 
-import TicketVoiceCallEvent from '../TicketVoiceCallEvent'
+import { TicketVoiceCallEvent } from '../TicketVoiceCallEvent'
 
 describe('TicketVoiceCallEvent', () => {
     const renderComponent = (event: ProcessedEvent) => {

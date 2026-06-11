@@ -1,11 +1,11 @@
 import { IntegrationType } from 'models/integration/constants'
-import AppDetails from 'pages/common/components/ProductDetail'
+import { Detail as AppDetails } from 'pages/common/components/ProductDetail'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import WhatsAppIntegrationConnectButton from './WhatsAppIntegrationConnectButton'
+import { WhatsAppIntegrationConnectButton } from './WhatsAppIntegrationConnectButton'
 
-export default function WhatsAppIntegrationDetails(): JSX.Element | null {
+export function WhatsAppIntegrationDetails(): JSX.Element | null {
     const config = getIntegrationConfig(IntegrationType.WhatsApp)
 
     if (!config) {

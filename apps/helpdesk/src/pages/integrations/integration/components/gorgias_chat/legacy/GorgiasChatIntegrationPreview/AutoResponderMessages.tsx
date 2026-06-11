@@ -6,9 +6,9 @@ import {
 } from 'config/integrations/gorgias_chat'
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 
-import AgentMessages from './AgentMessages'
-import AutoResponder from './AutoResponder'
-import CustomerInitialMessages from './CustomerInitialMessages'
+import { AgentMessages } from './AgentMessages'
+import { AutoResponder } from './AutoResponder'
+import { CustomerInitialMessages } from './CustomerInitialMessages'
 
 type Props = {
     conversationColor: string
@@ -67,4 +67,4 @@ const AutoResponderMessages: React.FC<Props> = ({
     )
 }
 
-export default AutoResponderMessages
+export { AutoResponderMessages }

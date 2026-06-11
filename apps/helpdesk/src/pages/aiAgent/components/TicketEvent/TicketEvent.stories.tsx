@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
 
-import TicketEvent from './TicketEvent'
+import { TicketEvent } from './TicketEvent'
 
 const meta: Meta<typeof TicketEvent> = {
     title: 'AI Agent/Playground/TicketEvent',

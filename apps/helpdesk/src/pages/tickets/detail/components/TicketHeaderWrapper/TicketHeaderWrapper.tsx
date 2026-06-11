@@ -2,13 +2,13 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import classnames from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AgentLabel } from 'pages/common/utils/labels'
-import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
-import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
+import { TicketHeader } from 'pages/tickets/detail/components/TicketHeader'
+import { useCollisionDetection } from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
-import TicketFields from '../TicketFields/TicketFields'
+import { DefaultExportTicketFields as TicketFields } from '../TicketFields/TicketFields'
 
 import css from './TicketHeaderWrapper.less'
 
@@ -120,4 +120,4 @@ const TicketHeaderWrapper = ({
     )
 }
 
-export default TicketHeaderWrapper
+export { TicketHeaderWrapper }

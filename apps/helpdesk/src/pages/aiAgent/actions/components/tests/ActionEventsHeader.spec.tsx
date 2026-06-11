@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import type { RootState } from 'state/types'
 
-import ActionEventsHeader from '../ActionEventsHeader'
+import { ActionEventsHeader } from '../ActionEventsHeader'
 
 describe('<ActionEventsHeader />', () => {
     it('should render component', () => {

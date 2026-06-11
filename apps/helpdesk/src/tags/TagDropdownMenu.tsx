@@ -14,13 +14,13 @@ import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 import type { Item } from 'components/Dropdown'
 import { Body, Context, focusOnNextItem } from 'components/Dropdown'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
 import { getCurrentUserState } from 'state/currentUser/selectors'
-import useListTags from 'tags/useListTags'
+import { useListTags } from 'tags/useListTags'
 import { hasRole } from 'utils'
 
-import TagDropdownItem from './TagDropdownItem'
+import { TagDropdownItem } from './TagDropdownItem'
 
 import css from './TagDropdownMenu.less'
 
@@ -192,4 +192,4 @@ const TagDropdownMenu = ({
     )
 }
 
-export default TagDropdownMenu
+export { TagDropdownMenu }

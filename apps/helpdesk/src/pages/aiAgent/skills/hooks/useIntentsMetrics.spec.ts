@@ -5,7 +5,7 @@ import { aggregateIntentMetrics } from 'domains/reporting/models/queryFactories/
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
@@ -44,7 +44,7 @@ jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 
 jest.mock(

@@ -21,4 +21,4 @@ const useIsVisualBuilderGraphChanged = (
     )
 }
 
-export default useIsVisualBuilderGraphChanged
+export { useIsVisualBuilderGraphChanged }

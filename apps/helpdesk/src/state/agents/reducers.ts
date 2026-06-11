@@ -25,7 +25,7 @@ export const initialState: AgentsState = fromJS({
     messageFeedbackStatus: {} as Record<ResourceSection, FeedbackStatus>,
 })
 
-export default function reducer(
+export function reducer(
     state: AgentsState = initialState,
     action: StoreAction,
 ): AgentsState {

@@ -3,9 +3,11 @@ import { renderHook } from '@repo/testing'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
-import useAiAgentMessageFeedback from '../useAiAgentMessageFeedback'
+import { useAiAgentMessageFeedback } from '../useAiAgentMessageFeedback'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => unknown) => fn(),
+}))
 jest.mock('models/aiAgentFeedback/queries', () => ({
     useGetAiAgentFeedback: jest.fn(),
 }))

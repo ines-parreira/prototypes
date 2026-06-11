@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
 import type { ServiceConnectionStatuses } from '../../../hooks/useServiceConnectionStatuses'
-import StatusCell from '../StatusCell'
+import { StatusCell } from '../StatusCell'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({

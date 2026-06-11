@@ -12,7 +12,7 @@ import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 
-import Shopify from '../Shopify'
+import { Shopify } from '../Shopify'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurationTemplates: jest.fn(),

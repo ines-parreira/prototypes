@@ -47,4 +47,4 @@ const statsReducer = combineReducers({
     [qualityManagementSlice.name]: qualityManagementSlice.reducer,
 })
 
-export default statsReducer
+export { statsReducer }

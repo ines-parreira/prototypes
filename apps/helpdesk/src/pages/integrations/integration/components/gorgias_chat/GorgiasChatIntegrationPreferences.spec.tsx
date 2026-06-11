@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
@@ -18,7 +18,11 @@ jest.mock(
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences',
-    () => () => <div data-testid="legacy-preferences" />,
+    () => ({
+        GorgiasChatIntegrationPreferencesWrapper: () => (
+            <div data-testid="legacy-preferences" />
+        ),
+    }),
 )
 
 const mockRevampPreferences = jest.fn()

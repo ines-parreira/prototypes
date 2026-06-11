@@ -8,14 +8,14 @@ import { isDomainEvent } from '@gorgias/events'
 import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from './constants'
-import TextToSpeechContext from './TextToSpeechContext'
+import { TextToSpeechContext } from './TextToSpeechContext'
 
-export default function TextToSpeechProvider({
+export function TextToSpeechProvider({
     integrationId,
     children,
 }: {

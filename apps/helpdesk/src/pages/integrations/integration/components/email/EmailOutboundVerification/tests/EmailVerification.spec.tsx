@@ -9,16 +9,18 @@ import type { EmailIntegration } from 'models/integration/types'
 import { OutboundVerificationStatusValue } from 'models/integration/types'
 
 import type { Props } from '../EmailVerification'
-import EmailVerification from '../EmailVerification'
+import { EmailVerification } from '../EmailVerification'
 
 const integration = integrationsState.integrations.find(
     (integration) => integration.meta.address === 'sendgrid@gorgias.io',
 ) as unknown as EmailIntegration
 
 const mockCreateDomainVerification = jest.fn()
-jest.mock('../../hooks/useCreateDomainVerification', () => () => ({
-    isLoading: false,
-    createDomainVerification: mockCreateDomainVerification,
+jest.mock('../../hooks/useCreateDomainVerification', () => ({
+    useCreateDomainVerification: () => ({
+        isLoading: false,
+        createDomainVerification: mockCreateDomainVerification,
+    }),
 }))
 
 describe('EmailVerification', () => {

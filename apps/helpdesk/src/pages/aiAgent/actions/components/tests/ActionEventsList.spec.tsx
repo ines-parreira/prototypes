@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { LlmTriggeredExecution } from '../../types'
-import ActionEventsList from '../ActionEventsList'
+import { ActionEventsList } from '../ActionEventsList'
 
 describe('<ActionEventsList />', () => {
     it('should render component', () => {

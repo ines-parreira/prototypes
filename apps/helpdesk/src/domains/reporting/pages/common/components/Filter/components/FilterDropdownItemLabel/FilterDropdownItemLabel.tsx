@@ -83,4 +83,4 @@ const FilterDropdownItemLabel = ({ label, icon }: Props) => {
     )
 }
 
-export default FilterDropdownItemLabel
+export { FilterDropdownItemLabel }

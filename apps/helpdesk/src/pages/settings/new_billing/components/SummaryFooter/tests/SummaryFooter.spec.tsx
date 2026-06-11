@@ -22,7 +22,7 @@ import { ShopifyBillingStatus } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { SummaryFooterProps } from '../SummaryFooter'
-import SummaryFooter from '../SummaryFooter'
+import { SummaryFooter } from '../SummaryFooter'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,

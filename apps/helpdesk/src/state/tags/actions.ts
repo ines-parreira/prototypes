@@ -7,7 +7,7 @@ import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
 
 import { fetchTags as fetchTagsResources } from 'models/tag/resources'
 import type { OrderByOrderDir, TagDraft } from 'models/tag/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'

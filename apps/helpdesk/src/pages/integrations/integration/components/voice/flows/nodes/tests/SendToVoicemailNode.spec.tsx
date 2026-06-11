@@ -16,8 +16,8 @@ import type {
 import { FlowProvider } from 'core/ui/flows'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
-import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { TextToSpeechContext } from '../../../VoiceMessageTTS/TextToSpeechContext'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { SendToVoicemailNode } from '../SendToVoicemailNode'
 
 describe('SendToVoicemailNode', () => {

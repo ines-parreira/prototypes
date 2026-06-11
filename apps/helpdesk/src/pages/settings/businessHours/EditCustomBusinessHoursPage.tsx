@@ -5,16 +5,16 @@ import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 import { useGetBusinessHoursDetails } from '@gorgias/helpdesk-queries'
 
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
-import SettingsContent from '../SettingsContent'
-import SettingsPageContainer from '../SettingsPageContainer'
+import { SettingsContent } from '../SettingsContent'
+import { SettingsPageContainer } from '../SettingsPageContainer'
 import { BUSINESS_HOURS_BASE_URL } from './constants'
-import CustomBusinessHoursProvider from './CustomBusinessHoursProvider'
-import EditCustomBusinessHoursForm from './EditCustomBusinessHoursForm'
+import { CustomBusinessHoursProvider } from './CustomBusinessHoursProvider'
+import { EditCustomBusinessHoursForm } from './EditCustomBusinessHoursForm'
 
-export default function EditCustomBusinessHoursPage() {
+export function EditCustomBusinessHoursPage() {
     const { id: idParam } = useParams<{ id: string }>()
 
     const {

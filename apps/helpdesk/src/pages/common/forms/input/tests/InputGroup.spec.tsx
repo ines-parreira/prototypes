@@ -5,9 +5,9 @@ import _noop from 'lodash/noop'
 
 import { Button } from '@gorgias/axiom'
 
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
-import InputGroup from '../InputGroup'
+import { InputGroup } from '../InputGroup'
 
 describe('<InputGroup />', () => {
     it('should render a group input wrapper', () => {

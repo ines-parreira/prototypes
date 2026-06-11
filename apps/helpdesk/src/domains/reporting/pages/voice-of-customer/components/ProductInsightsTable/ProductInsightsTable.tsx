@@ -19,9 +19,9 @@ import {
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import type { OrderDirection } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
 
 export const NO_DATA_HEADING = 'No data available'
 export const NO_DATA_SUBHEADING = 'Try adjusting filters to get results.'

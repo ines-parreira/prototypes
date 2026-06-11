@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import DEPRECATED_AgentsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_AgentsStatsFilter'
+import { DEPRECATED_AgentsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_AgentsStatsFilter'
 import {
     initialState,
     mergeStatsFilters,

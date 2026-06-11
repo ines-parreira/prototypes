@@ -5,8 +5,8 @@ import { Duration } from '@gorgias/toolkit'
 
 import { Popover } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
-import IconButton from 'pages/common/components/button/IconButton'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { ModalContext } from 'pages/common/components/modal/Modal'
 import type { RootState } from 'state/types'
 
@@ -19,12 +19,7 @@ type Props = {
     onEdit?: () => void
 }
 
-export default function LinkPopover({
-    children,
-    url,
-    onDelete,
-    onEdit,
-}: Props) {
+export function LinkPopover({ children, url, onDelete, onEdit }: Props) {
     const [isOpen, setIsOpen] = useState(false)
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
     const isEditingLink = useAppSelector(

@@ -86,4 +86,4 @@ const WorkflowTemplateCard = ({
     )
 }
 
-export default WorkflowTemplateCard
+export { WorkflowTemplateCard }

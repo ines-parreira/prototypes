@@ -26,7 +26,7 @@ import type {
 } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/PeriodFilter.less'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 const MAX_SPAN = 90
 

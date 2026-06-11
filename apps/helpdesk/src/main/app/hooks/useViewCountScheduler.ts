@@ -11,12 +11,12 @@ import {
     ViewCountSchedulerVersion,
 } from '@repo/views'
 
-import socketManager from 'services/socketManager/socketManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import { useIsSocketConnected } from 'services/socketManager/useIsSocketConnected'
 
 const FETCH_ALL_CHUNK_SIZE = 10
-export default function useViewCountScheduler(): void {
+export function useViewCountScheduler(): void {
     const { version } = useViewCountSchedulerVersion()
     const isEnabled = version === ViewCountSchedulerVersion.V3
     const config = useSchedulerConfig()

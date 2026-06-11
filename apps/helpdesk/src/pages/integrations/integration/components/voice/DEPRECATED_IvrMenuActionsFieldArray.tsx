@@ -9,7 +9,7 @@ import type {
 } from 'models/integration/types'
 import { IvrMenuActionType } from 'models/integration/types'
 
-import IvrMenuActionField from './IvrMenuActionField'
+import { IvrMenuActionField } from './IvrMenuActionField'
 
 import css from './VoiceIntegrationIvr.less'
 
@@ -85,4 +85,4 @@ const DEPRECATED_IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
     )
 }
 
-export default DEPRECATED_IvrMenuActionsFieldArray
+export { DEPRECATED_IvrMenuActionsFieldArray }

@@ -10,24 +10,18 @@ import { macros as macrosFixtures } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import type { MacrosState } from 'state/entities/macros/types'
 
-import MoreActions from '../MoreActions'
+import { MoreActions } from '../MoreActions'
 
 jest.mock('hooks/macros')
 const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacros)
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            useRouteMatch: jest.fn(),
-            Link: jest.fn(
-                ({ children }: { children?: React.ReactNode }) => children,
-            ),
-            NavLink: ({ children }: { children?: React.ReactNode }) => children,
-        }) as Record<string, unknown>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useRouteMatch: jest.fn(),
+    Link: jest.fn(({ children }: { children?: React.ReactNode }) => children),
+    NavLink: ({ children }: { children?: React.ReactNode }) => children,
+}))
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 const mockMutateBulkArchive = jest.fn()
 const mockMutateBulkUnarchive = jest.fn()

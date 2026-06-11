@@ -5,7 +5,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Variant } from 'constants/integrations/types/shopify'
 import { shopifyProductFixture } from 'fixtures/shopify'
 
-import IntegrationProductView from '../IntegrationProductView'
+import { IntegrationProductView } from '../IntegrationProductView'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)

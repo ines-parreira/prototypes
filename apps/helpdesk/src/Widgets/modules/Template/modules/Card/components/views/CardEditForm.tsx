@@ -4,12 +4,12 @@ import React, { useRef, useState } from 'react'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import CheckBox from 'pages/common/forms/CheckBox'
-import ColorField from 'pages/common/forms/ColorField'
-import FileField from 'pages/common/forms/FileField'
-import InputField from 'pages/common/forms/input/InputField'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { ColorField } from 'pages/common/forms/ColorField'
+import { FileFieldContainer as FileField } from 'pages/common/forms/FileField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
 import type { CardEditFormState, HiddenField } from '../../types'
@@ -192,4 +192,4 @@ const CardEdit = ({
     )
 }
 
-export default CardEdit
+export { CardEdit }

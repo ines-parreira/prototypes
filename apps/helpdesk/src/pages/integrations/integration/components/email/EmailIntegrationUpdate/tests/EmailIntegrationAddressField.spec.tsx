@@ -9,13 +9,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { EmailIntegration } from 'models/integration/types'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
+import { EmailIntegrationAddressField } from '../EmailIntegrationAddressField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

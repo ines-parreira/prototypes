@@ -5,12 +5,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import actionsIcon from 'assets/img/icons/guidance-actions.svg'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Search from 'pages/common/components/Search'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { useToolbarContext } from '../ToolbarContext'
@@ -177,4 +177,4 @@ const GuidanceActionDropdown = ({
     )
 }
 
-export default GuidanceActionDropdown
+export { GuidanceActionDropdown }

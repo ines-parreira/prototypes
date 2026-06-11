@@ -10,7 +10,7 @@ import {
 import { performanceByArticleQueryFactory } from 'domains/reporting/models/queryFactories/help-center/performanceByArticle'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { useGetHelpCenterStatistics } from 'models/helpCenter/queries'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
@@ -33,7 +33,7 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context',

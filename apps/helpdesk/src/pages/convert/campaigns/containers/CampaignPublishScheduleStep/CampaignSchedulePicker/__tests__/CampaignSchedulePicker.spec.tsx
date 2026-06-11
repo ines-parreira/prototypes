@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import type { RootState } from 'state/types'
 
-import CampaignSchedulePicker from '../CampaignSchedulePicker'
+import { CampaignSchedulePicker } from '../CampaignSchedulePicker'
 
 const mockStore = configureMockStore([thunk])
 

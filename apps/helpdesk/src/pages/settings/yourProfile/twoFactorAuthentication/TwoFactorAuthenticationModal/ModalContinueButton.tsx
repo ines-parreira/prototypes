@@ -8,7 +8,7 @@ type OwnProps = {
     onFinish: () => void
 }
 
-export default function ModalContinueButton({
+export function ModalContinueButton({
     currentStep,
     isLoading,
     hasError,

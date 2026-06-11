@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TableWrapper from '../TableWrapper'
+import { TableWrapper } from '../TableWrapper'
 
 describe('<TableWrapper/>', () => {
     it('should render', () => {

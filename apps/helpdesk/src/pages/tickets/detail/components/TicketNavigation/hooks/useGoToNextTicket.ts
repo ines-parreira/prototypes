@@ -4,14 +4,14 @@ import type { TicketInfobarTab } from '@repo/navigation'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getActiveView } from 'state/views/selectors'
 
-import useIsTicketNavigationAvailable from './useIsTicketNavigationAvailable'
-import usePrevNextTicketNavigation from './usePrevNextTicketNavigation'
+import { useIsTicketNavigationAvailable } from './useIsTicketNavigationAvailable'
+import { usePrevNextTicketNavigation } from './usePrevNextTicketNavigation'
 
-export default function useGoToNextTicket(
+export function useGoToNextTicket(
     ticketId?: string,
     activeTab?: TicketInfobarTab,
 ) {

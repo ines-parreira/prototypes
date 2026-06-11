@@ -41,4 +41,4 @@ const SelfServiceChatIntegrationFooter = ({ sspTexts, color }: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationFooter
+export { SelfServiceChatIntegrationFooter }

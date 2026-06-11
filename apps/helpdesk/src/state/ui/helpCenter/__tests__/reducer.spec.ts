@@ -2,7 +2,10 @@ import {
     changeHelpCenterId,
     changeViewLanguage,
 } from 'state/ui/helpCenter/actions'
-import reducer, { initialState } from 'state/ui/helpCenter/reducer'
+import {
+    initialState,
+    DefaultExportReducer as reducer,
+} from 'state/ui/helpCenter/reducer'
 import type { ChangeViewLanguage } from 'state/ui/helpCenter/types'
 
 describe('Help Center/UI reducer', () => {

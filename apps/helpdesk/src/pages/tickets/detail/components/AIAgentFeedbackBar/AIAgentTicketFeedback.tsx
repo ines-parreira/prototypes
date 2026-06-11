@@ -1,13 +1,13 @@
 import classNames from 'classnames'
 import pluralize from 'pluralize'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketFeedback } from 'models/aiAgentFeedback/types'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 
 import { QA_FAILED_MESSAGE } from './constants'
-import FeedbackEvents from './FeedbackEvents'
-import FeedbackOrders from './FeedbackOrders'
+import { FeedbackEvents } from './FeedbackEvents'
+import { FeedbackOrders } from './FeedbackOrders'
 
 import css from './AIAgentFeedbackBar.less'
 
@@ -173,4 +173,4 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ ticketFeedback }) => {
     )
 }
 
-export default AIAgentTicketFeedback
+export { AIAgentTicketFeedback }

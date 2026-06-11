@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useSaveTagsInTicketDraft from 'hooks/useSaveTagsInTicketDraft'
+import { useSaveTagsInTicketDraft } from 'hooks/useSaveTagsInTicketDraft'
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
 import type { LeafTemplate } from 'models/widget/types'

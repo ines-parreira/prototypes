@@ -1,1 +1,1 @@
-export { default } from './ContactFormPreview'
+export { ContactFormPreview } from './ContactFormPreview'

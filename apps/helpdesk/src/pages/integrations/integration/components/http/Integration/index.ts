@@ -1,3 +1,3 @@
-import Integration from './Integration'
+import { IntegrationWithFeatureFlag as Integration } from './Integration'
 
-export default Integration
+export { Integration }

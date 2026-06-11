@@ -3,13 +3,17 @@ import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import AdvancedInstallationCard from './AdvancedInstallationCard'
+import { AdvancedInstallationCard } from './AdvancedInstallationCard'
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/AdvancedInstallationCard/AdvancedInstallationSidePanel',
     () => ({
         __esModule: true,
-        default: ({ isOpen, onOpenChange, integration }: any) =>
+        AdvancedInstallationSidePanel: ({
+            isOpen,
+            onOpenChange,
+            integration,
+        }: any) =>
             isOpen ? (
                 <div role="dialog" aria-label="Advanced Installation Panel">
                     <p>Integration {integration.get('id')}</p>

@@ -20,8 +20,8 @@ import type {
     TableView,
     TableViewItem,
 } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import type { AccountSettingTableConfig } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 

@@ -6,11 +6,11 @@ import {
     isAtLeastMilestone,
     useActionCentralizedLibraryEnabled,
 } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
-import ActionCreateWizardView from 'pages/aiAgent/actionsV2/ActionCreateWizardView'
+import { ActionCreateWizardView } from 'pages/aiAgent/actionsV2/ActionCreateWizardView'
 
-import CreateActionView from './CreateActionView'
-import GuidanceReferenceProvider from './providers/GuidanceReferenceProvider'
-import StoreTrackstarProvider from './providers/StoreTrackstarProvider'
+import { CreateActionView } from './CreateActionView'
+import { GuidanceReferenceProvider } from './providers/GuidanceReferenceProvider'
+import { StoreTrackstarProvider } from './providers/StoreTrackstarProvider'
 
 const CreateActionViewContainer = () => {
     const { shopName, shopType } = useParams<{
@@ -34,4 +34,4 @@ const CreateActionViewContainer = () => {
     )
 }
 
-export default CreateActionViewContainer
+export { CreateActionViewContainer }

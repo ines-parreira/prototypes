@@ -7,7 +7,7 @@ import type {
 } from 'pages/convert/campaigns/types/AdvancedTriggerBaseProps'
 import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 
-import TriggersContext from './context'
+import { TriggersContext } from './context'
 
 type Props = {
     children: ReactNode

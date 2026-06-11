@@ -10,8 +10,8 @@ import css from 'domains/reporting/pages/voice/components/VoiceCallActivity/Voic
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { isInboundVoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 
 type Props = {
@@ -116,7 +116,7 @@ const OutboundVoiceCallActivity = ({ voiceCall }: Props) => {
     )
 }
 
-export default function VoiceCallActivity({ voiceCall }: Props) {
+export function VoiceCallActivity({ voiceCall }: Props) {
     return (
         <div>
             {isInboundVoiceCallSummary(voiceCall) ? (

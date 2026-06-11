@@ -10,7 +10,7 @@ import type { RootState } from 'state/types'
 
 import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
 import type { ManageHelpCentersProps } from '../ManageHelpCenters'
-import ManageHelpCenters from '../ManageHelpCenters'
+import { ManageHelpCenters } from '../ManageHelpCenters'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {

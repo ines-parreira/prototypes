@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import * as actions from 'state/integrations/actions'
 
-import useAuthenticationPolling from '../useAuthenticationPolling'
+import { useAuthenticationPolling } from '../useAuthenticationPolling'
 
 jest.useFakeTimers()
 

@@ -6,12 +6,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
 import {
     statFiltersClean,
     statFiltersDirty,
 } from 'domains/reporting/state/ui/stats/actions'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 
 jest.mock('domains/reporting/state/ui/stats/actions', () => ({
     statFiltersClean: jest.fn(() => () => ({})),

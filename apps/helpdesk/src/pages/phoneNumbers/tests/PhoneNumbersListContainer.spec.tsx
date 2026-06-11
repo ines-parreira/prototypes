@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import { phoneNumbers } from 'fixtures/phoneNumber'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PhoneNumberListContainer from '../PhoneNumbersListContainer'
+import { PhoneNumbersListContainer as PhoneNumberListContainer } from '../PhoneNumbersListContainer'
 
 const mockServer = new MockAdapter(client)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()

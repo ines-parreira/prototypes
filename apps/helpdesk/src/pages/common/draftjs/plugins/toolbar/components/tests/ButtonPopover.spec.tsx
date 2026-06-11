@@ -3,7 +3,7 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ButtonPopover from '../ButtonPopover'
+import { ButtonPopover } from '../ButtonPopover'
 
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 jest.mock('reactstrap', () => ({

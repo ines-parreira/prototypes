@@ -10,20 +10,22 @@ import {
 } from 'fixtures/emailMigration'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'
 
-import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
+import { DomainVerificationAccordionItem } from '../EmailMigration/DomainVerificationAccordionItem'
 
-jest.mock('../EmailDomainVerification/components/RecordsTable', () => () => (
-    <div data-testid="records-table" />
-))
+jest.mock('../EmailDomainVerification/components/RecordsTable', () => ({
+    RecordsTable: () => <div data-testid="records-table" />,
+}))
 
 jest.mock('@gorgias/analytics-ui-kit', () => ({
     Card: () => <div data-testid="verified-domain-card" />,
 }))
 
 const mockCreateDomainVerification = jest.fn()
-jest.mock('../hooks/useCreateDomainVerification', () => () => ({
-    isLoading: false,
-    createDomainVerification: mockCreateDomainVerification,
+jest.mock('../hooks/useCreateDomainVerification', () => ({
+    useCreateDomainVerification: () => ({
+        isLoading: false,
+        createDomainVerification: mockCreateDomainVerification,
+    }),
 }))
 
 describe('DomainVerificationAccordionItem', () => {

@@ -12,14 +12,14 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import PageHeader from 'pages/common/components/PageHeader'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import settingsCss from 'pages/settings/settings.less'
 import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 
@@ -32,7 +32,7 @@ import {
 import { HelpCenterDetailsBreadcrumb } from '../HelpCenterDetailsBreadcrumb'
 import { HelpCenterNavigation } from '../HelpCenterNavigation'
 import { LanguageSelect } from '../LanguageSelect/LanguageSelect'
-import PendingChangesModal from '../PendingChangesModal'
+import { PendingChangesModal } from '../PendingChangesModal'
 
 import css from './HelpCenterPageWrapper.less'
 
@@ -238,5 +238,3 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         </div>
     )
 }
-
-export default HelpCenterPageWrapper

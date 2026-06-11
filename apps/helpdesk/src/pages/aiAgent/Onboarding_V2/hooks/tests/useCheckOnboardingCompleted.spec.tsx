@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { useHistory, useParams } from 'react-router-dom'
 
-import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
+import { useCheckOnboardingCompleted } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 
 jest.mock('react-router-dom', () => ({

@@ -9,8 +9,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { submitSetting } from 'state/currentUser/actions'
 import { getCurrentUser, getPreferences } from 'state/currentUser/selectors'
 import { getTicket } from 'state/ticket/selectors'
@@ -34,7 +34,7 @@ interface Props {
     target: MutableRefObject<HTMLElement | null>
 }
 
-export default function OnbordingMacroPopover({
+export function OnbordingMacroPopover({
     target,
     onClearMacro,
     macrosVisible,

@@ -2,7 +2,7 @@ import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 
 import { Avatar, AvatarStatusIndicator, Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isAvailable as getIsAvailable } from 'state/currentUser/selectors'
 
 import { UserAvatar } from '@repo/users'

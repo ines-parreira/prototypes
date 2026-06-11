@@ -6,7 +6,7 @@ import type { BillingImmutableState } from './types'
 
 export const initialState: BillingImmutableState = fromJS({})
 
-export default function reducer(
+export function reducer(
     state: BillingImmutableState = initialState,
     action: GorgiasAction,
 ): BillingImmutableState {

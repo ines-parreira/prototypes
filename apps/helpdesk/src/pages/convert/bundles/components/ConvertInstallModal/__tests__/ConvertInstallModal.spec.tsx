@@ -17,7 +17,7 @@ import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hoo
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import ConvertInstallModal from '../ConvertInstallModal'
+import { ConvertInstallModal } from '../ConvertInstallModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -36,12 +36,12 @@ const useInstallBundleMock = assumeMock(useInstallBundle)
 
 const useThemeAppExtensionInstallationSpy = jest.spyOn(
     useThemeAppExtensionInstallation,
-    'default',
+    'useThemeAppExtensionInstallation',
 )
 
 const useIsManualInstallationMethodRequiredSpy = jest.spyOn(
     useIsManualInstallationMethodRequired,
-    'default',
+    'useIsManualInstallationMethodRequired',
 )
 
 describe('ConvertInstallModal', () => {

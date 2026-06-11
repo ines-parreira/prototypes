@@ -10,7 +10,7 @@ import {
 import type { StoresWorkflowConfiguration } from '../types'
 import { handleError } from './errorHandler'
 
-export default function useDeleteAction(
+export function useDeleteAction(
     name: string,
     storeName: string,
     storeType: string,

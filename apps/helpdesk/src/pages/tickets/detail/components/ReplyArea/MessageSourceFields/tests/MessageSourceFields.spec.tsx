@@ -8,7 +8,7 @@ import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { RootState } from 'state/types'
 
-import MessageSourceFields from '../MessageSourceFields'
+import { MessageSourceFields } from '../MessageSourceFields'
 
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),

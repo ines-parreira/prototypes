@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import AutomateViewContent from '../AutomateViewContent'
+import { AutomateViewContent } from '../AutomateViewContent'
 
 describe('AutomateViewContent', () => {
     test('renders description and help link correctly', () => {

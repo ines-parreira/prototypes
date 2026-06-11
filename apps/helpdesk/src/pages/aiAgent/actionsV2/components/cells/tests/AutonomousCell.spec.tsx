@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
-import AutonomousCell from '../AutonomousCell'
+import { AutonomousCell } from '../AutonomousCell'
 
 const makeAction = (isStandalone: boolean): StoreWorkflowsConfiguration =>
     ({

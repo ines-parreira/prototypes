@@ -11,18 +11,18 @@ import {
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import CheckBoxField from 'pages/common/forms/CheckBoxField'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { DefaultExportCheckBoxField as CheckBoxField } from 'pages/common/forms/CheckBoxField'
 
 import { MacrosSettingsItem } from './MacrosSettingsItem'
 
@@ -262,5 +262,3 @@ export function MacrosSettingsTable({
         </TableWrapper>
     )
 }
-
-export default MacrosSettingsTable

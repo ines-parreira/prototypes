@@ -13,7 +13,7 @@ import {
 } from '../../../utils/editor'
 import { addEmailExtra } from '../actions'
 import type { ReplyThreadMessage } from '../emailExtraUtils'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 
 describe('new message reducer', () => {
     describe('NEW_MESSAGE_ADD_EMAIL_EXTRA action', () => {

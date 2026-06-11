@@ -5,12 +5,12 @@ import { useIsHeadlessShopifyStore } from '../../hooks/useIsHeadlessShopifyStore
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSection as DropdownSection } from 'pages/common/components/dropdown/DropdownSection'
 import type { TriggerConfigValue } from 'pages/convert/campaigns/types/TriggerConfig'
-import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
+import { ConvertSubscriptionModal } from 'pages/convert/common/components/ConvertSubscriptionModal'
 
 import { useAvailableTriggerList } from '../../hooks/useAvailableTriggerList'
 import type { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'

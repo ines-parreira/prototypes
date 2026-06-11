@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { fn } from 'storybook/test'
 
-import AccordionRadioFieldSet from './AccordionRadioFieldSet'
+import { AccordionRadioFieldSet } from './AccordionRadioFieldSet'
 
 const meta: Meta<typeof AccordionRadioFieldSet> = {
     title: 'Common/Forms/AccordionRadioFieldSet',

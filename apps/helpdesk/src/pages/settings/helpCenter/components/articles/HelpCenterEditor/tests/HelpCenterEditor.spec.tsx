@@ -1,30 +1,34 @@
 import { render } from '@repo/testing'
 
-import HelpCenterEditor from '../HelpCenterEditor'
+import { HelpCenterEditor } from '../HelpCenterEditor'
 
 const mockUseCurrentHelpCenter = jest.fn()
 const mockUseAppDispatch = jest.fn()
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter', () => ({
     __esModule: true,
-    default: () => mockUseCurrentHelpCenter(),
+    useCurrentHelpCenter: () => mockUseCurrentHelpCenter(),
 }))
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockUseAppDispatch(),
+    useAppDispatch: () => mockUseAppDispatch(),
 }))
 
 jest.mock('../FroalaEditorComponent', () => {
-    return function MockFroalaEditorComponent(props: any) {
-        return (
-            <div
-                data-testid="froala-editor"
-                data-config={JSON.stringify(props.config)}
-            >
-                Mocked Froala Editor
-            </div>
-        )
+    return {
+        FroalaEditorFunctionality: function MockFroalaEditorComponent(
+            props: any,
+        ) {
+            return (
+                <div
+                    data-testid="froala-editor"
+                    data-config={JSON.stringify(props.config)}
+                >
+                    Mocked Froala Editor
+                </div>
+            )
+        },
     }
 })
 

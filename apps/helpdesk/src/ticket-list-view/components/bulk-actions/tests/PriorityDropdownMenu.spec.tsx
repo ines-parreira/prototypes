@@ -8,7 +8,7 @@ import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
-import PriorityDropdownMenu from '../PriorityDropdownMenu'
+import { PriorityDropdownMenu } from '../PriorityDropdownMenu'
 
 describe('<PriorityDropdownMenu />', () => {
     const minProps = {

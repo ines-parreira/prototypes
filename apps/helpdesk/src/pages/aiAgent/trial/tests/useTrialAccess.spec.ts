@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
 import { HelpdeskPlanTier } from 'models/billing/types'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'

@@ -10,13 +10,14 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { IntegrationType } from 'models/integration/constants'
 import { useHistoryTracking } from 'pages/automate/common/hooks/useHistoryTracking'
-import useSelfServiceChannels, {
+import {
     isSelfServiceChatChannel,
+    useSelfServiceChannels,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import type { ConnectedChannelsContextType } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
-import ConnectedChannelsContext from 'pages/automate/connectedChannels/ConnectedChannelsContext'
+import { ConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
 import { ChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChannelSelector/ChannelSelector'
 import { OrderManagementViewContainer } from 'pages/automate/orderManagement/OrderManagementViewContainer'
 import {

@@ -9,7 +9,8 @@ import {
 import { applyMacro, messageDeleted } from 'state/ticket/actions'
 
 import type { SendMessageArgs } from '../pendingMessageManager'
-import pendingMessageManager, {
+import {
+    pendingMessageManager,
     PendingMessageManager,
 } from '../pendingMessageManager'
 

@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import BusinessHoursForm from '../BusinessHoursForm'
+import { BusinessHoursForm } from '../BusinessHoursForm'
 import { DEPRECATED_DAYS_OPTIONS } from '../constants'
 
 describe('<BusinessHoursForm />', () => {

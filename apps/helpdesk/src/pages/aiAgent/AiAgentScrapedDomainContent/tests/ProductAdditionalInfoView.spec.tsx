@@ -3,9 +3,9 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
 import { useUpdateProductAdditionalInfoWithTracking } from 'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking'
-import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
+import { useUnsavedChangesPrompt } from 'pages/common/components/useUnsavedChangesPrompt'
 
-import ProductAdditionalInfoView from '../ProductAdditionalInfoView'
+import { ProductAdditionalInfoView } from '../ProductAdditionalInfoView'
 
 jest.mock(
     'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking',
@@ -31,13 +31,15 @@ mockUseUnsavedChangesPrompt.mockReturnValue({
 })
 let mockOnChange: ((editorState: EditorState) => void) | null = null
 jest.mock('pages/common/forms/RichField/RichField', () => {
-    return function MockRichField(props: any) {
-        mockOnChange = props.onChange
-        return (
-            <div data-testid="mock-rich-field" role="combobox">
-                {props.placeholder}
-            </div>
-        )
+    return {
+        RichField: function MockRichField(props: any) {
+            mockOnChange = props.onChange
+            return (
+                <div data-testid="mock-rich-field" role="combobox">
+                    {props.placeholder}
+                </div>
+            )
+        },
     }
 })
 jest.mock('utils/editor', () => ({

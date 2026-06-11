@@ -4,8 +4,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useCreateHelpCenter,
     useCreateHelpCenterTranslation,
@@ -16,7 +16,7 @@ import type { HelpCenter } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
     HELP_CENTER_DEFAULT_LOCALE,

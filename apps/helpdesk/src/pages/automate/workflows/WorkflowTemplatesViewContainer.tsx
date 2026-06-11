@@ -7,7 +7,7 @@ import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import WorkflowTemplatesView from './WorkflowTemplatesView'
+import { WorkflowTemplatesView } from './WorkflowTemplatesView'
 
 const WorkflowTemplatesViewContainer = () => {
     const { shopName, shopType } = useParams<{
@@ -60,4 +60,4 @@ const WorkflowTemplatesViewContainer = () => {
     )
 }
 
-export default WorkflowTemplatesViewContainer
+export { WorkflowTemplatesViewContainer }

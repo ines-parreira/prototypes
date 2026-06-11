@@ -53,7 +53,7 @@ export async function fetchStatsMetricTrend<
         })
 }
 
-export default function useStatsMetricTrend<TMeta extends ScopeMeta>(
+export function useStatsMetricTrend<TMeta extends ScopeMeta>(
     currentPeriodQuery: BuiltQuery<TMeta>,
     prevPeriodQuery: BuiltQuery<TMeta>,
     enabled: boolean = true,

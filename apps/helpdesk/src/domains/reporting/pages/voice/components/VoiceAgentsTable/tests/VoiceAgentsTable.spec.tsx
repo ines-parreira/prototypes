@@ -18,11 +18,15 @@ import { agents } from 'fixtures/agents'
 
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell',
-    () => () => <div>TeamAverageTalkTimeCell</div>,
+    () => ({
+        TeamAverageTalkTimeCell: () => <div>TeamAverageTalkTimeCell</div>,
+    }),
 )
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell',
-    () => () => <div>TeamAverageCallsCountCell</div>,
+    () => ({
+        TeamAverageCallsCountCell: () => <div>TeamAverageCallsCountCell</div>,
+    }),
 )
 
 jest.mock(

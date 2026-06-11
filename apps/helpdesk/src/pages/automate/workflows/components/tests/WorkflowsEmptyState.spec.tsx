@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import WorkflowsEmptyState from '../WorkflowsEmptyState'
+import { WorkflowsEmptyState } from '../WorkflowsEmptyState'
 
 describe('WorkflowsEmptyState', () => {
     const mockGoToWorkflowTemplatesPage = jest.fn()

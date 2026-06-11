@@ -45,4 +45,4 @@ const ContactCard: React.FC<Props> = ({
     </div>
 )
 
-export default ContactCard
+export { ContactCard }

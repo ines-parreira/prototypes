@@ -8,15 +8,19 @@ export const initialState = {
     isFocused: false,
 }
 
-export default createReducer<EditorState>(initialState, (builder) =>
-    builder
-        .addCase(linkEditionStarted, (state) => {
-            state.isEditingLink = true
-        })
-        .addCase(linkEditionEnded, (state) => {
-            state.isEditingLink = false
-        })
-        .addCase(editorFocused, (state, { payload }) => {
-            state.isFocused = payload
-        }),
+const DefaultExportReducer = createReducer<EditorState>(
+    initialState,
+    (builder) =>
+        builder
+            .addCase(linkEditionStarted, (state) => {
+                state.isEditingLink = true
+            })
+            .addCase(linkEditionEnded, (state) => {
+                state.isEditingLink = false
+            })
+            .addCase(editorFocused, (state, { payload }) => {
+                state.isFocused = payload
+            }),
 )
+
+export { DefaultExportReducer }

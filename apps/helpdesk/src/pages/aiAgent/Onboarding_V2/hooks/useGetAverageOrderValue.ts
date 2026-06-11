@@ -4,7 +4,7 @@ import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimen
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { averageOrderValuePreviewQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
+import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 
 const fakeAverageOrderValue = 150
 

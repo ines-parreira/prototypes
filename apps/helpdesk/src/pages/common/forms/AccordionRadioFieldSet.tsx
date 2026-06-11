@@ -2,11 +2,11 @@ import type { ReactNode } from 'react'
 
 import { useId } from '@gorgias/toolkit-react'
 
-import Accordion from '../components/accordion/Accordion'
-import AccordionBody from '../components/accordion/AccordionBody'
-import AccordionHeader from '../components/accordion/AccordionHeader'
-import AccordionItem from '../components/accordion/AccordionItem'
-import RadioButton from '../components/RadioButton'
+import { Accordion } from '../components/accordion/Accordion'
+import { AccordionBody } from '../components/accordion/AccordionBody'
+import { AccordionHeader } from '../components/accordion/AccordionHeader'
+import { AccordionItem } from '../components/accordion/AccordionItem'
+import { DefaultExportRadioButton as RadioButton } from '../components/RadioButton'
 
 import css from './AccordionRadioFieldSet.less'
 
@@ -71,4 +71,4 @@ const AccordionRadioFieldSet = ({
     )
 }
 
-export default AccordionRadioFieldSet
+export { AccordionRadioFieldSet }

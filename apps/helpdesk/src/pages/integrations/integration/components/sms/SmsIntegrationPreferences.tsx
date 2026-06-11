@@ -9,15 +9,15 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SmsIntegration } from 'models/integration/types'
 import { isSmsIntegration } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { EmojiTextInput } from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences.less'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+import { PhoneNumberTitle } from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 import {
@@ -29,7 +29,7 @@ type Props = {
     integration: SmsIntegration
 }
 
-export default function SmsIntegrationPreferences({
+export function SmsIntegrationPreferences({
     integration,
 }: Props): JSX.Element | null {
     const [isInitialized, setIsInitialized] = useState(false)

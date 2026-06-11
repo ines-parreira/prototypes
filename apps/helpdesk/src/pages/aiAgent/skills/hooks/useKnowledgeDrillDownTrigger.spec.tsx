@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 import { useKnowledgeDrillDownTrigger } from './useKnowledgeDrillDownTrigger'
 

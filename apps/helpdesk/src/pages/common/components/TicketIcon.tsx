@@ -5,14 +5,15 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketStatus } from 'business/types/ticket'
 import type { ChannelLike } from 'models/channel/types'
-import SourceIcon, {
+import {
     AI_AGENT_ICON,
     ERROR_ICON,
+    DefaultExportSourceIcon as SourceIcon,
     WARNING_ICON,
 } from 'pages/common/components/SourceIcon'
 import css from 'pages/common/components/TicketIcon.less'
 
-export default function TicketIcon({
+export function TicketIcon({
     channel,
     className,
     status,

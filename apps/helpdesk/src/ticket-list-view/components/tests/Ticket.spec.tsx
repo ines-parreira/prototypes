@@ -6,12 +6,14 @@ import { mockTicketTranslationCompact } from '@gorgias/helpdesk-mocks'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import type { Customer } from 'models/customer/types'
-import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
+import { useIsTicketViewed } from 'ticket-list-view/hooks/useIsTicketViewed'
 import type { TicketCompact } from 'ticket-list-view/types'
 
-import Ticket from '../Ticket'
+import { Ticket } from '../Ticket'
 
-jest.mock('ticket-list-view/hooks/useIsTicketViewed', () => jest.fn())
+jest.mock('ticket-list-view/hooks/useIsTicketViewed', () => ({
+    useIsTicketViewed: jest.fn(),
+}))
 const useIsTicketViewedMock = useIsTicketViewed as jest.Mock
 
 jest.mock('pages/tickets/common/components/PriorityLabel', () => ({

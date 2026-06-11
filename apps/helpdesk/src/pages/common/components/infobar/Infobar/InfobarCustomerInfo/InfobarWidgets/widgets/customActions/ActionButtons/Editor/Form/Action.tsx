@@ -6,12 +6,12 @@ import type {
     Action as ActionType,
     OnChangeAction,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 
-import Body from './Body'
-import Parameters from './Parameters'
+import { Body } from './Body'
+import { DefaultExportParameters as Parameters } from './Parameters'
 
 import css from './Actions.less'
 
@@ -20,7 +20,7 @@ type Props = {
     onChange: OnChangeAction
 }
 
-export default function Action({ action, onChange }: Props) {
+export function Action({ action, onChange }: Props) {
     return (
         <div className="http">
             <div className={css.formParamRow}>

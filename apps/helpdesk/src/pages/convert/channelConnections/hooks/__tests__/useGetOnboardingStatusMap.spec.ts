@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useListChannelConnections } from 'models/convert/channelConnection/queries'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 
@@ -16,7 +16,7 @@ jest.mock('models/convert/channelConnection/queries', () => ({
 }))
 const useListChannelConnectionsMock = assumeMock(useListChannelConnections)
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 const mockChannelConnections = [

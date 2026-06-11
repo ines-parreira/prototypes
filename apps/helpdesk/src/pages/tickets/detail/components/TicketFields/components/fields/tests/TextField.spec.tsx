@@ -14,7 +14,7 @@ import {
 } from 'state/ticket/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import TextField from '../TextField'
+import { TextField } from '../TextField'
 
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()

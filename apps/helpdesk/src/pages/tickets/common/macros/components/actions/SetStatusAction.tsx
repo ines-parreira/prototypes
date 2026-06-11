@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
 import { TICKET_STATUSES } from 'config'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 type Props = {
     action: Map<string, any>
@@ -41,4 +41,4 @@ const SetStatusAction = ({
     )
 }
 
-export default SetStatusAction
+export { SetStatusAction }

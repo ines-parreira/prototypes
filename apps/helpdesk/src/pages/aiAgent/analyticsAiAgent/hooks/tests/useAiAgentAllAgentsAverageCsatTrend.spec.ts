@@ -1,7 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { averageAiAgentCsatQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentCsat'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

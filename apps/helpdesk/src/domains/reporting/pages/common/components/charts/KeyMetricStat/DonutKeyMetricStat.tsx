@@ -18,7 +18,7 @@ type Props = {
     startAngle?: number
 }
 
-export default class DonutKeyMetricStat extends Component<Props> {
+export class DonutKeyMetricStat extends Component<Props> {
     static defaultProps: Pick<
         Props,
         | 'height'

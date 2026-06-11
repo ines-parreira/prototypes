@@ -1,7 +1,7 @@
 import { getCheapestPlanNameForFeature } from '@repo/billing'
 
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     getAvailableAutomatePlans,
     getAvailableHelpdeskPlans,
@@ -15,7 +15,7 @@ import type {
 } from 'state/currentAccount/types'
 
 import type { PaywallTheme } from '../Paywall/Paywall'
-import Paywall, { UpgradeType } from '../Paywall/Paywall'
+import { Paywall, UpgradeType } from '../Paywall/Paywall'
 
 type Props = {
     feature: AccountFeature
@@ -79,4 +79,4 @@ const FeaturePaywall = ({
     )
 }
 
-export default FeaturePaywall
+export { FeaturePaywall }

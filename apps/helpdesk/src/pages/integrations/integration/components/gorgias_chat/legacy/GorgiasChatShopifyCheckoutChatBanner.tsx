@@ -2,7 +2,7 @@ import type { Map } from 'immutable'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'
 import { Tab } from 'pages/integrations/integration/types'
 import { hideShopifyCheckoutChatBanner } from 'state/integrations/actions'
@@ -37,4 +37,4 @@ const GorgiasChatShopifyCheckoutBanner = ({ integration }: Props) => {
     )
 }
 
-export default GorgiasChatShopifyCheckoutBanner
+export { GorgiasChatShopifyCheckoutBanner }

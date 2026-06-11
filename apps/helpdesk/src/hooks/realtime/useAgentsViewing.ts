@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-export default function useAgentsViewing(ticketId: number) {
+export function useAgentsViewing(ticketId: number) {
     const currentUser = useAppSelector(getCurrentUser)
 
     const { getTicketActivity } = useAgentActivity()

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CampaignStatsPaywallView from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import { DefaultExportCampaignStatsPaywallView as CampaignStatsPaywallView } from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 

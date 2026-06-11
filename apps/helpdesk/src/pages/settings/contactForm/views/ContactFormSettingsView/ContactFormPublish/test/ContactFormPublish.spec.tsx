@@ -13,7 +13,7 @@ import { CONTACT_FORM_PUBLISH_PATH } from 'pages/settings/contactForm/constants'
 import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { useGetPageEmbedments } from 'pages/settings/contactForm/queries'
-import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ContactFormPublish'
+import { ContactFormPublish } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ContactFormPublish'
 import type { RootState } from 'state/types'
 
 jest.mock('@repo/feature-flags')

@@ -5,11 +5,11 @@ import classnames from 'classnames'
 import QRCode from 'qrcode'
 
 import type { AuthenticatorData } from 'models/twoFactorAuthentication/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import InputField from 'pages/common/forms/input/InputField'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 
-import CantScanQRCode from './CantScanQRCode'
+import { CantScanQRCode } from './CantScanQRCode'
 
 import modalStepsCss from '../ModalSteps.less'
 import css from './QRCodeStep.less'
@@ -22,7 +22,7 @@ type OwnProps = {
     setVerificationCode: Dispatch<SetStateAction<string>>
 }
 
-export default function QRCodeStep({
+export function QRCodeStep({
     authenticatorData,
     errorText,
     setErrorText,

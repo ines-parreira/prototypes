@@ -11,7 +11,7 @@ import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 
-import MacroNoResults from '../MacroNoResults'
+import { MacroNoResults } from '../MacroNoResults'
 
 const mockStore = configureMockStore([thunk])
 

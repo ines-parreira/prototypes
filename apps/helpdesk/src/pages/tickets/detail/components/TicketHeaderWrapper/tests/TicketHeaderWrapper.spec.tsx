@@ -7,17 +7,16 @@ import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
-import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
+import { useCollisionDetection } from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 
-import TicketHeaderWrapper from '../TicketHeaderWrapper'
+import { TicketHeaderWrapper } from '../TicketHeaderWrapper'
 
-jest.mock('pages/tickets/detail/components/TicketHeader', () => () => (
-    <div>TicketHeader</div>
-))
-jest.mock(
-    'pages/tickets/detail/components/TicketFields/TicketFields',
-    () => () => <div>TicketFields</div>,
-)
+jest.mock('pages/tickets/detail/components/TicketHeader', () => ({
+    TicketHeader: () => <div>TicketHeader</div>,
+}))
+jest.mock('pages/tickets/detail/components/TicketFields/TicketFields', () => ({
+    DefaultExportTicketFields: () => <div>TicketFields</div>,
+}))
 
 jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',

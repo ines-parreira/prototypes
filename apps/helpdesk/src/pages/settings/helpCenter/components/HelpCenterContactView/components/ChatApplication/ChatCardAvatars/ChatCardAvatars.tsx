@@ -27,4 +27,4 @@ const ChatCardAvatars: React.FC = () => {
     )
 }
 
-export default ChatCardAvatars
+export { ChatCardAvatars }

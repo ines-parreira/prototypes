@@ -12,8 +12,8 @@ import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
 } from '../../helpers'
-import DomainVerificationProvider from '../DomainVerificationProvider'
-import useDomainVerification from '../useDomainVerification'
+import { DomainVerificationProvider } from '../DomainVerificationProvider'
+import { useDomainVerification } from '../useDomainVerification'
 
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('../../helpers')

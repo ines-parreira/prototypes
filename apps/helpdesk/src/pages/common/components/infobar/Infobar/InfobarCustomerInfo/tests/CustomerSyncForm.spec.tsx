@@ -10,9 +10,9 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
-import CustomerSyncForm from '../CustomerSyncForm/CustomerSyncForm'
+import { CustomerSyncForm } from '../CustomerSyncForm/CustomerSyncForm'
 
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = assumeMock(useAppDispatch)

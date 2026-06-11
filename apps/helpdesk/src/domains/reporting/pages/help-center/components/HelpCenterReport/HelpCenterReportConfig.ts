@@ -4,14 +4,15 @@ import type { OptionalFilter } from 'domains/reporting/pages/common/filters/Filt
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
-import ArticleViewsGraph from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
+import { ArticleViewsGraph } from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
 import { ArticleViewsTrendCard } from 'domains/reporting/pages/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
-import NoSearchTable, {
+import {
     NO_SEARCH_TABLE_TITLE,
+    NoSearchTable,
 } from 'domains/reporting/pages/help-center/components/NoSearchTable/NoSearchTable'
 import { PerformanceByArticleChart } from 'domains/reporting/pages/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
 import { SearchesTrendCard } from 'domains/reporting/pages/help-center/components/SearchesTrendCard/SearchesTrendCard'
-import SearchResultDonut from 'domains/reporting/pages/help-center/components/SearchResultDonut/SearchResultDonut'
+import { SearchResultDonut } from 'domains/reporting/pages/help-center/components/SearchResultDonut/SearchResultDonut'
 import { SearchTermsTableChart } from 'domains/reporting/pages/help-center/components/SearchTermsTable/SearchTermsTableChart'
 import {
     HelpCenterMetric,

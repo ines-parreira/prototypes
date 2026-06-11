@@ -8,17 +8,19 @@ import type { WorkflowVariable } from 'pages/automate/workflows/models/variables
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { LiquidTemplateNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import TestLiquidTemplateModal from '../TestLiquidTemplateModal'
+import { TestLiquidTemplateModal } from '../TestLiquidTemplateModal'
 
 // Mock the useSendTestLiquidTemplate hook
 const mockSendTestRequest = jest.fn()
 const mockIsLoading = false
 
 jest.mock('../useSendTestLiquidTemplate', () => {
-    return jest.fn(() => ({
-        isLoading: mockIsLoading,
-        sendTestRequest: mockSendTestRequest,
-    }))
+    return {
+        useSendTestLiquidTemplate: jest.fn(() => ({
+            isLoading: mockIsLoading,
+            sendTestRequest: mockSendTestRequest,
+        })),
+    }
 })
 
 const mockNodeInEdition: LiquidTemplateNodeType = {
@@ -293,7 +295,9 @@ describe('<TestLiquidTemplateModal />', () => {
 
     describe('loading state', () => {
         it('should show loading state on test button when isLoading is true', () => {
-            const mockUseSendTestLiquidTemplate = require('../useSendTestLiquidTemplate')
+            const {
+                useSendTestLiquidTemplate: mockUseSendTestLiquidTemplate,
+            } = require('../useSendTestLiquidTemplate')
             mockUseSendTestLiquidTemplate.mockReturnValue({
                 isLoading: true,
                 sendTestRequest: mockSendTestRequest,

@@ -8,7 +8,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { FulfillmentStatus } from 'constants/integrations/types/shopify'
 
-import OrderLineItemRow from './OrderLineItemRow'
+import { DefaultExportOrderLineItemRow as OrderLineItemRow } from './OrderLineItemRow'
 
 import css from './OrderTable.less'
 
@@ -117,4 +117,6 @@ function OrderTable({
     )
 }
 
-export default memo(OrderTable)
+const DefaultExportOrderTable = memo(OrderTable)
+
+export { DefaultExportOrderTable }

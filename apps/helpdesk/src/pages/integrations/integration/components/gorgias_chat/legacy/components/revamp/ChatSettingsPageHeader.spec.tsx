@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ChatSettingsPageHeader from './ChatSettingsPageHeader'
+import { ChatSettingsPageHeader } from './ChatSettingsPageHeader'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

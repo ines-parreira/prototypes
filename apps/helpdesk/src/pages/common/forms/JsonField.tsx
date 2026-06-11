@@ -8,8 +8,8 @@ import type { HTTPForm } from 'models/integration/types/http'
 import type { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import type { InputFieldProps } from './DEPRECATED_InputField'
-import DEPRECATED_InputField from './DEPRECATED_InputField'
-import Errors from './Errors'
+import { InputField as DEPRECATED_InputField } from './DEPRECATED_InputField'
+import { Errors } from './Errors'
 
 type Props = InputFieldProps<HTTPForm | JSONValue>
 
@@ -18,7 +18,7 @@ type State = {
     value: string | null
 }
 
-export default class JsonField extends DEPRECATED_InputField<Props, State> {
+export class JsonField extends DEPRECATED_InputField<Props, State> {
     defaultValue = null
 
     state: State = {

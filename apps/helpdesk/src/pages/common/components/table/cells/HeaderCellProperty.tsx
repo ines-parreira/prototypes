@@ -4,10 +4,10 @@ import classnames from 'classnames'
 
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 import type { IconTooltipProps } from 'pages/common/forms/IconTooltip/IconTooltip'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
@@ -31,7 +31,7 @@ const tooltipProps: IconTooltipProps['tooltipProps'] = {
     placement: 'top-start',
 }
 
-export default function HeaderCellProperty({
+export function HeaderCellProperty({
     children,
     className,
     titleClassName,

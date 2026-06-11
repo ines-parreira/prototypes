@@ -1,5 +1,5 @@
 import { useBillingContact } from 'models/billing/queries'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { StripeElementsProvider } from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
 import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'

@@ -2,15 +2,15 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { Map } from 'immutable'
 
 import { getActionByName } from 'config/actions'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isTicketEvent, isTicketRuleSuggestion } from 'models/ticket/predicates'
 import {
     getRuleSuggestionContent,
     isSuggestionEmpty,
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 
-import useGroupedElements from '../useGroupedElements'
-import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
+import { useGroupedElements } from '../useGroupedElements'
+import { useRuleSuggestionForDemos } from '../useRuleSuggestionForDemos'
 
 jest.mock('config/actions', () => ({
     getActionByName: jest.fn(),
@@ -18,7 +18,7 @@ jest.mock('config/actions', () => ({
 jest.mock('constants/event', () => ({
     PHONE_EVENTS: ['phone-event'],
 }))
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('models/ticket/predicates', () => ({
     isTicketEvent: jest.fn(),
     isTicketRuleSuggestion: jest.fn(),
@@ -40,7 +40,9 @@ jest.mock(
     }),
 )
 
-jest.mock('../useRuleSuggestionForDemos', () => jest.fn())
+jest.mock('../useRuleSuggestionForDemos', () => ({
+    useRuleSuggestionForDemos: jest.fn(),
+}))
 
 // not using `assumeMock` for this one since I
 // don't need/want to pass a correct entity

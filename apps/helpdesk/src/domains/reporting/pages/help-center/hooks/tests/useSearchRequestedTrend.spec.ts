@@ -1,13 +1,15 @@
 import moment from 'moment/moment'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useSearchRequestedTrend } from 'domains/reporting/pages/help-center/hooks/useSearchRequestedTrend'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
-jest.mock('domains/reporting/hooks/useMetricTrend', () => jest.fn())
+jest.mock('domains/reporting/hooks/useMetricTrend', () => ({
+    useMetricTrend: jest.fn(),
+}))
 
 const mockUseMetricTrend = jest.mocked(useMetricTrend)
 

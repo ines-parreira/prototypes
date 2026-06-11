@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 
 import type { TicketMessage } from 'models/ticket/types'
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
 import { useAIAgentMessageEvents } from '../../hooks/useAIAgentMessageEvents'
 import {
@@ -84,4 +84,4 @@ const AIAgentMessageEvents = ({ message }: Props) => {
     )
 }
 
-export default AIAgentMessageEvents
+export { AIAgentMessageEvents }

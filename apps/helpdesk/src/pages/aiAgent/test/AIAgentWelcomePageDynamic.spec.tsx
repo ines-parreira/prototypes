@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import { useHelpCentersArticleCount } from 'pages/automate/common/hooks/useHelpCentersArticleCount'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegration } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import { AIAgentWelcomePageDynamic } from '../AIAgentWelcomePageDynamic'
@@ -30,7 +30,7 @@ jest.mock(
 
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useSelfServiceStoreIntegration: jest.fn(),
 }))
 
 describe('<AIAgentWelcomePageDynamic />', () => {

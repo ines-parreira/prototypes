@@ -7,7 +7,7 @@ import css from './VolumeControl.less'
 
 type Props = InputHTMLAttributes<HTMLInputElement>
 
-export default function VolumeControl(props: Props) {
+export function VolumeControl(props: Props) {
     return (
         <div className={css.container}>
             <i className={cn('material-icons', css.icon)}>volume_down</i>

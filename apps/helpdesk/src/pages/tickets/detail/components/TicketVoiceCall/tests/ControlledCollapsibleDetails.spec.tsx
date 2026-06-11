@@ -3,7 +3,7 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ControlledCollapsibleDetails from '../ControlledCollapsibleDetails'
+import { ControlledCollapsibleDetails } from '../ControlledCollapsibleDetails'
 
 describe('ControlledCollapsibleDetails', () => {
     const renderComponent = (

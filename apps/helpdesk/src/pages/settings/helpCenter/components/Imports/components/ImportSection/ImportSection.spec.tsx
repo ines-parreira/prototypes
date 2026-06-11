@@ -7,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { toast } from '@gorgias/axiom'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import { getMigrationClient } from 'rest_api/migration_api'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
@@ -22,32 +22,26 @@ import {
     partiallySucceededMigrationStats,
     succeededMigrationStats,
 } from './fixtures/migration-sessions'
-import ImportSection, { ACTIVE_MIGRATION_UPDATE_TIMEOUT } from './ImportSection'
+import { ACTIVE_MIGRATION_UPDATE_TIMEOUT, ImportSection } from './ImportSection'
 import { sessionHasProgressStatus } from './utils'
 
-jest.mock(
-    'pages/common/components/modal/Modal',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <div>{children}</div>
-        },
-)
+jest.mock('pages/common/components/modal/Modal', () => ({
+    DefaultExportModal: ({ children }: { children?: ReactNode }) => {
+        return <div>{children}</div>
+    },
+}))
 
-jest.mock(
-    'pages/common/components/modal/ModalBody',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <div>{children}</div>
-        },
-)
+jest.mock('pages/common/components/modal/ModalBody', () => ({
+    DefaultExportModalBody: ({ children }: { children?: ReactNode }) => {
+        return <div>{children}</div>
+    },
+}))
 
-jest.mock(
-    'pages/common/components/modal/ModalHeader',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <div>{children}</div>
-        },
-)
+jest.mock('pages/common/components/modal/ModalHeader', () => ({
+    ModalHeader: ({ children }: { children?: ReactNode }) => {
+        return <div>{children}</div>
+    },
+}))
 
 const storeState: Partial<RootState> = {
     entities: {

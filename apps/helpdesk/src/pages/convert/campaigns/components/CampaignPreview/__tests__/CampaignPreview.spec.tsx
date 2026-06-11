@@ -18,7 +18,7 @@ import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import type { RootState } from 'state/types'
 
-import CampaignPreview from '../CampaignPreview'
+import { CampaignPreview } from '../CampaignPreview'
 
 const CAMPAIGN_POSITION = {
     alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,

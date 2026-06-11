@@ -15,8 +15,8 @@ import {
     useUpdateEffect,
 } from '@gorgias/toolkit-react'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import { DropdownContext } from './Dropdown'
 
@@ -97,4 +97,8 @@ const DropdownSearch = (
     )
 }
 
-export default forwardRef<HTMLInputElement, Props>(DropdownSearch)
+const DefaultExportDropdownSearch = forwardRef<HTMLInputElement, Props>(
+    DropdownSearch,
+)
+
+export { DefaultExportDropdownSearch }

@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import { Category } from 'models/integration/types/app'
 
-import CategoryFilter from '../CategoryFilter'
+import { CategoryFilter } from '../CategoryFilter'
 import { CATEGORY_DATA, CATEGORY_URL_PARAM } from '../constants'
 
 const mockStore = configureMockStore([thunk])

@@ -2,9 +2,9 @@ import { Form } from '@repo/forms'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
+import { VoiceIntegrationSettingCallRecording } from '../VoiceIntegrationSettingCallRecording'
 import type { TextToSpeechContext as TextToSpeechContextType } from '../VoiceMessageTTS/TextToSpeechContext'
-import TextToSpeechContext from '../VoiceMessageTTS/TextToSpeechContext'
+import { TextToSpeechContext } from '../VoiceMessageTTS/TextToSpeechContext'
 
 const defaultPreferences = {
     record_inbound_calls: false,

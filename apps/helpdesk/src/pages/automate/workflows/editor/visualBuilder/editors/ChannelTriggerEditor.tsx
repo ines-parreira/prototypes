@@ -6,19 +6,19 @@ import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/us
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
-import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
-import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
+import { TranslationsPreviewField } from '../components/translations/TranslationPreviewField'
+import { TranslationPreviewHeader } from '../components/translations/TranslationPreviewHeader'
 import { useNodeEditorDrawerContext } from '../NodeEditorDrawerContext'
-import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
+import { NodeEditorDrawerHeader } from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
 
 const textLimit = 50
 
-export default function ChannelTriggerEditor({
+export function ChannelTriggerEditor({
     nodeInEdition,
 }: {
     nodeInEdition: ChannelTriggerNodeType

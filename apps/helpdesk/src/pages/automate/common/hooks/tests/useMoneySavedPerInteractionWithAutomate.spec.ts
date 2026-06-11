@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetCostPerAutomatedInteraction } from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import { useGetCostPerBillableTicket } from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'

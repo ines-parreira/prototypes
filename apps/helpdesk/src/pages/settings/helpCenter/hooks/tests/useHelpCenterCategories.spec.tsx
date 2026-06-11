@@ -12,7 +12,7 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import { useCategoriesActions } from '../useCategoriesActions'
 import { useHelpCenterCategories } from '../useHelpCenterCategories'
 

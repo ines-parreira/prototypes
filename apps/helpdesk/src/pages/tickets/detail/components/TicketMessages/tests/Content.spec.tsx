@@ -7,7 +7,7 @@ import { mockTicketMessageTranslation } from '@gorgias/helpdesk-mocks'
 
 import { THEME_NAME } from 'core/theme'
 
-import Content from '../Content'
+import { Content } from '../Content'
 
 jest.mock(
     'react-player',

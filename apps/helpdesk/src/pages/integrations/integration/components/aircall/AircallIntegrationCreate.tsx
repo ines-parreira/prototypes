@@ -19,7 +19,7 @@ import {
 } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/constants'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import type { RootState } from 'state/types'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
@@ -222,4 +222,8 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(AircallIntegrationCreate)
+const DefaultExportAircallIntegrationCreate = connector(
+    AircallIntegrationCreate,
+)
+
+export { DefaultExportAircallIntegrationCreate }

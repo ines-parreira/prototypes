@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
-import Label from 'custom-fields/components/Label'
+import { CustomFieldInput } from 'custom-fields/components/CustomFieldInput'
+import { DefaultExportLabel as Label } from 'custom-fields/components/Label'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
 import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
@@ -19,7 +19,7 @@ import { MIN_CHARACTERS_TO_TOOLTIP } from './contstants'
 
 import css from './CustomerField.less'
 
-export default function CustomerField({
+export function CustomerField({
     field,
     value: queryValue,
     customerId,

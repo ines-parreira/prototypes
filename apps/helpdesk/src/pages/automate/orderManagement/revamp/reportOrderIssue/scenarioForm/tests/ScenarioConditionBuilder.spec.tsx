@@ -12,7 +12,7 @@ import { ScenarioFormContext } from '../ScenarioFormContext'
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     __esModule: true,
-    default: ({
+    Dropdown: ({
         isOpen,
         children,
     }: {
@@ -23,21 +23,25 @@ jest.mock('pages/common/components/dropdown/Dropdown', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownHeader', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    DefaultExportDropdownHeader: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div>{children}</div>,
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    DefaultExportDropdownBody: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div>{children}</div>,
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
     __esModule: true,
-    default: ({
+    DefaultExportDropdownItem: ({
         option,
         onClick,
     }: {

@@ -34,4 +34,4 @@ class IntegrationAction extends Component<Props> {
     }
 }
 
-export default IntegrationAction
+export { IntegrationAction }

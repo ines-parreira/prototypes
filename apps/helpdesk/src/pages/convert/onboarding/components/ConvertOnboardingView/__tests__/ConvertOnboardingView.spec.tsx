@@ -12,7 +12,7 @@ import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
-import ConvertOnboardingView from '../ConvertOnboardingView'
+import { ConvertOnboardingView } from '../ConvertOnboardingView'
 
 const defaultStateShopify = {
     integrations: fromJS({

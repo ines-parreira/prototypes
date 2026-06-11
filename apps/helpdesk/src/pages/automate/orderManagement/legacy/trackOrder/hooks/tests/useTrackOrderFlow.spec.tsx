@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
-import useTrackOrderFlow from '../useTrackOrderFlow'
+import { useTrackOrderFlow } from '../useTrackOrderFlow'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 

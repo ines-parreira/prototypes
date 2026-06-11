@@ -6,7 +6,7 @@ import {
 import type { TicketMessage } from 'models/ticket/types'
 import { DEFAULT_CHANNEL } from 'tickets/common/config'
 
-import sourceTypeToChannel from '../sourceTypeToChannel'
+import { sourceTypeToChannel } from '../sourceTypeToChannel'
 
 describe('sourceTypeToChannel()', () => {
     it('should return the default channel if there is no source type', () => {

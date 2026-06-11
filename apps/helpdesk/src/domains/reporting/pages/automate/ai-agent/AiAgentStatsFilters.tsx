@@ -7,16 +7,16 @@ import { AiAgentStatsEmptyState } from 'domains/reporting/pages/automate/ai-agen
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { setStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/statsSlice'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { AutomatePaywallView } from 'pages/automate/common/components/AutomatePaywallView'
 import { AutomateFeatures } from 'pages/automate/common/types'
 
 type Props = {
     children?: ReactNode
 }
 
-export default function AiAgentStatsFilters({ children }: Props) {
+export function AiAgentStatsFilters({ children }: Props) {
     const dispatch = useAppDispatch()
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
     const { hasAccess } = useAiAgentAccess()

@@ -6,12 +6,12 @@ import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
 import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
-import TextToSpeechContext from '../TextToSpeechContext'
-import VoiceMessageTTSPreviewFields from '../VoiceMessageTTSPreviewFields'
+import { TextToSpeechContext } from '../TextToSpeechContext'
+import { VoiceMessageTTSPreviewFields } from '../VoiceMessageTTSPreviewFields'
 
 jest.mock('../VoiceMessageTTSPreviewButton', () => ({
     __esModule: true,
-    default: ({ fieldName }: any) => (
+    VoiceMessageTTSPreviewButton: ({ fieldName }: any) => (
         <div data-testid="preview-button">Preview Button - {fieldName}</div>
     ),
 }))

@@ -1,7 +1,7 @@
 import { assumeMock, render } from '@repo/testing'
 
 import { useSentimentsCustomFieldsTimeSeries } from 'domains/reporting/hooks/useCustomFieldsTimeSeries'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { TotalTicketSentimentOverTimeChart } from 'domains/reporting/pages/voice-of-customer/charts/TotalTicketSentimentOverTimeChart/TotalTicketSentimentOverTimeChart'
 import {

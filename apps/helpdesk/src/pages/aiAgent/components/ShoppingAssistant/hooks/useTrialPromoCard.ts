@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'

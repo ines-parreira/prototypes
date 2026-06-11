@@ -10,14 +10,14 @@ import {
     StaticVerticalStep,
     StaticVerticalStepper,
 } from 'pages/common/forms/StaticVerticalStepper'
-import InfoIconWithTooltip from 'pages/tickets/common/components/InfoIconWithTooltip'
+import { InfoIconWithTooltip } from 'pages/tickets/common/components/InfoIconWithTooltip'
 
-import VoiceMessageField from '../../VoiceMessageField'
+import { VoiceMessageField } from '../../VoiceMessageField'
 import type { EnqueueNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { transformToReactFlowNodes } from '../utils'
 import { useDeleteNode } from '../utils/useDeleteNode'
-import VoiceNodeFormSection from './VoiceNodeFormSection'
+import { VoiceNodeFormSection } from './VoiceNodeFormSection'
 
 import css from './VoiceStepNode.less'
 

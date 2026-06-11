@@ -18,4 +18,4 @@ const MigrationConnectedActions: React.FC<Props> = ({ state }) => {
     )
 }
 
-export default MigrationConnectedActions
+export { MigrationConnectedActions }

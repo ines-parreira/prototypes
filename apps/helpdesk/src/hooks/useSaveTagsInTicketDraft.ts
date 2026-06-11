@@ -3,13 +3,13 @@ import { useCallback, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 import type { Order } from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getIntegrationsData, getTicketCustomer } from 'state/ticket/selectors'
 
 import { mergeCustomer } from '../state/ticket/actions'
 
-export default function useSaveTagsInTicketDraft(
+export function useSaveTagsInTicketDraft(
     data_source: 'Customer' | 'Order' | null,
     integrationId: number | null,
     orderId?: number | null,

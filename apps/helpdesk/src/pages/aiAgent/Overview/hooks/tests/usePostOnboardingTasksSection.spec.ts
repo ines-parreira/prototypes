@@ -23,7 +23,7 @@ const mockUseUpdateStepConfigurationPure = jest.fn()
 const mockInvalidateQueries = jest.fn()
 const mockUseQueryClient = jest.fn()
 
-jest.requireMock('hooks/useAppSelector').default = mockUseAppSelector
+jest.requireMock('hooks/useAppSelector').useAppSelector = mockUseAppSelector
 jest.requireMock(
     'models/aiAgentPostStoreInstallationSteps/queries',
 ).useGetPostStoreInstallationStepsPure =

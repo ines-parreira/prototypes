@@ -35,5 +35,3 @@ export const Caption: React.FC<
         </StyledCaption>
     )
 }
-
-export default Caption

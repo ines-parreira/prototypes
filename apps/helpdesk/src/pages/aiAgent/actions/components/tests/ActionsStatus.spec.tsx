@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ActionStatus from '../ActionsStatus'
+import { ActionStatus } from '../ActionsStatus'
 
 describe('ActionStatus Component', () => {
     it('should render SUCCESS badge when status is success', () => {

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import moment from 'moment'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
@@ -100,4 +100,4 @@ const AiShoppingAssistantExpireBanner: React.FC<
     )
 }
 
-export default AiShoppingAssistantExpireBanner
+export { AiShoppingAssistantExpireBanner }

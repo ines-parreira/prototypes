@@ -10,11 +10,13 @@ import { useCreatePageEmbedment } from 'pages/settings/helpCenter/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { MODAL_LABELS } from '../constants'
-import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
+import { HelpCenterAutoEmbedModalAssistant } from '../HelpCenterAutoEmbedModalAssistant'
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 jest.mock('pages/settings/helpCenter/queries')
 const mockCreatePageEmbedment = jest.fn()

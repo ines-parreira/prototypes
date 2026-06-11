@@ -10,13 +10,13 @@ import {
     HTTP_METHOD_GET,
     JSON_CONTENT_TYPE,
 } from 'config'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import InputField from 'pages/common/forms/input/InputField'
-import JsonField from 'pages/common/forms/JsonField'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { JsonField } from 'pages/common/forms/JsonField'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 
-import ParametersEditor from '../ParametersEditor'
+import { ParametersEditor } from '../ParametersEditor'
 
 type Props = {
     action: Map<string, any>
@@ -25,7 +25,7 @@ type Props = {
     updateActionTitle: (index: number, title: string) => void
 }
 
-export default class HttpAction extends Component<Props> {
+export class HttpAction extends Component<Props> {
     _setTitle = (title: string) => {
         this.props.updateActionTitle(this.props.index, title)
     }

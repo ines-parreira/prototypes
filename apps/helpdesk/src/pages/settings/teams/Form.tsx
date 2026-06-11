@@ -27,11 +27,11 @@ import {
 import type { Team } from '@gorgias/helpdesk-queries'
 
 import { useAppNode } from 'appNode'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import InputField from 'pages/common/forms/input/InputField'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { EmojiPicker } from 'pages/common/components/EmojiPicker/EmojiPicker'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 import { useDeleteTeam, useFetchTeam, useUpdateTeam } from 'teams/queries'
 

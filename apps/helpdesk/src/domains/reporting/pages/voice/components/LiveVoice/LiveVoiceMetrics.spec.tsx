@@ -7,8 +7,8 @@ import type { Moment } from 'moment'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
-import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
-import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
+import { LiveVoiceMetrics } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
+import { useLiveVoiceMetricCards } from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
@@ -42,7 +42,9 @@ jest.mock('domains/reporting/utils/reporting')
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard',
 )
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards',

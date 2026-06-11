@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { initializeMessageDraft } from 'state/newMessage/actions'
 import { clearTicket } from 'state/ticket/actions'
 

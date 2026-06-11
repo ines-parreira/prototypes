@@ -15,7 +15,7 @@ import type {
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,
 } from 'models/search/types'
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
+import { SkeletonLoader } from 'pages/common/components/SkeletonLoader'
 import css from 'pages/common/components/Spotlight/SpotlightScrollArea.less'
 
 const HEADER_HEIGHT = 32
@@ -167,4 +167,8 @@ export const GroupedSpotlightScrollArea = forwardRef<
     GroupedVirtuosoHandle,
     GroupedProps
 >(GroupedSpotlightScrollAreaComponent)
-export default forwardRef<VirtuosoHandle, Props>(SpotlightScrollArea)
+const DefaultExportSpotlightScrollArea = forwardRef<VirtuosoHandle, Props>(
+    SpotlightScrollArea,
+)
+
+export { DefaultExportSpotlightScrollArea }

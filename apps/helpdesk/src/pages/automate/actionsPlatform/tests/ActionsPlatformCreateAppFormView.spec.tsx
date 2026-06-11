@@ -6,9 +6,9 @@ import { fromJS } from 'immutable'
 
 import type { RootState } from 'state/types'
 
-import ActionsPlatformCreateAppFormView from '../ActionsPlatformCreateAppFormView'
-import useApps from '../hooks/useApps'
-import useCreateActionsApp from '../hooks/useCreateActionsApp'
+import { ActionsPlatformCreateAppFormView } from '../ActionsPlatformCreateAppFormView'
+import { useApps } from '../hooks/useApps'
+import { useCreateActionsApp } from '../hooks/useCreateActionsApp'
 
 jest.mock('models/integration/queries')
 jest.mock('../hooks/useCreateActionsApp')

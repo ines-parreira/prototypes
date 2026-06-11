@@ -2,11 +2,11 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import GuidanceReferenceContext from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { GuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
-import QuickActionsCell from '../QuickActionsCell'
+import { QuickActionsCell } from '../QuickActionsCell'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({
@@ -26,7 +26,7 @@ jest.mock('react-router-dom', () => {
 const mockDelete = jest.fn()
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useDeleteAction: jest.fn(),
 }))
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 

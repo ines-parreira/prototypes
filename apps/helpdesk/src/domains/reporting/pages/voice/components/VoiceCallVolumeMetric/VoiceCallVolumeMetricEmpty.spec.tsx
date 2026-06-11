@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import VoiceCallVolumeMetricEmpty from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
+import { VoiceCallVolumeMetricEmpty } from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
 
 describe('<VoiceCallVolumeMetricEmpty />', () => {
     it('should render', () => {

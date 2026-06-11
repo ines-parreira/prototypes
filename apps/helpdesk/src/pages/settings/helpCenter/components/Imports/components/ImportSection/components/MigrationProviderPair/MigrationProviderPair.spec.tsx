@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { migrationProviders } from '../../fixtures/migration-providers'
-import MigrationProviderPair from './MigrationProviderPair'
+import { MigrationProviderPair } from './MigrationProviderPair'
 
 const firstProvider = migrationProviders[0]
 const secondProvider = migrationProviders[2]

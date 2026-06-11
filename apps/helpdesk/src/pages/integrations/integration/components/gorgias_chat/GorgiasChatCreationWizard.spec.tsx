@@ -18,13 +18,13 @@ jest.mock(
     './legacy/GorgiasChatCreationWizard/GorgiasChatCreationWizard',
     () => ({
         __esModule: true,
-        default: () => <div>Legacy Wizard</div>,
+        GorgiasChatCreationWizard: () => <div>Legacy Wizard</div>,
     }),
 )
 
 jest.mock('./revamp/CreationWizard/GorgiasChatCreationWizard', () => ({
     __esModule: true,
-    default: () => <div>Revamp Wizard</div>,
+    GorgiasChatCreationWizard: () => <div>Revamp Wizard</div>,
 }))
 
 jest.mock('./revamp/CreationWizard/GorgiasChatCreationWizardSkeleton', () => ({

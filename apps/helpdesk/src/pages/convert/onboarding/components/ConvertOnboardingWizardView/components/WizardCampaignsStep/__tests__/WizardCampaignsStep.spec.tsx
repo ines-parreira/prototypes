@@ -17,14 +17,16 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import WizardCampaignsStep from '../WizardCampaignsStep'
+import { WizardCampaignsStep } from '../WizardCampaignsStep'
 
 jest.mock(
     'pages/convert/onboarding/components/ConvertSimplifiedEditorModal',
     () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-simplified-editor-modal" />
-        })
+        return {
+            ConvertSimplifiedEditorModal: jest.fn(() => {
+                return <div data-testid="mock-simplified-editor-modal" />
+            }),
+        }
     },
 )
 

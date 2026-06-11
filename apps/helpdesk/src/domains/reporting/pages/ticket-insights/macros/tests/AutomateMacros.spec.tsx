@@ -5,9 +5,9 @@ import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
 import { TicketChannel } from 'business/types/ticket'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import AutomateMacros from 'domains/reporting/pages/ticket-insights/macros/AutomateMacros'
+import { AutomateMacros } from 'domains/reporting/pages/ticket-insights/macros/AutomateMacros'
 import { integrationsState } from 'fixtures/integrations'
 import { messagesSentPerMacro } from 'fixtures/stats'
 import type { RootState } from 'state/types'
@@ -29,7 +29,9 @@ jest.mock(
 )
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>,
+    () => ({
+        DEPRECATED_ChannelsStatsFilter: () => <div>ChannelsStatsFilter</div>,
+    }),
 )
 
 const useStatResourceMock = useStatResource as jest.MockedFunction<

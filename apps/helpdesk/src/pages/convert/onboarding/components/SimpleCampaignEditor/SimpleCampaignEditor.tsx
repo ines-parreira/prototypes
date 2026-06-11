@@ -11,8 +11,8 @@ import type {
     UtmConfiguration,
     WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import TextEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/TextEditor'
-import Triggers from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/Triggers'
+import { TextEditor } from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/TextEditor'
+import { Triggers } from 'pages/convert/onboarding/components/SimpleCampaignEditor/components/Triggers'
 
 import css from './SimpleCampaignEditor.less'
 
@@ -84,5 +84,3 @@ export const SimpleCampaignEditor: React.FC<Props> = (props) => {
         </IntegrationProvider>
     )
 }
-
-export default SimpleCampaignEditor

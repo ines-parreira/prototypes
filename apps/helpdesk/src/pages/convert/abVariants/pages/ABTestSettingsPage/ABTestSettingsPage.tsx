@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 import { Button } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
-import VariantsList from 'pages/convert/abVariants/components/VariantsList'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { CampaignFromABTestModal } from 'pages/convert/abVariants/components/CampaignFromABTestModal'
+import { VariantsList } from 'pages/convert/abVariants/components/VariantsList'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
@@ -116,5 +116,3 @@ export const ABTestSettingsPage: React.FC<Props> = ({
         </>
     )
 }
-
-export default ABTestSettingsPage

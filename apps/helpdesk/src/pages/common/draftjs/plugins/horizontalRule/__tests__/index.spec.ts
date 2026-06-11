@@ -1,7 +1,7 @@
 import { EditorState, Modifier, SelectionState } from 'draft-js'
 
 import { mockPluginMethods, typeText } from '../../../tests/draftTestUtils'
-import createHorizontalRulePlugin, { HORIZONTAL_RULE_ENTITY } from '../index'
+import { createHorizontalRulePlugin, HORIZONTAL_RULE_ENTITY } from '../index'
 
 describe('horizontalRule plugin', () => {
     describe('onChange', () => {

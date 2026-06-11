@@ -11,7 +11,7 @@ import {
 } from 'fixtures/shopify'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import OrderFooter from '../OrderFooter'
+import { OrderFooter } from '../OrderFooter'
 
 jest.mock('lodash/debounce', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires

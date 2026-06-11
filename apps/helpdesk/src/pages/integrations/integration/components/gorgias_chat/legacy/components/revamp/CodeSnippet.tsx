@@ -1,4 +1,4 @@
-import CopyButton from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CopyButton'
+import { CopyButton } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CopyButton'
 
 import css from './CodeSnippet.less'
 
@@ -22,4 +22,4 @@ const CodeSnippet = ({ codeSnippet, withCopyButton = false }: Props) => {
     )
 }
 
-export default CodeSnippet
+export { CodeSnippet }

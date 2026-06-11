@@ -18,7 +18,7 @@ const pathItemMap: Record<string, string> = {
     '/app/voice-of-customer': 'voice-of-customer',
 }
 
-export default function useActiveItem() {
+export function useActiveItem() {
     const { pathname: path } = useLocation()
 
     return useMemo(() => {

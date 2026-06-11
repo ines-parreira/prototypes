@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { assetsUrl } from 'utils'
 
-import HeroImageCarousel from './HeroImageCarousel'
+import { HeroImageCarousel } from './HeroImageCarousel'
 
 const storyConfig: Meta = {
     title: 'Layout/HeroImageCarousel',

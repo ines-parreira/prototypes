@@ -13,15 +13,15 @@ import {
 import { useListStores } from '@gorgias/helpdesk-queries'
 
 import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import {
     getActionsAppFromTemplateApp,
     getGraphAppFromTemplateApp,
 } from 'pages/automate/actionsPlatform/utils'
-import NodeMenu from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
-import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
+import { DefaultExportNodeMenu as NodeMenu } from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
+import { NodeEditorDrawer } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
 import type { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {
     getReusableLLMPromptCallNodeStatuses,
@@ -32,9 +32,9 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { isReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { Separator } from 'pages/common/components/Separator/Separator'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
 import { useStepServiceConnectionStatuses } from '../hooks/useStepServiceConnectionStatuses'
 import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'

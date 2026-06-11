@@ -10,7 +10,7 @@ import * as userActions from 'state/agents/actions'
 import * as agentSelectors from 'state/agents/selectors'
 import type { RootState } from 'state/types'
 
-import Select from './ReactSelect'
+import { Select } from './ReactSelect'
 
 type OwnProps = {
     onChange: (value: number) => void
@@ -94,4 +94,6 @@ const connector = connect(
     }),
 )
 
-export default connector(AssigneeUserSelectContainer)
+const DefaultExportAssigneeUserSelect = connector(AssigneeUserSelectContainer)
+
+export { DefaultExportAssigneeUserSelect }

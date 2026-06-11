@@ -4,7 +4,7 @@ import moment from 'moment'
 import type { WorkflowTrendMetrics } from 'domains/reporting/hooks/automate/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Period } from 'domains/reporting/models/stat/types'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { comparedPeriodString } from 'domains/reporting/pages/common/utils'
 import { getTrendPropsToPercent } from 'pages/automate/automate-metrics/utils'
 

@@ -42,25 +42,28 @@ import {
 import { useRegisterCopilotContextAttachment } from 'copilot'
 import { buildTicketContextAttachment } from 'copilot/contextAttachments/contextAttachmentBuilders'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { useRecentItems } from 'hooks/useRecentItems/useRecentItems'
 import { useSearch } from 'hooks/useSearch'
-import useDraftMessages, { DRAFT_TICKET_STORE } from 'hooks/useTicketDraft'
+import {
+    DRAFT_TICKET_STORE,
+    useTicketDraft as useDraftMessages,
+} from 'hooks/useTicketDraft'
 import { MacroActionName } from 'models/macroAction/types'
 import type { PickedTicket } from 'models/search/types'
 import { pickedTicketFields } from 'models/search/types'
 import type { Ticket } from 'models/ticket/types'
 import { useListVoiceCalls } from 'models/voiceCall/queries'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
-import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
+import { KnowledgeSourceSidebarWrapper } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import { TicketThread } from 'pages/tickets/detail/components/TicketThread/TicketThread'
 import { TicketThreadLegacyBridge } from 'pages/tickets/detail/components/TicketThread/TicketThreadLegacyBridge'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
-import socketManager from 'services/socketManager/socketManager'
+import { pendingMessageManager } from 'services/pendingMessageManager/pendingMessageManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
 import { fetchCustomer } from 'state/customers/actions'
 import { DEPRECATED_getActiveCustomer } from 'state/customers/selectors'
@@ -100,12 +103,12 @@ import { getActiveView } from 'state/views/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'
-import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
-import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
+import { useGoToNextTicket } from './components/TicketNavigation/hooks/useGoToNextTicket'
+import { useGoToPreviousTicket } from './components/TicketNavigation/hooks/useGoToPreviousTicket'
 // oxlint-disable-next-line no-named-as-default
-import TicketView from './components/TicketView'
-import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
-import useTicketActivityTracking from './hooks/useTicketActivityTracking'
+import { TicketView } from './components/TicketView'
+import { useDraftTicketActivityTracking } from './hooks/useDraftTicketActivityTracking'
+import { useTicketActivityTracking } from './hooks/useTicketActivityTracking'
 import { useTicketFieldsCheck } from './hooks/useTicketFieldsCheck'
 import { useTicketShopperTypingActivityMessageHandler } from './hooks/useTicketShopperTypingActivityMessageHandler'
 
@@ -1250,4 +1253,6 @@ const getComposerDebugState = (newMessage: Map<any, any>) => {
     }
 }
 
-export default connector(TicketDetailContainer)
+const DefaultExportTicketDetailContainer = connector(TicketDetailContainer)
+
+export { DefaultExportTicketDetailContainer }

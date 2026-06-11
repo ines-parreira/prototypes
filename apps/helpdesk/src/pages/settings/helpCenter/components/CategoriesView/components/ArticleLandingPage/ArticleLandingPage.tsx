@@ -9,13 +9,13 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ArticleTemplate } from 'models/helpCenter/types'
 import { validLocaleCode } from 'models/helpCenter/utils'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
@@ -26,11 +26,11 @@ import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 import { useHasAccessToAILibrary } from '../../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import { ImportSection } from '../../../Imports/components/ImportSection'
 import { LanguageSelect } from '../../../LanguageSelect'
-import AddArticleCard from '../AddArticleCard'
-import AILibraryBanner from '../AILibraryBanner'
-import ArticleTemplateCard from '../ArticleTemplateCard'
-import ArticleTemplateCardSkeleton from '../ArticleTemplateCard/ArticleTemplateCardSkeleton'
-import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
+import { AddArticleCard } from '../AddArticleCard'
+import { AILibraryBanner } from '../AILibraryBanner'
+import { ArticleTemplateCard } from '../ArticleTemplateCard'
+import { ArticleTemplateCardSkeleton } from '../ArticleTemplateCard/ArticleTemplateCardSkeleton'
+import { ArticleTemplatesBanner } from '../ArticleTemplatesBanner'
 
 import css from './ArticleLandingPage.less'
 
@@ -210,4 +210,4 @@ const ArticleLandingPage = (props: ArticleLandingPageProps) => (
     </ErrorBoundary>
 )
 
-export default ArticleLandingPage
+export { ArticleLandingPage }

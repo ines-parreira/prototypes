@@ -7,10 +7,10 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import Avatar from 'gorgias-design-system/Avatar/Avatar'
+import { Avatar } from 'gorgias-design-system/Avatar/Avatar'
 
 import { ChatIntegrationPreviewContext } from '.'
-import ChatTitle from './ChatTitle'
+import { ChatTitle } from './ChatTitle'
 
 import previewCss from './ChatIntegrationPreview.less'
 
@@ -76,4 +76,4 @@ const BotMessages: React.FC<Props> = ({
     )
 }
 
-export default BotMessages
+export { BotMessages }

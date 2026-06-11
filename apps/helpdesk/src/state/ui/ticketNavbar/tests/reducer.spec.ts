@@ -4,7 +4,7 @@ import {
     optimisticUserSettingsReset,
     optimisticUserSettingsSet,
 } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, ViewsReducer as reducer } from '../reducer'
 
 describe('ticketNavbar reducer', () => {
     describe('optimisticAccountSettingsReset action', () => {

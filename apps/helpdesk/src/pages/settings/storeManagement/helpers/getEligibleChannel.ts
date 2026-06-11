@@ -12,7 +12,7 @@ import {
     isWhatsAppChannel,
 } from './isIntegration'
 
-export default function getEligibleChannels(integrations: Integration[]) {
+export function getEligibleChannels(integrations: Integration[]) {
     return (integrations || []).filter((integration) => {
         return (
             isEmailChannel(integration) ||

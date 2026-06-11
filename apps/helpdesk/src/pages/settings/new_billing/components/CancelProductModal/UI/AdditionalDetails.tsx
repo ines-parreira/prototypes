@@ -1,6 +1,6 @@
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
-import Instruction from './Instruction'
+import { Instruction } from './Instruction'
 
 import css from './AdditionalDetails.less'
 
@@ -26,4 +26,4 @@ const AdditionalDetails = ({
     )
 }
 
-export default AdditionalDetails
+export { AdditionalDetails }

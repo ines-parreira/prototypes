@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
-import IconButton from '../button/IconButton'
+import { IconButton } from '../button/IconButton'
 import { selectText } from './utils'
 
 import css from './CopyText.less'
@@ -41,4 +41,4 @@ const CopyText = ({ text, className }: CopyTextProps) => {
     )
 }
 
-export default CopyText
+export { CopyText }

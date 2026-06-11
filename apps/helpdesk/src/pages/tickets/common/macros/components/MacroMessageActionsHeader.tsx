@@ -126,4 +126,4 @@ const MacroMessageActionsHeader: React.FC<MacroMessageActionsHeaderProps> = ({
         <div className={css.content}>{children}</div>
     </div>
 )
-export default MacroMessageActionsHeader
+export { MacroMessageActionsHeader }

@@ -2,9 +2,9 @@ import moment from 'moment-timezone'
 import { useLocation } from 'react-router-dom'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
-import useWorkflowAnalyticsDisplayBanner from '../hooks/useWorkflowAnalyticsDisplayBanner'
+import { useWorkflowAnalyticsDisplayBanner } from '../hooks/useWorkflowAnalyticsDisplayBanner'
 
 import css from './WorkflowAnalytics.less'
 
@@ -65,4 +65,4 @@ const WorkflowAnalyticsBanner: React.FC<WorkflowAnalyticsBannerProps> = ({
     ) : null
 }
 
-export default WorkflowAnalyticsBanner
+export { WorkflowAnalyticsBanner }

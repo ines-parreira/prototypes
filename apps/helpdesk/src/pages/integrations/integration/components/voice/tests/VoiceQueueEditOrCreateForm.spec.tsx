@@ -7,17 +7,23 @@ import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 
-import VoiceQueueEditOrCreateForm from '../VoiceQueueEditOrCreateForm'
+import { VoiceQueueEditOrCreateForm } from '../VoiceQueueEditOrCreateForm'
 
-jest.mock('../VoiceQueueSettingsFormGeneralSection', () => () => (
-    <div>VoiceQueueSettingsFormGeneralSection</div>
-))
-jest.mock('../VoiceQueueSettingsFormCallFlowSection', () => () => (
-    <div>VoiceQueueSettingsFormCallFlowSection</div>
-))
-jest.mock('../VoiceQueueSettingsLinkedIntegrations', () => () => (
-    <div>VoiceQueueSettingsLinkedIntegrations</div>
-))
+jest.mock('../VoiceQueueSettingsFormGeneralSection', () => ({
+    VoiceQueueSettingsFormGeneralSection: () => (
+        <div>VoiceQueueSettingsFormGeneralSection</div>
+    ),
+}))
+jest.mock('../VoiceQueueSettingsFormCallFlowSection', () => ({
+    VoiceQueueSettingsFormCallFlowSection: () => (
+        <div>VoiceQueueSettingsFormCallFlowSection</div>
+    ),
+}))
+jest.mock('../VoiceQueueSettingsLinkedIntegrations', () => ({
+    VoiceQueueSettingsLinkedIntegrations: () => (
+        <div>VoiceQueueSettingsLinkedIntegrations</div>
+    ),
+}))
 
 describe('VoiceQueueEditOrCreateForm', () => {
     const renderComponent = (queue?: VoiceQueue) =>

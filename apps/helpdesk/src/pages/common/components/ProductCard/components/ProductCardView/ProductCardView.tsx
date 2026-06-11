@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import GorgiasButton from 'gorgias-design-system/Buttons/Button'
+import { Button as GorgiasButton } from 'gorgias-design-system/Buttons/Button'
 import { getContrastColor } from 'gorgias-design-system/utils'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import type { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'

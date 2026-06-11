@@ -20,7 +20,7 @@ import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 import { FlowProvider } from 'core/ui/flows'
 
 import type { VoiceFlowFormValues } from '../../types'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { TimeSplitConditionalNode } from '../TimeSplitConditionalNode'
 
 // Mock business hours data

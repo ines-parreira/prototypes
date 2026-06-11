@@ -4,7 +4,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
-import General from '../General'
+import { General } from '../General'
 import * as useStoreDeleterHook from '../hooks/useStoreDeleter'
 
 const mockShopifyStore: StoreIntegration = {
@@ -24,10 +24,12 @@ const mockRefetchStore = jest.fn()
 const mockDeleteIntegration = jest.fn()
 describe('General', () => {
     beforeEach(() => {
-        jest.spyOn(useStoreDeleterHook, 'default').mockImplementation(() => ({
-            deleteIntegration: mockDeleteIntegration,
-            isDeleting: false,
-        }))
+        jest.spyOn(useStoreDeleterHook, 'useStoreDeleter').mockImplementation(
+            () => ({
+                deleteIntegration: mockDeleteIntegration,
+                isDeleting: false,
+            }),
+        )
     })
     afterEach(() => {
         jest.clearAllMocks()

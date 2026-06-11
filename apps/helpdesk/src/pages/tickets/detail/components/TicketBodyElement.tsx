@@ -5,7 +5,7 @@ import type { Moment } from 'moment'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { PHONE_EVENTS } from 'constants/event'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     isTicketContactReasonSuggestion,
     isTicketEvent,
@@ -20,21 +20,22 @@ import type {
 import { isVoiceCall } from 'models/voiceCall/types'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
-import AuditLogEvent, {
+import {
+    DefaultExportAuditLogEvent as AuditLogEvent,
     contentfulEventTypesValues,
 } from 'pages/tickets/detail/components/AuditLogEvent'
-import Event from 'pages/tickets/detail/components/Event'
-import PhoneEvent from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
+import { EventContainer as Event } from 'pages/tickets/detail/components/Event'
+import { PhoneEvent } from 'pages/tickets/detail/components/PhoneEvent/PhoneEvent'
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
     PRIVATE_REPLY_ACTIONS,
 } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
-import PrivateReplyEvent from 'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent'
-import ContactReasonSuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestionContactReason'
-import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
-import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurvey'
-import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
+import { PrivateReplyEvent } from 'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent'
+import { ContactReasonSuggestion } from 'pages/tickets/detail/components/RuleSuggestion/AISuggestionContactReason'
+import { RuleSuggestion } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
+import { SatisfactionSurvey } from 'pages/tickets/detail/components/SatisfactionSurvey'
+import { TicketMessages } from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getLastCustomerMessage, getTicketState } from 'state/ticket/selectors'
 
@@ -42,7 +43,7 @@ import type { TicketEventPrivateReplyData } from '../../../../models/event/types
 import type { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'
 import { isShoppingAssistantEvent } from '../utils'
 import { InfluencedOrderEvent } from './ShoppingAssistantEvent/InfluencedOrderEvent'
-import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'
+import { TicketVoiceCall } from './TicketVoiceCall/TicketVoiceCall'
 
 interface Props {
     element: TicketElement | TicketMessage[] | ShoppingAssistantEvent
@@ -180,4 +181,4 @@ const TicketBodyElement = ({
     return <Event event={elementMap} isLast={isLast} />
 }
 
-export default TicketBodyElement
+export { TicketBodyElement }

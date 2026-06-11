@@ -1,9 +1,9 @@
 import { Icon, IconSize } from '@gorgias/axiom'
 
 import { useSettingsAutoSave } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
-import ArticleCategorySelect from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelect'
-import SelectCustomerVisibility from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
-import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
+import { ArticleCategorySelect } from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelect'
+import { SelectCustomerVisibility } from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
+import { AutoSaveBadge } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { ExcerptInput } from './components/ExcerptInput'

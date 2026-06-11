@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { channels as mockChannels } from 'fixtures/channels'
-import SelectTargetTicket from 'pages/common/components/MergeTickets/SelectTargetTicket'
+import { DefaultExportSelectTargetTicket as SelectTargetTicket } from 'pages/common/components/MergeTickets/SelectTargetTicket'
 
 jest.mock('services/channels', () => ({
     getChannels: () => mockChannels,

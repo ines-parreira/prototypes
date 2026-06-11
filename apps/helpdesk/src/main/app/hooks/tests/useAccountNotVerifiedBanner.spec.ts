@@ -3,8 +3,8 @@ import { fromJS } from 'immutable'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { resendVerificationEmail } from 'state/currentAccount/actions'
 
 import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
@@ -20,8 +20,8 @@ jest.mock(
             },
         }) as Record<string, unknown>,
 )
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 jest.mock('state/currentAccount/actions', () => ({
     resendVerificationEmail: jest.fn(),
 }))

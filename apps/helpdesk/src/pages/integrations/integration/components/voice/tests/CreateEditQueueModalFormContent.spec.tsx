@@ -1,15 +1,19 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import CreateEditQueueModalFormContent from '../CreateEditQueueModalFormContent'
+import { CreateEditQueueModalFormContent } from '../CreateEditQueueModalFormContent'
 
-jest.mock('../VoiceQueueSettingsFormGeneralSection', () => () => (
-    <div>VoiceQueueSettingsFormGeneralSection</div>
-))
+jest.mock('../VoiceQueueSettingsFormGeneralSection', () => ({
+    VoiceQueueSettingsFormGeneralSection: () => (
+        <div>VoiceQueueSettingsFormGeneralSection</div>
+    ),
+}))
 
-jest.mock('../VoiceQueueSettingsFormCallFlowSection', () => () => (
-    <div>VoiceQueueSettingsFormCallFlowSection</div>
-))
+jest.mock('../VoiceQueueSettingsFormCallFlowSection', () => ({
+    VoiceQueueSettingsFormCallFlowSection: () => (
+        <div>VoiceQueueSettingsFormCallFlowSection</div>
+    ),
+}))
 
 describe('CreateEditQueueModalFormContent', () => {
     const renderComponent = () => render(<CreateEditQueueModalFormContent />)

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import RadioButton from '../RadioButton'
+import { DefaultExportRadioButton as RadioButton } from '../RadioButton'
 
 describe('<RadioButton />', () => {
     const minProps = {

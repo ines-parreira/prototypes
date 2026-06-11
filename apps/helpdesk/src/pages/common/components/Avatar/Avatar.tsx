@@ -32,7 +32,7 @@ type Props = {
  * @date 2025-04-08
  * @type ui-kit-migration
  */
-export default function Avatar({
+export function Avatar({
     badgeBorderColor,
     badgeClassName,
     badgeColor,

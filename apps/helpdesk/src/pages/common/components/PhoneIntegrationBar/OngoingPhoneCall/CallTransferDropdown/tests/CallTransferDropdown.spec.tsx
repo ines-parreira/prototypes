@@ -12,7 +12,7 @@ import { toast } from '@gorgias/axiom'
 import { mockTransferCallHandler } from '@gorgias/helpdesk-mocks'
 import { VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
 
-import CallTransferDropdown from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown'
+import { CallTransferDropdown } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { mockIncomingCall } from 'tests/twilioMocks'
 
@@ -20,7 +20,10 @@ jest.mock(
     'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/AgentCallTransferDropdownContent',
     () => ({
         __esModule: true,
-        default: ({ setSelectedAgentId, clearErrors }: any) => {
+        AgentCallTransferDropdownContent: ({
+            setSelectedAgentId,
+            clearErrors,
+        }: any) => {
             return (
                 <div data-testid="agent-transfer-content">
                     <button
@@ -45,7 +48,7 @@ jest.mock(
     'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/ExternalCallTransferDropdownContent',
     () => ({
         __esModule: true,
-        default: ({
+        ExternalCallTransferDropdownContent: ({
             phoneNumber,
             customer,
             setSelectedExternalPhoneNumber,
@@ -123,7 +126,10 @@ jest.mock(
     'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/QueueCallTransferDropdownContent',
     () => ({
         __esModule: true,
-        default: ({ setSelectedQueueId, clearErrors }: any) => {
+        QueueCallTransferDropdownContent: ({
+            setSelectedQueueId,
+            clearErrors,
+        }: any) => {
             return (
                 <div data-testid="queue-transfer-content">
                     <button

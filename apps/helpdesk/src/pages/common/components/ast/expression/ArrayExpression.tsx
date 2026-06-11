@@ -2,8 +2,8 @@ import type { List, Map } from 'immutable'
 
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import Errors from '../Errors'
-import Widget from '../Widget'
+import { Errors } from '../Errors'
+import { Widget } from '../Widget'
 
 type Props = {
     actions: RuleItemActions
@@ -14,7 +14,7 @@ type Props = {
     schemas: Map<any, any>
 }
 
-export default function ArrayExpression({
+export function ArrayExpression({
     actions,
     elements,
     leftsiblings,

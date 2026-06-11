@@ -10,8 +10,8 @@ import {
     AiSalesAgentChartConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { WarningBannerContext } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import {
     formatCurrency,
     formatTimeSeriesData,
@@ -122,4 +122,4 @@ const GmvInfluencedOverTimeChart = ({
     return <TrendCardComponent />
 }
 
-export default GmvInfluencedOverTimeChart
+export { GmvInfluencedOverTimeChart }

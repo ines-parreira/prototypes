@@ -7,9 +7,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Modal from 'pages/common/components/modal/Modal'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
-import LinkPopover from '../LinkPopover'
+import { LinkPopover } from '../LinkPopover'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

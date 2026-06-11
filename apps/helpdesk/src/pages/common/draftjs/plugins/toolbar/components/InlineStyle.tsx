@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { RichUtils } from 'draft-js'
 
 import type { ActionInjectedProps } from '../types'
-import Button from './Button'
+import { DefaultExportButton as Button } from './Button'
 
 type Props = {
     icon: string
@@ -67,4 +67,4 @@ const InlineStyle = ({
     )
 }
 
-export default InlineStyle
+export { InlineStyle }

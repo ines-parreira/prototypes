@@ -19,7 +19,7 @@ import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
 
-import TicketEvent from '../../../components/TicketEvent/TicketEvent'
+import { TicketEvent } from '../../../components/TicketEvent/TicketEvent'
 import type { PlaygroundChannels } from '../../types'
 import { AuthenticationWarningBanner } from '../AuthenticationWarningBanner/AuthenticationWarningBanner'
 
@@ -319,4 +319,4 @@ const PlaygroundPlaceholderMessage = () => {
     )
 }
 
-export default PlaygroundMessage
+export { PlaygroundMessage }

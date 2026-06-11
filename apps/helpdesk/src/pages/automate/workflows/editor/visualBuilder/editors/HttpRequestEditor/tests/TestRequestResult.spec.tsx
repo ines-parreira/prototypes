@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TestRequestResult from '../TestRequestResult'
+import { TestRequestResult } from '../TestRequestResult'
 
 describe('<TestRequestResult />', () => {
     it('should render variable using jsonpath filters', () => {

@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
+import { SelfServiceStatsPagePaywallCustomCta } from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
@@ -13,53 +13,57 @@ jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 jest.mock('pages/settings/billing/automate/AutomateSubscriptionButton', () => {
-    return function AutomateSubscriptionButton({
-        onClick,
-        label,
-        segmentEventToSend,
-    }: {
-        onClick: () => void
-        label: string
-        segmentEventToSend: any
-    }) {
-        return (
-            <button
-                data-testid="automate-subscription-button"
-                onClick={() => {
-                    onClick()
-                    if (segmentEventToSend) {
-                        logEvent(
-                            segmentEventToSend.name,
-                            segmentEventToSend.props,
-                        )
-                    }
-                }}
-            >
-                {label}
-            </button>
-        )
+    return {
+        AutomateSubscriptionButton: function AutomateSubscriptionButton({
+            onClick,
+            label,
+            segmentEventToSend,
+        }: {
+            onClick: () => void
+            label: string
+            segmentEventToSend: any
+        }) {
+            return (
+                <button
+                    data-testid="automate-subscription-button"
+                    onClick={() => {
+                        onClick()
+                        if (segmentEventToSend) {
+                            logEvent(
+                                segmentEventToSend.name,
+                                segmentEventToSend.props,
+                            )
+                        }
+                    }}
+                >
+                    {label}
+                </button>
+            )
+        },
     }
 })
 
 jest.mock('pages/settings/billing/automate/AutomateSubscriptionModal', () => {
-    return function AutomateSubscriptionModal({
-        isOpen,
-        onClose,
-        confirmLabel,
-    }: {
-        isOpen: boolean
-        onClose: () => void
-        confirmLabel: string
-    }) {
-        if (!isOpen) return null
-        return (
-            <div data-testid="automate-subscription-modal">
-                <button data-testid="modal-close-button" onClick={onClose}>
-                    Close
-                </button>
-                <div data-testid="modal-confirm-label">{confirmLabel}</div>
-            </div>
-        )
+    return {
+        AutomateSubscriptionModal: function AutomateSubscriptionModal({
+            isOpen,
+            onClose,
+            confirmLabel,
+        }: {
+            isOpen: boolean
+            onClose: () => void
+            confirmLabel: string
+        }) {
+            if (!isOpen) return null
+            return (
+                <div data-testid="automate-subscription-modal">
+                    <button data-testid="modal-close-button" onClick={onClose}>
+                        Close
+                    </button>
+                    <div data-testid="modal-confirm-label">{confirmLabel}</div>
+                </div>
+            )
+        },
     }
 })
 

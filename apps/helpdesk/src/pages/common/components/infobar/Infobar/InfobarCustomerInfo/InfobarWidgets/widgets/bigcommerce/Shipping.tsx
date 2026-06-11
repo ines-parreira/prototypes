@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { getTrackingLink } from 'common/tracking'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import { StaticField } from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 export const shippingCustomization: CardCustomization = {
     AfterTitle,

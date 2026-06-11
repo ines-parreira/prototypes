@@ -6,25 +6,38 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { Router } from 'react-router-dom'
 
-import type Modal from 'pages/common/components/modal/Modal'
+import type { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
-import NavigatedSuccessModal, {
+import {
+    NavigatedSuccessModal,
     NavigatedSuccessModalName,
 } from '../NavigatedSuccessModal'
 import { SuccessModalIcon } from '../SuccessModal'
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({ children, isOpen, onClose }: ComponentProps<typeof Modal>) => (
-        <div onClick={onClose}>{isOpen ? children : null}</div>
-    )
+    return {
+        DefaultExportModal: ({
+            children,
+            isOpen,
+            onClose,
+        }: ComponentProps<typeof Modal>) => (
+            <div onClick={onClose}>{isOpen ? children : null}</div>
+        ),
+    }
 })
 
 jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return ({ title }: { title: ReactNode }) => <div>{title}</div>
+    return {
+        ModalHeader: ({ title }: { title: ReactNode }) => <div>{title}</div>,
+    }
 })
 
 jest.mock('pages/common/components/modal/ModalBody', () => {
-    return ({ children }: { children?: ReactNode }) => <div>{children}</div>
+    return {
+        DefaultExportModalBody: ({ children }: { children?: ReactNode }) => (
+            <div>{children}</div>
+        ),
+    }
 })
 
 describe('<NavigatedSuccessModal />', () => {

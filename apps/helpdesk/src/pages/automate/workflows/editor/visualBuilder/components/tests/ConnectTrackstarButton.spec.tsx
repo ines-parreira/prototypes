@@ -11,8 +11,8 @@ import {
 } from '@gorgias/workflows-mocks'
 import type { ListTrackstarConnectionsResponseItem } from '@gorgias/workflows-types'
 
-import StoreTrackstarProvider from '../../../../../../aiAgent/actions/providers/StoreTrackstarProvider'
-import ConnectTrackstarButton from '../ConnectTrackstarButton'
+import { StoreTrackstarProvider } from '../../../../../../aiAgent/actions/providers/StoreTrackstarProvider'
+import { TrackstarConnectButton as ConnectTrackstarButton } from '../ConnectTrackstarButton'
 
 jest.mock('@trackstar/react-trackstar-link')
 

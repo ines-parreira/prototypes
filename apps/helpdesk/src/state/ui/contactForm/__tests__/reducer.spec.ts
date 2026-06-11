@@ -1,5 +1,5 @@
 import { changeContactFormId } from 'state/ui/contactForm/actions'
-import reducer from 'state/ui/contactForm/reducer'
+import { DefaultExportReducer as reducer } from 'state/ui/contactForm/reducer'
 
 describe('Contact Form/UI reducer', () => {
     describe('dispatch changeContactFormId', () => {

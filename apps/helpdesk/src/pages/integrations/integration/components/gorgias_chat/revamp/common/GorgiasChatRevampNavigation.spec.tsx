@@ -21,11 +21,11 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
 )
 
-jest.mock(
-    'pages/common/components/SecondaryNavbar/SecondaryNavbar',
-    () =>
-        ({ children }: { children?: React.ReactNode }) => <nav>{children}</nav>,
-)
+jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => ({
+    SecondaryNavbar: ({ children }: { children?: React.ReactNode }) => (
+        <nav>{children}</nav>
+    ),
+}))
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<

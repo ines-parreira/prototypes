@@ -14,7 +14,7 @@ import {
 } from 'business/shopify/lineItem'
 import { formatPrice } from 'business/shopify/number'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import css from './OrderLineItemRow.less'
 
@@ -273,4 +273,6 @@ function OrderLineItemRow({
     )
 }
 
-export default memo(OrderLineItemRow)
+const DefaultExportOrderLineItemRow = memo(OrderLineItemRow)
+
+export { DefaultExportOrderLineItemRow }

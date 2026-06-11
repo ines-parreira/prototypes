@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import type { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import { TicketTags } from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
 type Props = {
     args: Map<string, string>
@@ -66,4 +66,4 @@ const AddTagsAction = ({
     )
 }
 
-export default AddTagsAction
+export { AddTagsAction }

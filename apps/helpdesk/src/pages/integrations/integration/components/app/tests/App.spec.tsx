@@ -14,7 +14,10 @@ import { dummyAppData } from 'fixtures/apps'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { TrialPeriod } from 'models/integration/types/app'
-import App, { Tab } from 'pages/integrations/integration/components/app/App'
+import {
+    AppDetail as App,
+    Tab,
+} from 'pages/integrations/integration/components/app/App'
 import { DEFAULT_VALUES } from 'pages/integrations/mappers/mapDefaults'
 import type { Application } from 'services/applications'
 import { getApplicationById } from 'services/applications'

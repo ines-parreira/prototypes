@@ -1,10 +1,11 @@
 import { useState } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import HelpCenterStatsTable, {
+import {
+    HelpCenterStatsTable,
     TableCellType,
 } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { usePerformanceByArticleMetrics } from 'domains/reporting/pages/help-center/hooks/usePerformanceByArticleMetrics'

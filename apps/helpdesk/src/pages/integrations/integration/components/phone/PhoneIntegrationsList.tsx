@@ -4,7 +4,7 @@ import { history } from '@repo/routing'
 import { reverse, sortBy } from 'lodash'
 import { Container } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import type {
     PhoneIntegration,
@@ -13,22 +13,22 @@ import type {
 } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
-import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
+import { PhoneNumberTitle } from 'pages/phoneNumbers/PhoneNumberTitle'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import VoiceAddedSuccessModal from '../voice/VoiceIntegrationOnboarding/VoiceAddedSuccessModal'
+import { VoiceAddedSuccessModal } from '../voice/VoiceIntegrationOnboarding/VoiceAddedSuccessModal'
 
 import css from './PhoneIntegrationsList.less'
 
@@ -41,9 +41,7 @@ type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
 }
 
-export default function PhoneIntegrationsList({
-    type,
-}: Props): JSX.Element | null {
+export function PhoneIntegrationsList({ type }: Props): JSX.Element | null {
     const config = getIntegrationConfig(type)
 
     const getIntegrations = useMemo(

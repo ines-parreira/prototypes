@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import Expression from 'pages/common/components/ast/expression/Expression'
+import { Expression } from 'pages/common/components/ast/expression/Expression'
 
 describe('<Expression />', () => {
     const minProps = {

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import _capitalize from 'lodash/capitalize'
 
 import { ExecutionIdDisplay } from 'pages/aiAgent/components/ExecutionIdDisplay/ExecutionIdDisplay'
-import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
+import { ControlledCollapsibleDetails } from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
 import type { IngestedProduct } from './types'
 
@@ -117,4 +117,4 @@ const IngestionProductView = ({ product }: Props) => {
     )
 }
 
-export default IngestionProductView
+export { IngestionProductView }

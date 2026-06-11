@@ -36,4 +36,4 @@ const AnalyticsAiAgentStatsPaywall: React.FC = () => {
     )
 }
 
-export default AnalyticsAiAgentStatsPaywall
+export { AnalyticsAiAgentStatsPaywall }

@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import useHelpCenterCustomDomainHostnames from '../useHelpCenterCustomDomainHostnames'
+import { useHelpCenterCustomDomainHostnames } from '../useHelpCenterCustomDomainHostnames'
 
 const mockedListCustomDomains = jest.fn()
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
@@ -13,7 +13,9 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 
 describe('useHelpCenterCustomDomainUrls', () => {
     beforeEach(() => {

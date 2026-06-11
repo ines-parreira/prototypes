@@ -19,17 +19,18 @@ import {
 
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from 'pages/common/components/dropdown/DropdownItemLabel'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import AddCustomBusinessHoursModal from './AddCustomBusinessHoursModal'
+import { AddCustomBusinessHoursModal } from './AddCustomBusinessHoursModal'
 
 import css from './BusinessHoursSelectField.less'
 
@@ -41,7 +42,7 @@ type BusinessHoursSelectProps = {
 
 const DEFAULT_BUSINESS_HOURS_NAME = 'Default business hours'
 
-export default function BusinessHoursSelectField({
+export function BusinessHoursSelectField({
     value,
     onChange,
     name,

@@ -11,7 +11,7 @@ import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTable.
 import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 export const LegacyDrillDownTable = ({
     metricData,

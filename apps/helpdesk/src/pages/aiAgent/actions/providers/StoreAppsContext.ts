@@ -17,4 +17,4 @@ const StoreAppsContext = createContext<StoreAppsContextType>({})
 
 export const useStoreAppsContext = () => useContext(StoreAppsContext)
 
-export default StoreAppsContext
+export { StoreAppsContext }

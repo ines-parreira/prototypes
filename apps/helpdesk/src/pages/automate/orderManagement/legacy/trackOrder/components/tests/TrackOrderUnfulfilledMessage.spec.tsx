@@ -8,8 +8,8 @@ import thunk from 'redux-thunk'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 
-import TrackOrderFlowViewContext from '../../TrackOrderFlowViewContext'
-import TrackOrderUnfulfilledMessage from '../TrackOrderUnfulfilledMessage'
+import { TrackOrderFlowViewContext } from '../../TrackOrderFlowViewContext'
+import { TrackOrderUnfulfilledMessage } from '../TrackOrderUnfulfilledMessage'
 
 const mockStore = configureMockStore([thunk])()
 

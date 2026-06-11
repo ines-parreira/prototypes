@@ -34,7 +34,7 @@ type Props = {
     onClick?: () => void
 }
 
-export default function PrivateReplyButton({
+export function PrivateReplyButton({
     buttonComponent: Component,
     ticketMessageId,
     meta,

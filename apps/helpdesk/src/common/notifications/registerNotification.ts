@@ -1,7 +1,7 @@
 import { categories, notifications } from './data'
 import type { NotificationConfig } from './types'
 
-export default function registerNotification<T = unknown>(
+export function registerNotification<T = unknown>(
     config: NotificationConfig<T>,
 ) {
     notifications[config.type] = config

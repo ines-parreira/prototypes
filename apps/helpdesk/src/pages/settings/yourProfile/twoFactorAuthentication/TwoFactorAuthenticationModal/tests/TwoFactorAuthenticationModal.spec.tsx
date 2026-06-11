@@ -20,7 +20,7 @@ import {
 } from 'models/twoFactorAuthentication/resources'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
+import { TwoFactorAuthenticationModal } from '../TwoFactorAuthenticationModal'
 
 jest.mock('models/twoFactorAuthentication/resources')
 const fetchAuthenticatorDataMock =

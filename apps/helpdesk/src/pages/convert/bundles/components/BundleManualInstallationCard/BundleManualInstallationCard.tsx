@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 
 import classnames from 'classnames'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Collapse from 'pages/common/components/Collapse/Collapse'
-import ManualInstallationOtherWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
-import ManualInstallationShopifyWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
+import { ManualInstallationOtherWebsiteTab } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
+import { ManualInstallationShopifyWebsiteTab } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
 
 import css from './BundleManualInstallationCard.less'
 
@@ -113,4 +113,4 @@ const BundleManualInstallationCard = ({
     )
 }
 
-export default BundleManualInstallationCard
+export { BundleManualInstallationCard }

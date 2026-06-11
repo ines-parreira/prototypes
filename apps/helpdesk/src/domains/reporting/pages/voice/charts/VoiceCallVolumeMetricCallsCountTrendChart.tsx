@@ -3,8 +3,8 @@ import type { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallC
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { isFilterEmpty } from 'domains/reporting/pages/utils'
-import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
-import VoiceCallVolumeMetricEmpty from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
+import { VoiceCallVolumeMetric } from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
+import { VoiceCallVolumeMetricEmpty } from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetricEmpty'
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
 
 type CallsCountDashboardChartProps = DashboardChartProps & {

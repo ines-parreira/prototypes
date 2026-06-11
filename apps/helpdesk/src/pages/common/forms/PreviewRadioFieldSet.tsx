@@ -61,4 +61,4 @@ const PreviewRadioFieldSet = ({
     )
 }
 
-export default PreviewRadioFieldSet
+export { PreviewRadioFieldSet }

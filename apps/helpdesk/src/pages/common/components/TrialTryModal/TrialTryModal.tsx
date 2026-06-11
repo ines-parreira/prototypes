@@ -11,15 +11,15 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
 import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import {
     hasTrialExpired,
     hasTrialOptedIn,
 } from 'pages/aiAgent/trial/utils/utils'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './TrialTryModal.less'
@@ -387,4 +387,4 @@ const TrialTryModal = ({
     )
 }
 
-export default TrialTryModal
+export { TrialTryModal }

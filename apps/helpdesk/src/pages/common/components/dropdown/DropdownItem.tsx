@@ -21,7 +21,7 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import css from 'pages/common/components/dropdown/DropdownItem.less'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 export type Props<T extends boolean | number | string | null> = {
     autoFocus?: boolean
@@ -219,4 +219,6 @@ export const DropdownItem = <T extends boolean | number | string | null>(
     ) : null
 }
 
-export default forwardRef(DropdownItem)
+const DefaultExportDropdownItem = forwardRef(DropdownItem)
+
+export { DefaultExportDropdownItem }

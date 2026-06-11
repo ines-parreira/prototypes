@@ -1,1 +1,1 @@
-export { default } from './CopyText'
+export { CopyText } from './CopyText'

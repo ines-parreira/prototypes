@@ -6,7 +6,7 @@ import { toast } from '@gorgias/axiom'
 
 import { deleteVerification as deleteVerificationRequest } from 'models/singleSenderVerification/resources'
 
-export default function useDeleteSingleSenderVerification() {
+export function useDeleteSingleSenderVerification() {
     const [isLoading, setIsLoading] = useState(false)
 
     const deleteVerification = async (id: number) => {

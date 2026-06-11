@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import RestrictedFeature from '../RestrictedFeature'
+import { RestrictedFeature } from '../RestrictedFeature'
 
 describe('RestrictedFeature component', () => {
     it('should render image carousel and Lightbox', () => {

@@ -1,5 +1,5 @@
 import { categories } from '../data'
-import registerCategory from '../registerCategory'
+import { registerCategory } from '../registerCategory'
 import type { CategoryConfig } from '../types'
 
 jest.mock('../data', () => ({

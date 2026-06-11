@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import _omit from 'lodash/omit'
 import { STATUSES } from 'reapop'
 
-import notificationsTheme from '../../components/Notifications'
+import { theme as notificationsTheme } from '../../components/Notifications'
 import { NotificationIcon } from '../NotificationIcon'
 
 describe('<NotificationIcon />', () => {

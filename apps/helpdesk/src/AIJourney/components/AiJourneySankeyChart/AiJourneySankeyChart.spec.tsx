@@ -23,7 +23,9 @@ jest.mock(
 )
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 
 const mockUseAIJourneySankeyMetrics = useAIJourneySankeyMetrics as jest.Mock
 const mockConversationFunnelCard = ConversationFunnelCard as jest.Mock

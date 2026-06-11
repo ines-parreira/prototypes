@@ -2,15 +2,15 @@ import React, { memo } from 'react'
 
 import type { NodeProps } from '@xyflow/react'
 
-import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
+import { VisualBuilderActionTag } from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { ShopperAuthenticationNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import EdgeBlock from '../components/EdgeBlock'
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeIconContent from './VisualBuilderNodeIconContent'
+import { EdgeBlock } from '../components/EdgeBlock'
+import { NodeDeleteIcon } from '../components/NodeDeleteIcon'
+import { VisualBuilderNode } from './VisualBuilderNode'
+import { VisualBuilderNodeIconContent } from './VisualBuilderNodeIconContent'
 
 const ShopperAuthenticationNode = memo(function ShopperAuthenticationNode({
     isSelected,
@@ -37,7 +37,7 @@ const ShopperAuthenticationNode = memo(function ShopperAuthenticationNode({
     )
 })
 
-export default function ShopperAuthenticationNodeWrapper(
+export function ShopperAuthenticationNodeWrapper(
     node: NodeProps<ShopperAuthenticationNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)

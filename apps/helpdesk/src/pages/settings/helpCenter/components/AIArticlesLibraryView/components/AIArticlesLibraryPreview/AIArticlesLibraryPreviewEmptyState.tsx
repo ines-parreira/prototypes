@@ -6,4 +6,4 @@ const AIArticlesLibraryPreviewEmptyState: React.FC = () => (
     </div>
 )
 
-export default AIArticlesLibraryPreviewEmptyState
+export { AIArticlesLibraryPreviewEmptyState }

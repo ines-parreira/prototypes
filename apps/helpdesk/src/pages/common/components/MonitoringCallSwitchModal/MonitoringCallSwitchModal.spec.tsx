@@ -2,9 +2,9 @@ import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
-import MonitoringCallSwitchModal from './MonitoringCallSwitchModal'
+import { MonitoringCallSwitchModal } from './MonitoringCallSwitchModal'
 
 jest.mock('pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel')
 

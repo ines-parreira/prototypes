@@ -26,4 +26,4 @@ const TemplateNotFoundBanner = ({ integrationId }: OwnProps) => {
     )
 }
 
-export default TemplateNotFoundBanner
+export { TemplateNotFoundBanner }

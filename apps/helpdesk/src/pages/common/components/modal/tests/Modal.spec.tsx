@@ -3,9 +3,9 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import Modal from '../Modal'
-import ModalBody from '../ModalBody'
-import ModalHeader from '../ModalHeader'
+import { DefaultExportModal as Modal } from '../Modal'
+import { DefaultExportModalBody as ModalBody } from '../ModalBody'
+import { ModalHeader } from '../ModalHeader'
 
 describe('<Modal />', () => {
     const minProps = {

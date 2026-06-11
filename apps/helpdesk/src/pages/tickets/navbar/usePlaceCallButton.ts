@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { isDesktopDevice, useConditionalShortcuts } from '@repo/utils'
 import { isDeviceReady } from '@repo/voice'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useHasPhone from 'hooks/useHasPhone'
-import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useHasPhone } from 'hooks/useHasPhone'
+import { useMicrophonePermissions } from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 export function usePlaceCallButton() {
     const [isDeviceVisible, setIsDeviceVisible] = useState(false)

@@ -16,147 +16,134 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import type ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import type { ProductSearchInput } from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getDuplicateOrderPayload } from 'state/infobarActions/shopify/createOrder/actions'
-import type AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
+import type { AddCustomItemPopover } from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { DraftOrderModalContainer } from '../DraftOrderModal'
-import type EmailInvoicePopover from '../EmailInvoicePopover'
-import type OrderFooter from '../OrderFooter'
+import type { EmailInvoicePopover } from '../EmailInvoicePopover'
+import type { DefaultExportOrderFooter as OrderFooter } from '../OrderFooter'
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => (
-            <div data-testid="DatetimeLabel">{dateTime}</div>
-        ),
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div data-testid="DatetimeLabel">{dateTime}</div>
+    ),
+}))
 
-jest.mock(
-    'pages/common/components/modal/ModalHeader',
-    () =>
-        ({ title }: { title: ReactNode }) => (
-            <div data-testid="Modal-Header">{title}</div>
-        ),
-)
+jest.mock('pages/common/components/modal/ModalHeader', () => ({
+    ModalHeader: ({ title }: { title: ReactNode }) => (
+        <div data-testid="Modal-Header">{title}</div>
+    ),
+}))
 
-jest.mock(
-    'pages/common/components/modal/Modal',
-    () =>
-        ({
-            isOpen,
-            children,
-            onClose,
-        }: {
-            isOpen: boolean
-            children: ReactNode
-            onClose: () => void
-        }) => {
-            if (isOpen) {
-                return (
-                    <div data-testid="Modal" onClick={onClose}>
-                        {children}
-                    </div>
-                )
-            }
-            return null
-        },
-)
+jest.mock('pages/common/components/modal/Modal', () => ({
+    DefaultExportModal: ({
+        isOpen,
+        children,
+        onClose,
+    }: {
+        isOpen: boolean
+        children: ReactNode
+        onClose: () => void
+    }) => {
+        if (isOpen) {
+            return (
+                <div data-testid="Modal" onClick={onClose}>
+                    {children}
+                </div>
+            )
+        }
+        return null
+    },
+}))
 
-jest.mock(
-    '../InventoryScopeMissingBanner',
-    () => () => '<div>InventoryScopeMissingBanner</div>',
-)
+jest.mock('../InventoryScopeMissingBanner', () => ({
+    InventoryScopeMissingBanner: () => '<div>InventoryScopeMissingBanner</div>',
+}))
 
 const mockFromJS = fromJS
 const mockIntegrationDataItemProductFixture = integrationDataItemProductFixture
 const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
 const mockShopifyInvoicePayloadFixture = shopifyInvoicePayloadFixture
 
-jest.mock(
-    'pages/common/forms/ProductSearchInput/ProductSearchInput',
-    () =>
-        ({ onVariantClicked }: ComponentProps<typeof ProductSearchInput>) => {
-            const item = mockIntegrationDataItemProductFixture()
-            const variant = item.data.variants[0]
+jest.mock('pages/common/forms/ProductSearchInput/ProductSearchInput', () => ({
+    ProductSearchInput: ({
+        onVariantClicked,
+    }: ComponentProps<typeof ProductSearchInput>) => {
+        const item = mockIntegrationDataItemProductFixture()
+        const variant = item.data.variants[0]
 
-            return (
-                <div data-testid="ProductSearchInput">
-                    <div
-                        data-testid="ProductSearchInput_result"
-                        onClick={() => {
-                            onVariantClicked(item, variant)
-                        }}
-                    >
-                        Result
-                    </div>
+        return (
+            <div data-testid="ProductSearchInput">
+                <div
+                    data-testid="ProductSearchInput_result"
+                    onClick={() => {
+                        onVariantClicked(item, variant)
+                    }}
+                >
+                    Result
                 </div>
-            )
-        },
-)
+            </div>
+        )
+    },
+}))
 
-jest.mock(
-    'Widgets/modules/Shopify/modules/AddCustomItemPopover',
-    () =>
-        ({ onSubmit }: ComponentProps<typeof AddCustomItemPopover>) => {
-            return (
-                <div data-testid="AddCustomItemPopover">
-                    <div
-                        data-testid="AddCustomItemPopover_submit"
-                        onClick={() =>
-                            onSubmit(
-                                mockFromJS(mockShopifyCustomLineItemFixture()),
-                            )
-                        }
-                    >
-                        Submit
-                    </div>
+jest.mock('Widgets/modules/Shopify/modules/AddCustomItemPopover', () => ({
+    AddCustomItemPopover: ({
+        onSubmit,
+    }: ComponentProps<typeof AddCustomItemPopover>) => {
+        return (
+            <div data-testid="AddCustomItemPopover">
+                <div
+                    data-testid="AddCustomItemPopover_submit"
+                    onClick={() =>
+                        onSubmit(mockFromJS(mockShopifyCustomLineItemFixture()))
+                    }
+                >
+                    Submit
                 </div>
-            )
-        },
-)
+            </div>
+        )
+    },
+}))
 
-jest.mock(
-    '../EmailInvoicePopover',
-    () =>
-        ({ onSubmit }: ComponentProps<typeof EmailInvoicePopover>) => {
-            return (
-                <div data-testid="EmailInvoicePopover">
-                    <div
-                        data-testid="EmailInvoicePopover_submit"
-                        onClick={() =>
-                            onSubmit(
-                                mockFromJS(mockShopifyInvoicePayloadFixture()),
-                            )
-                        }
-                    >
-                        Submit
-                    </div>
+jest.mock('../EmailInvoicePopover', () => ({
+    EmailInvoicePopover: ({
+        onSubmit,
+    }: ComponentProps<typeof EmailInvoicePopover>) => {
+        return (
+            <div data-testid="EmailInvoicePopover">
+                <div
+                    data-testid="EmailInvoicePopover_submit"
+                    onClick={() =>
+                        onSubmit(mockFromJS(mockShopifyInvoicePayloadFixture()))
+                    }
+                >
+                    Submit
                 </div>
-            )
-        },
-)
+            </div>
+        )
+    },
+}))
 
-jest.mock(
-    '../OrderFooter',
-    () =>
-        ({
-            editable,
-            actionName,
-            currencyCode,
-        }: ComponentProps<typeof OrderFooter>) => {
-            return (
-                <div data-testid="OrderFooter">
-                    {`editable: ${editable.toString()}`}
-                    {`actionName: ${actionName}`}
-                    {`currencyCode: ${currencyCode}`}
-                </div>
-            )
-        },
-)
+jest.mock('../OrderFooter', () => ({
+    DefaultExportOrderFooter: ({
+        editable,
+        actionName,
+        currencyCode,
+    }: ComponentProps<typeof OrderFooter>) => {
+        return (
+            <div data-testid="OrderFooter">
+                {`editable: ${editable.toString()}`}
+                {`actionName: ${actionName}`}
+                {`currencyCode: ${currencyCode}`}
+            </div>
+        )
+    },
+}))
 
 jest.mock('ulidx', () => ({
     ulid: () => '01FZ8K3G6TVY2Z7X3Z1XG5Y6TA',

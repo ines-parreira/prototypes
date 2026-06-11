@@ -3,7 +3,7 @@ import { render } from '@repo/testing'
 import type { CampaignTemplateSectionType } from 'pages/convert/campaigns/templates/types'
 import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/types'
 
-import CampaignLibrarySection from '../CampaignLibrarySection'
+import { CampaignLibrarySection } from '../CampaignLibrarySection'
 
 describe('CampaignLibrarySection', () => {
     const sectionTemplate: CampaignTemplateSectionType = {

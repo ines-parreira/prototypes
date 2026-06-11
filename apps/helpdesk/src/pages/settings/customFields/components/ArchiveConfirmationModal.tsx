@@ -13,7 +13,7 @@ export type Props = {
 const TICKET_FIELDS_RELATED_MESSAGE =
     'This field may be in use in Rules, Macros and Saved Filters. Make sure to edit them, as they will not be able to apply a value on an archived field.'
 
-export default function ArchiveConfirmationModal({
+export function ArchiveConfirmationModal({
     customFieldLabel,
     isOpen,
     onConfirm,

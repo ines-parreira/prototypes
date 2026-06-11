@@ -17,4 +17,4 @@ const TicketListInfo = ({ text, subText, action }: TicketListInfoTextProps) => {
     )
 }
 
-export default TicketListInfo
+export { TicketListInfo }

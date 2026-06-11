@@ -14,4 +14,4 @@ const TargetCount: React.FC<Props> = ({ count }) => (
     </div>
 )
 
-export default TargetCount
+export { TargetCount }

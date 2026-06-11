@@ -60,4 +60,4 @@ const WizardProgressHeader: React.FC<Props> = ({ className, labels }) => {
     )
 }
 
-export default WizardProgressHeader
+export { WizardProgressHeader }

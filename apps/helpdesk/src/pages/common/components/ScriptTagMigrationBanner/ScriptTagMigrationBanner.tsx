@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 import { isAdmin } from 'utils'
 
-import useStoresRequiringScriptTagMigration from './hooks/useStoresRequiringScriptTagMigration'
+import { useStoresRequiringScriptTagMigration } from './hooks/useStoresRequiringScriptTagMigration'
 
 const ScriptTagMigrationBanner = () => {
     const migrationDueDate: string | undefined = useFlag(
@@ -129,4 +129,4 @@ const ScriptTagMigrationBanner = () => {
     )
 }
 
-export default ScriptTagMigrationBanner
+export { ScriptTagMigrationBanner }

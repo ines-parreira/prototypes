@@ -5,7 +5,7 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SmartFollowUp } from 'models/ticket/types'
 import { Pill } from 'pages/settings/conditionalFields/components/ExpressionField/Pill'
 import { getShouldDisplayAllFollowUps } from 'state/ticket/selectors'
@@ -17,7 +17,7 @@ type Props = {
     selectedSmartFollowUpIndex?: number
 }
 
-export default function SmartFollowUps({
+export function SmartFollowUps({
     smartFollowUps,
     selectedSmartFollowUpIndex,
 }: Props) {

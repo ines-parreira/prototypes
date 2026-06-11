@@ -31,17 +31,17 @@ jest.mock('pages/common/utils/labels', () => ({
     )),
 }))
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Meta', () =>
-    jest.fn(() => <span>Meta Component</span>),
-)
+jest.mock('pages/tickets/detail/components/TicketMessages/Meta', () => ({
+    Meta: jest.fn(() => <span>Meta Component</span>),
+}))
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Source', () =>
-    jest.fn(() => <span>Source Component</span>),
-)
+jest.mock('pages/tickets/detail/components/TicketMessages/Source', () => ({
+    Source: jest.fn(() => <span>Source Component</span>),
+}))
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SourceActionsHeader',
-    () => jest.fn(() => <span>Actions Header</span>),
+    () => ({ SourceActionsHeader: jest.fn(() => <span>Actions Header</span>) }),
 )
 
 jest.mock('tickets/ticket-detail/components/MessageMetadata', () => ({

@@ -24,4 +24,4 @@ const MigrationProviderPair: React.FC<Props> = ({ left, right }) => {
     )
 }
 
-export default MigrationProviderPair
+export { MigrationProviderPair }

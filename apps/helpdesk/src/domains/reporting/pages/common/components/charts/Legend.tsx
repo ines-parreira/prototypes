@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/charts/Legend.less'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 type LegendItem = {
     label: string
@@ -20,11 +20,7 @@ type Props = {
     toggleLegend?: boolean
 }
 
-export default function Legend({
-    items,
-    className,
-    toggleLegend = false,
-}: Props) {
+export function Legend({ items, className, toggleLegend = false }: Props) {
     const withTooltip = (label: string, tooltip?: string) => {
         const tooltipId = tooltip
             ? `legend-${tooltip.replace(/[^a-zA-Z0-9]/g, '_')}`

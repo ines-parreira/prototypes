@@ -18,4 +18,4 @@ const HomePageLink = () => (
     </NavLink>
 )
 
-export default HomePageLink
+export { HomePageLink }

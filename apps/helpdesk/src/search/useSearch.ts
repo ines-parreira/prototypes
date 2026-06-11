@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { SearchBody } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 
 async function postSearch<T>(params: SearchBody) {
@@ -17,7 +17,7 @@ async function postSearch<T>(params: SearchBody) {
     )
 }
 
-export default function useSearch<T>(
+export function useSearch<T>(
     body: SearchBody,
     overrides?: UseQueryOptions<Awaited<ReturnType<typeof postSearch>>>,
 ) {

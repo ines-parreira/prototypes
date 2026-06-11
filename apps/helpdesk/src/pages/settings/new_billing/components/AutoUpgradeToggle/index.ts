@@ -1,1 +1,1 @@
-export { default } from './AutoUpgradeToggle'
+export { AutoUpgradeToggle } from './AutoUpgradeToggle'

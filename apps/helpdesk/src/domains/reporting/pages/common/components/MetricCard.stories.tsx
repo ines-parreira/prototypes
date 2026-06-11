@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { PerformanceTip } from 'domains/reporting/pages/common/components/PerformanceTip'
 
 const storyConfig: Meta = {
     title: 'Stats/MetricCard',

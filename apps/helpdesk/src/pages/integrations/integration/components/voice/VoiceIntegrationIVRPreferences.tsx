@@ -3,18 +3,18 @@ import { Form } from '@repo/forms'
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { isPhoneIntegration } from 'models/integration/types'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
 import { getDefaultValues, useFormSubmit } from './useVoiceSettingsForm'
 import { integrationSettingsIVRValidation } from './utils'
-import VoiceIntegrationIVRPreferencesForm from './VoiceIntegrationIVRPreferencesForm'
+import { VoiceIntegrationIVRPreferencesForm } from './VoiceIntegrationIVRPreferencesForm'
 
 type Props = {
     integration: PhoneIntegration
 }
 
-export default function VoiceIntegrationIVRPreferences({
+export function VoiceIntegrationIVRPreferences({
     integration,
 }: Props): JSX.Element {
     const { onSubmit } = useFormSubmit(integration)

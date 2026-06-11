@@ -4,10 +4,10 @@ import { Skeleton } from '@gorgias/axiom'
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { useListVoiceQueues, VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportDropdownSection as DropdownSection } from 'pages/common/components/dropdown/DropdownSection'
 
 import css from './CallTransferDropdown.less'
 
@@ -128,4 +128,4 @@ const QueueDropdownItem = ({
     )
 }
 
-export default QueueCallTransferDropdownContent
+export { QueueCallTransferDropdownContent }

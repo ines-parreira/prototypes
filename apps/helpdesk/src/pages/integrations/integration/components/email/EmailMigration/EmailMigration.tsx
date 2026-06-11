@@ -2,17 +2,17 @@ import { isEmpty } from 'lodash'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EmailMigrationStatus } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { getEmailMigrationStatus } from 'state/integrations/selectors'
 
-import MigrationComplete from './MigrationComplete'
-import MigrationInProgress from './MigrationInProgress'
-import StartMigration from './StartMigration'
+import { MigrationComplete } from './MigrationComplete'
+import { MigrationInProgress } from './MigrationInProgress'
+import { StartMigration } from './StartMigration'
 
-export default function EmailMigration() {
+export function EmailMigration() {
     const migrationStatus = useAppSelector(getEmailMigrationStatus)
 
     if (!migrationStatus || isEmpty(migrationStatus)) {

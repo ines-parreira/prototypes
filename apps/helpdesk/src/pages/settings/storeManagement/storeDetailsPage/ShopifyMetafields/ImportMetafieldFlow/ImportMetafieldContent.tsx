@@ -4,9 +4,9 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Box, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
@@ -17,9 +17,9 @@ import { isAtMaxFields } from '../utils/isAtMaxFields'
 import { useFieldSelection } from './hooks/useFieldSelection'
 import { useImportMetafields } from './hooks/useImportMetafields'
 import { useImportWizard } from './hooks/useImportWizard'
-import ImportableCategories from './ImportableCategories/ImportableCategories'
-import ImportDisclaimer from './ImportDisclaimer/ImportDisclaimer'
-import MetafieldsImportList from './MetafieldsImportList/MetafieldsImportList'
+import { ImportableCategories } from './ImportableCategories/ImportableCategories'
+import { ImportDisclaimer } from './ImportDisclaimer/ImportDisclaimer'
+import { MetafieldsImportList } from './MetafieldsImportList/MetafieldsImportList'
 
 import styles from './ImportMetafieldFlow.less'
 
@@ -28,7 +28,7 @@ interface ImportMetafieldContentProps {
     importedFields?: Field[]
 }
 
-export default function ImportMetafieldContent({
+export function ImportMetafieldContent({
     onClose,
     importedFields,
 }: ImportMetafieldContentProps) {

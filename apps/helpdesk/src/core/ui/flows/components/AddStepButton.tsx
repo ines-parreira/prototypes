@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 
 import css from './AddStepButton.less'
 

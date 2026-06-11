@@ -66,4 +66,4 @@ const DisconnectStoreModal = ({
     )
 }
 
-export default DisconnectStoreModal
+export { DisconnectStoreModal }

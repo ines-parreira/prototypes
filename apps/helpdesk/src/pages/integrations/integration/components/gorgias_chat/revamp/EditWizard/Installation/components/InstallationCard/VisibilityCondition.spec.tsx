@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import { GorgiasChatInstallationVisibilityConditionOperator } from 'models/integration/types'
 
-import VisibilityCondition from './VisibilityCondition'
+import { VisibilityCondition } from './VisibilityCondition'
 
 const mockButton = jest.fn((__props: any) => null)
 const mockSelectField = jest.fn((__props: any) => null)

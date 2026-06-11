@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import RadioButton from './RadioButton'
+import { DefaultExportRadioButton as RadioButton } from './RadioButton'
 
 const storyConfig: Meta = {
     title: 'Data Entry/RadioButton',

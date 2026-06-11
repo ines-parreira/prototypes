@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { allAgentsAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
@@ -10,7 +10,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
 import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
 import type { AiAgentType } from 'pages/aiAgent/Overview/hooks/useAiAgentType'

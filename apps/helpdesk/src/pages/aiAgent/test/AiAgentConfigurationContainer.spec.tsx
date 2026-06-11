@@ -12,7 +12,7 @@ import { Route, useLocation } from 'react-router-dom'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import * as billingFixtures from 'fixtures/billing'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -20,12 +20,12 @@ import {
     useStoreConfigurations,
 } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { applyMockActivationHook } from 'pages/aiAgent/test/mock-activation-hooks.utils'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState } from 'state/billing/reducers'
 import { getHasAutomate } from 'state/billing/selectors'
 
-import AiAgentConfigurationContainer from '../AiAgentConfigurationContainer'
+import { AiAgentConfigurationContainer } from '../AiAgentConfigurationContainer'
 import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
 import { useHandoverCustomizationChatFallbackSettingsForm } from '../hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatOfflineSettingsForm } from '../hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'

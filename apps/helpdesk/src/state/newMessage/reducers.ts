@@ -32,7 +32,7 @@ import {
     updateNewMessageWithContentState,
 } from './responseUtils'
 import { getReceiversProperties } from './selectors'
-import ticketReplyCache from './ticketReplyCache'
+import { ticketReplyCache } from './ticketReplyCache'
 import type { NewMessage, NewMessageState, ReplyAreaState } from './types'
 import { getMentionIds } from './utils'
 
@@ -109,7 +109,7 @@ const resetContentState = (state: Map<any, any>): NewMessageState => {
         .deleteIn(['state', 'originalContentState'])
 }
 
-export default function reducer(
+export function reducer(
     state: NewMessageState = initialState,
     action: GorgiasAction,
 ): NewMessageState {

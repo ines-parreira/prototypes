@@ -10,7 +10,7 @@ type Props = {
     label: ReactNode
 }
 
-export default function Foldable({ children, label }: Props) {
+export function Foldable({ children, label }: Props) {
     const [isOpen, setOpen] = useState(true)
 
     return (

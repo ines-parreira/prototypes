@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 
 import { tags } from 'fixtures/tag'
 
-import MergeButton from '../MergeButton'
+import { MergeButton } from '../MergeButton'
 
 const props: ComponentProps<typeof MergeButton> = {
     selectedTagsText: 'refund and billing',

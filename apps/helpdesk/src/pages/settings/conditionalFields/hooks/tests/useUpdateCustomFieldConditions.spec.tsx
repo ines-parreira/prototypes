@@ -20,7 +20,7 @@ import {
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useUpdateCustomFieldConditions from '../useUpdateCustomFieldConditions'
+import { useUpdateCustomFieldConditions } from '../useUpdateCustomFieldConditions'
 
 const queryClient = mockQueryClient()
 

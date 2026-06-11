@@ -15,13 +15,13 @@ import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 's
 import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
-import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
+import { AIAgentDraftMessage } from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
     DRAFT_MESSAGE_TAG,
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
-import TicketMessages from '../TicketMessages'
+import { TicketMessages } from '../TicketMessages'
 
 jest.mock('tickets/ticket-detail/components/withMessageTranslations', () => ({
     withMessageTranslations: (Component: React.ComponentType<any>) => Component,
@@ -89,17 +89,17 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
 )
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Message', () =>
-    jest.fn(() => <p>Message</p>),
-)
+jest.mock('pages/tickets/detail/components/TicketMessages/Message', () => ({
+    Message: jest.fn(() => <p>Message</p>),
+}))
 
-jest.mock('pages/tickets/detail/components/TicketMessages/Body', () =>
-    jest.fn(() => <p>Body</p>),
-)
+jest.mock('pages/tickets/detail/components/TicketMessages/Body', () => ({
+    Body: jest.fn(() => <p>Body</p>),
+}))
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage',
-    () => jest.fn(() => <p>AIAgentDraftMessage</p>),
+    () => ({ AIAgentDraftMessage: jest.fn(() => <p>AIAgentDraftMessage</p>) }),
 )
 
 jest.mock('tickets/ticket-detail/components/MessageHeader', () => ({

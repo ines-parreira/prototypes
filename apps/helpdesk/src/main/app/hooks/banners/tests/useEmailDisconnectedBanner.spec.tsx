@@ -17,17 +17,13 @@ const mockUseFlag = useFlag as jest.Mock
 
 const mockedAddBanner = jest.fn()
 const mockedRemoveBanner = jest.fn()
-jest.mock(
-    'AlertBanners',
-    () =>
-        ({
-            ...jest.requireActual('AlertBanners'),
-            useBanners: () => ({
-                addBanner: mockedAddBanner,
-                removeBanner: mockedRemoveBanner,
-            }),
-        }) as Record<string, unknown>,
-)
+jest.mock('AlertBanners', () => ({
+    ...jest.requireActual('AlertBanners'),
+    useBanners: () => ({
+        addBanner: mockedAddBanner,
+        removeBanner: mockedRemoveBanner,
+    }),
+}))
 
 jest.mock('state/currentUser/selectors', () => ({
     ...jest.requireActual('state/currentUser/selectors'),

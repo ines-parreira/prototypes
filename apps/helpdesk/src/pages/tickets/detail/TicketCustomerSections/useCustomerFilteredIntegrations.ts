@@ -4,7 +4,7 @@ import { TicketInfobarTab } from '@repo/navigation'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Integration } from 'models/integration/types'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import { getIntegrationsData } from 'state/ticket/selectors'

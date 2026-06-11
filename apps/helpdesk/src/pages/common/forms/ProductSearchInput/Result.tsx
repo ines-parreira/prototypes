@@ -22,7 +22,7 @@ export type Props = {
     ignoreStockAvailability?: boolean
 }
 
-export default function Result({
+export function Result({
     image,
     title,
     subtitle,

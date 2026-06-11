@@ -15,14 +15,10 @@ import { EXPRESSION_OPERATORS_BY_UI_DATA_TYPE } from 'pages/settings/conditional
 
 import { FieldField } from '../FieldField'
 
-jest.mock(
-    '@gorgias/axiom',
-    () =>
-        ({
-            ...jest.requireActual('@gorgias/axiom'),
-            LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
-        }) as Record<string, unknown>,
-)
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
+}))
 jest.mock('@repo/forms', () => ({
     useFormContext: jest.fn(),
 }))

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import Alert from './Alert'
+import { Alert } from './Alert'
 
 import css from './LinkAlert.less'
 
@@ -64,4 +64,4 @@ const LinkAlert = ({
     )
 }
 
-export default LinkAlert
+export { LinkAlert }

@@ -37,7 +37,7 @@ import {
 } from 'state/widgets/constants'
 
 import * as types from '../constants'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 
 jest.mock('../helpers', () => {
     const helpers = jest.requireActual('../helpers')

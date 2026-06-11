@@ -12,7 +12,7 @@ import type { SortOption } from '../hooks/useTimelineData'
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => ({
     __esModule: true,
-    default: jest.fn(() => 'MM/DD/YYYY'),
+    useGetDateAndTimeFormat: jest.fn(() => 'MM/DD/YYYY'),
 }))
 
 // Store onChange handler globally so we can trigger it in tests

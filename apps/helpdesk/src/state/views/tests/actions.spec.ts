@@ -31,7 +31,7 @@ import {
 } from 'models/ticket/resources'
 import { ViewType, ViewVisibility } from 'models/view/types'
 import { MoveIndexDirection } from 'pages/common/utils/keyboard'
-import socketManager from 'services/socketManager/socketManager'
+import { socketManager } from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import * as actions from 'state/views/actions'

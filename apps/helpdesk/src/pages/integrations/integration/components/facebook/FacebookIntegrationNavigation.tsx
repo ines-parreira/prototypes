@@ -1,7 +1,7 @@
 import type { Map } from 'immutable'
 import { NavLink } from 'react-router-dom'
 
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 const FacebookIntegrationNavigation = ({
     integration,
@@ -28,4 +28,4 @@ const FacebookIntegrationNavigation = ({
     )
 }
 
-export default FacebookIntegrationNavigation
+export { FacebookIntegrationNavigation }

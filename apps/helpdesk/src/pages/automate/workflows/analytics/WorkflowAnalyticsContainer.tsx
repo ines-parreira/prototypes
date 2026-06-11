@@ -8,19 +8,19 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 import { Skeleton, toast } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import type { Notification } from 'state/notifications/types'
 
-import WorkflowAnalytics from './WorkflowAnalytics'
-import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'
+import { WorkflowAnalytics } from './WorkflowAnalytics'
+import { DefaultExportWorkflowAnalyticsFilters as WorkflowAnalyticsFilters } from './WorkflowAnalyticsFilters'
 
 const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 
-export default function WorkflowAnalyticsContainer() {
+export function WorkflowAnalyticsContainer() {
     const currentAccountId: number = useAppSelector(getCurrentAccountState).get(
         'id',
     )

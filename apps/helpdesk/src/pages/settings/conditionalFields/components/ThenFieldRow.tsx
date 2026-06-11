@@ -1,11 +1,11 @@
 import type { CustomField, ExpressionFieldType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import IconButton from 'pages/common/components/button/IconButton'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import CheckBoxField from 'pages/common/forms/CheckBoxField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportCheckBoxField as CheckBoxField } from 'pages/common/forms/CheckBoxField'
 
 import css from './ThenFieldRow.less'
 
@@ -29,7 +29,7 @@ type ThenFieldRowProps = {
     onDelete: () => void
 }
 
-export default function ThenFieldRow(props: ThenFieldRowProps) {
+export function ThenFieldRow(props: ThenFieldRowProps) {
     const customField = useCustomFieldDefinition(props.fieldId).data
     if (!customField) {
         return null

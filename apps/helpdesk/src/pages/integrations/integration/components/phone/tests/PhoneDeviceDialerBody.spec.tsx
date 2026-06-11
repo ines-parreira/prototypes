@@ -4,30 +4,28 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
+import { PhoneDeviceDialerBody } from '../PhoneDeviceDialerBody'
 
-jest.mock(
-    'pages/integrations/integration/components/phone/DialPad',
-    () =>
-        ({
-            onChange,
-            value,
-        }: {
-            onChange: (value: string) => void
-            value: string
-        }) => (
-            <div data-testid="mock-dialpad">
-                <div
-                    onClick={() => onChange(value + '1')}
-                    data-testid="mock-dialpad-digit"
-                />
-            </div>
-        ),
-)
+jest.mock('pages/integrations/integration/components/phone/DialPad', () => ({
+    DialPad: ({
+        onChange,
+        value,
+    }: {
+        onChange: (value: string) => void
+        value: string
+    }) => (
+        <div data-testid="mock-dialpad">
+            <div
+                onClick={() => onChange(value + '1')}
+                data-testid="mock-dialpad-digit"
+            />
+        </div>
+    ),
+}))
 
-jest.mock('pages/common/components/Avatar/Avatar', () => () => (
-    <div data-testid="avatar" />
-))
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    Avatar: () => <div data-testid="avatar" />,
+}))
 
 const defaultProps = {
     value: '123',

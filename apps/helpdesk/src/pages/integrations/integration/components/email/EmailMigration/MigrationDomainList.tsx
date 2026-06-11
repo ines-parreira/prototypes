@@ -12,12 +12,12 @@ import {
     OutboundVerificationType,
 } from 'models/integration/types'
 import type { SenderInformation } from 'models/singleSenderVerification/types'
-import Accordion from 'pages/common/components/accordion/Accordion'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
 
-import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
-import DomainVerificationAccordionItem from './DomainVerificationAccordionItem'
-import SingleSenderVerificationAccordionItem from './SingleSenderVerificationAccordionItem'
-import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
+import { useBulkCreateSingleSenderVerification } from '../hooks/useBulkCreateSingleSenderVerification'
+import { DomainVerificationAccordionItem } from './DomainVerificationAccordionItem'
+import { SingleSenderVerificationAccordionItem } from './SingleSenderVerificationAccordionItem'
+import { SingleSenderVerificationFormModal } from './SingleSenderVerificationFormModal'
 
 type Props = {
     domains: EmailMigrationOutboundVerification[]
@@ -27,10 +27,7 @@ type Props = {
 const MIGRATION_OUTBOUND_VERIFICATION_TYPE_KEY =
     'migration-selected-outbound-verification-type'
 
-export default function MigrationDomainList({
-    domains,
-    refreshMigrationData,
-}: Props) {
+export function MigrationDomainList({ domains, refreshMigrationData }: Props) {
     const [isBulkSubmitFormModalOpen, setIsBulkSubmitFormModalOpen] =
         useState(false)
     const [integrationsToBulkSubmit, setIntegrationsToBulkSubmit] =

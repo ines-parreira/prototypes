@@ -1,7 +1,7 @@
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import getVariablesList from '../getVariablesList'
+import { getVariablesList } from '../getVariablesList'
 
 describe('getVariablesList', () => {
     const list = getVariablesList()

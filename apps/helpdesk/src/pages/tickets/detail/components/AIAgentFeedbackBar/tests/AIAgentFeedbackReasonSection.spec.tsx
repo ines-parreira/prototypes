@@ -18,69 +18,73 @@ jest.mock('@gorgias/toolkit-react', () => ({
 }))
 
 jest.mock('pages/common/forms/input/SelectInputBox', () => {
-    return function MockSelectInputBox({
-        id,
-        className,
-        inputClassName,
-        placeholder,
-        onClick,
-    }: any) {
-        return (
-            <div
-                id={id}
-                className={`${className || ''} ${inputClassName || ''}`}
-                onClick={onClick}
-                data-testid="select-input-box"
-            >
-                {placeholder}
-            </div>
-        )
+    return {
+        DefaultExportSelectInputBox: function MockSelectInputBox({
+            id,
+            className,
+            inputClassName,
+            placeholder,
+            onClick,
+        }: any) {
+            return (
+                <div
+                    id={id}
+                    className={`${className || ''} ${inputClassName || ''}`}
+                    onClick={onClick}
+                    data-testid="select-input-box"
+                >
+                    {placeholder}
+                </div>
+            )
+        },
     }
 })
 
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
-    return function MockMultiLevelSelect({
-        onChange,
-        value,
-        CustomInput,
-    }: any) {
-        return (
-            <div data-testid="multi-level-select">
-                {CustomInput && <CustomInput onFocus={() => {}} />}
-                <select
-                    data-testid="select"
-                    multiple
-                    value={value}
-                    onChange={(e) => {
-                        const selectedValues = Array.from(
-                            e.target.selectedOptions,
-                            (option) => option.value,
-                        )
-                        onChange(selectedValues)
-                    }}
-                >
-                    <option value="Wrong knowledge used">
-                        Wrong knowledge used
-                    </option>
-                    <option value="Didn't follow knowledge content">
-                        Didn't follow knowledge content
-                    </option>
-                    <option value="Action not performed">
-                        Action not performed
-                    </option>
-                    <option value="Tone of voice not aligned">
-                        Tone of voice not aligned
-                    </option>
-                    <option value="Overpromise">Overpromise</option>
-                    <option value="Repetitive messages">
-                        Repetitive messages
-                    </option>
-                    <option value="Other (explain in additional feedback)">
-                        Other
-                    </option>
-                </select>
-            </div>
-        )
+    return {
+        MultiLevelSelect: function MockMultiLevelSelect({
+            onChange,
+            value,
+            CustomInput,
+        }: any) {
+            return (
+                <div data-testid="multi-level-select">
+                    {CustomInput && <CustomInput onFocus={() => {}} />}
+                    <select
+                        data-testid="select"
+                        multiple
+                        value={value}
+                        onChange={(e) => {
+                            const selectedValues = Array.from(
+                                e.target.selectedOptions,
+                                (option) => option.value,
+                            )
+                            onChange(selectedValues)
+                        }}
+                    >
+                        <option value="Wrong knowledge used">
+                            Wrong knowledge used
+                        </option>
+                        <option value="Didn't follow knowledge content">
+                            Didn't follow knowledge content
+                        </option>
+                        <option value="Action not performed">
+                            Action not performed
+                        </option>
+                        <option value="Tone of voice not aligned">
+                            Tone of voice not aligned
+                        </option>
+                        <option value="Overpromise">Overpromise</option>
+                        <option value="Repetitive messages">
+                            Repetitive messages
+                        </option>
+                        <option value="Other (explain in additional feedback)">
+                            Other
+                        </option>
+                    </select>
+                </div>
+            )
+        },
     }
 })
 

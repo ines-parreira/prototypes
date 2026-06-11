@@ -4,12 +4,12 @@ import { useMemo } from 'react'
 import type { Map } from 'immutable'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { hasIntegrationOfTypes } from 'state/integrations/selectors'
 import { getNewMessageType } from 'state/newMessage/selectors'
 
-import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
+import { PhoneTicketSubmitButtons } from './ReplyArea/PhoneTicketSubmitButtons'
 
 const ReplyForm = ({ children }: PropsWithChildren<unknown>) => {
     const ticket = useAppSelector((state) => state.ticket)
@@ -43,4 +43,4 @@ const ReplyForm = ({ children }: PropsWithChildren<unknown>) => {
     )
 }
 
-export default ReplyForm
+export { ReplyForm }

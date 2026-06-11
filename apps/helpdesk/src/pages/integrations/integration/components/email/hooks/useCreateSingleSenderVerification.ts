@@ -3,12 +3,12 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { createVerification } from 'models/singleSenderVerification/resources'
 import type { SenderInformation } from 'models/singleSenderVerification/types'
 import { setVerification } from 'state/entities/singleSenderVerification/actions'
 
-export default function useCreateSingleSenderVerification() {
+export function useCreateSingleSenderVerification() {
     const dispatch = useAppDispatch()
 
     const [{ loading: isLoading }, handleVerificationCreate] = useAsyncFn(

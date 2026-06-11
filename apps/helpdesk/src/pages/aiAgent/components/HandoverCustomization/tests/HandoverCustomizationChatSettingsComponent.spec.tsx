@@ -25,7 +25,11 @@ jest.mock('../FormComponents/HandoverCustomizationChatSettingsDrawer', () => {
 
     return {
         __esModule: true,
-        default: ({ activeContent, onClose, open }: MockDrawerProps) =>
+        HandoverCustomizationChatSettingsDrawer: ({
+            activeContent,
+            onClose,
+            open,
+        }: MockDrawerProps) =>
             open ? (
                 <div
                     className="drawer-container"

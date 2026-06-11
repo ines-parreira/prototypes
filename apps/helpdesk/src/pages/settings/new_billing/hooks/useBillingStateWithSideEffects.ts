@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useBillingState } from 'models/billing/queries'
 import { FETCH_BILLING_STATE_ERROR } from 'state/billing/constants'
 

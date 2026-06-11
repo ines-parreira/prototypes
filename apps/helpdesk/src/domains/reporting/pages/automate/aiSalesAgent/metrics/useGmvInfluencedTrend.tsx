@@ -9,8 +9,9 @@ import {
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import {
     AiSalesAgentOrdersDimension,

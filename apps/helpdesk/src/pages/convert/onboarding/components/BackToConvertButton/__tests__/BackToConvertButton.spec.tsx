@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { useBackToConvert } from 'pages/convert/onboarding/hooks/useBackToConvert'
 
-import BackToConvertButton from '../BackToConvertButton'
+import { BackToConvertButton } from '../BackToConvertButton'
 
 jest.mock('pages/convert/onboarding/hooks/useBackToConvert')
 const useBackToConvertMock = assumeMock(useBackToConvert)

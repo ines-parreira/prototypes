@@ -36,4 +36,4 @@ const GorgiasChatIntegrationNotInstalledBanner: React.FC<Props> = ({
     />
 )
 
-export default GorgiasChatIntegrationNotInstalledBanner
+export { GorgiasChatIntegrationNotInstalledBanner }

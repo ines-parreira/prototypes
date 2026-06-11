@@ -7,7 +7,7 @@ import {
 import type { ContentBlock, ContentState } from 'draft-js'
 
 import type { Plugin, PluginMethods } from '../types'
-import HorizontalRuleBlock from './HorizontalRuleBlock'
+import { HorizontalRuleBlock } from './HorizontalRuleBlock'
 
 export const HORIZONTAL_RULE_ENTITY = 'HORIZONTAL_RULE'
 
@@ -123,4 +123,4 @@ const createHorizontalRulePlugin = (): Plugin => {
     }
 }
 
-export default createHorizontalRulePlugin
+export { createHorizontalRulePlugin }

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import EmptyMetafieldsState from '../EmptyMetafieldsState'
+import { EmptyMetafieldsState } from '../EmptyMetafieldsState'
 
 describe('EmptyMetafieldsState', () => {
     it('should render the heading correctly', () => {

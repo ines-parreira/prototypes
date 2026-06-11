@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import PopoverModal from './PopoverModal'
+import { PopoverModal } from './PopoverModal'
 
 describe('<PopoverModal />', () => {
     it('should render ', () => {

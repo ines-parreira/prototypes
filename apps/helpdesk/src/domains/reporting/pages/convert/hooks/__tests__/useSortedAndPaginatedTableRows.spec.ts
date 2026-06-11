@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import CAMPAIGN_PERFORMANCE_ROWS from 'domains/reporting/pages/convert/fixtures/campaignPerformanceRows'
+import { CAMPAIGN_PERFORMANCE_ROWS } from 'domains/reporting/pages/convert/fixtures/campaignPerformanceRows'
 import { useSortedAndPaginatedTableRows } from 'domains/reporting/pages/convert/hooks/useSortedAndPaginatedTableRows'
 import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'

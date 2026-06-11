@@ -6,7 +6,7 @@ import type { EventType } from 'models/event/types'
 import { EventObjectType } from 'models/event/types'
 import type { RootState } from 'state/types'
 
-import UserAuditRow from '../UserAuditRow'
+import { UserAuditRow } from '../UserAuditRow'
 
 global.Math.random = () => 0.8
 const defaultState: Partial<RootState> = {

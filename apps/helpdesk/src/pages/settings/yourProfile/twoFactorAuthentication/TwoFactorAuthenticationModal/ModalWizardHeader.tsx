@@ -2,14 +2,14 @@ import type { ComponentProps } from 'react'
 import React, { useContext, useEffect } from 'react'
 
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
 
 type OwnProps = {
     currentStep: number
     isUpdate?: boolean
 } & ComponentProps<typeof WizardProgressHeader>
 
-export default function ModalWizardHeader({
+export function ModalWizardHeader({
     currentStep,
     isUpdate,
     labels,

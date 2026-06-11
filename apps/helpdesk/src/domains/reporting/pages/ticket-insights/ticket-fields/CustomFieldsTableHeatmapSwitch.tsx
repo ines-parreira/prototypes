@@ -3,8 +3,8 @@ import {
     getHeatmapMode,
     toggleHeatmapMode,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const CustomFieldsTableHeatmapSwitch = () => {
     const heatmapMode = useAppSelector(getHeatmapMode)

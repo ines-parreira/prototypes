@@ -46,4 +46,4 @@ const RemoveCampaignConfirmation = ({ isOpen, onClose, onConfirm }: Props) => {
     )
 }
 
-export default RemoveCampaignConfirmation
+export { RemoveCampaignConfirmation }

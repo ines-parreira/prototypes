@@ -4,7 +4,7 @@ import type { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-typ
 
 import { CustomBusinessHoursContext } from './CustomBusinessHoursContext'
 
-export default function CustomBusinessHoursProvider({
+export function CustomBusinessHoursProvider({
     children,
     businessHoursId,
 }: {

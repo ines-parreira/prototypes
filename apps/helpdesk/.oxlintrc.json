@@ -32,6 +32,23 @@
         },
         {
             "files": [
+                ".prettierrc.mjs",
+                ".storybook/main.ts",
+                ".storybook/preview.tsx",
+                "jest.config.ts",
+                "oxfmt.config.ts",
+                "rsbuild.config.mjs",
+                "rspack.app.config.mjs",
+                "rspack.workers.config.mjs",
+                "src/**/*.stories.ts",
+                "src/**/*.stories.tsx"
+            ],
+            "rules": {
+                "import/no-default-export": "off"
+            }
+        },
+        {
+            "files": [
                 "src/hooks/useAppDispatch.ts",
                 "src/hooks/useAppSelector.ts",
                 "src/utils/testing/renderHook.tsx",
@@ -66,7 +83,6 @@
     ],
     "plugins": ["import", "jsx-a11y", "react", "react-hooks", "typescript"],
     "rules": {
-        "custom-rules/no-axiom-mock": "warn",
         "custom-rules/no-generic-duration-wrapper": "error",
         "custom-rules/prefer-duration-for-timing": "error",
         "typescript/ban-ts-comment": "off",
@@ -98,13 +114,21 @@
         "import/no-duplicates": "error",
         "import/no-anonymous-default-export": "error",
         "import/no-named-as-default-member": "error",
-        "import/no-default-export": "warn",
+        "import/no-default-export": "error",
         "import/no-named-as-default": "warn",
-        "oxc/no-barrel-file": ["error", { "threshold": 300 }],
+        "oxc/no-barrel-file": [
+            "error",
+            {
+                "threshold": 300
+            }
+        ],
         "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
         "sort-imports": [
             "error",
-            { "ignoreCase": true, "ignoreDeclarationSort": true }
+            {
+                "ignoreCase": true,
+                "ignoreDeclarationSort": true
+            }
         ],
         "jsx-a11y/alt-text": ["error"],
         "jsx-a11y/anchor-is-valid": "off",

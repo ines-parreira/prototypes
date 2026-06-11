@@ -1,7 +1,7 @@
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import RequirementTypeInput from '../RequirementTypeInput'
+import { RequirementTypeInput } from '../RequirementTypeInput'
 
 describe('<RequirementTypeInput/>', () => {
     it('should trigger events on change', () => {

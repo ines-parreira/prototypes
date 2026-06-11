@@ -10,7 +10,7 @@ type Props = {
     isForcedEmailOnboarding: boolean
 }
 
-export default function EmailIntegrationOnboardingBreadcrumbs({
+export function EmailIntegrationOnboardingBreadcrumbs({
     integration,
     isForcedEmailOnboarding,
 }: Props) {

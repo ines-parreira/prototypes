@@ -1,10 +1,10 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import LinkButton from 'pages/common/components/button/LinkButton'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
 import { SUPPORT_EMAIL } from 'pages/integrations/integration/components/email/EmailDomainVerification/constants'
-import useDomainVerification from 'pages/integrations/integration/components/email/EmailDomainVerification/useDomainVerification'
+import { useDomainVerification } from 'pages/integrations/integration/components/email/EmailDomainVerification/useDomainVerification'
 
-export default function OnboardingDomainVerificationButtons() {
+export function OnboardingDomainVerificationButtons() {
     const {
         domain,
         isCreatingDomain,

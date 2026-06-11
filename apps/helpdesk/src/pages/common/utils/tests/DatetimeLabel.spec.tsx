@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { channels as mockChannels } from 'fixtures/channels'
 
-import DatetimeLabel from '../DatetimeLabel'
+import { DatetimeLabel } from '../DatetimeLabel'
 
 const mockStore = configureMockStore()
 

@@ -1,7 +1,8 @@
 import type { MetricTrend } from '@repo/reporting'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { dynamicAllAgentsTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

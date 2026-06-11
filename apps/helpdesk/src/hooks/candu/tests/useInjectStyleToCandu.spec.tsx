@@ -3,7 +3,7 @@ import React from 'react'
 import { render, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import useInjectStyleToCandu from '../useInjectStyleToCandu'
+import { useInjectStyleToCandu } from '../useInjectStyleToCandu'
 
 describe('useInjectStyleToCandu', () => {
     let originalCSSStyleSheet: typeof CSSStyleSheet

@@ -1,7 +1,7 @@
 import { render, userEvent } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import Search from '../Search'
+import { DefaultExportSearch as Search } from '../Search'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 

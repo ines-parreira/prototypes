@@ -6,7 +6,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import InfobarCustomerActions from '../InfobarCustomerActions'
+import { InfobarCustomerActions } from '../InfobarCustomerActions'
 
 jest.mock('utils', () => ({
     isCurrentlyOnTicket: (ticketId: Maybe<string | number>) => !!ticketId,

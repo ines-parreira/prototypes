@@ -3,7 +3,7 @@ import type { FC, HTMLAttributes } from 'react'
 import styled from '@emotion/styled'
 
 import { gorgiasColors } from '../styles'
-import BotIcon from './icons/BotIcon'
+import { BotIcon } from './icons/BotIcon'
 import { getInitials } from './utils'
 
 export const StyledAvatarName = styled.span`
@@ -145,4 +145,4 @@ const Avatar: FC<AvatarProps & HTMLAttributes<HTMLDivElement>> = ({
     )
 }
 
-export default Avatar
+export { Avatar }

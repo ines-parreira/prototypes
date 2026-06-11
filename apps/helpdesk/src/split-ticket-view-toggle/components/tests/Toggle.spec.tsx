@@ -9,7 +9,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { store } from 'common/store'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
-import Toggle from '../Toggle'
+import { Toggle } from '../Toggle'
 
 jest.mock('@repo/logging')
 jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag', () => ({

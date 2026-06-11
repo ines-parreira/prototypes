@@ -5,10 +5,10 @@ import type { Map } from 'immutable'
 import _startCase from 'lodash/startCase'
 import { Link } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Event } from 'models/event/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { getHumanAgents } from 'state/agents/selectors'
 import { humanizeString } from 'utils'
 
@@ -87,4 +87,4 @@ const UserAuditRow = ({ eventItem }: Props) => {
     )
 }
 
-export default UserAuditRow
+export { UserAuditRow }

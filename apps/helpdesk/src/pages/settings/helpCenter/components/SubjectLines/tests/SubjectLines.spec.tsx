@@ -7,14 +7,14 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import type { UpdateSubjectLinesProps } from 'models/contactForm/types'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { HelpCenterTranslationProvider } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import type { RootState } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import SubjectLines from '../SubjectLines'
+import { SubjectLines } from '../SubjectLines'
 
 jest.mock('lodash/uniqueId', () => {
     let value = 0

@@ -27,4 +27,4 @@ const ChurnMitigationOfferFooter = ({
     )
 }
 
-export default ChurnMitigationOfferFooter
+export { ChurnMitigationOfferFooter }

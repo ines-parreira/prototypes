@@ -15,7 +15,10 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/hooks/useOpportunitiesCount')
 jest.mock('pages/aiAgent/utils/store-configuration.utils')
 jest.mock('models/aiAgentPostStoreInstallationSteps/queries')
-jest.mock('core/theme')
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 
 const mockUseAiAgentStoreConfigurationContext = jest.fn()
 const mockUseOpportunitiesCount = jest.fn()

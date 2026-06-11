@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import { WORKFLOW_TEMPLATES_LIST } from '../workflowTemplates'
-import WorkflowTemplatesView from '../WorkflowTemplatesView'
+import { WorkflowTemplatesView } from '../WorkflowTemplatesView'
 
 jest.mock(
     'assets/img/icons/arrow-backward.svg',

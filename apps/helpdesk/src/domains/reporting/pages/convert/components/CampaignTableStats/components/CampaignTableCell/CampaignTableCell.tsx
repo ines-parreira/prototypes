@@ -15,11 +15,11 @@ import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/t
 import { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import { CampaignTableValueFormat } from 'domains/reporting/pages/convert/types/enums/CampaignTableValueFormat.enum'
 import type { BadgeColor } from 'gorgias-design-system/Badge/Badge'
-import Badge from 'gorgias-design-system/Badge/Badge'
+import { Badge } from 'gorgias-design-system/Badge/Badge'
 import { InferredCampaignStatus } from 'models/convert/campaign/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import {
     abVariantControlVariantUrl,

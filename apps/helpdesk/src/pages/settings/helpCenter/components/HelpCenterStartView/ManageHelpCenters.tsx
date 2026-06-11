@@ -6,13 +6,13 @@ import { useHistory } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     PRODUCT_BANNER_KEY,
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
 import type { HelpCenter, Locale } from 'models/helpCenter/types'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import settingsCss from 'pages/settings/settings.less'
 import { helpCenterCreated } from 'state/entities/helpCenter/helpCenters'
 import { notify } from 'state/notifications/actions'
@@ -22,7 +22,7 @@ import { changeHelpCenterId, changeViewLanguage } from 'state/ui/helpCenter'
 import { HELP_CENTER_BASE_PATH } from '../../constants'
 import { useHelpCenterApi } from '../../hooks/useHelpCenterApi'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
-import HelpCenterTable from '../HelpCenterTable'
+import { HelpCenterTable } from '../HelpCenterTable'
 import { StandaloneBanner } from '../StandaloneBanner/StandaloneBanner'
 
 import css from './HelpCenterStartView.less'
@@ -190,5 +190,3 @@ export const ManageHelpCenters = ({
         </div>
     )
 }
-
-export default ManageHelpCenters

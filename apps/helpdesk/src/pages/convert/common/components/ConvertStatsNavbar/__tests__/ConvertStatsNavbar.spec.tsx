@@ -25,9 +25,11 @@ import type { RootState } from 'state/types'
 import { ConvertStatsNavbar } from '../ConvertStatsNavbar'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 
 describe('ConvertStatsNavbar', () => {

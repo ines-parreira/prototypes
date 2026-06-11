@@ -7,9 +7,11 @@ import { MemoryRouter } from 'react-router-dom'
 
 import type { ActionType } from 'models/rule/types'
 
-import Action from '../Action'
+import { Action } from '../Action'
 
-jest.mock('../ActionSelect', () => () => <div>ActionSelect</div>)
+jest.mock('../ActionSelect', () => ({
+    ActionSelect: () => <div>ActionSelect</div>,
+}))
 
 describe('Action', () => {
     describe('render()', () => {

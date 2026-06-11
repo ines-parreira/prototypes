@@ -8,7 +8,7 @@ import { useSelectedIndex } from '@gorgias/toolkit-react'
 
 import { useSearch } from 'hooks/useSearch'
 import type { TicketElement, TicketMessage } from 'models/ticket/types'
-import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
+import { VoiceRecordingsProvider } from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
 
 import {
     useExpandedMessages,
@@ -20,8 +20,8 @@ import {
 import type { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'
 import { useInsertShoppingAssistantEventElements } from '../hooks/useInsertShoppingAssistantEventElements'
 import { getVoiceCallIndex } from '../utils'
-import MessageQuoteContext from './MessageQuoteContext'
-import TicketBodyElement from './TicketBodyElement'
+import { MessageQuoteContext } from './MessageQuoteContext'
+import { TicketBodyElement } from './TicketBodyElement'
 
 import css from './TicketBody.less'
 
@@ -31,7 +31,7 @@ interface Props {
     setStatus: (s: string) => void
 }
 
-export default function TicketBody({
+export function TicketBody({
     customScrollParentRef,
     elements,
     setStatus,

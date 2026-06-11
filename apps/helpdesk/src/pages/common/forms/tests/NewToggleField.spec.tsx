@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import NewToggleField from '../NewToggleField'
+import { DefaultExportNewToggleField as NewToggleField } from '../NewToggleField'
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof NewToggleField>> = {},

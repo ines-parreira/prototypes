@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import { useGuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -83,4 +83,4 @@ const QuickActionsCell = ({ action, shopName, shopType }: Props) => {
     )
 }
 
-export default QuickActionsCell
+export { QuickActionsCell }

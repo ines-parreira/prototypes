@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
 export const FormSubmitButtonError: React.FC = () => {
     const {

@@ -9,7 +9,7 @@ import { SourceBadge } from 'tickets/ticket-detail/components/SourceBadge'
 import { TicketStatus } from 'tickets/ticket-detail/components/TicketStatus'
 
 import { OwnerLabel } from './OwnerLabel'
-import TicketFields from './TicketFields'
+import { TicketFields } from './TicketFields'
 
 import css from './TicketCard.less'
 
@@ -20,7 +20,7 @@ type Props = {
     isHighlighted?: boolean
 }
 
-export default function TicketCard({
+export function TicketCard({
     ticket,
     isHighlighted = false,
     displayedDate,

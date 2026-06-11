@@ -10,11 +10,11 @@ import type {
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
 import { SubscriptionStatus } from 'models/billing/types'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 
-import AddSalesCouponModal from '../AddSalesCouponModal'
+import { AddSalesCouponModal } from '../AddSalesCouponModal'
 
 import css from './UpcomingInvoiceCard.less'
 
@@ -28,7 +28,7 @@ interface UpcomingInvoiceCardProps {
     hasExtendedTrial: boolean
 }
 
-export default function UpcomingInvoiceCard({
+export function UpcomingInvoiceCard({
     subscriptionStatus,
     endOfTrialDatetime,
     endOfCurrentCycleDatetime,

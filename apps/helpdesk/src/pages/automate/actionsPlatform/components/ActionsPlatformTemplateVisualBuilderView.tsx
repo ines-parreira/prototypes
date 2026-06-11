@@ -5,20 +5,20 @@ import { Container } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import WorkflowVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { WorkflowVisualBuilder } from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type {
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import IconButton from 'pages/common/components/button/IconButton'
-import PageHeader from 'pages/common/components/PageHeader'
-import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
-import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { UnsavedChangesModal } from 'pages/common/components/UnsavedChangesModal'
+import { useUnsavedChangesPrompt } from 'pages/common/components/useUnsavedChangesPrompt'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -208,4 +208,4 @@ const ActionsPlatformTemplateVisualBuilderView = ({
     )
 }
 
-export default ActionsPlatformTemplateVisualBuilderView
+export { ActionsPlatformTemplateVisualBuilderView }

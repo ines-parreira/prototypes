@@ -165,4 +165,6 @@ function withSavedSizes<T extends object>(
     }
 }
 
-export default connector(withSavedSizes(InfobarLayout))
+const DefaultExportInfobarLayout = connector(withSavedSizes(InfobarLayout))
+
+export { DefaultExportInfobarLayout }

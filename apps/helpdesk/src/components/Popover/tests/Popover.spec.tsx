@@ -7,7 +7,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import * as themeModule from 'core/theme'
 
-import Popover from '../Popover'
+import { Popover } from '../Popover'
 
 const mockSetIsOpen = jest.fn()
 

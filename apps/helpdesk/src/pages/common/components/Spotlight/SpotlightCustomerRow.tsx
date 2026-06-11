@@ -6,7 +6,7 @@ import { sanitizeHtmlDefault } from '@repo/utils'
 import type { PickedCustomerWithHighlights } from 'models/search/types'
 import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'
-import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
+import { SpotlightRow } from 'pages/common/components/Spotlight/SpotlightRow'
 
 type SpotlightCustomerRowProps = {
     item: PickedCustomerWithHighlights
@@ -88,4 +88,4 @@ const SpotlightCustomerInfo = ({
     )
 }
 
-export default SpotlightCustomerRow
+export { SpotlightCustomerRow }

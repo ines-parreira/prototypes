@@ -71,4 +71,4 @@ const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
     )
 }
 
-export default useTouchActionGraph
+export { useTouchActionGraph }

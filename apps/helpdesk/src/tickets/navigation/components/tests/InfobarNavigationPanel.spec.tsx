@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import { useHasAIAgent } from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 
 import { InfobarNavigationPanel } from '../InfobarNavigationPanel'
 

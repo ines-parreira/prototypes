@@ -2,7 +2,7 @@ import { Form } from '@repo/forms'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import AddCustomBusinessHoursModalGeneralSection from '../AddCustomBusinessHoursModalGeneralSection'
+import { AddCustomBusinessHoursModalGeneralSection } from '../AddCustomBusinessHoursModalGeneralSection'
 
 describe('AddCustomBusinessHoursModalGeneralSection', () => {
     it('should render all fields', () => {

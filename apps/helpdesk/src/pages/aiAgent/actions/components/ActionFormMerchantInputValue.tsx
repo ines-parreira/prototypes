@@ -3,10 +3,10 @@ import React, { useRef } from 'react'
 import type { LegacySelectFieldOption as SelectFieldOption } from '@gorgias/axiom'
 import { Label } from '@gorgias/axiom'
 
-import CheckBox from 'pages/common/forms/CheckBox'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 import type { MerchantInput } from '../types'
 
@@ -59,4 +59,4 @@ const ActionFormMerchantInputValue = ({ input, onChange, value }: Props) => {
     )
 }
 
-export default ActionFormMerchantInputValue
+export { ActionFormMerchantInputValue }

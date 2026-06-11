@@ -1,8 +1,8 @@
 import { renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HandoverConfigurationData } from 'models/aiAgent/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import HelpCenterPreview from '../HelpCenterPreview'
+import { HelpCenterPreview } from '../HelpCenterPreview'
 
 describe('<HelpCenterPreview />', () => {
     it('should render the help center preview with the name as well as its children', () => {

@@ -2,7 +2,8 @@ import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import _times from 'lodash/times'
 
-import FilterValue, {
+import {
+    DefaultExportFilterValue as FilterValue,
     getTooltipLabels,
 } from 'pages/common/forms/FilterInput/FilterValue'
 

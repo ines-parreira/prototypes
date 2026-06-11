@@ -5,8 +5,8 @@ import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
 
 import { LINE_ITEMS } from './constants'
-import useOrderDates from './hooks/useOrderDates'
-import useTrackPagePreview from './hooks/useTrackPagePreview'
+import { useOrderDates } from './hooks/useOrderDates'
+import { useTrackPagePreview } from './hooks/useTrackPagePreview'
 
 import css from './SelfServiceHelpCenterTrackPage.less'
 
@@ -188,4 +188,4 @@ const SelfServiceHelpCenterTrackPage = ({ helpCenter }: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterTrackPage
+export { SelfServiceHelpCenterTrackPage }

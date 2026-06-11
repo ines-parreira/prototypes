@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import NameCell from '../NameCell'
+import { NameCell } from '../NameCell'
 
 describe('NameCell', () => {
     it('renders the action name as-is when shorter than the limit', () => {

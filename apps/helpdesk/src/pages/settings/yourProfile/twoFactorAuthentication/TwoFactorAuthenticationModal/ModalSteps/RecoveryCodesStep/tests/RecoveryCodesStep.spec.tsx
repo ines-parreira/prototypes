@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { recoveryCodes as recoveryCodesFixture } from '../../../../../../../../fixtures/recoveryCodes'
-import RecoveryCodesStep from '../RecoveryCodesStep'
+import { RecoveryCodesStep } from '../RecoveryCodesStep'
 
 describe('<RecoveryCodesStep />', () => {
     const waitForLoadingSpinnersToDisappear = async () => {

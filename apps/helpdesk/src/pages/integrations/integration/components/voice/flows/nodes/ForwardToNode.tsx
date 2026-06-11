@@ -11,7 +11,7 @@ import type { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
 import type { NodeProps } from 'core/ui/flows'
 import { NodeWrapper } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
-import PhoneSelectField from 'pages/integrations/integration/components/phone/PhoneSelectField'
+import { PhoneSelectField } from 'pages/integrations/integration/components/phone/PhoneSelectField'
 
 import type { ForwardToExternalNode } from '../types'
 import { VoiceStepNode } from './VoiceStepNode'

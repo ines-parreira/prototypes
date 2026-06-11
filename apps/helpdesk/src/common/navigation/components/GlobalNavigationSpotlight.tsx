@@ -1,9 +1,9 @@
 import { isMacOs } from '@repo/utils'
 
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import { ShortcutIcon } from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { useSpotlightContext } from 'providers/ui/SpotlightContext'
 
-import GlobalNavigationItem from './GlobalNavigationItem'
+import { GlobalNavigationItem } from './GlobalNavigationItem'
 
 export function GlobalNavigationSpotlight() {
     const { isOpen, setIsOpen } = useSpotlightContext()

@@ -39,4 +39,4 @@ const useCancellableRequest = <T extends FnReturningPromise>(
     return [request as T, cancel]
 }
 
-export default useCancellableRequest
+export { useCancellableRequest }

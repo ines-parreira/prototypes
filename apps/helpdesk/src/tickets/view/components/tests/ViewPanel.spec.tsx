@@ -4,11 +4,11 @@ import { Panels } from '@repo/layout'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ViewPanel from '../ViewPanel'
+import { ViewPanel } from '../ViewPanel'
 
-jest.mock('pages/tickets/list/TicketList', () =>
-    jest.fn(() => <div>TicketList</div>),
-)
+jest.mock('pages/tickets/list/TicketList', () => ({
+    TicketList: jest.fn(() => <div>TicketList</div>),
+}))
 
 describe('ViewPanel', () => {
     it('should render the ticket list', () => {

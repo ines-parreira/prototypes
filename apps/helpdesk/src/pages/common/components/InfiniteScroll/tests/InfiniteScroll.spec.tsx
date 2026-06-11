@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import InfiniteScroll from '../InfiniteScroll'
+import { InfiniteScroll } from '../InfiniteScroll'
 
 describe('<InfiniteScroll />', () => {
     const originalClientHeight = Object.getOwnPropertyDescriptor(

@@ -12,7 +12,7 @@ import {
     GorgiasChatInstallationVisibilityMethod,
 } from 'models/integration/types'
 
-import GorgiasChatIntegrationVisibilityControls from '../GorgiasChatIntegrationVisibilityControls'
+import { DefaultExportGorgiasChatIntegrationVisibilityControls as GorgiasChatIntegrationVisibilityControls } from '../GorgiasChatIntegrationVisibilityControls'
 
 describe('<GorgiasChatIntegrationVisibilityControls />', () => {
     const baseProps: Omit<

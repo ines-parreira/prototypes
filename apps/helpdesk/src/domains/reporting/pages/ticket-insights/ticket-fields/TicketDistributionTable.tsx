@@ -8,8 +8,8 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import GaugeAddon from 'domains/reporting/pages/common/components/charts/GaugeAddon'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { GaugeAddon } from 'domains/reporting/pages/common/components/charts/GaugeAddon'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import {
@@ -28,11 +28,11 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import { TicketFieldsMetric } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 export const OUTSIDE_TOP_DATA = {
     title: 'Outside of Top used',

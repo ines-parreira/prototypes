@@ -4,24 +4,30 @@ import { render, userEvent } from '@repo/testing'
 
 jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    GuidanceReferenceProvider: ({ children }: { children?: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock('pages/aiAgent/actions/providers/StoreAppsProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    StoreAppsProvider: ({ children }: { children?: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock('pages/aiAgent/actions/providers/StoreTrackstarProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: ReactNode }) => <>{children}</>,
+    StoreTrackstarProvider: ({ children }: { children?: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock(
     'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder',
     () => ({
         __esModule: true,
-        default: () => <div>Visual builder canvas</div>,
+        WorkflowVisualBuilder: () => <div>Visual builder canvas</div>,
     }),
 )
 

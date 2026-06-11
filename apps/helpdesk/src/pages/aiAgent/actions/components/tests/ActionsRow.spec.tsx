@@ -8,17 +8,17 @@ import { ulid } from 'ulidx'
 import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
 import type { ListTrackstarConnectionsResponseItem } from '@gorgias/workflows-types'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
-import StoreTrackstarProvider from '../../providers/StoreTrackstarProvider'
-import ActionsRow from '../ActionsRow'
+import { StoreTrackstarProvider } from '../../providers/StoreTrackstarProvider'
+import { ActionsRow } from '../ActionsRow'
 
 let mockCanBeDeleted: jest.Mock<boolean, [string]>
 

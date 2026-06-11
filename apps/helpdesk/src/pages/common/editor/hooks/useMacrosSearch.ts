@@ -9,7 +9,7 @@ import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchMacros } from 'models/macro/resources'
 import type { Filters } from 'models/macro/types'
 import type { Ticket } from 'models/ticket/types'
@@ -27,7 +27,7 @@ export const STALE_TIME_MS = Duration.minutes(15)
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()
 
-export default function useMacrosSearch({ params, ticket }: Props) {
+export function useMacrosSearch({ params, ticket }: Props) {
     const dispatch = useAppDispatch()
     const previousSearchOptions = useRef<Filters | null>(null)
 

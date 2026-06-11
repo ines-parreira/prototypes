@@ -8,9 +8,9 @@ import {
     FilterComponentKey,
     FilterKey,
 } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 
 const LIVE_VOICE_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterComponentKey.PhoneIntegrations,
@@ -18,7 +18,7 @@ const LIVE_VOICE_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.VoiceQueues,
 ]
 
-export default function LiveVoiceFilters() {
+export function LiveVoiceFilters() {
     useCleanStatsFilters()
 
     const isDuringBusinessHoursEnabled = useFlag(

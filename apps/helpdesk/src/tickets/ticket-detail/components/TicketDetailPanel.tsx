@@ -1,7 +1,7 @@
 import { Panel } from '@repo/layout'
 
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
+import { TicketWrapper } from 'split-ticket-view/components/TicketWrapper'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 const panelConfig = {
@@ -14,7 +14,7 @@ type Props = {
     onToggleUnread?: OnToggleUnreadFn
 }
 
-export default function TicketDetailPanel({ onToggleUnread }: Props) {
+export function TicketDetailPanel({ onToggleUnread }: Props) {
     const { isEnabled: isOnSplitTicketView } = useSplitTicketView()
     return (
         <Panel name="ticket-detail" config={panelConfig}>

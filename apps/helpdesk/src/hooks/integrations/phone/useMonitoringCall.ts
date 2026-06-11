@@ -8,7 +8,7 @@ import {
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     MONITORING_GENERIC_ERROR,
@@ -17,7 +17,7 @@ import {
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import type { MonitoringErrorCode } from 'models/voiceCall/types'
 
-import useVoiceDevice from './useVoiceDevice'
+import { useVoiceDevice } from './useVoiceDevice'
 
 type PrepareMonitoringErrorData = {
     error_code: MonitoringErrorCode

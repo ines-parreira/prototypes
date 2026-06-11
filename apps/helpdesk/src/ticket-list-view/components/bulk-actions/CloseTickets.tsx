@@ -2,11 +2,11 @@ import { useRef } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 import css from './style.less'
 
-export default function CloseTickets({
+export function CloseTickets({
     isDisabled,
     onClick,
 }: {

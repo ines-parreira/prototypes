@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
-import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { MacroContainer } from 'pages/tickets/common/macros/MacroContainer'
 import { getActiveView } from 'state/views/selectors'
 
 type Props = {
@@ -13,11 +13,7 @@ type Props = {
     ticketIds: number[]
 }
 
-export default function ApplyMacro({
-    onApplyMacro,
-    setIsOpen,
-    ticketIds,
-}: Props) {
+export function ApplyMacro({ onApplyMacro, setIsOpen, ticketIds }: Props) {
     const activeView = useAppSelector(getActiveView)
     const selectedTicketIdsImmutable = useMemo(
         () => fromJS(ticketIds) as List<number>,

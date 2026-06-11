@@ -2,10 +2,10 @@ import classnames from 'classnames'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+import { WorkflowVisualBuilder } from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './ActionsPlatformTemplateSteps.less'
 
@@ -43,4 +43,4 @@ const ActionsPlatformTemplateSteps = ({ error, onEditSteps }: Props) => {
     )
 }
 
-export default ActionsPlatformTemplateSteps
+export { ActionsPlatformTemplateSteps }

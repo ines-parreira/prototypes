@@ -9,22 +9,22 @@ import { JobType } from '@gorgias/helpdesk-types'
 import type { Item } from 'components/Dropdown'
 import { Popover } from 'components/Popover'
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Update } from 'jobs'
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { getCurrentUserState } from 'state/currentUser/selectors'
 import { isViewActiveTrashView as getIsActiveViewTrashView } from 'state/views/selectors'
 import { TagDropdownMenu } from 'tags'
 import { hasRole } from 'utils'
 import { getMoment } from 'utils/date'
 
-import ApplyMacro from './ApplyMacro'
-import PriorityDropdownMenu from './PriorityDropdownMenu'
-import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
+import { ApplyMacro } from './ApplyMacro'
+import { PriorityDropdownMenu } from './PriorityDropdownMenu'
+import { TeamAssigneeDropdownMenu } from './TeamAssigneeDropdownMenu'
 import type { Job } from './types'
 import { Action } from './types'
 
@@ -141,7 +141,7 @@ function isItemNested(
     )
 }
 
-export default function MoreActions({
+export function MoreActions({
     isDisabled,
     isLoading,
     launchJob,

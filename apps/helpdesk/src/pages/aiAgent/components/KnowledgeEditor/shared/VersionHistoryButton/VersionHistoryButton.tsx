@@ -14,7 +14,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsTruncated } from 'pages/common/hooks/useIsTruncated'
 import {
     getDateAndTimeFormatter,

@@ -6,7 +6,7 @@ import { fireEvent } from '@testing-library/react'
 
 import { TIMEDELTA_OPERATOR_DEFAULT_QUANTITY } from 'config'
 
-import TimedeltaPicker from '../TimedeltaPicker'
+import { TimedeltaPicker } from '../TimedeltaPicker'
 
 describe('TimedeltaPicker component', () => {
     const minProps: ComponentProps<typeof TimedeltaPicker> = {

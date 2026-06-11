@@ -4,14 +4,14 @@ import type { Call } from '@twilio/voice-sdk'
 import { Box, Button, LegacyButton, Text } from '@gorgias/axiom'
 
 import { useCallStatus } from 'hooks/integrations/phone/useCallStatus'
-import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
-import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
-import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
+import { PhoneBarCallerDetailsContainer } from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
+import { PhoneCustomerName } from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
+import { PhoneInfobarWrapper } from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
+import { DefaultExportPhoneIntegrationName as PhoneIntegrationName } from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 
 import { useConnectionParameters } from '../hooks'
-import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
-import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
+import { PhoneBarContainer } from '../PhoneBarContainer/PhoneBarContainer'
+import { PhoneBarInnerContent } from '../PhoneBarInnerContent/PhoneBarInnerContent'
 
 import css from './OutgoingPhoneCall.less'
 
@@ -19,7 +19,7 @@ type Props = {
     call: Call
 }
 
-export default function OutgoingPhoneCall({ call }: Props): JSX.Element {
+export function OutgoingPhoneCall({ call }: Props): JSX.Element {
     const { integrationId, customerName, customerPhoneNumber } =
         useConnectionParameters(call)
     const status = useCallStatus(call)

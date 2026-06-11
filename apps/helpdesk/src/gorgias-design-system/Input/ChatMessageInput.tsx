@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from '@emotion/styled'
 
-import IconButton from 'gorgias-design-system/Buttons/IconButton'
+import { IconButton } from 'gorgias-design-system/Buttons/IconButton'
 
-import TextArea from './TextArea'
+import { TextArea } from './TextArea'
 
 export interface ChatMessageInputProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
@@ -116,4 +116,4 @@ const ChatMessageInput: React.FC<ChatMessageInputProps> = ({
     )
 }
 
-export default ChatMessageInput
+export { ChatMessageInput }

@@ -4,7 +4,7 @@ import {
     aiJourneyTotalMessagesQueryFactory,
     aiJourneyTotalMessagesTimeSeriesQuery,
 } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 

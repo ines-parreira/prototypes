@@ -4,7 +4,7 @@ import { act } from '@testing-library/react'
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import { useBannersContext } from 'AlertBanners/Context'
-import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
+import { useLegacyAlertBanners } from 'notifications/hooks/useLegacyAlertBanners'
 import type { BannerNotification } from 'state/notifications/types'
 import { NotificationStyle } from 'state/notifications/types'
 
@@ -34,7 +34,9 @@ const banner: ContextBanner = {
     },
 }
 
-jest.mock('notifications/hooks/useLegacyAlertBanners', () => jest.fn())
+jest.mock('notifications/hooks/useLegacyAlertBanners', () => ({
+    useLegacyAlertBanners: jest.fn(),
+}))
 jest.mock('../../Context', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../Context'),
     useBannersContext: jest.fn(),

@@ -13,9 +13,9 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'
 import type { CustomField } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { setHasAttemptedToCloseTicket } from 'state/ticket/actions'
 import {
@@ -24,7 +24,7 @@ import {
     getTicketFieldState,
 } from 'state/ticket/selectors'
 
-import TicketField from './TicketField'
+import { DefaultExportTicketField as TicketField } from './TicketField'
 
 import css from './TicketFields.less'
 
@@ -191,4 +191,6 @@ function TicketFields() {
     )
 }
 
-export default memo(TicketFields)
+const DefaultExportTicketFields = memo(TicketFields)
+
+export { DefaultExportTicketFields }

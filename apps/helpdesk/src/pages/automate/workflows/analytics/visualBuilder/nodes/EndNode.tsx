@@ -13,12 +13,12 @@ import {
 } from 'pages/automate/workflows/constants'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
+import { useWorkflowDropoffMetricTiers } from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
 import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { getDropoffColor } from 'pages/automate/workflows/utils/getDropOffColor'
 
-import EdgeBlock from '../components/EdgeBlock'
+import { EdgeBlock } from '../components/EdgeBlock'
 import {
     displayMetric,
     displayPercentMetric,
@@ -175,7 +175,7 @@ const EndNode = memo(function EndNode({ action, nodeId, edgeProps }: Props) {
     )
 })
 
-export default function EndNodeWrapper(node: NodeProps<EndNodeType>) {
+export function EndNodeWrapper(node: NodeProps<EndNodeType>) {
     const commonProps = useVisualBuilderNodeProps(node)
     const nodeId = useNodeId()
 

@@ -8,7 +8,7 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 
 import { getStoreConfigurationFormValuesFixture } from '../../fixtures/onboardingWizard.fixture'
 import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
-import AiAgentOnboardingWizard from '../AiAgentOnboardingWizard'
+import { AiAgentOnboardingWizard } from '../AiAgentOnboardingWizard'
 import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
@@ -18,7 +18,9 @@ jest.mock('hooks/useAppSelector')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('../AiAgentOnboardingWizardPersonalize', () => ({
     __esModule: true,
-    default: () => <div>Personalize AI Agent </div>,
+    AiAgentOnboardingWizardStepPersonalize: () => (
+        <div>Personalize AI Agent </div>
+    ),
 }))
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
     useAiAgentStoreConfigurationContext,

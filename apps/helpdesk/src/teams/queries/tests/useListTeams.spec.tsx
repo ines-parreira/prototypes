@@ -11,7 +11,7 @@ import {
 } from 'fixtures/axiosResponse'
 import { teams } from 'fixtures/teams'
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchTeams } from 'models/team/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

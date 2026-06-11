@@ -11,8 +11,8 @@ import { initialState as helpCenterState } from 'state/entities/helpCenter/reduc
 import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import ArticleCategorySelect from '../ArticleCategorySelect'
-import useCategoriesOptions from '../hooks/useCategoriesOptions'
+import { ArticleCategorySelect } from '../ArticleCategorySelect'
+import { useCategoriesOptions } from '../hooks/useCategoriesOptions'
 
 jest.mock('../hooks/useCategoriesOptions')
 

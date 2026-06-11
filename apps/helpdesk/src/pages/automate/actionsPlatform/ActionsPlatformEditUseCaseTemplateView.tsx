@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
+import { AutomateFormView } from 'pages/automate/common/components/AutomateFormView'
 import {
     useVisualBuilder,
     VisualBuilderContext,
@@ -16,13 +16,13 @@ import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/w
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 
-import ActionsPlatformUseCaseTemplateFormView from './components/ActionsPlatformUseCaseTemplateFormView'
-import useEditActionTemplate from './hooks/useEditActionTemplate'
-import useTouchActionUseCaseTemplateGraph from './hooks/useTouchActionUseCaseTemplateGraph'
-import useValidateActionUseCaseTemplateGraph from './hooks/useValidateActionUseCaseTemplateGraph'
-import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformUseCaseTemplateFormView } from './components/ActionsPlatformUseCaseTemplateFormView'
+import { useEditActionTemplate } from './hooks/useEditActionTemplate'
+import { useTouchActionUseCaseTemplateGraph } from './hooks/useTouchActionUseCaseTemplateGraph'
+import { useValidateActionUseCaseTemplateGraph } from './hooks/useValidateActionUseCaseTemplateGraph'
+import { useValidateOnVisualBuilderGraphChange } from './hooks/useValidateOnVisualBuilderGraphChange'
 import type { ActionTemplate } from './types'
 
 import css from './ActionsPlatformEditTemplateView.less'
@@ -197,4 +197,4 @@ const ActionsPlatformEditUseCaseTemplateView = ({ template }: Props) => {
     )
 }
 
-export default ActionsPlatformEditUseCaseTemplateView
+export { ActionsPlatformEditUseCaseTemplateView }

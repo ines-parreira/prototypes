@@ -2,9 +2,9 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 
 import css from './TrialFinishSetupModal.less'
 
@@ -164,4 +164,4 @@ const TrialFinishSetupModal = ({
     )
 }
 
-export default TrialFinishSetupModal
+export { TrialFinishSetupModal }

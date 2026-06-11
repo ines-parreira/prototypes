@@ -30,7 +30,7 @@ const titleOverrides: Record<string, string> = {
 const getIconBoxColor = (notificationType: string) =>
     notificationType === 'ticket.assigned' ? 'teal' : 'blue'
 
-export default function TicketNotification({ notification, ...props }: Props) {
+export function TicketNotification({ notification, ...props }: Props) {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { sender, ticket } = notification.payload
     const title = titleOverrides[notification.type] || 'New message'

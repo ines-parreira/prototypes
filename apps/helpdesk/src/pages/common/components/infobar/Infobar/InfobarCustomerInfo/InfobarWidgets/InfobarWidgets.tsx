@@ -4,12 +4,12 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { ImmutableSource, Source, Template } from 'models/widget/types'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { DragWrapper } from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { useWidgetData } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
@@ -26,7 +26,7 @@ import { getWidgetsState } from 'state/widgets/selectors'
 import type { WidgetEnvironment, WidgetType } from 'state/widgets/types'
 import { getSourcePathFromContext } from 'state/widgets/utils'
 import { compare } from 'utils'
-import RootWidget from 'Widgets/modules/Widget'
+import { Widget as RootWidget } from 'Widgets/modules/Widget'
 
 import { InfobarTabs } from './InfobarTabs'
 
@@ -212,7 +212,7 @@ const InfobarWidgets = ({
     )
 }
 
-export default InfobarWidgets
+export { InfobarWidgets }
 
 function getPreparedDisplayList({
     source,

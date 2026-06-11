@@ -199,4 +199,4 @@ const usePaginatedProductsByIds = ({
     )
 }
 
-export default usePaginatedProductsByIds
+export { usePaginatedProductsByIds }

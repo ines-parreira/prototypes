@@ -7,17 +7,17 @@ import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import { createTag, fetchTags } from 'models/tag/resources'
 import type { TagDraft } from 'models/tag/types'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { tagCreated, tagsFetched } from 'state/entities/tags/actions'
 
-import SelectField from '../../../forms/SelectField/SelectField'
-import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
+import { SelectField } from '../../../forms/SelectField/SelectField'
+import { TagDropdownMenu } from '../../TagDropdownMenu/TagDropdownMenu'
 
 type Props = {
     value?: string[] | string | Option[]
@@ -174,5 +174,3 @@ export const TagsSelectContainer = ({
         />
     )
 }
-
-export default TagsSelectContainer

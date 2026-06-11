@@ -84,4 +84,6 @@ export const AlertBanners = () => {
     )
 }
 
-export default memo(AlertBanners)
+const DefaultExportAlertBanners = memo(AlertBanners)
+
+export { DefaultExportAlertBanners }

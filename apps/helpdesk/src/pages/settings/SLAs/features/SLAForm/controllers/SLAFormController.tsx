@@ -10,18 +10,18 @@ import { useGetSlaPolicy } from '@gorgias/helpdesk-queries'
 import { validateCreateSLAPolicy } from '@gorgias/helpdesk-validators'
 
 import type { SLATemplate } from 'pages/settings/SLAs/config/templates'
-import Loader from 'pages/settings/SLAs/features/Loader/Loader'
+import { Loader } from 'pages/settings/SLAs/features/Loader/Loader'
 
-import DEPRECATED_SLAFormView from '../views/DEPRECATED_SLAFormView'
+import { SLAFormView as DEPRECATED_SLAFormView } from '../views/DEPRECATED_SLAFormView'
 import { SLAFormView } from '../views/SLAFormView'
-import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
-import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
+import { makeCreateSLAPolicyBody } from './makeCreateSLAPolicyBody'
+import { makeMappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 import type { SLAFormValues } from './useFormValues'
-import useFormValues from './useFormValues'
-import useResolveConditions from './useResolveConditions'
-import useSubmitPolicy from './useSubmitPolicy'
+import { useFormValues } from './useFormValues'
+import { useResolveConditions } from './useResolveConditions'
+import { useSubmitPolicy } from './useSubmitPolicy'
 
-export default function SLAFormController() {
+export function SLAFormController() {
     const { policyId } = useParams<{ policyId?: string }>()
     const location = useLocation<{
         template?: SLATemplate

@@ -1,8 +1,8 @@
 import type { ComponentProps, ComponentType } from 'react'
 import React from 'react'
 
-import StoreIntegrationView from '../components/StoreIntegrationView'
-import useStoreIntegrations from '../hooks/useStoreIntegrations'
+import { StoreIntegrationView } from '../components/StoreIntegrationView'
+import { useStoreIntegrations } from '../hooks/useStoreIntegrations'
 
 export const withStoreIntegration = (
     title: string,
@@ -18,5 +18,3 @@ export const withStoreIntegration = (
         )
     }
 }
-
-export default withStoreIntegration

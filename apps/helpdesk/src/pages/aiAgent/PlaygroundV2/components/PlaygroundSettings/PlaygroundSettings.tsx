@@ -12,8 +12,8 @@ import {
 } from '@gorgias/axiom'
 
 import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings'
-import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
-import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
+import { ChatAvailabilitySelection } from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
+import { PlaygroundActionsModal } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import { PlaygroundSegmentControl } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSegmentControl/PlaygroundSegmentControl'
 import { TargetSelection } from 'pages/aiAgent/PlaygroundV2/components/TargetSelection/TargetSelection'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'

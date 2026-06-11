@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import ConfirmationModal from './ConfirmationModal'
+import { ConfirmationModal } from './ConfirmationModal'
 
 type ConfirmCustomerMatchingModalProps = {
     isOpen: boolean
@@ -13,7 +13,7 @@ type ConfirmCustomerMatchingModalProps = {
     title?: string
 }
 
-export default function ConfirmCustomerMatchingModal({
+export function ConfirmCustomerMatchingModal({
     isOpen,
     setIsOpen,
     onConfirm,

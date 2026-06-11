@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { StatsNavbarView } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView'
-import StatsNavbarContainer from 'domains/reporting/pages/common/StatsNavbarContainer'
+import { StatsNavbarContainer } from 'domains/reporting/pages/common/StatsNavbarContainer'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)

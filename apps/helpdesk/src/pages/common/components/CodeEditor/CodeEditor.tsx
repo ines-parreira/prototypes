@@ -8,7 +8,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import ReactACE from './WithACEEditor/ReactACE'
+import { DefaultExportReactACE as ReactACE } from './WithACEEditor/ReactACE'
 import type { ACEProps } from './WithACEEditor/types'
 
 import css from './CodeEditor.less'
@@ -113,4 +113,4 @@ function CodeEditor({ title, tooltip, disabled, ...props }: Props) {
     )
 }
 
-export default CodeEditor
+export { CodeEditor }

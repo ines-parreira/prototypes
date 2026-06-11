@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ActionEventRow from '../components/ActionEventRow'
+import { ActionsRow as ActionEventRow } from '../components/ActionEventRow'
 import type { LlmTriggeredExecution } from '../types'
 
 describe('ActionEventRow', () => {

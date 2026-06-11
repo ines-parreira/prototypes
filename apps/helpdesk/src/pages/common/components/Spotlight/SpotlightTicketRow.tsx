@@ -9,13 +9,13 @@ import {
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import type { PickedTicketWithHighlights } from 'models/search/types'
 import type { TicketAssignee } from 'models/ticket/types'
 import { ticketHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
-import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
+import { SpotlightRow } from 'pages/common/components/Spotlight/SpotlightRow'
 import css from 'pages/common/components/Spotlight/SpotlightTicketRow.less'
-import TicketIcon from 'pages/common/components/TicketIcon'
+import { TicketIcon } from 'pages/common/components/TicketIcon'
 import { UserAssigneeLabel } from 'pages/common/utils/labels'
 
 type SpotlightTicketRowProps = {
@@ -123,4 +123,4 @@ const SpotlightTicketInfo = ({
     )
 }
 
-export default SpotlightTicketRow
+export { SpotlightTicketRow }

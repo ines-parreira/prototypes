@@ -1,4 +1,4 @@
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
 import { UserAvatar } from '@repo/users'
 import css from './AgentCard.less'
@@ -12,7 +12,7 @@ type Props = {
     useLegacyAvatar?: boolean
 }
 
-export default function AgentCard({
+export function AgentCard({
     name,
     url,
     badgeColor,

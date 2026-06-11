@@ -10,7 +10,7 @@ import {
     CampaignOrderEventsMeasure,
     OrderConversionMeasure,
 } from 'domains/reporting/pages/convert/clients/constants'
-import useCampaignPerformanceTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
+import { useCampaignPerformanceTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)

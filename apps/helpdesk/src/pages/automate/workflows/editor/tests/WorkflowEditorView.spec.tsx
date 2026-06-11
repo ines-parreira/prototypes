@@ -5,29 +5,29 @@ import { Router } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
-import useAppSelector from 'hooks/useAppSelector'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
 } from 'models/workflows/queries'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { useStoreWorkflowsApi } from '../../hooks/useStoreWorkflowsApi'
-import useWorkflowChannelSupport from '../../hooks/useWorkflowChannelSupport'
+import { useWorkflowChannelSupport } from '../../hooks/useWorkflowChannelSupport'
 import { useWorkflowEditorContext } from '../../hooks/useWorkflowEditor'
 import {
     useWorkflowsIdsEnabledInChat,
     useWorkflowsIdsEnabledInContactForm,
     useWorkflowsIdsEnabledInHelpCenter,
 } from '../../hooks/useWorkflowEnabledInChannels'
-import WorkflowEditorView from '../WorkflowEditorView'
+import { DefaultExportWorkflowEditorView as WorkflowEditorView } from '../WorkflowEditorView'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('@gorgias/toolkit-react', () => ({

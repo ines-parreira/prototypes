@@ -217,4 +217,4 @@ const pendingMessageManager = new PendingMessageManager(
     "Are you sure? Your message won't be sent",
 )
 
-export default pendingMessageManager
+export { pendingMessageManager }

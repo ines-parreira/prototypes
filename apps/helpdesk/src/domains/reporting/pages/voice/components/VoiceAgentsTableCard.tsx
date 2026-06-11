@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { VoiceAgentsTable } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/VoiceAgentsTable'
 import { VOICE_CALL_ACTIVITY_TITLE } from 'domains/reporting/pages/voice/constants/voiceAgents'

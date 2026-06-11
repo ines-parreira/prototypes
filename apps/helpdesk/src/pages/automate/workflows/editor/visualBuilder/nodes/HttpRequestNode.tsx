@@ -2,15 +2,15 @@ import React, { memo } from 'react'
 
 import type { NodeProps } from '@xyflow/react'
 
-import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
+import { VisualBuilderActionTag } from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import EdgeBlock from '../components/EdgeBlock'
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeContent from './VisualBuilderNodeContent'
+import { EdgeBlock } from '../components/EdgeBlock'
+import { NodeDeleteIcon } from '../components/NodeDeleteIcon'
+import { VisualBuilderNode } from './VisualBuilderNode'
+import { VisualBuilderNodeContent } from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     name: string
@@ -44,9 +44,7 @@ const HttpRequestNode = memo(function HttpRequestNode({
     )
 })
 
-export default function HttpRequestNodeWrapper(
-    node: NodeProps<HttpRequestNodeType>,
-) {
+export function HttpRequestNodeWrapper(node: NodeProps<HttpRequestNodeType>) {
     const commonProps = useVisualBuilderNodeProps(node)
 
     return (

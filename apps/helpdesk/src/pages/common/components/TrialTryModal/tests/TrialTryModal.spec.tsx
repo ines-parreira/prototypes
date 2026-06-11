@@ -12,7 +12,7 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
 import type { TrialFeature } from '../TrialTryModal'
-import TrialTryModal from '../TrialTryModal'
+import { TrialTryModal } from '../TrialTryModal'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('models/aiAgent/queries')
@@ -85,7 +85,9 @@ const defaultProps = {
     features: mockFeatures,
 }
 
-const mockUseAppSelector = jest.requireMock('hooks/useAppSelector').default
+const mockUseAppSelector = jest.requireMock(
+    'hooks/useAppSelector',
+).useAppSelector
 const mockUseGetTrials = jest.requireMock('models/aiAgent/queries').useGetTrials
 const mockUseAiAgentUpgradePlan = jest.requireMock(
     'hooks/aiAgent/useAiAgentUpgradePlan',

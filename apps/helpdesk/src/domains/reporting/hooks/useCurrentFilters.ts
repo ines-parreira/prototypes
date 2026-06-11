@@ -101,7 +101,7 @@ export const validateAndParseFilters = (
     }
 }
 
-export default function useCurrentFilters(
+export function useCurrentFilters(
     defaultFilters: StatsFiltersWithLogicalOperator,
 ): {
     filters: StatsFiltersWithLogicalOperator

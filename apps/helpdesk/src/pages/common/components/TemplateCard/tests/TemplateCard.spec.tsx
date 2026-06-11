@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TemplateCard from '../TemplateCard'
+import { TemplateCard } from '../TemplateCard'
 
 describe('<TemplateCard />', () => {
     const props = {

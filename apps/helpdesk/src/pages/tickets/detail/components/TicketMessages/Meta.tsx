@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchRule } from 'models/rule/resources'
 import type { Meta as MetaType, Source } from 'models/ticket/types'
-import StarRating from 'pages/common/components/StarRating'
+import { StarRating } from 'pages/common/components/StarRating'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
 import { ruleFetched } from 'state/entities/rules/actions'
 import { rulesSelector } from 'state/entities/rules/selectors'
@@ -18,9 +18,9 @@ import { ManagedRuleDisplayName } from 'state/rules/constants'
 import type { ManagedRule } from 'state/rules/types'
 import { RuleType } from 'state/rules/types'
 
-import MetaLabel from './MetaLabel'
-import MetaRepliedByLabel from './MetaRepliedByLabel'
-import MetaRepliedToLabel from './MetaRepliedToLabel'
+import { MetaLabel } from './MetaLabel'
+import { MetaRepliedByLabel } from './MetaRepliedByLabel'
+import { MetaRepliedToLabel } from './MetaRepliedToLabel'
 
 type Props = {
     messageId?: string
@@ -34,7 +34,7 @@ type Props = {
     subject?: string
 }
 
-export default function Meta(props: Props) {
+export function Meta(props: Props) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const {
         meta,

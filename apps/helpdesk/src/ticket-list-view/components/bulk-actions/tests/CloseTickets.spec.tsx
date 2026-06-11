@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import CloseTickets from '../CloseTickets'
+import { CloseTickets } from '../CloseTickets'
 
 describe('<CloseTickets />', () => {
     const minProps = {

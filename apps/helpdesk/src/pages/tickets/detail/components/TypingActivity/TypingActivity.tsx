@@ -22,4 +22,4 @@ const TypingActivity = ({ name, isTyping }: TypingActivityProps) => {
     )
 }
 
-export default TypingActivity
+export { TypingActivity }

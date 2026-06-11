@@ -12,29 +12,29 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     ExtraHTMLDto,
     LocalSocialNavigationLink,
     NavigationLink,
 } from 'models/helpCenter/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
-import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
+import { CodeEditor } from '../../../common/components/CodeEditor/CodeEditor'
 import { ExtraHtmlSection } from '../../../common/components/ExtraHtmlSection/ExtraHtmlSection'
-import ToggleInput from '../../../common/forms/ToggleInput'
+import { ToggleInput } from '../../../common/forms/ToggleInput'
 import { SocialNavigationLinks } from '../components/SocialNavigationLinks'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
     SOCIAL_NAVIGATION_LINKS,
 } from '../constants'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from '../hooks/useHelpCenterIdParam'
 import {
@@ -43,7 +43,7 @@ import {
 } from '../hooks/useNavigationLinks'
 import { getAbsoluteUrl } from '../utils/helpCenter.utils'
 import { saveNavigationLinks, saveSocialLinks } from '../utils/navigationLinks'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
+import { HelpCenterPageWrapper } from './HelpCenterPageWrapper'
 import { LinkList } from './LinkList'
 import { UpdateToggle } from './UpdateToggle'
 
@@ -616,5 +616,3 @@ export const HelpCenterCustomizationView = () => {
         </HelpCenterPageWrapper>
     )
 }
-
-export default HelpCenterCustomizationView

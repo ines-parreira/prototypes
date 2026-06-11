@@ -17,7 +17,9 @@ import { CustomizationContext } from 'Widgets/modules/Template'
 import { OrderContext, orderCustomization, Wrapper } from '../Order'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 
 jest.mock('hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket')

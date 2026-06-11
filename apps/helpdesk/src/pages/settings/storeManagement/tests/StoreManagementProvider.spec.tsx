@@ -12,7 +12,7 @@ import {
 
 jest.mock('../hooks/useStoresWithMaps', () => ({
     __esModule: true,
-    default: () => ({
+    useStoresWithMaps: () => ({
         enrichedStores: mockStoresWithAssignedChannels,
         unassignedChannels: [],
         refetchMapping: jest.fn(),

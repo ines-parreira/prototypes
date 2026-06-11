@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import type { UserSearchResult } from 'models/search/types'
 
-import PhoneSearchResultsContent from '../PhoneSearchResultsContent'
+import { PhoneSearchResultsContent } from '../PhoneSearchResultsContent'
 
 describe('PhoneSearchResultsContent', () => {
     const mockResults: UserSearchResult[] = [

@@ -4,7 +4,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import type { IntegrationType } from 'models/integration/constants'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 export function useStoreSelector(basePath: string, types?: IntegrationType[]) {
     const history = useHistory()

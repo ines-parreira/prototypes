@@ -1,11 +1,11 @@
 import { Route, Switch } from 'react-router-dom'
 
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
-import VoiceQueueCreatePage from './VoiceQueueCreatePage'
-import VoiceQueueEditPage from './VoiceQueueEditPage'
-import VoiceQueueListPage from './VoiceQueueListPage'
+import { VoiceQueueCreatePage } from './VoiceQueueCreatePage'
+import { VoiceQueueEditPage } from './VoiceQueueEditPage'
+import { VoiceQueueListPage } from './VoiceQueueListPage'
 
-export default function VoiceIntegrationQueueRoutes() {
+export function VoiceIntegrationQueueRoutes() {
     return (
         <Switch>
             <Route path={`${baseURL}/queues`} exact>

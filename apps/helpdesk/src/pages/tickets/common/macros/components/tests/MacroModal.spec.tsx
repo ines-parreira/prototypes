@@ -14,20 +14,20 @@ import {
     useDeleteMacro,
     useUpdateMacro,
 } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
-import type ModalHeader from 'pages/common/components/modal/ModalHeader'
+import type { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
 
 import type { MacroEdit } from '../MacroEdit'
-import MacroModal from '../MacroModal'
+import { MacroModal } from '../MacroModal'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('lodash/uniqueId', () => () => '42')
@@ -54,7 +54,9 @@ const mockMutateCreate = jest.fn()
 const mockMutateDelete = jest.fn()
 const mockMutateUpdate = jest.fn()
 
-jest.mock('../MacroModalList', () => () => <div>MacroModalListMock</div>)
+jest.mock('../MacroModalList', () => ({
+    MacroModalList: () => <div>MacroModalListMock</div>,
+}))
 const mockActions = fromJS([
     {
         name: MacroActionName.Http,
@@ -87,19 +89,27 @@ jest.mock('../MacroEdit', () => ({
 }))
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({ children }: { children?: ReactNode }) => <div>{children}</div>
+    return {
+        DefaultExportModal: ({ children }: { children?: ReactNode }) => (
+            <div>{children}</div>
+        ),
+    }
 })
 
 jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return ({ title }: ComponentProps<typeof ModalHeader>) => (
-        <div>{title}ModalHeaderMock</div>
-    )
+    return {
+        ModalHeader: ({ title }: ComponentProps<typeof ModalHeader>) => (
+            <div>{title}ModalHeaderMock</div>
+        ),
+    }
 })
 
 jest.mock('pages/common/components/modal/ModalBody', () => {
-    return ({ children }: { children?: ReactNode }) => (
-        <div>{children}ModalBodyMock</div>
-    )
+    return {
+        DefaultExportModalBody: ({ children }: { children?: ReactNode }) => (
+            <div>{children}ModalBodyMock</div>
+        ),
+    }
 })
 
 describe('<MacroModal />', () => {

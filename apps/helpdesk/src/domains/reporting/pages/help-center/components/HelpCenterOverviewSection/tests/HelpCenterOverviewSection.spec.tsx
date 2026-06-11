@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ArticleViewsTrendCard } from 'domains/reporting/pages/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
-import HelpCenterOverviewSection from 'domains/reporting/pages/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
+import { HelpCenterOverviewSection } from 'domains/reporting/pages/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
 import { SearchesTrendCard } from 'domains/reporting/pages/help-center/components/SearchesTrendCard/SearchesTrendCard'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 

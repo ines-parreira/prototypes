@@ -6,17 +6,17 @@ import { useTitle } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EntityType } from 'models/view/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PageHeader from 'pages/common/components/PageHeader'
-import ViewName from 'pages/common/components/ViewName/ViewName'
-import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportViewName as ViewName } from 'pages/common/components/ViewName/ViewName'
+import { DefaultExportViewTable as ViewTable } from 'pages/common/components/ViewTable/ViewTable'
 import { isCreationUrl, isSearchUrl } from 'pages/common/utils/url'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
-import CustomerListActions from 'pages/customers/list/CustomerListActions'
+import { DefaultExportCustomerForm as CustomerForm } from 'pages/customers/common/components/CustomerForm'
+import { CustomerListActionsWithViewCount as CustomerListActions } from 'pages/customers/list/CustomerListActions'
 import { getCustomers } from 'state/customers/selectors'
 import { fetchViewItems } from 'state/views/actions'
 import {
@@ -25,7 +25,7 @@ import {
 } from 'state/views/selectors'
 import { compactInteger } from 'utils'
 
-export default function CustomerListContainer() {
+export function CustomerListContainer() {
     const dispatch = useAppDispatch()
     const customers = useAppSelector(getCustomers)
     const activeView = useAppSelector(getActiveView)

@@ -26,4 +26,4 @@ const ProviderInfo: React.FC<Props> = ({ className, provider, onClick }) => {
     )
 }
 
-export default ProviderInfo
+export { ProviderInfo }

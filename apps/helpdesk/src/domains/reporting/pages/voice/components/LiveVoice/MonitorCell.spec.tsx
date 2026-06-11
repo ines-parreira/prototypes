@@ -1,10 +1,10 @@
 import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import MonitorCell from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'
+import { MonitorCell } from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { getCallMonitorability } from 'hooks/integrations/phone/monitoring.utils'
-import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
+import { MonitorCallButton } from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 
 jest.mock('hooks/integrations/phone/monitoring.utils')
 jest.mock('pages/common/components/MonitorCallButton/MonitorCallButton')

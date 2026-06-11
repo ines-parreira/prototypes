@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 
-import StartABTestModal from '../StartABTestModal'
+import { StartABTestModal } from '../StartABTestModal'
 
 describe('<StartABTestModal />', () => {
     const onClose = jest.fn()

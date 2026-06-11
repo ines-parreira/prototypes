@@ -7,13 +7,13 @@ import { isLegacyTicketChannel } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'
 import { DEFAULT_CHANNEL } from 'tickets/common/config'
 
-import isSystemType from './isSystemType'
-import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
+import { isSystemType } from './isSystemType'
+import { lastNonSystemTypeMessage } from './lastNonSystemTypeMessage'
 
 /**
  * Return channel of passed source type
  */
-export default function sourceTypeToChannel(
+export function sourceTypeToChannel(
     sourceType: TicketMessageSourceType,
     messages: Array<TicketMessage> = [],
 ): TicketChannel | TicketMessageSourceType {

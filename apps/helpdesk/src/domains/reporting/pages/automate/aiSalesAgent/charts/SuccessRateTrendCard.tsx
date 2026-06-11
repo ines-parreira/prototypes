@@ -70,4 +70,4 @@ const SuccessRateTrendCard = ({ chartId, dashboard }: DashboardChartProps) => {
     return <TrendCardComponent />
 }
 
-export default SuccessRateTrendCard
+export { SuccessRateTrendCard }

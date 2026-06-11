@@ -16,9 +16,9 @@ import {
 import { isGorgiasApiError } from 'models/api/types'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import useUpdateCustomFieldCondition from './useUpdateCustomFieldCondition'
+import { useUpdateCustomFieldCondition } from './useUpdateCustomFieldCondition'
 
-export default function useSaveCondition(conditionId?: number) {
+export function useSaveCondition(conditionId?: number) {
     const queryClient = useQueryClient()
 
     const { mutateAsync: createCondition, isLoading: isCreating } =

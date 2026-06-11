@@ -1,28 +1,30 @@
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ForwardingCallsPreferences from '../components/ForwardingCallsPreferences'
+import { ForwardingCallsPreferences } from '../components/ForwardingCallsPreferences'
 
 const mockSetPreference = jest.fn()
 
 jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
-    return function PhoneNumberInput({
-        disabled,
-        onChange,
-        value,
-    }: {
-        disabled: boolean
-        onChange: (value: string) => void
-        value: string
-    }) {
-        return (
-            <input
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                data-testid="mock-phone-input"
-                disabled={disabled}
-            />
-        )
+    return {
+        DefaultExportPhoneNumberInput: function PhoneNumberInput({
+            disabled,
+            onChange,
+            value,
+        }: {
+            disabled: boolean
+            onChange: (value: string) => void
+            value: string
+        }) {
+            return (
+                <input
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    data-testid="mock-phone-input"
+                    disabled={disabled}
+                />
+            )
+        },
     }
 })
 

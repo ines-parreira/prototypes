@@ -34,4 +34,4 @@ const ChannelIcon = ({ type }: Props) => {
     )
 }
 
-export default ChannelIcon
+export { ChannelIcon }

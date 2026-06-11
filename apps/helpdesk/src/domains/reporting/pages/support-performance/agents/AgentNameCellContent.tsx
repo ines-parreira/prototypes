@@ -8,9 +8,9 @@ import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import css from 'domains/reporting/pages/support-performance/agents/AgentCellContent.less'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 import { STATS_ROUTES } from 'routes/constants'
 
 export type AgentNameCellContentProps = {

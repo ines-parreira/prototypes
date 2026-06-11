@@ -9,7 +9,7 @@ type Props<T extends SelectFieldRawOption> = ComponentProps<
     value: T
 }
 
-export default function SelectDropdownField<T extends SelectFieldRawOption>({
+export function SelectDropdownField<T extends SelectFieldRawOption>({
     ...props
 }: Props<T>) {
     return <SelectField<T> {...props} selectedOption={props.value} />

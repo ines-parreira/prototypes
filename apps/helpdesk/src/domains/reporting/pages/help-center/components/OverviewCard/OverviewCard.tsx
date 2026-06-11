@@ -3,11 +3,11 @@ import React from 'react'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { PerformanceTip } from 'domains/reporting/pages/common/components/PerformanceTip'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import css from 'domains/reporting/pages/help-center/components/OverviewCard/OverviewCard.less'
@@ -90,4 +90,4 @@ const OverviewCard = ({
     )
 }
 
-export default OverviewCard
+export { OverviewCard }

@@ -2,8 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Wizard from '../Wizard'
-import WizardStep from '../WizardStep'
+import { Wizard } from '../Wizard'
+import { WizardStep } from '../WizardStep'
 
 describe('<WizardStep />', () => {
     it('should render', () => {

@@ -15,7 +15,7 @@ import {
 } from '../../../models/integration/types'
 import type { RootState } from '../../types'
 import * as types from '../constants'
-import reducer, { initialState } from '../reducers'
+import { initialState, reducer } from '../reducers'
 import {
     DEPRECATED_getIntegrationsState,
     getEmailIntegrations,

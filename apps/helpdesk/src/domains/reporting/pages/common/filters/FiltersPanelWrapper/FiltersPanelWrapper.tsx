@@ -7,7 +7,7 @@ import type { SavedFiltersActionsProps } from 'domains/reporting/pages/common/fi
 import { SavedFiltersActions } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
 import { SavedFiltersPanel } from 'domains/reporting/pages/common/filters/SavedFiltersPanel'
 import { getHideFiltersPanelOptionalFilters } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export type FiltersPanelWrapperProps = Omit<
     FiltersPanelProps,
@@ -60,5 +60,3 @@ export const FiltersPanelWrapper = ({
         </div>
     )
 }
-
-export default FiltersPanelWrapper

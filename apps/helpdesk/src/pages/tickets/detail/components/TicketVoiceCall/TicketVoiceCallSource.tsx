@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -16,7 +16,7 @@ type TicketVoiceCallSourceProps = {
     date: string
 }
 
-export default function TicketVoiceCallSource({
+export function TicketVoiceCallSource({
     to,
     from,
     icon,

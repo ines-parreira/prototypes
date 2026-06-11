@@ -5,7 +5,7 @@ import user from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Link, Switch } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { usePostOnboardingNudges } from '../../../hooks/usePostOnboardingNudges'
 import { PostOnboardingUserNudges } from '../PostOnboardingUserNudges'

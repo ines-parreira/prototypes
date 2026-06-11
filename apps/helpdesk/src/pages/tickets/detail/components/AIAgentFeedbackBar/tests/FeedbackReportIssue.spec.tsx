@@ -7,7 +7,7 @@ import {
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
 
-import FeedbackReportIssue from '../FeedbackReportIssue'
+import { ReportIssueSelect as FeedbackReportIssue } from '../FeedbackReportIssue'
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEventWithSampling)

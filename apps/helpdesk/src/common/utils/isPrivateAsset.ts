@@ -11,7 +11,7 @@ const privateBuckets: Record<GorgiasUIEnv, string> = {
  * @date 2026-03-02
  * @type migration to @repo/utils
  */
-export default function isPrivateAsset(url: string) {
+export function isPrivateAsset(url: string) {
     const bucketUrl = privateBuckets[getEnvironment()]
     return url.includes(bucketUrl)
 }

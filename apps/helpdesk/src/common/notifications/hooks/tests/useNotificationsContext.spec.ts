@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { requestNotificationPermission } from '../../requestNotificationPermission'
-import useNotificationsContext from '../useNotificationsContext'
+import { useNotificationsContext } from '../useNotificationsContext'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

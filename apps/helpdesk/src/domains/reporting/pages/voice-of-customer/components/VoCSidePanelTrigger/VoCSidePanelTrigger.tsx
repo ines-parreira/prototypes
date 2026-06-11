@@ -10,7 +10,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import css from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger.less'
 import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { setSidePanelData } from 'domains/reporting/state/ui/stats/sidePanelSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 type Props = {
     children: React.ReactNode

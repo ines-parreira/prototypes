@@ -14,7 +14,8 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-import AgentsFilter, {
+import {
+    AgentsFilter,
     AgentsFiltersWithSavedState,
     AgentsFiltersWithState,
 } from 'domains/reporting/pages/common/filters/AgentsFilter'
@@ -28,7 +29,9 @@ import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constan
 import type { RootState } from 'state/types'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const clearFilterIcon = 'close'
 const defaultState = {

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { helpCentersFetched } from 'state/entities/helpCenter/helpCenters'
@@ -51,4 +51,4 @@ const SelfServiceHelpCentersProvider = ({ children }: Props) => {
     return <>{children}</>
 }
 
-export default SelfServiceHelpCentersProvider
+export { SelfServiceHelpCentersProvider }

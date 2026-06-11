@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { useModalManagerApi } from 'hooks/useModalManager'
 import { useModalManager } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'

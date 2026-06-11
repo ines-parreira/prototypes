@@ -2,7 +2,7 @@ import classnames from 'classnames'
 
 import type { TicketMessage } from 'models/ticket/types'
 
-import SourceActionsFooter from './SourceActionsFooter'
+import { DefaultExportSourceActionsFooter as SourceActionsFooter } from './SourceActionsFooter'
 
 import css from './SourceDetailsFooter.less'
 
@@ -13,7 +13,7 @@ type Props = {
     isMessageDeleted: boolean
 }
 
-export default function SourceDetailsFooter(props: Props) {
+export function SourceDetailsFooter(props: Props) {
     const { message, isMessageHidden, isMessageDeleted } = props
     return (
         <div className={classnames(css.wrapper, props.className)}>

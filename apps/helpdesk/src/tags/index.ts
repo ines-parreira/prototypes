@@ -1,2 +1,2 @@
-export { default as TagDropdownMenu } from './TagDropdownMenu'
-export { default as useListTags } from './useListTags'
+export { TagDropdownMenu } from './TagDropdownMenu'
+export { useListTags } from './useListTags'

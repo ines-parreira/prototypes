@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useChatRedesignOptIn } from './useChatRedesignOptIn'
 

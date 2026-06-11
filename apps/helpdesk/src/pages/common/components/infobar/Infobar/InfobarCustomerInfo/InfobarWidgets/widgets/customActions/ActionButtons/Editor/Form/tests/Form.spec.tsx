@@ -6,7 +6,7 @@ import { ulid } from 'ulidx'
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { ContentType } from 'models/api/types'
 
-import Form from '..'
+import { DefaultExportForm as Form } from '..'
 
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()

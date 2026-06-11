@@ -1,4 +1,4 @@
-import mutatePanels from '../mutatePanels'
+import { mutatePanels } from '../mutatePanels'
 
 describe('mutatePanels', () => {
     it('should mutate when two panels when dragging to the left', () => {

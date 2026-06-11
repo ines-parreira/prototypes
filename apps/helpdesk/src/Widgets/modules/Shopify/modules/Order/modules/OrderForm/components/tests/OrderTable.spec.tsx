@@ -11,7 +11,7 @@ import {
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
 
-import OrderTable from '../OrderTable'
+import { DefaultExportOrderTable as OrderTable } from '../OrderTable'
 
 describe('<OrderTable/>', () => {
     let onLineItemChange: jest.MockedFunction<any>

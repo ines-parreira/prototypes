@@ -1,5 +1,5 @@
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceStoreIntegration } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { NotificationStatus } from 'state/notifications/types'
 
 import type { WorkflowConfigurationShallow } from '../models/workflowConfiguration.types'
@@ -17,7 +17,7 @@ type Props = {
     configurationsMap: Record<string, WorkflowConfigurationShallow>
 }
 
-export default function useStoreWorkflows({
+export function useStoreWorkflows({
     shopType,
     shopName,
     notifyMerchant,

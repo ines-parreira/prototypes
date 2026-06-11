@@ -9,7 +9,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { activeViewIdSet } from 'state/ui/views/actions'
 
 import { DefaultViews } from '../DefaultViews'
@@ -31,7 +31,7 @@ jest.mock('@repo/users', () => ({
     useCurrentUserRole: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('state/ui/views/actions', () => ({ activeViewIdSet: jest.fn() }))

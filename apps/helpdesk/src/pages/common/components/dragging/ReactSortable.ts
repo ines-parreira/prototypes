@@ -148,7 +148,7 @@ const store: {
     activeComponent: null,
 }
 
-export default ReactSortable
+export { ReactSortable }
 
 export const isSortableEvent = (
     evt?: SortableEvent | MoveEvent,

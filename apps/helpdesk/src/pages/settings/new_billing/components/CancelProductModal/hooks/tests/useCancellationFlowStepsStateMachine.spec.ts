@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { CancellationFlowStep } from '../../constants'
-import useCancellationFlowStepsStateMachine from '../useCancellationFlowStepsStateMachine'
+import { useCancellationFlowStepsStateMachine } from '../useCancellationFlowStepsStateMachine'
 
 describe('useCancellationFlowStepsStateMachine', () => {
     it('returns the product features FOMO step initially', () => {

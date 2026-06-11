@@ -1,6 +1,7 @@
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'

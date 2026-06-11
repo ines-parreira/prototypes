@@ -9,8 +9,8 @@ import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 
-import useSplitTicketView from '../hooks/useSplitTicketView'
-import useIsToggleEnabled from './useIsToggleEnabled'
+import { useSplitTicketView } from '../hooks/useSplitTicketView'
+import { useIsToggleEnabled } from './useIsToggleEnabled'
 
 import css from './Toggle.less'
 
@@ -20,7 +20,7 @@ const Labels = {
 }
 
 /* istanbul ignore next */
-export default function Toggle() {
+export function Toggle() {
     const { isEnabled, setIsEnabled } = useSplitTicketView()
     const { isEnabled: isToggleEnabled } = useIsToggleEnabled()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()

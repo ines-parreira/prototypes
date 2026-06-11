@@ -5,7 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
+import { useLegacyAlertBanners } from 'notifications/hooks/useLegacyAlertBanners'
 import type { BannerNotification } from 'state/notifications/types'
 import { NotificationStyle } from 'state/notifications/types'
 
@@ -13,9 +13,11 @@ import { useBannersContext } from '../../Context'
 import { useBannerCarousel } from '../../hooks/useBannerCarousel'
 import type { ContextBanner } from '../../types'
 import { AlertBannerTypes, BannerCategories } from '../../types'
-import AlertBanners from '../AlertBanners'
+import { DefaultExportAlertBanners as AlertBanners } from '../AlertBanners'
 
-jest.mock('notifications/hooks/useLegacyAlertBanners', () => jest.fn())
+jest.mock('notifications/hooks/useLegacyAlertBanners', () => ({
+    useLegacyAlertBanners: jest.fn(),
+}))
 jest.mock('../../Context', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../Context'),
     useBannersContext: jest.fn(),

@@ -14,7 +14,7 @@ import { mockSearchRank } from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
 import { view as fixtureView } from 'fixtures/views'
 import { EntityType, ViewField, ViewVisibility } from 'models/view/types'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import * as viewsActions from 'state/views/actions'
 
@@ -34,9 +34,9 @@ jest.mock('state/ui/views/actions')
     activeViewIdSet as jest.MockedFunction<typeof activeViewIdSet>
 ).mockImplementation((() => _identity) as any)
 
-jest.mock('pages/common/components/ViewTable/Header', () => () => (
-    <div>Header mock</div>
-))
+jest.mock('pages/common/components/ViewTable/Header', () => ({
+    DefaultExportHeader: () => <div>Header mock</div>,
+}))
 const mockGetItemUrl = jest.fn()
 const mockTable = jest.fn(
     ({ getItemUrl }: { getItemUrl: typeof mockGetItemUrl }) => {
@@ -44,12 +44,12 @@ const mockTable = jest.fn(
         return <div>Table mock</div>
     },
 )
-jest.mock('pages/common/components/ViewTable/Table', () =>
-    jest.fn((props) => mockTable(props)),
-)
-jest.mock('pages/common/components/ViewTable/FilterTopbar', () => () => (
-    <div>FilterTopbar mock</div>
-))
+jest.mock('pages/common/components/ViewTable/Table', () => ({
+    DefaultExportTable: jest.fn((props) => mockTable(props)),
+}))
+jest.mock('pages/common/components/ViewTable/FilterTopbar', () => ({
+    DefaultExportFilterTopbar: () => <div>FilterTopbar mock</div>,
+}))
 
 const minProps = {
     type: EntityType.Ticket,

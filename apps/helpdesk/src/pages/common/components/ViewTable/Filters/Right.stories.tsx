@@ -9,7 +9,7 @@ import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 import { userEvent } from 'storybook/test'
 
 import { ThemeProvider } from 'core/theme'
-import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
+import { DefaultExportRight as RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
 
 const defaultState = {
     integrations: fromJS({

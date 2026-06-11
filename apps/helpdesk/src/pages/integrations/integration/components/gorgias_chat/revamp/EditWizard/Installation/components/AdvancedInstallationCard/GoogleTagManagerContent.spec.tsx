@@ -1,13 +1,13 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import GoogleTagManagerContent from './GoogleTagManagerContent'
+import { GoogleTagManagerContent } from './GoogleTagManagerContent'
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/CopyButton',
     () => ({
         __esModule: true,
-        default: ({ value, displayText }: any) => (
+        CopyButton: ({ value, displayText }: any) => (
             <button data-value={value}>{displayText}</button>
         ),
     }),

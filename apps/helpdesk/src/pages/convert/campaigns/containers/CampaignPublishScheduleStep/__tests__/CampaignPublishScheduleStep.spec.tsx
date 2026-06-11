@@ -43,9 +43,11 @@ jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
 })
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div>ConvertSubscriptionModal</div>
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div>ConvertSubscriptionModal</div>
+        }),
+    }
 })
 
 const defaultState = {

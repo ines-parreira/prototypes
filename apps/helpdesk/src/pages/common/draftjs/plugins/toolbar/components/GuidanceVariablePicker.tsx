@@ -9,7 +9,7 @@ import {
 
 import type { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 
-import GuidanceVariableDropdown from './GuidanceVariableDropdown'
+import { GuidanceVariableDropdown } from './GuidanceVariableDropdown'
 
 export type GuidanceVariablePickerProps = {
     onSelect: (value: GuidanceVariable) => void
@@ -63,4 +63,4 @@ const GuidanceVariablePicker = ({
     )
 }
 
-export default GuidanceVariablePicker
+export { GuidanceVariablePicker }

@@ -12,7 +12,7 @@ import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { ManagedRulesSlugs } from 'state/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AutoReplyFAQEditor from '../AutoReplyFAQEditor'
+import { AutoReplyFAQEditor } from '../AutoReplyFAQEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 

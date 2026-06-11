@@ -5,11 +5,12 @@ import type { Iterable as ImmutableIterable, Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Dropdown, {
+import {
+    Dropdown,
     DropdownContext,
 } from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 type AddFilterDropdownProps = {
     filterableFields: ImmutableIterable<number, any>

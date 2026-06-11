@@ -13,10 +13,10 @@ import {
     ChannelColumnConfig,
     getColumnWidth,
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 export const ChannelsTable = () => {
     const [isTableScrolled, setIsTableScrolled] = useState(false)

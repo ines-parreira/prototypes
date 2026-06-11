@@ -1,1 +1,1 @@
-export { default } from './CampaignPreview'
+export { CampaignPreview } from './CampaignPreview'

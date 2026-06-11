@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { getCurrentAccountCreatedDatetime } from 'state/currentAccount/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'

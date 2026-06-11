@@ -4,9 +4,9 @@ import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import css from './TicketActions.less'
 
@@ -17,7 +17,7 @@ type Props = {
     actions: Action[]
 }
 
-export default function TicketActions({ actions }: Props) {
+export function TicketActions({ actions }: Props) {
     const [showDropdown, setShowDropdown] = useState(false)
     const toggleRef = useRef<HTMLButtonElement>(null)
 

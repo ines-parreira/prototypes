@@ -2,7 +2,7 @@ import type { FeedStoreState } from '@knocklabs/client'
 import { useKnockFeed } from '@knocklabs/react'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useCount from '../useCount'
+import { useCount } from '../useCount'
 
 jest.mock('@knocklabs/react', () => ({ useKnockFeed: jest.fn() }))
 const useKnockFeedMock = assumeMock(useKnockFeed)

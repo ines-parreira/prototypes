@@ -18,8 +18,8 @@ import {
 } from '@gorgias/helpdesk-client'
 import type { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import socketManager from 'services/socketManager'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { socketManager } from 'services/socketManager'
 import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -56,16 +56,12 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useLocalStorage: jest.fn(),
 }))
 
-jest.mock(
-    'react-router-dom',
-    () =>
-        ({
-            ...jest.requireActual('react-router-dom'),
-            useHistory: () => ({
-                push: mockHistoryPush,
-            }),
-        }) as Record<string, unknown>,
-)
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}))
 
 const mockHistoryPush = jest.fn()
 const mockDispatch = jest.fn()

@@ -18,14 +18,14 @@ import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useAddStoreApp } from 'pages/aiAgent/actions/hooks/useAddStoreApp'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useThreeplIntegrations } from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
@@ -34,7 +34,7 @@ import {
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
 
-import EditActionView from '../EditActionView'
+import { EditActionView } from '../EditActionView'
 
 jest.mock('models/workflows/queries')
 jest.mock('models/knowledgeService/queries')

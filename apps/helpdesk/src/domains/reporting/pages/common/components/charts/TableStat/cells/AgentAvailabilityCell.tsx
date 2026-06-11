@@ -16,7 +16,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useAvailabilityCellData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 type Props = {
     userId: number

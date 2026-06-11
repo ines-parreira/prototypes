@@ -50,7 +50,7 @@ const returnedValues: ReturnValues = new Map([
     ['FullReturn', ['light-dark', 'Returned']],
 ])
 
-export default function OrderStatus({
+export function OrderStatus({
     fulfillmentStatus,
     financialStatus,
     isCancelled,

@@ -1,4 +1,4 @@
-import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
+import { VisualBuilderActionTag } from 'pages/automate/workflows/components/VisualBuilderActionTag'
 
 import css from './LLMPromptTriggerNodeLabel.less'
 
@@ -15,4 +15,4 @@ const LLMPromptTriggerNodeLabel = ({ isFilled }: Props) => {
     )
 }
 
-export default LLMPromptTriggerNodeLabel
+export { LLMPromptTriggerNodeLabel }

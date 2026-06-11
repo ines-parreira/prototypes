@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ModalContinueButton from '../ModalContinueButton'
+import { ModalContinueButton } from '../ModalContinueButton'
 
 describe('<ModalContinueButton />', () => {
     const handleContinue = jest.fn()

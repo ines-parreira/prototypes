@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import useOrderDates from '../useOrderDates'
+import { useOrderDates } from '../useOrderDates'
 
 describe('useOrderDates', () => {
     it('should return order dates', () => {

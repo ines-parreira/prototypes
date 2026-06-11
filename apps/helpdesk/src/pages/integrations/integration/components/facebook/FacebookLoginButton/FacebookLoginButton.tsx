@@ -18,7 +18,7 @@ type Props = {
     isLoading?: boolean
 }
 
-export default function FacebookLoginButton({
+export function FacebookLoginButton({
     intent = 'primary',
     onClick,
     children,

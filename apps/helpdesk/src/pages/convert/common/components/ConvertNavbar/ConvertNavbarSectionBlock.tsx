@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import UpgradeIcon from 'pages/common/components/UpgradeIcon'
+import { UpgradeIcon } from 'pages/common/components/UpgradeIcon'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
+import { useCanAddContactFormFlag } from 'pages/convert/common/hooks/useContactFormFlag'
 
 import css from './ConvertNavbarSectionBlock.less'
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import IconInput from '../IconInput'
+import { IconInput } from '../IconInput'
 
 describe('<IconInput />', () => {
     it('should render an icon', () => {

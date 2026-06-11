@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import { UserSettingType } from 'config/types/user'
 import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'
 
-import BusinessHoursScheduleDisplay from '../BusinessHoursScheduleDisplay'
+import { BusinessHoursScheduleDisplay } from '../BusinessHoursScheduleDisplay'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

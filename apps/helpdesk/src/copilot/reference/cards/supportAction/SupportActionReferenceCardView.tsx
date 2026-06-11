@@ -1,6 +1,6 @@
 import type { Paths } from 'rest_api/workflows_api/client.generated'
 
-import RelativeTime from 'pages/common/components/RelativeTime'
+import { RelativeTime } from 'pages/common/components/RelativeTime'
 
 import { getReferenceVisual } from '../../icons'
 import {

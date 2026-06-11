@@ -27,23 +27,25 @@ jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => {
         className?: string
     }
 
-    return ({ children }: { children?: React.ReactNode }) => (
-        <nav aria-label="secondary">
-            {ReactActual.Children.map(children, (child) =>
-                ReactActual.isValidElement<SecondaryLinkProps>(child)
-                    ? ReactActual.cloneElement(child, {
-                          activeClassName: 'active',
-                          className: 'link',
-                      })
-                    : child,
-            )}
-        </nav>
-    )
+    return {
+        SecondaryNavbar: ({ children }: { children?: React.ReactNode }) => (
+            <nav aria-label="secondary">
+                {ReactActual.Children.map(children, (child) =>
+                    ReactActual.isValidElement<SecondaryLinkProps>(child)
+                        ? ReactActual.cloneElement(child, {
+                              activeClassName: 'active',
+                              className: 'link',
+                          })
+                        : child,
+                )}
+            </nav>
+        ),
+    }
 })
 
-jest.mock('pages/common/components/StoreSelector/StoreSelector', () => () => (
-    <div>StoreSelector</div>
-))
+jest.mock('pages/common/components/StoreSelector/StoreSelector', () => ({
+    StoreSelector: () => <div>StoreSelector</div>,
+}))
 
 jest.mock('models/integration/constants', () => ({
     IntegrationType: { Shopify: 'shopify' },

@@ -4,7 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import type { OutboundAuth } from 'models/integration/types/app'
-import OutboundConnectionCard from 'pages/integrations/integration/components/app/SetupCards/OutboundConnectionCard'
+import { OutboundConnectionCard } from 'pages/integrations/integration/components/app/SetupCards/OutboundConnectionCard'
 
 const mockTrackstarOpen = jest.fn()
 let trackstarCallbacks: {

@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { BannerCategories } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { BillingAddressValidationStatus } from 'models/billing/types'
 
@@ -16,7 +16,7 @@ jest.mock('@repo/permissions', () => ({
 
 const isAdminMock = assumeMock(isAdmin)
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 
@@ -27,17 +27,13 @@ const useBillingStateMock = assumeMock(useBillingState)
 const mockedAddBanner = jest.fn()
 const mockedRemoveBanner = jest.fn()
 
-jest.mock(
-    'AlertBanners',
-    () =>
-        ({
-            ...jest.requireActual('AlertBanners'),
-            useBanners: () => ({
-                addBanner: mockedAddBanner,
-                removeBanner: mockedRemoveBanner,
-            }),
-        }) as Record<string, unknown>,
-)
+jest.mock('AlertBanners', () => ({
+    ...jest.requireActual('AlertBanners'),
+    useBanners: () => ({
+        addBanner: mockedAddBanner,
+        removeBanner: mockedRemoveBanner,
+    }),
+}))
 
 const mockBillingData = (status: BillingAddressValidationStatus) => ({
     data: {

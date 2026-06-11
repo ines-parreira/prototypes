@@ -5,7 +5,7 @@ import {
     useListStoreMappings,
 } from 'models/storeMapping/queries'
 
-import usePreferencesStoreMapping from '../usePreferencesStoreMapping'
+import { usePreferencesStoreMapping } from '../usePreferencesStoreMapping'
 
 jest.mock('models/storeMapping/queries')
 

@@ -34,4 +34,4 @@ const VisualBuilderNodeIconContent = ({
     )
 }
 
-export default VisualBuilderNodeIconContent
+export { VisualBuilderNodeIconContent }

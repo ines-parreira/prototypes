@@ -12,11 +12,11 @@ import {
 } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import {

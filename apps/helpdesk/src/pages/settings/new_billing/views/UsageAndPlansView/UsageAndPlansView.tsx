@@ -18,15 +18,15 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import {
     generatePaymentPlanLabel,
     getProductInfo,
     hasSeparateInvoiceCadence,
 } from 'models/billing/utils'
-import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
-import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import { useMeetAiAgentNotifications } from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
+import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import {
     getCurrentAutomatePlan,
@@ -44,10 +44,10 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 
-import BillingScheduledUpdates from '../../components/BillingScheduledUpdates/BillingScheduledUpdates'
-import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
-import ProductCard from '../../components/ProductCard'
-import useProductCancellations from '../../hooks/useProductCancellations'
+import { BillingScheduledUpdates } from '../../components/BillingScheduledUpdates/BillingScheduledUpdates'
+import { NavigateToChangeBillingFrequency } from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
+import { ProductCard } from '../../components/ProductCard'
+import { useProductCancellations } from '../../hooks/useProductCancellations'
 import { CustomPlanBanner } from './CustomPlanBanner'
 
 import css from './UsageAndPlansView.less'
@@ -434,4 +434,4 @@ const UsageAndPlansView = ({
     )
 }
 
-export default UsageAndPlansView
+export { UsageAndPlansView }

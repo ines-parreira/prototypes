@@ -13,15 +13,15 @@ import { DropdownItem } from 'reactstrap'
 import { Button as BaseButton } from '@gorgias/axiom'
 
 import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { mapActionToActionPayload } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
 import type {
     Action,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import { ParameterTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import Modal from 'pages/common/components/modal/Modal'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import { AppContext } from 'providers/infobar/AppContext'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -31,7 +31,7 @@ import { executeAction } from 'state/infobar/actions'
 import { getPendingActionCallbacks } from 'state/infobar/selectors'
 
 import { ACTION_PARAMETER_PATHS } from '../../constants'
-import ActionEditor from './ActionEditor'
+import { ActionEditor } from './ActionEditor'
 
 import css from './Button.less'
 
@@ -135,7 +135,9 @@ export function Button({ label, action, isDropdown = false }: Props) {
     )
 }
 
-export default memo(Button)
+const DefaultExportButton = memo(Button)
+
+export { DefaultExportButton }
 
 function shouldDisplayEditor(action: Action): boolean {
     let shouldDisplayEditor = false

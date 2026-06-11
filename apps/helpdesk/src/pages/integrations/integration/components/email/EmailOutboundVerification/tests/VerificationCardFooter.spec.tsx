@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 
-import VerificationCardFooter from '../VerificationCard/VerificationCardFooter'
+import { VerificationCardFooter } from '../VerificationCard/VerificationCardFooter'
 
 const commonProps = {
     icon: 'email',

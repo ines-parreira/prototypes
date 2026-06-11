@@ -8,7 +8,7 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import type { User } from '@gorgias/helpdesk-types'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import {
     WorkflowsRoute,

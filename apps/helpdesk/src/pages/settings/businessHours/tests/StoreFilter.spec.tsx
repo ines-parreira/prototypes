@@ -11,44 +11,46 @@ import type {
 } from 'models/integration/types'
 import type { RootState } from 'state/types'
 
-import StoreFilter from '../StoreFilter'
+import { StoreFilter } from '../StoreFilter'
 
 jest.mock('pages/common/components/StoreSelector/StoreSelector', () => {
-    return function MockStoreSelector({
-        integrations,
-        selected,
-        onChange,
-    }: any) {
-        return (
-            <div data-testid="store-selector">
-                <div data-testid="selected-store">
-                    {selected?.name || 'All Stores'}
-                </div>
-                <button
-                    key={null}
-                    data-testid="all-stores-option"
-                    onClick={() => onChange(null)}
-                >
-                    All Stores
-                </button>
-                {integrations.map((integration: any) => (
+    return {
+        StoreSelector: function MockStoreSelector({
+            integrations,
+            selected,
+            onChange,
+        }: any) {
+            return (
+                <div data-testid="store-selector">
+                    <div data-testid="selected-store">
+                        {selected?.name || 'All Stores'}
+                    </div>
                     <button
-                        key={integration.id}
-                        data-testid={`store-option-${integration.id}`}
-                        onClick={() => onChange(integration.id)}
+                        key={null}
+                        data-testid="all-stores-option"
+                        onClick={() => onChange(null)}
                     >
-                        {integration.name}
+                        All Stores
                     </button>
-                ))}
-                <button
-                    key={-1}
-                    data-testid="non-existent-store-option"
-                    onClick={() => onChange(-1)}
-                >
-                    Non-existent Store
-                </button>
-            </div>
-        )
+                    {integrations.map((integration: any) => (
+                        <button
+                            key={integration.id}
+                            data-testid={`store-option-${integration.id}`}
+                            onClick={() => onChange(integration.id)}
+                        >
+                            {integration.name}
+                        </button>
+                    ))}
+                    <button
+                        key={-1}
+                        data-testid="non-existent-store-option"
+                        onClick={() => onChange(-1)}
+                    >
+                        Non-existent Store
+                    </button>
+                </div>
+            )
+        },
     }
 })
 

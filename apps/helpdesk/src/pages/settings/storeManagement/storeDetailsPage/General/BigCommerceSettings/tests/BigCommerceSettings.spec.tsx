@@ -4,11 +4,11 @@ import { fireEvent, screen } from '@testing-library/react'
 import type { BigCommerceIntegration } from 'models/integration/types'
 
 import * as Utils from '../../../../../../integrations/integration/components/bigcommerce/Utils'
-import BigCommerceSettings from '../BigCommerceSettings'
+import { BigCommerceSettings } from '../BigCommerceSettings'
 
 jest.mock('pages/integrations/integration/hooks/useQueryNotify', () => ({
     __esModule: true,
-    default: () => {},
+    useQueryNotify: () => {},
 }))
 
 const mockIntegration = {

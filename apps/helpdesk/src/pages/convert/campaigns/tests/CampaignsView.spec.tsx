@@ -45,12 +45,14 @@ jest.mock('ulidx', () => ({
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
-    return jest.fn(() => <div>Mocked Banner</div>)
+    return { ConvertSetupBanner: jest.fn(() => <div>Mocked Banner</div>) }
 })
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import { tags } from 'fixtures/tag'
 
-import TagDropdownItem from '../TagDropdownItem'
+import { TagDropdownItem } from '../TagDropdownItem'
 
 describe('<TagDropdownItem />', () => {
     const props = {

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import TicketCard from './TicketCard'
+import { TicketCard } from './TicketCard'
 
 import css from './TicketListItem.less'
 

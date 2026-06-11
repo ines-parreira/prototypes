@@ -5,8 +5,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getInTicketSuggestionSettings } from 'state/currentAccount/selectors'
@@ -24,7 +24,7 @@ const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
  * - User has not dismissed the demo suggestion more than 3 times
  * - Account has not hidden the demo suggestion
  */
-export default function useRuleSuggestionForDemos(
+export function useRuleSuggestionForDemos(
     ticketId: number,
     shouldCheckFrequency: boolean,
 ) {

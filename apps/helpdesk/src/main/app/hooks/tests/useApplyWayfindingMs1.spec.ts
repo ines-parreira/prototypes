@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useApplyWayfindingMs1 from '../useApplyWayfindingMs1'
+import { useApplyWayfindingMs1 } from '../useApplyWayfindingMs1'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

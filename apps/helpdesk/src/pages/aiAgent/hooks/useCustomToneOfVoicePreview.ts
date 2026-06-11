@@ -2,7 +2,7 @@ import { reportError } from '@repo/logging'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -72,4 +72,4 @@ const useCustomToneOfVoicePreview = ({
     }
 }
 
-export default useCustomToneOfVoicePreview
+export { useCustomToneOfVoicePreview }

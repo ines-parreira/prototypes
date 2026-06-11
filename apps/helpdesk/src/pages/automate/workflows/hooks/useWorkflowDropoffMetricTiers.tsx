@@ -93,4 +93,4 @@ const useWorkflowDropoffMetricTiers = ({
     return metricTiers
 }
 
-export default useWorkflowDropoffMetricTiers
+export { useWorkflowDropoffMetricTiers }

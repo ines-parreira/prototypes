@@ -6,12 +6,12 @@ import { Link, useHistory } from 'react-router-dom'
 
 import { Text, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     GorgiasChatCreationWizardStatus,
     IntegrationType,
 } from 'models/integration/types'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
 import { ChatRedesignSwitchConfirmModal } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatRedesignSwitchConfirmModal/ChatRedesignSwitchConfirmModal'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
 import { useSetChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn'

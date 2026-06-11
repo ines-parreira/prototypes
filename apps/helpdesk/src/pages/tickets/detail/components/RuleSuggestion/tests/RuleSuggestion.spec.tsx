@@ -18,9 +18,10 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { sendTicketMessage } from 'state/newMessage/actions'
 import { emailTicket } from 'state/ticket/tests/fixtures'
 
-import RuleSuggestion, {
+import {
     getRuleSuggestionContent,
     isSuggestionEmpty,
+    RuleSuggestion,
 } from '../RuleSuggestion'
 
 jest.mock('@gorgias/toolkit-react', () => ({
@@ -30,7 +31,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
 }))
 
 jest.mock('state/newMessage/actions.ts')
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = useFlag as jest.Mock

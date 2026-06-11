@@ -12,17 +12,17 @@ import {
     basicMonthlyHelpdeskPlan as mockedBasicMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
 } from 'fixtures/plans'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import Search from 'pages/common/components/Search'
-import UsersSettingsTable from 'pages/settings/users/List/UsersSettingsTable'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { UsersSettingsTable } from 'pages/settings/users/List/UsersSettingsTable'
 import { useUserList } from 'pages/settings/users/List/useUserList'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
 
-import UserList from '..'
+import { UserList } from '..'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -37,7 +37,9 @@ const mockedUseUserList = assumeMock(useUserList)
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch')
 const mockedUseAppDispatch = assumeMock(useAppDispatch)
-jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn((fn: () => unknown) => fn()),
+}))
 jest.mock('state/currentAccount/selectors')
 const mockedGetAccountOwnerId = assumeMock(getAccountOwnerId)
 jest.mock('state/billing/selectors', () => ({
@@ -45,21 +47,25 @@ jest.mock('state/billing/selectors', () => ({
 }))
 const mockedGetCurrentHelpdeskProduct = assumeMock(getCurrentHelpdeskPlan)
 
-jest.mock('pages/common/components/Navigation/Navigation', () =>
-    jest.fn(() => null),
-)
-jest.mock('../UsersSettingsTable', () => jest.fn(() => null))
+jest.mock('pages/common/components/Navigation/Navigation', () => ({
+    Navigation: jest.fn(() => null),
+}))
+jest.mock('../UsersSettingsTable', () => ({
+    UsersSettingsTable: jest.fn(() => null),
+}))
 const mockedUsersSettingsTable = assumeMock(UsersSettingsTable)
 
 jest.mock('pages/common/components/Search', () => {
-    return jest.fn(({ value, onChange, placeholder }) => (
-        <input
-            data-testid="search-input"
-            placeholder={placeholder}
-            value={value}
-            onChange={(e) => onChange?.(e.target.value)}
-        />
-    ))
+    return {
+        DefaultExportSearch: jest.fn(({ value, onChange, placeholder }) => (
+            <input
+                data-testid="search-input"
+                placeholder={placeholder}
+                value={value}
+                onChange={(e) => onChange?.(e.target.value)}
+            />
+        )),
+    }
 })
 const mockedSearch = assumeMock(Search)
 

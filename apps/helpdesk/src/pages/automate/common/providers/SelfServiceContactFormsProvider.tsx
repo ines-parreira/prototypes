@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React, { useCallback, useEffect } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -38,4 +38,4 @@ const SelfServiceContactFormsProvider = ({ children }: Props) => {
     return <>{children}</>
 }
 
-export default SelfServiceContactFormsProvider
+export { SelfServiceContactFormsProvider }

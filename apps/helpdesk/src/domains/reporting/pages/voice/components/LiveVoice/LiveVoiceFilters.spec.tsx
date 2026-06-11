@@ -6,13 +6,15 @@ import {
     FilterComponentKey,
     FilterKey,
 } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import LiveVoiceFilters from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { LiveVoiceFilters } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters'
 import * as statsSelectors from 'domains/reporting/state/stats/selectors'
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper')
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.spyOn(
     statsSelectors,

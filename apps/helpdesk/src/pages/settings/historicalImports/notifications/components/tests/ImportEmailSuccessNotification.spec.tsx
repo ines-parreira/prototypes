@@ -9,7 +9,7 @@ import userEventLib from '@testing-library/user-event'
 import type { Notification } from 'common/notifications'
 
 import type { ImportNotification } from '../../types'
-import ImportEmailSuccessNotification from '../ImportEmailSuccessNotification'
+import { ImportEmailSuccessNotification } from '../ImportEmailSuccessNotification'
 import { createMockNotification } from './shared-mocks'
 
 jest.mock('@repo/feature-flags', () => ({

@@ -1,9 +1,9 @@
 import { render, userEvent } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
 
-import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
+import { CreateTicketButton } from 'pages/common/components/CreateTicket/CreateTicketButton'
 
-import useHandleTicketDraft from '../useHandleTicketDraft'
+import { useHandleTicketDraft } from '../useHandleTicketDraft'
 
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),

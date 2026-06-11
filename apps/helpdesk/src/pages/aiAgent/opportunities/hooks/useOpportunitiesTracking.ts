@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     OpportunityOperation,
     OpportunityPageReferrer,

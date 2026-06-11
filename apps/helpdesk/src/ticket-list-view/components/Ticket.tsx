@@ -16,15 +16,15 @@ import type {
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
 
-import RelativeTime from 'pages/common/components/RelativeTime'
-import SourceIcon from 'pages/common/components/SourceIcon'
-import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
+import { RelativeTime } from 'pages/common/components/RelativeTime'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { ViewingIndicator } from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
-import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
+import { FailedMessageLabel } from 'ticket-list-view/components/FailedMessageLabel'
 
-import useIsTicketViewed from '../hooks/useIsTicketViewed'
+import { useIsTicketViewed } from '../hooks/useIsTicketViewed'
 import type { TicketCompact, TicketPartial } from '../types'
-import TicketSkeleton from './TicketSkeleton'
+import { TicketSkeleton } from './TicketSkeleton'
 
 import css from './Ticket.less'
 
@@ -50,7 +50,7 @@ const classNames = {
     exitActive: css.exitActive,
 }
 
-export default function Ticket({
+export function Ticket({
     isActive,
     ticket,
     translation,

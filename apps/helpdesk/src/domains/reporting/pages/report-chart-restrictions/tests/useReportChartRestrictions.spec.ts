@@ -30,7 +30,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { STATS_ROUTES } from 'routes/constants'
 
 jest.mock('state/currentAccount/selectors')

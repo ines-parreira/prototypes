@@ -4,11 +4,11 @@ import { fromJS, Map } from 'immutable'
 import { getMacroParametersOptions } from 'state/macro/selectors'
 import { getTicket } from 'state/ticket/selectors'
 
-import useInitialMacroFilters from '../useInitialMacroFilters'
+import { useInitialMacroFilters } from '../useInitialMacroFilters'
 
-jest.mock('hooks/useAppSelector', () =>
-    jest.fn((selector: () => unknown) => selector()),
-)
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn((selector: () => unknown) => selector()),
+}))
 jest.mock('state/macro/selectors', () => ({
     getMacroParametersOptions: jest.fn(),
 }))

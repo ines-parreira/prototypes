@@ -15,7 +15,7 @@ import type {
     GmailIntegration,
     OutlookIntegration,
 } from 'models/integration/types'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 import { getDomainFromEmailAddress } from '../../helpers'
 
@@ -27,7 +27,7 @@ export type Props = {
     onDeleteDomain?: () => void
 }
 
-export default function EmailDomainVerificationForm({ integration }: Props) {
+export function EmailDomainVerificationForm({ integration }: Props) {
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
     const provider = integration.meta?.provider || ''

@@ -7,7 +7,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
-import Dimension from 'auto_qa/components/Dimension'
+import { Dimension } from 'auto_qa/components/Dimension'
 import type { SupportedTicketQAScoreDimension } from 'auto_qa/config'
 import { dimensionConfig } from 'auto_qa/config'
 

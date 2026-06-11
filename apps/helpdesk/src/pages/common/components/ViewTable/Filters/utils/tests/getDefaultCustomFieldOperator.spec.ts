@@ -1,4 +1,4 @@
-import getDefaultCustomFieldOperator from '../getDefaultCustomFieldOperator'
+import { getDefaultCustomFieldOperator } from '../getDefaultCustomFieldOperator'
 import { mockCustomField, mockSchemas } from './mocks'
 
 describe('getDefaultCustomFieldOperator', () => {

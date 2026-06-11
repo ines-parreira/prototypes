@@ -5,15 +5,15 @@ import { Link } from 'react-router-dom'
 
 import { Button, toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isStarterTier } from 'models/billing/utils'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
-import UsersSettingsTable from './UsersSettingsTable'
+import { UsersSettingsTable } from './UsersSettingsTable'
 import { useUserList } from './useUserList'
 
 import css from './List.less'
@@ -101,4 +101,4 @@ const UserList = () => {
     )
 }
 
-export default UserList
+export { UserList }

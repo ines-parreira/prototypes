@@ -5,8 +5,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { desktopNotify } from '../desktopNotify'
 import { requestNotificationPermission } from '../requestNotificationPermission'
 import type { Notification } from '../types'
-import getNotificationConfig from '../utils/getNotificationConfig'
-import useNotifications from './useNotifications'
+import { getNotificationConfig } from '../utils/getNotificationConfig'
+import { useNotifications } from './useNotifications'
 
 export function useDesktopNotifications() {
     const hasDesktopNotifications = useFlag(FeatureFlagKey.DesktopNotifications)

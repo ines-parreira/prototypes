@@ -1,10 +1,10 @@
-import LoaderComponent from 'pages/common/components/Loader/Loader'
+import { Loader as LoaderComponent } from 'pages/common/components/Loader/Loader'
 
-import PageHeader from '../PageHeader/PageHeader'
+import { PageHeader } from '../PageHeader/PageHeader'
 
 import css from './Loader.less'
 
-export default function Loader() {
+export function Loader() {
     return (
         <div className={css.pageContainer}>
             <PageHeader />

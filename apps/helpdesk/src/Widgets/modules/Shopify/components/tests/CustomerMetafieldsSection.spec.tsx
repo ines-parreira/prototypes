@@ -15,7 +15,7 @@ import { mockListMetafieldDefinitionsHandler } from '@gorgias/helpdesk-mocks'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 
-import CustomerMetafieldsSection from '../CustomerMetafieldsSection'
+import { CustomerMetafieldsSection } from '../CustomerMetafieldsSection'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)

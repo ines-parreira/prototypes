@@ -54,4 +54,4 @@ const FakeTicketComponent: React.FC = () => (
     </div>
 )
 
-export default FakeTicketComponent
+export { FakeTicketComponent }

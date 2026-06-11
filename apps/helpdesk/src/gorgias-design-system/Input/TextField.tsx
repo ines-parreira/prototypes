@@ -6,8 +6,8 @@ import styled from '@emotion/styled'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 
-import Caption from './Caption'
-import Label from './Label'
+import { Caption } from './Caption'
+import { Label } from './Label'
 
 export interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     /**
@@ -264,4 +264,4 @@ const TextField: React.FC<TextFieldProps> = ({ ...args }) => {
     )
 }
 
-export default TextField
+export { TextField }

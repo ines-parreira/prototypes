@@ -3,10 +3,10 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { THEME_NAME } from '@gorgias/design-tokens'
 
 import type { Theme } from '../types'
-import useApplyTheme from '../useApplyTheme'
-import useTheme from '../useTheme'
+import { useApplyTheme } from '../useApplyTheme'
+import { useTheme } from '../useTheme'
 
-jest.mock('../useTheme', () => jest.fn())
+jest.mock('../useTheme', () => ({ useTheme: jest.fn() }))
 const useThemeMock = assumeMock(useTheme)
 
 describe('useApplyTheme', () => {

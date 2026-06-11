@@ -14,14 +14,14 @@ import type {
     ContentType,
     ProductIngestedResourceWithArticleId,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import {
@@ -30,7 +30,7 @@ import {
     PAGINATED_ITEMS_PER_PAGE,
 } from './constant'
 import { ProductImage } from './ProductImage'
-import ScrapedDomainHeader from './ScrapedDomainHeader'
+import { ScrapedDomainHeader } from './ScrapedDomainHeader'
 
 import css from './ScrapedDomainContentView.less'
 
@@ -488,4 +488,4 @@ function ScrapedDomainContentView<T extends ContentType>({
     )
 }
 
-export default ScrapedDomainContentView
+export { ScrapedDomainContentView }

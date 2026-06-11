@@ -15,7 +15,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     height?: 'comfortable' | 'compact'
 }
 
-export default function HeaderCell({
+export function HeaderCell({
     children,
     className,
     onClick,

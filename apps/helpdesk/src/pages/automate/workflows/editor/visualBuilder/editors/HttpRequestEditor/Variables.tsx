@@ -6,10 +6,10 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
 import css from '../NodeEditor.less'
 
@@ -174,4 +174,4 @@ const Variables = ({
     )
 }
 
-export default Variables
+export { Variables }

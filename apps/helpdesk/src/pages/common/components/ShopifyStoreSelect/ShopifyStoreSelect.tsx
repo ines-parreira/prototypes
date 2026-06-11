@@ -55,4 +55,4 @@ const ShopifyStoreSelect = ({
     )
 }
 
-export default ShopifyStoreSelect
+export { ShopifyStoreSelect }

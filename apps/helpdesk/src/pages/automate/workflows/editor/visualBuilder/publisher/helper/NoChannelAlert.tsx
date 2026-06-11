@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 import { ChannelConfig } from './utils'
 
@@ -43,4 +43,4 @@ const NoChannelsAlert = ({
     )
 }
 
-export default NoChannelsAlert
+export { NoChannelsAlert }

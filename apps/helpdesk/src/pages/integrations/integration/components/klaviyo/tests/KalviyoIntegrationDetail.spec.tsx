@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { SUCCESS_AUTHENTICATION_STATUS } from 'constants/integration'
-import KlaviyoIntegrationDetail from 'pages/integrations/integration/components/klaviyo/KlaviyoIntegrationDetail'
+import { KlaviyoIntegrationDetail } from 'pages/integrations/integration/components/klaviyo/KlaviyoIntegrationDetail'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 describe('KlaviyoIntegrationDetail', () => {

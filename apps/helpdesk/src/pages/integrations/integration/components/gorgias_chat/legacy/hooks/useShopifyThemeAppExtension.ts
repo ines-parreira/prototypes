@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 
-import useThemeAppExtensionInstallation from './useThemeAppExtensionInstallation'
+import { useThemeAppExtensionInstallation } from './useThemeAppExtensionInstallation'
 
 const useShopifyThemeAppExtension = ({
     shopifyIntegration,
@@ -53,4 +53,4 @@ const useShopifyThemeAppExtension = ({
     }
 }
 
-export default useShopifyThemeAppExtension
+export { useShopifyThemeAppExtension }

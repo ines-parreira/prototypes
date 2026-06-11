@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getSourcesWithCustomer } from 'state/widgets/selectors'
 
-export default function useHasWooCommerce() {
+export function useHasWooCommerce() {
     const sources = useAppSelector(getSourcesWithCustomer)
 
     return useMemo(() => {

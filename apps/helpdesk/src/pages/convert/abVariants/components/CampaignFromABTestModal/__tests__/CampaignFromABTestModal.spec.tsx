@@ -10,7 +10,7 @@ import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampai
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
-import CampaignFromABTestModal from '../CampaignFromABTestModal'
+import { CampaignFromABTestModal } from '../CampaignFromABTestModal'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(

@@ -19,7 +19,7 @@ export const initialState: CurrentUserState = fromJS({
     },
 })
 
-export default function reducer(
+export function reducer(
     state: CurrentUserState = initialState,
     action: GorgiasAction,
 ): CurrentUserState {

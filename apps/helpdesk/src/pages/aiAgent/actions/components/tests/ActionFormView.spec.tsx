@@ -6,7 +6,7 @@ import { produce } from 'immer'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import ActionFormView from '../ActionFormView'
+import { ActionFormView } from '../ActionFormView'
 
 let mockCanBeDeleted: jest.Mock<boolean, [string]>
 
@@ -39,7 +39,7 @@ jest.mock(
     'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps',
     () => ({
         __esModule: true,
-        default: () => <></>,
+        ActionsPlatformTemplateSteps: () => <></>,
     }),
 )
 

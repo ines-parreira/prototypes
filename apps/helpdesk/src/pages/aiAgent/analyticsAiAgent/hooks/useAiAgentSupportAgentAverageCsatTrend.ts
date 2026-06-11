@@ -1,5 +1,6 @@
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { averageAiAgentCsatSupportAgentQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentCsat'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

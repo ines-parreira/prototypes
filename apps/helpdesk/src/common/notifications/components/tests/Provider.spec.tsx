@@ -6,8 +6,8 @@ import { render } from '@repo/testing'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
-import useAuthentication from '../../hooks/useAuthentication'
-import Provider, { KNOCK_FEED_ID } from '../Provider'
+import { useAuthentication } from '../../hooks/useAuthentication'
+import { KNOCK_FEED_ID, Provider } from '../Provider'
 
 jest.mock('@knocklabs/react', () => ({
     KnockFeedProvider: ({
@@ -44,7 +44,9 @@ jest.mock('@knocklabs/react', () => ({
     ),
 }))
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('state/currentAccount/selectors', () => ({
     getCurrentAccountId: jest.fn(),
 }))
@@ -54,19 +56,19 @@ jest.mock('state/currentUser/selectors', () => ({
 }))
 const getCurrentUserIdMock = getCurrentUserId as unknown as jest.Mock
 
-jest.mock('../../hooks/useAuthentication', () => jest.fn())
+jest.mock('../../hooks/useAuthentication', () => ({
+    useAuthentication: jest.fn(),
+}))
 const useAuthenticationMock = useAuthentication as jest.Mock
 
-jest.mock(
-    '../ClientProvider',
-    () =>
-        ({ children }: { children?: ReactNode }) => (
-            <div>
-                <p>ClientProvider</p>
-                {children}
-            </div>
-        ),
-)
+jest.mock('../ClientProvider', () => ({
+    ClientProvider: ({ children }: { children?: ReactNode }) => (
+        <div>
+            <p>ClientProvider</p>
+            {children}
+        </div>
+    ),
+}))
 
 describe('Provider', () => {
     beforeEach(() => {

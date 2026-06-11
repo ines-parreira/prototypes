@@ -2,7 +2,7 @@ import settingsCss from 'pages/settings/settings.less'
 
 import css from './Header.less'
 
-export default function Header() {
+export function Header() {
     return (
         <div className={settingsCss.pageContainer}>
             <h1 className={css.heading}>Service level agreements</h1>

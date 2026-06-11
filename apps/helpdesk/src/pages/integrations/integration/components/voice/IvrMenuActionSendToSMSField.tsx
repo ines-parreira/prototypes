@@ -15,10 +15,10 @@ import type {
     VoiceMessage,
 } from 'models/integration/types'
 import { Drawer } from 'pages/common/components/Drawer'
-import TextArea from 'pages/common/forms/TextArea'
-import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
+import { SmsIntegrationSelect } from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
 
-import DEPRECATED_VoiceMessageField from './DEPRECATED_VoiceMessageField'
+import { DEPRECATED_VoiceMessageField } from './DEPRECATED_VoiceMessageField'
 
 import css from './IvrMenuActionField.less'
 
@@ -197,4 +197,4 @@ const IvrMenuActionSendToSMSField = ({
     )
 }
 
-export default IvrMenuActionSendToSMSField
+export { IvrMenuActionSendToSMSField }

@@ -6,7 +6,7 @@ import { List, Map } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import IntegrationList from '../IntegrationList'
+import { DefaultExportIntegrationList as IntegrationList } from '../IntegrationList'
 
 const mockStore = configureMockStore([thunk])
 describe('<IntegrationList />', () => {

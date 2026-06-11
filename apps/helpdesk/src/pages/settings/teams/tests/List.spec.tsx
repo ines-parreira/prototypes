@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { teams } from 'fixtures/teams'
 
-import TeamList from '../List'
+import { TeamList } from '../List'
 
 const paginationMeta = { next_cursor: null, prev_cursor: null }
 

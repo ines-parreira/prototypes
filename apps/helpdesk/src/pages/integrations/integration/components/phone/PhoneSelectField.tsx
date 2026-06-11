@@ -5,15 +5,15 @@ import {
     LegacyLabel as Label,
 } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import usePhoneDeviceDialerInput from 'pages/integrations/integration/components/phone/usePhoneDeviceDialerInput'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownSection as DropdownSection } from 'pages/common/components/dropdown/DropdownSection'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { usePhoneDeviceDialerInput } from 'pages/integrations/integration/components/phone/usePhoneDeviceDialerInput'
 
-import PhoneSearchResultsContent from './PhoneSearchResultsContent'
+import { PhoneSearchResultsContent } from './PhoneSearchResultsContent'
 
 import css from './PhoneSelectField.less'
 
@@ -23,7 +23,7 @@ type Props = {
     label?: string
 }
 
-export default function PhoneSelectField({ value, onChange, label }: Props) {
+export function PhoneSelectField({ value, onChange, label }: Props) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const {

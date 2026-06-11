@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useCreateHelpCenter,
     useCreateHelpCenterTranslation,
@@ -40,10 +40,10 @@ jest.mock('@repo/routing', () => ({
         replace: jest.fn(),
     },
 }))
-jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('hooks/useAppDispatch', () =>
-    jest.fn().mockImplementation(() => jest.fn()),
-)
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: jest.fn().mockImplementation(() => jest.fn()),
+}))
 jest.mock('models/helpCenter/queries')
 jest.mock('../useStoreToChannelMappings', () => ({
     useStoreToChannelMappings: () => ({

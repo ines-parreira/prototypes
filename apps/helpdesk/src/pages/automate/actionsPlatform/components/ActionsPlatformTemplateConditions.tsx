@@ -7,8 +7,8 @@ import { buildConditionSchemaByVariableType } from 'pages/automate/workflows/edi
 import type { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Alert from 'pages/common/components/Alert/Alert'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 import css from './ActionsPlatformTemplateConditions.less'
 
@@ -87,4 +87,4 @@ const ActionsPlatformTemplateConditions = ({
     )
 }
 
-export default ActionsPlatformTemplateConditions
+export { ActionsPlatformTemplateConditions }

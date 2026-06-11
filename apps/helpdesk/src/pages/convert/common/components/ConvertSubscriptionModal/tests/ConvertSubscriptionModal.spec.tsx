@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom'
 import { UserRole } from 'config/types/user'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
+import { ConvertSubscriptionModal } from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
 import type { RootState } from 'state/types'
 
 jest.mock('react-router-dom', () => ({
@@ -22,7 +22,9 @@ const useLocationMock = useLocation as jest.Mock
 
 const mockedDispatch = jest.fn()
 const mockedServer = new MockAdapter(client)
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 describe('ConvertSubscriptionModal', () => {
     const canduId = 'my-test-candu-id'

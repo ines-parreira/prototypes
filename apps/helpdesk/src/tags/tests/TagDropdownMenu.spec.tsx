@@ -16,10 +16,10 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 import { UserRole } from 'config/types/user'
 import { user } from 'fixtures/users'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
-import useListTags from 'tags/useListTags'
+import { useListTags } from 'tags/useListTags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import TagDropdownMenu from '../TagDropdownMenu'
+import { TagDropdownMenu } from '../TagDropdownMenu'
 
 jest.mock('tags/useListTags')
 const mockUseListTags = useListTags as jest.Mock

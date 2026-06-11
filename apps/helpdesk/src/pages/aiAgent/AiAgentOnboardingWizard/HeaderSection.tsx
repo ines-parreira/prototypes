@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import type { AiAgentChannel } from '../constants'
 import type { FormValues, WizardFormValues } from '../types'

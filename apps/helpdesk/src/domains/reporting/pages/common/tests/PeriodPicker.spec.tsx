@@ -54,7 +54,10 @@ jest.mock(
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
 
-jest.mock('core/theme')
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 
 describe('PeriodPicker', () => {
     const mockTheme = { resolvedName: 'light' }

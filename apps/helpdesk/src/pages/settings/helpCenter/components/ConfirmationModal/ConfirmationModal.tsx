@@ -6,7 +6,7 @@ import type {
     LegacyButtonProps as ButtonProps,
 } from '@gorgias/axiom'
 
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import { DEPRECATED_Modal } from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.less'
 
 export type ConfirmationModalProps = {

@@ -9,8 +9,8 @@ import { useCreateCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import useSaveCondition from '../useSaveCondition'
-import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'
+import { useSaveCondition } from '../useSaveCondition'
+import { useUpdateCustomFieldCondition } from '../useUpdateCustomFieldCondition'
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),

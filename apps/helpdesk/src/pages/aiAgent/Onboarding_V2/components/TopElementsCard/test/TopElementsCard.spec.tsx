@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TopElementsCard from '../TopElementsCard'
+import { TopElementsCard } from '../TopElementsCard'
 
 const elements = [
     {

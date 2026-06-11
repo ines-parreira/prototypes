@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 import { IntegrationType } from '../../../../models/integration/constants'
 import type { Integration } from '../../../../models/integration/types'
 import { mockStoresWithAssignedChannels } from '../fixtures'
-import ChannelListCell from '../storeManagementTable/StoreManagementTableRow/ChannelListCell'
+import { ChannelListCell } from '../storeManagementTable/StoreManagementTableRow/ChannelListCell'
 
 describe('ChannelListCell', () => {
     const mockChannels = mockStoresWithAssignedChannels[0].assignedChannels

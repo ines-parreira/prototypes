@@ -2,7 +2,7 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Duration } from '@gorgias/toolkit'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import type { MutationOverrides } from 'types/query'
 
 import {

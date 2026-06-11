@@ -10,7 +10,7 @@ import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { withDefaultCustomFieldAndLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import CustomFieldsFilter from 'domains/reporting/pages/common/filters/CustomFieldsFilter'
+import { CustomFieldsFilter } from 'domains/reporting/pages/common/filters/CustomFieldsFilter'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { customFieldsMockResponse } from 'fixtures/customField'

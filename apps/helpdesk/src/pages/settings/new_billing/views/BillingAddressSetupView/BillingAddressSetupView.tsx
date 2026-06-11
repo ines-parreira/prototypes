@@ -3,7 +3,7 @@ import { useLocation } from 'react-router'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { useBillingContact } from 'models/billing/queries'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { StripeElementsProvider } from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
 import { FormContainer } from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
 

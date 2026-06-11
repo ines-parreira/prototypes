@@ -5,12 +5,12 @@ import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'
 import css from 'domains/reporting/pages/common/components/IntentCard.less'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge/TrendBadge'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 
 function CardBody({ children }: { children: ReactNode }) {
     return <div className={css.body}>{children}</div>

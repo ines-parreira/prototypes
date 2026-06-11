@@ -6,20 +6,20 @@ import { useHistory } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import IconLink from 'core/ui/components/IconLink'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { IconLink } from 'core/ui/components/IconLink'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isEnterprise } from 'models/billing/utils'
 import type { EmailDomain } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { useListStoreMappings } from 'models/storeMapping/queries'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/helpers'
 
-import IntegrationList from '../IntegrationList'
-import EmailIntegrationListItem from './EmailIntegrationListItem'
+import { DefaultExportIntegrationList as IntegrationList } from '../IntegrationList'
+import { EmailIntegrationListItem } from './EmailIntegrationListItem'
 import { fetchEmailDomains } from './resources'
 
 type Props = {
@@ -27,7 +27,7 @@ type Props = {
     loading: Map<any, any>
 }
 
-export default function EmailIntegrationList(props: Props): JSX.Element {
+export function EmailIntegrationList(props: Props): JSX.Element {
     const { integrations, loading } = props
     const dispatch = useAppDispatch()
     const history = useHistory()

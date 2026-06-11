@@ -11,7 +11,7 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import PreviewSection from '../PreviewSection'
+import { TrainMyAiPreview as PreviewSection } from '../PreviewSection'
 
 const queryClient = mockQueryClient()
 

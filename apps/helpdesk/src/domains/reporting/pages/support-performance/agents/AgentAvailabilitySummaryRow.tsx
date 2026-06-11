@@ -16,8 +16,8 @@ import {
     calculateTotal,
 } from 'domains/reporting/pages/support-performance/agents/utils'
 import type { AgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 const { AGENT_NAME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
 

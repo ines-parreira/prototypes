@@ -7,8 +7,8 @@ import { Container } from 'reactstrap'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import css from './AutomateFormView.less'
 
@@ -73,4 +73,4 @@ const AutomateFormView = ({
     )
 }
 
-export default AutomateFormView
+export { AutomateFormView }

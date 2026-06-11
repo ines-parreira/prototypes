@@ -4,7 +4,7 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { updateVoiceQueue } from '@gorgias/helpdesk-client'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
-import VoiceQueueStatusToggle from '../VoiceQueueStatusToggle'
+import { VoiceQueueStatusToggle } from '../VoiceQueueStatusToggle'
 
 jest.mock('@gorgias/helpdesk-client')
 

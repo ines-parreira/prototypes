@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import type { Map } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatStatusEnum } from 'models/integration/types'
 import { fetchChatIntegrationStatus } from 'state/integrations/actions'
 import {

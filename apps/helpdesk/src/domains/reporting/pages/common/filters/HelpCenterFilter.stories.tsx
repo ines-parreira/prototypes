@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import HelpCenterFilter from 'domains/reporting/pages/common/filters/HelpCenterFilter'
+import { HelpCenterFilter } from 'domains/reporting/pages/common/filters/HelpCenterFilter'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import type { RootState } from 'state/types'

@@ -74,4 +74,4 @@ const SyncNotification = ({
     )
 }
 
-export default SyncNotification
+export { SyncNotification }

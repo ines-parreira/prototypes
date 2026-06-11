@@ -2,7 +2,7 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import css from './Loader.less'
 
-export default function Loader({ empty }: { empty?: boolean }) {
+export function Loader({ empty }: { empty?: boolean }) {
     return (
         <p className={css.spinnerWrapper}>
             <LoadingSpinner className={css.spinner} size="big" />

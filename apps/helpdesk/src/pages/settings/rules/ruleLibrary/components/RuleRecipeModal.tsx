@@ -14,12 +14,12 @@ import {
 
 import { useAppNode } from 'appNode'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { RuleRecipe } from 'models/ruleRecipe/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import type { AnyManagedRuleSettings } from 'state/rules/types'
@@ -31,7 +31,7 @@ import {
     InstallationErrorMessage,
     tagColors,
 } from '../constants'
-import InstallRuleModalBody from './InstallRuleModalBody'
+import { InstallRuleModalBody } from './InstallRuleModalBody'
 
 import css from './RuleRecipeModal.less'
 

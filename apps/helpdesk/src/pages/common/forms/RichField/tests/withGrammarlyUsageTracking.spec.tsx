@@ -5,8 +5,9 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import type { InjectedProps } from '../withGrammarlyUsageTracking'
-import withGrammarlyUsageTracking, {
+import {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
+    withGrammarlyUsageTracking,
 } from '../withGrammarlyUsageTracking'
 
 jest.mock('@repo/logging')

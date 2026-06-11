@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import classNames from 'classnames'
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { useGetDiscountOffer } from 'models/convert/discountOffer/queries'
 import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'

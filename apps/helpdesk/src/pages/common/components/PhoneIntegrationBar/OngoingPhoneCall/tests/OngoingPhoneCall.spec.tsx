@@ -9,20 +9,20 @@ import { fromJS } from 'immutable'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
-import goToTicket from 'common/utils/goToTicket'
+import { goToTicket } from 'common/utils/goToTicket'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { useCustomSound } from 'pages/common/hooks/useCustomSound'
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import type { VoiceCallTransferFailedEvent } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
 import type { RootState } from 'state/types'
 import { mockIncomingCall } from 'tests/twilioMocks'
 
 import { CallRecordingStatus, TWILIO_CURRENT_ITEM } from '../../constants'
-import OngoingPhoneCall from '../OngoingPhoneCall'
+import { DefaultExportOngoingPhoneCall as OngoingPhoneCall } from '../OngoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -37,7 +37,7 @@ jest.unmock('services/socketManager/socketManager')
 jest.mock('../CallTransferDropdown/CallTransferDropdown', () => {
     return {
         __esModule: true,
-        default: ({
+        CallTransferDropdown: ({
             isOpen,
             setIsOpen,
             onTransferInitiated,
@@ -95,13 +95,11 @@ jest.mock('../TransferTargetLabel', () => ({
     ),
 }))
 
-jest.mock(
-    '../../QueueName/QueueName',
-    () =>
-        ({ queueId }: { queueId: number | null }) => (
-            <div>Queue name {queueId}</div>
-        ),
-)
+jest.mock('../../QueueName/QueueName', () => ({
+    QueueName: ({ queueId }: { queueId: number | null }) => (
+        <div>Queue name {queueId}</div>
+    ),
+}))
 
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 

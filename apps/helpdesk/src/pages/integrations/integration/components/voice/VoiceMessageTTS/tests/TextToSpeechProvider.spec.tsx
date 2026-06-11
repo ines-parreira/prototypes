@@ -10,11 +10,11 @@ import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-types'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from '../constants'
 import { useTextToSpeechContext } from '../TextToSpeechContext'
-import TextToSpeechProvider from '../TextToSpeechProvider'
+import { TextToSpeechProvider } from '../TextToSpeechProvider'
 
 jest.mock('@gorgias/realtime')
 const mockUseChannel = useChannel as jest.Mock

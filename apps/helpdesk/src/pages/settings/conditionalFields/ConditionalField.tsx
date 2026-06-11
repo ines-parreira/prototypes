@@ -4,14 +4,14 @@ import { useTitle } from '@gorgias/toolkit-react'
 
 import { useGetCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import ConditionForm from './components/ConditionForm'
+import { EditConditionForm as ConditionForm } from './components/ConditionForm'
 
-export default function ConditionalField() {
+export function ConditionalField() {
     const params = useParams<{ id: string }>()
     const isNewCondition = params.id === 'add'
     const conditionId = isNewCondition ? null : Number.parseInt(params.id, 10)

@@ -4,7 +4,8 @@ import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
 import type { TicketStateWithoutImmutable } from 'state/ticket/types'
 
-import resolveTicketPropertyValue, {
+import {
+    resolveTicketPropertyValue,
     SupportedTicketFields,
 } from '../resolveTicketPropertyValue'
 

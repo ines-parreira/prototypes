@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasAgentPrivileges } from 'utils'
 
@@ -8,4 +8,4 @@ const useHasAgentPrivileges = () => {
     return hasAgentPrivileges(currentUser)
 }
 
-export default useHasAgentPrivileges
+export { useHasAgentPrivileges }

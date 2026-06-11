@@ -56,7 +56,7 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { initialState, makeNewMessage } from 'state/newMessage/reducers'
-import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import { ticketReplyCache } from 'state/newMessage/ticketReplyCache'
 import type { ReplyAreaState } from 'state/newMessage/types'
 import { initialState as ticketInitialState } from 'state/ticket/reducers'
 import {

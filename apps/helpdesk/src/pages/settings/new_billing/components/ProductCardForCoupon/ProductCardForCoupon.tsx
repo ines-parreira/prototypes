@@ -10,7 +10,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { CouponSummary, Plan } from 'models/billing/types'
 import { getPlanDescription } from 'models/billing/utils'
 
-import AddSalesCouponModal from '../AddSalesCouponModal'
+import { AddSalesCouponModal } from '../AddSalesCouponModal'
 
 import css from './ProductCardForCoupon.less'
 
@@ -25,7 +25,7 @@ interface ProductCardForCouponProps {
     isDeactivated?: boolean
 }
 
-export default function ProductCardForCoupon({
+export function ProductCardForCoupon({
     productName,
     isTrialing,
     endOfTrialDatetime,

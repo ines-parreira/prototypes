@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import type { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
 
 type Props = {
@@ -89,4 +89,4 @@ const VariantActions: React.FC<Props> = (props) => {
     )
 }
 
-export default VariantActions
+export { VariantActions }

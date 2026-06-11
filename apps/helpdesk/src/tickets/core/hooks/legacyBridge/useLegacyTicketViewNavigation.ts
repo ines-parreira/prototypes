@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { useRouteMatch } from 'react-router'
 
-import useAppSelector from 'hooks/useAppSelector'
-import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
-import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
-import useIsTicketNavigationAvailable from 'pages/tickets/detail/components/TicketNavigation/hooks/useIsTicketNavigationAvailable'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGoToNextTicket } from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import { useGoToPreviousTicket } from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
+import { useIsTicketNavigationAvailable } from 'pages/tickets/detail/components/TicketNavigation/hooks/useIsTicketNavigationAvailable'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getActiveView } from 'state/views/selectors'
 

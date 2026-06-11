@@ -5,12 +5,12 @@ import type {
     ReportIssueCaseReason,
     ReportIssueCaseReasonAction,
 } from 'models/selfServiceConfiguration/types'
-import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
+import { EmptyResponseMessageContentError } from 'pages/automate/common/components/EmptyResponseMessageContentError'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { SortableAccordionHeader } from 'pages/common/components/accordion/SortableAccordionHeader'
 
 import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
-import ReportOrderIssueScenarioReasonAction from './ReportOrderIssueScenarioReasonAction'
+import { ReportOrderIssueScenarioReasonAction } from './ReportOrderIssueScenarioReasonAction'
 
 import css from './ReportOrderIssueScenarioReason.less'
 
@@ -68,4 +68,4 @@ const ReportOrderIssueScenarioReason = ({
     )
 }
 
-export default ReportOrderIssueScenarioReason
+export { ReportOrderIssueScenarioReason }

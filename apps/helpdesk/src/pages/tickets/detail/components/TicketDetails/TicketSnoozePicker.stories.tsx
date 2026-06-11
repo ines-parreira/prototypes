@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
-import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
+import { TicketSnoozePicker } from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
 
 const defaultState = {}
 

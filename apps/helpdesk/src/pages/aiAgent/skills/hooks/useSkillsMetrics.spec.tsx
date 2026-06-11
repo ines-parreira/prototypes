@@ -7,7 +7,7 @@ import {
     getLast28DaysDateRange,
     useAllResourcesMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useSkillsMetrics } from './useSkillsMetrics'
 

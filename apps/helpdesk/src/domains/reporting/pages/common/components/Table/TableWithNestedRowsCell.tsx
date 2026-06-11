@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export const EXPAND_COLUMN_WIDTH = 24
 export const MOBILE_EXPAND_COLUMN_WIDTH = 10

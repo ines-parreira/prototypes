@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 
@@ -11,7 +11,7 @@ import {
 } from '../useIsTicketAfterFeedbackCollectionPeriod'
 
 // Mock dependencies
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('models/aiAgentFeedback/queries', () => ({
     useGetAiAgentFeedback: jest.fn(),
 }))

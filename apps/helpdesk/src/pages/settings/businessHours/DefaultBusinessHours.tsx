@@ -15,7 +15,7 @@ import { useAppNode } from 'appNode'
 import { Drawer } from 'components/Drawer/Drawer'
 import type { GorgiasApiError } from 'models/api/types'
 
-import BusinessHoursDisplay from './BusinessHoursDisplay'
+import { BusinessHoursDisplay } from './BusinessHoursDisplay'
 import { DefaultBusinessHoursDrawer } from './DefaultBusinessHoursDrawer'
 
 import settingsCss from '../settings.less'
@@ -117,4 +117,4 @@ const DefaultBusinessHours = () => {
     )
 }
 
-export default DefaultBusinessHours
+export { DefaultBusinessHours }

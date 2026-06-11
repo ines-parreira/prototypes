@@ -21,7 +21,7 @@ import {
 } from 'domains/reporting/pages/live/agents/dataTable/constants'
 import { parseUserPerformanceStat } from 'domains/reporting/pages/live/agents/dataTable/utils/parseUserPerformanceStat'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useChannels } from 'services/channels'
 
 import { useLiveAgentsStats } from 'domains/reporting/pages/live/agents/dataTable/hooks/useLiveAgentsStats'

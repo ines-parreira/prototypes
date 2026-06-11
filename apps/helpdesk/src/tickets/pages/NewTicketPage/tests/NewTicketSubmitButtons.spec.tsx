@@ -39,7 +39,7 @@ jest.mock('providers/OutboundTranslationProvider', () => ({
 
 jest.mock('pages/common/components/button/ConfirmButton', () => ({
     __esModule: true,
-    default: jest.fn(({ children, isDisabled, isLoading, onConfirm }) => (
+    ConfirmButton: jest.fn(({ children, isDisabled, isLoading, onConfirm }) => (
         <button disabled={isDisabled} aria-busy={isLoading} onClick={onConfirm}>
             {children}
         </button>
@@ -210,7 +210,7 @@ describe('NewTicketSubmitButtons', () => {
         it('renders a confirm button when subject is empty', () => {
             const ConfirmButton = jest.requireMock(
                 'pages/common/components/button/ConfirmButton',
-            ).default
+            ).ConfirmButton
 
             renderComponent('', { bodyText: 'Hello' })
 
@@ -238,7 +238,7 @@ describe('NewTicketSubmitButtons', () => {
         it('does not render a confirm button when the applied macro sets a subject', () => {
             const ConfirmButton = jest.requireMock(
                 'pages/common/components/button/ConfirmButton',
-            ).default
+            ).ConfirmButton
 
             renderComponent('', {
                 bodyText: 'Hello',

@@ -21,11 +21,7 @@ const rows = [
     [['*'], ['0'], ['#']],
 ]
 
-export default function DialPad({
-    value,
-    onChange,
-    onDigitClick,
-}: Props): JSX.Element {
+export function DialPad({ value, onChange, onDigitClick }: Props): JSX.Element {
     const handleDigitClick = (event: React.SyntheticEvent<HTMLElement>) => {
         const { digit } = event.currentTarget.dataset
 

@@ -3,11 +3,11 @@ import moment from 'moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import type { LlmTriggeredExecution } from '../types'
-import ActionStatus from './ActionsStatus'
+import { ActionStatus } from './ActionsStatus'
 
 import css from './ActionEventRow.less'
 
@@ -17,7 +17,7 @@ type Props = {
     isSelected: boolean
 }
 
-export default function ActionsRow({ execution, onClick, isSelected }: Props) {
+export function ActionsRow({ execution, onClick, isSelected }: Props) {
     const handleTicketClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation()
         window.open(`/app/ticket/${execution.state.user_journey_id}`, '_blank')

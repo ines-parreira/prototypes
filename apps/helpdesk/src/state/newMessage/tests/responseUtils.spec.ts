@@ -33,7 +33,7 @@ import {
     updateNewMessageWithContentState,
 } from '../responseUtils'
 import type { RawCachedTicket } from '../ticketReplyCache'
-import ticketReplyCache from '../ticketReplyCache'
+import { ticketReplyCache } from '../ticketReplyCache'
 import {
     getMessageContextSnapshot,
     getReplyAreaStateSnapshot,

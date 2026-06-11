@@ -11,7 +11,7 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
+import { useContactFormAutomationSettings } from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import {
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_CUSTOMIZATION_PATH,
@@ -21,7 +21,7 @@ import {
 } from 'pages/settings/contactForm/constants'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
-import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
+import { ContactFormSettingsView } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormSettingsView'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import type { RootState } from 'state/types'

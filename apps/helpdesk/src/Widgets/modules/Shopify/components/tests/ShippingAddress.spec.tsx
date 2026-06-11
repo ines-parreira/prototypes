@@ -17,7 +17,7 @@ jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup',
     () => ({
         __esModule: true,
-        default: ({ actions }: { actions: InfobarAction[] }) => (
+        ActionButtonsGroup: ({ actions }: { actions: InfobarAction[] }) => (
             <div data-testid="action-buttons">
                 {actions.map((action) => (
                     <button key={action.key}>{action.child}</button>

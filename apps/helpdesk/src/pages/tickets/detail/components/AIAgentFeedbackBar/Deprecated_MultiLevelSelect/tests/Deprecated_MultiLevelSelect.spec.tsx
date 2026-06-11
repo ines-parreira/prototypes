@@ -3,9 +3,11 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import Deprecated_MultiLevelSelect from '../Deprecated_MultiLevelSelect'
+import { MultiLevelSelect as Deprecated_MultiLevelSelect } from '../Deprecated_MultiLevelSelect'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(() => ({
         role: { name: 'admin' },

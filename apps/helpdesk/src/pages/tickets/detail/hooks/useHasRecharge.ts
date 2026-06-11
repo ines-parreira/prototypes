@@ -1,7 +1,7 @@
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useHasIntegration from './useHasIntegration'
+import { useHasIntegration } from './useHasIntegration'
 
-export default function useHasRecharge() {
+export function useHasRecharge() {
     return useHasIntegration(IntegrationType.Recharge)
 }

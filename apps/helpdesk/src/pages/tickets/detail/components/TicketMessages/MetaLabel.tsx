@@ -11,7 +11,7 @@ export type Props = {
     children?: ReactNode
 }
 
-export default function MetaLabel({ label, isLoading, children }: Props) {
+export function MetaLabel({ label, isLoading, children }: Props) {
     return (
         <span className={css.from}>
             {isLoading ? (

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map as ImmutableMap } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     InstructionTab,
     InstructionTabs,

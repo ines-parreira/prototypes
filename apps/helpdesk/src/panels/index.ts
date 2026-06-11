@@ -1,4 +1,4 @@
-export { default as Panel } from './components/Panel'
-export { default as Panels } from './components/Panels'
+export { Panel } from './components/Panel'
+export { Panels } from './components/Panels'
 export type { Config, PanelConfig } from './types'
-export { default as clamp } from './utils/clamp'
+export { clamp } from './utils/clamp'

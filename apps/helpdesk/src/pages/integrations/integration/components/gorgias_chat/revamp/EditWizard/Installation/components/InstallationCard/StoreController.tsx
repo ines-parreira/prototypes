@@ -13,13 +13,13 @@ import {
     toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { StoreNameDropdown } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import DisconnectStoreModal from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/DisconnectStoreModal'
+import { DisconnectStoreModal } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/DisconnectStoreModal'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getStoreIconNameFromType } from 'state/integrations/helpers'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -257,4 +257,4 @@ const StoreController = ({
     )
 }
 
-export default StoreController
+export { StoreController }

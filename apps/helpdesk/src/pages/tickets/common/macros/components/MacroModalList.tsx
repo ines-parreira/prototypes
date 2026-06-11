@@ -5,12 +5,12 @@ import classnames from 'classnames'
 
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
-import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { MacroFilters } from 'pages/common/components/MacroFilters/MacroFilters'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import { isMacroDisabled } from 'pages/tickets/common/macros/utils'
 
-import MacroList from './MacroList'
+import { MacroList } from './MacroList'
 
 import css from './MacroModalList.less'
 
@@ -30,7 +30,7 @@ type Props = {
     areExternalActionsDisabled?: boolean
 }
 
-export default function MacroModalList({
+export function MacroModalList({
     currentMacro,
     fetchMacros,
     hasDataToLoad,

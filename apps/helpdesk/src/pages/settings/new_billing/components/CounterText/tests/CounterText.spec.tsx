@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react'
 import { basicMonthlyAutomationPlan, convertPlan0 } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
-import CounterText from 'pages/settings/new_billing/components/CounterText/CounterText'
+import { CounterText } from 'pages/settings/new_billing/components/CounterText/CounterText'
 
 describe('CounterText', () => {
     it('should render the trial price text', () => {

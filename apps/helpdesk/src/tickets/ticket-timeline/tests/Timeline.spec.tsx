@@ -14,7 +14,7 @@ import type { Customer } from 'models/customer/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { useTicketList } from 'timeline/hooks/useTicketList'
-import Timeline from 'timeline/Timeline'
+import { DefaultExportTimeline as Timeline } from 'timeline/Timeline'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

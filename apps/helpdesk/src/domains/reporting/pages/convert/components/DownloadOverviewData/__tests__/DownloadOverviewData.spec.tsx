@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
-import DownloadOverviewData from 'domains/reporting/pages/convert/components/DownloadOverviewData/DownloadOverviewData'
+import { DownloadOverviewData } from 'domains/reporting/pages/convert/components/DownloadOverviewData/DownloadOverviewData'
 import { useGetTableStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTableStat'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { campaign } from 'fixtures/campaign'

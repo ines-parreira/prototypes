@@ -5,9 +5,9 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
-import PhoneNumberCreateContainer from 'pages/phoneNumbers/PhoneNumberCreateContainer'
-import PhoneNumberDetailContainer from 'pages/phoneNumbers/PhoneNumberDetailContainer'
-import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContainer'
+import { PhoneNumberCreateContainer } from 'pages/phoneNumbers/PhoneNumberCreateContainer'
+import { PhoneNumberDetailContainer } from 'pages/phoneNumbers/PhoneNumberDetailContainer'
+import { PhoneNumbersListContainer } from 'pages/phoneNumbers/PhoneNumbersListContainer'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
 import { PhoneNumbers } from '../PhoneNumbers'

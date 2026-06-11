@@ -11,7 +11,7 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import { SearchEngine } from 'models/search/types'
 import type { RootState } from 'state/types'
 
-import MultiSelectAsyncField from '../ReceiversSelectField'
+import { DefaultExportReceiversSelectField as MultiSelectAsyncField } from '../ReceiversSelectField'
 
 const mockStore = configureMockStore([thunk])
 

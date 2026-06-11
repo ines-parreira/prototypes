@@ -7,12 +7,12 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import gmailLogo from 'assets/img/integrations/gmail.svg'
 import officeLogo from 'assets/img/integrations/office.svg'
-import IconLink from 'core/ui/components/IconLink'
-import useAppSelector from 'hooks/useAppSelector'
+import { IconLink } from 'core/ui/components/IconLink'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 import { getRedirectUri } from 'state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
@@ -20,7 +20,7 @@ import css from './EmailIntegrationCreate.less'
 const EMAIL_FORWARDING_LINK = '/app/settings/channels/email/new/onboarding'
 const HELP_DOC_LINK = 'https://link.gorgias.com/121af4'
 
-export default function EmailIntegrationCreate() {
+export function EmailIntegrationCreate() {
     const gmailRedirectUri = useAppSelector(
         getRedirectUri(IntegrationType.Gmail),
     )

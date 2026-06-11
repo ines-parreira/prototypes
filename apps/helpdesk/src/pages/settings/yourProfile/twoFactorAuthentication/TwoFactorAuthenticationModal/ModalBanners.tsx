@@ -19,7 +19,7 @@ type OwnProps = {
     initialBannerType?: BannerType
 }
 
-export default function ModalBanners({
+export function ModalBanners({
     currentStep,
     errorText,
     initialBannerText,

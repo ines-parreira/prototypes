@@ -9,8 +9,8 @@ import type { UserSearchResult } from 'models/search/types'
 import type { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
-import PhoneDeviceDialerInput from '../PhoneDeviceDialerInput'
-import usePhoneDeviceDialerInput from '../usePhoneDeviceDialerInput'
+import { PhoneDeviceDialerInput } from '../PhoneDeviceDialerInput'
+import { usePhoneDeviceDialerInput } from '../usePhoneDeviceDialerInput'
 
 jest.mock(
     'pages/integrations/integration/components/phone/usePhoneDeviceDialerInput',
@@ -19,7 +19,7 @@ jest.mock('pages/common/forms/input/TextInput', () => {
     const { forwardRef } = jest.requireActual('react')
     return {
         __esModule: true,
-        default: forwardRef(
+        DefaultExportTextInput: forwardRef(
             (
                 {
                     onChange,
@@ -52,7 +52,7 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
     const { forwardRef } = jest.requireActual('react')
     return {
         __esModule: true,
-        default: forwardRef(
+        DefaultExportPhoneNumberInput: forwardRef(
             (
                 {
                     onChange,
@@ -96,7 +96,7 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
     }
 })
 const PhoneDeviceDialerBodySpy = jest
-    .spyOn(PhoneDeviceDialerBody, 'default')
+    .spyOn(PhoneDeviceDialerBody, 'PhoneDeviceDialerBody')
     .mockImplementation(() => <div data-testid="mock-dialer-body" />)
 const usePhoneDeviceDialerInputMock = assumeMock(usePhoneDeviceDialerInput)
 describe('PhoneDeviceDialerInput', () => {

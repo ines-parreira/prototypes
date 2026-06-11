@@ -1,7 +1,7 @@
 import type { Cadence } from 'models/billing/types'
 
-import SummaryLineItem from './SummaryLineItem'
-import SummaryTotal from './SummaryTotal'
+import { SummaryLineItem } from './SummaryLineItem'
+import { SummaryTotal } from './SummaryTotal'
 import type { SummaryItemData } from './types'
 
 import css from './SummaryBody.less'
@@ -34,4 +34,4 @@ const SummaryBody = ({ items, total, cadence }: SummaryBodyProps) => {
     )
 }
 
-export default SummaryBody
+export { SummaryBody }

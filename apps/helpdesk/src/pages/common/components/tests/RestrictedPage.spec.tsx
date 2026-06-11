@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { PageSection } from 'config/pages'
 import { UserRole } from 'config/types/user'
 
-import RestrictedPage from '../RestrictedPage'
+import { RestrictedPage } from '../RestrictedPage'
 
 describe('<RestrictedPage/>', () => {
     it.each(Object.values(UserRole))(

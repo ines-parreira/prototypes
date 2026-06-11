@@ -37,7 +37,7 @@ import {
 } from 'AIJourney/components'
 import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration'
 import { useJourneyContext } from 'AIJourney/providers'
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import css from './Settings.less'
 

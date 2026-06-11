@@ -4,7 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { requestNotificationPermission } from '../requestNotificationPermission'
 
-export default function useNotificationsContext() {
+export function useNotificationsContext() {
     const hasDesktopNotifications = useFlag(FeatureFlagKey.DesktopNotifications)
     const [isVisible, setIsVisible] = useState(false)
 

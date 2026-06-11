@@ -14,7 +14,7 @@ type CustomerMetafieldsSectionProps = {
     metafields?: ShopifyMetafield[]
 }
 
-export default function CustomerMetafieldsSection({
+export function CustomerMetafieldsSection({
     isEditing,
     metafields,
 }: CustomerMetafieldsSectionProps) {

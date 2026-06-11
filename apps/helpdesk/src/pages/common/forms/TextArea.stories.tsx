@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TextArea from './TextArea'
+import { DefaultExportTextArea as TextArea } from './TextArea'
 
 const storyConfig: Meta = {
     title: 'Data Entry/TextArea',

@@ -4,8 +4,8 @@ import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import type {
     CustomerWithHighlightsResponse,

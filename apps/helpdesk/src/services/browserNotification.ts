@@ -79,4 +79,4 @@ export class BrowserNotification {
 
 const browserNotification = new BrowserNotification()
 
-export default browserNotification
+export { browserNotification }

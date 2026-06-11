@@ -20,18 +20,18 @@ import { useUpdateAiAutofill } from 'custom-fields/hooks/queries/useUpdateAiAuto
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import type { CustomField, CustomFieldInput } from 'custom-fields/types'
 import { isCustomField, isCustomFieldSystemReadOnly } from 'custom-fields/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAccountConfiguration } from 'models/aiAgent/queries'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import Caption from 'pages/common/forms/Caption/Caption'
-import InputField from 'pages/common/forms/input/InputField'
-import TextArea from 'pages/common/forms/TextArea'
-import AIAutofill from 'pages/settings/customFields/components/AIAutofill'
-import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
-import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
+import { AIAutofill } from 'pages/settings/customFields/components/AIAutofill'
+import { ArchiveConfirmationModal } from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import { DefaultExportDropdownInput as DropdownInput } from 'pages/settings/customFields/components/DropdownInput'
 import css from 'pages/settings/customFields/components/FieldForm.less'
-import RequirementTypeInput from 'pages/settings/customFields/components/RequirementTypeInput'
-import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectInput'
+import { RequirementTypeInput } from 'pages/settings/customFields/components/RequirementTypeInput'
+import { TypeSelectInput } from 'pages/settings/customFields/components/TypeSelectInput'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
@@ -78,7 +78,7 @@ function pickDefinitionFields(
     )
 }
 
-export default function FieldForm(props: FieldFormProps) {
+export function FieldForm(props: FieldFormProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const isAiAutofillEnabled = useFlag(

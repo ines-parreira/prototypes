@@ -29,7 +29,7 @@ import {
     MICROPHONE_PERMISSION_ERROR_MESSAGE,
 } from 'business/twilio'
 import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useCreateTicketButton'
-import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
+import { PhoneDevice } from 'pages/integrations/integration/components/phone/PhoneDevice'
 
 import { usePlaceCallButton } from './usePlaceCallButton'
 import css from './TicketNavbarCreateMenu.less'

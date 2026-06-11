@@ -7,8 +7,8 @@ import { useParams } from 'react-router-dom'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { RevenueStatsContent } from 'domains/reporting/pages/convert/containers/RevenueStatsContent/RevenueStatsContent'
-import useCampaignPerformanceTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
-import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
+import { useCampaignPerformanceTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
+import { useGetCampaignRevenueTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
 import { useGetTotalsStat } from 'domains/reporting/pages/convert/hooks/stats/useGetTotalsStat'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
@@ -44,7 +44,7 @@ jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
     () => ({
         __esModule: true,
-        default: () => {
+        DefaultExportLineChart: () => {
             return <div>LineChart</div>
         },
     }),

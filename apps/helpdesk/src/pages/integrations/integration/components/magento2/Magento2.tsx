@@ -5,20 +5,20 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import Detail from 'pages/common/components/ProductDetail'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Detail } from 'pages/common/components/ProductDetail'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { makeHasFeature } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import Create from './Create'
-import Integration from './Integration'
-import List from './List'
+import { Create } from './Create'
+import { Integration } from './Integration'
+import { List } from './List'
 
 import css from './Magento2.less'
 
@@ -172,4 +172,4 @@ function Magento2({ integration, integrations, loading, redirectUri }: Props) {
     )
 }
 
-export default Magento2
+export { Magento2 }

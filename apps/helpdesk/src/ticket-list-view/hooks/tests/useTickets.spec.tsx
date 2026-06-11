@@ -2,14 +2,14 @@ import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
+import { useSplitTicketView } from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
 import type { TicketPartial } from '../../types'
-import useScrollOffset from '../useScrollOffset'
-import useTicketData from '../useTicketData'
-import useTicketPartials from '../useTicketPartials'
-import useTickets from '../useTickets'
-import useViewTickets from '../useViewTickets'
+import { useScrollOffset } from '../useScrollOffset'
+import { useTicketData } from '../useTicketData'
+import { useTicketPartials } from '../useTicketPartials'
+import { useTickets } from '../useTickets'
+import { useViewTickets } from '../useViewTickets'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -17,10 +17,10 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = useFlag as jest.Mock
 
-jest.mock('../useTicketData', () => jest.fn())
+jest.mock('../useTicketData', () => ({ useTicketData: jest.fn() }))
 const useTicketDataMock = useTicketData as jest.Mock
 
-jest.mock('../useTicketPartials', () => jest.fn())
+jest.mock('../useTicketPartials', () => ({ useTicketPartials: jest.fn() }))
 const useTicketPartialsMock = useTicketPartials as jest.Mock
 
 jest.mock('../useViewTickets')
@@ -31,7 +31,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useElementSize: jest.fn().mockImplementation(() => [0, 160]),
 }))
 
-jest.mock('../useScrollOffset', () => jest.fn())
+jest.mock('../useScrollOffset', () => ({ useScrollOffset: jest.fn() }))
 const useScrollOffsetMock = useScrollOffset as jest.Mock
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')

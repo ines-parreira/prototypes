@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { CheckBoxField } from '@gorgias/axiom'
 
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import { useCheckboxControlledField } from '../hooks/useCheckboxControlledField'
 

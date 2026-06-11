@@ -7,7 +7,7 @@ import {
     helpCentersFetched,
     helpCenterUpdated,
 } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, helpCenterReducer as reducer } from '../reducer'
 
 describe('helpCenters reducer', () => {
     describe('createHelpCenter action', () => {

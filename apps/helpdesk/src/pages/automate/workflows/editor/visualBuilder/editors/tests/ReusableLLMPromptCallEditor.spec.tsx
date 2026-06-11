@@ -3,14 +3,14 @@ import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { ReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import ReusableLLMPromptCallEditor from '../ReusableLLMPromptCallEditor'
+import { ReusableLLMPromptCallEditor } from '../ReusableLLMPromptCallEditor'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')

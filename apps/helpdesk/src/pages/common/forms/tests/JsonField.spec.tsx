@@ -5,7 +5,7 @@ import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import JsonField from '../JsonField'
+import { JsonField } from '../JsonField'
 
 describe('JsonField', () => {
     const minProps: ComponentProps<typeof JsonField> = {

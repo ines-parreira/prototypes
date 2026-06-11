@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import type { ConvertRouteParams } from 'pages/convert/common/types'
 import { getIntegrationById } from 'state/integrations/selectors'

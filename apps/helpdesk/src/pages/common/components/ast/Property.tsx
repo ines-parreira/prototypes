@@ -5,8 +5,8 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 
 import type { Argument, Properties } from './actions/config'
-import Errors from './Errors'
-import Widget from './Widget'
+import { Errors } from './Errors'
+import { Widget } from './Widget'
 
 type Props = {
     config?: ValueOf<Argument>
@@ -22,7 +22,7 @@ function hasValidate(
     return !!value && 'validate' in value
 }
 
-export default function Property({
+export function Property({
     config,
     compact = false,
     parent,

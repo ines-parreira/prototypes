@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
+import { PerformanceTip } from 'domains/reporting/pages/common/components/PerformanceTip'
 
 describe('<PerformanceTip />', () => {
     let index = 0

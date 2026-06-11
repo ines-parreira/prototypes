@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
-import GuidanceVariableTag from '../GuidanceVariableTag'
+import { GuidanceVariableTag } from '../GuidanceVariableTag'
 import { parseGuidanceVariable } from '../utils'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarContext', () => ({

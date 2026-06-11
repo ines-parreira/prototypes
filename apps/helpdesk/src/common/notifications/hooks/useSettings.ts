@@ -8,8 +8,8 @@ import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { AI_AGENT_SET_AND_OPTIMIZED_TYPE } from 'automate/notifications/constants'
 import { UserSettingType } from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SoundValue } from 'services/NotificationSounds'
 import { defaultSound } from 'services/NotificationSounds'
 import { submitSetting } from 'state/currentUser/actions'
@@ -18,7 +18,7 @@ import { getNotificationSettings } from 'state/currentUser/selectors'
 import { categories, channels, notifications } from '../data'
 import type { Settings } from '../types'
 
-export default function useSettings() {
+export function useSettings() {
     const dispatch = useAppDispatch()
     const knockClient = useKnockClient()
     const allSettings = useAppSelector(getNotificationSettings)

@@ -11,7 +11,7 @@ import { setupServer } from 'msw/node'
 import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { WorkflowsSidebar } from 'routes/layout/sidebars'
 
@@ -21,7 +21,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStoreIntegrations: jest.fn(),
 }))
 
 jest.mock(

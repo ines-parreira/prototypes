@@ -113,4 +113,4 @@ const ReportOrderIssueScenarioItem = ({
     )
 }
 
-export default ReportOrderIssueScenarioItem
+export { ReportOrderIssueScenarioItem }

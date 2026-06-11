@@ -6,11 +6,11 @@ import type {
     TicketPriority,
 } from '@gorgias/helpdesk-types'
 
-import CopyButton from 'components/CopyButton/CopyButton'
+import { CopyButton } from 'components/CopyButton/CopyButton'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import { TicketTags } from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
-import TicketFields from 'timeline/TicketFields'
+import { TicketFields } from 'timeline/TicketFields'
 
 import { SourceBadge } from './SourceBadge'
 import { TicketAssignee } from './TicketAssignee'

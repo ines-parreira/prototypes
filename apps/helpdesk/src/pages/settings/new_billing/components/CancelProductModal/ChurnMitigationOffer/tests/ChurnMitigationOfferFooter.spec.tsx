@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import ChurnMitigationOfferFooter from '../ChurnMitigationOfferFooter'
+import { ChurnMitigationOfferFooter } from '../ChurnMitigationOfferFooter'
 
 describe('ChurnMitigationOfferFooter', () => {
     const onAcceptMock = jest.fn()

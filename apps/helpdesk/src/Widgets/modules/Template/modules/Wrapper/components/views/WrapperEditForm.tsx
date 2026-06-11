@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ColorField from 'pages/common/forms/ColorField'
+import { ColorField } from 'pages/common/forms/ColorField'
 
 export const SUBMIT_TEXT = 'Submit'
 export const CANCEL_TEXT = 'Cancel'
@@ -60,4 +60,4 @@ const WrapperEditForm = ({ initialData, onCancel, onSubmit }: Props) => {
     )
 }
 
-export default WrapperEditForm
+export { WrapperEditForm }

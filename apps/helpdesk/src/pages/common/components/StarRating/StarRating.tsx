@@ -16,7 +16,7 @@ type Props = {
     classNames?: string
 }
 
-export default function StarRating({
+export function StarRating({
     value,
     size = DEFAULT_SIZE,
     edit = false,

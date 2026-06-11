@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import RuleSelect from '../../../widget/RuleSelect'
+import { RuleSelect } from '../../../widget/RuleSelect'
 import type { MetafieldCategoryOptionsProps } from '../types'
 import { getMetafieldCategoryType } from '../utils'
 

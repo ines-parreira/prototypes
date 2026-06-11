@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import TicketEvent from '../TicketEvent'
+import { TicketEvent } from '../TicketEvent'
 
 describe('TicketEvent', () => {
     it('renders the correct event type label', () => {

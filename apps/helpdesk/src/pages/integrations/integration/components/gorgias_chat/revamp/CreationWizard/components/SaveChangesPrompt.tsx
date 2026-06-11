@@ -120,4 +120,4 @@ const SaveChangesPrompt: React.FC<Props> = ({
     )
 }
 
-export default SaveChangesPrompt
+export { SaveChangesPrompt }

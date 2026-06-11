@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import _noop from 'lodash/noop'
 
 import { FilterComponentKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import { logSegmentEvent } from 'domains/reporting/pages/common/filters/helpers'
 import {
@@ -15,8 +15,8 @@ import {
     getSelectedMetric,
     setSelectedMetric,
 } from 'domains/reporting/state/ui/stats/busiestTimesSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const BusiestTimesMetricSelectFilter = () => {
     const dispatch = useAppDispatch()

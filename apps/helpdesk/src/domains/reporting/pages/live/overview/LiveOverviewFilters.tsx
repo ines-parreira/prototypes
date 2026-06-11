@@ -1,8 +1,8 @@
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
-import DEPRECATED_AgentsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_AgentsStatsFilter'
-import ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
+import { DEPRECATED_AgentsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_AgentsStatsFilter'
+import { DEPRECATED_ChannelsStatsFilter as ChannelsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
 import { getStatsFilters } from 'domains/reporting/state/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const LiveOverviewFilters = () => {
     useCleanStatsFilters()

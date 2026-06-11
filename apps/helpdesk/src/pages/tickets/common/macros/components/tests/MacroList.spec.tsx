@@ -12,7 +12,7 @@ import type { Macro } from '@gorgias/helpdesk-queries'
 import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 
-import MacroListContainer from '../MacroList'
+import { MacroList as MacroListContainer } from '../MacroList'
 
 const mockStore = configureMockStore([thunk])
 

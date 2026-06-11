@@ -1,6 +1,6 @@
 import type { MatcherContext } from '@jest/expect'
 
-import toBeAriaEnabled from '../toBeAriaEnabled'
+import { toBeAriaEnabled } from '../toBeAriaEnabled'
 
 describe('toBeAriaEnabled', () => {
     const context = {} as MatcherContext

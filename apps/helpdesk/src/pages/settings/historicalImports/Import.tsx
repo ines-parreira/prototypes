@@ -104,4 +104,4 @@ const ImportEmails = () => {
     )
 }
 
-export default ImportEmails
+export { ImportEmails }

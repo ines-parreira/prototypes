@@ -1,7 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export enum Source {
@@ -32,4 +32,4 @@ const TrackedRuleLibraryLink: React.FC<Props> = ({ from, children }) => {
     )
 }
 
-export default TrackedRuleLibraryLink
+export { TrackedRuleLibraryLink }

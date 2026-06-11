@@ -5,9 +5,9 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { SearchSpotlightRoot } from '@repo/search'
 import { shortcutManager } from '@repo/utils'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
-import SpotlightModal from 'pages/common/components/Spotlight/SpotlightModal'
+import { SpotlightModal } from 'pages/common/components/Spotlight/SpotlightModal'
 import { useSpotlightContext } from 'providers/ui/SpotlightContext'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 
@@ -55,4 +55,4 @@ const Spotlight = () => {
     )
 }
 
-export default Spotlight
+export { Spotlight }

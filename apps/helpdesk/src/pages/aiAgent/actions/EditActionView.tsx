@@ -18,8 +18,8 @@ import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLay
 import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
-import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
-import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformTemplateVisualBuilderView } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
+import { useValidateOnVisualBuilderGraphChange } from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
     useVisualBuilder,
     VisualBuilderContext,
@@ -34,19 +34,19 @@ import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/v
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
-import ActionFormView from './components/ActionFormView'
-import useDeleteAction from './hooks/useDeleteAction'
+import { ActionFormView } from './components/ActionFormView'
+import { useDeleteAction } from './hooks/useDeleteAction'
 import { useSupportActionTracking } from './hooks/useSupportActionTracking'
-import useThreeplIntegrations from './hooks/useThreeplIntegrations'
-import useTouchActionGraph from './hooks/useTouchActionGraph'
-import useUpsertAction from './hooks/useUpsertAction'
-import useValidateActionGraph from './hooks/useValidateActionGraph'
+import { useThreeplIntegrations } from './hooks/useThreeplIntegrations'
+import { useTouchActionGraph } from './hooks/useTouchActionGraph'
+import { useUpsertAction } from './hooks/useUpsertAction'
+import { useValidateActionGraph } from './hooks/useValidateActionGraph'
 import { useGuidanceReferenceContext } from './providers/GuidanceReferenceContext'
-import StoreAppsProvider from './providers/StoreAppsProvider'
+import { StoreAppsProvider } from './providers/StoreAppsProvider'
 import type { StoreWorkflowsConfiguration } from './types'
 
 import css from './CreateActionView.less'
@@ -433,4 +433,4 @@ const EditActionView = ({ configuration }: Props) => {
     )
 }
 
-export default EditActionView
+export { EditActionView }

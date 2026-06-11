@@ -31,7 +31,7 @@ interface ManualController {
     getEditor: () => any
 }
 
-export default class FroalaEditorFunctionality extends Component<FroalaEditorProps> {
+export class FroalaEditorFunctionality extends Component<FroalaEditorProps> {
     private defaultTag: string
     private tag: string
     private listeningEvents: any[]

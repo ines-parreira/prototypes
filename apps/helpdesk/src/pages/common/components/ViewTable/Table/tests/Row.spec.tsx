@@ -6,26 +6,27 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
-import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAgentsViewing } from 'hooks/realtime/useAgentsViewing'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import * as viewsActions from 'state/views/actions'
 
 import * as viewsConfig from '../../../../../../config/views'
 import * as agentsFixtures from '../../../../../../fixtures/agents'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
-import Row from '../Row'
+import { Row } from '../Row'
 
-jest.mock(
-    'pages/common/components/ViewingIndicator/ViewingIndicator',
-    () => () => {
+jest.mock('pages/common/components/ViewingIndicator/ViewingIndicator', () => ({
+    ViewingIndicator: () => {
         return <div>ViewingIndicator</div>
     },
-)
+}))
 
-jest.mock('../Cell', () => ({ colSpan }: { colSpan?: number }) => {
-    return <div data-colspan={colSpan}>Cell</div>
-})
+jest.mock('../Cell', () => ({
+    Cell: ({ colSpan }: { colSpan?: number }) => {
+        return <div data-colspan={colSpan}>Cell</div>
+    },
+}))
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/views/actions')

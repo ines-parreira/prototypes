@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 
-import EmailVerificationButton from '../EmailMigration/EmailVerificationButton'
+import { EmailVerificationButton } from '../EmailMigration/EmailVerificationButton'
 import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 const commonProps = {

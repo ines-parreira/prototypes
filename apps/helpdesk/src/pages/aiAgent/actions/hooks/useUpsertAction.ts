@@ -14,7 +14,7 @@ import type {
 } from '../types'
 import { handleError } from './errorHandler'
 
-export default function useUpsertAction(
+export function useUpsertAction(
     actionType: 'create' | 'update',
     storeName: string,
     storeType: string,

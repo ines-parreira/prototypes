@@ -199,4 +199,4 @@ export class TicketReplyCache {
 
 const ticketReplyCache = new TicketReplyCache()
 
-export default ticketReplyCache
+export { ticketReplyCache }

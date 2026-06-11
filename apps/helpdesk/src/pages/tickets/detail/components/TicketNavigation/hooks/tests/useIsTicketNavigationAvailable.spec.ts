@@ -1,8 +1,10 @@
 import { renderHook } from '@repo/testing'
 
-import useIsTicketNavigationAvailable from '../useIsTicketNavigationAvailable'
+import { useIsTicketNavigationAvailable } from '../useIsTicketNavigationAvailable'
 
-jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn((selector) => selector()),
+}))
 jest.mock('state/ticket/selectors', () => ({
     isTicketNavigationAvailable: jest.fn(() => () => true),
 }))

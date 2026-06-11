@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ObjectListField from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import { ObjectListField } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 
 describe('ObjectListField component', () => {
     const minProps: ComponentProps<typeof ObjectListField> = {

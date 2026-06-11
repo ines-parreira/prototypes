@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import * as capabilitiesHook from 'hooks/integrations/phone/usePhoneNumberCapabilities'
 import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
 
-import PhoneNumberCapabilitiesAlert from '../PhoneNumberCapabilitiesAlert'
+import { PhoneNumberCapabilitiesAlert } from '../PhoneNumberCapabilitiesAlert'
 import {
     getCountryCapabilityLimitationsMessage,
     getLimitationsMessageForType,

@@ -113,4 +113,4 @@ const useValidateActionStepGraph = (
     )
 }
 
-export default useValidateActionStepGraph
+export { useValidateActionStepGraph }

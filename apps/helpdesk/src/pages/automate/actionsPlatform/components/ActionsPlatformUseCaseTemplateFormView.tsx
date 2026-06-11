@@ -5,11 +5,11 @@ import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisua
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import type { ActionTemplate } from '../types'
-import ActionsPlatformTemplateConditions from './ActionsPlatformTemplateConditions'
-import ActionsPlatformTemplateConfirmation from './ActionsPlatformTemplateConfirmation'
-import ActionsPlatformTemplateInstructions from './ActionsPlatformTemplateInstructions'
-import ActionsPlatformTemplateName from './ActionsPlatformTemplateName'
-import ActionsPlatformUseCaseTemplateCategory from './ActionsPlatformUseCaseTemplateCategory'
+import { ActionsPlatformTemplateConditions } from './ActionsPlatformTemplateConditions'
+import { ActionsPlatformTemplateConfirmation } from './ActionsPlatformTemplateConfirmation'
+import { ActionsPlatformTemplateInstructions } from './ActionsPlatformTemplateInstructions'
+import { ActionsPlatformTemplateName } from './ActionsPlatformTemplateName'
+import { ActionsPlatformUseCaseTemplateCategory } from './ActionsPlatformUseCaseTemplateCategory'
 
 import css from './ActionsPlatformTemplateFormView.less'
 
@@ -156,4 +156,4 @@ const ActionsPlatformUseCaseTemplateFormView = ({ steps }: Props) => {
     )
 }
 
-export default ActionsPlatformUseCaseTemplateFormView
+export { ActionsPlatformUseCaseTemplateFormView }

@@ -1,5 +1,5 @@
-import CopyButton from 'components/CopyButton/CopyButton'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { CopyButton } from 'components/CopyButton/CopyButton'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { LEAF_TYPES } from 'models/widget/constants'
 import type { LeafTemplate, LeafType } from 'models/widget/types'
 import {
@@ -10,7 +10,7 @@ import {
 } from 'state/widgets/actions'
 
 import type { FieldEditFormData, HiddenFields } from '../types'
-import UIField from './views'
+import { Field as UIField } from './views'
 import type { TypeOption } from './views/FieldEditForm'
 
 export const EDIT_BUTTON_TEXT = 'edit'
@@ -49,7 +49,7 @@ type Props = {
     editionHiddenFields?: HiddenFields
 }
 
-export default function Field({
+export function Field({
     isEditing = false,
     template,
     value,

@@ -4,7 +4,7 @@ import { Button } from '@gorgias/axiom'
 
 import ruleTemplates from 'assets/img/presentationals/rule-templates.png'
 
-import TrackedRuleLibraryLink, { Source } from './TrackedRuleLibraryLink'
+import { Source, TrackedRuleLibraryLink } from './TrackedRuleLibraryLink'
 
 import css from './CreateRuleFooter.less'
 
@@ -43,4 +43,4 @@ const CreateRuleFooter: React.FC = () => {
     )
 }
 
-export default CreateRuleFooter
+export { CreateRuleFooter }

@@ -9,7 +9,7 @@ import type { LegacyButtonSize } from '@gorgias/axiom'
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
-import WorkflowVariableDropdown from './WorkflowVariableDropdown'
+import { WorkflowVariableDropdown } from './WorkflowVariableDropdown'
 
 export type WorkflowVariablePickerProps = {
     onSelect: (value: WorkflowVariable) => void
@@ -63,4 +63,4 @@ const WorkflowVariablePicker = ({
     )
 }
 
-export default WorkflowVariablePicker
+export { WorkflowVariablePicker }

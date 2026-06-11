@@ -15,7 +15,7 @@ import { ReturnOrderEligibility } from './components/ReturnOrderEligibility'
 import { ReturnOrderFlowViewSkeleton } from './components/ReturnOrderFlowViewSkeleton'
 import { useReturnOrderFlow } from './hooks/useReturnOrderFlow'
 import type { ReturnOrderFlowViewContextType } from './ReturnOrderFlowViewContext'
-import ReturnOrderFlowViewContext from './ReturnOrderFlowViewContext'
+import { ReturnOrderFlowViewContext } from './ReturnOrderFlowViewContext'
 import { buildReturnOrderSimulationMessages } from './utils/buildReturnOrderSimulationMessages'
 
 import css from './ReturnOrderFlowView.less'

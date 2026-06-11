@@ -7,4 +7,4 @@ const useAppSelector = <T>(
     equalityFn?: (left: T, right: T) => boolean,
 ) => useSelector<RootState, T>(selector, equalityFn)
 
-export default useAppSelector
+export { useAppSelector }

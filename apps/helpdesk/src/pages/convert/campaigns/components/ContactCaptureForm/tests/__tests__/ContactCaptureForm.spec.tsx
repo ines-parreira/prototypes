@@ -8,11 +8,11 @@ import configureMockStore from 'redux-mock-store'
 import { UserRole } from 'config/types/user'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
 import { user } from 'fixtures/users'
-import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
+import { AddContactCaptureForm } from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
 import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
 import { Customization } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
 import { PostSubmissionMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
-import useListTags from 'tags/useListTags'
+import { useListTags } from 'tags/useListTags'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()

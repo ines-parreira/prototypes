@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Label from '../Label'
+import { DefaultExportLabel as Label } from '../Label'
 
 describe('<Label />', () => {
     const content = <input name="test" defaultValue="yeaboy" />

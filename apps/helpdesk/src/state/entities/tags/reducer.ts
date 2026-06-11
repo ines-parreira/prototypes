@@ -34,4 +34,4 @@ const tagsReducer = createReducer<TagsState>(initialState, (builder) =>
         }),
 )
 
-export default tagsReducer
+export { tagsReducer }

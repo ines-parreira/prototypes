@@ -13,10 +13,10 @@ import type { InputType } from 'reactstrap/es/Input'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import PageHeader from 'pages/common/components/PageHeader'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { fetchCurrentAuths, resetApiKey } from 'state/auths/actions'
 import { getApiKey } from 'state/auths/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -389,4 +389,6 @@ const connector = connect(
     },
 )
 
-export default connector(APIViewContainer)
+const DefaultExportAPIView = connector(APIViewContainer)
+
+export { DefaultExportAPIView }

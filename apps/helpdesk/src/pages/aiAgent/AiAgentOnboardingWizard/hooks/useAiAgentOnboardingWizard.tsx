@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
@@ -20,7 +20,7 @@ import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 

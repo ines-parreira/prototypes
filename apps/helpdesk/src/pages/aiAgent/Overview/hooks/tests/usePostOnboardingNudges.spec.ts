@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useGetPostStoreInstallationStepsPure,
     useUpdateStepNotificationsPure,

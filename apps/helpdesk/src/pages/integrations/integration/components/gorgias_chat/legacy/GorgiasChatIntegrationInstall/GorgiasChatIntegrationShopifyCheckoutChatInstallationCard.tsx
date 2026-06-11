@@ -1,8 +1,8 @@
 import type { Map } from 'immutable'
 
-import LinkButton from 'pages/common/components/button/LinkButton'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
 
-import useShopifyCheckoutChatInstallation from '../hooks/useShopifyCheckoutChatInstallation'
+import { useShopifyCheckoutChatInstallation } from '../hooks/useShopifyCheckoutChatInstallation'
 
 import css from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard.less'
 
@@ -115,4 +115,4 @@ const GorgiasChatIntegrationShopifyCheckoutChatInstallationCard = ({
     )
 }
 
-export default GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
+export { GorgiasChatIntegrationShopifyCheckoutChatInstallationCard }

@@ -7,7 +7,7 @@ import {
     getAvailableChats,
     getFirstAvailableChat,
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatSettingsComponent.utils'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { StoreConfigFormSection } from '../../constants'

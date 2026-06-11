@@ -3,7 +3,7 @@ import type { MockStore } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import pollingManager from '../pollingManager'
+import { pollingManager } from '../pollingManager'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

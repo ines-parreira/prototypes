@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import css from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt.less'
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
     children?: ReactNode
 }
 
-export default function EmailGenericModal({
+export function EmailGenericModal({
     showModal,
     title,
     description,

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import type { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
 import { ArticleTemplateType } from 'models/helpCenter/types'

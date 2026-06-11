@@ -5,13 +5,13 @@ import { KnowledgeEditorSkillReadView } from './KnowledgeEditorSkillReadView'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarProvider', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
+    ToolbarProvider: ({ children }: { children?: React.ReactNode }) => (
         <div>{children}</div>
     ),
 }))
 jest.mock('pages/common/forms/RichField/RichField', () => ({
     __esModule: true,
-    default: () => <div>Rich Field</div>,
+    RichField: () => <div>Rich Field</div>,
 }))
 
 describe('KnowledgeEditorSkillReadView', () => {

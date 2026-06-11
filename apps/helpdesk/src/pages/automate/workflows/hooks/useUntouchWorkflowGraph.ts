@@ -48,4 +48,4 @@ const useUntouchWorkflowGraph = () => {
     }, [])
 }
 
-export default useUntouchWorkflowGraph
+export { useUntouchWorkflowGraph }

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { IntegrationType } from 'models/integration/constants'
 import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import { useHelpCentersArticleCount } from 'pages/automate/common/hooks/useHelpCentersArticleCount'
-import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegration } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import type {

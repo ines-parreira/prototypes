@@ -3,12 +3,12 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { AIArticle } from 'models/helpCenter/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import css from './AIArticleArchiveModal.less'
 
@@ -136,4 +136,4 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
     },
 )
 
-export default AIArticleArchiveModal
+export { AIArticleArchiveModal }

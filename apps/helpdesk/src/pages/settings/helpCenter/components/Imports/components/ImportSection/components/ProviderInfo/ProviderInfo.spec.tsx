@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import { noop } from 'lodash'
 
 import { migrationProviders } from '../../fixtures/migration-providers'
-import ProviderInfo from './ProviderInfo'
+import { ProviderInfo } from './ProviderInfo'
 
 const provider = migrationProviders[0]
 

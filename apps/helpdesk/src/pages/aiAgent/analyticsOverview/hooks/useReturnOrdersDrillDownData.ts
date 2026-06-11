@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     TextStatAxisValue,
     TwoDimensionalChart,

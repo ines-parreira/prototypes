@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
-import RemoveCampaignConfirmation from './RemoveCampaignConfirmation'
+import { RemoveCampaignConfirmation } from './RemoveCampaignConfirmation'
 
 describe('RemoveMetafieldConfirmation', () => {
     const defaultProps = {

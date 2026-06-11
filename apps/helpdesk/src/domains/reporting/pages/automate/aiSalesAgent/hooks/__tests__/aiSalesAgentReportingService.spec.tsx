@@ -13,11 +13,12 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import type { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import useAiSalesAgentOverviewReportData, {
+import {
     AI_SALES_AGENT_GMV_INFLUENCED_OVER_TIME,
     AI_SALES_AGENT_METRIC_FILE_NAME,
     createReport,
     fetchTopProductRecommendationsReportData,
+    useAiSalesAgentOverviewReportData,
 } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import {

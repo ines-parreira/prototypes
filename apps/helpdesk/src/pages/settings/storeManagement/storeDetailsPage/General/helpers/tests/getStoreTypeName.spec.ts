@@ -1,7 +1,7 @@
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
-import getStoreTypeName from '../getStoreTypeName'
+import { getStoreTypeName } from '../getStoreTypeName'
 
 describe('getStoreTypeName', () => {
     it('returns Shopify for Shopify integration', () => {

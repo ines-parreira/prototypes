@@ -1,8 +1,8 @@
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import Avatar from '../Avatar/Avatar'
-import BinaryChoiceField from '../BinaryChoiceField'
+import { Avatar } from '../Avatar/Avatar'
+import { BinaryChoiceField } from '../BinaryChoiceField'
 
 type Props = {
     sourceTicket: Map<any, any>
@@ -11,7 +11,7 @@ type Props = {
     updateFinalTicket: (map: Map<any, any>) => void
 }
 
-export default function BuildFinalTicket({
+export function BuildFinalTicket({
     sourceTicket,
     targetTicket,
     finalTicket,

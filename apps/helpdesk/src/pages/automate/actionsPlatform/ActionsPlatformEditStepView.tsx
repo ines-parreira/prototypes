@@ -17,15 +17,15 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import PageHeader from 'pages/common/components/PageHeader'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import InputField from 'pages/common/forms/input/InputField'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
-import useEditActionTemplate from './hooks/useEditActionTemplate'
-import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
-import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
-import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
+import { WorkflowVisualBuilder } from './components/visualBuilder/WorkflowVisualBuilder'
+import { useEditActionTemplate } from './hooks/useEditActionTemplate'
+import { useTouchActionStepGraph } from './hooks/useTouchActionStepGraph'
+import { useValidateActionStepGraph } from './hooks/useValidateActionStepGraph'
+import { useValidateOnVisualBuilderGraphChange } from './hooks/useValidateOnVisualBuilderGraphChange'
 import type { ActionTemplate } from './types'
 
 import css from './ActionsPlatformEditStepView.less'
@@ -254,4 +254,4 @@ const ActionsPlatformEditStepView = ({ template }: Props) => {
     )
 }
 
-export default ActionsPlatformEditStepView
+export { ActionsPlatformEditStepView }

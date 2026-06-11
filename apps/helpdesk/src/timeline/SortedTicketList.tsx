@@ -1,7 +1,7 @@
 import type { RefObject } from 'react'
 import { useMemo } from 'react'
 
-import DisplayedDate from './DisplayedDate'
+import { DisplayedDate } from './DisplayedDate'
 import * as timelineItem from './helpers/timelineItem'
 import { OrderCard } from './order-ticket'
 import { TicketModal, useTicketModal } from './ticket-modal'

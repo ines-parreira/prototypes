@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { fetchMacros as fetchMacrosRequest } from 'models/macro/resources'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'

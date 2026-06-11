@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TopElementItem from '../TopElementItem/TopElementItem'
+import { TopElementItem } from '../TopElementItem/TopElementItem'
 
 const element = {
     id: '1',

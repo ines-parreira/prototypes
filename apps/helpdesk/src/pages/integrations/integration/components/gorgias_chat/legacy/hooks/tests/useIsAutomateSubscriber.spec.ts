@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
 
-import useIsAutomateSubscriber from '../useIsAutomateSubscriber'
+import { useIsAutomateSubscriber } from '../useIsAutomateSubscriber'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 

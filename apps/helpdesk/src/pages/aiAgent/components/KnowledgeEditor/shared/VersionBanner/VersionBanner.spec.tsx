@@ -9,7 +9,9 @@ jest.mock('@repo/utils', () => ({
     formatDatetime: jest.fn(() => 'Jan 1, 2024 12:00 PM'),
 }))
 
-jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => unknown) => fn(),
+}))
 
 jest.mock('state/currentUser/selectors', () => ({
     getTimezone: jest.fn(() => 'UTC'),

@@ -1,8 +1,9 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useSendTestLiquidTemplate, {
+import {
     transformVariablesToNestedObject,
+    useSendTestLiquidTemplate,
 } from '../useSendTestLiquidTemplate'
 
 // Mock the workflows API client

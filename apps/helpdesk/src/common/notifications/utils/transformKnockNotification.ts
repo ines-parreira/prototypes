@@ -2,7 +2,7 @@ import type { FeedItem } from '@knocklabs/client'
 
 import type { Notification, RawNotification } from '../types'
 
-export default function transformKnockNotification(
+export function transformKnockNotification(
     item: FeedItem<RawNotification>,
 ): Notification | null {
     const { data, id, inserted_at, read_at, seen_at } = item

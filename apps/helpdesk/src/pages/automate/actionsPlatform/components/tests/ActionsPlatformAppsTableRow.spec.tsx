@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import ActionsPlatformAppsTableRow from '../ActionsPlatformAppsTableRow'
+import { ActionsPlatformAppsTableRow } from '../ActionsPlatformAppsTableRow'
 
 describe('<ActionsPlatformAppsTableRow />', () => {
     it('should render Actions app row', () => {

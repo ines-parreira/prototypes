@@ -4,11 +4,11 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 import { FLOWS } from '../common/components/constants'
-import WorkflowCustomFlowCard from './components/WorkflowCustomFlowCard'
-import WorkflowTemplateCard from './components/WorkflowTemplateCard'
+import { WorkflowCustomFlowCard } from './components/WorkflowCustomFlowCard'
+import { WorkflowTemplateCard } from './components/WorkflowTemplateCard'
 import { WORKFLOW_TEMPLATES_LIST } from './workflowTemplates'
 
 import css from './WorkflowTemplatesView.less'
@@ -77,4 +77,4 @@ const WorkflowTemplatesView = ({
     )
 }
 
-export default WorkflowTemplatesView
+export { WorkflowTemplatesView }

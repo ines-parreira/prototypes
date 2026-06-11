@@ -15,7 +15,7 @@ import {
 import type { GorgiasChatInstallationVisibilityCondition } from 'models/integration/types'
 
 import type { VisibilityControlsHandle } from './VisibilityControls'
-import VisibilityControls from './VisibilityControls'
+import { DefaultExportVisibilityControls as VisibilityControls } from './VisibilityControls'
 
 type SelectOption = {
     value: string
@@ -86,21 +86,21 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityCondition',
     () => ({
         __esModule: true,
-        default: (props: MockVisibilityConditionProps) =>
+        VisibilityCondition: (props: MockVisibilityConditionProps) =>
             mockVisibilityCondition(props),
     }),
 )
 
 jest.mock('pages/common/components/Collapse/Collapse', () => ({
     __esModule: true,
-    default: (props: MockCollapseProps) => mockCollapse(props),
+    Collapse: (props: MockCollapseProps) => mockCollapse(props),
 }))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl',
     () => ({
         __esModule: true,
-        default: (value: string) => {
+        validateUrl: (value: string) => {
             if (!value) return undefined
             if (value.includes('#')) return 'unsupported'
             if (!value.startsWith('http')) return 'invalid'

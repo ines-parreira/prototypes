@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import MaxFieldsImportedBanner from './MaxFieldsImportedBanner'
+import { MaxFieldsImportedBanner } from './MaxFieldsImportedBanner'
 
 describe('MaxFieldsImportedBanner', () => {
     it('should render info banner with correct message', () => {

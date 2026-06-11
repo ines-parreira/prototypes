@@ -3,10 +3,10 @@ import React, { useMemo } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import type { ConvertRouteParams } from 'pages/convert/common/types'
@@ -74,4 +74,4 @@ function ClickTrackingSettingsOrPaywallPage() {
     )
 }
 
-export default ClickTrackingSettingsOrPaywallPage
+export { ClickTrackingSettingsOrPaywallPage }

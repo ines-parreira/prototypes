@@ -6,7 +6,7 @@ import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { usePanels, useScreenSize } from '../hooks'
 import type { Config } from '../types'
-import Handle from './Handle'
+import { Handle } from './Handle'
 
 import css from './Panels.less'
 
@@ -18,7 +18,7 @@ type Props = {
     onResize?: (widths: number[]) => void
 }
 
-export default function Panels({
+export function Panels({
     children,
     config,
     fallbackComponent,

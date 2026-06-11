@@ -9,15 +9,15 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { toast } from '@gorgias/axiom'
 
 import type { CsvColumnPreview } from '../../../../models/helpCenter/types'
-import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
+import { Loader } from '../../../common/components/Loader/Loader'
+import { PageHeader } from '../../../common/components/PageHeader'
 import { HELP_CENTER_BASE_PATH } from '../constants'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
 import { useMigrationApi } from '../hooks/useMigrationApi'
 import { useSupportedLocales } from '../providers/SupportedLocales'
 import { HelpCenterDetailsBreadcrumb } from './HelpCenterDetailsBreadcrumb'
-import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
+import { CsvColumnMatching } from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 import type { GorgiasFieldsMappingsLocalized } from './Imports/components/CsvColumnMatching/types'
 import { mapCSVLocalValuesToAPIPayload } from './Imports/components/CsvColumnMatching/utils'
 import type { AutoOpenSessionLocationState } from './Imports/components/ImportSection/types'
@@ -205,5 +205,3 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
         </div>
     )
 }
-
-export default HelpCenterImportCsvColumnMatchingView

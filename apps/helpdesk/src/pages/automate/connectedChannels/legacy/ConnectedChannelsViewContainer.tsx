@@ -17,4 +17,4 @@ const ConnectedChannelsViewContainer = () => {
     return <ConnectedChannelsView />
 }
 
-export default ConnectedChannelsViewContainer
+export { ConnectedChannelsViewContainer }

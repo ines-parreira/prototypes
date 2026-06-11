@@ -8,16 +8,16 @@ import { connect } from 'react-redux'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import goToTicket from 'common/utils/goToTicket'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { goToTicket } from 'common/utils/goToTicket'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { mergeTickets } from 'state/mergeTickets/actions'
 
-import BuildFinalTicket from './BuildFinalTicket'
-import SelectTargetTicket from './SelectTargetTicket'
+import { BuildFinalTicket } from './BuildFinalTicket'
+import { DefaultExportSelectTargetTicket as SelectTargetTicket } from './SelectTargetTicket'
 
 const EDITABLE_FIELDS = fromJS([
     'subject',
@@ -187,4 +187,6 @@ const connector = connect(null, {
     mergeTickets,
 })
 
-export default connector(MergeTicketsContainer)
+const DefaultExportMergeTicketsContainer = connector(MergeTicketsContainer)
+
+export { DefaultExportMergeTicketsContainer }

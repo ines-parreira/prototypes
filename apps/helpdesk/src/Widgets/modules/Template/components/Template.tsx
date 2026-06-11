@@ -17,10 +17,10 @@ import {
     getStringFromData,
     getValueFromData,
 } from 'Widgets/modules/Template/helpers/fieldDataMappers'
-import Card from 'Widgets/modules/Template/modules/Card'
-import Field from 'Widgets/modules/Template/modules/Field'
-import List from 'Widgets/modules/Template/modules/List'
-import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
+import { Card } from 'Widgets/modules/Template/modules/Card'
+import { Field } from 'Widgets/modules/Template/modules/Field'
+import { List } from 'Widgets/modules/Template/modules/List'
+import { Wrapper } from 'Widgets/modules/Template/modules/Wrapper'
 
 import { CustomizationContext } from '../contexts/CustomizationContext'
 import {
@@ -137,5 +137,3 @@ export function Template({
         />
     )
 }
-
-export default Template

@@ -11,13 +11,13 @@ import { useUnmount, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import Search from 'pages/common/components/Search'
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { ShortcutIcon } from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {
     CALLS_LABEL,
     CUSTOMERS_LABEL,
@@ -26,7 +26,7 @@ import {
 import css from 'pages/common/components/Spotlight/SpotlightModal.less'
 import { SpotlightModalContent } from 'pages/common/components/Spotlight/SpotlightModalContent'
 import { Tabs, useSearch } from 'pages/common/components/Spotlight/useSearch'
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import { TabNavigator } from 'pages/common/components/TabNavigator/TabNavigator'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 type Props = {
@@ -292,4 +292,4 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
     )
 }
 
-export default SpotlightModal
+export { SpotlightModal }

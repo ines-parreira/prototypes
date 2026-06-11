@@ -20,7 +20,7 @@ import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import { CART_ABANDONMENT } from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
-import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
+import { CampaignTemplateCustomizeRecommendationsView } from '../CampaignTemplateCustomizeRecommendationsView'
 
 const mockStore = configureMockStore()
 
@@ -53,9 +53,11 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 
 jest.mock('pages/convert/campaigns/hooks/useUtm.ts')

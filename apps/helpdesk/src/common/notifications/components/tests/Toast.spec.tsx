@@ -6,7 +6,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import type { Notification } from '../../types'
-import Toast from '../Toast'
+import { Toast } from '../Toast'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

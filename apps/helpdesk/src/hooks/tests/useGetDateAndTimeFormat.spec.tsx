@@ -12,7 +12,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserSettingType } from 'config/types/user'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 
 describe('useGetDateAndTimeFormat', () => {
     it('should test en-GB format', () => {

@@ -9,7 +9,7 @@ import {
     toLiquidSyntax,
 } from 'pages/automate/workflows/models/variables.model'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getEntitySelectionState } from 'utils/editor'
 
 type Props = {
@@ -127,4 +127,4 @@ const LiquidFilterPopover = ({
     )
 }
 
-export default LiquidFilterPopover
+export { LiquidFilterPopover }

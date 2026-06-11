@@ -35,11 +35,11 @@ jest.mock('../../../hooks/useIsAiAgentDuringDeployment', () => ({
 }))
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => jest.fn(),
+    useAppDispatch: () => jest.fn(),
 }))
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: () => ({ get: () => 'test-domain' }),
+    useAppSelector: () => ({ get: () => 'test-domain' }),
 }))
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
     useStoreActivations: () => ({

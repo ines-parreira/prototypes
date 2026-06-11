@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ContactForm } from 'models/contactForm/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getContactFormsList } from 'state/entities/contactForm/contactForms'
@@ -39,4 +39,4 @@ const useSelfServiceStandaloneContactFormChannels = (
     }, [contactForms, shopType, shopName])
 }
 
-export default useSelfServiceStandaloneContactFormChannels
+export { useSelfServiceStandaloneContactFormChannels }

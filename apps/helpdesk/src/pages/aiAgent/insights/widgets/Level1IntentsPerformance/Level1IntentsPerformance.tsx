@@ -9,10 +9,10 @@ import { MISSING_AI_AGENT_USER_ID } from 'domains/reporting/hooks/automate/utils
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { AIInsightsMetric } from 'domains/reporting/state/ui/stats/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
-import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import { AIBanner } from 'pages/common/components/AIBanner/AIBanner'
 
 export const Level1IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(

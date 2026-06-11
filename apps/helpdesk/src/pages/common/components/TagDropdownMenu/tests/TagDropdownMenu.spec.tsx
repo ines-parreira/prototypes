@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import { TagDropdownMenu } from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
 describe('TagDropdownMenu', () => {
     it('should overwrite width style', () => {

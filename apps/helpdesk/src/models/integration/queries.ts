@@ -13,11 +13,11 @@ import { Duration } from '@gorgias/toolkit'
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
 import type { Product } from 'constants/integrations/types/shopify'
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { ApiListResponse } from 'models/api/types'
 import type { FetchIntegrationProductsParams } from 'models/integration/resources'
 import { fetchIntegrationProducts } from 'models/integration/resources'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import {
     getApplications,
     getInstallationSnippet,

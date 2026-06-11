@@ -11,7 +11,7 @@ import {
     fetchTotalNumberOfSalesConversationsTrend,
     useTotalNumberOfSalesConversationsTrend,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
+import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 
 const useSuccessRateTrend = (filters: StatsFilters, timezone: string) =>
     useGenericTrend(

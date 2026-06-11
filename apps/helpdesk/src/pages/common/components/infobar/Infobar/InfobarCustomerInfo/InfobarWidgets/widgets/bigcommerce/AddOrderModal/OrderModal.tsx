@@ -18,8 +18,8 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OptionSelection } from 'models/integration/resources/bigcommerce'
 import type {
     BigCommerceCartLineItem,
@@ -40,31 +40,31 @@ import {
     IntegrationType,
     ProductModifiersChangedError,
 } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCustomerAddresses } from 'state/infobarActions/bigcommerce/createOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import { AddressesDropdown } from './AddressesDropdown'
-import useAddModifiersPopover from './components/modifiers-popover/useAddModifiersPopover'
+import { useAddModifiersPopover } from './components/modifiers-popover/useAddModifiersPopover'
 import { modifierValuesToOptionSelections } from './components/modifiers-popover/utils'
-import OrderTable from './components/order-table/OrderTable'
+import { OrderTable } from './components/order-table/OrderTable'
 import { CurrencyPickerDropdown } from './CurrencyPickerDropdown'
-import GeneralErrorPopupModal from './GeneralErrorPopupModal'
+import { GeneralErrorPopupModal } from './GeneralErrorPopupModal'
 import {
     initializeCart,
     useCheckout,
     useValidationStatus,
 } from './OrderModalHelper'
-import OrderTotals from './OrderTotals'
+import { OrderTotals } from './OrderTotals'
 import { ProductSearch } from './ProductSearch'
 import {
     addCustomLineItem,
@@ -785,7 +785,7 @@ type ConnectedProps = {
     }
 } & Pick<InfobarModalProps, 'isOpen' | 'onClose'>
 
-export default function OrderModalRenderWrapper(props: ConnectedProps) {
+export function OrderModalRenderWrapper(props: ConnectedProps) {
     const { integrationId } = useContext(IntegrationContext)
     const { customerId } = useContext(CustomerContext)
 

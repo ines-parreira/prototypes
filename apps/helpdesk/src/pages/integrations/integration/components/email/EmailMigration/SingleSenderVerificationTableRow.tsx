@@ -7,17 +7,18 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import type { SenderInformation } from 'models/singleSenderVerification/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
-import DeleteVerificationModal from '../DeleteVerificationModal'
-import EmailVerificationStatusLabel, {
+import { DeleteVerificationModal } from '../DeleteVerificationModal'
+import {
     EmailVerificationStatus,
+    EmailVerificationStatusLabel,
 } from '../EmailVerificationStatusLabel'
-import useCreateSingleSenderVerification from '../hooks/useCreateSingleSenderVerification'
-import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
-import EmailVerificationButton from './EmailVerificationButton'
-import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
+import { useCreateSingleSenderVerification } from '../hooks/useCreateSingleSenderVerification'
+import { useDeleteSingleSenderVerification } from '../hooks/useDeleteSingleSenderVerification'
+import { EmailVerificationButton } from './EmailVerificationButton'
+import { SingleSenderVerificationFormModal } from './SingleSenderVerificationFormModal'
 import { computeSingleSenderVerificationStatus } from './utils'
 
 import css from './SingleSenderVerificationTable.less'
@@ -28,7 +29,7 @@ export type Props = {
     refreshMigrationData: () => void
 }
 
-export default function SingleSenderVerificationTableRow({
+export function SingleSenderVerificationTableRow({
     integration,
     hasSubmittedBulkVerification,
     refreshMigrationData,

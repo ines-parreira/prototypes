@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 const HELP_CENTER_SETTINGS_PATH = '/app/settings/help-center'
 
@@ -28,4 +28,4 @@ const UnpublishedHelpCenterAlert = ({
     </Alert>
 )
 
-export default UnpublishedHelpCenterAlert
+export { UnpublishedHelpCenterAlert }

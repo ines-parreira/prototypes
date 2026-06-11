@@ -29,8 +29,8 @@ jest.mock('automate/notifications/utils', () => ({
     isTrialNotificationOfType: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () =>
-    jest.fn().mockImplementation((selector) => {
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn().mockImplementation((selector) => {
         if (selector === getAccountAdminsJS) {
             return mockAccountAdmins
         }
@@ -42,7 +42,7 @@ jest.mock('hooks/useAppSelector', () =>
         }
         return null
     }),
-)
+}))
 
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 const mockUseAiAgentOnboardingNotification = assumeMock(

@@ -20,7 +20,7 @@ import {
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAvatarImageType,
@@ -28,19 +28,19 @@ import {
     GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
 import type { StoreIntegration } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import ListField from 'pages/common/forms/ListField'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
-import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { ListField } from 'pages/common/forms/ListField'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
 import { Tab } from 'pages/integrations/integration/types'
 import type { RootState } from 'state/types'
 
 import { updateOrCreateIntegration } from '../../../../../../../state/integrations/actions'
 import { getIntegrations } from '../../../../../../../state/integrations/selectors'
-import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
-import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
-import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import { ChatIntegrationPreview } from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreviewContent } from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import { QuickReplies as QuickRepliesPreview } from '../GorgiasChatIntegrationPreview/QuickReplies'
+import { GorgiasChatIntegrationPreviewContainer } from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 
 import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
@@ -421,4 +421,4 @@ function GorgiasChatIntegrationQuickRepliesWithHook(props: {
     )
 }
 
-export default GorgiasChatIntegrationQuickRepliesWithHook
+export { GorgiasChatIntegrationQuickRepliesWithHook }

@@ -12,15 +12,15 @@ import {
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import CheckBox from 'pages/common/forms/CheckBox'
-import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { CountryInput } from 'pages/common/forms/CountryInput/CountryInput'
 import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
-import InputField from 'pages/common/forms/input/InputField'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { ProvinceInput } from 'pages/common/forms/ProvinceInput/ProvinceInput'
 
 import { createCustomAddress } from './utils'
 

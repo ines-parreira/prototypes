@@ -11,37 +11,37 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { UserRole } from 'config/types/user'
-import AutomateAiAgentStatsReport from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
-import AiSalesAgentSalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'
-import AutomateStatsPaywall from 'domains/reporting/pages/automate/AutomateStatsPaywall'
+import { AutomateAiAgentStatsReport } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
+import { AiSalesAgentSalesOverview } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'
+import { AutomateStatsPaywall } from 'domains/reporting/pages/automate/AutomateStatsPaywall'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
-import StatsNavbarContainer from 'domains/reporting/pages/common/StatsNavbarContainer'
-import RevenueCampaignsStats from 'domains/reporting/pages/convert/pages/CampaignsStats'
-import CampaignStatsPaywallView from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
+import { StatsNavbarContainer } from 'domains/reporting/pages/common/StatsNavbarContainer'
+import { CampaignStatsOrPaywallPage as RevenueCampaignsStats } from 'domains/reporting/pages/convert/pages/CampaignsStats'
+import { DefaultExportCampaignStatsPaywallView as CampaignStatsPaywallView } from 'domains/reporting/pages/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import { CampaignStatsFilters } from 'domains/reporting/pages/convert/providers/CampaignStatsFilters'
 import { DashboardPage } from 'domains/reporting/pages/dashboards/DashboardPage'
 import { Dashboards } from 'domains/reporting/pages/dashboards/Dashboards'
-import HelpCenterStats from 'domains/reporting/pages/help-center/pages/HelpCenterStats'
-import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
-import LiveOverview from 'domains/reporting/pages/live/overview/LiveOverview'
-import SatisfactionReport from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
+import { HelpCenterStats } from 'domains/reporting/pages/help-center/pages/HelpCenterStats'
+import { DefaultExportLiveAgents as LiveAgents } from 'domains/reporting/pages/live/agents/LiveAgents'
+import { DefaultExportLiveOverview as LiveOverview } from 'domains/reporting/pages/live/overview/LiveOverview'
+import { SatisfactionReport } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
-import SelfServiceStatsPage from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
+import { SelfServiceStatsPageWithPaywall as SelfServiceStatsPage } from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
 import { ServiceLevelAgreementsPage } from 'domains/reporting/pages/sla/ServiceLevelAgreementsPage'
-import SupportPerformanceAgentsReport from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport'
-import AutoQA from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'
+import { SupportPerformanceAgentsReport } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport'
+import { AutoQA } from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'
 import { BusiestTimesOfDays } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import { ChannelsReport } from 'domains/reporting/pages/support-performance/channels/ChannelsReport'
-import SupportPerformanceOverviewReport from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReport'
-import SupportPerformanceRevenue from 'domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenue'
-import SupportPerformanceSatisfaction from 'domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfaction'
-import AutomateIntents from 'domains/reporting/pages/ticket-insights/intents/AutomateIntents'
-import AutomateMacros from 'domains/reporting/pages/ticket-insights/macros/AutomateMacros'
+import { SupportPerformanceOverviewReport } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReport'
+import { DefaultExportSupportPerformanceRevenue as SupportPerformanceRevenue } from 'domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenue'
+import { DefaultExportSupportPerformanceSatisfaction as SupportPerformanceSatisfaction } from 'domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfaction'
+import { AutomateIntents } from 'domains/reporting/pages/ticket-insights/intents/AutomateIntents'
+import { AutomateMacros } from 'domains/reporting/pages/ticket-insights/macros/AutomateMacros'
 import { Tags } from 'domains/reporting/pages/ticket-insights/tags/Tags'
 import { SupportPerformanceTicketInsights } from 'domains/reporting/pages/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
-import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
-import VoiceAgents from 'domains/reporting/pages/voice/pages/VoiceAgents'
-import VoiceOverview from 'domains/reporting/pages/voice/pages/VoiceOverview'
+import { DefaultExportLiveVoice as LiveVoice } from 'domains/reporting/pages/voice/pages/LiveVoice'
+import { DefaultExportVoiceAgents as VoiceAgents } from 'domains/reporting/pages/voice/pages/VoiceAgents'
+import { DefaultExportVoiceOverview as VoiceOverview } from 'domains/reporting/pages/voice/pages/VoiceOverview'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import * as billingFixtures from 'fixtures/billing'
 import {
@@ -59,32 +59,29 @@ import { initialState } from 'state/billing/reducers'
 jest.mock('@repo/logging')
 const logPageMock = assumeMock(logPageChange)
 
-jest.mock(
-    'pages/LegacyPage',
-    () =>
-        ({
-            content: Content,
-            children,
-        }: {
-            content?: ComponentType<any>
-            children?: ReactNode
-        }) =>
-            Content ? <Content /> : children,
-)
-jest.mock('pages/PanelLayout', () => () => <div>PanelLayout</div>)
+jest.mock('pages/LegacyPage', () => ({
+    DefaultExportLegacyPage: ({
+        content: Content,
+        children,
+    }: {
+        content?: ComponentType<any>
+        children?: ReactNode
+    }) => (Content ? <Content /> : children),
+}))
+jest.mock('pages/PanelLayout', () => ({
+    PanelLayout: () => <div>PanelLayout</div>,
+}))
 
-jest.mock(
-    'domains/reporting/pages/DefaultStatsFilters',
-    () =>
-        ({ children }: PropsWithChildren<any>) => {
-            return (
-                <>
-                    <div>Default stats filters</div>
-                    <>{children}</>
-                </>
-            )
-        },
-)
+jest.mock('domains/reporting/pages/DefaultStatsFilters', () => ({
+    DefaultStatsFilters: ({ children }: PropsWithChildren<any>) => {
+        return (
+            <>
+                <div>Default stats filters</div>
+                <>{children}</>
+            </>
+        )
+    },
+}))
 
 const mockStore = configureMockStore()
 

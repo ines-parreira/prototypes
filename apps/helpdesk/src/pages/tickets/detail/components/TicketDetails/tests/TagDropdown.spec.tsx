@@ -11,7 +11,7 @@ import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { TagDropdownMenu } from 'tags'
 
-import TagDropdown from '../TagDropdown'
+import { TagDropdown } from '../TagDropdown'
 
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
@@ -24,23 +24,24 @@ jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
 }))
 const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
 
-jest.mock(
-    'tags/TagDropdownMenu',
-    () =>
-        ({ filterBy, onClick }: ComponentProps<typeof TagDropdownMenu>) => (
-            <div onClick={onClick}>
-                {'filterBy test: angry ' +
-                    filterBy?.({ name: 'angry' } as Tag).toString()}
-                {'filterBy test: pop ' +
-                    filterBy?.({ name: 'pop' } as Tag).toString()}
-                {'filterBy test: ai_intent ' +
-                    filterBy?.({ name: 'ai_intent' } as Tag).toString()}
-                {'filterBy test: ai_status ' +
-                    filterBy?.({ name: 'ai_status' } as Tag).toString()}
-                TagDropdownMenuMock
-            </div>
-        ),
-)
+jest.mock('tags/TagDropdownMenu', () => ({
+    TagDropdownMenu: ({
+        filterBy,
+        onClick,
+    }: ComponentProps<typeof TagDropdownMenu>) => (
+        <div onClick={onClick}>
+            {'filterBy test: angry ' +
+                filterBy?.({ name: 'angry' } as Tag).toString()}
+            {'filterBy test: pop ' +
+                filterBy?.({ name: 'pop' } as Tag).toString()}
+            {'filterBy test: ai_intent ' +
+                filterBy?.({ name: 'ai_intent' } as Tag).toString()}
+            {'filterBy test: ai_status ' +
+                filterBy?.({ name: 'ai_status' } as Tag).toString()}
+            TagDropdownMenuMock
+        </div>
+    ),
+}))
 
 describe('<TagDropdown />', () => {
     const props = {

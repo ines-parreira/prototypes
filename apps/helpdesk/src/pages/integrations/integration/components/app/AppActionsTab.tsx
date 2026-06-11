@@ -9,11 +9,11 @@ import {
     aiAgentRoutes,
     getAiAgentNavigationRoutes,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import Loader from 'pages/common/components/Loader/Loader'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
-import AiAgentUpsellBanner from './AiAgentUpsellBanner'
-import AppActionsStepsTable from './AppActionsStepsTable'
+import { AiAgentUpsellBanner } from './AiAgentUpsellBanner'
+import { AppActionsStepsTable } from './AppActionsStepsTable'
 import { useAppActionSteps } from './hooks/useAppActionSteps'
 
 const LEARN_MORE_URL =
@@ -25,7 +25,7 @@ type Props = {
     appIcon?: string
 }
 
-export default function AppActionsTab({ appId, appName, appIcon }: Props) {
+export function AppActionsTab({ appId, appName, appIcon }: Props) {
     const shopifyIntegrations = useStoreIntegrations([IntegrationType.Shopify])
     const firstShopName = shopifyIntegrations[0]
         ? getShopNameFromStoreIntegration(shopifyIntegrations[0])

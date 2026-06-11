@@ -6,14 +6,17 @@ import classnames from 'classnames'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { states } from 'fixtures/states'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import InputField from 'pages/common/forms/input/InputField'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import SelectInputBox, { SelectInputBoxContext } from '../input/SelectInputBox'
-import type TextInput from '../input/TextInput'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
+    SelectInputBoxContext,
+} from '../input/SelectInputBox'
+import type { DefaultExportTextInput as TextInput } from '../input/TextInput'
 
 import css from '../ProvinceInput/ProvinceInput.less'
 
@@ -130,4 +133,4 @@ const ProvinceInput = ({
     )
 }
 
-export default ProvinceInput
+export { ProvinceInput }

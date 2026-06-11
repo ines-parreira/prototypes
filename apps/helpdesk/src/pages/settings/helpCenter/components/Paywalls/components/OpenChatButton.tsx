@@ -14,4 +14,4 @@ const OpenChatButton = ({ label }: Props) => {
     )
 }
 
-export default OpenChatButton
+export { OpenChatButton }

@@ -10,7 +10,7 @@ import { getCampaignStateLabelAndColor } from 'AIJourney/utils'
 
 import css from './CampaignStateBadge.less'
 
-export default function CampaignStateBadge({
+export function CampaignStateBadge({
     state,
     scheduledDatetime,
 }: {

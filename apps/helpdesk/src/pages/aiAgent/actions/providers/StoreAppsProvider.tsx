@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 import React, { useEffect, useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetStoreApps } from 'models/workflows/queries'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-import useAddStoreApp from '../hooks/useAddStoreApp'
+import { useAddStoreApp } from '../hooks/useAddStoreApp'
 import type { StoreAppsContextType } from './StoreAppsContext'
-import StoreAppsContext from './StoreAppsContext'
+import { StoreAppsContext } from './StoreAppsContext'
 
 type Props = {
     storeName: string
@@ -82,4 +82,4 @@ const StoreAppsProvider = ({ storeName, storeType, children }: Props) => {
     )
 }
 
-export default StoreAppsProvider
+export { StoreAppsProvider }

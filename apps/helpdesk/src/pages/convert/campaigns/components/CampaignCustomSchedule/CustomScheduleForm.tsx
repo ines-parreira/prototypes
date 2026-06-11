@@ -1,6 +1,6 @@
-import IconInput from 'pages/common/forms/input/IconInput'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { CustomScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 
 import css from './CustomScheduleForm.less'
@@ -53,4 +53,4 @@ const CustomScheduleForm: React.FC<Props> = ({
     )
 }
 
-export default CustomScheduleForm
+export { CustomScheduleForm }

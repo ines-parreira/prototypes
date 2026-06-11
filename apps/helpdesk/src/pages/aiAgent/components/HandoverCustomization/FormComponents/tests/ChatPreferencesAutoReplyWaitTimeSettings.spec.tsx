@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { GorgiasChatAutoResponderReply } from 'models/integration/types'
 
-import ChatPreferencesAutoReplyWaitTimeSettings from '../ChatPreferencesAutoReplyWaitTimeSettings'
+import { ChatPreferencesAutoReplyWaitTimeSettings } from '../ChatPreferencesAutoReplyWaitTimeSettings'
 
 describe('ChatPreferencesAutoReplyWaitTimeSettings', () => {
     const defaultProps = {

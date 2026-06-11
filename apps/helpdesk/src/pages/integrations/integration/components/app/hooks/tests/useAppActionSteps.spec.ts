@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 
 import { useAppActionSteps } from '../useAppActionSteps'
 

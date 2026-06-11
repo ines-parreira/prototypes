@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import NoStoresPage from '../NoStoresPage'
+import { NoStoresPage } from '../NoStoresPage'
 
 const renderComponent = () => {
     return render(<NoStoresPage />)

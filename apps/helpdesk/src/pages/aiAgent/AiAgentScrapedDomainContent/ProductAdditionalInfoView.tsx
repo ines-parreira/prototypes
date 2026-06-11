@@ -13,13 +13,13 @@ import {
     AdditionalInfoObjectType,
     AdditionalInfoSourceType,
 } from 'models/ecommerce/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { useUnsavedChangesPrompt } from 'pages/common/components/useUnsavedChangesPrompt'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 import { ErrorMessage } from 'pages/convert/settings/components/styled'
 import { contentStateFromTextOrHTML, convertToHTML } from 'utils/editor'
 
@@ -295,4 +295,4 @@ const ProductAdditionalInfoView = ({
     )
 }
 
-export default ProductAdditionalInfoView
+export { ProductAdditionalInfoView }

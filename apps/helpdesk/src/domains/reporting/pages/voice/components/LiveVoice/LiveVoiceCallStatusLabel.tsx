@@ -14,7 +14,7 @@ type Props = {
     status: VoiceCallSummary['status']
 }
 
-export default function LiveVoiceCallStatusLabel({ direction, status }: Props) {
+export function LiveVoiceCallStatusLabel({ direction, status }: Props) {
     const isOutbound = direction === VoiceCallDirection.Outbound
 
     if (isOutbound && isLiveCallRinging(status)) {

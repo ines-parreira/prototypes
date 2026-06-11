@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Integration from '../Integration'
+import { Integration } from '../Integration'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

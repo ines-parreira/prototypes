@@ -76,4 +76,4 @@ const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
     return defaultConfig
 }
 
-export default createInitialConfig
+export { createInitialConfig }

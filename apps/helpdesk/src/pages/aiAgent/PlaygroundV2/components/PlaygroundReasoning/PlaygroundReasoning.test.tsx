@@ -26,6 +26,12 @@ import {
 jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
+jest.mock('react-markdown', () => ({
+    __esModule: true,
+    default: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+}))
 jest.mock('../../contexts/CoreContext', () => ({
     useCoreContext: jest.fn(() => ({ useV3: false })),
 }))

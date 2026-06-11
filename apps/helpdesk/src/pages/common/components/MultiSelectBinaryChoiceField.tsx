@@ -140,4 +140,4 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
     }
 }
 
-export default MultiSelectBinaryChoiceField
+export { MultiSelectBinaryChoiceField }

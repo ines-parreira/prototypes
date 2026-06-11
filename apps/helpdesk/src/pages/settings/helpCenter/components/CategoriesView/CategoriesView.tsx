@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ArticleTemplate, HelpCenter } from 'models/helpCenter/types'
 import { Banner } from 'pages/common/components/Banner'
 import type { CategoriesTableProps } from 'pages/settings/helpCenter/components/CategoriesTable'
@@ -22,7 +22,7 @@ import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { useSearchContext } from '../../providers/SearchContext'
 import type { CategoriesPositionsType } from '../CategoriesTable/CategoriesTable'
 import { CategoriesTableSkeleton } from '../CategoriesTableSkeleton'
-import ArticleLandingPage from './components/ArticleLandingPage'
+import { ArticleLandingPage } from './components/ArticleLandingPage'
 
 import css from './CategoriesView.less'
 

@@ -5,7 +5,7 @@ import { act } from '@testing-library/react'
 
 import { createVerification } from 'models/singleSenderVerification/resources'
 
-import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
+import { useBulkCreateSingleSenderVerification } from '../hooks/useBulkCreateSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 

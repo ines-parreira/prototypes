@@ -3,9 +3,9 @@ import { isDesktopDevice } from '@repo/utils'
 import { isDeviceReady } from '@repo/voice'
 import { act } from '@testing-library/react'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useHasPhone from 'hooks/useHasPhone'
-import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useHasPhone } from 'hooks/useHasPhone'
+import { useMicrophonePermissions } from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 import { usePlaceCallButton } from '../usePlaceCallButton'
 

@@ -11,9 +11,9 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
-import HandoverCustomizationChatSettingsDrawer from './FormComponents/HandoverCustomizationChatSettingsDrawer'
+import { HandoverCustomizationChatSettingsDrawer } from './FormComponents/HandoverCustomizationChatSettingsDrawer'
 
 type Props = {
     shopName: string

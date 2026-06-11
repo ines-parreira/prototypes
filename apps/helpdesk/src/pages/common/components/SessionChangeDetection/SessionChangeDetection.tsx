@@ -3,9 +3,9 @@ import { Duration } from '@gorgias/toolkit'
 
 import { clearPersistedQueryCache } from '@repo/api-resources'
 
-import Modal from '../modal/Modal'
-import ModalBody from '../modal/ModalBody'
-import ModalHeader from '../modal/ModalHeader'
+import { DefaultExportModal as Modal } from '../modal/Modal'
+import { DefaultExportModalBody as ModalBody } from '../modal/ModalBody'
+import { ModalHeader } from '../modal/ModalHeader'
 import { logoutUser } from './logoutUser'
 
 const AUTO_LOGOUT_SECONDS = 5
@@ -13,7 +13,7 @@ const AUTO_LOGOUT_SECONDS = 5
 export const LOGOUT_EXPLANATION = `You will be redirected to the login screen in ${AUTO_LOGOUT_SECONDS}s`
 export const USER_CHANGE_EXPLANATION = `The page will refresh in ${AUTO_LOGOUT_SECONDS}s`
 
-export default function SessionChangeDetection() {
+export function SessionChangeDetection() {
     const [isOpen, setIsOpen] = useState(false)
     const [isLogout, setIsLogout] = useState(false)
 

@@ -4,11 +4,14 @@ import React from 'react'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import FileField from 'pages/common/forms/FileField'
+import { FileFieldContainer as FileField } from 'pages/common/forms/FileField'
 
-import CardEditForm, * as CardEditExports from '../CardEditForm'
+import { CardEdit as CardEditForm } from '../CardEditForm'
+import * as CardEditExports from '../CardEditForm'
 
-jest.mock('pages/common/forms/FileField', () => jest.fn(() => <div />))
+jest.mock('pages/common/forms/FileField', () => ({
+    FileFieldContainer: jest.fn(() => <div />),
+}))
 
 const mockedFileField = assumeMock(FileField)
 

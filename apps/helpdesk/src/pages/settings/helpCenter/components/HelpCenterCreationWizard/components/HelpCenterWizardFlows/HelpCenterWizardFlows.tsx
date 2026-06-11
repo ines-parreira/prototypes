@@ -6,12 +6,13 @@ import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
-import WorkflowsFeatureList from 'pages/automate/common/components/WorkflowsFeatureList'
+import { WorkflowsFeatureList } from 'pages/automate/common/components/WorkflowsFeatureList'
 import type { ChannelLanguage } from 'pages/automate/common/types'
-import useWorkflowChannelSupport, {
+import {
+    useWorkflowChannelSupport,
     WorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 
 import { useHelpCenterFlows } from '../../hooks/useHelpCenterFlows'
 import { AnimatedFadeInOut } from '../AnimatedFadeInOut/AnimatedFadeInOut'
@@ -141,4 +142,4 @@ const HelpCenterWizardFlows = ({
     )
 }
 
-export default HelpCenterWizardFlows
+export { HelpCenterWizardFlows }

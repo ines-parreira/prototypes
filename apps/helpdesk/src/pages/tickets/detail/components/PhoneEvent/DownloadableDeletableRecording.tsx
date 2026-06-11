@@ -6,9 +6,9 @@ import type { AxiosError } from 'axios'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole, replaceAttachmentURL } from 'utils'
 import { saveFileAsDownloaded } from 'utils/file'
@@ -184,4 +184,4 @@ const DownloadableDeletableRecording = ({
     )
 }
 
-export default DownloadableDeletableRecording
+export { DownloadableDeletableRecording }

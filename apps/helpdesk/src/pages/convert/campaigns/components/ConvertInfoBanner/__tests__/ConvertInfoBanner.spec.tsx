@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ConvertInfoBanner from '../ConvertInfoBanner'
+import { ConvertInfoBanner } from '../ConvertInfoBanner'
 
 describe('<ConvertInfoBanner>', () => {
     it('renders component', () => {

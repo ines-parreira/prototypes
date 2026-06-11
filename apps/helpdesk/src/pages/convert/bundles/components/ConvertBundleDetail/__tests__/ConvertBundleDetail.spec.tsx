@@ -7,7 +7,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 
-import ConvertBundleDetail from '../ConvertBundleDetail'
+import { ConvertBundleDetail } from '../ConvertBundleDetail'
 
 describe('ConvertBundleDetail', () => {
     beforeEach(() => {})

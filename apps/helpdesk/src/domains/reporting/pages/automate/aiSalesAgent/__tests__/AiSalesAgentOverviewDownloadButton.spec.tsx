@@ -4,10 +4,11 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import AiSalesAgentOverviewDownloadButton, {
+import {
+    AiSalesAgentOverviewDownloadButton,
     DOWNLOAD_DATA_BUTTON_LABEL,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
-import useAiSalesAgentOverviewReportData from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
+import { useAiSalesAgentOverviewReportData } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
 import { saveZippedFiles } from 'utils/file'
 
 jest.mock('@repo/logging')

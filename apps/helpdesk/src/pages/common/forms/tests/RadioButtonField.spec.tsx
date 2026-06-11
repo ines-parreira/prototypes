@@ -2,10 +2,12 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 
-import RadioButtonField from '../RadioButtonField'
-import RadioFieldSet from '../RadioFieldSet'
+import { RadioButtonField } from '../RadioButtonField'
+import { RadioFieldSet } from '../RadioFieldSet'
 
-jest.mock('pages/common/forms/RadioFieldSet', () => jest.fn(() => null))
+jest.mock('pages/common/forms/RadioFieldSet', () => ({
+    RadioFieldSet: jest.fn(() => null),
+}))
 
 const RadioFieldSetMock = assumeMock(RadioFieldSet)
 

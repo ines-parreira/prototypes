@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { testimonial as testimonialFixture } from 'fixtures/paywall'
 
-import Paywall, { PaywallTheme, UpgradeType } from '../Paywall'
+import { Paywall, PaywallTheme, UpgradeType } from '../Paywall'
 
 jest.mock('react-images', () => {
     return ({

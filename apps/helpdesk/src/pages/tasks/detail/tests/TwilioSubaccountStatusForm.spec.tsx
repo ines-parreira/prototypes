@@ -7,8 +7,9 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { toast } from '@gorgias/axiom'
 
-import TwilioSubaccountStatusForm, {
+import {
     TwilioSubaccountStatus,
+    TwilioSubaccountStatusForm,
 } from '../TwilioSubaccountStatusForm'
 
 const mockedServer = new MockAdapter(client)

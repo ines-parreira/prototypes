@@ -5,13 +5,13 @@ import { produce } from 'immer'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import {
     DAYS_OPTIONS,
     DEFAULT_SCHEDULE_VALUE,
     MAX_ENTRIES,
 } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
-import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
+import { CustomScheduleForm } from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
 import type { CustomScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 
 import css from './CampaignCustomSchedule.less'
@@ -113,4 +113,4 @@ const CampaignCustomSchedule: React.FC<Props> = ({
     )
 }
 
-export default CampaignCustomSchedule
+export { CampaignCustomSchedule }

@@ -10,7 +10,7 @@ import {
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { IntlDisplayNames } from 'constants/languages'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTicket } from 'state/ticket/selectors'
 
 import { TranslationLimit } from '../TranslationLimit'

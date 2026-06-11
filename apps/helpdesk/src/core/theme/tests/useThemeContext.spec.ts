@@ -3,13 +3,13 @@ import { renderHook } from '@repo/testing'
 import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 import type { ThemeName } from '@gorgias/design-tokens'
 
-import useActualTheme from '../useActualTheme'
-import useThemeContext from '../useThemeContext'
+import { useActualTheme } from '../useActualTheme'
+import { useThemeContext } from '../useThemeContext'
 
 const useActualThemeMock = useActualTheme as jest.Mock
 const realUseActualTheme = jest.requireActual<{
-    default: typeof useActualTheme
-}>('core/theme/useActualTheme.ts').default
+    useActualTheme: typeof useActualTheme
+}>('core/theme/useActualTheme.ts').useActualTheme
 
 describe('useThemeContext', () => {
     let matchMediaMock: jest.SpyInstance

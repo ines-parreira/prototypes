@@ -5,7 +5,7 @@ import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import MetafieldsContainer from '../MetafieldsContainer'
+import { MetafieldsContainer } from '../MetafieldsContainer'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

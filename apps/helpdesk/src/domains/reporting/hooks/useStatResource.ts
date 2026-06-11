@@ -15,9 +15,9 @@ import {
     fetchStatStarted,
 } from 'domains/reporting/state/ui/stats/fetchingMapSlice'
 import type { StatsState as StatsUIState } from 'domains/reporting/state/ui/stats/reducer'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useCancellableRequest from 'hooks/useCancellableRequest'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import { statFetched } from 'state/entities/stats/actions'
 import type { StatsState } from 'state/entities/stats/types'
 import { notify } from 'state/notifications/actions'
@@ -35,7 +35,7 @@ type Params = {
     fetchDebounceDelay?: number
 }
 
-export default function useStatResource<T>({
+export function useStatResource<T>({
     statName,
     resourceName,
     statsFilters,

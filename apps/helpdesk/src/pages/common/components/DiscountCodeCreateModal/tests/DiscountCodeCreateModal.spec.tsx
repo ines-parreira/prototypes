@@ -18,7 +18,7 @@ import {
 } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import DiscountCodeCreateModal from '../DiscountCodeCreateModal'
+import { DefaultExportDiscountCodeCreateModal as DiscountCodeCreateModal } from '../DiscountCodeCreateModal'
 import { setupValidModalParameters } from '../utils'
 
 jest.mock('models/integration/queries')

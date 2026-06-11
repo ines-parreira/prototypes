@@ -13,4 +13,4 @@ const ViewsReducer = createReducer<ViewsState>(initialState, (builder) =>
     }),
 )
 
-export default ViewsReducer
+export { ViewsReducer }

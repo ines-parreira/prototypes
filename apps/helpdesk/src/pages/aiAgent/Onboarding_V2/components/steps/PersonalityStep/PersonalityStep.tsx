@@ -9,9 +9,9 @@ import { z } from 'zod'
 
 import { Box } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
-import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
+import { AiAgentChatConversation } from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
 import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { DiscountStrategySection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategySection'
@@ -19,7 +19,7 @@ import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/Pe
 import { PurchaseGuidanceSection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PurchaseGuidanceSection'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import type { PreviewId } from 'pages/aiAgent/Onboarding_V2/constants/previewConstants'
-import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
+import { useCheckOnboardingCompleted } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
@@ -37,7 +37,7 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding_V2/settings'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreview } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 const personalitySchema = z

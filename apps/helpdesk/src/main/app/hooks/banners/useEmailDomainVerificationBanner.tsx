@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     canIntegrationDomainBeVerified,
     isOutboundDomainVerified,

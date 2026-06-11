@@ -6,8 +6,8 @@ import { updateRecord } from '@repo/utils'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type {
     CardMeta,
@@ -18,9 +18,9 @@ import type {
     Template,
 } from 'models/widget/types'
 import { isListTemplate, isSourceRecord } from 'models/widget/types'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { DragWrapper } from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import { DefaultExportCustomActions as CustomActions } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {
     hasCustomAction,
     isSimpleTemplateWidget,
@@ -39,7 +39,7 @@ import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import UICard from '../components/views'
+import { Card as UICard } from '../components/views'
 import { canDrop } from '../helpers/canDrop'
 import { isDefaultOpen } from '../helpers/isDefaultOpen'
 import type { CardEditFormState, HiddenField } from '../types'
@@ -73,7 +73,7 @@ export const cardMetaFields: Array<keyof Omit<CardMeta, 'custom'>> = [
 ]
 export const listMetaFields: Array<keyof ListMeta> = ['limit', 'orderBy']
 
-export default function Card(props: Props) {
+export function Card(props: Props) {
     const {
         extensions,
         editionHiddenFields,

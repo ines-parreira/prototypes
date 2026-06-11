@@ -91,10 +91,7 @@ export async function fetchMetricTrend<
         })
 }
 
-export default function useMetricTrend<
-    TCube extends Cubes,
-    TMeta extends ScopeMeta,
->(
+export function useMetricTrend<TCube extends Cubes, TMeta extends ScopeMeta>(
     currentPeriodQuery?: ReportingQuery<TCube>,
     prevPeriodQuery?: ReportingQuery<TCube>,
     currentPeriodQueryV2?: BuiltQuery<TMeta>,

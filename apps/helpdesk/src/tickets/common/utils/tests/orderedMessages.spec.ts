@@ -1,4 +1,4 @@
-import orderedMessages from '../orderedMessages'
+import { orderedMessages } from '../orderedMessages'
 
 describe('orderedMessages', () => {
     it('order messages', () => {

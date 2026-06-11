@@ -5,7 +5,7 @@ import { useSafeContext } from '@gorgias/toolkit-react'
 
 import type { Integration } from 'models/integration/types'
 
-import useStoresWithMaps from './hooks/useStoresWithMaps'
+import { useStoresWithMaps } from './hooks/useStoresWithMaps'
 import { sortStoresByName } from './StoreManagementProvider.helpers'
 import type { StoreWithAssignedChannels } from './types'
 

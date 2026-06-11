@@ -2,8 +2,8 @@ import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import {
@@ -12,9 +12,9 @@ import {
 } from 'state/ui/ticketAIAgentFeedback'
 
 import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
-import AIAgentMessageFeedback from './AIAgentMessageFeedback'
-import AIAgentTicketFeedback from './AIAgentTicketFeedback'
-import useAiAgentMessageFeedback from './hooks/useAiAgentMessageFeedback'
+import { AIAgentMessageFeedback } from './AIAgentMessageFeedback'
+import { AIAgentTicketFeedback } from './AIAgentTicketFeedback'
+import { useAiAgentMessageFeedback } from './hooks/useAiAgentMessageFeedback'
 import { ActionStatus } from './types'
 import { isTrialMessageFromAIAgent } from './utils'
 
@@ -134,4 +134,4 @@ const AIAgentFeedbackBar = () => {
     )
 }
 
-export default AIAgentFeedbackBar
+export { AIAgentFeedbackBar }

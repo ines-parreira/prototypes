@@ -9,7 +9,7 @@ export type Options = {
     integration: Map<any, any>
 }
 
-export default function useIntegrationPageViewLogEvent(
+export function useIntegrationPageViewLogEvent(
     event: SegmentEvent,
     options: Options,
 ) {

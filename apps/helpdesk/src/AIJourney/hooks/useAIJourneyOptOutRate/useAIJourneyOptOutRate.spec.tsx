@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 
 import { useAIJourneyOptOutRate } from './useAIJourneyOptOutRate'

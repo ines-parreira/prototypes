@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 
 import { ControlButton, Controls, useReactFlow } from '@xyflow/react'
 
-import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
+import { FitViewIcon } from 'pages/automate/common/components/FitViewIcon'
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
 
 type Props = {
@@ -32,4 +32,4 @@ const VisualBuilderControls = ({ isMiniMapHidden }: Props) => {
     )
 }
 
-export default VisualBuilderControls
+export { VisualBuilderControls }

@@ -8,9 +8,9 @@ import { IntegrationType } from '../../../../../models/integration/types'
 import { getCurrentAccountFeatures } from '../../../../../state/currentAccount/selectors'
 import { AccountFeature } from '../../../../../state/currentAccount/types'
 import type { RootState } from '../../../../../state/types'
-import IntegrationList from '../IntegrationList'
-import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
-import TwitterIntegrationListItem from './TwitterIntegrationListItem'
+import { DefaultExportIntegrationList as IntegrationList } from '../IntegrationList'
+import { IntegrationListLimitAlert } from '../IntegrationListLimitAlert'
+import { TwitterIntegrationListItem } from './TwitterIntegrationListItem'
 
 import css from './TwitterIntegrationList.less'
 
@@ -82,4 +82,6 @@ const mapStateToProps = (state: RootState) => ({
 
 const connector = connect(mapStateToProps)
 
-export default connector(TwitterIntegrationList)
+const DefaultExportTwitterIntegrationList = connector(TwitterIntegrationList)
+
+export { DefaultExportTwitterIntegrationList }

@@ -4,9 +4,9 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { Button } from '@gorgias/axiom'
 
-import GroupAddon from './GroupAddon'
-import InputGroup from './InputGroup'
-import TextInput from './TextInput'
+import { GroupAddon } from './GroupAddon'
+import { InputGroup } from './InputGroup'
+import { DefaultExportTextInput as TextInput } from './TextInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/Addon',

@@ -11,7 +11,7 @@ import type {
     IntegrationDataItem,
 } from 'models/integration/types'
 import { bigcommerceDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import { ProductSearchInput } from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import searchInputCss from 'pages/common/forms/SearchInput/SearchInput.less'
 
 import { AddCustomProductPopover } from './AddCustomProductPopover'

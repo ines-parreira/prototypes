@@ -1,5 +1,5 @@
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     ApplyExternalTemplateActionArguments,
     WhatsAppMessageTemplate,
@@ -11,8 +11,8 @@ import {
 } from 'state/newMessage/selectors'
 import { mergeActionsJS } from 'state/ticket/utils'
 
-import WhatsAppMessageTemplateBody from './WhatsAppMessageTemplateBody'
-import WhatsAppMessageTemplateHeader from './WhatsAppMessageTemplateHeader'
+import { WhatsAppMessageTemplateBody } from './WhatsAppMessageTemplateBody'
+import { WhatsAppMessageTemplateHeader } from './WhatsAppMessageTemplateHeader'
 
 import css from './WhatsAppMessageTemplateMessage.less'
 
@@ -21,7 +21,7 @@ type Props = {
     isPreview?: boolean
 }
 
-export default function WhatsAppMessageTemplateMessage({
+export function WhatsAppMessageTemplateMessage({
     template,
     isPreview = true,
 }: Props) {

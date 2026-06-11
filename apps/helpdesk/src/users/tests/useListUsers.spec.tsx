@@ -13,11 +13,11 @@ import {
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
 import { handleError } from 'hooks/agents/errorHandler'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchAgents } from 'models/agents/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useListUsers from '../useListUsers'
+import { useListUsers } from '../useListUsers'
 
 const queryClient = mockQueryClient()
 

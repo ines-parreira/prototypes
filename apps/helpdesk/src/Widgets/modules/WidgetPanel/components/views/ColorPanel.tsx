@@ -10,7 +10,7 @@ type Props = {
     children?: ReactNode
 }
 
-export default function ColorPanel({ children, accentColor }: Props) {
+export function ColorPanel({ children, accentColor }: Props) {
     return (
         <div
             className={classnames(css.wrapper)}

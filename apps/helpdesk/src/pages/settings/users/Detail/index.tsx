@@ -8,4 +8,4 @@ function Detail() {
     return isNewUsersListEnabled ? <DetailV2 /> : <LegacyDetail />
 }
 
-export default Detail
+export { Detail }

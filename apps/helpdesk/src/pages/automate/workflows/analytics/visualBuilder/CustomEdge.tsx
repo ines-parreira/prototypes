@@ -1,7 +1,7 @@
 import type { EdgeProps } from '@xyflow/react'
 import { BaseEdge, getSmoothStepPath } from '@xyflow/react'
 
-export default function CustomEdge(props: EdgeProps) {
+export function CustomEdge(props: EdgeProps) {
     const { sourceX, sourceY, targetX, targetY } = props
     const [centerX, centerY] = getEdgeCenter({
         sourceX,

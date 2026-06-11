@@ -10,7 +10,7 @@ const panelConfig = {
     maxSize: Infinity,
 }
 
-export default function TicketEmptyPanel() {
+export function TicketEmptyPanel() {
     return (
         <Panel name="ticket-empty" config={panelConfig}>
             <EmptyTicket className={css.empty} />

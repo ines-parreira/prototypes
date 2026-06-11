@@ -13,7 +13,7 @@ import type {
 import { useListCustomFields } from '@gorgias/helpdesk-queries'
 import { ObjectType } from '@gorgias/helpdesk-types'
 
-import getWrappedElementCount from 'common/utils/getWrappedElementCount'
+import { getWrappedElementCount } from 'common/utils/getWrappedElementCount'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { getShortValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
@@ -37,7 +37,7 @@ type TicketFieldsProps = {
 
 const ID_PREFIX = 'expand-tags-badge-'
 
-export default function TicketFields({
+export function TicketFields({
     fieldValues: maybeFieldValues,
     ticket,
     className,

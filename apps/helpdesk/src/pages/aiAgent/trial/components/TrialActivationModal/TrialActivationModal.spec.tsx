@@ -32,7 +32,9 @@ const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
 })
 
-const mockUseAppSelector = jest.requireMock('hooks/useAppSelector').default
+const mockUseAppSelector = jest.requireMock(
+    'hooks/useAppSelector',
+).useAppSelector
 const mockUseGetTrials = jest.requireMock('models/aiAgent/queries').useGetTrials
 const mockUseAiAgentUpgradePlan = jest.requireMock(
     'hooks/aiAgent/useAiAgentUpgradePlan',

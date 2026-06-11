@@ -5,8 +5,9 @@ import {
     fetchCommunicationSkillsTrend,
     useCommunicationSkillsTrend,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useCommunicationSkillsTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { communicationSkillsQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/communicationSkillsQueryFactory'
 import { communicationSkillsQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'

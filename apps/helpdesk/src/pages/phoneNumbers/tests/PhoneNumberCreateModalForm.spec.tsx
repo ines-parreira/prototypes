@@ -12,7 +12,7 @@ import type { PhoneNumber } from 'models/phoneNumber/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import PhoneNumberCreateModalForm from '../PhoneNumberCreateModalForm'
+import { PhoneNumberCreateModalForm } from '../PhoneNumberCreateModalForm'
 import * as phoneNumberUtils from '../utils'
 
 const QueryClientProvider = mockQueryClientProvider().QueryClientProvider

@@ -17,12 +17,16 @@ import { RulesList } from '../RulesList'
 
 jest.mock('../../../../models/rule/resources')
 jest.mock('../../../../state/entities/rules/actions')
-jest.mock('../accountRules/RulesList', () => () => {
-    return <div data-testid="rules-list"></div>
-})
-jest.mock('../components/CreateRuleFooter', () => () => {
-    return <div data-testid="create-rule-footer"></div>
-})
+jest.mock('../accountRules/RulesList', () => ({
+    RulesList: () => {
+        return <div data-testid="rules-list"></div>
+    },
+}))
+jest.mock('../components/CreateRuleFooter', () => ({
+    CreateRuleFooter: () => {
+        return <div data-testid="create-rule-footer"></div>
+    },
+}))
 
 const createRuleFixtures = (length: number) => {
     return Array.from({ length }, (_, i) => ({

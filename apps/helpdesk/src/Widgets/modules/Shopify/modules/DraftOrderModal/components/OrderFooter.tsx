@@ -10,14 +10,14 @@ import { Col, Container, Row } from 'reactstrap'
 
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { onPayloadChange } from 'state/infobarActions/shopify/createOrder/actions'
 import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
 import type { RootState } from 'state/types'
-import OrderTotals from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/OrderTotals'
+import { DefaultExportOrderTotals as OrderTotals } from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/OrderTotals'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './OrderFooter.less'
@@ -190,7 +190,9 @@ const mapDispatchToProps = {
     onPayloadChange,
 }
 
-export default connect(
+const DefaultExportOrderFooter = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(OrderFooterComponent)
+
+export { DefaultExportOrderFooter }

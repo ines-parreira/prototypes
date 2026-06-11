@@ -25,7 +25,7 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import type { RootState } from 'state/types'
 
-import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
+import { ConvertSimplifiedEditorModal } from '../ConvertSimplifiedEditorModal'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('models/convert/campaign/queries')

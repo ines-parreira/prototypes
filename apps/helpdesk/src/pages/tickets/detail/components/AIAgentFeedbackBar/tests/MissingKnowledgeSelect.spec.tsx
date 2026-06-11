@@ -4,14 +4,14 @@ import { useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsFeedbackMutating } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
 import type { KnowledgeSourceType } from '../constants'
-import MissingKnowledgeSelect, { KnowledgeTag } from '../MissingKnowledgeSelect'
+import { KnowledgeTag, MissingKnowledgeSelect } from '../MissingKnowledgeSelect'
 import type { KnowledgeResource, SuggestedResource } from '../types'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { getResourceMetadata } from '../useEnrichKnowledgeFeedbackData/utils'
@@ -45,37 +45,44 @@ const useGetGuidancesAvailableActionsMocked = assumeMock(
 )
 
 jest.mock('custom-fields/components/MultiLevelSelect', () => {
-    return jest.fn(({ onChange, choices, onFocus, isDisabled }) => (
-        <>
-            <button
-                onClick={() => onChange?.([choices[0]])}
-                disabled={isDisabled}
-            >
-                Select First
-            </button>
-            <button
-                data-testid="select-add-value"
-                onClick={() => onChange('new-value')}
-            >
-                Add Value
-            </button>
-            <button
-                data-testid="select-multiple"
-                onClick={() =>
-                    onChange?.([
-                        choices[0],
-                        ...(choices.length > 1 ? [choices[1]] : []),
-                    ])
-                }
-            >
-                Select Multiple
-            </button>
-            <button data-testid="deselect-all" onClick={() => onChange?.([])}>
-                Deselect All
-            </button>
-            <button onClick={onFocus}>Focus Input</button>
-        </>
-    ))
+    return {
+        MultiLevelSelect: jest.fn(
+            ({ onChange, choices, onFocus, isDisabled }) => (
+                <>
+                    <button
+                        onClick={() => onChange?.([choices[0]])}
+                        disabled={isDisabled}
+                    >
+                        Select First
+                    </button>
+                    <button
+                        data-testid="select-add-value"
+                        onClick={() => onChange('new-value')}
+                    >
+                        Add Value
+                    </button>
+                    <button
+                        data-testid="select-multiple"
+                        onClick={() =>
+                            onChange?.([
+                                choices[0],
+                                ...(choices.length > 1 ? [choices[1]] : []),
+                            ])
+                        }
+                    >
+                        Select Multiple
+                    </button>
+                    <button
+                        data-testid="deselect-all"
+                        onClick={() => onChange?.([])}
+                    >
+                        Deselect All
+                    </button>
+                    <button onClick={onFocus}>Focus Input</button>
+                </>
+            ),
+        ),
+    }
 })
 
 // Create a more complex enriched data mock with multiple items

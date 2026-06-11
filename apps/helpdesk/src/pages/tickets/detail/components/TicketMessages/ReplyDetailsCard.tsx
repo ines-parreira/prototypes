@@ -1,13 +1,13 @@
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import type { Actor, ReplyMetaTicketMessage, Source } from 'models/ticket/types'
-import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+import { TicketMessageEmbeddedCard } from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 
 type Props = {
     reply: ReplyMetaTicketMessage
 }
 
-export default function ReplyDetailsCard({ reply }: Props) {
+export function ReplyDetailsCard({ reply }: Props) {
     const { isSuccess, data } = useGetTicketMessage(
         reply.ticket_id,
         reply.ticket_message_id,

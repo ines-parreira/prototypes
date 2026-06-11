@@ -2,10 +2,10 @@ import { Form } from '@repo/forms'
 
 import type { Magento2Integration } from 'models/integration/types'
 
-import ActionButtons from './ActionButtons'
+import { ActionButtons } from './ActionButtons'
 import { useMagentoSettings } from './hooks/useMagentoSettings'
 import { InformationForm } from './InformationForm'
-import UnsavedChangesContainer from './UnsavedChangesContainer'
+import { UnsavedChangesContainer } from './UnsavedChangesContainer'
 
 import css from './BaseForm.less'
 

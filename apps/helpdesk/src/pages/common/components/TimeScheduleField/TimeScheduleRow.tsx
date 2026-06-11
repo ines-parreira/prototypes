@@ -6,7 +6,7 @@ import { get } from 'lodash'
 
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
-import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
+import { SelectDropdownField } from 'pages/common/forms/SelectDropdownField'
 import {
     ALWAYS_ON_OPTION_LABEL,
     DAYS_OPTIONS,
@@ -15,7 +15,7 @@ import {
     EVERYDAY_OPTION_VALUE,
 } from 'pages/settings/businessHours/constants'
 
-import TimeInputField from './TimeInputField'
+import { TimeInputField } from './TimeInputField'
 
 import css from './TimeScheduleRow.less'
 
@@ -30,7 +30,7 @@ type Props = {
     daysOptions?: { label: string; value: string }[]
 }
 
-export default function TimeScheduleRow({
+export function TimeScheduleRow({
     name,
     index,
     isRemovable,

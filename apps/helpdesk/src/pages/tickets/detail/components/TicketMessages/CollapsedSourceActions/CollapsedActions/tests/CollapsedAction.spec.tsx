@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { Dropdown } from 'reactstrap'
 
-import CollapsedAction from '../CollapsedAction'
+import { CollapsedAction } from '../CollapsedAction'
 
 const mockClick = jest.fn()
 

@@ -18,7 +18,7 @@ export const initialState: CreateOrderState = fromJS({
     products: new Map(),
 })
 
-export default function reducer(
+export function reducer(
     state: CreateOrderState = initialState,
     action: GorgiasAction,
 ): CreateOrderState {

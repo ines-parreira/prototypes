@@ -4,7 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import { ContentType } from 'models/api/types'
 
-import Body from '../Body'
+import { Body } from '../Body'
 
 describe('<Body/>', () => {
     const onChange = jest.fn()

@@ -8,7 +8,7 @@ import type {
     FeedbackExecutionsItemFeedbackItemOneOfSeven,
 } from '@gorgias/knowledge-service-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 
 import { AIAgentFeedbackRatingSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackRatingSection'

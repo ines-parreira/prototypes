@@ -7,7 +7,7 @@ import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { TranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { WorkflowChannelSupportContext } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
@@ -20,7 +20,7 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import FileUploadEditor from '../FileUploadEditor'
+import { FileUploadEditor } from '../FileUploadEditor'
 
 describe('<FileUploadEditor />', () => {
     it('should dispatch SET_TOUCHED', () => {

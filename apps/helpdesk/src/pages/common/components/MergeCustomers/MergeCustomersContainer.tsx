@@ -10,7 +10,7 @@ import { getLoading } from 'state/customers/selectors'
 import { getMessages } from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 
-import MergeCustomersModal from './MergeCustomersModal'
+import { MergeCustomersModal } from './MergeCustomersModal'
 
 type Props = ConnectedProps<typeof connector> & {
     destinationCustomer: Map<any, any>
@@ -102,4 +102,6 @@ const connector = connect(
     { mergeCustomers },
 )
 
-export default connector(MergeCustomersContainer)
+const DefaultExportMergeCustomersContainer = connector(MergeCustomersContainer)
+
+export { DefaultExportMergeCustomersContainer }

@@ -7,7 +7,7 @@ import { Heading, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getHasAutomate } from 'state/billing/selectors'

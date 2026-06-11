@@ -70,7 +70,7 @@ jest.mock(
     'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted',
     () => ({
         __esModule: true,
-        default: () => null,
+        useCheckOnboardingCompleted: () => null,
     }),
 )
 jest.mock(
@@ -81,7 +81,7 @@ jest.mock(
 )
 jest.mock('pages/aiAgent/hooks/useCustomToneOfVoicePreview', () => ({
     __esModule: true,
-    default: () => ({
+    useCustomToneOfVoicePreview: () => ({
         latestCustomToneOfVoicePreview: null,
         onGenerateCustomToneOfVoicePreview: jest.fn(),
         isLoading: false,

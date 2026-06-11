@@ -6,10 +6,12 @@ import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
 
-import TrainMyAiViewContainer from '../TrainMyAiViewContainer'
+import { TrainMyAiViewContainer } from '../TrainMyAiViewContainer'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
-jest.mock('../TrainMyAiView', () => () => <div>TrainMyAiView</div>)
+jest.mock('../TrainMyAiView', () => ({
+    TrainMyAiView: () => <div>TrainMyAiView</div>,
+}))
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 const defaultState = {
     billing: fromJS(billingState),

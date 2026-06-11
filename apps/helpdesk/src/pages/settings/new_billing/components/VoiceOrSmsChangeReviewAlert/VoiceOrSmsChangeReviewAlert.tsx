@@ -3,9 +3,9 @@ import { useMemo } from 'react'
 
 import type { SelectedPlans } from '@repo/billing'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
-import Alert from 'pages/common/components/Alert/Alert'
+import { Alert } from 'pages/common/components/Alert/Alert'
 import {
     getIsVettedForPhone,
     getVoiceOrSmsPlanChanged,
@@ -52,4 +52,4 @@ const VoiceOrSmsChangeReviewAlert: React.FC<
     return null
 }
 
-export default VoiceOrSmsChangeReviewAlert
+export { VoiceOrSmsChangeReviewAlert }

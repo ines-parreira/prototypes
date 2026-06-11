@@ -3,10 +3,10 @@ import { useCallback, useRef, useState } from 'react'
 import { Button } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
-import useAppSelector from 'hooks/useAppSelector'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import type { FileFieldContainer } from 'pages/common/forms/FileField'
-import FileField from 'pages/common/forms/FileField'
+import { FileFieldContainer as FileField } from 'pages/common/forms/FileField'
 import { getCurrentIntegration } from 'state/integrations/selectors'
 
 import css from './LogoUpload.less'

@@ -21,7 +21,7 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
-import Tip from 'pages/common/components/tip/Tip'
+import { Tip } from 'pages/common/components/tip/Tip'
 
 type Props = {
     isToggled: boolean

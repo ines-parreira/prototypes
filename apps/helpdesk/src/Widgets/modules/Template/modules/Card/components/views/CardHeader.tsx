@@ -12,7 +12,7 @@ import {
 } from 'Widgets/modules/Template/config/template'
 
 import type { CardEditFormState } from '../../types'
-import CardEditForm from './CardEditForm'
+import { CardEdit as CardEditForm } from './CardEditForm'
 import { CardHeaderIcon } from './CardHeaderIcon'
 
 import css from './CardHeader.less'
@@ -100,7 +100,7 @@ type CardHeaderProps = {
     renderTitleWrapper: (children: ReactNode) => JSX.Element | null
 }
 
-export default function CardHeader(props: CardHeaderProps) {
+export function CardHeader(props: CardHeaderProps) {
     const {
         displayedTitle,
         dynamicLink,

@@ -7,8 +7,8 @@ import {
 } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { ShortcutIcon } from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { useSpotlightContext } from 'providers/ui/SpotlightContext'
 
 const SpotlightButton = () => {
@@ -52,4 +52,4 @@ const SpotlightButton = () => {
     )
 }
 
-export default SpotlightButton
+export { SpotlightButton }

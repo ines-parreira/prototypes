@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ScrapedDomainSelectedModal from '../ScrapedDomainSelectedModal'
+import { ScrapedDomainSelectedModal } from '../ScrapedDomainSelectedModal'
 
 const mockedOnBackdropClick = jest.fn()
 

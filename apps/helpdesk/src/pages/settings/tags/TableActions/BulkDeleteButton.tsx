@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 export const getPluralOrSingular = (
     count: number,
@@ -80,4 +80,4 @@ const BulkDeleteButton = ({
     )
 }
 
-export default BulkDeleteButton
+export { BulkDeleteButton }

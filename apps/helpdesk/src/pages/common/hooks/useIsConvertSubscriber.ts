@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentConvertPlan } from 'state/billing/selectors'
 
 export function useIsConvertSubscriber(): boolean {

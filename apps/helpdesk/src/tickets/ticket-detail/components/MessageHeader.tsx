@@ -14,9 +14,9 @@ import type {
     TicketMessage as TicketMessage_DEPRECATED,
 } from 'models/ticket/types'
 import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
-import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
-import Source from 'pages/tickets/detail/components/TicketMessages/Source'
-import SourceActionsHeader from 'pages/tickets/detail/components/TicketMessages/SourceActionsHeader'
+import { Meta } from 'pages/tickets/detail/components/TicketMessages/Meta'
+import { Source } from 'pages/tickets/detail/components/TicketMessages/Source'
+import { SourceActionsHeader } from 'pages/tickets/detail/components/TicketMessages/SourceActionsHeader'
 import { isForwardedMessage } from 'tickets/common/utils'
 import { MessageMetadata } from 'tickets/ticket-detail/components/MessageMetadata'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'

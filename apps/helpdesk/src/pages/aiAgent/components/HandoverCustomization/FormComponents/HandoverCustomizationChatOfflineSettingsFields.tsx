@@ -8,8 +8,8 @@ import {
 import { Label } from 'gorgias-design-system/Input/Label'
 import type { HandoverCustomizationChatOfflineSettingsFormValues } from 'pages/aiAgent/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatOfflineSettingsForm.utils'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TextArea from 'pages/common/forms/TextArea'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import commonCss from './HandoverCommonSettings.less'
 import css from './HandoverCustomizationChatOfflineSettings.less'

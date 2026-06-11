@@ -24,7 +24,7 @@ const MockAiAgentPlayground = require('../../PlaygroundV2/AiAgentPlayground')
     .AiAgentPlayground as jest.Mock
 const MockPlaygroundActionsModal =
     require('../../PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal')
-        .default as jest.Mock
+        .PlaygroundActionsModal as jest.Mock
 
 describe('PlaygroundPanel', () => {
     const mockSetIsCollapsibleColumnOpen = jest.fn()

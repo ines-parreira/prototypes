@@ -14,8 +14,8 @@ import {
     BigCommerceGeneralError,
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import InputField from 'pages/common/forms/input/InputField'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { PopoverContainer } from './components/popover-container/PopoverContainer'
 

@@ -3,10 +3,10 @@ import type {
     GmailIntegration,
 } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { OutlookIntegration } from 'models/integration/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { FormSection } from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import { getIntegrationsLoading } from 'state/integrations/selectors'
 
 import {
@@ -14,14 +14,14 @@ import {
     isBaseEmailAddress,
     isCommonDomainEmail,
 } from '../helpers'
-import RecordsTable from './components/RecordsTable'
-import useDomainVerification from './useDomainVerification'
+import { RecordsTable } from './components/RecordsTable'
+import { useDomainVerification } from './useDomainVerification'
 
 type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
 }
 
-export default function EmailDomainVerificationContent({ integration }: Props) {
+export function EmailDomainVerificationContent({ integration }: Props) {
     const isLoadingIntegration =
         useAppSelector(getIntegrationsLoading)?.integration ?? false
 

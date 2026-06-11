@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { accuracyQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/accuracyQueryFactory'
 import { accuracyQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'

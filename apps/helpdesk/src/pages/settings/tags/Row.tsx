@@ -9,13 +9,13 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
 import type { Tag, TagDecoration } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import IconButton from 'pages/common/components/button/IconButton'
-import ColorPicker from 'pages/common/components/ColorPicker/ColorPicker'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import TicketTag from 'pages/common/components/TicketTag'
-import CheckBox from 'pages/common/forms/CheckBox'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ColorPicker } from 'pages/common/components/ColorPicker/ColorPicker'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { TicketTag } from 'pages/common/components/TicketTag'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import css from 'pages/settings/tags/Row.less'
 import { cancel, edit, remove, save, select } from 'state/tags/actions'
 
@@ -25,7 +25,7 @@ type Props = {
     refresh: () => void
 }
 
-export default function Row({ meta, refresh, row }: Props) {
+export function Row({ meta, refresh, row }: Props) {
     const dispatch = useAppDispatch()
     const [decoration, setDecoration] = useState<TagDecoration>({ color: '' })
     const [description, setDescription] = useState<string | null>('')

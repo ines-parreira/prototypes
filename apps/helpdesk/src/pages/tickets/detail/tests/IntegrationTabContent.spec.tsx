@@ -6,7 +6,7 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { WidgetEnvironment } from 'state/widgets/types'
 
-import IntegrationTabContent from '../IntegrationTabContent'
+import { IntegrationTabContent } from '../IntegrationTabContent'
 
 const MockWidget = ({ source, template }: any) => (
     <div>
@@ -17,7 +17,7 @@ const MockWidget = ({ source, template }: any) => (
 
 jest.mock('../WidgetEditionTools', () => ({
     __esModule: true,
-    default: () => <div>WidgetEditionTools</div>,
+    WidgetEditionTools: () => <div>WidgetEditionTools</div>,
 }))
 
 jest.mock('Widgets/contexts/WidgetContext', () => ({

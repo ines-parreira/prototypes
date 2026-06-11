@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
-import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
+import { useSplitTicketViewSwitcher } from '../useSplitTicketViewSwitcher'
 
 function useSwitcherLocation() {
     useSplitTicketViewSwitcher()

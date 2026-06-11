@@ -9,10 +9,10 @@ import { Link } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { LegacyButtonIntent as ButtonIntent } from '@gorgias/axiom'
 
-import DropdownButton from 'pages/common/components/button/DropdownButton'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
+import { DefaultExportDropdownButton as DropdownButton } from 'pages/common/components/button/DropdownButton'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { UncontrolledDropdown } from 'pages/common/components/dropdown/UncontrolledDropdown'
 
 import { useCreateTicketButton } from './useCreateTicketButton'
 
@@ -30,7 +30,7 @@ type CreateTicketButtonProps = {
     shouldBindKeys?: boolean
     trigger?: ReactElement
 }
-export default function CreateTicketButton({
+export function CreateTicketButton({
     buttonProps,
     isDisabled,
     to,

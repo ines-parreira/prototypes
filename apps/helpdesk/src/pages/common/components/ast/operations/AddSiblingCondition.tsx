@@ -6,7 +6,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import useHoverable from 'pages/common/hooks/useHoverable'
+import { useHoverable } from 'pages/common/hooks/useHoverable'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 
@@ -88,4 +88,4 @@ const AddSiblingCondition: React.FC<Props> = ({
     )
 }
 
-export default AddSiblingCondition
+export { AddSiblingCondition }

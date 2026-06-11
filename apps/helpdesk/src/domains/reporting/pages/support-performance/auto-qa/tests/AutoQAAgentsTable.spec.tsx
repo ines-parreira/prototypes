@@ -45,14 +45,10 @@ jest.mock(
             isSortingMetricLoading: jest.fn(),
         }) as Record<string, any>,
 )
-jest.mock(
-    'domains/reporting/state/stats/selectors',
-    () =>
-        ({
-            ...jest.requireActual('domains/reporting/state/stats/selectors'),
-            getPageStatsFilters: jest.fn(),
-        }) as Record<string, any>,
-)
+jest.mock('domains/reporting/state/stats/selectors', () => ({
+    ...jest.requireActual('domains/reporting/state/stats/selectors'),
+    getPageStatsFilters: jest.fn(),
+}))
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModalTrigger.tsx',
     () => ({

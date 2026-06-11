@@ -77,7 +77,7 @@ jest.mock('../CollapsedActionDrivenNavigationItems', () => ({
 jest.mock('pages/common/components/StoreSelector/StoreSelector', () => {
     return {
         __esModule: true,
-        default: ({
+        StoreSelector: ({
             integrations,
             selected,
             onChange,
@@ -183,7 +183,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => true),
+    useAppSelector: jest.fn(() => true),
 }))
 
 const mockedOnboardingHook = jest.requireMock(

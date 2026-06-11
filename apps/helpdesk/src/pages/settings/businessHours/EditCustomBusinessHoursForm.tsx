@@ -6,19 +6,19 @@ import { useUpdateBusinessHours } from '@gorgias/helpdesk-queries'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursUpdate } from '@gorgias/helpdesk-validators'
 
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 import {
     SettingsCard,
     SettingsCardContent,
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
-import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
+import { TimeScheduleField } from 'pages/common/components/TimeScheduleField/TimeScheduleField'
 
 import { BUSINESS_HOURS_BASE_URL } from './constants'
-import CustomBusinessHoursGeneralFields from './CustomBusinessHoursGeneralFields'
-import EditCustomBusinessHoursActions from './EditCustomBusinessHoursActions'
-import EditCustomBusinessHoursIntegrationsSection from './EditCustomBusinessHoursIntegrationsSection'
+import { CustomBusinessHoursGeneralFields } from './CustomBusinessHoursGeneralFields'
+import { EditCustomBusinessHoursActions } from './EditCustomBusinessHoursActions'
+import { EditCustomBusinessHoursIntegrationsSection } from './EditCustomBusinessHoursIntegrationsSection'
 import type { EditCustomBusinessHoursFormValues } from './types'
 import { useCustomBusinessHoursForm } from './useCustomBusinessHoursForm'
 import {
@@ -32,7 +32,7 @@ type Props = {
     businessHours: BusinessHoursDetails
 }
 
-export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
+export function EditCustomBusinessHoursForm({ businessHours }: Props) {
     const { clientSideValidation } = useCustomBusinessHoursForm()
 
     const { mutate: updateBusinessHours, isLoading } = useUpdateBusinessHours({

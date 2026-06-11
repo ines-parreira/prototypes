@@ -8,16 +8,16 @@ import gorgiasLogo from 'assets/img/icons/gorgias-icon-logo-black.png'
 import type { MigrationProviderMeta, MigrationState } from '../../types'
 import { MigrationStatus } from '../../types'
 import type { ParsedSessionStats } from '../../utils'
-import MigrationBaseModal from '../MigrationBaseModal'
-import MigrationBaseModalBody from '../MigrationBaseModalBody'
-import MigrationProviderPair from '../MigrationProviderPair'
-import MigrationConnectedActions from './components/MigrationConnectedActions'
-import MigrationFailedActions from './components/MigrationFailedActions'
-import MigrationFailuresDetails from './components/MigrationFailuresDetails'
-import MigrationInProgressActions from './components/MigrationInProgressActions'
-import MigrationPartiallySucceededActions from './components/MigrationPartiallySucceededActions'
-import MigrationQuickSummary from './components/MigrationQuickSummary'
-import MigrationSucceededActions from './components/MigrationSucceededActions'
+import { MigrationBaseModal } from '../MigrationBaseModal'
+import { MigrationBaseModal as MigrationBaseModalBody } from '../MigrationBaseModalBody'
+import { MigrationProviderPair } from '../MigrationProviderPair'
+import { MigrationConnectedActions } from './components/MigrationConnectedActions'
+import { MigrationFailedActions } from './components/MigrationFailedActions'
+import { MigrationFailuresDetails } from './components/MigrationFailuresDetails'
+import { MigrationInProgressActions } from './components/MigrationInProgressActions'
+import { MigrationPartiallySucceededActions } from './components/MigrationPartiallySucceededActions'
+import { MigrationQuickSummary } from './components/MigrationQuickSummary'
+import { MigrationSucceededActions } from './components/MigrationSucceededActions'
 
 import css from './MigrationStateModal.less'
 
@@ -151,4 +151,4 @@ const MigrationStateModal: React.FC<Props> = ({
     )
 }
 
-export default MigrationStateModal
+export { MigrationStateModal }

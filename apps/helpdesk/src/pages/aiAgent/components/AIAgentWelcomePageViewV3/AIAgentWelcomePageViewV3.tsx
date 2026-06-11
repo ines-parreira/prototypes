@@ -30,7 +30,7 @@ import {
 import type { JtbdValue } from 'pages/aiAgent/utils/jtbd'
 import { JTBD_QUERY_KEY } from 'pages/aiAgent/utils/jtbd'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { assetsUrl } from 'utils'
 
 import { useAiAgentCtas } from './useAiAgentPaywallCta'

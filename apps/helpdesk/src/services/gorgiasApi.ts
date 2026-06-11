@@ -35,7 +35,7 @@ export type SearchResultType = {
     id: number
 }
 
-export default class GorgiasApi {
+export class GorgiasApi {
     _api: AxiosInstance
     //@ts-ignore ts(2564)
     _requestCanceller: CancelTokenSource

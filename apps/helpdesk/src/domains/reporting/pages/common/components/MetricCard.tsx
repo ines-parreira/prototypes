@@ -22,7 +22,7 @@ type Props = {
     titleExtra?: ReactNode
 } & DashboardChartProps
 
-export default function MetricCard({
+export function MetricCard({
     children,
     className,
     hint,

@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import SelfServiceFeatureDisabledOnChannelAlert from '../SelfServiceFeatureDisabledOnChannelAlert'
+import { SelfServiceFeatureDisabledOnChannelAlert } from '../SelfServiceFeatureDisabledOnChannelAlert'
 
 jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
     useIsAutomateSettings: jest.fn(),

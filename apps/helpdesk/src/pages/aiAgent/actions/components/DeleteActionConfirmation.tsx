@@ -1,15 +1,12 @@
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 type Props = {
     onDelete: () => void
     isDisabled: boolean
 }
 
-export default function DeleteActionConfirmation({
-    onDelete,
-    isDisabled,
-}: Props) {
+export function DeleteActionConfirmation({ onDelete, isDisabled }: Props) {
     return (
         <ConfirmationPopover
             buttonProps={{ intent: 'destructive' }}

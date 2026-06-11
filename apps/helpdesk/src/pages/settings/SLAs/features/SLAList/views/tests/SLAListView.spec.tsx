@@ -8,10 +8,10 @@ import {
 import type { TableColumn } from '../../types'
 import * as SLATableConfig from '../config'
 import { columnConfig } from '../config'
-import SLAListView from '../SLAListView'
-import useSortablePolicies from '../useSortablePolicies'
+import { SLAListView } from '../SLAListView'
+import { useSortablePolicies } from '../useSortablePolicies'
 
-jest.mock('../TableRow', () => () => <div>TableRow</div>)
+jest.mock('../TableRow', () => ({ TableRow: () => <div>TableRow</div> }))
 
 jest.mock('../useSortablePolicies')
 

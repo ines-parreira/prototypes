@@ -10,15 +10,16 @@ import type { Category, NonRootCategory } from 'models/helpCenter/types'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
 import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import useCategoriesOptions, {
+import {
     getCategoryDropdownOption,
+    useCategoriesOptions,
 } from '../hooks/useCategoriesOptions'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')

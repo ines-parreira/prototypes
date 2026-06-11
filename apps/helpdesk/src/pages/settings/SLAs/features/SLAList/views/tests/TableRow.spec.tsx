@@ -7,7 +7,7 @@ import { UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
 import * as SLATableConfig from '../config'
 import { columnOrder } from '../config'
-import TableRow from '../TableRow'
+import { TableRow } from '../TableRow'
 
 jest.mock('pages/common/hooks/useReorderDnD')
 

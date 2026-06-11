@@ -17,4 +17,4 @@ const AppIcon = ({ icon, name, className }: Props) => {
     )
 }
 
-export default AppIcon
+export { AppIcon }

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import { Button } from '@gorgias/axiom'
 
-import Group from '../Group'
+import { Group } from '../Group'
 
 describe('<Group />', () => {
     it('should render a group of buttons', () => {

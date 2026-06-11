@@ -181,7 +181,7 @@ const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
     __esModule: true,
-    default: () => <div data-testid="filters-panel-wrapper" />,
+    FiltersPanelWrapper: () => <div data-testid="filters-panel-wrapper" />,
 }))
 
 jest.mock('AIJourney/components', () => ({

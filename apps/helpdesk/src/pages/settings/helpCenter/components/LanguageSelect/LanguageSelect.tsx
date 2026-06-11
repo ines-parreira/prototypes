@@ -1,10 +1,10 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
 import { getLocaleSelectOptions } from '../../utils/localeSelectOptions'
 
@@ -33,5 +33,3 @@ export const LanguageSelect: React.FC<Props> = (props) => {
         />
     )
 }
-
-export default LanguageSelect

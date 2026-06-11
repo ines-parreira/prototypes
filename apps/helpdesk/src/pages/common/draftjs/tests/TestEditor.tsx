@@ -12,7 +12,7 @@ type Props = {
     plugins: Plugin[]
 }
 
-export default function TestEditor({ html, editorState, plugins }: Props) {
+export function TestEditor({ html, editorState, plugins }: Props) {
     const [editorComponentState] = useState<EditorState>(
         editorState ? editorState : createEditorStateFromHtml(html),
     )

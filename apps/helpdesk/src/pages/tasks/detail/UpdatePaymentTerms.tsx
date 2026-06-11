@@ -12,7 +12,7 @@ import {
 } from '@gorgias/axiom'
 import type { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
 
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import { useGetPaymentTermsWithSideEffects } from 'pages/settings/new_billing/hooks/useGetPaymentTermsWithSideEffects'
 import { useUpdatePaymentTermsWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdatePaymentTermsWithSideEffects'
 import cssSettings from 'pages/settings/settings.less'
@@ -124,4 +124,4 @@ const UpdatePaymentTerms = () => {
     )
 }
 
-export default UpdatePaymentTerms
+export { UpdatePaymentTerms }

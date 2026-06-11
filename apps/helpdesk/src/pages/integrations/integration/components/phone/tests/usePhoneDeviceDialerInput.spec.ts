@@ -4,8 +4,8 @@ import { isValidNumber } from 'libphonenumber-js'
 
 import type { UserSearchResult } from 'models/search/types'
 
-import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
-import usePhoneDeviceDialerInput from '../usePhoneDeviceDialerInput'
+import { usePhoneDeviceDialerCustomerSuggestions } from '../usePhoneDeviceDialerCustomerSuggestions'
+import { usePhoneDeviceDialerInput } from '../usePhoneDeviceDialerInput'
 
 jest.mock('../usePhoneDeviceDialerCustomerSuggestions')
 jest.mock('libphonenumber-js')

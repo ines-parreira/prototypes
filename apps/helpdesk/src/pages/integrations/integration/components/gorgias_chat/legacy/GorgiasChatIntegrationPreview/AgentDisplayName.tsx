@@ -1,6 +1,6 @@
 import { GorgiasChatAvatarNameType } from 'models/integration/types'
 
-import ChatTitle from './ChatTitle'
+import { ChatTitle } from './ChatTitle'
 
 export const AgentDisplayName = ({
     chatTitle,

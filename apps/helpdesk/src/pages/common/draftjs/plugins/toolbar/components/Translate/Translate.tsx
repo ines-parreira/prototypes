@@ -5,19 +5,19 @@ import { useId } from '@gorgias/toolkit-react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Language } from '@gorgias/helpdesk-types'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 import type { ActionInjectedProps } from '../../types'
-import Button from '../Button'
+import { DefaultExportButton as Button } from '../Button'
 import { useLanguageDropdown } from './hooks/useLanguageDropdown'
 import { useOutboundTranslation } from './hooks/useOutboundTranslation'
-import LanguageDropdown from './LanguageDropdown'
+import { LanguageDropdown } from './LanguageDropdown'
 
 import css from './Translate.less'
 
 type Props = ActionInjectedProps
 
-export default function Translate({ getEditorState, setEditorState }: Props) {
+export function Translate({ getEditorState, setEditorState }: Props) {
     const buttonRef = useRef<HTMLButtonElement>(null)
     const randomId = useId()
     const loaderId = `translate-loader-${randomId}`

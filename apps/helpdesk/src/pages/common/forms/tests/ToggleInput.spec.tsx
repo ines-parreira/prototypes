@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ToggleInput from '../ToggleInput'
+import { ToggleInput } from '../ToggleInput'
 
 describe('ToggleInput', () => {
     const mockOnCall = jest.fn().mockResolvedValue(null)

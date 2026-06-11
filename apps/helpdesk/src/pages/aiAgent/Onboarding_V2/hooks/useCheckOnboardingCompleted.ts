@@ -25,4 +25,4 @@ const useCheckOnboardingCompleted = (): null => {
     return null
 }
 
-export default useCheckOnboardingCompleted
+export { useCheckOnboardingCompleted }

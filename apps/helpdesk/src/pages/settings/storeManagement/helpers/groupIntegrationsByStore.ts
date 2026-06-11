@@ -5,7 +5,7 @@ type StoreChannelRecord = {
     integrations: number[]
 }
 
-export default function groupIntegrationsByStore(
+export function groupIntegrationsByStore(
     data: StoreMapping[],
 ): StoreChannelRecord[] {
     const storeMap = new Map<number, number[]>()

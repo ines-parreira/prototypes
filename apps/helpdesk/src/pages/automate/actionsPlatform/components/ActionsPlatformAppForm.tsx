@@ -4,14 +4,14 @@ import { useHistory } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { IntegrationType } from 'models/integration/constants'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import InputField from 'pages/common/forms/input/InputField'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { validateWebhookURL } from 'utils'
 
 import type { ActionsApp, App } from '../types'
-import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
-import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
-import ActionsPlatformTrackstarIntegrationSelectBox from './ActionsPlatformTrackstarIntegrationSelectBox'
+import { ActionsPlatformAppSelectBox } from './ActionsPlatformAppSelectBox'
+import { ActionsPlatformAuthTypeSelectBox } from './ActionsPlatformAuthTypeSelectBox'
+import { ActionsPlatformTrackstarIntegrationSelectBox } from './ActionsPlatformTrackstarIntegrationSelectBox'
 
 import css from './ActionsPlatformAppForm.less'
 
@@ -236,4 +236,4 @@ const ActionsPlatformAppForm = ({
     )
 }
 
-export default ActionsPlatformAppForm
+export { ActionsPlatformAppForm }

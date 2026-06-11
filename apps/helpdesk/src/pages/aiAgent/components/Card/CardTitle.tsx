@@ -11,4 +11,4 @@ const CardTitle = forwardRef<
     <div ref={ref} className={cn(css.cardTitle, className)} {...props} />
 ))
 
-export default CardTitle
+export { CardTitle }

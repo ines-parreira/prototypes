@@ -1,12 +1,13 @@
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { UseAIAgentGetOtherResourcesProps } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import { useAIAgentGetOtherResources } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 
 import type { MultiLevelSelectProps } from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
-import FeedbackOtherResourcesSelect, {
+import {
+    FeedbackOtherResourcesSelect,
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'
 
@@ -26,9 +27,8 @@ assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
 const mockUseAIAgentGetOtherResources = assumeMock(useAIAgentGetOtherResources)
 
 const mockChildComponent = jest.fn()
-jest.mock(
-    '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect',
-    () => (props: MultiLevelSelectProps) => {
+jest.mock('../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect', () => ({
+    MultiLevelSelect: (props: MultiLevelSelectProps) => {
         mockChildComponent(props)
         return (
             <div>
@@ -36,7 +36,7 @@ jest.mock(
             </div>
         )
     },
-)
+}))
 
 describe('FeedbackOtherResourcesSelect Component', () => {
     const setupMockResourcesValues = ({

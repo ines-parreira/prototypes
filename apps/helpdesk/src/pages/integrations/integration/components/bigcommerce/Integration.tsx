@@ -6,16 +6,16 @@ import { Col, Container, Row } from 'reactstrap'
 
 import { Button, LegacyLabel as Label } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getConnectUrl } from 'pages/integrations/integration/components/bigcommerce/Utils'
-import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import { SyncNotification } from 'pages/integrations/integration/components/SyncNotification'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
+import { useAuthenticationPolling } from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import { useQueryNotify } from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -150,4 +150,4 @@ const Integration = ({ integration, loading }: Props) => {
     )
 }
 
-export default Integration
+export { Integration }

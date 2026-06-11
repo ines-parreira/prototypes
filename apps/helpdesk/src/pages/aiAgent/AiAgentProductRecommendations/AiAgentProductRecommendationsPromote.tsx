@@ -13,7 +13,7 @@ import { CollectionRecommendationRuleCard } from './components/CollectionRecomme
 import { ProductRecommendationRuleCard } from './components/ProductRecommendationRuleCard'
 import { TagRecommendationRuleCard } from './components/TagRecommendationRuleCard'
 import { VendorRecommendationRuleCard } from './components/VendorRecommendationRuleCard'
-import usePaginatedProductsByIds from './hooks/usePaginatedProductsByIds'
+import { usePaginatedProductsByIds } from './hooks/usePaginatedProductsByIds'
 import type { ProductRecommendationRuleType } from './types'
 import { formatProductRecommendationRules } from './utils/format-product-recommendation-rules'
 

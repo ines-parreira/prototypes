@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import type { Map } from 'immutable'
 
 import shopify from 'assets/img/integrations/shopify.png'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import type { Option } from 'pages/common/forms/SelectField/types'
 import { DEPRECATED_getIntegrationsByTypes } from 'state/integrations/selectors'

@@ -8,21 +8,21 @@ import { TrainButton } from '../TrainButton'
 
 jest.mock('pages/common/components/dropdown/UncontrolledDropdown', () => ({
     __esModule: true,
-    default: ({ children }: any) => (
+    UncontrolledDropdown: ({ children }: any) => (
         <div data-testid="dropdown">{children}</div>
     ),
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
     __esModule: true,
-    default: ({ children }: any) => (
+    DefaultExportDropdownBody: ({ children }: any) => (
         <div data-testid="dropdown-body">{children}</div>
     ),
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
     __esModule: true,
-    default: ({ option, onClick }: any) => (
+    DefaultExportDropdownItem: ({ option, onClick }: any) => (
         <button data-testid={`dropdown-item-${option.value}`} onClick={onClick}>
             {option.label}
         </button>
@@ -31,7 +31,7 @@ jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
 
 jest.mock('pages/common/components/button/DropdownButton', () => ({
     __esModule: true,
-    default: React.forwardRef(
+    DefaultExportDropdownButton: React.forwardRef(
         ({ children, isDisabled, onToggleClick }: any, ref: any) => (
             <button
                 data-testid="dropdown-button"

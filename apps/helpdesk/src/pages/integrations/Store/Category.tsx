@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Category as CategoryType } from 'models/integration/types/app'
-import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
+import { ArrowLink } from 'pages/common/components/ArrowLink/ArrowLink'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { CATEGORY_DATA } from './constants'
@@ -14,10 +14,7 @@ type Props = {
     showCategoryLink?: boolean
 }
 
-export default function Category({
-    category,
-    showCategoryLink = false,
-}: Props) {
+export function Category({ category, showCategoryLink = false }: Props) {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     return (
         <>

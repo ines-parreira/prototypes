@@ -66,4 +66,8 @@ function StealthInput(
     )
 }
 
-export default forwardRef<HTMLInputElement, Props>(StealthInput)
+const DefaultExportStealthInput = forwardRef<HTMLInputElement, Props>(
+    StealthInput,
+)
+
+export { DefaultExportStealthInput }

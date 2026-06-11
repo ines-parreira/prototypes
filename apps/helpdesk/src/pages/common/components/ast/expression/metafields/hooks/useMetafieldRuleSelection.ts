@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { generateExpression, getMetafieldTreePath } from 'models/rule/utils'
 import { useMetafieldDefinitions } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldDefinitions'

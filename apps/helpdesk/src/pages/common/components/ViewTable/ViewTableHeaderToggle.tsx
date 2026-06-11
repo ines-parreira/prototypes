@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { Box } from '@gorgias/axiom'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import Toggle from 'split-ticket-view-toggle/components/Toggle'
+import { Toggle } from 'split-ticket-view-toggle/components/Toggle'
 import { isTicketPath } from 'utils'
 
 export function ViewTableHeaderToggle() {

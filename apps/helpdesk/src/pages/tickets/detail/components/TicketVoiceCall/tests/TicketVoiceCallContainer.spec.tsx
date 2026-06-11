@@ -14,10 +14,10 @@ import {
     getCallMonitorability,
 } from 'hooks/integrations/phone/monitoring.utils'
 import type { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
-import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
+import { MonitorCallButton } from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 
-import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
+import { TicketVoiceCallContainer } from '../TicketVoiceCallContainer'
 
 const header = <div>Header</div>
 const user = { name: 'John Doe' } as User
@@ -44,40 +44,49 @@ jest.mock('hooks/integrations/phone/monitoring.utils')
 const canMonitorCallMock = assumeMock(canMonitorCall)
 const getCallMonitorabilityMock = assumeMock(getCallMonitorability)
 
-jest.mock(
-    '../TicketVoiceCallAudios',
-    () =>
-        ({ type }: { type: VoiceCallRecordingType }) => <div>Audio {type}</div>,
-)
-jest.mock('../VoiceCallTranscription', () => {
-    return ({ type }: { audio: any; type: VoiceCallRecordingType }) => (
+jest.mock('../TicketVoiceCallAudios', () => ({
+    TicketVoiceCallAudios: ({ type }: { type: VoiceCallRecordingType }) => (
         <div>Audio {type}</div>
-    )
+    ),
+}))
+jest.mock('../VoiceCallTranscription', () => {
+    return {
+        VoiceCallTranscription: ({
+            type,
+        }: {
+            audio: any
+            type: VoiceCallRecordingType
+        }) => <div>Audio {type}</div>,
+    }
 })
 
-jest.mock('../TicketVoiceCallDuration', () => () => <div>Duration</div>)
+jest.mock('../TicketVoiceCallDuration', () => ({
+    TicketVoiceCallDuration: () => <div>Duration</div>,
+}))
 
-jest.mock(
-    'pages/common/utils/DatetimeLabel',
-    () =>
-        ({ dateTime }: { dateTime: string }) => (
-            <div>DatetimeLabel {dateTime}</div>
-        ),
-)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: ({ dateTime }: { dateTime: string }) => (
+        <div>DatetimeLabel {dateTime}</div>
+    ),
+}))
 
-jest.mock('pages/common/components/Avatar/Avatar', () => () => (
-    <div>Avatar</div>
-))
+jest.mock('pages/common/components/Avatar/Avatar', () => ({
+    Avatar: () => <div>Avatar</div>,
+}))
 jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
     Avatar: () => <div>New Avatar</div>,
 }))
-jest.mock('../TicketVoiceCallSummary', () => () => <div>Summary</div>)
+jest.mock('../TicketVoiceCallSummary', () => ({
+    TicketVoiceCallSummary: () => <div>Summary</div>,
+}))
 
 jest.mock('pages/common/hooks/useVoiceRecordingsContext')
 const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)
 
-jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
-    setRecentItem: jest.fn(),
+jest.mock('hooks/useRecentItems/useRecentItems', () => ({
+    useRecentItems: () => ({
+        setRecentItem: jest.fn(),
+    }),
 }))
 
 const renderComponent = (

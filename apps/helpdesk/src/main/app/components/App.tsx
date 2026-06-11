@@ -15,7 +15,7 @@ import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import AlertBanners from 'AlertBanners'
+import { DefaultExportAlertBanners as AlertBanners } from 'AlertBanners'
 import { AppNode } from 'appNode'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {
@@ -25,31 +25,31 @@ import {
 } from 'common/notifications'
 import { CopilotProvider } from 'copilot'
 import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
-import useHasPhone from 'hooks/useHasPhone'
-import UIKitRootNodeProvider from 'main/app/components/UIKitRootNodeProvider'
+import { useHasPhone } from 'hooks/useHasPhone'
+import { UIKitRootNodeProvider } from 'main/app/components/UIKitRootNodeProvider'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
-import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
-import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
-import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
-import KeyboardHelp from 'pages/common/components/KeyboardHelp/KeyboardHelp'
-import PhoneIntegrationBar from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
-import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
-import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
-import SessionChangeDetection from 'pages/common/components/SessionChangeDetection'
-import Spotlight from 'pages/common/components/Spotlight/Spotlight'
-import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
+import { EmailDisconnectedBanner } from 'pages/common/components/EmailDisconnectedBanner'
+import { EmailDomainVerificationBanner } from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
+import { EmailMigrationBanner } from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
+import { KeyboardHelp } from 'pages/common/components/KeyboardHelp/KeyboardHelp'
+import { PhoneIntegrationBar } from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
+import { ScriptTagMigrationBanner } from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
+import { ScriptTagMigrationModal } from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
+import { SessionChangeDetection } from 'pages/common/components/SessionChangeDetection'
+import { Spotlight } from 'pages/common/components/Spotlight/Spotlight'
+import { OutOfRecoveryCodesModal } from 'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal'
 import { useAutomateRedirects } from 'settings/automate'
 
-import ImpersonationBanner from '../../../AlertBanners/components/ImpersonationBanner'
-import useActivityTracker from '../hooks/useActivityTracker'
-import useApplyWayfindingMs1 from '../hooks/useApplyWayfindingMs1'
-import useAppShortcuts from '../hooks/useAppShortcuts'
-import useInitialViewCountsFetch from '../hooks/useInitialViewCountsFetch'
-import usePollingManager from '../hooks/usePollingManager'
+import { ImpersonationBanner } from '../../../AlertBanners/components/ImpersonationBanner'
+import { useActivityTracker } from '../hooks/useActivityTracker'
+import { useApplyWayfindingMs1 } from '../hooks/useApplyWayfindingMs1'
+import { useAppShortcuts } from '../hooks/useAppShortcuts'
+import { useInitialViewCountsFetch } from '../hooks/useInitialViewCountsFetch'
+import { usePollingManager } from '../hooks/usePollingManager'
 import { useSetBanners } from '../hooks/useSetBanners'
-import useSharedLogic from '../hooks/useSharedLogic'
-import useViewCountScheduler from '../hooks/useViewCountScheduler'
+import { useSharedLogic } from '../hooks/useSharedLogic'
+import { useViewCountScheduler } from '../hooks/useViewCountScheduler'
 
 import css from './App.less'
 
@@ -57,7 +57,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function App({ children }: Props) {
+export function App({ children }: Props) {
     const theme = useTheme()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()

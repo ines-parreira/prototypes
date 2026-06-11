@@ -1,2 +1,2 @@
-export { default } from './ContactFormAutoEmbedCard'
+export { ContactFormAutoEmbedCard } from './ContactFormAutoEmbedCard'
 export * from './constants'

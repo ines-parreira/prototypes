@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useGetCampaign,
     useListCampaigns,
@@ -235,4 +235,4 @@ const CampaignDetailsFactory = (): JSX.Element => {
     )
 }
 
-export default CampaignDetailsFactory
+export { CampaignDetailsFactory }

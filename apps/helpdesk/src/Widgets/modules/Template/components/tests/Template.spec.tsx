@@ -17,10 +17,10 @@ import type {
     CardCustomization,
     HiddenField,
 } from 'Widgets/modules/Template/modules/Card'
-import Card from 'Widgets/modules/Template/modules/Card'
-import Field from 'Widgets/modules/Template/modules/Field'
-import ListWidget from 'Widgets/modules/Template/modules/List'
-import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
+import { Card } from 'Widgets/modules/Template/modules/Card'
+import { Field } from 'Widgets/modules/Template/modules/Field'
+import { List as ListWidget } from 'Widgets/modules/Template/modules/List'
+import { Wrapper } from 'Widgets/modules/Template/modules/Wrapper'
 
 import { CustomizationContext } from '../../contexts/CustomizationContext'
 import {
@@ -28,7 +28,7 @@ import {
     seekFieldCustomization,
 } from '../../helpers/customization'
 import type { FieldEditFormData } from '../../modules/Field/types'
-import Template, { self } from '../Template'
+import { self, Template } from '../Template'
 
 jest.spyOn(self, 'Template')
 const spiedTemplate = assumeMock(self.Template)

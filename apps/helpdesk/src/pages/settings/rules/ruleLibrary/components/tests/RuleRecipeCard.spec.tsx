@@ -21,7 +21,7 @@ import { createRule } from 'models/rule/resources'
 import { createSection } from 'models/section/resources'
 import { createTag } from 'models/tag/resources'
 import { createView } from 'models/view/resources'
-import RuleRecipeCard from 'pages/settings/rules/ruleLibrary/components/RuleRecipeCard'
+import { RuleRecipeCard } from 'pages/settings/rules/ruleLibrary/components/RuleRecipeCard'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('models/view/resources')
@@ -31,7 +31,7 @@ jest.mock('models/tag/resources', () => {
         ...resource,
         createTag: jest.fn(),
         fetchTags: jest.fn().mockResolvedValue({ data: { data: [] } }),
-    } as Record<string, unknown>
+    }
 })
 jest.mock('models/rule/resources')
 jest.mock('models/section/resources', () => {
@@ -39,7 +39,7 @@ jest.mock('models/section/resources', () => {
     return {
         ...resource,
         createSection: jest.fn().mockResolvedValue({ id: 1 }),
-    } as Record<string, unknown>
+    }
 })
 jest.mock('reapop', () => {
     const reapop = jest.requireActual('reapop')

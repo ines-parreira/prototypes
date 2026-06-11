@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import usePaginatedProductIntegration from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
+import { usePaginatedProductIntegration } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration'
 
-import usePaginatedProductsByIds from '../hooks/usePaginatedProductsByIds'
+import { usePaginatedProductsByIds } from '../hooks/usePaginatedProductsByIds'
 import type { FormattedProductRecommendationRules } from '../utils/format-product-recommendation-rules'
 import { getRuleCardLabels } from '../utils/get-rule-card-labels'
 import { ItemDrawer } from './ItemDrawer'

@@ -1,4 +1,4 @@
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useInviteAgent as usePureInviteAgent } from 'models/agents/queries'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

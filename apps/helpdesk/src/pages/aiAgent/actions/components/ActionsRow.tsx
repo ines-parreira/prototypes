@@ -11,24 +11,24 @@ import {
 } from '@gorgias/axiom'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useDeleteAction } from 'pages/aiAgent/actions/hooks/useDeleteAction'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import { getActionsAppFromTemplateApp } from '../../../automate/actionsPlatform/utils'
 import { useGuidanceReferenceContext } from '../providers/GuidanceReferenceContext'
 import { useStoreTrackstarContext } from '../providers/StoreTrackstarContext'
-import DeleteActionConfirmation from './DeleteActionConfirmation'
+import { DeleteActionConfirmation } from './DeleteActionConfirmation'
 
 import css from './ActionsRow.less'
 
@@ -36,7 +36,7 @@ type Props = {
     action: StoreWorkflowsConfiguration
 }
 
-export default function ActionsRow({ action }: Props) {
+export function ActionsRow({ action }: Props) {
     const { shopName, shopType } = useParams<{
         shopType: 'shopify'
         shopName: string

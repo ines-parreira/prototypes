@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import UpgradeIcon from './UpgradeIcon'
+import { UpgradeIcon } from './UpgradeIcon'
 
 const storyConfig: Meta = {
     title: 'General/Icons/Upgrade icon',

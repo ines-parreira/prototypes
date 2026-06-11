@@ -7,7 +7,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 
-import useOrderDates from './hooks/useOrderDates'
+import { useOrderDates } from './hooks/useOrderDates'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationTrackUnfulfillResponsePage.less'
@@ -114,4 +114,4 @@ const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
     )
 }
 
-export default SelfServiceChatIntegrationTrackUnfilFillResponsePage
+export { SelfServiceChatIntegrationTrackUnfilFillResponsePage }

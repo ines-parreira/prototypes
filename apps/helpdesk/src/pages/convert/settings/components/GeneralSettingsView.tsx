@@ -6,9 +6,9 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { CampaignSettingType } from 'domains/reporting/pages/convert/components/CampaignTableStats/constants'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { SettingRequest } from 'models/convert/settings/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { useChatIntegration } from 'pages/convert/campaigns/hooks/useChatIntegration'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {

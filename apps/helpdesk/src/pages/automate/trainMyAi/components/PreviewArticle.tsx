@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     helpCenterArticleKeys,
     helpCenterKeys,
@@ -10,7 +10,7 @@ import {
 } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { ArticleTemplateType } from 'models/helpCenter/types'
-import ArticleEditor from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
+import { ArticleEditor } from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
     getArticleUrl,
@@ -29,7 +29,7 @@ interface Props {
     helpCenter: HelpCenter
 }
 
-export default function PreviewHeader({ articleData, helpCenter }: Props) {
+export function PreviewHeader({ articleData, helpCenter }: Props) {
     const {
         mutateAsync: updateArticleTranslationMutateAsync,
         isLoading: isUpdateArticleTranslationLoading,

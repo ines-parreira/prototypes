@@ -10,12 +10,12 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import StoreDisplayName from 'pages/common/components/StoreDisplayName'
+import { StoreDisplayName } from 'pages/common/components/StoreDisplayName'
 
-import BusinessHoursDisplay from '../BusinessHoursDisplay'
+import { BusinessHoursDisplay } from '../BusinessHoursDisplay'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
-import CustomBusinessHoursIntegrationCell from '../CustomBusinessHoursIntegrationCell'
-import IntegrationRowsField from '../IntegrationRowsField'
+import { CustomBusinessHoursIntegrationCell } from '../CustomBusinessHoursIntegrationCell'
+import { IntegrationRowsField } from '../IntegrationRowsField'
 
 jest.mock('../BusinessHoursDisplay')
 jest.mock('../CustomBusinessHoursIntegrationCell')

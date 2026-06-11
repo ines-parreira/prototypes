@@ -7,7 +7,7 @@ import type { LocaleCode } from 'models/helpCenter/types'
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import { usePollStoreDomainIngestionLog } from '../hooks/usePollStoreDomainIngestionLog'
 import { useSyncStoreDomain } from '../hooks/useSyncStoreDomain'
-import AiAgentScrapedDomainContentLayout from './AiAgentScrapedDomainContentLayout'
+import { AiAgentScrapedDomainContentLayout } from './AiAgentScrapedDomainContentLayout'
 import {
     CONTENT_TYPE,
     HeaderType,
@@ -17,8 +17,8 @@ import {
 import { useIngestedResourceMutation } from './hooks/useIngestedResourceMutation'
 import { usePaginatedIngestedResources } from './hooks/usePaginatedIngestedResources'
 import { useSelectedQuestionAndDetail } from './hooks/useSelectedQuestionAndDetail'
-import ScrapedDomainContentView from './ScrapedDomainContentView'
-import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
+import { ScrapedDomainContentView } from './ScrapedDomainContentView'
+import { ScrapedDomainSelectedContent } from './ScrapedDomainSelectedContent'
 import type { IngestedResourceWithArticleId } from './types'
 
 type Props = {
@@ -185,4 +185,4 @@ const AiAgentScrapedDomainQuestionsView = ({
     )
 }
 
-export default AiAgentScrapedDomainQuestionsView
+export { AiAgentScrapedDomainQuestionsView }

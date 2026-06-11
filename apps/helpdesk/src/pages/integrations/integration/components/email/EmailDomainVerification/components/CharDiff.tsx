@@ -8,7 +8,7 @@ type Props = {
     string2?: string
 }
 
-export default function CharDiff({ string1 = '', string2 = '' }: Props) {
+export function CharDiff({ string1 = '', string2 = '' }: Props) {
     const groups = diffChars(string1, string2)
 
     if (!groups) return null

@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
 
-import RequestTrialModal from '../RequestTrialModal'
+import { RequestTrialModal } from '../RequestTrialModal'
 
 const adminNames = [
     { name: 'Alice Johnson', email: 'alice@company.com', color: '4A90E2' },

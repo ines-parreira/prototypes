@@ -4,8 +4,8 @@ import React, { Component } from 'react'
 import Lightbox from 'react-images'
 
 import { AlertType } from '../Alert/Alert'
-import LinkAlert from '../Alert/LinkAlert'
-import Carousel from './Carousel'
+import { LinkAlert } from '../Alert/LinkAlert'
+import { Carousel } from './Carousel'
 
 type LinkAlertProps = ComponentProps<typeof LinkAlert>
 type Props = {
@@ -21,7 +21,7 @@ type State = {
     currentImage: number
 }
 
-export default class RestrictedFeature extends Component<Props, State> {
+export class RestrictedFeature extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
 

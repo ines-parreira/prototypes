@@ -27,8 +27,8 @@ import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import type { Paths } from 'rest_api/workflows_api/client.generated'
 import type { StoreState } from 'state/types'
 
-import ActionEventsViewContainer from '../ActionEventsViewContainer'
-import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import { ActionEventsViewContainer } from '../ActionEventsViewContainer'
+import { useGetAppImageUrl } from '../hooks/useGetAppImageUrl'
 
 const LocationPath = () => {
     const location = useLocation()

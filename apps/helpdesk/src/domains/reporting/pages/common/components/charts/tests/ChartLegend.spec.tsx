@@ -7,37 +7,35 @@ import { Chart } from 'chart.js'
 import { ChartLegend } from 'domains/reporting/pages/common/components/charts/ChartLegend'
 
 jest.mock('chart.js')
-jest.mock(
-    'domains/reporting/pages/common/components/charts/Legend',
-    () =>
-        ({
-            items,
-            className,
-        }: {
-            items: [
-                {
-                    label: string
-                    onChange: () => void
-                },
-            ]
-            className: string
-            toggleLegend: boolean
-        }) => {
-            return (
-                <div className={`Legend ${className}`}>
-                    {items.map((item, index) => (
-                        <button
-                            key={index}
-                            onClick={item.onChange}
-                            data-testid={`legend-item-${index}`}
-                        >
-                            {item.label}
-                        </button>
-                    ))}
-                </div>
-            )
-        },
-)
+jest.mock('domains/reporting/pages/common/components/charts/Legend', () => ({
+    Legend: ({
+        items,
+        className,
+    }: {
+        items: [
+            {
+                label: string
+                onChange: () => void
+            },
+        ]
+        className: string
+        toggleLegend: boolean
+    }) => {
+        return (
+            <div className={`Legend ${className}`}>
+                {items.map((item, index) => (
+                    <button
+                        key={index}
+                        onClick={item.onChange}
+                        data-testid={`legend-item-${index}`}
+                    >
+                        {item.label}
+                    </button>
+                ))}
+            </div>
+        )
+    },
+}))
 
 const initialProps = {
     data: [],

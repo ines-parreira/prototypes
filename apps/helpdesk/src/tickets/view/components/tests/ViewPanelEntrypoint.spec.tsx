@@ -13,8 +13,8 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useGetView } from '@gorgias/helpdesk-queries'
 
 import { BASE_VIEW_ID } from 'constants/view'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewField, ViewVisibility } from 'models/view/types'
 import type { StoreState } from 'state/types'
 import { resetView, setViewActive, setViewEditMode } from 'state/views/actions'
@@ -91,7 +91,7 @@ const useLocationMock = assumeMock(useLocation)
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppDispatch: jest.fn(),
 }))
 jest.mock('@repo/logging', () => ({
     __esModule: true,
@@ -103,7 +103,7 @@ jest.mock('@repo/logging', () => ({
 }))
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
@@ -306,7 +306,7 @@ jest.mock('@repo/tickets/views', () => ({
 
 jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
     __esModule: true,
-    default: ({
+    ApplyMacro: ({
         ticketIds,
         onApplyMacro,
         setIsOpen,
@@ -326,7 +326,7 @@ jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
 
 jest.mock('../ViewPanel', () => ({
     __esModule: true,
-    default: () => <div>LegacyViewPanel</div>,
+    ViewPanel: () => <div>LegacyViewPanel</div>,
 }))
 
 jest.mock('tickets/core/hooks', () => ({ useViewId: () => mockViewId }))

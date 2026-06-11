@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { getTicketCustomer } from 'state/ticket/selectors'

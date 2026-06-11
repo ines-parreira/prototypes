@@ -2,14 +2,14 @@ import React, { useCallback, useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { ContactFormAutomationSettings } from 'models/contactForm/types'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
+import { useContactFormsAutomationSettings } from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import ChannelBlock from '../helper/ChannelBlock'
-import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
-import ChannelToggle from './ChannelToggle'
+import { ChannelBlock } from '../helper/ChannelBlock'
+import { useOnlySupportedChannels } from '../helper/useOnlySupportedChannels'
+import { ChannelToggle } from './ChannelToggle'
 
 const ChannelItem = ({
     channel,
@@ -97,4 +97,4 @@ const ContactFormChannels = ({
         </ChannelBlock>
     )
 }
-export default ContactFormChannels
+export { ContactFormChannels }

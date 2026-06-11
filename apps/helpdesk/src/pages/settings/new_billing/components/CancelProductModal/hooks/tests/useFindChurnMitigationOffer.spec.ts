@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useFindChurnMitigationOfferId from '../useFindChurnMitigationOffer'
+import { useFindChurnMitigationOfferId } from '../useFindChurnMitigationOffer'
 
 describe('useFindChurnMitigationOfferId', () => {
     const reasonsToCanduContents = [

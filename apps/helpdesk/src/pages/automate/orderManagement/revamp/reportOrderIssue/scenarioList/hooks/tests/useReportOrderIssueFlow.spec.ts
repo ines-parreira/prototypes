@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { selfServiceConfiguration1 as mockSelfServiceConfig } from 'fixtures/self_service_configurations'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { useReportOrderIssueFlow } from '../useReportOrderIssueFlow'
 

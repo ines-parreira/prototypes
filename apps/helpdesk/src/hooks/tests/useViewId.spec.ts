@@ -2,9 +2,9 @@ import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useViewId from '../useViewId'
+import { useViewId } from '../useViewId'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -12,7 +12,7 @@ jest.mock('react-router-dom', () => ({
 }))
 const useParamsMock = useParams as jest.Mock
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 describe('useViewId', () => {

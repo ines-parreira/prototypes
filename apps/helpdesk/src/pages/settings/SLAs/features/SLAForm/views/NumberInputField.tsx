@@ -1,15 +1,15 @@
 import type { ComponentProps, ForwardedRef } from 'react'
 import React, { forwardRef } from 'react'
 
-import Caption from 'pages/common/forms/Caption/Caption'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 type NumberInputFieldProps = ComponentProps<typeof NumberInput> & {
     error?: string
     wrapperClassName?: string
 }
 
-export default forwardRef(function NumberInputField(
+const DefaultExportNumberInputField = forwardRef(function NumberInputField(
     { error, wrapperClassName, ...numberInputProps }: NumberInputFieldProps,
     ref: ForwardedRef<HTMLInputElement>,
 ) {
@@ -20,3 +20,5 @@ export default forwardRef(function NumberInputField(
         </div>
     )
 })
+
+export { DefaultExportNumberInputField }

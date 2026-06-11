@@ -18,10 +18,10 @@ import {
     getPlanUnitsPerCadence,
     isEnterprise,
 } from 'models/billing/utils'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 
 import css from './AutoUpgradeToggle.less'
@@ -187,4 +187,4 @@ const AutoUpgradeToggle = ({
     )
 }
 
-export default AutoUpgradeToggle
+export { AutoUpgradeToggle }

@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { SEARCH_URL_PARAM } from '../constants'
-import Search from '../Search'
+import { Search } from '../Search'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

@@ -5,8 +5,9 @@ import * as chartjs from 'chart.js'
 import colors from '@gorgias/design-tokens/tokens/colors'
 
 import { ThemeProvider } from 'core/theme'
-import BarChart, {
+import {
     BAR_BORDER_RADIUS,
+    DefaultExportBarChart as BarChart,
     BarChart as BarChartWithoutTheme,
     CHART_TOOLTIP_TARGET,
     getBorderRadius,

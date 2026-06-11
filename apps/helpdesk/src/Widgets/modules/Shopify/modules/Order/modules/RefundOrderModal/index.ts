@@ -1,1 +1,1 @@
-export { default } from './components/RefundOrderModal'
+export { DefaultExportRefundOrderModal } from './components/RefundOrderModal'

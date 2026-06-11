@@ -1,1 +1,1 @@
-export { default } from 'domains/reporting/pages/convert/components/CampaignRevenueChart/CampaignRevenueChart'
+export { CampaignRevenueChart } from 'domains/reporting/pages/convert/components/CampaignRevenueChart/CampaignRevenueChart'

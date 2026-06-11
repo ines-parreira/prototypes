@@ -2,7 +2,7 @@ import React, { useContext, useMemo } from 'react'
 
 import type { Map } from 'immutable'
 
-import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import { ActionButtonsGroup } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { EditOrderShippingAddressModal } from 'Widgets/modules/Shopify/modules/Order'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'

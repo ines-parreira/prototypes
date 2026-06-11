@@ -22,7 +22,7 @@ type Props = {
     canduId?: string
 } & DashboardChartProps
 
-export default function ChartCard({
+export function ChartCard({
     children,
     className,
     hint,

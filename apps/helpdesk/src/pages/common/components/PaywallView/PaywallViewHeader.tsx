@@ -9,7 +9,7 @@ type Props = {
     title?: ReactNode
 }
 
-export default function PaywallViewHeader({ logo, logoAlt, title }: Props) {
+export function PaywallViewHeader({ logo, logoAlt, title }: Props) {
     return (
         <>
             {logo && (

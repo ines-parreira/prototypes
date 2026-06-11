@@ -14,19 +14,19 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreview } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
-import SelfServiceChatIntegrationArticleRecommendationPage from './SelfServiceChatIntegrationArticleRecommendationPage'
-import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
-import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
-import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
-import SelfServiceChatIntegrationReportIssuePage from './SelfServiceChatIntegrationReportIssuePage'
-import SelfServiceChatIntegrationReportIssueReasonsPage from './SelfServiceChatIntegrationReportIssueReasonsPage'
-import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationReturnPage'
-import SelfServiceChatIntegrationReturnPortalPage from './SelfServiceChatIntegrationReturnPortalPage'
-import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
-import SelfServiceChatIntegrationTrackUnfulfillResponsePage from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
+import { SelfServiceChatIntegrationArticleRecommendationPage } from './SelfServiceChatIntegrationArticleRecommendationPage'
+import { SelfServiceChatIntegrationCancelPage } from './SelfServiceChatIntegrationCancelPage'
+import { SelfServiceChatIntegrationHomePage } from './SelfServiceChatIntegrationHomePage'
+import { SelfServiceChatIntegrationOrdersPage } from './SelfServiceChatIntegrationOrdersPage'
+import { SelfServiceChatIntegrationReportIssuePage } from './SelfServiceChatIntegrationReportIssuePage'
+import { SelfServiceChatIntegrationReportIssueReasonsPage } from './SelfServiceChatIntegrationReportIssueReasonsPage'
+import { SelfServiceChatIntegrationReturnPage } from './SelfServiceChatIntegrationReturnPage'
+import { SelfServiceChatIntegrationReturnPortalPage } from './SelfServiceChatIntegrationReturnPortalPage'
+import { SelfServiceChatIntegrationTrackPage } from './SelfServiceChatIntegrationTrackPage'
+import { SelfServiceChatIntegrationTrackUnfilFillResponsePage as SelfServiceChatIntegrationTrackUnfulfillResponsePage } from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 type Props = {
@@ -149,4 +149,8 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
     )
 }
 
-export default memo(SelfServiceChatIntegrationPreview)
+const DefaultExportSelfServiceChatIntegrationPreview = memo(
+    SelfServiceChatIntegrationPreview,
+)
+
+export { DefaultExportSelfServiceChatIntegrationPreview }

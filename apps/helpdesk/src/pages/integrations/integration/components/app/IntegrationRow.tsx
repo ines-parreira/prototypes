@@ -2,17 +2,17 @@ import { fromJS } from 'immutable'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     EcommerceIntegrationMeta,
     Integration,
 } from 'models/integration/types'
 import { isAppIntegration } from 'models/integration/types'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/integrations/integration/components/app/IntegrationRow.less'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { deleteIntegration } from 'state/integrations/actions'
@@ -25,7 +25,7 @@ type Props = {
     connectUrl: string
 }
 
-export default function IntegrationRow({ integration, connectUrl }: Props) {
+export function IntegrationRow({ integration, connectUrl }: Props) {
     const domain = useAppSelector(getCurrentDomain)
     const isDisabled = integration.deactivated_datetime
     const reconnectUrl = getReconnectUrl(connectUrl, domain, integration)

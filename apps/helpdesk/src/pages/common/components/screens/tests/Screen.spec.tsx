@@ -2,8 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Screen from '../Screen'
-import Screens from '../Screens'
+import { Screen } from '../Screen'
+import { Screens } from '../Screens'
 
 describe('<Screen />', () => {
     it('should render', () => {

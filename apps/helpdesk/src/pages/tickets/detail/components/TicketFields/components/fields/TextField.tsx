@@ -2,12 +2,12 @@ import { useCallback, useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import Label from 'custom-fields/components/Label'
-import StealthInput from 'custom-fields/components/StealthInput'
+import { DefaultExportLabel as Label } from 'custom-fields/components/Label'
+import { DefaultExportStealthInput as StealthInput } from 'custom-fields/components/StealthInput'
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import type { CustomFieldState } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
@@ -32,7 +32,7 @@ type Props = {
  * @date 2026-01-06
  * @type ui-kit-migration
  */
-export default function TextField({
+export function TextField({
     id,
     label,
     fieldState,

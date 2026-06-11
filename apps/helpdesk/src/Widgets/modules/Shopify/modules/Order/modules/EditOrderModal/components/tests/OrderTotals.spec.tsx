@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import OrderTotals from '../OrderTotals'
+import { OrderTotals } from '../OrderTotals'
 
 const minProps = {
     currencyCode: 'USD',

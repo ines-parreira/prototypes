@@ -7,7 +7,7 @@ import type {
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     ALWAYS_ON_OPTION_LABEL,
     DAYS_OPTIONS_WITHOUT_ALWAYS_ON,

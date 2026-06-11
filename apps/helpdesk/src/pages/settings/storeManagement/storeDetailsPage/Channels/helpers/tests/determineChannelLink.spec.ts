@@ -1,7 +1,7 @@
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 
-import determineChannelLink from '../determineChannelLink'
+import { determineChannelLink } from '../determineChannelLink'
 
 describe('determineChannelLink', () => {
     const baseIntegration = {

@@ -3,7 +3,7 @@ import { Col, Row } from 'reactstrap'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { validLocaleCode } from 'models/helpCenter/utils'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import SelectCustomerVisibility from '../SelectVisibilityStatus'
+import { SelectCustomerVisibility } from '../SelectVisibilityStatus'
 
 const onChange = jest.fn()
 const setShowNotification = jest.fn()

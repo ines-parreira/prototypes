@@ -120,5 +120,3 @@ export const ArticleAttachment = ({
         </StyledArticleAttachment>
     )
 }
-
-export default ArticleAttachment

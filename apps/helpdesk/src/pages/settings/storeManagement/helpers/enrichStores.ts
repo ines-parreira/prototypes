@@ -3,9 +3,9 @@ import { IntegrationType } from 'models/integration/types'
 import type { StoreMapping } from 'models/storeMapping/types'
 
 import type { StoreWithAssignedChannels } from '../types'
-import groupIntegrationsByStore from './groupIntegrationsByStore'
+import { groupIntegrationsByStore } from './groupIntegrationsByStore'
 
-export default function enrichStores(
+export function enrichStores(
     storeToChannelsMapping: StoreMapping[],
     allIntegrations: Integration[],
 ): StoreWithAssignedChannels[] {

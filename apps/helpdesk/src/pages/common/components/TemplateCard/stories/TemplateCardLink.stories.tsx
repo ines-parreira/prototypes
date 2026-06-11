@@ -4,9 +4,9 @@ import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TicketTag from 'pages/common/components/TicketTag'
+import { TicketTag } from 'pages/common/components/TicketTag'
 
-import { default as TemplateCardLinkComponent } from '../TemplateCardLink'
+import { TemplateCardLink as TemplateCardLinkComponent } from '../TemplateCardLink'
 
 const storyConfig: Meta = {
     title: 'General/TemplateCard/TemplateCardLink',

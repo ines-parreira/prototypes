@@ -5,10 +5,10 @@ import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import TextArea from 'gorgias-design-system/Input/TextArea'
-import useAppSelector from 'hooks/useAppSelector'
+import { TextArea } from 'gorgias-design-system/Input/TextArea'
+import { useAppSelector } from 'hooks/useAppSelector'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
-import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
+import { AutoSaveBadge } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
@@ -101,4 +101,4 @@ const FeedbackInternalNote = ({
     )
 }
 
-export default FeedbackInternalNote
+export { FeedbackInternalNote }

@@ -14,8 +14,8 @@ import {
     eventTypes as getEventTypes,
 } from '../../../../state/rules/helpers'
 import type { RuleDraft } from '../../../../state/rules/types'
-import Errors from '../../../common/components/ast/Errors'
-import SelectField from '../../../common/forms/MultiSelectField'
+import { Errors } from '../../../common/components/ast/Errors'
+import { MultiSelectField as SelectField } from '../../../common/forms/MultiSelectField'
 
 import css from './RulesTriggerSelect.less'
 

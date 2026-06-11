@@ -94,4 +94,4 @@ const useUnsavedChangesPrompt = ({ when }: Props) => {
     }
 }
 
-export default useUnsavedChangesPrompt
+export { useUnsavedChangesPrompt }

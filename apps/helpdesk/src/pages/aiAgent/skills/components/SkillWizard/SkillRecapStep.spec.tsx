@@ -33,6 +33,12 @@ jest.mock('models/helpCenter/queries', () => ({
     ...jest.requireActual('models/helpCenter/queries'),
     useGetHelpCenter: jest.fn(),
 }))
+jest.mock('lottie-react', () => ({
+    __esModule: true,
+    default: jest.fn(({ animationData: __animationData, ...props }) => (
+        <div data-testid="lottie-animation" {...props} />
+    )),
+}))
 
 const mockUseApplyWizardChanges = useApplyWizardChanges as jest.MockedFunction<
     typeof useApplyWizardChanges

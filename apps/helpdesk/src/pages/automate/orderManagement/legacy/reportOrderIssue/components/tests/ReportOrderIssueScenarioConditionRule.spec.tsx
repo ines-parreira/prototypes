@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { ReportIssueVariable } from 'models/selfServiceConfiguration/types'
 
-import ReportOrderIssueScenarioConditionRule from '../ReportOrderIssueScenarioConditionRule'
+import { ReportOrderIssueScenarioConditionRule } from '../ReportOrderIssueScenarioConditionRule'
 
 describe('<ReportOrderIssueScenarioConditionRule />', () => {
     it('should render component', () => {

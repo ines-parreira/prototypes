@@ -2,22 +2,22 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 
-import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
+import { CustomFieldInput } from 'custom-fields/components/CustomFieldInput'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { ticketInputFieldDefinition } from 'fixtures/customField'
 
-import CustomFieldByIdInput from '../CustomFieldByIdInput'
+import { CustomFieldByIdInput } from '../CustomFieldByIdInput'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
 
 jest.mock('custom-fields/components/CustomFieldInput', () => {
-    return jest.fn(() => <div>CustomFieldInput</div>)
+    return { CustomFieldInput: jest.fn(() => <div>CustomFieldInput</div>) }
 })
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 
 describe('<CustomFieldIdInput/>', () => {
     const baseProps = {

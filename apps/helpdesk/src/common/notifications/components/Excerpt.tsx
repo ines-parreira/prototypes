@@ -6,6 +6,6 @@ type Props = {
     children: ReactNode
 }
 
-export default function Excerpt({ children }: Props) {
+export function Excerpt({ children }: Props) {
     return <div className={css.excerpt}>{children}</div>
 }

@@ -66,4 +66,4 @@ const FlowsBanner = ({
     )
 }
 
-export default FlowsBanner
+export { FlowsBanner }

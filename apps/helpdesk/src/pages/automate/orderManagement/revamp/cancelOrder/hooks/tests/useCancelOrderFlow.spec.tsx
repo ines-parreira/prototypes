@@ -6,7 +6,7 @@ import {
     FilterKeyEnum,
     FilterOperatorEnum,
 } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { useCancelOrderFlow } from '../useCancelOrderFlow'
 

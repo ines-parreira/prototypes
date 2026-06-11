@@ -1,5 +1,5 @@
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
 import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
@@ -8,7 +8,7 @@ import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
 } from 'domains/reporting/pages/convert/campaigns/CampaignsPerformanceReportConfig'
-import CampaignPerformanceCharts from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts'
+import { CampaignPerformanceCharts } from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts'
 import { CampaignTotalsStat } from 'domains/reporting/pages/convert/components/CampaignTotalsStat'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'

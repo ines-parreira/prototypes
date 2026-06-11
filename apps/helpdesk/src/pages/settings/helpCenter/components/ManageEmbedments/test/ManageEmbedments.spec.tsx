@@ -16,7 +16,7 @@ import {
 } from 'pages/settings/helpCenter/queries'
 import type { RootState } from 'state/types'
 
-import ManageEmbedments from '../ManageEmbedments'
+import { ManageEmbedments } from '../ManageEmbedments'
 
 jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>

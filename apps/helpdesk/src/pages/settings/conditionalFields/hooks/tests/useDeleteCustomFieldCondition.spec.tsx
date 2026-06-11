@@ -14,7 +14,7 @@ import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useDeleteCustomFieldCondition from '../useDeleteCustomFieldCondition'
+import { useDeleteCustomFieldCondition } from '../useDeleteCustomFieldCondition'
 
 const queryClient = mockQueryClient()
 

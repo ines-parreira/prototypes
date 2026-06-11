@@ -1,7 +1,7 @@
 import type { List, Map } from 'immutable'
 
 import type { RuleItemActions } from '../../../settings/rules/types'
-import Widget from './Widget'
+import { Widget } from './Widget'
 
 type Props = {
     rule: Map<any, any>
@@ -38,4 +38,4 @@ const Identifier = ({
     )
 }
 
-export default Identifier
+export { Identifier }

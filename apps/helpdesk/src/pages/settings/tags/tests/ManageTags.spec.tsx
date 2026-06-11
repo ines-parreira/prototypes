@@ -9,10 +9,12 @@ import { fetchTags } from 'models/tag/resources'
 import * as tagActions from 'state/tags/actions'
 import type { RootState } from 'state/types'
 
-import ManageTags from '../ManageTags'
+import { ManageTags } from '../ManageTags'
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('models/tag/resources')
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 jest.spyOn(tagActions, 'selectAll')

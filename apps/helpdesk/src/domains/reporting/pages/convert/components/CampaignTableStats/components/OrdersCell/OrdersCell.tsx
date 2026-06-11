@@ -3,7 +3,7 @@ import { formatNumber } from 'domains/reporting/pages/common/utils'
 import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
 import type { ConvertMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ConvertMetric } from 'domains/reporting/state/ui/stats/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 type Props = {
     cell: CampaignTableContentCell

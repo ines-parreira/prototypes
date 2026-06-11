@@ -5,7 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import LegacyIconButtonTooltip from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/LegacyIconButtonTooltip'
+import { DefaultExportLegacyIconButtonTooltip as LegacyIconButtonTooltip } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/LegacyIconButtonTooltip'
 
 type Props = ComponentProps<typeof Button> & {
     children: string
@@ -46,4 +46,8 @@ const IconButtonTooltip = (
     )
 }
 
-export default forwardRef<HTMLButtonElement, Props>(IconButtonTooltip)
+const DefaultExportIconButtonTooltip = forwardRef<HTMLButtonElement, Props>(
+    IconButtonTooltip,
+)
+
+export { DefaultExportIconButtonTooltip }

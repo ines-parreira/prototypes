@@ -15,7 +15,7 @@ import {
 } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const TRIGGER_ID = 'drill-down'
 

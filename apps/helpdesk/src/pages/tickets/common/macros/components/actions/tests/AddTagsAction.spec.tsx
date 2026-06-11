@@ -7,10 +7,10 @@ import { useElementSize } from '@gorgias/toolkit-react'
 
 import type { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import { TicketTags } from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AddTagsAction from '../AddTagsAction'
+import { AddTagsAction } from '../AddTagsAction'
 
 jest.mock('pages/tickets/detail/components/TicketDetails/TicketTags')
 const mockedTicketTags = assumeMock(TicketTags)
@@ -19,10 +19,9 @@ jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
     useElementSize: jest.fn(),
 }))
-jest.mock(
-    'pages/tickets/detail/components/TicketDetails/TagDropdown',
-    () => () => 'TagDropdownMock',
-)
+jest.mock('pages/tickets/detail/components/TicketDetails/TagDropdown', () => ({
+    TagDropdown: () => 'TagDropdownMock',
+}))
 
 const useElementSizeMock = useElementSize as jest.Mock
 useElementSizeMock.mockReturnValue([0, 160])
@@ -45,7 +44,7 @@ describe('<AddTagsAction />', () => {
         mockedTicketTags.mockImplementation(
             jest.requireActual(
                 'pages/tickets/detail/components/TicketDetails/TicketTags',
-            ).default,
+            ).TicketTags,
         )
         /* eslint-enable */
     })

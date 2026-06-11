@@ -1,4 +1,4 @@
-import FieldMappingSelectorDropdown from './FieldMappingSelectorDropdown'
+import { FieldMappingSelectorDropdown } from './FieldMappingSelectorDropdown'
 
-export default FieldMappingSelectorDropdown
+export { FieldMappingSelectorDropdown }
 export type { Props } from './FieldMappingSelectorDropdown'

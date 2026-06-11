@@ -1,4 +1,4 @@
-import Search from 'pages/common/components/Search'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 
 import css from './ScrapedDomainHeader.less'
 
@@ -26,4 +26,4 @@ const ScrapedDomainHeader = ({ description, searchValue, onSearch }: Props) => {
     )
 }
 
-export default ScrapedDomainHeader
+export { ScrapedDomainHeader }

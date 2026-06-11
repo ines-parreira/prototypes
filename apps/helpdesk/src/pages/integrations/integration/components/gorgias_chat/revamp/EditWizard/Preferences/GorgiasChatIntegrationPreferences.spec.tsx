@@ -60,7 +60,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
-        default: () => null,
+        SaveChangesPrompt: () => null,
     }),
 )
 
@@ -146,12 +146,12 @@ jest.mock(
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockDispatch,
+    useAppDispatch: () => mockDispatch,
 }))
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => ({
+    useAppSelector: jest.fn(() => ({
         id: 1,
         data: {
             send_survey_for_chat: false,
@@ -383,7 +383,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
 
     describe('surveysSettings is null', () => {
         const mockUseAppSelector = jest.mocked(
-            require('hooks/useAppSelector').default,
+            require('hooks/useAppSelector').useAppSelector,
         )
         const defaultSurveysSettings = {
             id: 1,

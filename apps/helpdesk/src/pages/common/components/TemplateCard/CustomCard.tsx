@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import BaseCard from './BaseCard'
+import { BaseCard } from './BaseCard'
 
 function CustomCard(props: ComponentProps<typeof BaseCard>) {
     return (
@@ -12,4 +12,4 @@ function CustomCard(props: ComponentProps<typeof BaseCard>) {
     )
 }
 
-export default CustomCard
+export { CustomCard }

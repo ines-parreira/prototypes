@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 
-import LogicalOperator from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator'
+import { LogicalOperator } from 'domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,

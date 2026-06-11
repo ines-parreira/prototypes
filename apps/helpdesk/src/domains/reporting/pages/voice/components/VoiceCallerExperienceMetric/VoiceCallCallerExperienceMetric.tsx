@@ -3,9 +3,9 @@ import moment from 'moment'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { getAdvancedVoicePeriodFilters } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import {
     comparedPeriodString,
@@ -81,4 +81,4 @@ function VoiceCallCallerExperienceMetric({
     )
 }
 
-export default VoiceCallCallerExperienceMetric
+export { VoiceCallCallerExperienceMetric }

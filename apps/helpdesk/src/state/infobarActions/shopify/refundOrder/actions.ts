@@ -9,7 +9,7 @@ import {
     initRefundOrderPayload,
 } from 'business/shopify/order'
 import { getTotalQuantities } from 'business/shopify/refund'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 

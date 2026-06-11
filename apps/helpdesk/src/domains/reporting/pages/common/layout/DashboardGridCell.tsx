@@ -11,11 +11,7 @@ type Props = {
     size?: number
 }
 
-export default function DashboardGridCell({
-    children,
-    className,
-    size = 12,
-}: Props) {
+export function DashboardGridCell({ children, className, size = 12 }: Props) {
     const style = useMemo(
         () => ({
             gridColumn: `span ${size} / span ${size}`,

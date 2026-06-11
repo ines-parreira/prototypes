@@ -4,7 +4,7 @@ import { LegacyBadge as Badge, CheckBoxField } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import SectionHeader from 'pages/common/components/SectionHeader/SectionHeader'
+import { SectionHeader } from 'pages/common/components/SectionHeader/SectionHeader'
 
 import css from './AIAutofill.less'
 
@@ -13,7 +13,7 @@ interface AIAutofillProps {
     onChange: (value: boolean) => void
 }
 
-export default function AIAutofill({ value, onChange }: AIAutofillProps) {
+export function AIAutofill({ value, onChange }: AIAutofillProps) {
     const { hasAccess } = useAiAgentAccess()
 
     return (

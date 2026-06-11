@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import CheckboxCard from '../CheckboxCard'
+import { CheckboxCard } from '../CheckboxCard'
 
 describe('CheckboxCard', () => {
     const defaultProps = {

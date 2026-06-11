@@ -1,7 +1,7 @@
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetChatsApplicationAutomationSettings } from 'models/automation/queries'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
@@ -118,4 +118,4 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
     }
 }
 
-export default useApplicationsAutomationSettings
+export { useApplicationsAutomationSettings }

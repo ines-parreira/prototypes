@@ -7,7 +7,7 @@ import { Table } from 'reactstrap'
 
 import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import OrderLineItemRow from './OrderLineItemRow'
+import { DefaultExportOrderLineItemRow as OrderLineItemRow } from './OrderLineItemRow'
 
 import css from './OrderTable.less'
 
@@ -92,4 +92,6 @@ function OrderTable({
         </Table>
     )
 }
-export default memo(OrderTable)
+const DefaultExportOrderTable = memo(OrderTable)
+
+export { DefaultExportOrderTable }

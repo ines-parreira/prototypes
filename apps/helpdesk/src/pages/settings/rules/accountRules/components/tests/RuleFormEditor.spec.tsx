@@ -20,7 +20,11 @@ jest.mock('models/rule/resources', () => ({
 
 jest.mock('../ruleEditors/DefaultRuleEditor', () => ({
     __esModule: true,
-    default: ({ handleSubmit, handleDelete, rule }: RuleEditorProps) => (
+    DefaultExportDefaultRuleEditor: ({
+        handleSubmit,
+        handleDelete,
+        rule,
+    }: RuleEditorProps) => (
         <div>
             <button
                 type="button"

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 
 import type { ACEProps, EditorProps } from './types'
-import withACEEditor from './withACEEditor'
+import { withACEEditor } from './withACEEditor'
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 
@@ -149,4 +149,6 @@ const ReactAce = ({
     return <div ref={editorRef} id={name} style={{ width, height }}></div>
 }
 
-export default withACEEditor(ReactAce)
+const DefaultExportReactACE = withACEEditor(ReactAce)
+
+export { DefaultExportReactACE }

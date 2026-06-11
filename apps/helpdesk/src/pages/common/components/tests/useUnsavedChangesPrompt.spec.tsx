@@ -7,7 +7,7 @@ import type * as H from 'history'
 import { createMemoryHistory } from 'history'
 import { Route, Router } from 'react-router-dom'
 
-import useUnsavedChangesPrompt from '../useUnsavedChangesPrompt'
+import { useUnsavedChangesPrompt } from '../useUnsavedChangesPrompt'
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ProgressBar from '../ProgressBar'
+import { ProgressBar } from '../ProgressBar'
 
 const defaultProps: ComponentProps<typeof ProgressBar> = {
     barType: 'primary',

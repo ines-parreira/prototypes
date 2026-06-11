@@ -5,7 +5,7 @@ import {
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 
-import useValidateWorkflowGraph from '../useValidateWorkflowGraph'
+import { useValidateWorkflowGraph } from '../useValidateWorkflowGraph'
 
 describe('useValidateWorkflowGraph()', () => {
     it('should validate workflow graph', () => {

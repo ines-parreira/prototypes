@@ -10,7 +10,7 @@ import { emptyRule } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import DefaultRuleEditor from '../DefaultRuleEditor'
+import { DefaultExportDefaultRuleEditor as DefaultRuleEditor } from '../DefaultRuleEditor'
 
 describe('<DefaultRuleEditor/>', () => {
     const minProps = {

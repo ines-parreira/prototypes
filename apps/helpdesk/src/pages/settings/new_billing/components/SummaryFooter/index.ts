@@ -1,2 +1,2 @@
-export { default } from './SummaryFooter'
+export { SummaryFooter } from './SummaryFooter'
 export type { SummaryFooterProps } from './SummaryFooter'

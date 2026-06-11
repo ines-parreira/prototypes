@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import type { VisibilityCellProps } from './VisibilityCell'
-import VisibilityCell from './VisibilityCell'
+import { VisibilityCell } from './VisibilityCell'
 
 const storyConfig: Meta = {
     title: 'Help Center/VisibilityCell',

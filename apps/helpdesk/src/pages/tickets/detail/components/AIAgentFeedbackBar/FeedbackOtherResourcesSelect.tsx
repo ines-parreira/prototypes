@@ -10,18 +10,18 @@ import {
 } from '@gorgias/axiom'
 import type { Tag } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
-import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
+import { DefaultExportSelectInputBox as SelectInputBox } from 'pages/common/forms/input/SelectInputBox'
 import { useAIAgentGetOtherResources } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import { addTag, removeTag } from 'state/ticket/actions'
 
-import InfoIconWithTooltip from '../../../common/components/InfoIconWithTooltip'
+import { InfoIconWithTooltip } from '../../../common/components/InfoIconWithTooltip'
 import { RESOURCE_ICONS, RESOURCE_LABELS } from './constants'
-import Deprecated_MultiLevelSelect from './Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
+import { MultiLevelSelect as Deprecated_MultiLevelSelect } from './Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 
 import css from './FeedbackOtherResourcesSelect.less'
 
@@ -369,4 +369,4 @@ const FeedbackOtherResourcesSelect = ({
     )
 }
 
-export default FeedbackOtherResourcesSelect
+export { FeedbackOtherResourcesSelect }

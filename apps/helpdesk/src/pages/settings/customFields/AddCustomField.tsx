@@ -4,13 +4,13 @@ import { useTitle } from '@gorgias/toolkit-react'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import AddFieldForm from './components/AddFieldForm'
+import { AddFieldForm } from './components/AddFieldForm'
 
-export default function AddCustomField({
+export function AddCustomField({
     objectType,
 }: {
     objectType: CustomFieldObjectTypes

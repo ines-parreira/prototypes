@@ -3,10 +3,10 @@ import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
 import type { ProcessedEvent } from 'models/voiceCall/processEvents'
-import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { VoiceCallSubjectLabel } from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
-import TimelineItem from './TimelineItem'
+import { TimelineItem } from './TimelineItem'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -51,4 +51,4 @@ const TicketVoiceCallEvent = ({ event }: TicketVoiceCallEventProps) => {
     )
 }
 
-export default TicketVoiceCallEvent
+export { TicketVoiceCallEvent }

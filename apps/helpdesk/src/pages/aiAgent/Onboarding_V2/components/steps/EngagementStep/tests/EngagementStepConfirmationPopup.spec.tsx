@@ -19,7 +19,7 @@ jest.mock(
 )
 const mockUseGmvUsdOver30Days = assumeMock(useGmvUsdOver30Days)
 const mockUseLowestPotentialImpact = assumeMock(useLowestPotentialImpact)
-jest.spyOn(hooks, 'default').mockReturnValue(fromJS(shopifyIntegration))
+jest.spyOn(hooks, 'useAppSelector').mockReturnValue(fromJS(shopifyIntegration))
 const testQueryClient = new QueryClient({
     defaultOptions: {
         queries: { retry: false },

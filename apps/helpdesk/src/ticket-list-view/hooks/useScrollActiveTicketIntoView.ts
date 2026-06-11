@@ -6,7 +6,7 @@ import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import type { TicketCompact } from '../types'
 
-export default function useScrollActiveTicketIntoView(
+export function useScrollActiveTicketIntoView(
     activeTicketId: number | undefined,
     tickets: TicketCompact[],
     ticketIds: MutableRefObject<number[]>,

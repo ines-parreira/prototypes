@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from '../../../../../models/integration/types'
-import ForwardIcon from '../../../common/components/ForwardIcon'
-import IntegrationList from '../IntegrationList'
+import { ForwardIcon } from '../../../common/components/ForwardIcon'
+import { DefaultExportIntegrationList as IntegrationList } from '../IntegrationList'
 
 type Props = {
     integrations: List<Map<any, any>>
@@ -15,7 +15,7 @@ type Props = {
     loading: Map<any, any>
 }
 
-export default function SmileIntegrationList({
+export function SmileIntegrationList({
     integrations,
     loading,
     redirectUri,

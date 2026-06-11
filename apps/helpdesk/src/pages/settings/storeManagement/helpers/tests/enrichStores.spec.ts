@@ -1,6 +1,6 @@
 import type { Integration } from 'models/integration/types'
 
-import enrichStores from '../enrichStores'
+import { enrichStores } from '../enrichStores'
 
 describe('enrichStores', () => {
     const mockStoreToChannelsMapping = [

@@ -9,7 +9,7 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 
-import useNotificationPayload from '../useNotificationPayload'
+import { useNotificationPayload } from '../useNotificationPayload'
 
 jest.mock('reapop')
 

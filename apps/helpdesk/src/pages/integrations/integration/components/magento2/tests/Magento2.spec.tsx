@@ -17,7 +17,7 @@ import {
 } from 'fixtures/plans'
 import { IntegrationType } from 'models/integration/types'
 
-import Magento2 from '../Magento2'
+import { Magento2 } from '../Magento2'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({

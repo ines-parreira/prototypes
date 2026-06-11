@@ -1,7 +1,7 @@
 import { useKnockFeed } from '@knocklabs/react'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-export default function useCount() {
+export function useCount() {
     const { feedClient, useFeedStore } = useKnockFeed()
 
     const unreadCount = useFeedStore((state) => state.metadata.unread_count)

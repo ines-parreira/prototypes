@@ -23,7 +23,7 @@ import {
     setInvalidCustomFieldsToErrored,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
-import goToTicket from 'common/utils/goToTicket'
+import { goToTicket } from 'common/utils/goToTicket'
 import { DEFAULT_ACTIONS } from 'config'
 import type { CustomFields, CustomFieldState } from 'custom-fields/types'
 import { getCustomer } from 'models/customer/resources'
@@ -48,8 +48,8 @@ import type {
     TicketMessageIntent,
 } from 'models/ticket/types'
 import type { View } from 'models/view/types'
-import GorgiasApi from 'services/gorgiasApi'
-import socketManager from 'services/socketManager/socketManager'
+import { GorgiasApi } from 'services/gorgiasApi'
+import { socketManager } from 'services/socketManager/socketManager'
 import { JoinEventType, SocketEventType } from 'services/socketManager/types'
 import { markChatAsRead } from 'state/chats/actions'
 import type { InTicketSuggestionState } from 'state/entities/rules/types'

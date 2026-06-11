@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import { DropdownContext } from '../Dropdown'
-import DropdownQuickSelect from '../DropdownQuickSelect'
+import { DefaultExportDropdownQuickSelect as DropdownQuickSelect } from '../DropdownQuickSelect'
 
 const minProps = {
     count: 2,

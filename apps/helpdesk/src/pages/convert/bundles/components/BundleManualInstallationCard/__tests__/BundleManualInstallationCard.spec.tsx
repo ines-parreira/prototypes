@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import BundleManualInstallationCard from '../BundleManualInstallationCard'
+import { BundleManualInstallationCard } from '../BundleManualInstallationCard'
 
 describe('BundleManualInstallationCard', () => {
     test('renders correctly with default props', () => {

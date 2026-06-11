@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Article,
     CreateArticleDto,
@@ -28,10 +28,10 @@ import {
     isExistingArticle,
 } from '../../utils/helpCenter.utils'
 import { getLocaleSelectOptions } from '../../utils/localeSelectOptions'
-import EditingState from '../EditingState/EditingState'
+import { EditingState } from '../EditingState/EditingState'
 import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
-import SelectCustomerVisibility from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import ArticleCategorySelect from './ArticleCategorySelect'
+import { SelectCustomerVisibility } from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import { ArticleCategorySelect } from './ArticleCategorySelect'
 import type { ActionType, OptionItem } from './ArticleLanguageSelect'
 import { ArticleLanguageSelect } from './ArticleLanguageSelect'
 
@@ -413,5 +413,3 @@ export const HelpCenterEditModalHeader = ({
         </header>
     )
 }
-
-export default HelpCenterEditModalHeader

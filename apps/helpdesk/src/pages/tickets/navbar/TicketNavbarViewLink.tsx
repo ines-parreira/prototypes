@@ -9,12 +9,12 @@ import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { Navigation } from 'components/Navigation/Navigation'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
-import useViewId from 'hooks/useViewId'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useScrollActiveItemIntoView } from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
+import { useViewId } from 'hooks/useViewId'
 import type { View } from 'models/view/types'
-import ViewCount from 'pages/common/components/ViewCount/ViewCount'
-import ViewName from 'pages/common/components/ViewName/ViewName'
+import { DefaultExportViewCount as ViewCount } from 'pages/common/components/ViewCount/ViewCount'
+import { DefaultExportViewName as ViewName } from 'pages/common/components/ViewName/ViewName'
 import { TicketNavbarViewLinkItem } from 'pages/tickets/navbar/TicketNavbarViewLinkItem'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { activeViewIdSet } from 'state/ui/views/actions'
@@ -114,4 +114,8 @@ const TicketNavbarViewLink = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(TicketNavbarViewLink)
+const DefaultExportTicketNavbarViewLink = forwardRef<HTMLDivElement, Props>(
+    TicketNavbarViewLink,
+)
+
+export { DefaultExportTicketNavbarViewLink }

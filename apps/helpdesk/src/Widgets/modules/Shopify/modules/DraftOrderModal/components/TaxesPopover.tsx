@@ -11,7 +11,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { focusElement } from '@repo/utils'
 import { Button, Form, Popover, PopoverBody } from 'reactstrap'
 
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './Popover.less'
@@ -32,7 +32,7 @@ type State = {
     taxExempt: boolean
 }
 
-export default class TaxesPopover extends Component<Props, State> {
+export class TaxesPopover extends Component<Props, State> {
     static defaultProps: Pick<Props, 'placement'> = {
         placement: 'bottom',
     }

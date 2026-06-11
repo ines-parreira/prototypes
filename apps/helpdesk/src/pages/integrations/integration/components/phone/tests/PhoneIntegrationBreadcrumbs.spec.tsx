@@ -12,8 +12,8 @@ import {
 } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
-import VoiceQueueBreadcrumbs from '../VoiceQueueBreadcrumbs'
+import { PhoneIntegrationBreadcrumbs } from '../PhoneIntegrationBreadcrumbs'
+import { VoiceQueueBreadcrumbs } from '../VoiceQueueBreadcrumbs'
 
 jest.mock('../VoiceQueueBreadcrumbs')
 const VoiceQueueBreadcrumbsMock = assumeMock(VoiceQueueBreadcrumbs)

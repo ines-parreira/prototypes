@@ -18,7 +18,13 @@ jest.mock('models/job/resources', () => ({
 }))
 jest.mock('../MacrosCSVImportPopover', () => ({
     __esModule: true,
-    default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+    MacrosCSVImportPopover: ({
+        isOpen,
+        onClose,
+    }: {
+        isOpen: boolean
+        onClose: () => void
+    }) =>
         isOpen ? (
             <div role="dialog" aria-label="Import macros from CSV">
                 <button type="button" onClick={onClose}>

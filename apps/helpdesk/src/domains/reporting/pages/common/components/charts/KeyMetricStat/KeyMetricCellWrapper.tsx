@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/KeyMetricCellWrapper.less'
-import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
+import { StatsHelpIcon } from 'domains/reporting/pages/common/components/StatsHelpIcon'
 
 type Props = {
     children: ReactNode
@@ -46,4 +46,4 @@ const KeyMetricCellWrapper = ({
     )
 }
 
-export default KeyMetricCellWrapper
+export { KeyMetricCellWrapper }

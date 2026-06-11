@@ -10,7 +10,7 @@ import type { AircallIntegration } from 'models/integration/types'
 import { deleteIntegration } from 'state/integrations/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import AircallIntegrationListItem from '../AircallIntegrationListItem'
+import { AircallIntegrationListItem } from '../AircallIntegrationListItem'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)

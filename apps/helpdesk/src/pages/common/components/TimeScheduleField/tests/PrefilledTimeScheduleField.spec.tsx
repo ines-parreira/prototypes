@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 import { DEFAULT_BUSINESS_HOUR } from 'pages/settings/businessHours/constants'
 
-import PrefilledTimeScheduleField from '../PrefilledTimeScheduleField'
+import { PrefilledTimeScheduleField } from '../PrefilledTimeScheduleField'
 
 const customDefaultValues = {
     days: '1,2,3,4,5,6,7',

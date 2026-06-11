@@ -52,4 +52,4 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
     return entrypoints
 }
 
-export default useWorkflowsEntrypoints
+export { useWorkflowsEntrypoints }

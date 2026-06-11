@@ -32,7 +32,9 @@ const queryClient = mockQueryClient()
 jest.mock('models/aiAgentFeedback/queries')
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/agents/actions', () => ({
     setAgentFeedbackMessageStatus: jest.fn(),
 }))

@@ -16,8 +16,8 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import { MultiSelectFilterTrigger } from 'domains/reporting/pages/common/filters/MultiSelectFilterTrigger'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const HANDOVER_OPTIONS = [
     { label: 'Yes', value: 'yes' },

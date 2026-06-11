@@ -3,11 +3,11 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import EmailIntegrationCreate from '../EmailIntegrationCreate'
+import { EmailIntegrationCreate } from '../EmailIntegrationCreate'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 describe('<EmailIntegrationCreate/>', () => {

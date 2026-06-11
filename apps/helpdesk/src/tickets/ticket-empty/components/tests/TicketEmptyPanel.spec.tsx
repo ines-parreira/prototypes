@@ -4,7 +4,7 @@ import { Panels } from '@repo/layout'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TicketEmptyPanel from '../TicketEmptyPanel'
+import { TicketEmptyPanel } from '../TicketEmptyPanel'
 
 jest.mock('ticket-page', () => ({
     EmptyTicket: () => <div>TicketWrapper</div>,

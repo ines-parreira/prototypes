@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
-import GuidanceActionTag from '../GuidanceActionTag'
+import { GuidanceActionTag } from '../GuidanceActionTag'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarContext', () => ({
     useToolbarContext: jest.fn(),

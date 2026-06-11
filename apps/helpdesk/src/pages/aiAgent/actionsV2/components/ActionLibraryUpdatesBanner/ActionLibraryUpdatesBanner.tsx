@@ -102,4 +102,4 @@ const ActionLibraryUpdatesBanner = ({ shopName }: Props) => {
     )
 }
 
-export default ActionLibraryUpdatesBanner
+export { ActionLibraryUpdatesBanner }

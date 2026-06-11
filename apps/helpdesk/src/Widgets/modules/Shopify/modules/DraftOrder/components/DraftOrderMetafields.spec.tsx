@@ -13,8 +13,9 @@ import { mockListMetafieldDefinitionsHandler } from '@gorgias/helpdesk-mocks'
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import WrappedDraftOrderMetafields, {
+import {
     DraftOrderMetafields,
+    WrappedDraftOrderMetafields,
 } from './DraftOrderMetafields'
 
 jest.mock('@repo/logging', () => ({

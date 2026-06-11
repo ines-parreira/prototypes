@@ -12,7 +12,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import type { MessageFeedback } from 'models/aiAgentFeedback/types'
 

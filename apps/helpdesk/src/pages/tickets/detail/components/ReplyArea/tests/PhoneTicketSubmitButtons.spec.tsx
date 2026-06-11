@@ -9,10 +9,10 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
+import { VoiceDeviceProvider } from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
+import { PhoneTicketSubmitButtons } from '../PhoneTicketSubmitButtons'
 
 jest.mock('@repo/voice', () => ({
     isDeviceReady: jest.fn(),

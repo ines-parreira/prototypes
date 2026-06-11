@@ -12,11 +12,9 @@ export type TextToSpeechContext = {
     setLastSelectedGender: (gender: VoiceGender) => void
 }
 
-const TextToSpeechContext = createContext<TextToSpeechContext | undefined>(
-    undefined,
-)
+export const TextToSpeechContext = createContext<
+    TextToSpeechContext | undefined
+>(undefined)
 TextToSpeechContext.displayName = 'TextToSpeechContext'
 
 export const useTextToSpeechContext = () => useSafeContext(TextToSpeechContext)
-
-export default TextToSpeechContext

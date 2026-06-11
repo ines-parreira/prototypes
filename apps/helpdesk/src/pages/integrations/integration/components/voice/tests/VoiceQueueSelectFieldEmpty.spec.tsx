@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import VoiceQueueSelectFieldEmpty from '../VoiceQueueSelectFieldEmpty'
+import { VoiceQueueSelectFieldEmpty } from '../VoiceQueueSelectFieldEmpty'
 
 describe('VoiceQueueSelectFieldEmpty', () => {
     const renderComponent = (props = {}) => {

@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import { EditingStateEnum } from 'pages/settings/helpCenter/constants'
 
-import EditingState from '../EditingState'
+import { EditingState } from '../EditingState'
 
 describe('<EditingState />', () => {
     describe('when state is UNSAVED', () => {

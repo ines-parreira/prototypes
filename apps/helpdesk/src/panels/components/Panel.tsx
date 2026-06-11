@@ -11,7 +11,7 @@ type Props = {
     width?: number
 }
 
-export default function Panel({ children, className, width }: Props) {
+export function Panel({ children, className, width }: Props) {
     return (
         <div className={classNames(css.panel, className)} style={{ width }}>
             {children}

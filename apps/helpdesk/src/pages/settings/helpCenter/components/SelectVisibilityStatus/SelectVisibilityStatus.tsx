@@ -158,4 +158,4 @@ const SelectCustomerVisibility = ({
     )
 }
 
-export default SelectCustomerVisibility
+export { SelectCustomerVisibility }

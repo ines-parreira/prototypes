@@ -22,7 +22,7 @@ import {
 } from 'domains/reporting/pages/self-service/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { STATS_ROUTES } from 'routes/constants'

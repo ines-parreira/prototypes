@@ -2,7 +2,7 @@ import { mockFeatureFlagsValues } from '@repo/feature-flags/testing'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import BackToActionButton from '../BackToActionButton'
+import { BackToActionButton } from '../BackToActionButton'
 
 describe('<BackToActionButton />', () => {
     it('renders "Back to Support Actions" when the ActionCentralizedLibrary flag is below MILESTONE-2', () => {

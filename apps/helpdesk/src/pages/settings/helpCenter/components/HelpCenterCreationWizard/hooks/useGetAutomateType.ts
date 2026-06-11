@@ -1,5 +1,5 @@
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { HelpCenterAutomateType } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -23,4 +23,4 @@ const useGetAutomateType = (): HelpCenterAutomateType => {
     return HelpCenterAutomateType.AUTOMATE
 }
 
-export default useGetAutomateType
+export { useGetAutomateType }

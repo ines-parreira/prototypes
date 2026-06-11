@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { totalNumberOfSalesConversationsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { AISalesAgentTotalNumberOfSalesConversationsQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentConversations'

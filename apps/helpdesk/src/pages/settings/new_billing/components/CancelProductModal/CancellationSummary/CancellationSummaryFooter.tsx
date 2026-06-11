@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Disclaimer from '../UI/Disclaimer'
+import { Disclaimer } from '../UI/Disclaimer'
 
 import css from './CancellationSummaryFooter.less'
 
@@ -36,4 +36,4 @@ const CancellationSummaryFooter = ({
     )
 }
 
-export default CancellationSummaryFooter
+export { CancellationSummaryFooter }

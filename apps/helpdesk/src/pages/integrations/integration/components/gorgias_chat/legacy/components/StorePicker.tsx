@@ -11,7 +11,7 @@ import type {
 import { IntegrationType } from 'models/integration/types'
 import { getStoreIconNameFromType } from 'state/integrations/helpers'
 
-import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
+import { useThemeAppExtensionInstallation } from '../hooks/useThemeAppExtensionInstallation'
 
 import css from './StorePicker.less'
 

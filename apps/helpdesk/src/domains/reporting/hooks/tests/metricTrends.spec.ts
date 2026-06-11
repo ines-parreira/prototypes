@@ -37,8 +37,9 @@ import {
     useTicketsRepliedTrend,
     useZeroTouchTicketsTrend,
 } from 'domains/reporting/hooks/metricTrends'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { onlineTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/onlineTime'
 import { ticketAverageHandleTimeQueryFactory } from 'domains/reporting/models/queryFactories/agentxp/ticketHandleTime'

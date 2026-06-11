@@ -1,10 +1,10 @@
 import { Duration } from '@gorgias/toolkit'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import useAppSelector from 'hooks/useAppSelector'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SourceAddress } from 'models/ticket/types'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { normalizeLocale } from 'pages/integrations/integration/components/whatsapp/utils'
 import { getNewPhoneNumberByNumber } from 'state/entities/phoneNumbers/selectors'
 import { makeGetNewMessageSourceProperty } from 'state/newMessage/selectors'
@@ -15,10 +15,7 @@ type Props = {
     onChange: (newValue: string[]) => void
 }
 
-export default function TemplateLanguageFilterDropdown({
-    value,
-    onChange,
-}: Props) {
+export function TemplateLanguageFilterDropdown({ value, onChange }: Props) {
     const fromPhoneNumber = useAppSelector(makeGetNewMessageSourceProperty)(
         'from',
     )?.toJS?.() as SourceAddress

@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import CopyButton from 'components/CopyButton/CopyButton'
+import { CopyButton } from 'components/CopyButton/CopyButton'
 import { getContrastColor } from 'gorgias-design-system/utils'
 import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 

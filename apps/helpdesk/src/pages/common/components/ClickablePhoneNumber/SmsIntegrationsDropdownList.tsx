@@ -5,8 +5,8 @@ import parsePhoneNumber from 'libphonenumber-js'
 import { DropdownItem } from 'reactstrap'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SmsIntegration } from 'models/integration/types'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { fetchCustomer } from 'state/customers/actions'
@@ -71,4 +71,4 @@ const SmsIntegrationsDropdownList = ({
         </>
     )
 }
-export default SmsIntegrationsDropdownList
+export { SmsIntegrationsDropdownList }

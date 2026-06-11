@@ -3,10 +3,10 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useGetStoreApps } from 'models/workflows/queries'
-import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
+import { useAddStoreApp } from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 
-import StoreAppsContext from '../StoreAppsContext'
-import StoreAppsProvider from '../StoreAppsProvider'
+import { StoreAppsContext } from '../StoreAppsContext'
+import { StoreAppsProvider } from '../StoreAppsProvider'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')

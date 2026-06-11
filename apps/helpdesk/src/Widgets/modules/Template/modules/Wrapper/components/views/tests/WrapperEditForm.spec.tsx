@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import type { FormData } from '../WrapperEditForm'
-import WrapperEditForm, { CANCEL_TEXT, SUBMIT_TEXT } from '../WrapperEditForm'
+import { CANCEL_TEXT, SUBMIT_TEXT, WrapperEditForm } from '../WrapperEditForm'
 
 describe('WrapperEditForm', () => {
     const defaultData: FormData = {

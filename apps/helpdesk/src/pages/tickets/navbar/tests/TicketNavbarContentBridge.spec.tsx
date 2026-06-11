@@ -30,7 +30,7 @@ jest.mock('../TicketNavbarDropTarget', () => {
     return {
         __esModule: true,
         ...actual,
-        default: ({
+        TicketNavbarDropTarget: ({
             accept,
             children,
             canDrop,

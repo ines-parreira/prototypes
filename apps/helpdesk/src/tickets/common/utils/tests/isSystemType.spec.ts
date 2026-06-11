@@ -1,6 +1,6 @@
 import { SYSTEM_SOURCE_TYPES } from 'tickets/common/config'
 
-import isSystemType from '../isSystemType'
+import { isSystemType } from '../isSystemType'
 
 describe('isSystemType', () => {
     it('is correct', () => {

@@ -3,34 +3,40 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import VoiceIntegrationOnboarding from '../VoiceIntegrationOnboarding'
+import { VoiceIntegrationOnboarding } from '../VoiceIntegrationOnboarding'
 
-jest.mock('../AddPhoneNumberStep', () =>
-    jest.fn(({ onCreateNewNumber }) => (
+jest.mock('../AddPhoneNumberStep', () => ({
+    AddPhoneNumberStep: jest.fn(({ onCreateNewNumber }) => (
         <div>
             AddPhoneNumberStep
             <button onClick={() => onCreateNewNumber()}>CREATE_BUTTON</button>
         </div>
     )),
-)
-jest.mock('../ConfigureRoutingBehaviorStep', () =>
-    jest.fn(() => <div>ConfigureRoutingBehaviorStep</div>),
-)
-jest.mock('../VoiceIntegrationOnboardingForm', () =>
-    jest.fn(({ children }) => <div>{children}</div>),
-)
-jest.mock('../VoiceIntegrationOnboardingUnsavedChangesPrompt', () =>
-    jest.fn(({ hasNewPhoneNumber }) => (
-        <div>
-            <div>VoiceIntegrationOnboardingUnsavedChangesPrompt</div>
-            <div>
-                {hasNewPhoneNumber
-                    ? 'has new phone number'
-                    : 'no new phone number'}
-            </div>
-        </div>
+}))
+jest.mock('../ConfigureRoutingBehaviorStep', () => ({
+    ConfigureRoutingBehaviorStep: jest.fn(() => (
+        <div>ConfigureRoutingBehaviorStep</div>
     )),
-)
+}))
+jest.mock('../VoiceIntegrationOnboardingForm', () => ({
+    VoiceIntegrationOnboardingForm: jest.fn(({ children }) => (
+        <div>{children}</div>
+    )),
+}))
+jest.mock('../VoiceIntegrationOnboardingUnsavedChangesPrompt', () => ({
+    VoiceIntegrationOnboardingUnsavedChangesPrompt: jest.fn(
+        ({ hasNewPhoneNumber }) => (
+            <div>
+                <div>VoiceIntegrationOnboardingUnsavedChangesPrompt</div>
+                <div>
+                    {hasNewPhoneNumber
+                        ? 'has new phone number'
+                        : 'no new phone number'}
+                </div>
+            </div>
+        ),
+    ),
+}))
 
 describe('VoiceIntegrationOnboarding', () => {
     const renderComponent = () => render(<VoiceIntegrationOnboarding />)

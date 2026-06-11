@@ -5,9 +5,9 @@ import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { UncontrolledDropdown } from 'reactstrap'
 
-import Dropdown from '../Dropdown'
-import Input from '../Input'
-import Menu from '../Menu'
+import { Dropdown } from '../Dropdown'
+import { Input } from '../Input'
+import { Menu } from '../Menu'
 
 jest.mock('reactstrap', () => {
     const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
@@ -22,8 +22,8 @@ jest.mock('reactstrap', () => {
         DropdownMenu: (props: Record<string, unknown>) => <div {...props} />,
     }
 })
-jest.mock('../Input', () => jest.fn(() => <div>Input</div>))
-jest.mock('../Menu', () => jest.fn(() => <div>Menu</div>))
+jest.mock('../Input', () => ({ Input: jest.fn(() => <div>Input</div>) }))
+jest.mock('../Menu', () => ({ Menu: jest.fn(() => <div>Menu</div>) }))
 
 const mockedInput = Input as unknown as jest.Mock
 const mockedMenu = assumeMock(Menu)

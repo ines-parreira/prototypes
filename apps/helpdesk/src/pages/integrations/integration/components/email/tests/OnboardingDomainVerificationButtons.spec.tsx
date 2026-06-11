@@ -3,9 +3,9 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import OnboardingDomainVerificationButtons from '../CustomerOnboarding/OnboardingDomainVerificationButtons'
-import useDomainVerification from '../EmailDomainVerification/useDomainVerification'
-import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
+import { OnboardingDomainVerificationButtons } from '../CustomerOnboarding/OnboardingDomainVerificationButtons'
+import { useDomainVerification } from '../EmailDomainVerification/useDomainVerification'
+import { useDeleteEmailIntegration } from '../useDeleteEmailIntegration'
 
 jest.mock('../EmailDomainVerification/useDomainVerification')
 jest.mock('../useDeleteEmailIntegration')

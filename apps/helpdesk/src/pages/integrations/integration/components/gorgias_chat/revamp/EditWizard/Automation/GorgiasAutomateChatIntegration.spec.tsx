@@ -7,10 +7,10 @@ import { MemoryRouter } from 'react-router-dom'
 import { toast } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useIsQuickRepliesEnabled } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useArticleRecommendation } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useArticleRecommendation'
 import { useFlows } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useFlows'
@@ -174,7 +174,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
-        default: () => null,
+        SaveChangesPrompt: () => null,
     }),
 )
 

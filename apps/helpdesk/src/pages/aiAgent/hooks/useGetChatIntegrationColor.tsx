@@ -1,5 +1,5 @@
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 export const useGetChatIntegrationColor = ({
     shopName,

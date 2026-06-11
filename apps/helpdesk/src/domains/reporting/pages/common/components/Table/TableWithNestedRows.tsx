@@ -11,10 +11,10 @@ import type { TooltipData } from 'domains/reporting/pages/types'
 import type { OrderDirection } from 'models/api/types'
 import { opposite } from 'models/api/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 type NestedRowProps<Columns extends string> = {
     intentCustomFieldId?: number

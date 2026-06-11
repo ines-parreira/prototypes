@@ -7,10 +7,10 @@ import { Col, Form, Label, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import type {
@@ -20,7 +20,7 @@ import type {
 import { AccountSettingType } from 'state/currentAccount/types'
 import { getMomentTimezoneNames } from 'utils/date'
 
-import BusinessHoursForm from './BusinessHoursForm'
+import { BusinessHoursForm } from './BusinessHoursForm'
 import { DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS } from './constants'
 
 import settingsCss from '../settings.less'
@@ -200,4 +200,4 @@ const BusinessHoursLegacy = ({ children }: { children?: ReactNode }) => {
     )
 }
 
-export default BusinessHoursLegacy
+export { BusinessHoursLegacy }

@@ -1,1 +1,1 @@
-export { default as useViewId } from './useViewId'
+export { useViewId } from './useViewId'

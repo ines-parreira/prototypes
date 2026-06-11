@@ -28,7 +28,7 @@ jest.mock('../../../contexts/SettingsContext', () => ({
 
 jest.mock('../../PlaygroundMessage/PlaygroundMessage', () => ({
     __esModule: true,
-    default: ({ message, children }: any) => (
+    PlaygroundMessage: ({ message, children }: any) => (
         <div>
             <div>Message: {message.content || message.type}</div>
             {children}
@@ -38,7 +38,7 @@ jest.mock('../../PlaygroundMessage/PlaygroundMessage', () => ({
 
 jest.mock('../../KnowledgeSourcesWrapper/KnowledgeSourcesWrapper', () => ({
     __esModule: true,
-    default: ({ executionId, outcome }: any) => (
+    KnowledgeSourcesWrapper: ({ executionId, outcome }: any) => (
         <div>
             KnowledgeSourcesWrapper - executionId: {executionId}, outcome:{' '}
             {outcome}

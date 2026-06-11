@@ -1,1 +1,1 @@
-export { default } from './FlowsBanner'
+export { FlowsBanner } from './FlowsBanner'

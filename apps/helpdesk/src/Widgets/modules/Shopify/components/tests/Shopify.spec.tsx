@@ -4,9 +4,9 @@ import React, { useContext } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 
-import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { CustomizationContext, Template } from 'Widgets/modules/Template'
 
-import ShopifyWidget, { customization } from '../Shopify'
+import { customization, ShopifyWidget } from '../Shopify'
 
 jest.mock('Widgets/modules/Template', () => {
     const templateExports: Record<string, unknown> = jest.requireActual(
@@ -15,7 +15,7 @@ jest.mock('Widgets/modules/Template', () => {
     return {
         __esModule: true,
         ...templateExports,
-        default: jest.fn(),
+        Template: jest.fn(),
     }
 })
 

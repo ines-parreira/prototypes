@@ -5,7 +5,7 @@ import {
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Props as RecentTicketsProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRecentTickets'
 import { getTimezone } from 'state/currentUser/selectors'
 

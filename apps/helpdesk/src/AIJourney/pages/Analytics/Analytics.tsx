@@ -45,7 +45,7 @@ import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeS
 import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from '../../../domains/reporting/models/stat/types'
 import { DrillDownModal } from '../../../domains/reporting/pages/common/drill-down/DrillDownModal'
-import FiltersPanelWrapper from '../../../domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from '../../../domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { filterNonDraftCampaigns } from '../../../domains/reporting/pages/common/filters/JourneyCampaignsFilter'
 import { useGetNamespacedShopNameForStore } from '../../../domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 

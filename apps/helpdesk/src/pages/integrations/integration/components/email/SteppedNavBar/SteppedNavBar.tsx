@@ -12,7 +12,7 @@ type Props = {
     activeStep: number
 }
 
-export default function SteppedNavBar({ steps, activeStep }: Props) {
+export function SteppedNavBar({ steps, activeStep }: Props) {
     return (
         <div className={css.container}>
             <div className={css.line} />

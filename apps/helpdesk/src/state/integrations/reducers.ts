@@ -60,7 +60,7 @@ export const initialState: IntegrationsImmutableState = fromJS({
  * If we see 'flickering' in the frontend we should update the state here instead of waiting for the integrations
  * to be fetched.
  */
-export default function reducer(
+export function reducer(
     state: IntegrationsImmutableState = initialState,
     action: GorgiasAction,
 ): IntegrationsImmutableState {

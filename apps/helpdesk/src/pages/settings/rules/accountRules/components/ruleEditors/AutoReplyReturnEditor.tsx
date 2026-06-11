@@ -5,9 +5,9 @@ import { fromJS } from 'immutable'
 import isURL from 'validator/lib/isURL'
 
 import { MacroActionName } from 'models/macroAction/types'
-import InputField from 'pages/common/forms/input/InputField'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { MultiSelectField } from 'pages/common/forms/MultiSelectField'
+import { ResponseAction } from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import type { AutoReplyReturnSettings } from 'state/rules/types'
 
 import type { ManagedRuleDetailProps } from './ManagedRuleEditor'
@@ -143,5 +143,3 @@ export const AutoReplyReturnEditor = ({
         </>
     )
 }
-
-export default AutoReplyReturnEditor

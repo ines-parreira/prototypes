@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 
 type Props = {

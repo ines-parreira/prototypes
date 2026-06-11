@@ -1,9 +1,9 @@
 import { Button } from '@gorgias/axiom'
 
-import PhoneDeviceDialerInput from 'pages/integrations/integration/components/phone/PhoneDeviceDialerInput'
+import { PhoneDeviceDialerInput } from 'pages/integrations/integration/components/phone/PhoneDeviceDialerInput'
 
-import PhoneDeviceDialerIntegrationSelect from './PhoneDeviceDialerIntegrationSelect'
-import usePhoneDeviceDialer from './usePhoneDeviceDialer'
+import { PhoneDeviceDialerIntegrationSelect } from './PhoneDeviceDialerIntegrationSelect'
+import { usePhoneDeviceDialer } from './usePhoneDeviceDialer'
 
 import css from './PhoneDevice.less'
 
@@ -11,7 +11,7 @@ type Props = {
     onCallInitiated: () => void
 }
 
-export default function PhoneDeviceDialer({ onCallInitiated }: Props) {
+export function PhoneDeviceDialer({ onCallInitiated }: Props) {
     const {
         isPhoneNumberValid,
         setIsPhoneNumberValid,

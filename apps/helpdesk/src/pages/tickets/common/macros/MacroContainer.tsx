@@ -5,12 +5,12 @@ import { fromJS } from 'immutable'
 
 import type { Macro } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Filters } from 'models/macro/types'
-import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
+import { useMacrosSearch } from 'pages/common/editor/hooks/useMacrosSearch'
 import { getHumanAgents } from 'state/agents/selectors'
 
-import MacroModal from './components/MacroModal'
+import { MacroModal } from './components/MacroModal'
 import { getDefaultSelectedMacroId } from './utils'
 
 type Props = {
@@ -114,4 +114,4 @@ const MacroContainer = ({
     )
 }
 
-export default MacroContainer
+export { MacroContainer }

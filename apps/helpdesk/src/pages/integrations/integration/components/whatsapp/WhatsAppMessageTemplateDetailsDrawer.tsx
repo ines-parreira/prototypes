@@ -6,15 +6,15 @@ import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
-import Alert from 'pages/common/components/Alert/Alert'
+import { Alert } from 'pages/common/components/Alert/Alert'
 import { Drawer } from 'pages/common/components/Drawer'
 import { getLanguageDisplayName } from 'utils'
 
 import { templateAlertContent, whatsAppFlagCodes } from './constants'
 import { normalizeLocale } from './utils'
-import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
-import WhatsAppMessageTemplateMessage from './WhatsAppMessageTemplateMessage'
-import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
+import { WhatsAppMessageTemplateCategoryLabel } from './WhatsAppMessageTemplateCategoryLabel'
+import { WhatsAppMessageTemplateMessage } from './WhatsAppMessageTemplateMessage'
+import { WhatsAppMessageTemplateStatusLabel } from './WhatsAppMessageTemplateStatusLabel'
 
 import css from './WhatsAppMessageTemplateDetailsDrawer.less'
 
@@ -24,7 +24,7 @@ type Props = {
     template: WhatsAppMessageTemplate
 }
 
-export default function WhatsAppMessageTemplateDetailsDrawer({
+export function WhatsAppMessageTemplateDetailsDrawer({
     isOpen,
     setIsOpen,
     template,

@@ -14,7 +14,7 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import { account } from 'fixtures/account'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import {
@@ -24,7 +24,7 @@ import {
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'
+import { ContactFormEntrypointPreview } from '../ContactFormEntrypointPreview'
 
 const CONTACT_FORM_SHOP_NAME = 'acme'
 
@@ -40,7 +40,7 @@ const mockSelfServiceConfiguration = {
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useSelfServiceConfiguration: jest.fn(),
 }))
 jest.mock('models/workflows/queries', () => ({
     useListWorkflowEntryPoints: jest.fn(),

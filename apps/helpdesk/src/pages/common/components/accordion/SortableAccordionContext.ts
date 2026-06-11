@@ -21,4 +21,4 @@ const SortableAccordionContext = createContext<SortableAccordionContextType>({
 export const useSortableAccordionContext = () =>
     useContext(SortableAccordionContext)
 
-export default SortableAccordionContext
+export { SortableAccordionContext }

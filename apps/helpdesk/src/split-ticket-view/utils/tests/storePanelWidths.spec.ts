@@ -1,5 +1,5 @@
 import { LayoutKeys } from '../../constants'
-import storePanelWidths from '../storePanelWidths'
+import { storePanelWidths } from '../storePanelWidths'
 
 describe('storePanelWidths', () => {
     afterEach(() => {

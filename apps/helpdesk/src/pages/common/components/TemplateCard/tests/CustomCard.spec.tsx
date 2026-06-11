@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CustomCard from '../CustomCard'
+import { CustomCard } from '../CustomCard'
 
 describe('<CustomCard />', () => {
     const props = {

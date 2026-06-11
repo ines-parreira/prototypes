@@ -9,12 +9,12 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { AGENT_ROLE } from 'config/user'
 import { ViewCategory } from 'models/view/types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import type { RootState } from 'state/types'
 import { hasRole } from 'utils'
 
-import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
-import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
+import { ViewSharingButtonTooltip } from './ViewSharingButtonTooltip'
+import { ViewSharingModal } from './ViewSharingModal/ViewSharingModal'
 
 import css from './ViewSharingButton.less'
 
@@ -60,4 +60,6 @@ const connector = connect((state: RootState) => ({
     currentUser: state.currentUser,
 }))
 
-export default connector(ViewSharingButtonContainer)
+const DefaultExportViewSharingButton = connector(ViewSharingButtonContainer)
+
+export { DefaultExportViewSharingButton }

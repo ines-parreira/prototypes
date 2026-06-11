@@ -8,7 +8,7 @@ import type {
     ShopifyIntegration,
 } from 'models/integration/types'
 
-import IntegrationContext from './context'
+import { IntegrationContext } from './context'
 
 type Props = {
     children: ReactNode

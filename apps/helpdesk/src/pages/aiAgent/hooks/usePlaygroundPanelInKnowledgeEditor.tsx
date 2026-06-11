@@ -4,7 +4,7 @@ import { SidebarContext } from '@repo/navigation'
 
 import type { SizeValue } from '@gorgias/axiom'
 
-import useScreenSize from 'panels/hooks/useScreenSize'
+import { useScreenSize } from 'panels/hooks/useScreenSize'
 
 /**
  * Threshold width below which the fullscreen button should be hidden when playground is open

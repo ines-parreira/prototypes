@@ -6,7 +6,7 @@ import { useFeedbackTracking } from '@repo/ai-agent'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     KnowledgeSourceSideBarContext,
     KnowledgeSourceSideBarMode,

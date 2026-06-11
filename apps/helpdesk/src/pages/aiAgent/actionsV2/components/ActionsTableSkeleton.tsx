@@ -1,6 +1,6 @@
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import { Skeleton } from '@gorgias/axiom'
 
@@ -37,4 +37,4 @@ const ActionsTableSkeleton = ({ rows }: Props) => {
     )
 }
 
-export default ActionsTableSkeleton
+export { ActionsTableSkeleton }

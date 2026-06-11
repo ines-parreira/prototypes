@@ -51,4 +51,4 @@ const ModalHeader = ({
     )
 }
 
-export default ModalHeader
+export { ModalHeader }

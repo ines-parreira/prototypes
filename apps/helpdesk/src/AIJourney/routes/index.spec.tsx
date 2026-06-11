@@ -22,8 +22,9 @@ jest.mock('AIJourney/providers', () => ({
 }))
 
 jest.mock('pages/LegacyPage', () => ({
-    __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    DefaultExportLegacyPage: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock('AIJourney/components', () => ({
@@ -50,8 +51,9 @@ jest.mock('AIJourney/pages/Campaigns/Campaigns', () => ({
 }))
 
 jest.mock('../../domains/reporting/pages/DefaultStatsFilters', () => ({
-    __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    DefaultStatsFilters: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock('./RedirectToShop', () => ({

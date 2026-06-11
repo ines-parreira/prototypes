@@ -13,8 +13,8 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
-import AIBanner from 'domains/reporting/pages/help-center/components/AIBanner'
-import HelpCenterStats from 'domains/reporting/pages/help-center/pages/HelpCenterStats'
+import { AIBanner } from 'domains/reporting/pages/help-center/components/AIBanner'
+import { HelpCenterStats } from 'domains/reporting/pages/help-center/pages/HelpCenterStats'
 import { HELP_CENTER_STATS_TEST_IDS } from 'domains/reporting/pages/help-center/pages/tests/constants'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import {
@@ -26,7 +26,7 @@ import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/compon
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import type { RootState } from 'state/types'
-import configureStore from 'store/configureStore.prod'
+import { configureStore } from 'store/configureStore.prod'
 import type { InitialRootState } from 'types'
 
 jest.mock(
@@ -42,7 +42,9 @@ jest.mock(
 )
 jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
-    () => () => <div>line-chart</div>,
+    () => ({
+        DefaultExportLineChart: () => <div>line-chart</div>,
+    }),
 )
 jest.mock(
     'domains/reporting/pages/help-center/hooks/useArticleViewsTrend',

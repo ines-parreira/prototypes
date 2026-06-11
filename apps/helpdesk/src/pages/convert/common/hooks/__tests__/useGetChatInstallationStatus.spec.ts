@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { GorgiasChatInstallationMethod } from 'models/integration/types'
-import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
+import { useGetChatInstallationStatus } from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 
 const integrationWithScriptTagAndValidDates = {
     meta: {

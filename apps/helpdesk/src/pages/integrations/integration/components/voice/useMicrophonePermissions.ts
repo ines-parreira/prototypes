@@ -3,7 +3,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import { useQuery } from '@tanstack/react-query'
 
-export default function useMicrophonePermissions(
+export function useMicrophonePermissions(
     refetchInterval = Duration.seconds(5),
 ) {
     const [permissionState, setPermissionState] =

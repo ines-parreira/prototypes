@@ -5,12 +5,12 @@ import { useParams } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest.less'
-import RequestABTestModal from 'domains/reporting/pages/convert/components/RequestABTestModal'
-import ViewABTestModal from 'domains/reporting/pages/convert/components/ViewABTestModal'
+import { RequestABTestModal } from 'domains/reporting/pages/convert/components/RequestABTestModal'
+import { ViewABTestModal } from 'domains/reporting/pages/convert/components/ViewABTestModal'
 import { useCanRequestABTest } from 'domains/reporting/pages/convert/hooks/stats/useCanRequestABTest'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useListABTests } from 'models/convert/abTest/queries'
 import type { ABTestListOptions as ABTestListOptionsParams } from 'models/convert/abTest/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -154,4 +154,4 @@ const RequestABTest = () => {
     )
 }
 
-export default RequestABTest
+export { RequestABTest }

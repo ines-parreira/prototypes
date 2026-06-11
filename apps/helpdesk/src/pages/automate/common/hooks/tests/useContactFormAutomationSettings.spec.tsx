@@ -3,8 +3,8 @@ import { act } from '@testing-library/react'
 
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 
-import useContactFormAutomationSettings from '../useContactFormAutomationSettings'
-import useContactFormsAutomationSettings from '../useContactFormsAutomationSettings'
+import { useContactFormAutomationSettings } from '../useContactFormAutomationSettings'
+import { useContactFormsAutomationSettings } from '../useContactFormsAutomationSettings'
 
 jest.mock('../useContactFormsAutomationSettings')
 

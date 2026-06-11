@@ -1,1 +1,1 @@
-export { default } from './CustomActions'
+export { DefaultExportCustomActions } from './CustomActions'

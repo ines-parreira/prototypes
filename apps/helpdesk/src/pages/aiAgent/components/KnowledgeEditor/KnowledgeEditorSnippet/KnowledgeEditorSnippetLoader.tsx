@@ -6,7 +6,7 @@ import {
     getLast28DaysDateRange,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import {

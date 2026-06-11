@@ -16,7 +16,7 @@ import {
     colors as colorsConfig,
 } from 'domains/reporting/config/stats'
 import { highlightTimeRanges } from 'domains/reporting/pages/common/components/charts/plugins'
-import Legend from 'domains/reporting/pages/common/components/Legend/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/Legend/Legend'
 import { getBusinessHoursRangesByUserTimezone } from 'state/currentAccount/selectors'
 import type { RootState } from 'state/types'
 
@@ -125,6 +125,8 @@ const connector = connect((state: RootState) => ({
 }))
 
 // Use memo to prevent redrawing on state change
-export default connector(
+const DefaultExportLineStat = connector(
     React.memo(LineStatContainer, (prev, next) => _isEqual(prev, next)),
 )
+
+export { DefaultExportLineStat }

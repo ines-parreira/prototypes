@@ -3,9 +3,9 @@ import { fromJS } from 'immutable'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useCollisionDetection from '../useCollisionDetection'
+import { useCollisionDetection } from '../useCollisionDetection'
 
 jest.mock('@gorgias/realtime')
 jest.mock('hooks/useAppSelector')

@@ -16,14 +16,14 @@ import type {
     ShopifyIntegration,
 } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { ProductSearchInput } from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import {
@@ -39,13 +39,13 @@ import {
 import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
-import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
-import OrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
+import { AddCustomItemPopover } from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
+import { DefaultExportOrderTable as OrderTable } from 'Widgets/modules/Shopify/modules/OrderTable'
 import type { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import EmailInvoicePopover from './EmailInvoicePopover'
-import InventoryScopeMissingBanner from './InventoryScopeMissingBanner'
-import OrderFooter from './OrderFooter'
+import { EmailInvoicePopover } from './EmailInvoicePopover'
+import { InventoryScopeMissingBanner } from './InventoryScopeMissingBanner'
+import { DefaultExportOrderFooter as OrderFooter } from './OrderFooter'
 
 import css from './DraftOrderModal.less'
 
@@ -438,4 +438,6 @@ const connector = connect(
     },
 )
 
-export default connector(DraftOrderModalContainer)
+const DefaultExportDraftOrderModal = connector(DraftOrderModalContainer)
+
+export { DefaultExportDraftOrderModal }

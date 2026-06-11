@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { fromJS, List } from 'immutable'
 import moment from 'moment'
 
-import useLastMessageDatetimeAfterMount from '../useLastMessageDatetimeAfterMount'
+import { useLastMessageDatetimeAfterMount } from '../useLastMessageDatetimeAfterMount'
 
 describe('useLastMessageDatetimeAfterMount', () => {
     it('should return null by default', () => {

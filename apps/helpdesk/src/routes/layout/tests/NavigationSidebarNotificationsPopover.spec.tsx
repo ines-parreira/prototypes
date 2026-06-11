@@ -33,7 +33,7 @@ jest.mock('@repo/notifications', () => ({
 
 jest.mock('common/notifications/utils/getNotificationConfig', () => ({
     __esModule: true,
-    default: jest.fn(),
+    getNotificationConfig: jest.fn(),
 }))
 
 jest.mock('../NavigationSidebarNotificationsButton', () => ({

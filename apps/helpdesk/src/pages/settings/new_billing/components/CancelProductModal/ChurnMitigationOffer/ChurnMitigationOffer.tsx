@@ -36,4 +36,4 @@ const ChurnMitigationOffer = ({
     )
 }
 
-export default ChurnMitigationOffer
+export { ChurnMitigationOffer }

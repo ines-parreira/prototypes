@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { countries } from 'config/countries'
 import { useBillingContact } from 'models/billing/queries'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { DataRow } from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
 import { Description } from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'

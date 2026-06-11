@@ -8,16 +8,16 @@ import type {
     UpdateCustomFieldCondition,
 } from '@gorgias/helpdesk-queries'
 
-import InputField from 'pages/common/forms/input/InputField'
-import ToggleInputField from 'pages/common/forms/ToggleInputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { ToggleInputField } from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
 import { DEFAULT_EXPRESSION_RULE } from '../constants'
-import useSaveCondition from '../hooks/useSaveCondition'
+import { useSaveCondition } from '../hooks/useSaveCondition'
 import { DeletionPopover } from './DeletionPopover'
 import { ExpressionField } from './ExpressionField'
-import ThenField from './ThenField'
+import { DefaultExportThenField as ThenField } from './ThenField'
 
 import css from './ConditionForm.less'
 
@@ -25,7 +25,7 @@ type ConditionFormProps = {
     condition?: CustomFieldCondition
 }
 
-export default function EditConditionForm({ condition }: ConditionFormProps) {
+export function EditConditionForm({ condition }: ConditionFormProps) {
     const { onSubmit, isSubmitting } = useSaveCondition(condition?.id)
 
     const editValues = {

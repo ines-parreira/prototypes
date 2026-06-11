@@ -2,9 +2,9 @@ import React, { useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import type { DropdownOption } from 'domains/reporting/pages/types'
-import Search from 'pages/common/components/Search'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
 
 import type { App } from '../types'
 
@@ -79,4 +79,4 @@ const ActionsPlatformTemplatesFilters = ({
     )
 }
 
-export default ActionsPlatformTemplatesFilters
+export { ActionsPlatformTemplatesFilters }

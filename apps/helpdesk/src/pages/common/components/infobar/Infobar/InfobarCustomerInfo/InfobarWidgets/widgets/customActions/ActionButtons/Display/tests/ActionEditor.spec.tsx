@@ -5,7 +5,7 @@ import { userEvent } from '@testing-library/user-event'
 import { actionFixture } from 'fixtures/infobarCustomActions'
 import { ContentType } from 'models/api/types'
 
-import ActionEditor from '../ActionEditor'
+import { ActionEditor } from '../ActionEditor'
 
 describe('<ActionEditor/>', () => {
     const action = actionFixture()

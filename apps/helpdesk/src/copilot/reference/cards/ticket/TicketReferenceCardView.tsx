@@ -1,6 +1,6 @@
 import type { Ticket } from '@gorgias/helpdesk-types'
 
-import RelativeTime from 'pages/common/components/RelativeTime'
+import { RelativeTime } from 'pages/common/components/RelativeTime'
 
 import { getReferenceVisual } from '../../icons'
 import {

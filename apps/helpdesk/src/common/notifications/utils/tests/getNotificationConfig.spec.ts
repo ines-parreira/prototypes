@@ -1,5 +1,5 @@
 import type { Notification } from '../../types'
-import getNotificationConfig from '../getNotificationConfig'
+import { getNotificationConfig } from '../getNotificationConfig'
 
 jest.mock('../../data', () => ({
     notifications: {

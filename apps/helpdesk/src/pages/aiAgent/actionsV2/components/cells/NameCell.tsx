@@ -29,4 +29,4 @@ const NameCell = ({ name }: Props) => {
     )
 }
 
-export default NameCell
+export { NameCell }

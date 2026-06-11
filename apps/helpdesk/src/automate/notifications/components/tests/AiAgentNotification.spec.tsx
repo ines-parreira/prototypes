@@ -13,7 +13,7 @@ import type { Notification } from 'common/notifications'
 import { defaultUseAiAgentOnboardingNotificationFixture } from 'fixtures/onboardingStateNotification'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 
-import AiAgentNotification from '../AiAgentNotification'
+import { AiAgentNotification } from '../AiAgentNotification'
 
 const TICKET_VIEW_ID = 123
 const SHOP_NAME = 'store_1'

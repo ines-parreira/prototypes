@@ -5,7 +5,7 @@ import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import * as DrillDownModalTrigger from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
-import VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
+import { VoiceCallCallerExperienceMetric } from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,

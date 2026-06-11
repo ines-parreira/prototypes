@@ -11,14 +11,14 @@ import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
 
-import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from '../../workflows/hooks/useLanguagesMismatchWarnings'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from '../../workflows/hooks/useWorkflowChannelSupport'
 import type { SelfServiceChannelType } from '../hooks/useSelfServiceChannels'
 import type { ChannelLanguage } from '../types'
-import WorkflowItem from './WorkflowItem'
+import { WorkflowItem } from './WorkflowItem'
 
 import css from './WorkflowsFeatureList.less'
 
@@ -217,4 +217,4 @@ const WorkflowsFeatureList = ({
     )
 }
 
-export default WorkflowsFeatureList
+export { WorkflowsFeatureList }

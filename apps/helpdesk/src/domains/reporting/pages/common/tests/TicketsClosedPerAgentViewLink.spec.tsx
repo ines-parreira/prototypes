@@ -11,8 +11,8 @@ import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
-import TicketsClosedPerAgentViewLink from 'domains/reporting/pages/common/TicketsClosedPerAgentViewLink'
-import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
+import { TicketsClosedPerAgentViewLink } from 'domains/reporting/pages/common/TicketsClosedPerAgentViewLink'
+import { DefaultExportStatsFiltersContext as StatsFiltersContext } from 'domains/reporting/pages/StatsFiltersContext'
 import { agents as agentsFixtures } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -20,15 +20,14 @@ import type { RootState, StoreDispatch } from 'state/types'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('@repo/logging')
-jest.mock(
-    'domains/reporting/pages/common/ViewLink',
-    () => (props: LinkProps) => (
+jest.mock('domains/reporting/pages/common/ViewLink', () => ({
+    ViewLink: (props: LinkProps) => (
         <div>
             ViewLink Mock
             {JSON.stringify(props, null, 2)}
         </div>
     ),
-)
+}))
 
 const logEventMock = logEvent as jest.Mock
 

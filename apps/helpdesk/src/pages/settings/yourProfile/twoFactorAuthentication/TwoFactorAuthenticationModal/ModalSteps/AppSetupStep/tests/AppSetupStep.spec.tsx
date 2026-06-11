@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import AppSetupStep from '../AppSetupStep'
+import { AppSetupStep } from '../AppSetupStep'
 
 describe('<AppSetupStep />', () => {
     it('should render the component', () => {

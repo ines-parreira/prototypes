@@ -11,7 +11,7 @@ import {
     createCompositeDecorator,
     createEditorStateFromHtml,
 } from './draftTestUtils'
-import TestEditor from './TestEditor'
+import { TestEditor } from './TestEditor'
 import * as utils from './utils'
 
 // mock random key generation so they match from a snapshot to the other

@@ -19,7 +19,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function NavbarPanel({ children }: Props) {
+export function NavbarPanel({ children }: Props) {
     const { navBarDisplay, onNavHover, onNavLeave } = useNavBar()
 
     if (navBarDisplay === NavBarDisplayMode.Open) {

@@ -10,7 +10,7 @@ import type {
 
 import { findManyGuidanceVariables } from '../../../guidance-variables/utils'
 import { useToolbarContext } from '../../ToolbarContext'
-import GuidanceVariableDropdown from '../GuidanceVariableDropdown'
+import { GuidanceVariableDropdown } from '../GuidanceVariableDropdown'
 
 jest.mock('../../ToolbarContext', () => ({
     useToolbarContext: jest.fn(),
@@ -24,55 +24,67 @@ jest.mock('../../../guidance-variables/utils', () => ({
 }))
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => {
-    return jest.fn(({ children, isOpen, onToggle }) => (
-        <div data-testid="dropdown" data-open={isOpen}>
-            {isOpen && children}
-            <button
-                data-testid="toggle-dropdown"
-                onClick={() => onToggle(!isOpen)}
-            >
-                Toggle
-            </button>
-        </div>
-    ))
+    return {
+        Dropdown: jest.fn(({ children, isOpen, onToggle }) => (
+            <div data-testid="dropdown" data-open={isOpen}>
+                {isOpen && children}
+                <button
+                    data-testid="toggle-dropdown"
+                    onClick={() => onToggle(!isOpen)}
+                >
+                    Toggle
+                </button>
+            </div>
+        )),
+    }
 })
 
 jest.mock('pages/common/components/dropdown/DropdownHeader', () => {
-    return jest.fn(({ children }) => (
-        <div data-testid="dropdown-header">{children}</div>
-    ))
+    return {
+        DefaultExportDropdownHeader: jest.fn(({ children }) => (
+            <div data-testid="dropdown-header">{children}</div>
+        )),
+    }
 })
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => {
-    return jest.fn(({ children }) => (
-        <div data-testid="dropdown-body">{children}</div>
-    ))
+    return {
+        DefaultExportDropdownBody: jest.fn(({ children }) => (
+            <div data-testid="dropdown-body">{children}</div>
+        )),
+    }
 })
 
 jest.mock('pages/common/components/dropdown/DropdownItem', () => {
-    return jest.fn(({ children, onClick }) => (
-        <div data-testid="dropdown-item" onClick={onClick}>
-            {children}
-        </div>
-    ))
+    return {
+        DefaultExportDropdownItem: jest.fn(({ children, onClick }) => (
+            <div data-testid="dropdown-item" onClick={onClick}>
+                {children}
+            </div>
+        )),
+    }
 })
 
 jest.mock('pages/common/components/button/ButtonIconLabel', () => {
-    return jest.fn(({ children, icon }) => (
-        <div data-testid="button-icon-label" data-icon={icon}>
-            {children}
-        </div>
-    ))
+    return {
+        DefaultExportButtonIconLabel: jest.fn(({ children, icon }) => (
+            <div data-testid="button-icon-label" data-icon={icon}>
+                {children}
+            </div>
+        )),
+    }
 })
 
 jest.mock('pages/common/components/Search', () => {
-    return jest.fn(({ value, onChange }) => (
-        <input
-            data-testid="search-input"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-        />
-    ))
+    return {
+        DefaultExportSearch: jest.fn(({ value, onChange }) => (
+            <input
+                data-testid="search-input"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+            />
+        )),
+    }
 })
 
 describe('GuidanceVariableDropdown', () => {

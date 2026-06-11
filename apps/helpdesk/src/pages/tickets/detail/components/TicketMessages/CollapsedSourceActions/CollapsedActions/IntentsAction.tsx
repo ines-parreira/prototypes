@@ -1,4 +1,4 @@
-import CollapsedAction from './CollapsedAction'
+import { CollapsedAction } from './CollapsedAction'
 
 type Props = {
     onClick: () => void
@@ -15,4 +15,4 @@ const IntentsAction: React.FC<Props> = ({ onClick }) => (
     />
 )
 
-export default IntentsAction
+export { IntentsAction }

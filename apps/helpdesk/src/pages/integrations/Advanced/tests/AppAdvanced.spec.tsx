@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { dummyErrorLogList } from 'fixtures/appErrors'
 import { dummyAppDetail } from 'fixtures/apps'
-import AppAdvanced from 'pages/integrations/Advanced/AppAdvanced'
+import { AppAdvanced } from 'pages/integrations/Advanced/AppAdvanced'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ currentAccount: fromJS({ domain: '20-1 rpz' }) })

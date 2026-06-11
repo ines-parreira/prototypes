@@ -6,14 +6,14 @@ import { act, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { PhoneNumberInputHandle } from '../PhoneNumberInput'
-import PhoneNumberInput from '../PhoneNumberInput'
+import { DefaultExportPhoneNumberInput as PhoneNumberInput } from '../PhoneNumberInput'
 
 jest.mock('@repo/logging')
 
 jest.mock('lodash/uniqueId', () => (id: string) => `${id || ''}42`)
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div data-testid="loader" />
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div data-testid="loader" />,
+}))
 
 describe('<PhoneNumberInput/>', () => {
     const onChange: jest.MockedFunction<(value: string) => void> = jest.fn()

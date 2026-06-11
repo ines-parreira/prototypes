@@ -1,5 +1,5 @@
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
 import { METRICS } from 'domains/reporting/pages/convert/constants/ConvertPerformanceOverviewConfig'
 import { useCampaignTotalStats } from 'domains/reporting/pages/convert/hooks/useCampaignTotalStats'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'

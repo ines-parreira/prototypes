@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import type { CustomSSOProviderData } from '../../types'
-import CustomSsoProviderModal from '../CustomSsoProviderModal'
+import { CustomSsoProviderModal } from '../CustomSsoProviderModal'
 
 describe('CustomSsoProviderModal', () => {
     const mockOnClose = jest.fn()

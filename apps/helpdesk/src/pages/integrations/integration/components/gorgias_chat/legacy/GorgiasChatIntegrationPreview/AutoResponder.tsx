@@ -8,8 +8,8 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
-import BotMessages from './BotMessages'
-import EmailCaptureMessage from './EmailCaptureMessage'
+import { BotMessages } from './BotMessages'
+import { EmailCaptureMessage } from './EmailCaptureMessage'
 
 type Props = {
     autoResponderReply?: string
@@ -55,4 +55,4 @@ const AutoResponder = ({
     )
 }
 
-export default AutoResponder
+export { AutoResponder }

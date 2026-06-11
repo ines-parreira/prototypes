@@ -4,12 +4,12 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     GorgiasChatInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
-import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
+import { useThemeAppExtensionInstallation } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
 const useChatMigrationBanner = (
@@ -92,4 +92,4 @@ const useChatMigrationBanner = (
     }
 }
 
-export default useChatMigrationBanner
+export { useChatMigrationBanner }

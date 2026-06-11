@@ -15,4 +15,6 @@ export type ContextType = {
     setShouldRedirectToSplitView: (value: boolean) => void
 } | null
 
-export default createContext<ContextType>(null)
+const DefaultExportContext = createContext<ContextType>(null)
+
+export { DefaultExportContext }

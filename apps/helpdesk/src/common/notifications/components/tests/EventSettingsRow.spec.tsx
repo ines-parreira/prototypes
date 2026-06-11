@@ -4,22 +4,20 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
 import type { NotificationConfig } from '../../types'
-import EventSettingsRow from '../EventSettingsRow'
+import { EventSettingsRow } from '../EventSettingsRow'
 
-jest.mock(
-    '../SoundSelect',
-    () =>
-        ({ onChange }: { onChange: (sound: string) => void }) => (
-            <select
-                onChange={(e) => {
-                    onChange(e.target.value)
-                }}
-            >
-                <option value="sound 1">sound 1</option>
-                <option value="sound 2">sound 2</option>
-            </select>
-        ),
-)
+jest.mock('../SoundSelect', () => ({
+    SoundSelect: ({ onChange }: { onChange: (sound: string) => void }) => (
+        <select
+            onChange={(e) => {
+                onChange(e.target.value)
+            }}
+        >
+            <option value="sound 1">sound 1</option>
+            <option value="sound 2">sound 2</option>
+        </select>
+    ),
+}))
 
 describe('EventSettingsRow', () => {
     it('should render the given config', () => {

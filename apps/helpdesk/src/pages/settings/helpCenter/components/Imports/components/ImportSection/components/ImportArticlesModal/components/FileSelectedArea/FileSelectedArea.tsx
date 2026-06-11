@@ -39,4 +39,4 @@ const FileSelectedArea: React.FC<Props> = ({ file, onChangeFileClick }) => {
     )
 }
 
-export default FileSelectedArea
+export { FileSelectedArea }

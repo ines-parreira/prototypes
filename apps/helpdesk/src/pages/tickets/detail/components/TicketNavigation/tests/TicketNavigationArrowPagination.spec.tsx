@@ -3,15 +3,15 @@ import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
-import useGoToNextTicket from '../hooks/useGoToNextTicket'
-import useGoToPreviousTicket from '../hooks/useGoToPreviousTicket'
-import useIsTicketNavigationAvailable from '../hooks/useIsTicketNavigationAvailable'
-import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
+import { useGoToNextTicket } from '../hooks/useGoToNextTicket'
+import { useGoToPreviousTicket } from '../hooks/useGoToPreviousTicket'
+import { useIsTicketNavigationAvailable } from '../hooks/useIsTicketNavigationAvailable'
+import { TicketNavigationArrowPagination } from '../TicketNavigationArrowPagination'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 jest.mock('@repo/feature-flags', () => ({

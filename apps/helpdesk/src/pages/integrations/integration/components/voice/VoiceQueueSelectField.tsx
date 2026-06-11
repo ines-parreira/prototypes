@@ -12,19 +12,20 @@ import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
-import CreateNewQueueModal from './CreateNewQueueModal'
-import VoiceQueueSelectFieldEmpty from './VoiceQueueSelectFieldEmpty'
+import { CreateNewQueueModal } from './CreateNewQueueModal'
+import { VoiceQueueSelectFieldEmpty } from './VoiceQueueSelectFieldEmpty'
 
 import css from './VoiceQueueSelectField.less'
 
@@ -35,7 +36,7 @@ type VoiceQueueSelectProps = {
     withLabel?: boolean
 }
 
-export default function VoiceQueueSelectField({
+export function VoiceQueueSelectField({
     value,
     onChange,
     name,

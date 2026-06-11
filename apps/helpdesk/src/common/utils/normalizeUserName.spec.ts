@@ -1,4 +1,4 @@
-import normalizeUserName from './normalizeUserName'
+import { normalizeUserName } from './normalizeUserName'
 
 describe('normalizeUserName', () => {
     it('should remove emojis from the name', () => {

@@ -6,7 +6,7 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
+import { ArticleAttachment } from 'gorgias-design-system/Attachments/ArticleAttachment'
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
@@ -15,7 +15,7 @@ import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/tran
 import { AgentDisplayName } from './AgentDisplayName'
 import type { ArticleAttachmentSchema } from './ArticleAttachment'
 import { isArticleAttachment } from './ArticleAttachment'
-import ChatAvatar from './ChatAvatar'
+import { ChatAvatar } from './ChatAvatar'
 import { FileIcon } from './icon-utils'
 
 import css from './ChatIntegrationPreview.less'
@@ -176,4 +176,4 @@ const AgentMessages: React.FC<Props> = ({
     )
 }
 
-export default AgentMessages
+export { AgentMessages }

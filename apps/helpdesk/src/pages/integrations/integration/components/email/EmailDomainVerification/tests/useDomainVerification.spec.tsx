@@ -3,7 +3,7 @@ import React from 'react'
 import { renderHook } from '@repo/testing'
 
 import { DomainVerificationContext } from '../DomainVerificationContext'
-import useDomainVerification from '../useDomainVerification'
+import { useDomainVerification } from '../useDomainVerification'
 
 describe('useDomainVerification', () => {
     it('should throw an error if it is used outside of the provider', () => {

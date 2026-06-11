@@ -19,7 +19,9 @@ jest.mock('models/convert/abVariants/queries')
 const usePureStopCampaignMock = assumeMock(usePureStopABGroup)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/notifications/actions')
 
 describe('usePauseABGroup', () => {

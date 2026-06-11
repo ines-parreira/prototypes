@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import ScoredDateBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredDateBodyCell'
+import { ScoredDateBodyCell } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredDateBodyCell'
 
 describe('<ScoredDateBodyCell>', () => {
     it('should render formatted date', () => {

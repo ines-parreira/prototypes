@@ -11,9 +11,9 @@ import {
 } from '@gorgias/axiom'
 import type { TicketSummary } from '@gorgias/helpdesk-types'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/TicketSummary.less'
-import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
+import { useTicketSummary } from 'pages/tickets/detail/hooks/useTicketSummary'
 
 type TicketSummaryProps = {
     summary?: TicketSummary | null
@@ -158,7 +158,7 @@ const TicketSummarySection = ({
     )
 }
 
-export default TicketSummarySection
+export { TicketSummarySection }
 
 type TicketSummaryButtonProps = {
     onClick: () => void

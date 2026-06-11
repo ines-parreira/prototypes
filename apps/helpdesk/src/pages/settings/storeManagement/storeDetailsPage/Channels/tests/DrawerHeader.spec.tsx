@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { ChannelWithMetadata } from '../../../types'
-import DrawerHeader from '../ChannelsDrawer/DrawerHeader'
+import { DrawerHeader } from '../ChannelsDrawer/DrawerHeader'
 
 describe('DrawerHeader', () => {
     const createChannel = (

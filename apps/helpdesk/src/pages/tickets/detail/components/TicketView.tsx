@@ -6,17 +6,17 @@ import classnames from 'classnames'
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import useAppSelector from 'hooks/useAppSelector'
-import TicketBody from 'pages/tickets/detail/components/TicketBody'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { TicketBody } from 'pages/tickets/detail/components/TicketBody'
 import { getBody, getTicketState } from 'state/ticket/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import Timeline from 'timeline/Timeline'
+import { DefaultExportTimeline as Timeline } from 'timeline/Timeline'
 
 import type { SubmitArgs } from '../TicketDetailContainer'
 import type { TicketFooterContext } from './TicketFooter'
-import TicketFooter from './TicketFooter'
-import TicketHeaderWrapper from './TicketHeaderWrapper/TicketHeaderWrapper'
+import { TicketFooter } from './TicketFooter'
+import { TicketHeaderWrapper } from './TicketHeaderWrapper/TicketHeaderWrapper'
 
 import css from './TicketView.less'
 
@@ -204,5 +204,3 @@ export const TicketView = ({
         </div>
     )
 }
-
-export default TicketView

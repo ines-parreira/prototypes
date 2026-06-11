@@ -7,15 +7,15 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import type { Components } from 'rest_api/ssp_api/client.generated'
 
-import useUpdateArticleRecommendationPrediction from '../hooks/useUpdateArticleRecommendationPrediction'
-import DeletedArticlePreview from './DeletedArticlePreview'
-import NoRelevantArticlePreview from './NoRelevantArticlePreview'
-import PreviewArticle from './PreviewArticle'
-import PreviewHeader from './PreviewHeader'
+import { useUpdateArticleRecommendationPrediction } from '../hooks/useUpdateArticleRecommendationPrediction'
+import { DeletedArticlePreview } from './DeletedArticlePreview'
+import { NoRelevantArticlePreview } from './NoRelevantArticlePreview'
+import { PreviewHeader as PreviewArticle } from './PreviewArticle'
+import { PreviewHeader } from './PreviewHeader'
 
 import css from './PreviewSection.less'
 
@@ -26,7 +26,7 @@ interface Props {
     page: number
 }
 
-export default function TrainMyAiPreview({
+export function TrainMyAiPreview({
     recommendations,
     page,
     onConfirmFeedback,

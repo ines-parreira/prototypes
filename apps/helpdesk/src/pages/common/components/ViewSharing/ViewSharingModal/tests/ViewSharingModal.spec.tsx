@@ -8,11 +8,11 @@ import thunk from 'redux-thunk'
 import { user as currentUserFixture } from 'fixtures/users'
 import { view as mockViewFixture } from 'fixtures/views'
 import { ViewVisibility } from 'models/view/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
 import * as viewTypes from 'state/views/constants'
 
-import ViewSharingModal from '../ViewSharingModal'
+import { ViewSharingModal } from '../ViewSharingModal'
 
 const mockStore = configureMockStore([thunk])
 const mockData = fromJS({

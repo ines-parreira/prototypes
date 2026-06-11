@@ -56,7 +56,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
-        default: ({ when }: { when: boolean }) => (
+        SaveChangesPrompt: ({ when }: { when: boolean }) => (
             <div data-testid="save-changes-prompt" data-when={when} />
         ),
     }),

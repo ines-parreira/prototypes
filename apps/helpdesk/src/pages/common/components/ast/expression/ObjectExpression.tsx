@@ -7,7 +7,7 @@ import type {
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import type { ObjectExpressionProperty } from 'state/rules/types'
 
-import Property from '../Property'
+import { Property } from '../Property'
 
 type Props = {
     actions: RuleItemActions
@@ -27,7 +27,7 @@ function hasHidden(
     return !!value && 'hide' in value
 }
 
-export default function ObjectExpression({
+export function ObjectExpression({
     actions,
     className,
     compact,

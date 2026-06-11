@@ -11,7 +11,7 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import type { Product } from 'constants/integrations/types/shopify'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     useCreateTestSessionMutation,
     useTriggerAIJourney,

@@ -2,17 +2,17 @@ import { useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import Editor from 'pages/common/editor/Editor'
-import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
-import WhatsAppEditorProvider from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Editor } from 'pages/common/editor/Editor'
+import { useInitialMacroFilters } from 'pages/common/editor/hooks/useInitialMacroFilters'
+import { WhatsAppEditorProvider } from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
 import type { SubmitArgs } from '../TicketDetailContainer'
-import TypingActivity from './TypingActivity'
+import { TypingActivity } from './TypingActivity'
 
 export type TicketFooterContext = {
     isShopperTyping: boolean
@@ -24,7 +24,7 @@ type Props = {
     context?: TicketFooterContext
 }
 
-export default function TicketFooter({ context }: Props) {
+export function TicketFooter({ context }: Props) {
     const dispatch = useAppDispatch()
     const ticket = useAppSelector(getTicket)
     const initialMacroFilters = useInitialMacroFilters()

@@ -26,10 +26,10 @@ import {
     GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityMethod,
 } from 'models/integration/types'
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
 import type { UrlValidationResult } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
-import validateUrl from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
-import VisibilityCondition from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityCondition'
+import { validateUrl } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
+import { VisibilityCondition } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityCondition'
 
 import css from './VisibilityControls.less'
 
@@ -368,4 +368,9 @@ const VisibilityControls = (
     )
 }
 
-export default forwardRef<VisibilityControlsHandle, Props>(VisibilityControls)
+const DefaultExportVisibilityControls = forwardRef<
+    VisibilityControlsHandle,
+    Props
+>(VisibilityControls)
+
+export { DefaultExportVisibilityControls }

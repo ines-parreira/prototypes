@@ -3,12 +3,12 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
 
-import NumberedList from './NumberedList'
+import { NumberedList } from './NumberedList'
 
 import css from './MigrationTutorialList.less'
 
@@ -32,7 +32,7 @@ type Props = {
     isDefaultOpen?: boolean
 }
 
-export default function MigrationTutorialList({
+export function MigrationTutorialList({
     description,
     footer,
     tutorials,

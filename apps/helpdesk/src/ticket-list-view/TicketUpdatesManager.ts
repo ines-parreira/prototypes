@@ -8,13 +8,13 @@ import { viewItemsDefinitionKeys } from 'models/view/queries'
 import { getViewTicketUpdates } from 'models/view/resources'
 
 import type { TicketPartial } from './types'
-import transformApiTicketPartial from './utils/transformApiTicketPartial'
+import { transformApiTicketPartial } from './utils/transformApiTicketPartial'
 
 export type Listener = (tickets: TicketPartial[], cursor: string | null) => void
 export type Unsubscribe = () => void
 
 const PAGE_LIMIT = 25
-export default class TicketUpdatesManager {
+export class TicketUpdatesManager {
     private isPaused: boolean = false
     private latestIndex = 0
     private listener: Listener | null = null

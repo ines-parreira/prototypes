@@ -13,11 +13,15 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import * as infobarActions from 'state/infobar/actions'
 import { SET_INVALID_CUSTOM_FIELDS_TO_ERRORED } from 'state/ticket/constants'
 
-import PrivateReplyModal from '../PrivateReplyModal'
+import { DefaultExportPrivateReplyModal as PrivateReplyModal } from '../PrivateReplyModal'
 
 jest.mock(
     'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard.tsx',
-    () => () => <div>mocked TicketMessageEmbeddedCard</div>,
+    () => ({
+        TicketMessageEmbeddedCard: () => (
+            <div>mocked TicketMessageEmbeddedCard</div>
+        ),
+    }),
 )
 
 const defaultProps = {

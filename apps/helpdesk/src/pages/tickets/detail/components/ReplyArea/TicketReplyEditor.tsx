@@ -19,10 +19,10 @@ import { humanize } from 'business/format'
 import { canAddAttachments } from 'business/ticket'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import type RichField from 'pages/common/forms/RichField/RichField'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
+import { DefaultExportTicketRichField as TicketRichField } from 'pages/common/forms/RichField/TicketRichField'
 import type { TypingActivityProps } from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
-import withTypingActivity from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
+import { withTypingActivity } from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import { isNewChannel } from 'services/channels'
 import { getOtherAgents } from 'state/agents/selectors'
@@ -562,10 +562,12 @@ const connector = connect(
     },
 )
 
-export default connector(
+const DefaultExportTicketReplyEditor = connector(
     withOutboundTranslationContext(
         withTypingActivity(
             withTicketReplyEditorFlags(TicketReplyEditorContainer),
         ),
     ),
 )
+
+export { DefaultExportTicketReplyEditor }

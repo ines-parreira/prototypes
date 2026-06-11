@@ -4,28 +4,28 @@ import React from 'react'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import CopyButton from 'components/CopyButton/CopyButton'
+import { CopyButton } from 'components/CopyButton/CopyButton'
 import { LEAF_TYPES } from 'models/widget/constants'
 
 import type { FieldEditFormData } from '../../../types'
-import Field, { DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT } from '../Field'
-import FieldEditForm from '../FieldEditForm'
+import { DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT, Field } from '../Field'
+import { FieldEditForm } from '../FieldEditForm'
 
 const COPY_BUTTON_TEST_ID = 'copy-button'
-jest.mock('components/CopyButton/CopyButton', () =>
-    jest.fn(() => {
+jest.mock('components/CopyButton/CopyButton', () => ({
+    CopyButton: jest.fn(() => {
         return <span data-testid={COPY_BUTTON_TEST_ID}>copy button</span>
     }),
-)
+}))
 
 const FIELD_EDIT_FORM_TEST_ID = 'field-edit-form'
-jest.mock('../FieldEditForm', () =>
-    jest.fn(() => {
+jest.mock('../FieldEditForm', () => ({
+    FieldEditForm: jest.fn(() => {
         return (
             <span data-testid={FIELD_EDIT_FORM_TEST_ID}>field edit form</span>
         )
     }),
-)
+}))
 const FieldEditFormMock = assumeMock(FieldEditForm)
 
 describe('Field', () => {

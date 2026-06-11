@@ -4,11 +4,11 @@ import { fromJS } from 'immutable'
 
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { RootState } from 'state/types'
 
-import CreateReportOrderIssueFlowScenarioView from '../CreateReportOrderIssueFlowScenarioView'
-import CreateReportOrderIssueFlowScenarioViewContainer from '../CreateReportOrderIssueFlowScenarioViewContainer'
+import { CreateReportOrderIssueFlowScenarioView } from '../CreateReportOrderIssueFlowScenarioView'
+import { CreateReportOrderIssueFlowScenarioViewContainer } from '../CreateReportOrderIssueFlowScenarioViewContainer'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('hooks/aiAgent/useAiAgentAccess')

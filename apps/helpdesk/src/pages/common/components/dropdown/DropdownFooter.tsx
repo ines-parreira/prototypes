@@ -20,6 +20,9 @@ const DropdownFooter = (
     </div>
 )
 
-export default forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
-    DropdownFooter,
-)
+const DefaultExportDropdownFooter = forwardRef<
+    HTMLDivElement,
+    HTMLProps<HTMLDivElement>
+>(DropdownFooter)
+
+export { DefaultExportDropdownFooter }

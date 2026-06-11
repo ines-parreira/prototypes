@@ -2,9 +2,9 @@ import type { List } from 'immutable'
 
 import type { TicketPriority } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import Select from './ReactSelect'
+import { Select } from './ReactSelect'
 
 type Props = {
     onChange: (value: TicketPriority) => void
@@ -36,4 +36,4 @@ function PrioritySelect({ onChange, value, className }: Props) {
     )
 }
 
-export default PrioritySelect
+export { PrioritySelect }

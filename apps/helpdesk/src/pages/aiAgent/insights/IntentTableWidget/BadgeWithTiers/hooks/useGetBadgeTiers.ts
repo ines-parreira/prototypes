@@ -84,4 +84,4 @@ const useGetBadgeTiers = (values: number[]) => {
     return metricTiers
 }
 
-export default useGetBadgeTiers
+export { useGetBadgeTiers }

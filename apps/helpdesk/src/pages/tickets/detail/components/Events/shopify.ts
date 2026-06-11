@@ -62,4 +62,4 @@ const shopifyEvent = ({
     }
 }
 
-export default shopifyEvent
+export { shopifyEvent }

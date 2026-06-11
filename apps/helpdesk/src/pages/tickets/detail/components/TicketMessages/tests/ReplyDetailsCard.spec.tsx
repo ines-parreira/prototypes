@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
-import ReplyDetailsCard from 'pages/tickets/detail/components/TicketMessages/ReplyDetailsCard'
+import { ReplyDetailsCard } from 'pages/tickets/detail/components/TicketMessages/ReplyDetailsCard'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()

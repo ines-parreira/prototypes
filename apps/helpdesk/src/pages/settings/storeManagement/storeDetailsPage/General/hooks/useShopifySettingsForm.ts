@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 
-import useStoreUpdater from './useStoreUpdater'
+import { useStoreUpdater } from './useStoreUpdater'
 
 interface UseShopifySettingsFormProps {
     integration: ShopifyIntegration

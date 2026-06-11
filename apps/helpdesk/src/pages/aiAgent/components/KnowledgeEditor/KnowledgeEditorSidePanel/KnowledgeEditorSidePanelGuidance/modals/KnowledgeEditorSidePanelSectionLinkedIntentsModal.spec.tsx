@@ -116,7 +116,9 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn(() => 'America/New_York'))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn(() => 'America/New_York'),
+}))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',

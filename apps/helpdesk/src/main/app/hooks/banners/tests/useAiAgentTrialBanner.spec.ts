@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

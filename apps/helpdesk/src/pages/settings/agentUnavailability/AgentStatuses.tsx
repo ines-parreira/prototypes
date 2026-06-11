@@ -19,7 +19,7 @@ import { useToggle } from '@gorgias/toolkit-react'
 
 import { Banner, Box, Button, toast } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 import { CUSTOM_UNAVAILABILITY_STATUS_LIMIT } from '../../../../../../packages/agent-status/src/constants'
 
@@ -190,4 +190,4 @@ function AgentUnavailabilityStatuses() {
     )
 }
 
-export default AgentUnavailabilityStatuses
+export { AgentUnavailabilityStatuses }

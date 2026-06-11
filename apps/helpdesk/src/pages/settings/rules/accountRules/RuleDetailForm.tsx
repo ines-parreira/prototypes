@@ -9,7 +9,7 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 import { toast } from '@gorgias/axiom'
 
 import { fetchRule } from 'models/rule/resources'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { ruleFetched } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import type { RootState } from 'state/types'
@@ -63,4 +63,6 @@ const connector = connect(
     },
 )
 
-export default connector(RuleDetailForm)
+const DefaultExportRuleDetailForm = connector(RuleDetailForm)
+
+export { DefaultExportRuleDetailForm }

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
@@ -59,4 +59,4 @@ const ABGroupVariants: React.FC<Props> = ({
     )
 }
 
-export default ABGroupVariants
+export { ABGroupVariants }

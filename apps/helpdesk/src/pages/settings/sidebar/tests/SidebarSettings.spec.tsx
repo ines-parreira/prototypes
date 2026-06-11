@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ViewCategory } from 'models/view/types'
-import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
+import { SidebarSettings } from 'pages/settings/sidebar/SidebarSettings'
 import * as accountActions from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -37,7 +37,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     currentAccount: mockAccount,
 })
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('@repo/logging')
 
 const WrappedGeneralSettings = () => (

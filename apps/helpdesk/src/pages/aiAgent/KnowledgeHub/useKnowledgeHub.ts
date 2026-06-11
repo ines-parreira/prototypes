@@ -3,7 +3,7 @@ import { useFileIngestionStatus } from 'pages/aiAgent/KnowledgeHub/hooks/useFile
 import { useKnowledgeHubArticles } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubArticles'
 import { useShopContext } from 'pages/aiAgent/KnowledgeHub/hooks/useShopContext'
 import { useUrlSyncStatus } from 'pages/aiAgent/KnowledgeHub/hooks/useUrlSyncStatus'
-import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
+import { useHelpCenterCustomDomainHostnames } from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 
 /**
  * Main hook for Knowledge Hub that orchestrates shop context, articles, and sync status

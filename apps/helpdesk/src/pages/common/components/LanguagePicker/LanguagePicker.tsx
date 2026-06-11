@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 
 import { LANGUAGE as LanguageEnum } from 'constants/languages'
-import BadgeItem from 'pages/common/components/BadgetItem'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { BadgeItem } from 'pages/common/components/BadgetItem'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 
-import DropdownButtonWithSearch from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
+import { DropdownButtonWithSearch } from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
 
 import css from './LanguagePicker.less'
 

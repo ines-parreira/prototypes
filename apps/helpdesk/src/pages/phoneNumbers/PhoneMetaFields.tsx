@@ -10,8 +10,8 @@ import {
 } from 'business/twilio'
 import type { PhoneNumberMeta } from 'models/phoneNumber/types'
 import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import {
@@ -34,7 +34,7 @@ type Props = {
     showUseCase?: boolean
 }
 
-export default function PhoneDetailsFields({
+export function PhoneDetailsFields({
     value,
     onChange,
     usecase,

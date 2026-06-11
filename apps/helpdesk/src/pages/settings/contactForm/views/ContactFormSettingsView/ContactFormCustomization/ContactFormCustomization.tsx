@@ -11,17 +11,17 @@ import type {
 } from 'models/contactForm/types'
 import type { ContactFormExtraHTML } from 'pages/common/components/ExtraHtmlSection/ExtraHtmlSection'
 import { ExtraHtmlSection } from 'pages/common/components/ExtraHtmlSection/ExtraHtmlSection'
-import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
-import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
+import { ContactFormDisplayModeToggle } from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
+import { ContactFormEntrypointPreview } from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
 import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
-import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
+import { PendingChangesModal } from 'pages/settings/helpCenter/components/PendingChangesModal'
+import { SubjectLines } from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
 
-import ContactFormFlowsBanner from './ContactFormFlowsBanner'
+import { ContactFormFlowsBanner } from './ContactFormFlowsBanner'
 
 import css from './ContactFormCustomization.less'
 
@@ -257,4 +257,4 @@ const ContactFormCustomization = (): JSX.Element => {
     )
 }
 
-export default ContactFormCustomization
+export { ContactFormCustomization }

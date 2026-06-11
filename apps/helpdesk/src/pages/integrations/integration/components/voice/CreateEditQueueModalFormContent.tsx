@@ -1,9 +1,9 @@
-import VoiceQueueSettingsFormCallFlowSection from './VoiceQueueSettingsFormCallFlowSection'
-import VoiceQueueSettingsFormGeneralSection from './VoiceQueueSettingsFormGeneralSection'
+import { VoiceQueueSettingsFormCallFlowSection } from './VoiceQueueSettingsFormCallFlowSection'
+import { VoiceQueueSettingsFormGeneralSection } from './VoiceQueueSettingsFormGeneralSection'
 
 import css from './CreateEditQueueModalFormContent.less'
 
-export default function CreateEditQueueModalFormContent() {
+export function CreateEditQueueModalFormContent() {
     return (
         <div className={css.container}>
             <VoiceQueueSettingsFormGeneralSection />

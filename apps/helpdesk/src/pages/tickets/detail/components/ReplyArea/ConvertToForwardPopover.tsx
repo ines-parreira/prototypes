@@ -4,8 +4,8 @@ import { Popover, PopoverBody } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     setShowConvertToForwardPopover,
     setSourceExtra,
@@ -66,4 +66,4 @@ const ConvertToForwardPopover: React.FC<Props> = ({ target }) => {
     )
 }
 
-export default ConvertToForwardPopover
+export { ConvertToForwardPopover }

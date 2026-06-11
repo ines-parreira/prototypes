@@ -8,14 +8,14 @@ import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
 import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { getSingleArticleEnglish } from '../../../fixtures/getArticlesResponse.fixture'
-import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
+import { HelpCenterEditAdvancedArticleForm } from '../HelpCenterEditAdvancedArticleForm'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 

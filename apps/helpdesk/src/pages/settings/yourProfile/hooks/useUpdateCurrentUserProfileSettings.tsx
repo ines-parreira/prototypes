@@ -4,7 +4,7 @@ import {
     useUpdateCurrentUserSettings,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as constants from 'state/currentUser/constants'
 
 export function useUpdateCurrentUserProfileSettings() {

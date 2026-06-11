@@ -69,7 +69,7 @@ import type {
     AgentsTableRow,
     ChannelsTableColumns,
 } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Channel } from 'models/channel/types'
 
 export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'

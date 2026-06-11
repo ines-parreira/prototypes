@@ -3,12 +3,12 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { view } from 'fixtures/views'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useViewId from 'hooks/useViewId'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useViewId } from 'hooks/useViewId'
 import type { View } from 'models/view/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
-import TicketNavbarViewLink from '../TicketNavbarViewLink'
+import { DefaultExportTicketNavbarViewLink as TicketNavbarViewLink } from '../TicketNavbarViewLink'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -18,10 +18,10 @@ const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
     useHelpdeskV2WayfindingMS1Flag,
 )
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('hooks/useViewId', () => jest.fn())
+jest.mock('hooks/useViewId', () => ({ useViewId: jest.fn() }))
 const useViewIdMock = assumeMock(useViewId)
 
 jest.mock('split-ticket-view-toggle', () => ({ useSplitTicketView: jest.fn() }))

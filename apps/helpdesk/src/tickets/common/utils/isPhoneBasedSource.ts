@@ -1,6 +1,6 @@
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 
-export default function isPhoneBasedSource(
+export function isPhoneBasedSource(
     sourceType: TicketMessageSourceType | TicketChannel,
 ): boolean {
     return [

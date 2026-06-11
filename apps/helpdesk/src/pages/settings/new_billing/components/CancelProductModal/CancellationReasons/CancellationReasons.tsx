@@ -6,10 +6,10 @@ import type {
     CancellationReasonsState,
 } from '../types'
 import { CancellationReasonsActionType } from '../types'
-import AdditionalDetails from '../UI/AdditionalDetails'
-import Instruction from '../UI/Instruction'
-import PrimaryReasons from '../UI/PrimaryReasons'
-import SecondaryReasons from '../UI/SecondaryReasons'
+import { AdditionalDetails } from '../UI/AdditionalDetails'
+import { Instruction } from '../UI/Instruction'
+import { PrimaryReasons } from '../UI/PrimaryReasons'
+import { SecondaryReasons } from '../UI/SecondaryReasons'
 import { findSecondaryReasonsByPrimaryReason } from './helpers'
 
 import css from './CancellationReasons.less'
@@ -79,4 +79,4 @@ const CancellationReasons = (props: Props) => {
     )
 }
 
-export default CancellationReasons
+export { CancellationReasons }

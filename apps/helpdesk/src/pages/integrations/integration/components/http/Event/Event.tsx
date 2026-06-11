@@ -3,12 +3,12 @@ import classnames from 'classnames'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { useGetHTTPEvent } from 'models/integration/queries/http'
-import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
-import Loader from 'pages/common/components/Loader/Loader'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { HTTPStatusLabel } from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
-import HTTPItem from './Item'
-import HTTPParams from './Params'
+import { Item as HTTPItem } from './Item'
+import { Params as HTTPParams } from './Params'
 
 import css from './Event.less'
 
@@ -185,5 +185,3 @@ export function Event({ integrationId, eventId }: Props) {
         </div>
     )
 }
-
-export default Event

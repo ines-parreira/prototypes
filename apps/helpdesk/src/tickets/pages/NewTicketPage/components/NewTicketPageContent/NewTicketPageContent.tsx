@@ -1,4 +1,4 @@
-import WhatsAppEditorProvider from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
+import { WhatsAppEditorProvider } from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { OutboundTranslationProvider } from 'providers/OutboundTranslationProvider'
 import type { Receiver } from 'state/ticket/utils'

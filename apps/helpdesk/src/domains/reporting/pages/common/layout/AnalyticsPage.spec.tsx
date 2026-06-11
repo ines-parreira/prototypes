@@ -22,7 +22,7 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
 
 jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useInjectStyleToCandu: jest.fn(),
 }))
 
 const mockStore = configureMockStore()

@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
 import {
@@ -12,7 +12,7 @@ import {
     useNotifyTrialExtensionSlackChannel,
 } from '../hooks/useNotifyTrialExtensionSlackChannel'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const mockUseAppSelector = assumeMock(useAppSelector)
 
 jest.mock('@repo/api-resources', () => ({

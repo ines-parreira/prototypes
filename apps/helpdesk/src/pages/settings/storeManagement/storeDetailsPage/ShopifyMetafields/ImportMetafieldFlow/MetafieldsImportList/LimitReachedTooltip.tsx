@@ -8,9 +8,7 @@ type LimitReachedTooltipProps = {
     children: ReactNode
 }
 
-export default function LimitReachedTooltip({
-    children,
-}: LimitReachedTooltipProps) {
+export function LimitReachedTooltip({ children }: LimitReachedTooltipProps) {
     return (
         <Tooltip placement="top left" trigger={<div>{children}</div>}>
             <TooltipContent>

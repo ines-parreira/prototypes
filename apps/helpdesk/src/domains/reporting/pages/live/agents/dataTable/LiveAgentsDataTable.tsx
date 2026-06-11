@@ -17,8 +17,8 @@ import type { PaginationState } from '@gorgias/axiom'
 import { useStatCurrentDate } from 'domains/reporting/pages/common/components/useStatCurrentDate'
 import { LiveAgentMetricsProvider } from 'domains/reporting/pages/live/agents/dataTable/LiveAgentMetricsContext'
 import { getLiveAgentsColumns } from 'domains/reporting/pages/live/agents/dataTable/LiveAgentsTableColumns'
-import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import { DefaultExportStatsFiltersContext as StatsFiltersContext } from 'domains/reporting/pages/StatsFiltersContext'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 import {
@@ -130,6 +130,8 @@ function LiveAgentsDataTable() {
     )
 }
 
-export default withFeaturePaywall(AccountFeature.UsersLiveStatistics)(
-    LiveAgentsDataTable,
-)
+const DefaultExportLiveAgentsDataTable = withFeaturePaywall(
+    AccountFeature.UsersLiveStatistics,
+)(LiveAgentsDataTable)
+
+export { DefaultExportLiveAgentsDataTable }

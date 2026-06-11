@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { totalProductBoughtQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { AISalesAgentTotalProductBoughtQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
@@ -12,7 +13,7 @@ import {
     fetchTotalProductRecommendations,
     useTotalProductRecommendations,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
+import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 const useProductBuyRateTrend = (filters: StatsFilters, timezone: string) =>

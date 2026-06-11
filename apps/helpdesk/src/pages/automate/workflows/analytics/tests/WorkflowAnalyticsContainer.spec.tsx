@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 
 import * as useAutomateBaseURL from 'settings/automate/hooks/useAutomateBaseURL'
 
-import WorkflowAnalyticsContainer from '../WorkflowAnalyticsContainer'
+import { WorkflowAnalyticsContainer } from '../WorkflowAnalyticsContainer'
 
 // Mock dependencies
 jest.mock('@repo/logging', () => ({
@@ -22,14 +22,16 @@ jest.mock('@repo/logging', () => ({
 
 jest.mock('../WorkflowAnalyticsFilters', () => ({
     __esModule: true,
-    default: ({ children }: { children?: React.ReactNode }) => (
-        <div data-testid="workflow-analytics-filters">{children}</div>
-    ),
+    DefaultExportWorkflowAnalyticsFilters: ({
+        children,
+    }: {
+        children?: React.ReactNode
+    }) => <div data-testid="workflow-analytics-filters">{children}</div>,
 }))
 
 jest.mock('../WorkflowAnalytics', () => ({
     __esModule: true,
-    default: () => (
+    WorkflowAnalytics: () => (
         <div data-testid="workflow-analytics">Analytics Component</div>
     ),
 }))

@@ -1,7 +1,7 @@
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 
-import CharDiff from './CharDiff'
+import { CharDiff } from './CharDiff'
 
 import css from './EmailDomainVerificationDiffStatus.less'
 
@@ -15,7 +15,7 @@ type Props = {
     record: EmailDNSRecord
 }
 
-export default function RecordDiffStatus({ record }: Props) {
+export function RecordDiffStatus({ record }: Props) {
     const {
         verified,
         current_values: currentValues,

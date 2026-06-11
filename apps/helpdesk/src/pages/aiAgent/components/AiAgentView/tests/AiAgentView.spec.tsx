@@ -6,14 +6,14 @@ import { screen } from '@testing-library/react'
 import { AiAgentView } from '../AiAgentView'
 
 // Mock components used within AiAgentView
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loading...</div>
-))
-jest.mock(
-    'pages/common/components/SecondaryNavbar/SecondaryNavbar',
-    () =>
-        ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-)
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loading...</div>,
+}))
+jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => ({
+    SecondaryNavbar: ({ children }: { children?: ReactNode }) => (
+        <div>{children}</div>
+    ),
+}))
 describe('AiAgentView', () => {
     test('renders with title and action', () => {
         render(

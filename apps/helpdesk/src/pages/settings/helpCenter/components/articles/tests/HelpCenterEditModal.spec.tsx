@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 
 import { HelpCenterArticleModalView } from '../HelpCenterEditArticleModalContent/types'
-import HelpCenterEditModal from '../HelpCenterEditModal'
+import { HelpCenterEditModal } from '../HelpCenterEditModal'
 
 const mockedUseEditionManager = {
     isFullscreenEditModal: false,

@@ -6,7 +6,7 @@ import { cleanup, fireEvent, screen, within } from '@testing-library/react'
 
 import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 
-import WhatsAppMessageTemplateBody from '../WhatsAppMessageTemplateBody'
+import { WhatsAppMessageTemplateBody } from '../WhatsAppMessageTemplateBody'
 
 describe('WhatsAppMessageTemplateBody', () => {
     const onInputChange = jest.fn()

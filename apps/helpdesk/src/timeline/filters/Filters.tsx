@@ -59,4 +59,4 @@ const Filters = ({
     )
 }
 
-export default Filters
+export { Filters }

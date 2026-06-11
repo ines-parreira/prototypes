@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
-import LightCampaignBadge from '../LightCampaignBadge'
+import { LightCampaignBadge } from '../LightCampaignBadge'
 
 describe('LightCampaignBadge', () => {
     const campaign = {

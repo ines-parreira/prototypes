@@ -146,4 +146,4 @@ const useSendTestLiquidTemplate = (
     return { isLoading, sendTestRequest }
 }
 
-export default useSendTestLiquidTemplate
+export { useSendTestLiquidTemplate }

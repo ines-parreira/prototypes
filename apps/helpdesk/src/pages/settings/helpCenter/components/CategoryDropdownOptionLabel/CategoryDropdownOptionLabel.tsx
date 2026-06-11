@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Category } from 'models/helpCenter/types'
 import { getCategoriesById } from 'state/entities/helpCenter/categories'
 

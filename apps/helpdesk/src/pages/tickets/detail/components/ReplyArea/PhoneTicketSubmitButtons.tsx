@@ -9,8 +9,8 @@ import parsePhoneNumber from 'libphonenumber-js'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getNewMessageSource } from 'state/newMessage/selectors'
 import { DEPRECATED_getTicket } from 'state/ticket/selectors'
@@ -55,7 +55,7 @@ function PhoneTicketSubmitButtons() {
     )
 }
 
-export default PhoneTicketSubmitButtons
+export { PhoneTicketSubmitButtons }
 
 function useSubmit(source: Map<any, any>, ticketId: number, agentId: number) {
     const [fromAddress, setFromAddress] = useState<string>('')

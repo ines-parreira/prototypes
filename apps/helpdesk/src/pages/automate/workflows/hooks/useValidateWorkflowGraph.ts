@@ -123,4 +123,4 @@ const useValidateWorkflowGraph = (
     )
 }
 
-export default useValidateWorkflowGraph
+export { useValidateWorkflowGraph }

@@ -10,8 +10,8 @@ import {
 
 import { EmailProvider } from 'models/integration/constants'
 import type { EmailIntegration } from 'models/integration/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 import {
     isSingleSenderVerified as checkIsSingleSenderVerified,
@@ -19,9 +19,9 @@ import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
 } from '../helpers'
-import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
-import VerificationCard from './VerificationCard/VerificationCard'
-import VerificationCardFooter from './VerificationCard/VerificationCardFooter'
+import { useCreateDomainVerification } from '../hooks/useCreateDomainVerification'
+import { VerificationCard } from './VerificationCard/VerificationCard'
+import { VerificationCardFooter } from './VerificationCard/VerificationCardFooter'
 
 export type Props = {
     baseURL: string
@@ -29,11 +29,7 @@ export type Props = {
     loading: boolean
 }
 
-export default function EmailVerification({
-    baseURL,
-    integration,
-    loading,
-}: Props) {
+export function EmailVerification({ baseURL, integration, loading }: Props) {
     const [showAlert, setShowAlert] = useState(true)
 
     const isDomainVerified = isOutboundDomainVerified(integration)

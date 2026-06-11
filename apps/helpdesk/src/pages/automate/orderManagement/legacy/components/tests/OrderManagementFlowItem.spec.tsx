@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import OrderManagementFlowItem from '../OrderManagementFlowItem'
+import { OrderManagementFlowItem } from '../OrderManagementFlowItem'
 
 describe('<OrderManagementFlowItem />', () => {
     it('should render component', () => {

@@ -27,7 +27,7 @@ import {
 } from '../../../fixtures/playgroundMessages.fixture'
 import { CoreProvider } from '../../contexts/CoreContext'
 import { SettingsProvider } from '../../contexts/SettingsContext'
-import PlaygroundMessage from './PlaygroundMessage'
+import { PlaygroundMessage } from './PlaygroundMessage'
 
 const mockUseMessagesContext = jest.fn()
 const mockUseAIJourneyContext = jest.fn()

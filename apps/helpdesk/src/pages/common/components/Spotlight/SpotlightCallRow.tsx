@@ -7,18 +7,18 @@ import moment from 'moment'
 import { VoiceCallDirection } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import type { PicketVoiceCallWithHighlights } from 'models/search/types'
 import {
     getInboundDisplayStatus,
     getOutboundDisplayStatus,
 } from 'models/voiceCall/types'
 import { callHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
-import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
-import TicketIcon from 'pages/common/components/TicketIcon'
-import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import { SpotlightRow } from 'pages/common/components/Spotlight/SpotlightRow'
+import { TicketIcon } from 'pages/common/components/TicketIcon'
+import { VoiceCallCustomerLabel } from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
-import VoiceCallStatusLabel from '../VoiceCallStatusLabel/VoiceCallStatusLabel'
+import { VoiceCallStatusLabel } from '../VoiceCallStatusLabel/VoiceCallStatusLabel'
 
 import css from './SpotlightCallRow.less'
 
@@ -125,4 +125,4 @@ const SpotlightCallInfo = ({
     )
 }
 
-export default SpotlightCallRow
+export { SpotlightCallRow }

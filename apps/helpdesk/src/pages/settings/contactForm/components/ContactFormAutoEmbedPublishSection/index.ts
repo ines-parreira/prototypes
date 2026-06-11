@@ -1,1 +1,1 @@
-export { default } from './ContactFormAutoEmbedPublishSection'
+export { ContactFormAutoEmbedPublishSection } from './ContactFormAutoEmbedPublishSection'

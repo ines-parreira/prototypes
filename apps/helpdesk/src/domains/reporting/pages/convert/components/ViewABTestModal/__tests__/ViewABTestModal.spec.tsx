@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import ViewABTestModal from 'domains/reporting/pages/convert/components/ViewABTestModal/ViewABTestModal'
+import { ViewABTestModal } from 'domains/reporting/pages/convert/components/ViewABTestModal/ViewABTestModal'
 
 describe('ViewABTestModal', () => {
     it('renders', () => {

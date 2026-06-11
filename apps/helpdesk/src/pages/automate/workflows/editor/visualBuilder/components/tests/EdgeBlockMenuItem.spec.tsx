@@ -5,7 +5,7 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
-import MenuItem from '../MenuItem'
+import { MenuItem } from '../MenuItem'
 
 describe('<EdgeBlockMenuItem />', () => {
     it('should render edge block menu item', () => {

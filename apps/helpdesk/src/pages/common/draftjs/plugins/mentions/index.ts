@@ -7,11 +7,11 @@ import decorateComponentWithProps from 'decorate-component-with-props'
 import type { EditorState } from 'draft-js'
 import { Map } from 'immutable'
 
-import Mention from './Mention'
-import mentionStrategy from './mentionStrategy'
-import MentionSuggestions from './MentionSuggestions'
-import MentionSuggestionsPortal from './MentionSuggestionsPortal'
-import mentionSuggestionsStrategy from './mentionSuggestionsStrategy'
+import { Mention } from './Mention'
+import { findMentionEntities as mentionStrategy } from './mentionStrategy'
+import { MentionSuggestions } from './MentionSuggestions'
+import { MentionSuggestionsPortal } from './MentionSuggestionsPortal'
+import { mentionSuggestionStrategy as mentionSuggestionsStrategy } from './mentionSuggestionsStrategy'
 import type {
     ClientRectFunction,
     GetSetEditorState,
@@ -181,4 +181,4 @@ const createMentionPlugin = () => {
 }
 
 export const suggestionsFilter = defaultSuggestionsFilter
-export default createMentionPlugin
+export { createMentionPlugin }

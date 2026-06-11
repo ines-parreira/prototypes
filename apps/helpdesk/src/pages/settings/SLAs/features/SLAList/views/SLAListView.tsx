@@ -1,20 +1,20 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import type {
     OnPolicyPriorityChangeFn,
     OnTogglePolicyFn,
     UISLAPolicy,
 } from 'pages/settings/SLAs/features/SLAList/types'
 
-import PageHeader from '../../PageHeader/PageHeader'
+import { PageHeader } from '../../PageHeader/PageHeader'
 import { columnConfig } from './config'
-import Header from './Header'
-import TableRow from './TableRow'
-import useSortablePolicies from './useSortablePolicies'
+import { Header } from './Header'
+import { TableRow } from './TableRow'
+import { useSortablePolicies } from './useSortablePolicies'
 
 import css from './SLAListView.less'
 
@@ -24,7 +24,7 @@ type SLAListViewProps = {
     onPolicyPriorityChange: OnPolicyPriorityChangeFn
     isSubmitting: boolean
 }
-export default function SLAListView({
+export function SLAListView({
     data,
     onTogglePolicy,
     onPolicyPriorityChange,

@@ -12,16 +12,16 @@ import { GorgiasChatInstallationMethod } from 'models/integration/types'
 import * as useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
 
-import useIsManualInstallationMethodRequired from '../useIsManualInstallationMethodRequired'
+import { useIsManualInstallationMethodRequired } from '../useIsManualInstallationMethodRequired'
 
 const useGetChatInstallationStatusSpy = jest.spyOn(
     useGetChatInstallationStatus,
-    'default',
+    'useGetChatInstallationStatus',
 )
 
 const useShopifyThemeAppExtensionSpy = jest.spyOn(
     useShopifyThemeAppExtension,
-    'default',
+    'useShopifyThemeAppExtension',
 )
 
 describe('useIsManualInstallationMethodRequired', () => {

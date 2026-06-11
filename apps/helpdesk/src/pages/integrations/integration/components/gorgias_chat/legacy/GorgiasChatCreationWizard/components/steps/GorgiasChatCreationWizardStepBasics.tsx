@@ -35,8 +35,8 @@ import {
     mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
 import { Label as DesignSystemLabel } from 'gorgias-design-system/Input/Label'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -48,15 +48,15 @@ import {
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import { LanguagePicker } from 'pages/common/components/LanguagePicker/LanguagePicker'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import {
     DEPRECATED_getIntegrationsByTypes,
@@ -64,11 +64,11 @@ import {
 } from 'state/integrations/selectors'
 
 import { StoreNameDropdown } from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
-import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
+import { useThemeAppExtensionInstallation } from '../../../hooks/useThemeAppExtensionInstallation'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
+import { DiscardNewChatPrompt } from '../DiscardNewChatPrompt'
+import { GorgiasChatCreationWizardPreview } from '../GorgiasChatCreationWizardPreview'
+import { GorgiasChatCreationWizardStep } from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepBasics.less'
 
@@ -734,4 +734,4 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepBasics
+export { GorgiasChatCreationWizardStepBasics }

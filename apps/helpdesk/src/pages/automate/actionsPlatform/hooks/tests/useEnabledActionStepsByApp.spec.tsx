@@ -8,8 +8,8 @@ import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useApps from '../useApps'
-import useEnabledActionStepsByApp from '../useEnabledActionStepsByApp'
+import { useApps } from '../useApps'
+import { useEnabledActionStepsByApp } from '../useEnabledActionStepsByApp'
 
 jest.mock('@repo/feature-flags')
 jest.mock('models/workflows/queries')

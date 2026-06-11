@@ -14,7 +14,7 @@ import {
     CONTACT_FORM_FORMS_PATH,
 } from 'pages/settings/contactForm/constants'
 import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/ContactFormStartView/constants'
-import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
+import { ContactFormStartView } from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
 import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { RootState } from 'state/types'

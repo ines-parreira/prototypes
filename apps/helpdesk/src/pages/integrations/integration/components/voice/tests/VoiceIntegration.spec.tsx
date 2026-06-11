@@ -1,20 +1,22 @@
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceIntegration from '../VoiceIntegration'
+import { VoiceIntegration } from '../VoiceIntegration'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationQueueRoutes',
-    () => () => <div>QueueRoutes</div>,
+    () => ({ VoiceIntegrationQueueRoutes: () => <div>QueueRoutes</div> }),
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/VoiceIntegrationOnboarding',
-    () => () => <div>VoiceIntegrationOnboarding</div>,
+    () => ({
+        VoiceIntegrationOnboarding: () => <div>VoiceIntegrationOnboarding</div>,
+    }),
 )
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationById: jest.fn(),
@@ -28,34 +30,46 @@ jest.mock('pages/integrations/integration/utils/defaultRoutes', () => ({
 }))
 jest.mock(
     'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs',
-    () => () => <div>PhoneIntegrationBreadcrumbs</div>,
+    () => ({
+        PhoneIntegrationBreadcrumbs: () => (
+            <div>PhoneIntegrationBreadcrumbs</div>
+        ),
+    }),
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationDetails',
-    () => () => <div>VoiceIntegrationDetails</div>,
+    () => ({
+        VoiceIntegrationDetails: () => <div>VoiceIntegrationDetails</div>,
+    }),
 )
 jest.mock(
     'pages/integrations/integration/components/phone/PhoneIntegrationsList',
-    () => () => <div>PhoneIntegrationsList</div>,
+    () => ({ PhoneIntegrationsList: () => <div>PhoneIntegrationsList</div> }),
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationIvr',
-    () => () => <div>VoiceIntegrationIvr</div>,
+    () => ({ VoiceIntegrationIvr: () => <div>VoiceIntegrationIvr</div> }),
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences',
-    () => () => <div>VoiceIntegrationIVRPreferences</div>,
+    () => ({
+        VoiceIntegrationIVRPreferences: () => (
+            <div>VoiceIntegrationIVRPreferences</div>
+        ),
+    }),
 )
-jest.mock('../VoiceIntegrationSettingsPage', () => () => (
-    <div>VoiceIntegrationSettings</div>
-))
+jest.mock('../VoiceIntegrationSettingsPage', () => ({
+    VoiceIntegrationSettingsPage: () => <div>VoiceIntegrationSettings</div>,
+}))
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail',
-    () => () => <div>VoiceIntegrationVoicemail</div>,
+    () => ({
+        VoiceIntegrationVoicemail: () => <div>VoiceIntegrationVoicemail</div>,
+    }),
 )
-jest.mock('../VoiceIntegrationFlowPage', () => () => (
-    <div>VoiceIntegrationFlowPage</div>
-))
+jest.mock('../VoiceIntegrationFlowPage', () => ({
+    VoiceIntegrationFlowPage: () => <div>VoiceIntegrationFlowPage</div>,
+}))
 
 describe('VoiceIntegration', () => {
     const renderComponent = (route: string = '') =>

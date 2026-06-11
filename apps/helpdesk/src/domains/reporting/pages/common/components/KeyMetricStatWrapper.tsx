@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import css from 'domains/reporting/pages/common/components/KeyMetricStatWrapper.less'
 
-export default function KeyMetricStatWrapper({
+export function KeyMetricStatWrapper({
     className,
     ...divProps
 }: HTMLAttributes<HTMLDivElement>) {

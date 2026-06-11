@@ -1,6 +1,6 @@
 import type { PanelLayoutConfig } from 'pages/PanelLayout'
 
-import GlobalNavigation from './components/GlobalNavigation'
+import { GlobalNavigation } from './components/GlobalNavigation'
 
 export const globalNavigationPanel: PanelLayoutConfig = {
     key: 'global-navbar-panel',

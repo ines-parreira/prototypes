@@ -4,7 +4,7 @@ import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { VoiceQueueContext } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueContext'
 
-import VoiceQueueLabel, { LOADING_TEST_ID } from './VoiceQueueLabel'
+import { LOADING_TEST_ID, VoiceQueueLabel } from './VoiceQueueLabel'
 
 describe('VoiceQueueLabel', () => {
     const renderWithContext = (

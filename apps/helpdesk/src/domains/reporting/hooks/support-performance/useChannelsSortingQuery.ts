@@ -9,8 +9,8 @@ import {
     sortingSet,
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import type { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { opposite, OrderDirection } from 'models/api/types'
 import { notEmpty } from 'utils'
 

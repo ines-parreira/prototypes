@@ -2,10 +2,10 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import GuidanceReferenceContext from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
+import { GuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
-import UsedInCell from '../UsedInCell'
+import { UsedInCell } from '../UsedInCell'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: () => ({

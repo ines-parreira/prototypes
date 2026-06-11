@@ -4,11 +4,11 @@ import { ReactCountryFlag } from 'react-country-flag'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchNewPhoneNumber } from 'models/phoneNumber/resources'
-import PageHeader from 'pages/common/components/PageHeader'
-import PhoneNumberDetails from 'pages/phoneNumbers/PhoneNumberDetails'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { PhoneNumberDetails } from 'pages/phoneNumbers/PhoneNumberDetails'
 import css from 'pages/settings/settings.less'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
 import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
@@ -84,5 +84,3 @@ export function PhoneNumberDetailContainer() {
         </div>
     )
 }
-
-export default PhoneNumberDetailContainer

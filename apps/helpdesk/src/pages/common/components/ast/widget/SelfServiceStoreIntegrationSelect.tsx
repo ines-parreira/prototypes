@@ -2,12 +2,12 @@ import React, { useEffect, useMemo } from 'react'
 
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useShopifyIntegrations } from 'pages/automate/common/hooks/useShopifyIntegrations'
 import { RenderLabel } from 'pages/common/utils/labels'
 import { fetchIntegrations } from 'state/integrations/actions'
 
-import Select from './ReactSelect'
+import { Select } from './ReactSelect'
 
 type OwnProps = {
     onChange: (value: number) => void
@@ -58,4 +58,4 @@ const SelfServiceStoreIntegrationSelect = ({
     )
 }
 
-export default SelfServiceStoreIntegrationSelect
+export { SelfServiceStoreIntegrationSelect }

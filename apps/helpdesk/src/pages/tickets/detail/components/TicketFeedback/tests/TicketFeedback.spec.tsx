@@ -1,23 +1,23 @@
 import { render } from '@repo/testing'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
+import { useAiAgentMessageFeedback } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
 
-import useHasAIAgent from '../hooks/useHasAIAgent'
-import TicketFeedback from '../TicketFeedback'
+import { useHasAIAgent } from '../hooks/useHasAIAgent'
+import { TicketFeedback } from '../TicketFeedback'
 
 jest.mock('auto_qa', () => ({ AutoQA: () => <div>AutoQA</div> }))
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar',
-    () => () => <div>AIAgentFeedbackBar</div>,
+    () => ({ AIAgentFeedbackBar: () => <div>AIAgentFeedbackBar</div> }),
 )
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback',
-    () => jest.fn(),
+    () => ({ useAiAgentMessageFeedback: jest.fn() }),
 )
 const useAiAgentMessageFeedbackMock = useAiAgentMessageFeedback as jest.Mock
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -26,10 +26,12 @@ jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
 const useTicketIsAfterFeedbackCollectionPeriodMock =
     useTicketIsAfterFeedbackCollectionPeriod as jest.Mock
 
-jest.mock('../hooks/useHasAIAgent', () => jest.fn())
+jest.mock('../hooks/useHasAIAgent', () => ({ useHasAIAgent: jest.fn() }))
 const useHasAIAgentMock = useHasAIAgent as jest.Mock
 
-jest.mock('hooks/useHasAgentPrivileges', () => jest.fn())
+jest.mock('hooks/useHasAgentPrivileges', () => ({
+    useHasAgentPrivileges: jest.fn(),
+}))
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.Mock
 
 describe('TicketFeedback', () => {

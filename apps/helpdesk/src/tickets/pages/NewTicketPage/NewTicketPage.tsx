@@ -18,9 +18,9 @@ import {
 
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import useDraftTicketActivityTracking from 'pages/tickets/detail/hooks/useDraftTicketActivityTracking'
+import { useDraftTicketActivityTracking } from 'pages/tickets/detail/hooks/useDraftTicketActivityTracking'
 import { useTicketInfobarSectionFlags } from 'pages/tickets/detail/TicketCustomerSections/useTicketInfobarSectionFlags'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { NewTicketPageContent } from 'tickets/pages/NewTicketPage/components/NewTicketPageContent/NewTicketPageContent'

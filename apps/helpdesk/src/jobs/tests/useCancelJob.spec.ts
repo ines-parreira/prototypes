@@ -10,7 +10,7 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 
-import useCancelJob from '../useCancelJob'
+import { useCancelJob } from '../useCancelJob'
 
 jest.mock('reapop')
 
@@ -20,7 +20,9 @@ const useCancelJobMock = assumeMock(useCancelJobQuery)
 jest.mock('state/notifications/actions')
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const mutateCancelJobMock = jest.fn()
 const cancelJobResponse = () =>

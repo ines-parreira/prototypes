@@ -8,7 +8,7 @@ import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import css from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/AiAgentActivationStoreCard.less'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 type ChannelToggleProps = {

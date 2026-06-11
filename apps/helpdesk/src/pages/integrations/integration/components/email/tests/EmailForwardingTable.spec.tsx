@@ -6,7 +6,7 @@ import { cleanup, screen } from '@testing-library/react'
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 
-import EmailForwardingTable from '../EmailMigration/EmailForwardingTable'
+import { EmailForwardingTable } from '../EmailMigration/EmailForwardingTable'
 
 jest.mock('fixtures/emailMigration.ts', () => ({ migrations: undefined }))
 
@@ -31,9 +31,9 @@ const mockMigrations = [
     },
 ] as unknown as EmailMigrationInboundVerification[]
 
-jest.mock('../EmailMigration/EmailForwardingButton', () => () => (
-    <div data-testid="cta" />
-))
+jest.mock('../EmailMigration/EmailForwardingButton', () => ({
+    EmailForwardingButton: () => <div data-testid="cta" />,
+}))
 
 describe('EmailForwardingTable', () => {
     const renderComponent = (migrations = mockMigrations) => {

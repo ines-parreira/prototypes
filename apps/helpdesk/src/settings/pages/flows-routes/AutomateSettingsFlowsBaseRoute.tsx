@@ -4,8 +4,8 @@ import type { StaticContext } from 'react-router'
 import type { RouteComponentProps } from 'react-router-dom'
 
 import { AGENT_ROLE } from 'config/user'
-import WorkflowsViewContainer from 'pages/automate/workflows/WorkflowsViewContainer'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
+import { WorkflowsViewContainer } from 'pages/automate/workflows/WorkflowsViewContainer'
+import { memoizedWithUserRoleRequired as withUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
 
 type AutomateSettingsFlowsBaseRouteProps = RouteComponentProps<
     {

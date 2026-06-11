@@ -83,4 +83,8 @@ const DropdownSection = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(DropdownSection)
+const DefaultExportDropdownSection = forwardRef<HTMLDivElement, Props>(
+    DropdownSection,
+)
+
+export { DefaultExportDropdownSection }

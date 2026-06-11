@@ -14,7 +14,7 @@ type Props = {
     >
 }
 
-export default function VisualBuilderActionIconCondensed({ nodeType }: Props) {
+export function VisualBuilderActionIconCondensed({ nodeType }: Props) {
     return (
         <div className={css.visualBuilderActionIconCondensed}>
             {iconByVisualBuilderNodeType[nodeType]}

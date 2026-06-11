@@ -2,15 +2,15 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { defaultAutoMergeSettings } from 'pages/settings/autoMerge/constants'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getAutoMergeSettings } from 'state/currentAccount/selectors'
 import type { AccountSetting } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 
-export default function useAutoMergeSettings() {
+export function useAutoMergeSettings() {
     const dispatch = useAppDispatch()
     const autoMergeSettings = useAppSelector(getAutoMergeSettings)
 

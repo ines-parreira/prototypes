@@ -8,9 +8,9 @@ import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 import { isBaseEmailAddress } from '../../helpers'
-import RecordsTable from '../components/RecordsTable'
-import EmailDomainVerificationContent from '../EmailDomainVerificationContent'
-import useDomainVerification from '../useDomainVerification'
+import { RecordsTable } from '../components/RecordsTable'
+import { EmailDomainVerificationContent } from '../EmailDomainVerificationContent'
+import { useDomainVerification } from '../useDomainVerification'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('../../helpers')

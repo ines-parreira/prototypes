@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { assetsUrl } from 'utils'
 
-import HeroImageCarousel from '../HeroImageCarousel'
+import { HeroImageCarousel } from '../HeroImageCarousel'
 
 describe('<HeroImageCarousel />', () => {
     const buttonLabel = 'Hey I am the button label'

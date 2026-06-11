@@ -8,9 +8,11 @@ import {
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
 
-import UserMenuWithToggle from '../UserMenuWithToggle'
+import { UserMenuWithToggle } from '../UserMenuWithToggle'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
@@ -19,7 +21,7 @@ jest.mock('state/currentUser/selectors', () => ({
 const getCurrentUserMock = assumeMock(getCurrentUser)
 const getIsAvailableMock = assumeMock(getIsAvailable)
 
-jest.mock('../UserMenu', () => () => <div>UserMenu</div>)
+jest.mock('../UserMenu', () => ({ UserMenu: () => <div>UserMenu</div> }))
 
 describe('UserMenuWithToggle', () => {
     beforeEach(() => {

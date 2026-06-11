@@ -5,7 +5,7 @@ import { useEffectOnce } from '@gorgias/toolkit-react'
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
+import { PlaygroundActionsModal } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import type { DraftKnowledge } from 'pages/aiAgent/PlaygroundV2/types'
 import { useAppContext } from 'pages/AppContext'
 

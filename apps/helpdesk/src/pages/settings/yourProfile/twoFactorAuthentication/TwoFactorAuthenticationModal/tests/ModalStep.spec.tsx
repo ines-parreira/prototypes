@@ -4,24 +4,28 @@ import { render } from '@repo/testing'
 
 import { authenticatorData } from '../../../../../../fixtures/authenticatorData'
 import { recoveryCodes as recoveryCodesFixture } from '../../../../../../fixtures/recoveryCodes'
-import ModalStep from '../ModalStep'
+import { ModalStep } from '../ModalStep'
 
-jest.mock('../ModalSteps/AppSetupStep/AppSetupStep', () => () => (
-    <div>App Setup step mocked</div>
-))
+jest.mock('../ModalSteps/AppSetupStep/AppSetupStep', () => ({
+    AppSetupStep: () => <div>App Setup step mocked</div>,
+}))
 
-jest.mock('../ModalSteps/QRCodeStep/QRCodeStep', () => () => (
-    <div>QRCode step mocked</div>
-))
+jest.mock('../ModalSteps/QRCodeStep/QRCodeStep', () => ({
+    QRCodeStep: () => <div>QRCode step mocked</div>,
+}))
 
 jest.mock(
     '../ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep',
-    () => () => <div>Validate Verification Code step mocked</div>,
+    () => ({
+        ValidateVerificationCodeStep: () => (
+            <div>Validate Verification Code step mocked</div>
+        ),
+    }),
 )
 
-jest.mock('../ModalSteps/RecoveryCodesStep/RecoveryCodesStep', () => () => (
-    <div>Validate Verification Code step mocked</div>
-))
+jest.mock('../ModalSteps/RecoveryCodesStep/RecoveryCodesStep', () => ({
+    RecoveryCodesStep: () => <div>Validate Verification Code step mocked</div>,
+}))
 
 describe('<ModalStep />', () => {
     describe('render()', () => {

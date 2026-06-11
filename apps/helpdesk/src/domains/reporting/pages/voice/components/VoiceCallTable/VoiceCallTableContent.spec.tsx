@@ -7,8 +7,8 @@ import { act, fireEvent, waitFor } from '@testing-library/react'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
-import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
-import VoiceQueueProvider from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
+import { VoiceCallTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
+import { VoiceQueueProvider } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
@@ -21,24 +21,30 @@ const useVoiceCallCountMock = assumeMock(useVoiceCallCount)
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
-    () =>
-        ({ customerId }: { customerId: number }) => (
+    () => ({
+        VoiceCallCustomerLabel: ({ customerId }: { customerId: number }) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
         ),
+    }),
 )
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 jest.mock(
     'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel',
     () => {
-        return ({ integrationId }: { integrationId: number }) => (
-            <div>VoiceIntegrationBasicLabel {integrationId}</div>
-        )
+        return {
+            VoiceIntegrationBasicLabel: ({
+                integrationId,
+            }: {
+                integrationId: number
+            }) => <div>VoiceIntegrationBasicLabel {integrationId}</div>,
+        }
     },
 )
 jest.mock('utils', () => {

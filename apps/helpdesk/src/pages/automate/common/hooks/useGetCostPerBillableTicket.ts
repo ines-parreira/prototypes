@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
 export const useGetCostPerBillableTicket = () => {

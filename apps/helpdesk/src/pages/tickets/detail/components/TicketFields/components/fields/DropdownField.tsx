@@ -2,16 +2,16 @@ import { useCallback, useEffect } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import Label from 'custom-fields/components/Label'
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { DefaultExportLabel as Label } from 'custom-fields/components/Label'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
 import { isOutdatedValue } from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'
 import type { MultiLevelSelectProps } from 'custom-fields/components/MultiLevelSelect/MultiLevelSelect'
 import { getValueLabel } from 'custom-fields/helpers/getValueLabels'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import type { CustomFieldState, CustomFieldValue } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
@@ -30,7 +30,7 @@ type Props = Pick<MultiLevelSelectProps, 'choices' | 'isDisabled'> &
 export const createInputId = (ticketId: string | number, id: string | number) =>
     `ticket-${ticketId}-custom-field-value-input-${id}`
 
-export default function DropdownField(props: Props) {
+export function DropdownField(props: Props) {
     const dispatch = useAppDispatch()
     const ticketId = useAppSelector(getTicket).id
 

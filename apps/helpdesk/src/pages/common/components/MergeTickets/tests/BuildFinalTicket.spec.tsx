@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
-import BuildFinalTicket from '../BuildFinalTicket'
+import { BuildFinalTicket } from '../BuildFinalTicket'
 
 describe('BuildFinalTicket component', () => {
     const baseTicket = fromJS({

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import InfoCard from 'pages/common/components/ProductDetail/InfoCard'
+import { InfoCard } from 'pages/common/components/ProductDetail/InfoCard'
 
 import { dummyInfocard } from './fixtures'
 

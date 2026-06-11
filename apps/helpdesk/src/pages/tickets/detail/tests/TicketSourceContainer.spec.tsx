@@ -4,20 +4,21 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import type SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
+import type { SourceWrapper } from '../../../common/components/sourceWidgets/SourceWrapper'
 import { TicketSourceContainer } from '../TicketSourceContainer'
 
-jest.mock(
-    '../../../common/components/sourceWidgets/SourceWrapper',
-    () =>
-        ({ context, identifier }: ComponentProps<typeof SourceWrapper>) => (
-            <div>
-                SourceWrapper
-                <div>context: {JSON.stringify(context)}</div>
-                <div>identifier: {JSON.stringify(identifier)}</div>
-            </div>
-        ),
-)
+jest.mock('../../../common/components/sourceWidgets/SourceWrapper', () => ({
+    SourceWrapper: ({
+        context,
+        identifier,
+    }: ComponentProps<typeof SourceWrapper>) => (
+        <div>
+            SourceWrapper
+            <div>context: {JSON.stringify(context)}</div>
+            <div>identifier: {JSON.stringify(identifier)}</div>
+        </div>
+    ),
+}))
 
 describe('<TicketSourceContainer />', () => {
     const minProps = {

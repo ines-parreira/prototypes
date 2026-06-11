@@ -10,7 +10,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { columns } from './Columns'
-import MetafieldsTable from './MetafieldsTable'
+import { MetafieldsTable } from './MetafieldsTable'
 import type { Field } from './types'
 
 const INTEGRATION_ID = 123

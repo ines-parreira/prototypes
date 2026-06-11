@@ -28,7 +28,7 @@ export type WorkflowVariableTagProps = {
     isLiquidTemplate?: boolean
 }
 
-export default function WorkflowVariableTag({
+export function WorkflowVariableTag({
     value,
     size = 'normal',
     onClick,

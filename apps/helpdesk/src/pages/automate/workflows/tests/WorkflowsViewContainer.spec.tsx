@@ -9,14 +9,14 @@ import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
 
-import WorkflowsViewContainer from '../WorkflowsViewContainer'
+import { WorkflowsViewContainer } from '../WorkflowsViewContainer'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 const mockWorkflowsView = jest.fn()
 jest.mock('../WorkflowsView', () => ({
     __esModule: true,
-    default: (props: unknown) => mockWorkflowsView(props),
+    WorkflowsView: (props: unknown) => mockWorkflowsView(props),
 }))
 
 const defaultState = {

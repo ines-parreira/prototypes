@@ -15,7 +15,7 @@ export const initialState: TagsState = fromJS({
     items: [],
 })
 
-export default function reducer(
+export function reducer(
     state: TagsState = initialState,
     action: GorgiasAction,
 ): TagsState {

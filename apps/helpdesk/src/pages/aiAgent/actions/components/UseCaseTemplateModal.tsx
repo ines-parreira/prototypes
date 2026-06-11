@@ -12,16 +12,16 @@ import {
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-neutral.svg'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useHumanReadableOrderConditions from 'pages/aiAgent/actions/hooks/useHumanReadableOrderConditions'
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useHumanReadableOrderConditions } from 'pages/aiAgent/actions/hooks/useHumanReadableOrderConditions'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
-import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
+import { ReusableLLMPromptCallNodeLabel } from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
 import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import { getWorkflowVariableListForNode } from 'pages/automate/workflows/models/variables.model'
@@ -38,10 +38,10 @@ import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import { useSupportActionTracking } from '../hooks/useSupportActionTracking'
 
@@ -456,4 +456,4 @@ const UseCaseTemplateModal = ({ template, onClose }: Props) => {
     )
 }
 
-export default UseCaseTemplateModal
+export { UseCaseTemplateModal }

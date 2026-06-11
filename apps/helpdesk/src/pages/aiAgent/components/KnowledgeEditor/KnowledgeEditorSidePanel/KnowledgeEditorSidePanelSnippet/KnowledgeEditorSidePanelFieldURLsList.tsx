@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Box, Icon } from '@gorgias/axiom'
 
-import Collapse from 'pages/common/components/Collapse/Collapse'
+import { Collapse } from 'pages/common/components/Collapse/Collapse'
 
 import css from './KnowledgeEditorSidePanelFieldURLsList.less'
 

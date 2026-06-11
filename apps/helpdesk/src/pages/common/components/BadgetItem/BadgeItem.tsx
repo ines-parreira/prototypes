@@ -71,4 +71,4 @@ const BadgeItem: React.FC<BadgeItemProps> = ({
     )
 }
 
-export default BadgeItem
+export { BadgeItem }

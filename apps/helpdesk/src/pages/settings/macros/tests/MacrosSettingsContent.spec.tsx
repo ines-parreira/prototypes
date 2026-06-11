@@ -19,7 +19,7 @@ import {
     useCreateMacro,
     useDeleteMacro,
 } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -72,7 +72,7 @@ jest.mock('../MacrosCreateDropdown', () => ({
 
 jest.mock('pages/common/components/MacroFilters/MacroFilters', () => ({
     __esModule: true,
-    default: ({ onChange }: { onChange: (params: any) => void }) => {
+    MacroFilters: ({ onChange }: { onChange: (params: any) => void }) => {
         // Expose the onChange handler to the test
         ;(global as any).mockMacroFiltersOnChange = onChange
         return 'MacroFilters'

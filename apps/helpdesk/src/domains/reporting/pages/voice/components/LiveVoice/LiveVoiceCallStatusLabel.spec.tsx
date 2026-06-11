@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
+import { LiveVoiceCallStatusLabel } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
 import {
     isLiveCallRinging,
     isLiveInboundVoiceCallAnswered,

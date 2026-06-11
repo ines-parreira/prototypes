@@ -5,10 +5,10 @@ import { useGridSize } from '@gorgias/toolkit-react'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { AGENTS_SHOUT_OUTS_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
 import { DownloadAgentsAvailabilityButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsAvailabilityButton'
@@ -20,7 +20,7 @@ import {
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 
-export default function SupportPerformanceAgentsReport() {
+export function SupportPerformanceAgentsReport() {
     const { path } = useRouteMatch()
     const getGridCellSize = useGridSize()
     const isAgentAvailabilityEnabled = useCustomAgentUnavailableStatusesFlag()

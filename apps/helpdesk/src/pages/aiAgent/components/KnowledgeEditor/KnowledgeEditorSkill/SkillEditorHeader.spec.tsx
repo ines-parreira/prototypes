@@ -28,7 +28,7 @@ jest.mock(
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => ({
     __esModule: true,
-    default: () => 'MMM d, yyyy h:mm a',
+    useGetDateAndTimeFormat: () => 'MMM d, yyyy h:mm a',
 }))
 
 describe('SkillEditorHeader', () => {

@@ -12,115 +12,156 @@ import { IntegrationDetail } from '../Integration'
 import { Tab } from '../types'
 
 jest.mock('@repo/feature-flags')
-jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
-    <div>AircallIntegrationList</div>
-))
-jest.mock('../components/aircall/AircallIntegrationCreate.tsx', () => () => (
-    <div>AircallIntegrationCreate</div>
-))
-jest.mock('../components/bigcommerce/BigCommerce', () => () => (
-    <div>BigCommerceIntegration</div>
-))
-jest.mock('../components/email/EmailIntegrationList', () => () => (
-    <div>EmailIntegrationList</div>
-))
+jest.mock('../components/aircall/AircallIntegrationList.tsx', () => ({
+    AircallIntegrationList: () => <div>AircallIntegrationList</div>,
+}))
+jest.mock('../components/aircall/AircallIntegrationCreate.tsx', () => ({
+    DefaultExportAircallIntegrationCreate: () => (
+        <div>AircallIntegrationCreate</div>
+    ),
+}))
+jest.mock('../components/bigcommerce/BigCommerce', () => ({
+    BigCommerce: () => <div>BigCommerceIntegration</div>,
+}))
+jest.mock('../components/email/EmailIntegrationList', () => ({
+    EmailIntegrationList: () => <div>EmailIntegrationList</div>,
+}))
 jest.mock(
     '../components/email/EmailDomainVerification/EmailDomainVerification',
-    () => () => <div>EmailDomainVerification</div>,
+    () => ({
+        EmailDomainVerification: () => <div>EmailDomainVerification</div>,
+    }),
 )
 jest.mock(
     '../components/email/EmailOutboundVerification/EmailOutboundVerification',
-    () => () => <div>EmailOutboundVerification</div>,
+    () => ({
+        EmailOutboundVerification: () => <div>EmailOutboundVerification</div>,
+    }),
 )
 jest.mock(
     '../components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer',
-    () => () => <div>DEPRECATED_EmailDomainVerificationContainer</div>,
+    () => ({
+        DEPRECATED_EmailDomainVerificationContainer: () => (
+            <div>DEPRECATED_EmailDomainVerificationContainer</div>
+        ),
+    }),
 )
 jest.mock(
     '../components/email/EmailIntegrationUpdate/EmailIntegrationUpdate',
-    () => () => <div>EmailIntegrationUpdate</div>,
+    () => ({ EmailIntegrationUpdate: () => <div>EmailIntegrationUpdate</div> }),
 )
 jest.mock(
     '../components/email/EmailIntegrationCreate/EmailIntegrationCreate',
-    () => () => <div>EmailIntegrationCreate</div>,
+    () => ({ EmailIntegrationCreate: () => <div>EmailIntegrationCreate</div> }),
 )
 jest.mock(
     '../components/email/CustomerOnboarding/EmailIntegrationOnboarding',
-    () => () => <div>EmailIntegrationOnboarding</div>,
+    () => ({
+        EmailIntegrationOnboarding: () => <div>EmailIntegrationOnboarding</div>,
+    }),
 )
 jest.mock(
     '../components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding',
-    () => () => <div>EmailIntegrationCreateForwarding</div>,
+    () => ({
+        DefaultExportEmailIntegrationCreateForwarding: () => (
+            <div>EmailIntegrationCreateForwarding</div>
+        ),
+    }),
 )
 jest.mock(
     '../components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification',
-    () => () => <div>EmailIntegrationCreateVerification</div>,
+    () => ({
+        DefaultExportEmailIntegrationCreateVerification: () => (
+            <div>EmailIntegrationCreateVerification</div>
+        ),
+    }),
 )
 jest.mock(
     '../components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout',
-    () =>
-        ({ children }: any) => (
+    () => ({
+        EmailIntegrationUpdateLayout: ({ children }: any) => (
             <div>
                 EmailIntegrationUpdateLayout
                 <div>{children}</div>
             </div>
         ),
+    }),
 )
-jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
-    <div>FacebookIntegrationDetail</div>
-))
+jest.mock('../components/facebook/FacebookIntegrationDetail', () => ({
+    DefaultExportFacebookIntegrationDetail: () => (
+        <div>FacebookIntegrationDetail</div>
+    ),
+}))
 jest.mock(
     '../components/facebook/FacebookIntegrationList/FacebookIntegrationList',
-    () => () => <div>FacebookIntegrationList</div>,
+    () => ({
+        FacebookIntegrationList: () => <div>FacebookIntegrationList</div>,
+    }),
 )
-jest.mock('../components/facebook/FacebookIntegrationPreferences', () => () => (
-    <div>FacebookIntegrationPreferences</div>
-))
+jest.mock('../components/facebook/FacebookIntegrationPreferences', () => ({
+    DefaultExportFacebookIntegrationPreferences: () => (
+        <div>FacebookIntegrationPreferences</div>
+    ),
+}))
 jest.mock(
     '../components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup',
-    () => () => <div>FacebookIntegrationSetup</div>,
+    () => ({
+        DefaultExportFacebookIntegrationSetup: () => (
+            <div>FacebookIntegrationSetup</div>
+        ),
+    }),
 )
 jest.mock(
     '../components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat',
-    () => () => <div>FacebookIntegrationCustomerChat</div>,
+    () => ({
+        FacebookIntegrationCustomerChat: () => (
+            <div>FacebookIntegrationCustomerChat</div>
+        ),
+    }),
 )
-jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
+jest.mock('../components/http/HTTP', () => ({
+    Http: () => <div>HTTPIntegration</div>,
+}))
 jest.mock('../components/gorgias_chat/GorgiasChatIntegration', () => ({
     GorgiasChatIntegration: () => <div>GorgiasChatIntegration</div>,
 }))
-jest.mock('../components/sms/SmsIntegration', () => () => (
-    <div>SmsIntegration</div>
-))
-jest.mock('../components/voice/VoiceIntegration', () => () => (
-    <div>VoiceIntegration</div>
-))
-jest.mock('../components/shopify/Shopify', () => () => (
-    <div>ShopifyIntegration</div>
-))
-jest.mock('../components/klaviyo/KlaviyoIntegrationList', () => () => (
-    <div>KlaviyoIntegrationList</div>
-))
-jest.mock('../components/klaviyo/KlaviyoIntegrationDetail', () => () => (
-    <div>KlaviyoIntegrationDetail</div>
-))
-jest.mock('../components/recharge/Recharge', () => () => (
-    <div>RechargeIntegration</div>
-))
-jest.mock('../components/smile/SmileIntegrationList', () => () => (
-    <div>SmileIntegrationList</div>
-))
-jest.mock('../components/smile/SmileIntegrationDetail', () => () => (
-    <div>SmileIntegrationDetail</div>
-))
-jest.mock('../components/yotpo/YotpoIntegrationList', () => () => (
-    <div>YotpoIntegrationList</div>
-))
-jest.mock('../components/yotpo/YotpoIntegrationDetail', () => () => (
-    <div>YotpoIntegrationDetail</div>
-))
-jest.mock('../components/magento2/Magento2', () => () => (
-    <div>Magento2Integration</div>
-))
+jest.mock('../components/sms/SmsIntegration', () => ({
+    SmsIntegration: () => <div>SmsIntegration</div>,
+}))
+jest.mock('../components/voice/VoiceIntegration', () => ({
+    VoiceIntegration: () => <div>VoiceIntegration</div>,
+}))
+jest.mock('../components/shopify/Shopify', () => ({
+    Shopify: () => <div>ShopifyIntegration</div>,
+}))
+jest.mock('../components/klaviyo/KlaviyoIntegrationList', () => ({
+    KlaviyoIntegrationList: () => <div>KlaviyoIntegrationList</div>,
+}))
+jest.mock('../components/klaviyo/KlaviyoIntegrationDetail', () => ({
+    KlaviyoIntegrationDetail: () => <div>KlaviyoIntegrationDetail</div>,
+}))
+jest.mock('../components/recharge/Recharge', () => ({
+    Recharge: () => <div>RechargeIntegration</div>,
+}))
+jest.mock('../components/smile/SmileIntegrationList', () => ({
+    SmileIntegrationList: () => <div>SmileIntegrationList</div>,
+}))
+jest.mock('../components/smile/SmileIntegrationDetail', () => ({
+    DefaultExportSmileIntegrationDetail: () => (
+        <div>SmileIntegrationDetail</div>
+    ),
+}))
+jest.mock('../components/yotpo/YotpoIntegrationList', () => ({
+    YotpoIntegrationList: () => <div>YotpoIntegrationList</div>,
+}))
+jest.mock('../components/yotpo/YotpoIntegrationDetail', () => ({
+    DefaultExportYotpoIntegrationDetail: () => (
+        <div>YotpoIntegrationDetail</div>
+    ),
+}))
+jest.mock('../components/magento2/Magento2', () => ({
+    Magento2: () => <div>Magento2Integration</div>,
+}))
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
 const useFlagMock = jest.mocked(useFlag)

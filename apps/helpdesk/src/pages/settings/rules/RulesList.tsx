@@ -9,14 +9,14 @@ import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchRules } from 'models/rule/resources'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
-import Video from 'pages/common/components/Video/Video'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { Video } from 'pages/common/components/Video/Video'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -27,11 +27,12 @@ import {
 } from 'state/entities/rules/selectors'
 import { RuleLimitStatus } from 'state/rules/types'
 
-import List from './accountRules/RulesList'
-import CourseCard from './components/CourseCard'
-import CreateRuleFooter from './components/CreateRuleFooter'
-import TrackedRuleLibraryLink, {
+import { RulesList as List } from './accountRules/RulesList'
+import { CourseCard } from './components/CourseCard'
+import { CreateRuleFooter } from './components/CreateRuleFooter'
+import {
     Source,
+    TrackedRuleLibraryLink,
 } from './components/TrackedRuleLibraryLink'
 
 import css from './RulesView.less'
@@ -190,5 +191,3 @@ export function RulesList() {
         </div>
     )
 }
-
-export default RulesList

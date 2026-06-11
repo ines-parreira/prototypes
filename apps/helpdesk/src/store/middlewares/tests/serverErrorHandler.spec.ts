@@ -4,7 +4,7 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import serverErrorHandler from '../serverErrorHandler'
+import { serverErrorHandler } from '../serverErrorHandler'
 
 const middlewares = [thunk, serverErrorHandler]
 const mockStore = configureMockStore(middlewares)

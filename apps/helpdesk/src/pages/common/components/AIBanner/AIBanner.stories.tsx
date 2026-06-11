@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import AIBanner from './AIBanner'
+import { AIBanner } from './AIBanner'
 
 const storyConfig: Meta = {
     title: 'Data Display/AIBanner',

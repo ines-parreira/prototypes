@@ -22,16 +22,17 @@ import {
     toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
-import SkeletonLoader from 'pages/common/components/SkeletonLoader'
-import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
-import useThemeAppExtensionInstallation, {
+import { SkeletonLoader } from 'pages/common/components/SkeletonLoader'
+import { useShopifyThemeAppExtension } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
+import {
     getGorgiasMainThemeAppExtensionId,
+    useThemeAppExtensionInstallation,
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import type { VisibilityControlsHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityControls'
-import VisibilityControls from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityControls'
+import { DefaultExportVisibilityControls as VisibilityControls } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityControls'
 import {
     updateOrCreateIntegration as updateOrCreateIntegrationAction,
     updateOrCreateIntegrationRequest,
@@ -438,4 +439,4 @@ const OneClickInstall = ({
     )
 }
 
-export default OneClickInstall
+export { OneClickInstall }

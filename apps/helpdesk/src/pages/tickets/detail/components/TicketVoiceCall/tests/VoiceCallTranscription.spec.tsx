@@ -13,11 +13,11 @@ import {
 import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import type { VoiceRecordingsContextState } from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
 
-import VoiceCallTranscription from '../VoiceCallTranscription'
+import { VoiceCallTranscription } from '../VoiceCallTranscription'
 
 jest.mock('../TranscriptionData', () => ({
     __esModule: true,
-    default: () => 'completed transcription',
+    TranscriptionData: () => 'completed transcription',
 }))
 jest.mock('pages/common/hooks/useVoiceRecordingsContext')
 const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)

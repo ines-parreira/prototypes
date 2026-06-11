@@ -71,4 +71,4 @@ function BaseCard({
     )
 }
 
-export default BaseCard
+export { BaseCard }

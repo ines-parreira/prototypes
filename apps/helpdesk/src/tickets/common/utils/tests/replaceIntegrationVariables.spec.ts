@@ -2,15 +2,17 @@ import { fromJS } from 'immutable'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 
-import replaceIntegrationVariables from '../replaceIntegrationVariables'
+import { replaceIntegrationVariables } from '../replaceIntegrationVariables'
 
 jest.mock('../getVariableWithValue', () => {
-    return (variable: string) => {
-        if (variable.includes('variableWithReplace')) {
-            return 'my value'
-        }
+    return {
+        getVariableWithValue: (variable: string) => {
+            if (variable.includes('variableWithReplace')) {
+                return 'my value'
+            }
 
-        return null
+            return null
+        },
     }
 })
 

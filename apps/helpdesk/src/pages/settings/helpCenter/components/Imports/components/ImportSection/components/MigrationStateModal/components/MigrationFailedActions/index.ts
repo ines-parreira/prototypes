@@ -1,1 +1,1 @@
-export { default } from './MigrationFailedActions'
+export { MigrationFailedActions } from './MigrationFailedActions'

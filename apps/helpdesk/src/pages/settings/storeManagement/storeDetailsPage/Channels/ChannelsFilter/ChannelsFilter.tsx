@@ -3,15 +3,15 @@ import { useRef, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
 
-import deriveLabelFromIntegration from '../../../helpers/deriveLabelFromIntegration'
+import { deriveLabelFromIntegration } from '../../../helpers/deriveLabelFromIntegration'
 import type { ChannelWithMetadata } from '../../../types'
-import CreateNewChannel from './CreateNewChannel'
-import UnselectableItems from './UnselectableItems'
+import { CreateNewChannel } from './CreateNewChannel'
+import { UnselectableItems } from './UnselectableItems'
 
 interface ChannelsFilterProps {
     selectorLabel: string
@@ -20,7 +20,7 @@ interface ChannelsFilterProps {
     setAssignedChannelIds: Dispatch<SetStateAction<number[]>>
 }
 
-export default function ChannelsFilter({
+export function ChannelsFilter({
     selectorLabel,
     activeChannel,
     assignedChannelIds,

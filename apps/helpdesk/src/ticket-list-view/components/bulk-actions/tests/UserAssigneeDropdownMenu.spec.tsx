@@ -6,12 +6,12 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { focusOnNextItem } from 'components/Dropdown'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
-import useSearch from 'search/useSearch'
+import { useSearch } from 'search/useSearch'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import useListUsers from 'users/useListUsers'
+import { useListUsers } from 'users/useListUsers'
 
-import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
-import type UserDropdownItem from '../UserDropdownItem'
+import { UserAssigneeDropdownMenu } from '../UserAssigneeDropdownMenu'
+import type { UserDropdownItem } from '../UserDropdownItem'
 
 jest.mock('components/Dropdown/focusOnNextItem')
 const mockFocusOnNextItem = focusOnNextItem as jest.Mock
@@ -22,13 +22,11 @@ const mockUseListUsers = useListUsers as jest.Mock
 jest.mock('search/useSearch')
 const mockUseSearch = useSearch as jest.Mock
 
-jest.mock(
-    '../UserDropdownItem',
-    () =>
-        ({ item }: ComponentProps<typeof UserDropdownItem>) => (
-            <div>{item.name}</div>
-        ),
-)
+jest.mock('../UserDropdownItem', () => ({
+    UserDropdownItem: ({ item }: ComponentProps<typeof UserDropdownItem>) => (
+        <div>{item.name}</div>
+    ),
+}))
 
 const queryClient = mockQueryClient()
 

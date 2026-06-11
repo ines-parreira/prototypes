@@ -6,9 +6,7 @@ interface MappedChannelsDrawerInfoBlockProps {
     channel: ChannelWithMetadata
 }
 
-export default function DrawerHeader({
-    channel,
-}: MappedChannelsDrawerInfoBlockProps) {
+export function DrawerHeader({ channel }: MappedChannelsDrawerInfoBlockProps) {
     switch (channel.type) {
         case 'email':
             return (

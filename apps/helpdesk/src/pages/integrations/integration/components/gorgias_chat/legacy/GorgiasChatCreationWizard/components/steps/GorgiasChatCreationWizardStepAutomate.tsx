@@ -13,8 +13,8 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
 import type {
@@ -27,11 +27,11 @@ import {
 } from 'models/integration/types'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServiceChatIntegrationHomePage } from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
@@ -39,10 +39,10 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { StoreNameDropdown } from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
+import { useThemeAppExtensionInstallation } from '../../../hooks/useThemeAppExtensionInstallation'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardPreview } from '../GorgiasChatCreationWizardPreview'
+import { GorgiasChatCreationWizardStep } from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepAutomate.less'
 
@@ -421,4 +421,4 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepAutomate
+export { GorgiasChatCreationWizardStepAutomate }

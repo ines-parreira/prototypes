@@ -9,7 +9,7 @@ import { fromJS } from 'immutable'
 import { discountCodeResult } from 'fixtures/discountCodes'
 import { integrationsState } from 'fixtures/integrations'
 
-import DiscountCodeResults from '../DiscountCodeResults'
+import { DiscountCodeResults } from '../DiscountCodeResults'
 
 const FETCH_RESULTS_DEBOUNCE_MS = 300
 

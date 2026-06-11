@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 import { useListStoreMappings } from 'models/storeMapping/queries'

@@ -11,7 +11,7 @@ import type { IvrMenuAction } from 'models/integration/types'
 import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 import type { RootState } from 'state/types'
 
-import IvrMenuActionsFieldArray from '../DEPRECATED_IvrMenuActionsFieldArray'
+import { DEPRECATED_IvrMenuActionsFieldArray as IvrMenuActionsFieldArray } from '../DEPRECATED_IvrMenuActionsFieldArray'
 
 const mockStore = configureMockStore([thunk])
 describe('<DEPRECATED_IvrMenuActionsFieldArray />', () => {

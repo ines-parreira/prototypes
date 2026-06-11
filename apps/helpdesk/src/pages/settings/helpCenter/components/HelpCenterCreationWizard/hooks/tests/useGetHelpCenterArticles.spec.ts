@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { chain } from 'lodash'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/constants'
 import {

@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 
 import type { VoiceCallSummary } from 'models/voiceCall/types'
 
-import TicketVoiceCallSummary from '../TicketVoiceCallSummary'
+import { TicketVoiceCallSummary } from '../TicketVoiceCallSummary'
 
 describe('TicketVoiceCallSummary', () => {
     const renderSummary = (summaries: VoiceCallSummary[]) => {

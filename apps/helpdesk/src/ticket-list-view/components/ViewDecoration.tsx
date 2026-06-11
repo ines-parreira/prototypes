@@ -6,7 +6,7 @@ import { ViewCategory } from 'models/view/types'
 
 import css from './ViewDecoration.less'
 
-export default function ViewDecoration({ view }: { view: View | null }) {
+export function ViewDecoration({ view }: { view: View | null }) {
     const viewEmoji = view?.decoration?.emoji
     const { category, slug } = view || {}
     const shouldDisplaySystemIcon = !!(

@@ -125,5 +125,3 @@ export const usePaginatedProductIntegration = ({
         prevCursor,
     ])
 }
-
-export default usePaginatedProductIntegration

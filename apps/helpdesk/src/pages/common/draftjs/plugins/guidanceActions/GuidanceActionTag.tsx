@@ -25,10 +25,7 @@ export type GuidanceActionTagProps = {
     children: ReactNode
 }
 
-export default function GuidanceActionTag({
-    value,
-    children,
-}: GuidanceActionTagProps) {
+export function GuidanceActionTag({ value, children }: GuidanceActionTagProps) {
     const {
         guidanceActions,
         shopName,

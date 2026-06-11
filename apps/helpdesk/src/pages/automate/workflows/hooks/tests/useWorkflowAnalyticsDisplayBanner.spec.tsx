@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useWorkflowAnalyticsDisplayBanner from '../useWorkflowAnalyticsDisplayBanner'
+import { useWorkflowAnalyticsDisplayBanner } from '../useWorkflowAnalyticsDisplayBanner'
 
 describe('useWorkflowAnalyticsDisplayBanner', () => {
     it('should display no data available banner when no data is available', () => {

@@ -7,24 +7,22 @@ import { fromJS } from 'immutable'
 
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
-import ObjectExpression from '../ObjectExpression'
+import { ObjectExpression } from '../ObjectExpression'
 
-jest.mock(
-    'pages/common/components/ast/Property',
-    () =>
-        ({
-            leftsiblings,
-            parent,
-        }: {
-            leftsiblings?: List<any>
-            parent: List<any>
-        }) => (
-            <div>
-                PropertyMock: {JSON.stringify(leftsiblings?.toJS())}
-                {JSON.stringify(parent?.toJS())}
-            </div>
-        ),
-)
+jest.mock('pages/common/components/ast/Property', () => ({
+    Property: ({
+        leftsiblings,
+        parent,
+    }: {
+        leftsiblings?: List<any>
+        parent: List<any>
+    }) => (
+        <div>
+            PropertyMock: {JSON.stringify(leftsiblings?.toJS())}
+            {JSON.stringify(parent?.toJS())}
+        </div>
+    ),
+}))
 
 const commonProps = {
     actions: {} as RuleItemActions,

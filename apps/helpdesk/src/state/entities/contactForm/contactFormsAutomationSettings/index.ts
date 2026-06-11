@@ -3,6 +3,6 @@ export * from 'state/entities/contactForm/contactFormsAutomationSettings/selecto
 export * from 'state/entities/contactForm/contactFormsAutomationSettings/types'
 
 export {
-    default,
+    contactFormAutomationSettingsReducer,
     initialState,
 } from 'state/entities/contactForm/contactFormsAutomationSettings/reducer'

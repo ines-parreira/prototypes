@@ -4,12 +4,12 @@ import React, { useCallback } from 'react'
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter.less'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
+import { SelectStatsFilter } from 'domains/reporting/pages/common/SelectStatsFilter'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { TagDropdownMenu } from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
 const TagDropdownMenuWrapper = (
     props: ComponentProps<typeof TagDropdownMenu>,
@@ -34,7 +34,7 @@ export const tagsStatsFilterLabels = {
  * @date 2024-07-29
  * @type feature-component
  */
-export default function DEPRECATED_TagsStatsFilter({
+export function DEPRECATED_TagsStatsFilter({
     value = [],
     variant = 'fill',
 }: Props) {

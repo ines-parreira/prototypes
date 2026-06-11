@@ -5,7 +5,7 @@ import { isAdmin } from '@repo/permissions'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { BillingAddressValidationStatus } from 'models/billing/types'
 import { getCurrentUser } from 'state/currentUser/selectors'

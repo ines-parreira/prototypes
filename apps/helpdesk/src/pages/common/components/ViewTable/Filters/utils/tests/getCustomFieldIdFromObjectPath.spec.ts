@@ -1,4 +1,4 @@
-import getCustomFieldIdFromObjectPath from '../getCustomFieldIdFromObjectPath'
+import { getCustomFieldIdFromObjectPath } from '../getCustomFieldIdFromObjectPath'
 
 describe('getCustomFieldIdFromObjectPath', () => {
     it('should return null if the object path does not contain an id', () => {

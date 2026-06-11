@@ -8,7 +8,7 @@ import type { User } from 'config/types/user'
 import { getCallMonitorability } from 'hooks/integrations/phone/monitoring.utils'
 import type { VoiceCall as LocalVoiceCall } from 'models/voiceCall/types'
 import { getInCallAgentId } from 'models/voiceCall/utils'
-import MonitorCallButton from 'pages/common/components/MonitorCallButton/MonitorCallButton'
+import { MonitorCallButton } from 'pages/common/components/MonitorCallButton/MonitorCallButton'
 
 type VoiceCallMonitorButtonProps = {
     voiceCall: VoiceCall

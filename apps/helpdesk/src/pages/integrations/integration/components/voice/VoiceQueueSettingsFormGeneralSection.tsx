@@ -2,14 +2,14 @@ import { FormField } from '@repo/forms'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './VoiceQueueSettingsFormGeneralSection.less'
 
 const PRIORITY_WEIGHT_MAX = 100
 const PRIORITY_WEIGHT_MIN = 1
 
-export default function VoiceQueueSettingsFormGeneralSection() {
+export function VoiceQueueSettingsFormGeneralSection() {
     return (
         <div className={css.container}>
             <FormField name="name" isRequired label="Queue name">

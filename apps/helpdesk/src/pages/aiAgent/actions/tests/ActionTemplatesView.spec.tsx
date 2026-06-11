@@ -8,7 +8,7 @@ import { screen } from '@testing-library/react'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 
-import ActionTemplatesView from '../ActionTemplatesView'
+import { ActionTemplatesView } from '../ActionTemplatesView'
 
 jest.mock('@repo/feature-flags')
 jest.mock('models/workflows/queries')

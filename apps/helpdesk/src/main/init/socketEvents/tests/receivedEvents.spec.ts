@@ -35,7 +35,7 @@ import {
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallTypes from 'models/voiceCall/types'
-import browserNotification from 'services/browserNotification'
+import { browserNotification } from 'services/browserNotification'
 import type {
     CustomerExternalDataUpdatedEvent,
     OrderEvent,
@@ -79,7 +79,7 @@ import { throttledUpdateCustomFieldsCache } from '../helpers'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 import { ticket } from 'fixtures/ticket'
-import receivedEvents from '../receivedEvents'
+import { receivedEvents } from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -115,7 +115,9 @@ jest.mock('state/entities/phoneNumbers/actions', () => ({
     })),
 }))
 
-jest.mock('services/browserNotification', () => ({ newMessage: jest.fn() }))
+jest.mock('services/browserNotification', () => ({
+    browserNotification: { newMessage: jest.fn() },
+}))
 
 jest.spyOn(browserNotification, 'newMessage')
 jest.mock('state/chats/actions')
@@ -173,14 +175,14 @@ jest.mock('business/recentChats', () => {
     return {
         ...jest.requireActual('business/recentChats.ts'),
         shouldTicketBeDisplayedInRecentChats: jest.fn(),
-    } as Record<string, unknown>
+    }
 })
 
 jest.mock('utils', () => {
     return {
         ...jest.requireActual('utils'),
         isCurrentlyOnTicket: jest.fn(),
-    } as Record<string, unknown>
+    }
 })
 
 jest.mock('state/entities/views/actions')

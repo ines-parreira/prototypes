@@ -4,7 +4,7 @@ import { useFeedbackTracking } from '@repo/ai-agent'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
@@ -13,8 +13,8 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 
-import KnowledgeSourceSideBar from '../KnowledgeSourceSideBar'
-import KnowledgeSourceSidebarWrapper from '../KnowledgeSourceSidebarWrapper'
+import { KnowledgeSourceSideBar } from '../KnowledgeSourceSideBar'
+import { KnowledgeSourceSidebarWrapper } from '../KnowledgeSourceSidebarWrapper'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { useGetAllRelatedResourceData } from '../useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 
@@ -66,7 +66,7 @@ jest.mock(
     'pages/settings/helpCenter/contexts/CurrentHelpCenterContext',
     () => ({
         __esModule: true,
-        default: {
+        DefaultExportCurrentHelpCenterContext: {
             Provider: ({
                 children,
                 value,

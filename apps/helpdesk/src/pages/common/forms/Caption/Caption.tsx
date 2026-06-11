@@ -25,4 +25,4 @@ const Caption = ({ children, className, error, ...props }: Props) => (
     </div>
 )
 
-export default Caption
+export { Caption }

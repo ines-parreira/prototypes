@@ -1,10 +1,10 @@
 import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
-import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
-import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
+import { HelpCenterPreviewAutomation } from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
+import { HelpCenterPreviewHomePage } from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 
-import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
+import { HelpCenterPreview } from '../../../HelpCenterPreview/HelpCenterPreview'
 import { useHelpCenterFlows } from '../../hooks/useHelpCenterFlows'
 
 type Props = {
@@ -93,4 +93,4 @@ const HelpCenterWizardAutomationPreview = ({
     )
 }
 
-export default HelpCenterWizardAutomationPreview
+export { HelpCenterWizardAutomationPreview }

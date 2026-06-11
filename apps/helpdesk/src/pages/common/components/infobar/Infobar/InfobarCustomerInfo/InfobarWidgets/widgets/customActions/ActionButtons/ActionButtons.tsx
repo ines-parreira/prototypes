@@ -3,8 +3,8 @@ import React, { memo } from 'react'
 import type { Source } from 'models/widget/types'
 
 import type { Button as ButtonType } from '../types'
-import ButtonsGroup from './Display'
-import Editor from './Editor'
+import { DefaultExportButtonsGroup as ButtonsGroup } from './Display'
+import { Editor } from './Editor'
 
 type Props = {
     templatePath: string
@@ -37,4 +37,6 @@ export function ActionButtons({
     return null
 }
 
-export default memo(ActionButtons)
+const DefaultExportActionButtons = memo(ActionButtons)
+
+export { DefaultExportActionButtons }

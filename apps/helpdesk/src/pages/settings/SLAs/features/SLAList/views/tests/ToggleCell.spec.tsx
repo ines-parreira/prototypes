@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
 import type { UISLAPolicy } from '../../types'
-import ToggleCell from '../ToggleCell'
+import { ToggleCell } from '../ToggleCell'
 
 const policy = {
     id: '123',

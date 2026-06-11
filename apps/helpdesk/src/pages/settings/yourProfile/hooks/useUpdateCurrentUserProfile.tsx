@@ -1,7 +1,7 @@
 import { toast } from '@gorgias/axiom'
 
 import { useUpdateCurrentUser } from 'hooks/currentUser/useUpdateCurrentUser'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as constants from 'state/currentUser/constants'
 
 export function useUpdateCurrentUserProfile() {

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { reportError } from '@repo/logging'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useListChannelConnections } from 'models/convert/channelConnection/queries'
 import { ChannelConnectionChannel } from 'models/convert/channelConnection/types'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'

@@ -2,7 +2,7 @@ import { UserRole } from '@repo/permissions'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'
-import HistoricalImports from 'pages/settings/historicalImports/Import'
+import { ImportEmails as HistoricalImports } from 'pages/settings/historicalImports/Import'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

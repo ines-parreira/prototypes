@@ -1,1 +1,1 @@
-export { default } from './ProductPlanSelection'
+export { ProductPlanSelection } from './ProductPlanSelection'

@@ -3,9 +3,11 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import SatisfactionSurvey from '../SatisfactionSurvey'
+import { SatisfactionSurvey } from '../SatisfactionSurvey'
 
-jest.mock('pages/common/utils/DatetimeLabel', () => () => <div>datetime</div>)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: () => <div>datetime</div>,
+}))
 
 describe('SatisfactionSurvey', () => {
     it('should display satisfaction survey', () => {

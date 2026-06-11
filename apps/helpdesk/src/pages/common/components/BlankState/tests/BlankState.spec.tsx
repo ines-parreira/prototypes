@@ -1,6 +1,6 @@
 import { render } from '@repo/testing'
 
-import BlankState from '../BlankState'
+import { BlankState } from '../BlankState'
 
 describe('<BlankState />', () => {
     it('should display the provided message', () => {

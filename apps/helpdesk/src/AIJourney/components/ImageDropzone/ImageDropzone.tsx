@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { Label, Skeleton, toast } from '@gorgias/axiom'
 
 import type { GenericAttachment } from 'common/types'
-import uploadFiles from 'common/utils/uploadFiles'
+import { uploadFiles } from 'common/utils/uploadFiles'
 import {
     DropText,
     DropZone,

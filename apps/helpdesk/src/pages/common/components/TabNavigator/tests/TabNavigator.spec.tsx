@@ -3,7 +3,7 @@ import React from 'react'
 
 import { flushPromises, render } from '@repo/testing'
 
-import TabNavigator from '../TabNavigator'
+import { TabNavigator } from '../TabNavigator'
 
 describe('<TabNavigator />', () => {
     const defaultProps: ComponentProps<typeof TabNavigator> = {

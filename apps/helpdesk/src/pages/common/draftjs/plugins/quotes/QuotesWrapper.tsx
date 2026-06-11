@@ -51,4 +51,4 @@ const QuotesWrapper = ({ innerWrapper, children }: Props) => {
     )
 }
 
-export default QuotesWrapper
+export { QuotesWrapper }

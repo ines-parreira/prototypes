@@ -9,7 +9,7 @@ import {
 import { useListBundles } from 'models/convert/bundle/queries'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
-import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import { useShopifyIntegrations } from 'pages/automate/common/hooks/useShopifyIntegrations'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

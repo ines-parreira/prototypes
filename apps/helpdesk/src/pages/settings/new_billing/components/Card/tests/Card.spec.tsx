@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Card from '../Card'
+import { Card } from '../Card'
 
 describe('<Card />', () => {
     it('should render', () => {

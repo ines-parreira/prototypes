@@ -1,7 +1,7 @@
 import type { ComponentProps, ForwardedRef } from 'react'
 import React, { forwardRef } from 'react'
 
-import CheckBox from './CheckBox'
+import { DefaultExportCheckBox as CheckBox } from './CheckBox'
 
 type Props = {
     value: boolean
@@ -25,4 +25,6 @@ function CheckBoxField(
  * @date 2025-04-01
  * @type ui-kit-migration
  */
-export default forwardRef(CheckBoxField)
+const DefaultExportCheckBoxField = forwardRef(CheckBoxField)
+
+export { DefaultExportCheckBoxField }

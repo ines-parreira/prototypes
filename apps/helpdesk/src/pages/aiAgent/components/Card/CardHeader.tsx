@@ -11,4 +11,4 @@ const CardHeader = forwardRef<
     <div ref={ref} className={cn(css.cardHeader, className)} {...props} />
 ))
 
-export default CardHeader
+export { CardHeader }

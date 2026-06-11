@@ -3,7 +3,7 @@ import { act } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
 
 import { useCreateTicketButton } from '../useCreateTicketButton'
-import useHandleTicketDraft from '../useHandleTicketDraft'
+import { useHandleTicketDraft } from '../useHandleTicketDraft'
 
 // Mock dependencies
 jest.mock('react-router-dom', () => ({

@@ -1,1 +1,1 @@
-export { default } from './ArticleTemplatesBanner'
+export { ArticleTemplatesBanner } from './ArticleTemplatesBanner'

@@ -9,7 +9,7 @@ type SetupCardProps = {
     descriptionColor?: ComponentProps<typeof Text>['color']
 }
 
-export default function SetupCard({
+export function SetupCard({
     title,
     description,
     action,

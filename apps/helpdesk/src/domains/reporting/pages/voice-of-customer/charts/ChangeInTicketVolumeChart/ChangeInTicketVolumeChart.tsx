@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import css from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable.less'
 import { ChangeInTicketVolumeChartConfig } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/ticketVolumeConfig'
 import { TicketVolumeTable } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/TicketVolumeTable'

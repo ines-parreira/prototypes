@@ -10,12 +10,12 @@ import type { Section } from 'models/section/types'
 import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
 import type { TicketNavbarDropDirection } from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import type { SectionsState } from 'state/entities/sections/types'
 import type { ViewsState } from 'state/entities/views/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import TicketNavbarSectionBridge from './TicketNavbarSectionBridge'
+import { DefaultExportTicketNavbarSectionBridge as TicketNavbarSectionBridge } from './TicketNavbarSectionBridge'
 import { TicketNavbarView } from './TicketNavbarView'
 
 import css from './TicketNavbarContent.less'
@@ -157,5 +157,3 @@ function resolveDropResult(
         }
     )
 }
-
-export default TicketNavbarContentBridgeContainer

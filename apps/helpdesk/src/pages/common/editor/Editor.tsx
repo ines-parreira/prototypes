@@ -6,24 +6,24 @@ import type { ListMacrosParams } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { MacrosProperties } from 'models/macro/types'
 import type { Ticket } from 'models/ticket/types'
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import ChannelSelect from 'pages/tickets/detail/components/ReplyArea/ChannelSelect'
-import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields'
-import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
-import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
-import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
-import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { ChannelSelect } from 'pages/tickets/detail/components/ReplyArea/ChannelSelect'
+import { MessageSourceFields } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields'
+import { TicketReplyAreaWithStandaloneAiContext as TicketReplyArea } from 'pages/tickets/detail/components/ReplyArea/TicketReplyArea'
+import { TicketSubmitButtons } from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
+import { WhatsAppMessageTemplateReplyArea } from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
+import { ReplyForm } from 'pages/tickets/detail/components/ReplyForm'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { prepare } from 'state/newMessage/actions'
 import { getNewMessageType } from 'state/newMessage/selectors'
 
-import useForm from './hooks/useForm'
-import useMacros from './hooks/useMacros'
-import useMacrosSearch from './hooks/useMacrosSearch'
+import { useForm } from './hooks/useForm'
+import { useMacros } from './hooks/useMacros'
+import { useMacrosSearch } from './hooks/useMacrosSearch'
 
 import css from './Editor.less'
 
@@ -42,7 +42,7 @@ type Props = {
     ticket: Ticket
 }
 
-export default function Editor({
+export function Editor({
     canEdit = true,
     internalNotesOnly = false,
     initialMacroFilters,

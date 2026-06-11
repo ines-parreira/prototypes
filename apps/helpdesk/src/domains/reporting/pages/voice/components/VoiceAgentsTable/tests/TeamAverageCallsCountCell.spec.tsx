@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import TeamAverageCallsCountCell from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell'
+import { TeamAverageCallsCountCell } from 'domains/reporting/pages/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell'
 import type { useTotalCallsMetric } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import { initialState as agentPerformanceInitialState } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import { AGENT_PERFORMANCE_SLICE_NAME } from 'domains/reporting/state/ui/stats/constants'

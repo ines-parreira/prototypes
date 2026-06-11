@@ -5,14 +5,19 @@ import { render } from '@repo/testing'
 
 import type { WidgetType } from 'state/widgets/types'
 
-import type ColorPanel from '../views/ColorPanel'
-import WidgetPanel, { WIDGET_COLORS } from '../WidgetPanel'
+import type { ColorPanel } from '../views/ColorPanel'
+import { WIDGET_COLORS, WidgetPanel } from '../WidgetPanel'
 
 const MOCK_ACCENT_COLOR_ID = 'accent-color'
-jest.mock('Widgets/modules/WidgetPanel/components/views/ColorPanel.tsx', () =>
-    jest.fn(({ accentColor }: ComponentProps<typeof ColorPanel>) => (
-        <span data-testid={MOCK_ACCENT_COLOR_ID}>{accentColor}</span>
-    )),
+jest.mock(
+    'Widgets/modules/WidgetPanel/components/views/ColorPanel.tsx',
+    () => ({
+        ColorPanel: jest.fn(
+            ({ accentColor }: ComponentProps<typeof ColorPanel>) => (
+                <span data-testid={MOCK_ACCENT_COLOR_ID}>{accentColor}</span>
+            ),
+        ),
+    }),
 )
 
 describe('WidgetPanel', () => {

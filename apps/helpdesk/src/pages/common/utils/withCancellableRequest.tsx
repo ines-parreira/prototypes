@@ -5,7 +5,7 @@ import type { CancelToken } from 'axios'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import useCancellableRequest from '../../../hooks/useCancellableRequest'
+import { useCancellableRequest } from '../../../hooks/useCancellableRequest'
 
 type InjectedRequest<T> = T extends (
     a: infer A,
@@ -88,4 +88,4 @@ const withCancellableRequest =
         }) as any)
     }
 
-export default withCancellableRequest
+export { withCancellableRequest }

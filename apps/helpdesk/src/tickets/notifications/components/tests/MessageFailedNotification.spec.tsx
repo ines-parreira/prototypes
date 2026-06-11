@@ -10,7 +10,7 @@ import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import type { Notification } from 'common/notifications'
 
 import type { TicketPayload } from '../../types'
-import MessageFailedNotification from '../MessageFailedNotification'
+import { MessageFailedNotification } from '../MessageFailedNotification'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

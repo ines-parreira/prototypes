@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import CategoryChip from './CategoryChip'
+import { CategoryChip } from './CategoryChip'
 
 describe('CategoryChip', () => {
     it('should render Customer category with correct label', () => {

@@ -6,7 +6,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { VoiceCallTableChart } from 'domains/reporting/pages/voice/charts/VoiceCallTableChart'
-import VoiceCallFilter from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
+import { VoiceCallFilter } from 'domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter'
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'
 import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/types'
 

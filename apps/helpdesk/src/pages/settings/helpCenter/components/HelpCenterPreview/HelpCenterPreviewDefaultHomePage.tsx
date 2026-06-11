@@ -84,4 +84,4 @@ const HelpCenterPreviewDefaultHomePage = ({
     )
 }
 
-export default HelpCenterPreviewDefaultHomePage
+export { HelpCenterPreviewDefaultHomePage }

@@ -15,7 +15,7 @@ import * as TicketActions from 'state/ticket/actions'
 import type { StoreDispatch } from 'state/types'
 import { getActionTemplate, stripErrorMessage } from 'utils'
 
-import Error from '../Error'
+import { DefaultExportError as Error } from '../Error'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

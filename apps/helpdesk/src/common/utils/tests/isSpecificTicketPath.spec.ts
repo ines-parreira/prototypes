@@ -1,4 +1,4 @@
-import isSpecificTicketPath from '../isSpecificTicketPath'
+import { isSpecificTicketPath } from '../isSpecificTicketPath'
 
 describe('isSpecificTicketPath', () => {
     it('should return true for a full-width ticket path', () => {

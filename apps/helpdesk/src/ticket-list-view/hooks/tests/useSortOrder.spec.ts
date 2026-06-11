@@ -4,7 +4,7 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
-import useSortOrder from '../useSortOrder'
+import { useSortOrder } from '../useSortOrder'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

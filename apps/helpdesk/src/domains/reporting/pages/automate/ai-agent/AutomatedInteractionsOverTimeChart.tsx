@@ -7,7 +7,7 @@ import { calculateGreyArea } from 'domains/reporting/hooks/automate/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AutomatedInteractionsOverTime } from 'domains/reporting/pages/automate/ai-agent/AutomatedInteractionsOverTime'
 import { getGreyAreaHint } from 'domains/reporting/pages/automate/overview/utils'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AUTOMATED_INTERACTION_TOOLTIP } from 'pages/automate/automate-metrics/constants'
 

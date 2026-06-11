@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 import { useStoreSelector } from 'settings/automate'
 
 import css from './FlowsSettingsHeader.less'

@@ -13,7 +13,7 @@ import {
     isWhatsAppChannel,
 } from './isIntegration'
 
-export default function integrationBelongsToChannel(
+export function integrationBelongsToChannel(
     integration: Integration,
     chanelType: ChannelTypes,
 ) {

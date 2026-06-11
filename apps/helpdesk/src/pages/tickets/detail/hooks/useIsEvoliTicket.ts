@@ -1,6 +1,6 @@
 import type { List, Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTicketState } from 'state/ticket/selectors'
 
 const EVOLI_TAGS = ['ai_evolution', 'ai_next_gen']

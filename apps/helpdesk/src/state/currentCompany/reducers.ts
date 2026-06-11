@@ -1,1 +1,4 @@
-export { default, initialState } from 'state/currentCompany/currentCompanySlice'
+export {
+    DefaultExportCurrentCompanySlice,
+    initialState,
+} from 'state/currentCompany/currentCompanySlice'

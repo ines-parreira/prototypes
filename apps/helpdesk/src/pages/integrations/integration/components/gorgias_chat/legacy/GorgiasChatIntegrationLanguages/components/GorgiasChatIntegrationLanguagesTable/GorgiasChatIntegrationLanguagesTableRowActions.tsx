@@ -15,9 +15,9 @@ import {
 } from '@gorgias/axiom'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
-import GorgiasChatIntegrationLanguageDeleteModal from './GorgiasChatIntegrationLanguageDeleteModal'
+import { GorgiasChatIntegrationLanguageDeleteModal } from './GorgiasChatIntegrationLanguageDeleteModal'
 import type { LanguageItemRow } from './types'
 
 type GorgiasChatIntegrationLanguagesTableRowActionsProps = {

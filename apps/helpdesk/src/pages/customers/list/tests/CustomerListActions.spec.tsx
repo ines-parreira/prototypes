@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import CustomerListActions from '../CustomerListActions'
+import { CustomerListActionsWithViewCount as CustomerListActions } from '../CustomerListActions'
 
 const mockStore = configureMockStore([thunk])
 

@@ -15,7 +15,7 @@ import {
     mockUpdateSlaPolicyHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import SLAFormController from '../SLAFormController'
+import { SLAFormController } from '../SLAFormController'
 
 const server = setupServer()
 

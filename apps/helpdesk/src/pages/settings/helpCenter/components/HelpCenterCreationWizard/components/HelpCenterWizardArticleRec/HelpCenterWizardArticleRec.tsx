@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
 import css from './HelpCenterWizardArticleRec.less'
 
@@ -64,4 +64,4 @@ const HelpCenterWizardArticleRec = ({
     )
 }
 
-export default HelpCenterWizardArticleRec
+export { HelpCenterWizardArticleRec }

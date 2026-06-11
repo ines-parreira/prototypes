@@ -17,7 +17,7 @@ import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { ignoreHTML } from 'tests/ignoreHTML'
 
-import UserMenu from '../UserMenu'
+import { UserMenu } from '../UserMenu'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -28,10 +28,12 @@ jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
-jest.mock('pages/common/components/NoticeableIndicator', () => () => (
-    <div>NoticeableIndicator</div>
-))
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('pages/common/components/NoticeableIndicator', () => ({
+    NoticeIndicator: () => <div>NoticeableIndicator</div>,
+}))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('@repo/activity-tracker', () => ({
     ...jest.requireActual('@repo/activity-tracker'),
@@ -56,22 +58,28 @@ const getCurrentUserMock = assumeMock(getCurrentUser)
 const { useHelpdeskV2BaselineFlag } = jest.requireMock('@repo/feature-flags')
 const useHelpdeskV2BaselineFlagMock = useHelpdeskV2BaselineFlag as jest.Mock
 
-jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
+jest.mock('../AvailabilityToggle', () => ({
+    AvailabilityToggle: () => <div>AvailabilityToggle</div>,
+}))
 jest.mock('../HelpdeskV2BetaToggle', () => ({
     HelpdeskV2BetaToggle: () => <div>HelpdeskV2BetaToggle</div>,
 }))
-jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
-jest.mock(
-    '../StatusMenu',
-    () =>
-        ({ onUpdateStatusStart }: { onUpdateStatusStart: () => void }) => (
-            <div>
-                StatusMenu
-                <button onClick={onUpdateStatusStart}>MockStatusUpdate</button>
-            </div>
-        ),
-)
-jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
+jest.mock('../MainNavigation', () => ({
+    MainNavigation: () => <div>MainNavigation</div>,
+}))
+jest.mock('../StatusMenu', () => ({
+    StatusMenu: ({
+        onUpdateStatusStart,
+    }: {
+        onUpdateStatusStart: () => void
+    }) => (
+        <div>
+            StatusMenu
+            <button onClick={onUpdateStatusStart}>MockStatusUpdate</button>
+        </div>
+    ),
+}))
+jest.mock('../ThemeMenu', () => ({ ThemeMenu: () => <div>ThemeMenu</div> }))
 
 jest.mock('@repo/agent-status', () => ({
     UserInfoHeaderContainer: () => <div>UserInfoHeaderContainer</div>,

@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { dummyErrorLog } from 'fixtures/appErrors'
-import AppErrorRow from 'pages/integrations/Advanced/AppErrorRow'
+import { AppErrorRow } from 'pages/integrations/Advanced/AppErrorRow'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ currentAccount: fromJS({ domain: '20-1 rpz' }) })

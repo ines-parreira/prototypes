@@ -9,7 +9,7 @@ import { Box } from '@gorgias/axiom'
 import { DashboardExportButton } from '@repo/reporting'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import {
     isPeriodBeforeDate,
     STORES_FILTER_AVAILABILITY_DATE,

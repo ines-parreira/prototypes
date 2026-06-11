@@ -7,7 +7,7 @@ import {
     actions,
     initialState as uiFiltersInitialState,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { RootState } from 'state/types'
 
 jest.mock('hooks/useAppDispatch')

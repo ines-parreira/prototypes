@@ -13,7 +13,7 @@ type EmptyCampaignsStateProps = {
     cta?: ReactNode
 }
 
-export default function EmptyCampaignsState({ cta }: EmptyCampaignsStateProps) {
+export function EmptyCampaignsState({ cta }: EmptyCampaignsStateProps) {
     const history = useHistory()
     const { shopName } = useJourneyContext()
 

@@ -12,13 +12,13 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-validators'
 
 import { isPhoneIntegration } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import { getDefaultValues, useFormSubmit } from './useVoiceSettingsForm'
-import VoiceIntegrationSettingsForm from './VoiceIntegrationSettingsForm'
+import { VoiceIntegrationSettingsForm } from './VoiceIntegrationSettingsForm'
 
 function VoiceIntegrationSettingsPage() {
     const history = useHistory()
@@ -74,4 +74,4 @@ const PageContent = ({ integration }: { integration: PhoneIntegration }) => {
     )
 }
 
-export default VoiceIntegrationSettingsPage
+export { VoiceIntegrationSettingsPage }

@@ -1,9 +1,10 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
     getStatsTrendFetch,
     getStatsTrendHook,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { timesRecommendedQueryV2Factory } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import { aiSalesAgentUniqueClicksQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignEvents'

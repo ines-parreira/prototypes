@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ViewName from '../ViewName'
+import { DefaultExportViewName as ViewName } from '../ViewName'
 
 const defaultView = {
     name: 'foo bar',

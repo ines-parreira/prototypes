@@ -2,15 +2,13 @@ import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import IconButtonTooltip from '../IconButtonTooltip'
-import LegacyIconButtonTooltip from '../LegacyIconButtonTooltip'
+import { DefaultExportIconButtonTooltip as IconButtonTooltip } from '../IconButtonTooltip'
+import { DefaultExportLegacyIconButtonTooltip as LegacyIconButtonTooltip } from '../LegacyIconButtonTooltip'
 
 jest.mock('@repo/feature-flags')
-jest.mock(
-    'pages/common/components/button/IconButton',
-    () =>
-        ({ children, ...rest }: any) => <div {...rest}>{children}</div>,
-)
+jest.mock('pages/common/components/button/IconButton', () => ({
+    IconButton: ({ children, ...rest }: any) => <div {...rest}>{children}</div>,
+}))
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 

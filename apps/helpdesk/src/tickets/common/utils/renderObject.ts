@@ -2,7 +2,7 @@ import type { Map } from 'immutable'
 
 import { renderTemplate } from 'pages/common/utils/template'
 
-export default function renderObject(
+export function renderObject(
     argument: string | Map<any, any>,
     context: Record<string, string>,
 ) {

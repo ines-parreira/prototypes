@@ -11,8 +11,8 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import type { RootState, StoreDispatch } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 
-import ClickTrackingPaywallView from '../../ClickTrackingPaywallView/ClickTrackingPaywallView'
-import ClickTrackingSettingsView from '../ClickTrackingSettingsView'
+import { DefaultExportClickTrackingPaywallView as ClickTrackingPaywallView } from '../../ClickTrackingPaywallView/ClickTrackingPaywallView'
+import { ClickTrackingSettingsOrPaywallPage as ClickTrackingSettingsView } from '../ClickTrackingSettingsView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

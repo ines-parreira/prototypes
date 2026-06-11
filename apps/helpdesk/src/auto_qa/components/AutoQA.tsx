@@ -10,22 +10,22 @@ import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
+import { AutoSaveBadge } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getTicket } from 'state/ticket/selectors'
-import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
+import { TicketListInfo } from 'ticket-list-view/components/TicketListInfo'
 
 import { dimensionConfig } from '../config'
-import useAutoQA from '../hooks/useAutoQA'
-import AutoQASkeleton from './AutoQASkeleton'
-import Dimension from './Dimension'
-import SaveBadge from './SaveBadge'
+import { useAutoQA } from '../hooks/useAutoQA'
+import { AutoQASkeleton } from './AutoQASkeleton'
+import { Dimension } from './Dimension'
+import { SaveBadge } from './SaveBadge'
 
 import css from './AutoQA.less'
 
-export default function AutoQA() {
+export function AutoQA() {
     const ticket = useAppSelector(getTicket)
     const hasAgentPrivileges = useHasAgentPrivileges()
     const { changeHandlers, dimensions, isLoading, lastUpdated, saveState } =

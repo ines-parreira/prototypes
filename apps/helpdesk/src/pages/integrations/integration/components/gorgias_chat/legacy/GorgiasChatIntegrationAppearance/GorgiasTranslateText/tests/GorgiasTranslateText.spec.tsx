@@ -15,11 +15,11 @@ import { billingState } from 'fixtures/billing'
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import * as IntegrationsActions from 'state/integrations/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import GorgiasTranslateText from '../GorgiasTranslateText'
+import { DefaultExportGorgiasTranslateText as GorgiasTranslateText } from '../GorgiasTranslateText'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -41,7 +41,7 @@ jest.mock(
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStoreIntegrations: jest.fn(),
 }))
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
@@ -58,89 +58,87 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
     () => ({
         __esModule: true,
-        default: () => <div data-testid="integration-header" />,
+        GorgiasChatIntegrationHeader: () => (
+            <div data-testid="integration-header" />
+        ),
     }),
 )
 
 jest.mock('pages/common/components/PageHeader', () => ({
     __esModule: true,
-    default: ({ title }: { title: React.ReactNode }) => <div>{title}</div>,
+    PageHeader: ({ title }: { title: React.ReactNode }) => <div>{title}</div>,
 }))
 
-jest.mock(
-    '../GorgiasTranslateExitModal',
-    () =>
-        ({
-            isOpen,
-            onConfirm,
-            onDiscard,
-            onClose,
-        }: {
-            isOpen: boolean
-            onConfirm: () => void
-            onDiscard: () => void
-            onClose: () => void
-        }) =>
-            isOpen ? (
-                <div role="dialog" aria-label="exit-modal">
-                    <button type="button" onClick={onConfirm}>
-                        modal-save
-                    </button>
-                    <button type="button" onClick={onDiscard}>
-                        modal-discard
-                    </button>
-                    <button type="button" onClick={onClose}>
-                        modal-close
-                    </button>
-                </div>
-            ) : null,
-)
+jest.mock('../GorgiasTranslateExitModal', () => ({
+    GorgiasTranslateExitModal: ({
+        isOpen,
+        onConfirm,
+        onDiscard,
+        onClose,
+    }: {
+        isOpen: boolean
+        onConfirm: () => void
+        onDiscard: () => void
+        onClose: () => void
+    }) =>
+        isOpen ? (
+            <div role="dialog" aria-label="exit-modal">
+                <button type="button" onClick={onConfirm}>
+                    modal-save
+                </button>
+                <button type="button" onClick={onDiscard}>
+                    modal-discard
+                </button>
+                <button type="button" onClick={onClose}>
+                    modal-close
+                </button>
+            </div>
+        ) : null,
+}))
 
-jest.mock(
-    '../GorgiasTranslateInputGroup',
-    () =>
-        ({
-            title,
-            keys,
-            requiredKeys,
-            saveValue,
-            trackInputMethod,
-        }: {
-            title: string
-            keys: string[]
-            requiredKeys?: string[]
-            saveValue: (key: string, value: string) => void
-            trackInputMethod?: (key: string) => void
-        }) => (
-            <section aria-label={`section-${title}`}>
-                <h2>{title}</h2>
-                <ul>
-                    {keys.map((key) => (
-                        <li key={key}>
-                            {key}
-                            {requiredKeys?.includes(key) ? ' *' : ''}
-                            <button
-                                type="button"
-                                onClick={() => saveValue(key, `value-${key}`)}
-                            >
-                                {`save-${key}`}
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => trackInputMethod?.(key)}
-                            >
-                                {`track-${key}`}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-        ),
-)
+jest.mock('../GorgiasTranslateInputGroup', () => ({
+    GorgiasTranslateInputGroup: ({
+        title,
+        keys,
+        requiredKeys,
+        saveValue,
+        trackInputMethod,
+    }: {
+        title: string
+        keys: string[]
+        requiredKeys?: string[]
+        saveValue: (key: string, value: string) => void
+        trackInputMethod?: (key: string) => void
+    }) => (
+        <section aria-label={`section-${title}`}>
+            <h2>{title}</h2>
+            <ul>
+                {keys.map((key) => (
+                    <li key={key}>
+                        {key}
+                        {requiredKeys?.includes(key) ? ' *' : ''}
+                        <button
+                            type="button"
+                            onClick={() => saveValue(key, `value-${key}`)}
+                        >
+                            {`save-${key}`}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => trackInputMethod?.(key)}
+                        >
+                            {`track-${key}`}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </section>
+    ),
+}))
 
 jest.mock('pages/common/forms/SelectField/SelectField', () => ({
     __esModule: true,
-    default: ({
+    SelectField: ({
         value,
         onChange,
         options,

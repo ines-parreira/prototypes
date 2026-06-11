@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { getQaScoreDimensionFromObjectPath } from 'pages/common/components/ViewTable/Filters/utils'
 import { updateQAScoreFilterDimension } from 'state/views/actions'
 
@@ -9,7 +9,7 @@ type Props = {
     objectPath: string
 }
 
-export default function useQAScoreFilters({ index, objectPath }: Props) {
+export function useQAScoreFilters({ index, objectPath }: Props) {
     const dispatch = useAppDispatch()
 
     const qaScoreDimension = getQaScoreDimensionFromObjectPath(objectPath)

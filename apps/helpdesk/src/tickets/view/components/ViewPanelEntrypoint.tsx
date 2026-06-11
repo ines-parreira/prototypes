@@ -15,8 +15,8 @@ import { useGetView } from '@gorgias/helpdesk-queries'
 
 import { getConfigByName } from 'config/views'
 import { BASE_VIEW_ID } from 'constants/view'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { SearchEngine } from 'models/search/types'
 import type { ViewVisibility as ViewVisibilityType } from 'models/view/types'
 import { EntityType } from 'models/view/types'
@@ -30,7 +30,7 @@ import {
     isEditMode as getIsEditMode,
     getViewPlainJS,
 } from 'state/views/selectors'
-import ApplyMacro from 'ticket-list-view/components/bulk-actions/ApplyMacro'
+import { ApplyMacro } from 'ticket-list-view/components/bulk-actions/ApplyMacro'
 import { useViewId } from 'tickets/core/hooks'
 
 import {
@@ -40,7 +40,7 @@ import {
     getNewRouteVisibility,
     useDraftViewState,
 } from './useDraftViewState'
-import LegacyViewPanel from './ViewPanel'
+import { ViewPanel as LegacyViewPanel } from './ViewPanel'
 import { ViewPanelFiltersBridge } from './ViewPanelFiltersBridge'
 
 type ViewPanelLocationState = {

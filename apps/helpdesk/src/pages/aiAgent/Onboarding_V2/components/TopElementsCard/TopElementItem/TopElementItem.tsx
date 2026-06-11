@@ -24,4 +24,4 @@ const TopElementItem = ({ topElement }: Props) => {
     )
 }
 
-export default TopElementItem
+export { TopElementItem }

@@ -2,8 +2,8 @@ import cn from 'classnames'
 import { CSSTransition } from 'react-transition-group'
 import { Duration } from '@gorgias/toolkit'
 
-import useNotificationsOverlay from '../hooks/useNotificationsOverlay'
-import Feed from './Feed'
+import { useNotificationsOverlay } from '../hooks/useNotificationsOverlay'
+import { Feed } from './Feed'
 
 import css from './Overlay.less'
 
@@ -16,7 +16,7 @@ const transitionClassNames = {
     exitActive: css.exitActive,
 }
 
-export default function Overlay() {
+export function Overlay() {
     const [isVisible, onToggle] = useNotificationsOverlay()
 
     return (

@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react'
 import type { ShopperData } from '@repo/customer'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { executeAction } from 'state/infobar/actions'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

@@ -55,4 +55,4 @@ const Cell = ({
     )
 }
 
-export default Cell
+export { Cell }

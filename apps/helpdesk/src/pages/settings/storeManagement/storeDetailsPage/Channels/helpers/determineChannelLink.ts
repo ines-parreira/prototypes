@@ -6,7 +6,7 @@ import {
     isTikTokChannel,
 } from '../../../helpers/isIntegration'
 
-export default function determineChannelLink(channel: Integration): string {
+export function determineChannelLink(channel: Integration): string {
     if (isEmailChannel(channel)) {
         return `/app/settings/channels/email/${channel.id}`
     }

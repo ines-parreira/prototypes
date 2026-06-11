@@ -6,29 +6,31 @@ import userEvent from '@testing-library/user-event'
 
 import type { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 
-import GuidanceVariablePicker from '../GuidanceVariablePicker'
+import { GuidanceVariablePicker } from '../GuidanceVariablePicker'
 
 jest.mock('../GuidanceVariableDropdown', () => {
-    return jest.fn(({ onSelect, isOpen, onToggle }) =>
-        isOpen ? (
-            <div role="menu" aria-label="Variable dropdown">
-                <button
-                    role="menuitem"
-                    onClick={() => {
-                        const mockVariable: GuidanceVariable = {
-                            name: 'Customer Name',
-                            value: '&&&customer.name&&&',
-                            category: 'customer',
-                        }
-                        onSelect(mockVariable)
-                        onToggle(false)
-                    }}
-                >
-                    Select Variable
-                </button>
-            </div>
-        ) : null,
-    )
+    return {
+        GuidanceVariableDropdown: jest.fn(({ onSelect, isOpen, onToggle }) =>
+            isOpen ? (
+                <div role="menu" aria-label="Variable dropdown">
+                    <button
+                        role="menuitem"
+                        onClick={() => {
+                            const mockVariable: GuidanceVariable = {
+                                name: 'Customer Name',
+                                value: '&&&customer.name&&&',
+                                category: 'customer',
+                            }
+                            onSelect(mockVariable)
+                            onToggle(false)
+                        }}
+                    >
+                        Select Variable
+                    </button>
+                </div>
+            ) : null,
+        ),
+    }
 })
 
 describe('GuidanceVariablePicker', () => {
@@ -150,7 +152,9 @@ describe('GuidanceVariablePicker', () => {
     })
 
     it('passes variableDropdownProps to GuidanceVariableDropdown', async () => {
-        const GuidanceVariableDropdown = require('../GuidanceVariableDropdown')
+        const {
+            GuidanceVariableDropdown,
+        } = require('../GuidanceVariableDropdown')
         const user = userEvent.setup()
         const variableDropdownProps = {
             noSelectedCategoryText: 'Custom text',

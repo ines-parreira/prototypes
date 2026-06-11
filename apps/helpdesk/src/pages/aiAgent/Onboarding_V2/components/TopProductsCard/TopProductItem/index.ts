@@ -1,2 +1,2 @@
-export { default } from './TopProductItem'
+export { TopProductItem } from './TopProductItem'
 export { TopProductItemSkeleton } from './TopProductItem'

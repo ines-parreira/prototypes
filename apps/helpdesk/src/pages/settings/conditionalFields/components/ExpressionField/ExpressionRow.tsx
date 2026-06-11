@@ -3,7 +3,7 @@ import { FormField, useWatch } from '@repo/forms'
 import { ExpressionOperator } from '@gorgias/helpdesk-types'
 
 import type { CustomField } from 'custom-fields/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 import { FieldField } from './FieldField'
 import { OperatorField } from './OperatorField'

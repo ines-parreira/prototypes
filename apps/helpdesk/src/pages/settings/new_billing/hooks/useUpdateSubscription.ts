@@ -2,7 +2,7 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { updateSubscription } from 'state/currentAccount/actions'
 
 export type HandleSubscriptionUpdate = {

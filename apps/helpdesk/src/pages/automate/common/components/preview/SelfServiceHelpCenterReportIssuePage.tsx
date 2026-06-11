@@ -6,7 +6,7 @@ import { HELP_CENTER_TEXTS } from 'config/helpCenter'
 import type { HelpCenter } from 'models/helpCenter/types'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
-import SelfServiceHelpCenterRequestSentPage from './SelfServiceHelpCenterRequestSentPage'
+import { SelfServiceHelpCenterRequestSentPage } from './SelfServiceHelpCenterRequestSentPage'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterReportIssuePage.less'
@@ -57,4 +57,4 @@ const SelfServiceHelpCenterReportIssuePage = (props: Props) => {
     return <SelfServiceHelpCenterRequestSentPage {...props} />
 }
 
-export default SelfServiceHelpCenterReportIssuePage
+export { SelfServiceHelpCenterReportIssuePage }

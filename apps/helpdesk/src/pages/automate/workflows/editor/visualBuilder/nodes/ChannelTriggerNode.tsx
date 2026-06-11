@@ -8,8 +8,8 @@ import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useV
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeContent from './VisualBuilderNodeContent'
+import { VisualBuilderNode } from './VisualBuilderNode'
+import { VisualBuilderNodeContent } from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     label: string
@@ -37,7 +37,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({
     )
 })
 
-export default function ChannelTriggerNodeWrapper(
+export function ChannelTriggerNodeWrapper(
     node: NodeProps<ChannelTriggerNodeType>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)

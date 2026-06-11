@@ -1,8 +1,8 @@
 import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
-import RootDetails from 'pages/common/components/ProductDetail'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
+import { Detail as RootDetails } from 'pages/common/components/ProductDetail'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
 import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
@@ -26,4 +26,4 @@ function Details() {
     return <RootDetails {...detailProps} />
 }
 
-export default Details
+export { Details }

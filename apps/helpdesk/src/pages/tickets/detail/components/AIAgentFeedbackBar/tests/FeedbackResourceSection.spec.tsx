@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import type { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
 import type { RootState, StoreDispatch } from 'state/types'
 

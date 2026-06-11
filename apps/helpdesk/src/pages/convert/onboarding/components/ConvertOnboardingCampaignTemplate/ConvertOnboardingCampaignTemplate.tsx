@@ -5,11 +5,11 @@ import type { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/types'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
-import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
+import { ConvertSimplifiedEditorModal } from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 
 import css from './ConvertOnboardingCampaignTemplate.less'
@@ -123,4 +123,4 @@ const ConvertOnboardingCampaignTemplate = ({
     )
 }
 
-export default ConvertOnboardingCampaignTemplate
+export { ConvertOnboardingCampaignTemplate }

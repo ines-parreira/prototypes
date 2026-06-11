@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import css from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable.less'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export type Props = Omit<BodyCellProps, 'children' | 'ref'> & {
     customerName: string | null
     surveyCustomerId: string | null
 }
 
-export default function CustomerNameBodyCell({
+export function CustomerNameBodyCell({
     customerName,
     surveyCustomerId,
     width,

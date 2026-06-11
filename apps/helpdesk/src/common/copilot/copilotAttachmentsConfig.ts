@@ -2,7 +2,7 @@ import { toast } from '@gorgias/axiom'
 import type { AttachmentsConfig } from '@gorgias/copilot'
 
 import { UploadType } from 'common/types'
-import uploadFiles from 'common/utils/uploadFiles'
+import { uploadFiles } from 'common/utils/uploadFiles'
 
 type AttachmentUploadError = Parameters<
     NonNullable<AttachmentsConfig['onUploadFailed']>

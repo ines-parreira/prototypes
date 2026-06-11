@@ -6,9 +6,7 @@ type Props = {
     isHorizontal?: boolean
 }
 
-export default function WhatsAppIntegrationConnectButton({
-    isHorizontal,
-}: Props) {
+export function WhatsAppIntegrationConnectButton({ isHorizontal }: Props) {
     return isHorizontal ? (
         <>
             <MigrateButton isHorizontal />

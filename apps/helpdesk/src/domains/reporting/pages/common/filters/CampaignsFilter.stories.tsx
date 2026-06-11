@@ -12,7 +12,7 @@ import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import CampaignsFilter from 'domains/reporting/pages/common/filters/CampaignsFilter'
+import { CampaignsFilter } from 'domains/reporting/pages/common/filters/CampaignsFilter'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { campaignsResponseData } from 'fixtures/campaign'
 import { campaignKeys } from 'models/convert/campaign/queries'

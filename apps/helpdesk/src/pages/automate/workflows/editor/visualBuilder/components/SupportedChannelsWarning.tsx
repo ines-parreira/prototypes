@@ -3,9 +3,9 @@ import {
     useWorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
-export default function SupportedChannelsWarning({
+export function SupportedChannelsWarning({
     nodeType,
 }: {
     nodeType: VisualBuilderNode['type']

@@ -2,7 +2,7 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import ReturnOrderFlowView from './ReturnOrderFlowView'
+import { ReturnOrderFlowView } from './ReturnOrderFlowView'
 
 const ReturnOrderFlowViewContainer = () => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -15,4 +15,4 @@ const ReturnOrderFlowViewContainer = () => {
     return <ReturnOrderFlowView />
 }
 
-export default ReturnOrderFlowViewContainer
+export { ReturnOrderFlowViewContainer }

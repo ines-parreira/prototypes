@@ -10,32 +10,32 @@ import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import CustomerListContainer from '../CustomerListContainer'
+import { CustomerListContainer } from '../CustomerListContainer'
 
-jest.mock('pages/common/components/ViewTable/ViewTable', () => (props: any) => (
-    <div data-hide-header={props.hideHeader}>
-        ViewTable
-        {props.viewButtons}
-    </div>
-))
+jest.mock('pages/common/components/ViewTable/ViewTable', () => ({
+    DefaultExportViewTable: (props: any) => (
+        <div data-hide-header={props.hideHeader}>
+            ViewTable
+            {props.viewButtons}
+        </div>
+    ),
+}))
 
-jest.mock(
-    'pages/customers/common/components/CustomerForm',
-    () =>
-        ({
-            closeModal,
-            onSuccess,
-        }: {
-            closeModal: () => void
-            onSuccess: () => void
-        }) => (
-            <div>
-                CustomerForm
-                <button onClick={closeModal}>Close form</button>
-                <button onClick={onSuccess}>Submit form</button>
-            </div>
-        ),
-)
+jest.mock('pages/customers/common/components/CustomerForm', () => ({
+    DefaultExportCustomerForm: ({
+        closeModal,
+        onSuccess,
+    }: {
+        closeModal: () => void
+        onSuccess: () => void
+    }) => (
+        <div>
+            CustomerForm
+            <button onClick={closeModal}>Close form</button>
+            <button onClick={onSuccess}>Submit form</button>
+        </div>
+    ),
+}))
 
 const mockFetchViewItems = jest.fn(() => ({ type: 'MOCK_FETCH_VIEW_ITEMS' }))
 jest.mock('state/views/actions', () => ({
@@ -43,9 +43,9 @@ jest.mock('state/views/actions', () => ({
         mockFetchViewItems(...args),
 }))
 
-jest.mock('pages/customers/list/CustomerListActions', () => () => (
-    <div>CustomerListActions</div>
-))
+jest.mock('pages/customers/list/CustomerListActions', () => ({
+    CustomerListActionsWithViewCount: () => <div>CustomerListActions</div>,
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

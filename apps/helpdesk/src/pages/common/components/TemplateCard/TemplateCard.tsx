@@ -3,7 +3,7 @@ import React from 'react'
 
 import classnames from 'classnames'
 
-import BaseCard from './BaseCard'
+import { BaseCard } from './BaseCard'
 
 import css from './Card.less'
 
@@ -16,4 +16,4 @@ function TemplateCard(props: ComponentProps<typeof BaseCard>) {
     )
 }
 
-export default TemplateCard
+export { TemplateCard }

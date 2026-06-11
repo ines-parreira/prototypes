@@ -8,7 +8,7 @@ import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
 
 import { FlowProvider } from 'core/ui/flows'
 
-import AddStepMenuContent from '../AddStepMenuContent'
+import { AddStepMenuContent } from '../AddStepMenuContent'
 import { VoiceFlowNodeType } from '../constants'
 import type { VoiceFlowNode } from '../types'
 

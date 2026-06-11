@@ -1,1 +1,1 @@
-export { default } from './HelpCenterAutoEmbedModalAssistant'
+export { HelpCenterAutoEmbedModalAssistant } from './HelpCenterAutoEmbedModalAssistant'

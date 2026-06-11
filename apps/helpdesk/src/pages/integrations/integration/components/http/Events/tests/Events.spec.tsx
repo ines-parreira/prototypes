@@ -10,10 +10,12 @@ import { HttpMethod } from 'models/api/types'
 import { useGetHTTPEvents } from 'models/integration/queries/http'
 import type { HTTPIntegrationEvent } from 'models/integration/types'
 
-import Events from '../Events'
+import { Events } from '../Events'
 
 jest.mock('models/integration/queries/http')
-jest.mock('pages/common/utils/DatetimeLabel', () => () => null)
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: () => null,
+}))
 const mockUseGetHTTPEvents = assumeMock(useGetHTTPEvents)
 const INTEGRATION_ID = 1
 const mockEvents: HTTPIntegrationEvent[] = [

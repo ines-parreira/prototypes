@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import ReactDOM from 'react-dom'
 import { SCREEN_SIZE, useKey, useScreenSize } from '@gorgias/toolkit-react'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
 
 import css from './ScrapedDomainSelectedModal.less'
@@ -125,5 +125,3 @@ export const ScrapedDomainSelectedModal = ({
 
     return (portalRoot && ReactDOM.createPortal(modal, portalRoot)) || modal
 }
-
-export default ScrapedDomainSelectedModal

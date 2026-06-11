@@ -3,12 +3,12 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, within } from '@testing-library/react'
 
-import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
+import { NodeEditorDrawerContext } from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import ReusableLLMPromptTriggerEditor from '../ReusableLLMPromptTriggerEditor'
+import { ReusableLLMPromptTriggerEditor } from '../ReusableLLMPromptTriggerEditor'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

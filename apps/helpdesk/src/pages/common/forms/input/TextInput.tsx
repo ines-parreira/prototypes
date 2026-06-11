@@ -20,7 +20,7 @@ import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import IconInput from 'pages/common/forms/input/IconInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
 import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
 
 import css from './TextInput.less'
@@ -177,4 +177,6 @@ function TextInput(
  * @date 2026-01-06
  * @type ui-kit-migration
  */
-export default forwardRef<HTMLInputElement, Props>(TextInput)
+const DefaultExportTextInput = forwardRef<HTMLInputElement, Props>(TextInput)
+
+export { DefaultExportTextInput }

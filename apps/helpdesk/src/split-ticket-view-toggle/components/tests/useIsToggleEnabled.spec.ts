@@ -1,11 +1,11 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
 import * as utils from 'utils'
 
-import useIsToggleEnabled from '../useIsToggleEnabled'
+import { useIsToggleEnabled } from '../useIsToggleEnabled'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

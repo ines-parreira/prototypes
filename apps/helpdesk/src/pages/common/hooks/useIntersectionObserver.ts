@@ -27,4 +27,4 @@ const useIntersectionObserver = (
     return observerEntry
 }
 
-export default useIntersectionObserver
+export { useIntersectionObserver }

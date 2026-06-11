@@ -9,7 +9,7 @@ import * as resources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import * as dateUtils from 'utils/date'
 
-import StartMigration from '../EmailMigration/StartMigration'
+import { StartMigration } from '../EmailMigration/StartMigration'
 
 jest.mock(
     'models/integration/resources/email',
@@ -24,7 +24,7 @@ jest.mock(
 
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment')
 const mockFetchMigrationStatus = jest.fn()
-jest.spyOn(migrationBannerHook, 'default').mockImplementation(
+jest.spyOn(migrationBannerHook, 'useMigrationBannerStatus').mockImplementation(
     () => mockFetchMigrationStatus,
 )
 const mockHistoryPush = jest.fn()
@@ -41,9 +41,11 @@ useHistory.mockReturnValue({
     push: mockHistoryPush,
     goBack: mockHistoryGoBack,
 })
-jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => () => (
-    <div data-testid="integrations-table" />
-))
+jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => ({
+    StartMigrationIntegrationsTable: () => (
+        <div data-testid="integrations-table" />
+    ),
+}))
 const mockIntegrations = [
     {
         id: 1,

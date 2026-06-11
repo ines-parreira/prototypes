@@ -7,10 +7,10 @@ import { toast } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 
-import GenericVoiceFormSubmitButton from '../VoiceFormSubmitButton'
-import TextToSpeechProvider from '../VoiceMessageTTS/TextToSpeechProvider'
+import { VoiceFormSubmitButton as GenericVoiceFormSubmitButton } from '../VoiceFormSubmitButton'
+import { TextToSpeechProvider } from '../VoiceMessageTTS/TextToSpeechProvider'
 import { VoiceFlowNodeType } from './constants'
 import type { VoiceFlowFormValues } from './types'
 import { useVoiceFlowForm } from './utils/useVoiceFlowForm'
@@ -81,4 +81,4 @@ function VoiceFlowForm({
         </Form>
     )
 }
-export default VoiceFlowForm
+export { VoiceFlowForm }

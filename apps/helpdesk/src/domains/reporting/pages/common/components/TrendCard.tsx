@@ -7,9 +7,9 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { isMetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
 import type { TrendMetric } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,

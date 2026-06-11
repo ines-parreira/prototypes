@@ -8,7 +8,7 @@ import {
     LegacyAvatar as UIKitAvatar,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import css from './Avatar.less'

@@ -28,15 +28,16 @@ import {
     TICKET_MAX_SUBJECT_LENGTH,
 } from 'domains/reporting/config/stats'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
-import DistributionVariantStat, {
+import {
     DistributionStatVariant,
+    DistributionVariantStat,
 } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 import { AgentAvailabilityCell } from 'domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell'
-import ProductCell from 'domains/reporting/pages/common/components/charts/TableStat/cells/ProductCell'
+import { ProductCell } from 'domains/reporting/pages/common/components/charts/TableStat/cells/ProductCell'
 import css from 'domains/reporting/pages/common/components/charts/TableStat/TableStat.less'
-import TicketDetailsStat from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
-import StatDifference from 'domains/reporting/pages/common/components/StatDifference'
-import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
+import { TicketDetailsStat } from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
+import { StatDifference } from 'domains/reporting/pages/common/components/StatDifference'
+import { StatsHelpIcon } from 'domains/reporting/pages/common/components/StatsHelpIcon'
 import {
     formatComparedPeriodString,
     formatCurrency,
@@ -48,8 +49,8 @@ import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/t
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import type { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import withRouter from 'pages/common/utils/withRouter'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
+import { withRouter } from 'pages/common/utils/withRouter'
 
 type OwnProps = {
     data: Map<any, any>
@@ -694,4 +695,6 @@ export class TableStat extends Component<
     }
 }
 
-export default withRouter(TableStat)
+const DefaultExportTableStat = withRouter(TableStat)
+
+export { DefaultExportTableStat }

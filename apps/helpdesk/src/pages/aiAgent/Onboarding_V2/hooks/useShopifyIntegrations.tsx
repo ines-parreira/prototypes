@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export const useShopifyIntegrations = () => {

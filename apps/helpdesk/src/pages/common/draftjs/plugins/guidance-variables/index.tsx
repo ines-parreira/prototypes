@@ -7,7 +7,7 @@ import type {
 } from 'pages/common/draftjs/plugins/types'
 
 import type { GuidanceVariableTagProps } from './GuidanceVariableTag'
-import GuidanceVariableTag from './GuidanceVariableTag'
+import { GuidanceVariableTag } from './GuidanceVariableTag'
 import { attachGuidanceVariableEntities } from './utils'
 
 type Options = {
@@ -16,7 +16,7 @@ type Options = {
     onClick?: (entityKey: string, element: HTMLElement) => void
 }
 
-export default function createGuidanceVariablesPlugin(options: Options = {}) {
+export function createGuidanceVariablesPlugin(options: Options = {}) {
     return {
         decorators: [
             {

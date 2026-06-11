@@ -1,5 +1,5 @@
 import { deriveLauncherColors } from 'gorgias-design-system/Launcher/deriveLauncherColors'
-import BubbleIconRedesigned from 'gorgias-design-system/Launcher/icons/BubbleIconRedesigned'
+import { BubbleIconRedesigned } from 'gorgias-design-system/Launcher/icons/BubbleIconRedesigned'
 
 import css from './LauncherPreview.less'
 

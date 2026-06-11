@@ -9,9 +9,11 @@ import type { PhoneIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { PhoneFunction } from 'models/phoneNumber/types'
 
-import VoiceIntegrationSecondaryNavigation from '../VoiceIntegrationSecondaryNavigation'
+import { VoiceIntegrationSecondaryNavigation } from '../VoiceIntegrationSecondaryNavigation'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('@repo/feature-flags')
 jest.mock('state/integrations/selectors', () => ({
     getPhoneIntegrations: jest.fn(),

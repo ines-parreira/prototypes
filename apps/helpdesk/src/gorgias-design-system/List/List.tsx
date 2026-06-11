@@ -50,4 +50,4 @@ const List: React.FC<HTMLAttributes<HTMLDivElement> & ListProps> = ({
     )
 }
 
-export default List
+export { List }

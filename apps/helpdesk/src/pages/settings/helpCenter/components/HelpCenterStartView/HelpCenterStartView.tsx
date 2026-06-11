@@ -7,11 +7,11 @@ import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { PRODUCT_BANNER_KEY } from 'hooks/useProductBannerStorage'
-import PageHeader from 'pages/common/components/PageHeader'
-import Detail from 'pages/common/components/ProductDetail'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Detail } from 'pages/common/components/ProductDetail'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { changeHelpCenterId } from 'state/ui/helpCenter'
 
 import {
@@ -23,7 +23,7 @@ import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { useHelpCenterList } from '../../hooks/useHelpCenterList'
 import { useStandaloneHelpCenterAfterDismiss } from '../../hooks/useStandaloneHelpCenterAfterDismiss'
 import { ABOUT_PAGE } from './constants'
-import ManageHelpCenters from './ManageHelpCenters'
+import { ManageHelpCenters } from './ManageHelpCenters'
 
 import css from './HelpCenterStartView.less'
 
@@ -182,4 +182,4 @@ const HelpCenterStartView: React.FC = () => {
     )
 }
 
-export default HelpCenterStartView
+export { HelpCenterStartView }

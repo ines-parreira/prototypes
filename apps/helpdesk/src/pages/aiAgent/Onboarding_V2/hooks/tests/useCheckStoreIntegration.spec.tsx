@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useHistory, useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'

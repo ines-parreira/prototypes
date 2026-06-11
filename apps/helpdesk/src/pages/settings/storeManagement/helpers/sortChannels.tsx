@@ -1,6 +1,6 @@
 import type { Integration } from 'models/integration/types'
 
-import deriveTypeFromIntegration from './deriveTypeFromIntegration'
+import { deriveTypeFromIntegration } from './deriveTypeFromIntegration'
 
 const channelSortMap: Record<string, number> = {
     email: 0,
@@ -18,7 +18,7 @@ const channelSortMap: Record<string, number> = {
     other: 9,
 }
 
-export default function sortChannels(channels: Integration[]) {
+export function sortChannels(channels: Integration[]) {
     return [...channels].sort((a, b) => {
         const sortValueA =
             channelSortMap[deriveTypeFromIntegration(a)] ?? channelSortMap.other

@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import { TableHeatmapSwitch } from 'domains/reporting/pages/common/components/Table/TableHeatmapSwitch'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
@@ -14,8 +14,8 @@ import {
     toggleHeatmapMode,
     toggleValueMode,
 } from 'domains/reporting/state/ui/stats/tagsReportSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const AllUsedTagsTableChart = ({
     chartId,

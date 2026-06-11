@@ -7,7 +7,7 @@ import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { isGorgiasApiError } from 'models/api/types'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'

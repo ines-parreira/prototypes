@@ -1,8 +1,8 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { AIAgentWelcomePageView } from 'pages/aiAgent/components/AIAgentWelcomePageView/AIAgentWelcomePageView'
-import StoreIntegrationView from 'pages/automate/common/components/StoreIntegrationView'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { StoreIntegrationView } from 'pages/automate/common/components/StoreIntegrationView'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 type TrialPaywallMiddlewareProps = {

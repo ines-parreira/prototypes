@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import WizardFooter from '../WizardFooter'
+import { WizardFooter } from '../WizardFooter'
 
 describe('WizardFooter', () => {
     const integrationId = 123

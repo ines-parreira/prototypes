@@ -5,8 +5,8 @@ import { Collapse } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Source } from 'models/widget/types'
 import type {
     Link as LinkType,
@@ -21,8 +21,8 @@ import {
     updateCustomActions,
 } from 'state/widgets/actions'
 
-import Editor from './Editor'
-import Link from './Link'
+import { Editor } from './Editor'
+import { Link } from './Link'
 
 import css from './Links.less'
 
@@ -192,4 +192,6 @@ export function Links(props: Props) {
     )
 }
 
-export default memo(Links)
+const DefaultExportLinks = memo(Links)
+
+export { DefaultExportLinks }

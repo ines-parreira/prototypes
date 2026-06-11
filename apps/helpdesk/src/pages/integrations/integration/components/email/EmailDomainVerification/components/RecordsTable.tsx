@@ -1,13 +1,13 @@
 import type { EmailDNSRecord, EmailDomain } from '@gorgias/helpdesk-queries'
 
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { removeDomainFromDNSRecords } from '../../helpers'
-import RecordItem from './RecordItem'
-import RecordsTableSkeleton from './RecordsTableSkeleton'
+import { RecordItem } from './RecordItem'
+import { RecordsTableSkeleton } from './RecordsTableSkeleton'
 
 import css from './RecordsTable.less'
 
@@ -47,4 +47,4 @@ const RecordsTable = ({ domainName, isLoading, domain }: Props) => {
     )
 }
 
-export default RecordsTable
+export { RecordsTable }

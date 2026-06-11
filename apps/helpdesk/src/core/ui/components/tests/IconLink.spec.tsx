@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import IconLink from '../IconLink'
+import { IconLink } from '../IconLink'
 
 describe('IconLink', () => {
     const defaultProps = {

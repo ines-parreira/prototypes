@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import CopyButton from './CopyButton'
+import { CopyButton } from './CopyButton'
 
 jest.mock('copy-to-clipboard', () => jest.fn())
 

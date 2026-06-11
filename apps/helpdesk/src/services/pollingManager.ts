@@ -68,4 +68,4 @@ class PollingManager {
 
 const pollingManager = new PollingManager()
 
-export default pollingManager
+export { pollingManager }

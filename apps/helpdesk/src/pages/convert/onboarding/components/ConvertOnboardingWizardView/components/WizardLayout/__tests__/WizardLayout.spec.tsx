@@ -15,13 +15,13 @@ import {
     useCreateCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import { OnboardingWizardSteps } from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import WizardLayout from '../WizardLayout'
+import { WizardLayout } from '../WizardLayout'
 
 const queryClient = mockQueryClient()
 
@@ -36,18 +36,24 @@ const useCreateCampaignMock = assumeMock(useCreateCampaign)
 const useListCampaignsMock = assumeMock(useListCampaigns)
 
 jest.mock('pages/convert/bundles/components/ConvertInstallModal', () => {
-    return jest.fn(() => <div>ConvertInstallModal</div>)
+    return {
+        ConvertInstallModal: jest.fn(() => <div>ConvertInstallModal</div>),
+    }
 })
 jest.mock(
     'pages/convert/onboarding/components/ConvertOnboardingWizardView/components/WizardCampaignsStep',
     () => {
-        return jest.fn(() => <div>WizardCampaignsStep</div>)
+        return {
+            WizardCampaignsStep: jest.fn(() => <div>WizardCampaignsStep</div>),
+        }
     },
 )
 jest.mock(
     'pages/convert/onboarding/components/ConvertOnboardingWizardView/components/WizardInstallStep',
     () => {
-        return jest.fn(() => <div>WizardInstallStep</div>)
+        return {
+            WizardInstallStep: jest.fn(() => <div>WizardInstallStep</div>),
+        }
     },
 )
 

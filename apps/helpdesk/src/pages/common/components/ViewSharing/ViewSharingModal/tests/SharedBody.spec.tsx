@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import SharedBody from '../SharedBody'
+import { SharedBody } from '../SharedBody'
 
 describe('<SharedBody/>', () => {
     let onTeamClick: jest.MockedFunction<any>

@@ -7,8 +7,11 @@ import { fromJS } from 'immutable'
 import type { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
 import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
 
-import client from '../client'
-import createPredictionPlugin, { clearCache } from '../index'
+import { phrasePredictionClient as client } from '../client'
+import {
+    clearCache,
+    predictionPlugin as createPredictionPlugin,
+} from '../index'
 import { cachedSelection, predictionKey } from '../state'
 
 jest.mock('@repo/logging')

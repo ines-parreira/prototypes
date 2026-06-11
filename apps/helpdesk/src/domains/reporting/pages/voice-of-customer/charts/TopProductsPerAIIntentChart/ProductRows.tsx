@@ -24,8 +24,8 @@ import type { TopProductsRowProps } from 'domains/reporting/pages/voice-of-custo
 import { ProductImage } from 'domains/reporting/pages/voice-of-customer/components/ProductImage'
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
 import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 export const ProductRows = ({
     entityId,

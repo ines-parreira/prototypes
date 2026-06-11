@@ -3,7 +3,7 @@ import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { screen } from '@testing-library/react'
 import moment from 'moment'
 
-import DatePicker from 'pages/common/forms/DatePicker'
+import { DatePicker } from 'pages/common/forms/DatePicker'
 import {
     getDateAndTimeFormatter,
     getTimezone,
@@ -17,11 +17,15 @@ jest.mock('../helpers/rangeFilter', () => ({
     getRangeLabel: jest.fn(),
 }))
 
-jest.mock('../../../hooks/useAppSelector', () => (fn: () => unknown) => fn())
+jest.mock('../../../hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => unknown) => fn(),
+}))
 
-jest.mock('../../../pages/common/forms/DatePicker', () =>
-    jest.fn(({ children }) => <div data-testid="DatePicker">{children}</div>),
-)
+jest.mock('../../../pages/common/forms/DatePicker', () => ({
+    DatePicker: jest.fn(({ children }) => (
+        <div data-testid="DatePicker">{children}</div>
+    )),
+}))
 jest.mock('../../../state/currentUser/selectors', () => ({
     getTimezone: jest.fn(),
     getDateAndTimeFormatter: jest.fn(() => () => {}),

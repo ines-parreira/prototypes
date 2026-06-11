@@ -2,8 +2,8 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 
-import RecordDiffStatus from '../RecordDiffStatus'
-import RecordItem from '../RecordItem'
+import { RecordDiffStatus } from '../RecordDiffStatus'
+import { RecordItem } from '../RecordItem'
 
 jest.mock('../RecordDiffStatus')
 

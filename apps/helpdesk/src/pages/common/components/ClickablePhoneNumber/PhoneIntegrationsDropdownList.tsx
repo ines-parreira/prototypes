@@ -5,8 +5,8 @@ import parsePhoneNumber from 'libphonenumber-js'
 import { DropdownItem } from 'reactstrap'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -84,4 +84,4 @@ const PhoneIntegrationsDropdownList = ({
     )
 }
 
-export default PhoneIntegrationsDropdownList
+export { PhoneIntegrationsDropdownList }

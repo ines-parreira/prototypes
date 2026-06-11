@@ -30,7 +30,7 @@ import {
     getCustomFieldsOrder,
     getSelectedCustomField,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { getAllAgentsJS } from 'state/agents/selectors'

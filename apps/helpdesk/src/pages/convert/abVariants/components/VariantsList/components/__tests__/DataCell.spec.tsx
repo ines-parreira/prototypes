@@ -2,10 +2,10 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
 
-import DataCell from '../DataCell'
+import { DataCell } from '../DataCell'
 
 jest.mock('hooks/useGetDateAndTimeFormat')
 

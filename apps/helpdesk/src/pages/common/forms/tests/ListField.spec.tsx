@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
-import ListField from '../ListField'
+import { ListField } from '../ListField'
 
 describe('ListField component', () => {
     it('should render with no items and an "add" button', () => {

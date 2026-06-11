@@ -2,7 +2,7 @@ import { FormField } from '@repo/forms'
 
 import { Box, NumberField } from '@gorgias/axiom'
 
-import TimeUnitSelectField from 'pages/settings/SLAs/features/SLAForm/views/TimeUnitSelectField'
+import { TimeUnitSelectField } from 'pages/settings/SLAs/features/SLAForm/views/TimeUnitSelectField'
 
 const METRICS_FIELD_NAME = 'metrics.0'
 

@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'

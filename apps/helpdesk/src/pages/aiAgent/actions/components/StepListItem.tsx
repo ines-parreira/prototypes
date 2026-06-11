@@ -6,8 +6,8 @@ import classNames from 'classnames'
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import type { ActionTemplate, App } from 'pages/automate/actionsPlatform/types'
-import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
-import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
+import { ReusableLLMPromptCallNodeStatusLabel } from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
+import { ReusableLLMPromptCallNodeLabel } from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './StepListItem.less'

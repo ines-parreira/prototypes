@@ -11,11 +11,11 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import { SettingsFeatureRow } from 'pages/common/components/SettingsCard/SettingsFeatureRow'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
-import SyncNotificationNew from './SyncNotificationNew'
+import { SyncNotification as SyncNotificationNew } from './SyncNotificationNew'
 
 import css from './StoreInformationForm.less'
 

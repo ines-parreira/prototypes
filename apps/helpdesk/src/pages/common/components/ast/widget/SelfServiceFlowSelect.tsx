@@ -6,7 +6,7 @@ import { toast } from '@gorgias/axiom'
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 
-import Select from './ReactSelect'
+import { Select } from './ReactSelect'
 
 type OwnProps = {
     onChange: (value: number) => void
@@ -114,5 +114,3 @@ export function SelfServiceFlowSelect({
         />
     )
 }
-
-export default SelfServiceFlowSelect

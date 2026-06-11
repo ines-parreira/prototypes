@@ -31,30 +31,34 @@ afterEach(() => {
 })
 afterAll(() => server.close())
 
-jest.mock(
-    'pages/common/forms/FileField',
-    () =>
-        ({ onChange }: { onChange: (files: Attachment[]) => void }) => (
-            <input
-                onClick={() =>
-                    onChange([{ name: 'attachement name' } as Attachment])
-                }
-                value="FileFieldMock"
-            />
-        ),
-)
+jest.mock('pages/common/forms/FileField', () => ({
+    FileFieldContainer: ({
+        onChange,
+    }: {
+        onChange: (files: Attachment[]) => void
+    }) => (
+        <input
+            onClick={() =>
+                onChange([{ name: 'attachement name' } as Attachment])
+            }
+            value="FileFieldMock"
+        />
+    ),
+}))
 
-jest.mock('../actions/SetCustomFieldValueAction', () => () => (
-    <div data-testid="set-custom-field-value-action" />
-))
+jest.mock('../actions/SetCustomFieldValueAction', () => ({
+    SetCustomFieldValueAction: () => (
+        <div data-testid="set-custom-field-value-action" />
+    ),
+}))
 
-jest.mock('../actions/SetStatusAction', () => () => (
-    <div data-testid="set-status-action" />
-))
+jest.mock('../actions/SetStatusAction', () => ({
+    SetStatusAction: () => <div data-testid="set-status-action" />,
+}))
 
-jest.mock('../actions/SetPriorityAction', () => () => (
-    <div data-testid="set-priority-action" />
-))
+jest.mock('../actions/SetPriorityAction', () => ({
+    SetPriorityAction: () => <div data-testid="set-priority-action" />,
+}))
 
 jest.mock('@repo/feature-flags')
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({

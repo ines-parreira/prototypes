@@ -7,7 +7,7 @@ import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import type { Action } from 'models/ticket/types'
 import { ActionStatus } from 'models/ticket/types'
 
-import HttpAction from '../HttpAction'
+import { HttpAction } from '../HttpAction'
 
 describe('HTTP action component', () => {
     const action: Action = {

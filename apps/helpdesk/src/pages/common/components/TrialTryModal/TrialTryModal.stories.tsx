@@ -5,7 +5,7 @@ import { getCadenceName } from 'models/billing/utils'
 import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 
 import type { TrialFeature } from './TrialTryModal'
-import TrialTryModal from './TrialTryModal'
+import { TrialTryModal } from './TrialTryModal'
 
 const meta: Meta<typeof TrialTryModal> = {
     title: 'Overlays/TrialTryModal',

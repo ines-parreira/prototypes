@@ -1,1 +1,1 @@
-export { default } from './ABTestVariantEditPage'
+export { ABTestVariantEditPage } from './ABTestVariantEditPage'

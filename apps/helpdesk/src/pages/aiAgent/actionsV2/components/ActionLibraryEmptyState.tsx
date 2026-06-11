@@ -48,4 +48,4 @@ const ActionLibraryEmptyState = ({ onCreate }: Props) => {
     )
 }
 
-export default ActionLibraryEmptyState
+export { ActionLibraryEmptyState }

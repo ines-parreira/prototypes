@@ -22,4 +22,4 @@ const SpinnerIcon: FC = () => (
     </svg>
 )
 
-export default SpinnerIcon
+export { SpinnerIcon }

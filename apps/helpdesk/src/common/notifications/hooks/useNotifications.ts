@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react'
 
-import Context from '../Context'
+import { DefaultExportContext as Context } from '../Context'
 import type { Notification } from '../types'
 
-export default function useNotifications(
+export function useNotifications(
     listener: (notification: Notification) => void,
 ) {
     const client = useContext(Context)

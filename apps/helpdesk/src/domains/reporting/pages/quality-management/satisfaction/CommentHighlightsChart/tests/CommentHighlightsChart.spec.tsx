@@ -8,12 +8,12 @@ import { useCommentHighlights } from 'domains/reporting/hooks/quality-management
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import CommentHighlightsCarousel from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
-import CommentHighlightsChart from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
-import CommentHighlightCsatSentimentToggle from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
+import { CommentHighlightsCarousel } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
+import { CommentHighlightsChart } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
+import { CommentHighlightsToggle as CommentHighlightCsatSentimentToggle } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 jest.mock(
     'domains/reporting/hooks/quality-management/satisfaction/useCommentHighlights',

@@ -4,15 +4,15 @@ import { useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import type { DiscountCode } from 'models/discountCodes/types'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import DiscountCodeResults from '../DiscountCodeResults/DiscountCodeResults'
-import TabNavigator from '../TabNavigator/TabNavigator'
-import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults/UniqueDiscountOfferResults'
+import { DiscountCodeResults } from '../DiscountCodeResults/DiscountCodeResults'
+import { TabNavigator } from '../TabNavigator/TabNavigator'
+import { UniqueDiscountCodeResults } from '../UniqueDiscountOfferResults/UniqueDiscountOfferResults'
 
 enum DiscountCodesTabs {
     Generic = 'generic',

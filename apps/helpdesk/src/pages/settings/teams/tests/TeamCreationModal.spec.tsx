@@ -12,7 +12,7 @@ import thunk from 'redux-thunk'
 import { createTeam } from 'models/team/resources'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import TeamCreationModal from '../TeamCreationModal'
+import { TeamCreationModal } from '../TeamCreationModal'
 
 const minProps = {
     isOpen: false,
@@ -24,13 +24,13 @@ jest.mock('models/team/resources', () => ({
     createTeam: jest.fn(() => () => Promise.resolve({})),
 }))
 
-jest.mock('pages/settings/teams/RuleCreationModalContent.tsx', () => () => (
-    <div>RuleCreationModalContent</div>
-))
+jest.mock('pages/settings/teams/RuleCreationModalContent.tsx', () => ({
+    RuleCreationModalContent: () => <div>RuleCreationModalContent</div>,
+}))
 
 jest.mock('pages/common/components/EmojiPicker/EmojiPicker', () => ({
     __esModule: true,
-    default: ({ onClick }: any) => (
+    EmojiPicker: ({ onClick }: any) => (
         <button
             type="button"
             onClick={(event) => {

@@ -12,7 +12,7 @@ jest.mock('../../StoreConfigForm/hooks/useSmsPhoneNumbers', () => ({
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     __esModule: true,
-    default: ({ children, isOpen, onToggle }: any) => (
+    Dropdown: ({ children, isOpen, onToggle }: any) => (
         <div data-testid="dropdown" onClick={onToggle}>
             {isOpen && children}
         </div>
@@ -21,14 +21,14 @@ jest.mock('pages/common/components/dropdown/Dropdown', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownBody', () => ({
     __esModule: true,
-    default: ({ children }: any) => (
+    DefaultExportDropdownBody: ({ children }: any) => (
         <div data-testid="dropdown-body">{children}</div>
     ),
 }))
 
 jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
     __esModule: true,
-    default: ({ children, onClick, option }: any) => (
+    DefaultExportDropdownItem: ({ children, onClick, option }: any) => (
         <div
             data-testid={`dropdown-item-${option.value}`}
             onClick={() => onClick(option.value)}
@@ -40,12 +40,14 @@ jest.mock('pages/common/components/dropdown/DropdownItem', () => ({
 
 jest.mock('pages/common/components/dropdown/DropdownSearch', () => ({
     __esModule: true,
-    default: () => <div data-testid="dropdown-search">Search</div>,
+    DefaultExportDropdownSearch: () => (
+        <div data-testid="dropdown-search">Search</div>
+    ),
 }))
 
 jest.mock('pages/common/forms/input/SelectInputBox', () => ({
     __esModule: true,
-    default: React.forwardRef(
+    DefaultExportSelectInputBox: React.forwardRef(
         (
             { children, onToggle, placeholder, hasError, error, label }: any,
             ref,

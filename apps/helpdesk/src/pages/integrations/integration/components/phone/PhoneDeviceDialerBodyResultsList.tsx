@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import classNames from 'classnames'
 
 import type { UserSearchResult } from 'models/search/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
 import css from './PhoneDevice.less'
 
@@ -18,7 +18,7 @@ type Props = {
     className?: string
 }
 
-export default function PhoneDeviceDialerBodyResultsList({
+export function PhoneDeviceDialerBodyResultsList({
     results,
     onCustomerSelect,
     highlightedResultIndex,

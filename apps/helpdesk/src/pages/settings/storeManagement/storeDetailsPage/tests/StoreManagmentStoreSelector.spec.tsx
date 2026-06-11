@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 
 import { mockStoresWithAssignedChannels } from '../../fixtures'
 import { useStoreManagementState } from '../../StoreManagementProvider'
-import StoreManagementStoreSelector from '../StoreManagmentStoreSelector'
+import { StoreManagementStoreSelector } from '../StoreManagmentStoreSelector'
 
 const mockHistoryReplace = jest.fn()
 

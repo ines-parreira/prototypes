@@ -2,15 +2,15 @@ import { useMemo } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ArrowPagination } from 'pages/common/components/Paginations'
-import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import { ShortcutIcon } from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { getActiveView } from 'state/views/selectors'
 
-import useGoToNextTicket from './hooks/useGoToNextTicket'
-import useGoToPreviousTicket from './hooks/useGoToPreviousTicket'
-import useIsTicketNavigationAvailable from './hooks/useIsTicketNavigationAvailable'
+import { useGoToNextTicket } from './hooks/useGoToNextTicket'
+import { useGoToPreviousTicket } from './hooks/useGoToPreviousTicket'
+import { useIsTicketNavigationAvailable } from './hooks/useIsTicketNavigationAvailable'
 
 import css from './TicketNavigationArrowPagination.less'
 
@@ -18,7 +18,7 @@ type Props = {
     ticketId: string
 }
 
-export default function TicketNavigationArrowPagination({ ticketId }: Props) {
+export function TicketNavigationArrowPagination({ ticketId }: Props) {
     const activeView = useAppSelector(getActiveView)
 
     const isNavigationAvailable = useIsTicketNavigationAvailable(ticketId)

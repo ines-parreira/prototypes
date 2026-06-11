@@ -9,11 +9,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import {
     getCurrentAutomatePlan,
     getCurrentConvertPlan,
@@ -29,12 +29,12 @@ import { trackBillingEvent } from '../../../../../models/billing/resources'
 import { cancelHelpdeskAutoRenewal } from '../../../../../state/currentAccount/actions'
 import { reportCRMGrowthError } from '../../utils/reportCRMGrowthError'
 import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
-import CancellationReasons from './CancellationReasons'
-import CancellationReasonsFooter from './CancellationReasons/CancellationReasonsFooter'
-import CancellationSummary from './CancellationSummary'
-import CancellationSummaryFooter from './CancellationSummary/CancellationSummaryFooter'
-import ChurnMitigationOffer from './ChurnMitigationOffer'
-import ChurnMitigationOfferFooter from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
+import { CancellationReasons } from './CancellationReasons'
+import { CancellationReasonsFooter } from './CancellationReasons/CancellationReasonsFooter'
+import { CancellationSummary } from './CancellationSummary'
+import { CancellationSummaryFooter } from './CancellationSummary/CancellationSummaryFooter'
+import { ChurnMitigationOffer } from './ChurnMitigationOffer'
+import { ChurnMitigationOfferFooter } from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
 import {
     CancellationFlowStep,
     PRIMARY_REASON_LABEL_TO_INTERNAL_NAME,
@@ -48,14 +48,14 @@ import {
     findCancellationScenarioByProductType,
     formatCancellationReasonsForZapier,
 } from './helpers'
-import useCancellationFlowStepsStateMachine from './hooks/useCancellationFlowStepsStateMachine'
-import useFindChurnMitigationOfferId from './hooks/useFindChurnMitigationOffer'
-import ProductFeaturesFOMO from './ProductFeaturesFOMO'
-import ProductFeaturesFOMOFooter from './ProductFeaturesFOMO/ProductFeaturesFOMOFooter'
+import { useCancellationFlowStepsStateMachine } from './hooks/useCancellationFlowStepsStateMachine'
+import { useFindChurnMitigationOfferId } from './hooks/useFindChurnMitigationOffer'
+import { ProductFeaturesFOMO } from './ProductFeaturesFOMO'
+import { ProductFeaturesFOMOFooter } from './ProductFeaturesFOMO/ProductFeaturesFOMOFooter'
 import { cancellationReasonsReducer, DEFAULT_STATE } from './reducers'
 import { sendAcceptedChurnMitigationOfferToSupport } from './resources'
 import { CancellationReasonsActionType } from './types'
-import Step from './UI/Step'
+import { Step } from './UI/Step'
 
 type CancelProductModelProps = {
     onClose: () => void
@@ -493,4 +493,4 @@ const CancelProductModal = ({
     )
 }
 
-export default CancelProductModal
+export { CancelProductModal }

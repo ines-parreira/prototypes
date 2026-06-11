@@ -9,7 +9,7 @@ import { UserRole } from 'config/types/user'
 import { USER_ROLES_ORDERED_BY_PRIVILEGES } from 'config/user'
 import { RoleLabel } from 'pages/common/utils/labels'
 
-import PageHeader from './PageHeader'
+import { PageHeader } from './PageHeader'
 
 import css from './RestrictedPage.less'
 
@@ -71,4 +71,4 @@ const RestrictedPage = ({ requiredRole, page }: Props) => {
     )
 }
 
-export default RestrictedPage
+export { RestrictedPage }

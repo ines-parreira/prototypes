@@ -8,7 +8,7 @@ import { utmConfiguration } from 'fixtures/utmConfiguration'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
 
-import AddUtm from '../AddUtm'
+import { AddUtm } from '../AddUtm'
 
 jest.mock('pages/convert/campaigns/hooks/useCampaignFormContext')
 const useCampaignFormContextMock: jest.MockedFunction<

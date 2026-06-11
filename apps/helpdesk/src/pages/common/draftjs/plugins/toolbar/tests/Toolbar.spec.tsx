@@ -12,9 +12,9 @@ import type { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEdit
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
 
-import toolbarPlugin from '../index'
-import Toolbar from '../Toolbar'
-import ToolbarProvider from '../ToolbarProvider'
+import { toolbarPlugin } from '../index'
+import { Toolbar } from '../Toolbar'
+import { ToolbarProvider } from '../ToolbarProvider'
 import { ActionName } from '../types'
 
 jest.mock('@repo/feature-flags', () => ({

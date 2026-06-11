@@ -17,4 +17,4 @@ const ArrowIcon: React.FC<Props> = ({ fillColor }) => (
     </svg>
 )
 
-export default ArrowIcon
+export { ArrowIcon }

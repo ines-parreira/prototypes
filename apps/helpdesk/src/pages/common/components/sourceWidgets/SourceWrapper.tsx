@@ -6,7 +6,7 @@ import type { List, Map } from 'immutable'
 import { fromJS, Set } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import { IntegrationType } from 'models/integration/types/'
 import {
@@ -24,7 +24,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
-import Widgets from './Widgets'
+import { Widgets } from './Widgets'
 
 import css from './SourceWrapper.less'
 
@@ -187,7 +187,7 @@ type Props = {
     onClose?: () => void
 }
 
-export default function SourceWrapper({
+export function SourceWrapper({
     actions,
     context,
     identifier,

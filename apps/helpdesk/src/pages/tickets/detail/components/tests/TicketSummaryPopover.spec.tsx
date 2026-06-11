@@ -3,9 +3,9 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import TicketSummaryPopover from '../TicketSummaryPopover'
+import { TicketSummaryPopover } from '../TicketSummaryPopover'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -36,7 +36,7 @@ jest.mock('pages/tickets/detail/components/TicketSummary', () => {
 
     return {
         __esModule: true,
-        default: Section,
+        TicketSummarySection: Section,
         TicketSummaryButton: Button,
     }
 })

@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ConfirmCustomerMatchingModal from '../ConfirmCustomerMatchingModal'
+import { ConfirmCustomerMatchingModal } from '../ConfirmCustomerMatchingModal'
 
 describe('<ConfirmCustomerMatchingModal />', () => {
     const defaultProps = {

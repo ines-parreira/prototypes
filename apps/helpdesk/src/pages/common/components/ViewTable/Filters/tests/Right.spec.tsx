@@ -10,13 +10,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import type CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
+import type { CustomFieldByIdInput } from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { OBJECT_PATHS } from 'custom-fields/constants'
 import type { IntegrationType } from 'models/integration/constants'
 import type { IntegrationFromType } from 'models/integration/types'
 import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
 import { FEEDBACK_VALUE_TYPE_FILTER_OPTIONS } from 'pages/common/components/ViewTable/Filters/utils/feedbackValueTypeFilterOptions'
-import type MultiSelectField from 'pages/common/forms/MultiSelectField'
+import type { MultiSelectField } from 'pages/common/forms/MultiSelectField'
 import { CHANNELS } from 'tickets/common/config'
 
 jest.mock('moment-timezone', () => () => {
@@ -26,57 +26,59 @@ jest.mock('moment-timezone', () => () => {
     return moment('2019-09-03')
 })
 
-jest.mock(
-    'pages/common/forms/DatePicker',
-    () =>
-        ({ children }: { children?: ReactNode }) => {
-            return <>{children}</>
-        },
-)
+jest.mock('pages/common/forms/DatePicker', () => ({
+    DatePicker: ({ children }: { children?: ReactNode }) => {
+        return <>{children}</>
+    },
+}))
 
-jest.mock(
-    'pages/common/forms/MultiSelectField',
-    () =>
-        ({ onChange, options }: ComponentProps<typeof MultiSelectField>) => {
-            return (
-                <div data-testid="multi-select-field">
-                    MultiSelectField
-                    {options.map((option) => (
-                        <div
-                            key={option.value}
-                            onClick={() => onChange([option.value])}
-                        >
-                            {option.label}
-                        </div>
-                    ))}
-                </div>
-            )
-        },
-)
+jest.mock('pages/common/forms/MultiSelectField', () => ({
+    MultiSelectField: ({
+        onChange,
+        options,
+    }: ComponentProps<typeof MultiSelectField>) => {
+        return (
+            <div data-testid="multi-select-field">
+                MultiSelectField
+                {options.map((option) => (
+                    <div
+                        key={option.value}
+                        onClick={() => onChange([option.value])}
+                    >
+                        {option.label}
+                    </div>
+                ))}
+            </div>
+        )
+    },
+}))
 
-jest.mock('pages/common/forms/TimedeltaPicker', () => () => {
-    return <div data-testid="timedelta-picker">TimedeltaPicker</div>
-})
+jest.mock('pages/common/forms/TimedeltaPicker', () => ({
+    TimedeltaPicker: () => {
+        return <div data-testid="timedelta-picker">TimedeltaPicker</div>
+    },
+}))
 
-jest.mock('pages/common/components/ViewTable/FilterDropdown', () => () => {
-    return <div data-testid="filter-dropdown">FilterDropdown</div>
-})
+jest.mock('pages/common/components/ViewTable/FilterDropdown', () => ({
+    FilterDropdown: () => {
+        return <div data-testid="filter-dropdown">FilterDropdown</div>
+    },
+}))
 
-jest.mock(
-    'pages/common/components/ViewTable/FilterMultiSelectField',
-    () => () => {
+jest.mock('pages/common/components/ViewTable/FilterMultiSelectField', () => ({
+    DefaultExportFilterMultiSelectField: () => {
         return (
             <div data-testid="filter-multi-select-field">
                 FilterMultiSelectField
             </div>
         )
     },
-)
+}))
 
 jest.mock(
     'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput',
-    () =>
-        ({
+    () => ({
+        CustomFieldByIdInput: ({
             value,
             onChange,
             dropdownAdditionalProps,
@@ -102,6 +104,7 @@ jest.mock(
                 </div>
             )
         },
+    }),
 )
 
 const mockStore = configureMockStore([thunk])

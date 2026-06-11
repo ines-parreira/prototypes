@@ -1,10 +1,10 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { ShopifyIntegration } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import {
     getIntegrationByIdAndType,
     makeGetRedirectUri,
@@ -66,5 +66,3 @@ export const InventoryScopeMissingBanner = ({
         </div>
     )
 }
-
-export default InventoryScopeMissingBanner

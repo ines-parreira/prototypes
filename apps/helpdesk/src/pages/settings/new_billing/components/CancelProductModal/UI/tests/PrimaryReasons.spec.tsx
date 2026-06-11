@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import PrimaryReasons from '../PrimaryReasons'
+import { PrimaryReasons } from '../PrimaryReasons'
 
 describe('PrimaryReasons', () => {
     it('renders with no selected reason', () => {

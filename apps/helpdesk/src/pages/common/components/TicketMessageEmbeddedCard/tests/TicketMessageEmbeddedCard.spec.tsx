@@ -6,21 +6,24 @@ import { fromJS } from 'immutable'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 
-import TicketMessageEmbeddedCard from '../TicketMessageEmbeddedCard'
+import { TicketMessageEmbeddedCard } from '../TicketMessageEmbeddedCard'
 
-jest.mock(
-    'pages/tickets/detail/components/TicketMessages/Meta.tsx',
-    () => () => <div>MockedTicketMessageMeta</div>,
-)
+jest.mock('pages/tickets/detail/components/TicketMessages/Meta.tsx', () => ({
+    Meta: () => <div>MockedTicketMessageMeta</div>,
+}))
 
 jest.mock(
     'pages/tickets/detail/components/ReplyArea/TicketAttachments.tsx',
-    () => () => <div>MockedTicketAttachments</div>,
+    () => ({
+        DefaultExportTicketAttachments: () => (
+            <div>MockedTicketAttachments</div>
+        ),
+    }),
 )
 
-jest.mock('pages/common/utils/DatetimeLabel', () => () => (
-    <div>MockedDatetimeLabel</div>
-))
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: () => <div>MockedDatetimeLabel</div>,
+}))
 
 const defaultProps = {
     integrationId: 1,

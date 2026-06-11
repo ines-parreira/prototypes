@@ -12,7 +12,7 @@ import { fetchTicket } from '../../../state/ticket/actions'
 import type { RootState } from '../../../state/types'
 import * as widgetsActions from '../../../state/widgets/actions'
 import { getSourcesWithCustomer } from '../../../state/widgets/selectors'
-import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
+import { SourceWrapper } from '../../common/components/sourceWidgets/SourceWrapper'
 
 type OwnProps = {
     widgetType?: string | null
@@ -75,4 +75,6 @@ const connector = connect(
     }),
 )
 
-export default connector(TicketSourceContainer)
+const DefaultExportTicketSourceContainer = connector(TicketSourceContainer)
+
+export { DefaultExportTicketSourceContainer }

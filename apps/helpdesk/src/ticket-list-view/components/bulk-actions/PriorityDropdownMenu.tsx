@@ -5,7 +5,7 @@ import { TicketPriority } from '@gorgias/helpdesk-types'
 import type { Item } from 'components/Dropdown'
 import { Body, Context } from 'components/Dropdown'
 
-import PriorityDropdownItem from './PriorityDropdownItem'
+import { PriorityDropdownItem } from './PriorityDropdownItem'
 
 import css from './style.less'
 
@@ -39,4 +39,4 @@ const PriorityDropdownMenu = ({ onClick }: Props) => {
     )
 }
 
-export default PriorityDropdownMenu
+export { PriorityDropdownMenu }

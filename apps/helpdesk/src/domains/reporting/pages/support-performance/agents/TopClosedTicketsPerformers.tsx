@@ -1,5 +1,5 @@
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import AgentsShoutOut from 'domains/reporting/pages/support-performance/agents/AgentsShoutOut'
+import { AgentsShoutOut } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOut'
 import {
     AgentsShoutOutsConfig,
     TopPerformersChart,

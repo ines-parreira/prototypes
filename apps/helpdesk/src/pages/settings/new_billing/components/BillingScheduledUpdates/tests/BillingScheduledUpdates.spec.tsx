@@ -15,9 +15,9 @@ import {
     smsPlan1,
     voicePlan1,
 } from 'fixtures/plans'
-import useScheduledChangesNotifications from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
+import { useScheduledChangesNotifications } from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
 
-import BillingScheduledUpdates from '../BillingScheduledUpdates'
+import { BillingScheduledUpdates } from '../BillingScheduledUpdates'
 
 jest.mock('pages/settings/new_billing/hooks/useScheduledChangesNotifications')
 

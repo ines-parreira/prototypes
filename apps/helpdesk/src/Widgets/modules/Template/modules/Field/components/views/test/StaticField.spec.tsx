@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import StaticField from '../StaticField'
+import { StaticField } from '../StaticField'
 
 describe('<StaticField/>', () => {
     const defaultProps = {

@@ -8,8 +8,8 @@ import { fromJS } from 'immutable'
 
 import { Card, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -20,7 +20,7 @@ import {
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { FeatureToggle } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/FeatureToggle'
 import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/GorgiasChatCreationWizardStep'
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
@@ -30,8 +30,8 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { GorgiasChatCreationWizardFooter } from '../../components/GorgiasChatCreationWizardFooter'
-import SaveChangesPrompt from '../../components/SaveChangesPrompt'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { SaveChangesPrompt } from '../../components/SaveChangesPrompt'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
 
 type SubmitForm = {
     type: IntegrationType.GorgiasChat
@@ -288,4 +288,4 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepAutomate
+export { GorgiasChatCreationWizardStepAutomate }

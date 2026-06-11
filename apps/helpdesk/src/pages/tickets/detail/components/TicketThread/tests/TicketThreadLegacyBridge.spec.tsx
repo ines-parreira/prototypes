@@ -9,10 +9,10 @@ import { TicketThreadLegacyBridgeProvider } from '@repo/ticket-thread/legacy-bri
 import { screen } from '@testing-library/react'
 
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
-import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useRuleSuggestionForDemos } from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
+import { pendingMessageManager } from 'services/pendingMessageManager/pendingMessageManager'
 
 import { TicketThreadAiAgentDraftMessage } from '../TicketThreadAiAgentDraftMessage'
 import { TicketThreadAiAgentTrialMessage } from '../TicketThreadAiAgentTrialMessage'
@@ -24,7 +24,7 @@ jest.mock('hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket')
 jest.mock('pages/tickets/detail/hooks/useRuleSuggestionForDemos')
 jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
     __esModule: true,
-    default: {
+    pendingMessageManager: {
         pendingSendMessagesArgs: null,
         timeoutId: null,
         undoMessage: jest.fn(),

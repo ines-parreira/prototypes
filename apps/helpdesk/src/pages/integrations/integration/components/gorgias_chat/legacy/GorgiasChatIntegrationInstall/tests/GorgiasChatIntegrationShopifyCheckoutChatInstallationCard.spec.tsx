@@ -4,12 +4,12 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Map } from 'immutable'
 
-import useShopifyCheckoutChatInstallation from '../../hooks/useShopifyCheckoutChatInstallation'
-import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from '../GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
+import { useShopifyCheckoutChatInstallation } from '../../hooks/useShopifyCheckoutChatInstallation'
+import { GorgiasChatIntegrationShopifyCheckoutChatInstallationCard } from '../GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
 
 jest.mock('../../hooks/useShopifyCheckoutChatInstallation', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useShopifyCheckoutChatInstallation: jest.fn(),
 }))
 
 describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {

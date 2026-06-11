@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
-import ImageField, { ImageFieldVariant } from '../ImageField'
+import { ImageField, ImageFieldVariant } from '../ImageField'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

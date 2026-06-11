@@ -1,6 +1,6 @@
 import { TicketMessageSourceType } from 'business/types/ticket'
 
-import normalizeAddress from '../normalizeAddress'
+import { normalizeAddress } from '../normalizeAddress'
 
 describe('normalizeAddress', () => {
     it('should normalize email addresses', () => {

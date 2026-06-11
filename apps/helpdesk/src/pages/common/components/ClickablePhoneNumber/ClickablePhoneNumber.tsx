@@ -10,15 +10,15 @@ import {
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {
     getPhoneIntegrations,
     getSmsIntegrations,
 } from 'state/integrations/selectors'
 
-import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
-import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
+import { PhoneIntegrationsDropdownList } from './PhoneIntegrationsDropdownList'
+import { SmsIntegrationsDropdownList } from './SmsIntegrationsDropdownList'
 
 import css from './ClickablePhoneNumber.less'
 
@@ -149,4 +149,4 @@ const ClickablePhoneNumber = ({
     )
 }
 
-export default ClickablePhoneNumber
+export { ClickablePhoneNumber }

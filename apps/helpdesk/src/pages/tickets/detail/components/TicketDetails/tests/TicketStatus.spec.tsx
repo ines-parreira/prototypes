@@ -5,7 +5,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import TicketStatus from '../TicketStatus'
+import { TicketStatus } from '../TicketStatus'
 
 describe('TicketStatus component', () => {
     const renderComponent = (

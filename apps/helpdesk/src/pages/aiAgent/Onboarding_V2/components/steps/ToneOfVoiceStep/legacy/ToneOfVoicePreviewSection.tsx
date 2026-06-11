@@ -3,14 +3,14 @@ import { useMemo } from 'react'
 import { Box } from '@gorgias/axiom'
 
 import { ToneOfVoice } from 'pages/aiAgent/constants'
-import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
+import { AiAgentChatConversation } from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
 import { toneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import { OnboardingPreviewContainer } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
 import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding_V2/settings'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreview } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
 type ToneOfVoicePreviewSectionProps = {
     toneOfVoice: ToneOfVoice

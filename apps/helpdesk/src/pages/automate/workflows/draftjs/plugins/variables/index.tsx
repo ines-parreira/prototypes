@@ -14,7 +14,7 @@ import type {
 
 import { addEntityToVariable } from './utils'
 import type { WorkflowVariableTagProps } from './WorkflowVariableTag'
-import WorkflowVariableTag from './WorkflowVariableTag'
+import { WorkflowVariableTag } from './WorkflowVariableTag'
 
 type Options = {
     size?: WorkflowVariableTagProps['size']
@@ -23,7 +23,7 @@ type Options = {
     isLiquidTemplate?: boolean
 }
 
-export default function createWorkflowVariablesPlugin(options: Options = {}) {
+export function createWorkflowVariablesPlugin(options: Options = {}) {
     return {
         decorators: [
             {

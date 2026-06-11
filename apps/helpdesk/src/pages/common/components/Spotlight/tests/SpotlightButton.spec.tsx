@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
 
-import Button from '../SpotlightButton'
+import { SpotlightButton as Button } from '../SpotlightButton'
 
 jest.mock('@repo/logging')
 

@@ -5,7 +5,7 @@ import {
     useDeleteMacro as useDeleteMacroPrimitive,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { GorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

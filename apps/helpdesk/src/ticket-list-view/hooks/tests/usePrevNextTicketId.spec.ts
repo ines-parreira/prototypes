@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import usePrevNextTicketId from '../usePrevNextTicketId'
+import { usePrevNextTicketId } from '../usePrevNextTicketId'
 
 describe('usePrevNextTicketId', () => {
     const mockPartials = [

@@ -15,7 +15,7 @@ jest.mock('common/utils', () => {
     return {
         ...mockedUtils,
         uploadFiles: jest.fn(() => Promise.resolve([{ url: 'file1' }])),
-    } as unknown
+    }
 })
 
 const MockInput = {

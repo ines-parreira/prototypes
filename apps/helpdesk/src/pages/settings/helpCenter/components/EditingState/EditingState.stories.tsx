@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { EditingStateEnum } from '../../constants'
 import type { EditingStateProps } from './EditingState'
-import EditingState from './EditingState'
+import { EditingState } from './EditingState'
 
 const storyConfig: Meta = {
     title: 'Help Center/EditingState',

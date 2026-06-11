@@ -5,14 +5,14 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
-import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
-import ReportOrderIssueFlowPreview from './ReportOrderIssueFlowPreview'
+import { ReportOrderIssueScenarioList } from './components/ReportOrderIssueScenarioList'
+import { useReportOrderIssueFlowScenarios } from './hooks/useReportOrderIssueFlowScenarios'
+import { ReportOrderIssueFlowPreview } from './ReportOrderIssueFlowPreview'
 
 import css from './ReportOrderIssueFlowView.less'
 
@@ -88,4 +88,4 @@ const ReportOrderIssueFlowView = () => {
     )
 }
 
-export default ReportOrderIssueFlowView
+export { ReportOrderIssueFlowView }

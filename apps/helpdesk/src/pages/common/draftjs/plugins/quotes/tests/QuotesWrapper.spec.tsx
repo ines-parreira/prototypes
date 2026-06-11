@@ -2,8 +2,9 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import QuotesWrapper, {
+import {
     QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX,
+    QuotesWrapper,
 } from '../QuotesWrapper'
 
 describe('<QuotesWrapper />', () => {

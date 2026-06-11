@@ -4,7 +4,7 @@ import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import { GENDER_OPTIONS, LANGUAGE_OPTIONS } from './constants'
 import { useTextToSpeechContext } from './TextToSpeechContext'
-import VoiceMessageTTSPreviewButton from './VoiceMessageTTSPreviewButton'
+import { VoiceMessageTTSPreviewButton } from './VoiceMessageTTSPreviewButton'
 
 import css from './VoiceMessageTTSPreviewFields.less'
 
@@ -76,4 +76,4 @@ const VoiceMessageTTSPreviewFields = ({
     )
 }
 
-export default VoiceMessageTTSPreviewFields
+export { VoiceMessageTTSPreviewFields }

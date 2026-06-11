@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
+import { useGetIsActionStepEnabled } from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 
 import type { AppActionStep } from '../AppActionsStepsTable'
 

@@ -4,7 +4,7 @@ import type { TicketPartial } from '../types'
 
 type TicketTimestamps = Record<number, number>
 
-export default function useStaleTickets(partials: TicketPartial[]) {
+export function useStaleTickets(partials: TicketPartial[]) {
     const [state, setState] = useState<{
         pending: TicketTimestamps
         updated: TicketTimestamps

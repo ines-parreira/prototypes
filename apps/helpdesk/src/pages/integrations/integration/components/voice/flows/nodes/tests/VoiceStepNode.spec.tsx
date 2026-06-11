@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import { FlowProvider } from 'core/ui/flows'
 
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { VoiceStepNode } from '../VoiceStepNode'
 
 const mockUseDeleteNode = jest.fn()

@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { visualBuilderGraphSimpleChoicesFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import VisualBuilderTemplatePreview from '../VisualBuilderTemplatePreview'
+import { DefaultExportVisualBuilderTemplatePreview as VisualBuilderTemplatePreview } from '../VisualBuilderTemplatePreview'
 
 describe('<VisualBuilderTemplatePreview />', () => {
     it('should render template preview', () => {

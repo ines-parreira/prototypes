@@ -5,7 +5,7 @@ import { RichUtils } from 'draft-js'
 
 import { HEADER_ONE, HEADER_THREE, HEADER_TWO } from '../constants'
 import type { ActionInjectedProps } from '../types'
-import ButtonPopover from './ButtonPopover'
+import { ButtonPopover } from './ButtonPopover'
 
 import css from './HeadingPicker.less'
 
@@ -78,4 +78,4 @@ const HeadingPicker = ({
     )
 }
 
-export default HeadingPicker
+export { HeadingPicker }

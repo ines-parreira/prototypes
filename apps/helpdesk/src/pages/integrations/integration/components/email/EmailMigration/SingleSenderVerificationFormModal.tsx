@@ -6,12 +6,13 @@ import { ModalHeader } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { SenderInformation } from 'models/singleSenderVerification/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
-import VerificationForm, {
+import {
     FORM_ID,
+    VerificationForm,
 } from '../EmailOutboundVerification/VerificationForm/VerificationForm'
 
 type Props = Pick<
@@ -25,7 +26,7 @@ type Props = Pick<
     isLoading?: boolean
 }
 
-export default function SingleSenderVerificationFormModal({
+export function SingleSenderVerificationFormModal({
     isOpen,
     setIsOpen,
     onConfirm,

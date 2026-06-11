@@ -1,8 +1,10 @@
 import { renderHook } from '@repo/testing'
 
-import useViewId from '../useViewId'
+import { useViewId } from '../useViewId'
 
-jest.mock('hooks/useAppSelector', () => jest.fn(() => 987789))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: jest.fn(() => 987789),
+}))
 
 describe('useViewId', () => {
     it('should return the default view id if no view id is in the url', () => {

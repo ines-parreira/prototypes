@@ -47,4 +47,4 @@ const joinEvents: SendEvent[] = [
     },
 ]
 
-export default joinEvents
+export { joinEvents }

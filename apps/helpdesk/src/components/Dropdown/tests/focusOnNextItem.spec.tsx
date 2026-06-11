@@ -7,7 +7,7 @@ import React, { useRef } from 'react'
 import { render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import focusOnNextItem from '../focusOnNextItem'
+import { focusOnNextItem } from '../focusOnNextItem'
 
 describe.skip('focusOnNextItem', () => {
     let activeElement: Element | null

@@ -8,17 +8,17 @@ import type {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
+import { ReportOrderIssueScenarioForm } from './components/ReportOrderIssueScenarioForm'
 import type { ReportOrderIssueScenarioFormContextType } from './components/ReportOrderIssueScenarioFormContext'
-import ReportOrderIssueScenarioFormContext from './components/ReportOrderIssueScenarioFormContext'
+import { ReportOrderIssueScenarioFormContext } from './components/ReportOrderIssueScenarioFormContext'
 import { DEFAULT_SCENARIO } from './constants'
-import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
-import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
+import { useReportOrderIssueFlowScenarios } from './hooks/useReportOrderIssueFlowScenarios'
+import { ReportOrderIssueFlowScenarioPreview } from './ReportOrderIssueFlowScenarioPreview'
 
 const CreateReportOrderIssueFlowScenarioView = () => {
     const history = useHistory()
@@ -136,4 +136,4 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     )
 }
 
-export default CreateReportOrderIssueFlowScenarioView
+export { CreateReportOrderIssueFlowScenarioView }

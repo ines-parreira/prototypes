@@ -5,7 +5,7 @@ import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import type {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import HTTPStatusLabel from '../HTTPStatusLabel'
+import { HTTPStatusLabel } from '../HTTPStatusLabel'
 
 describe('HTTPStatusLabel', () => {
     it('should render a secondary label for unknown HTTP status code', () => {

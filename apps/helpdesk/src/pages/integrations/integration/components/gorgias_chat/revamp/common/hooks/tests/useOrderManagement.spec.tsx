@@ -3,19 +3,20 @@ import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from 'models/integration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { useOrderManagement } from '../useOrderManagement'
 
 const mockHandleChatApplicationAutomationSettingsUpdate = jest.fn()
 
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () =>
-    jest.fn(),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
+    useSelfServiceConfiguration: jest.fn(),
+}))
 
-jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings', () =>
-    jest.fn(),
+jest.mock(
+    'pages/automate/common/hooks/useApplicationsAutomationSettings',
+    () => ({ useApplicationsAutomationSettings: jest.fn() }),
 )
 
 const mockedUseSelfServiceConfiguration =

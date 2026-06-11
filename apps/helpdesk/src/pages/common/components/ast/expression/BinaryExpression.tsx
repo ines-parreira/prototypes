@@ -5,7 +5,7 @@ import type { List, Map } from 'immutable'
 
 import type { SyntaxTree } from 'pages/common/components/ast/utils'
 import { getSyntaxTreeLeaves } from 'pages/common/components/ast/utils'
-import Widget from 'pages/common/components/ast/Widget'
+import { Widget } from 'pages/common/components/ast/Widget'
 import type { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
 import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 import type { RuleItemActions } from 'pages/settings/rules/types'
@@ -84,4 +84,4 @@ const BinaryExpression = ({
     )
 }
 
-export default BinaryExpression
+export { BinaryExpression }

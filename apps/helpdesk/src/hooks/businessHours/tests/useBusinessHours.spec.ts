@@ -6,7 +6,7 @@ import type {
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useBusinessHours } from '../useBusinessHours'
 

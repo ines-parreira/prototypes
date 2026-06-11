@@ -4,8 +4,8 @@ import React from 'react'
 import _memoize from 'lodash/memoize'
 
 import type { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
-import useAppSelector from 'hooks/useAppSelector'
-import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { FeaturePaywall } from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { currentAccountHasFeature } from 'state/currentAccount/selectors'
 import type { AccountFeature } from 'state/currentAccount/types'
 
@@ -36,5 +36,3 @@ export function withFeaturePaywall<P extends Record<string, unknown>>(
 export const memoizedWithFeaturePaywall = _memoize(
     withFeaturePaywall,
 ) as typeof withFeaturePaywall
-
-export default memoizedWithFeaturePaywall

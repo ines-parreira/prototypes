@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CircularProgressBar from '../CircularProgressBar'
+import { CircularProgressBar } from '../CircularProgressBar'
 
 describe('CircularProgressBar', () => {
     it.each([

@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import InstructionsCard from 'pages/common/components/InstructionsCard'
+import { InstructionsCard } from 'pages/common/components/InstructionsCard'
 
 import { useContactFormManualEmbedInstructionsCardState } from './useContactFormManualEmbedTabs'
 
@@ -36,5 +36,3 @@ export function ContactFormManualEmbedCard({
         />
     )
 }
-
-export default ContactFormManualEmbedCard

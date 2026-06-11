@@ -1,4 +1,4 @@
-import CampaignIncognitoVisitorsSwitch from 'pages/convert/campaigns/components/CampaignIncognitoVisitorsSwitch'
+import { CampaignIncognitoVisitorsSwitch } from 'pages/convert/campaigns/components/CampaignIncognitoVisitorsSwitch'
 import { CampaignWithNoReply } from 'pages/convert/campaigns/components/CampaignWithNoReply'
 import type { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
 

@@ -8,26 +8,30 @@ import { fromJS } from 'immutable'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import Timeline from 'timeline/Timeline'
+import { DefaultExportTimeline as Timeline } from 'timeline/Timeline'
 
-import TicketView, { TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
+import { TicketView, TIMELINE_CLOSE_BUTTON_ID } from '../TicketView'
 
-jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
+jest.mock('timeline/Timeline', () => ({
+    DefaultExportTimeline: jest.fn(() => <div>Timeline</div>),
+}))
 jest.mock('timeline/hooks/useTimelinePanel', () => ({
     useTimelinePanel: jest.fn(),
 }))
 
-jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
-jest.mock('../TicketBodyNonVirtualized', () => () => (
-    <div>TicketBodyNonVirtualized</div>
-))
-jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
-    <div>TicketHeaderWrapper</div>
-))
+jest.mock('../TicketBody', () => ({ TicketBody: () => <div>TicketBody</div> }))
+jest.mock('../TicketBodyNonVirtualized', () => ({
+    DefaultExportTicketBodyNonVirtualized: () => (
+        <div>TicketBodyNonVirtualized</div>
+    ),
+}))
+jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => ({
+    TicketHeaderWrapper: () => <div>TicketHeaderWrapper</div>,
+}))
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
-jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
+jest.mock('../ReplyForm', () => ({ ReplyForm: () => <div>ReplyForm</div> }))
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -37,7 +41,9 @@ const useTimelinePanelMock = assumeMock(useTimelinePanel)
 const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 const scrollToMock = jest.fn()
 
 describe('<TicketView />', () => {

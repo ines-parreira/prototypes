@@ -3,19 +3,19 @@ import React, { useMemo } from 'react'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 import type { Tag, TicketTag } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import Caption from 'pages/common/forms/Caption/Caption'
-import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
-import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import { TicketAssignee } from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
+import { TicketTags } from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { getHumanAgents } from 'state/agents/selectors'
 import { getTeams } from 'state/teams/selectors'
 
-import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
-import EndNodeTypeSelect from './EndNodeTypeSelect'
-import WasThisHelpfulCard from './WasThisHelpfulCard'
+import { NodeEditorDrawerHeader } from '../../NodeEditorDrawerHeader'
+import { EndNodeTypeSelect } from './EndNodeTypeSelect'
+import { WasThisHelpfulCard } from './WasThisHelpfulCard'
 
 import css from '../NodeEditor.less'
 
@@ -23,7 +23,7 @@ type EndNodeEditorProps = {
     nodeInEdition: EndNodeType
 }
 
-export default function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
+export function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
     const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
     const { dispatch, visualBuilderGraph } = useVisualBuilderContext()

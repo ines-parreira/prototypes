@@ -73,4 +73,4 @@ const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
     return { hasCanduContent, ref }
 }
 
-export default useHasCanduContent
+export { useHasCanduContent }

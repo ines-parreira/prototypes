@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import PreviewHeader from '../PreviewHeader'
+import { PreviewHeader } from '../PreviewHeader'
 
 const queryClient = mockQueryClient()
 

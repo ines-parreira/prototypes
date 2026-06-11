@@ -32,15 +32,15 @@ import {
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import QuickSelectionOption from 'domains/reporting/pages/common/QuickSelectionOption'
+import { QuickSelectionOption } from 'domains/reporting/pages/common/QuickSelectionOption'
 import css from 'domains/reporting/pages/common/SelectFilter.less'
 import {
     statFiltersClean,
     statFiltersDirty,
 } from 'domains/reporting/state/ui/stats/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 type Value = string | number
 
@@ -517,4 +517,4 @@ const SelectFilter = ({
 SelectFilter.Group = Group
 SelectFilter.Item = Item
 
-export default SelectFilter
+export { SelectFilter }

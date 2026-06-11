@@ -6,8 +6,8 @@ import { Col, Row } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 
 export type Field = { key: any; value: any }
 
@@ -19,7 +19,7 @@ type Props = {
     onChange: (fields: Array<Field>) => void
 }
 
-export default class ObjectListField extends Component<Props> {
+export class ObjectListField extends Component<Props> {
     _add = () => {
         return this.props.onChange(
             _clone(this.props.fields).concat([

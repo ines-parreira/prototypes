@@ -5,14 +5,14 @@ import { JobType } from '@gorgias/helpdesk-types'
 import type { Update } from 'jobs'
 import { useBulkAction } from 'jobs'
 
-import AssignUser from './AssignUser'
-import CloseTickets from './CloseTickets'
-import MoreActions from './MoreActions'
+import { AssignUser } from './AssignUser'
+import { CloseTickets } from './CloseTickets'
+import { MoreActions } from './MoreActions'
 import type { Action, Job } from './types'
 
 import css from './style.less'
 
-export default function BulkActions({
+export function BulkActions({
     hasSelectedAll,
     onComplete,
     selectedTickets,

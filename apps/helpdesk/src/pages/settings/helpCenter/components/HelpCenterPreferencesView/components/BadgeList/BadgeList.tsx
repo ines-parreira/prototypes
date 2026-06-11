@@ -1,5 +1,5 @@
 import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
-import BadgeItem from 'pages/common/components/BadgetItem'
+import { BadgeItem } from 'pages/common/components/BadgetItem'
 
 import css from './BadgeList.less'
 

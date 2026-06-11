@@ -11,7 +11,7 @@ import {
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import SyncIngestionDomainBanner from '../SyncIngestionDomainBanner'
+import { SyncIngestionDomainBanner } from '../SyncIngestionDomainBanner'
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),

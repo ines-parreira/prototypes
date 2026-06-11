@@ -1,7 +1,7 @@
 import { Redirect } from 'react-router-dom'
 
-import StoreIntegrationView from 'pages/automate/common/components/StoreIntegrationView'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { StoreIntegrationView } from 'pages/automate/common/components/StoreIntegrationView'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 export function AutomateSettings() {
     const integrations = useStoreIntegrations()

@@ -4,7 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
 
-import Legend from 'domains/reporting/pages/common/components/charts/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/charts/Legend'
 
 describe('<Legend />', () => {
     const items = [

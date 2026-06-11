@@ -3,19 +3,19 @@ import { useHistory } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { HELP_CENTER_DEFAULT_LOCALE } from '../../constants'
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import AIArticleArchiveModal from './components/AIArticleArchiveModal/AIArticleArchiveModal'
-import ArticleEditor from './components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor'
-import AIArticlesLibraryList from './components/AIArticlesLibraryList'
-import AIArticlesLibraryPreview from './components/AIArticlesLibraryPreview'
-import LibrarySkeleton from './components/AIArticlesLibrarySkeleton/AIArticlesLibrarySkeleton'
-import useAILibraryActions from './hooks/useAILibraryActions'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
+import { HelpCenterPageWrapper } from '../HelpCenterPageWrapper'
+import { AIArticleArchiveModal } from './components/AIArticleArchiveModal/AIArticleArchiveModal'
+import { ArticleEditor } from './components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor'
+import { AIArticlesLibraryList } from './components/AIArticlesLibraryList'
+import { AIArticlesLibraryPreview } from './components/AIArticlesLibraryPreview'
+import { LibrarySkeleton } from './components/AIArticlesLibrarySkeleton/AIArticlesLibrarySkeleton'
+import { useAILibraryActions } from './hooks/useAILibraryActions'
 import { useHelpCenterAIArticlesLibrary } from './hooks/useHelpCenterAIArticlesLibrary'
 
 import css from './AIArticlesLibraryView.less'
@@ -126,4 +126,4 @@ const AIArticlesLibraryViewWithErrorBoundary = () => (
     </ErrorBoundary>
 )
 
-export default AIArticlesLibraryViewWithErrorBoundary
+export { AIArticlesLibraryViewWithErrorBoundary }

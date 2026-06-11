@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import KeyMetricStatWrapper from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
+import { KeyMetricStatWrapper } from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
 
 describe('KeyMetricStatWrapper', () => {
     it('should render the key metric wrapper', () => {

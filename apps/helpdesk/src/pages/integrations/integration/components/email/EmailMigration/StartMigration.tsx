@@ -7,12 +7,12 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { startEmailMigration } from 'models/integration/resources/email'
 import type { EmailIntegration } from 'models/integration/types'
-import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import Loader from 'pages/common/components/Loader/Loader'
+import { useMigrationBannerStatus } from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { UPDATE_FORWARDING_EMAIL_ADDRESS } from 'state/integrations/constants'
 import {
     getAreIntegrationsLoading,
@@ -22,11 +22,11 @@ import {
 import { getMoment, stringToDatetime } from 'utils/date'
 
 import { isBaseEmailIntegration } from '../helpers'
-import StartMigrationIntegrationsTable from './StartMigrationIntegrationsTable'
+import { StartMigrationIntegrationsTable } from './StartMigrationIntegrationsTable'
 
 import css from './StartMigration.less'
 
-export default function StartMigration() {
+export function StartMigration() {
     const [emailMigrationStarted, setEmailMigrationStarted] = useState(false)
     const migrationStatus = useAppSelector(getEmailMigrationStatus)
     const isLoading = useAppSelector(getAreIntegrationsLoading)

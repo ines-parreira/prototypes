@@ -32,5 +32,3 @@ export const QUICK_FILTERS: QuickFilterType[] = [
     TRIGGERED_OUTSIDE_BUSINESS_HOURS,
     AB_GROUP_TESTS,
 ]
-
-export default QUICK_FILTERS

@@ -15,4 +15,4 @@ const ForwardIcon: React.FC<Props> = ({ href, onClick }) => {
     )
 }
 
-export default ForwardIcon
+export { ForwardIcon }

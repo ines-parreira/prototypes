@@ -47,4 +47,6 @@ export const getCompanyFixedGmvBandTier = (
     state: RootState,
 ): CompanyTier | null => state.currentCompany?.fixed_gmv_band || null
 
-export default currentCompanySlice.reducer
+const DefaultExportCurrentCompanySlice = currentCompanySlice.reducer
+
+export { DefaultExportCurrentCompanySlice }

@@ -1,8 +1,8 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
-export default function useAiAgentMessageFeedback() {
+export function useAiAgentMessageFeedback() {
     const selectedMessage = useAppSelector(getSelectedAIMessage)
     const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,

@@ -1,6 +1,6 @@
 import { assumeMock, render } from '@repo/testing'
 
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { TopAIIntentsForProductOverTimeGraph } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsForProductOverTimeGraph'
 import { TopAIIntentsForProductOverTimeChart } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsForProductOverTimeChart/TopAIIntentsOverTimeForProductChart'
 import {

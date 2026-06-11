@@ -29,7 +29,7 @@ import {
 } from 'hooks/integrations/phone/twilioCall.utils'
 import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import {
     CallRecordingStatus,
     TWILIO_CURRENT_ITEM,
@@ -39,14 +39,14 @@ import {
     useAudioLevel,
     useConnectionParameters,
 } from 'pages/common/components/PhoneIntegrationBar/hooks'
-import IconButtonTooltip from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/IconButtonTooltip'
+import { DefaultExportIconButtonTooltip as IconButtonTooltip } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/IconButtonTooltip'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
-import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
-import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
-import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
+import { PhoneBarCallerDetailsContainer } from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
+import { PhoneCustomerName } from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
+import { PhoneInfobarWrapper } from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
+import { DefaultExportPhoneIntegrationName as PhoneIntegrationName } from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 import { useCustomSound } from 'pages/common/hooks/useCustomSound'
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import type {
     ServerMessage,
     VoiceCallTransferFailedEvent,
@@ -55,11 +55,11 @@ import { SocketEventType } from 'services/socketManager/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
-import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
-import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
-import QueueName from '../QueueName/QueueName'
-import CallTransferDropdown from './CallTransferDropdown/CallTransferDropdown'
-import InCallDialPad from './InCallDialPad/InCallDialPad'
+import { PhoneBarContainer } from '../PhoneBarContainer/PhoneBarContainer'
+import { PhoneBarInnerContent } from '../PhoneBarInnerContent/PhoneBarInnerContent'
+import { QueueName } from '../QueueName/QueueName'
+import { CallTransferDropdown } from './CallTransferDropdown/CallTransferDropdown'
+import { InCallDialPad } from './InCallDialPad/InCallDialPad'
 import { TransferTargetLabel } from './TransferTargetLabel'
 
 import css from './OngoingPhoneCall.less'
@@ -466,4 +466,6 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     }
 }
 const connector = connect(mapStateToProps)
-export default connector(OngoingPhoneCall)
+const DefaultExportOngoingPhoneCall = connector(OngoingPhoneCall)
+
+export { DefaultExportOngoingPhoneCall }

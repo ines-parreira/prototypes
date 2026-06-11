@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import { toast } from '@gorgias/axiom'
 
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { setCurrentSubscription } from 'state/currentAccount/actions'
 import * as selectors from 'state/currentAccount/selectors'
 

@@ -4,7 +4,7 @@ import { IntegrationType } from 'models/integration/types'
 import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
-import useShopifyCheckoutChatInstallation from '../useShopifyCheckoutChatInstallation'
+import { useShopifyCheckoutChatInstallation } from '../useShopifyCheckoutChatInstallation'
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',

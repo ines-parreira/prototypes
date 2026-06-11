@@ -4,8 +4,8 @@ import { FormField, useFormContext } from '@repo/forms'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
-import AccordionRadioFieldSet from 'pages/common/forms/AccordionRadioFieldSet'
-import VoiceQueueSelectField from 'pages/integrations/integration/components/voice/VoiceQueueSelectField'
+import { AccordionRadioFieldSet } from 'pages/common/forms/AccordionRadioFieldSet'
+import { VoiceQueueSelectField } from 'pages/integrations/integration/components/voice/VoiceQueueSelectField'
 
 import {
     getDefaultIvrFlow,
@@ -80,4 +80,4 @@ function RoutingTemplateRadioFieldSet() {
     )
 }
 
-export default RoutingTemplateRadioFieldSet
+export { RoutingTemplateRadioFieldSet }

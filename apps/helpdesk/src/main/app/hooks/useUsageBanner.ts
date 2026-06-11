@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 
 import type { Map } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { handleUsageBanner } from 'state/notifications/actions'
 
 export function useUsageBanner() {

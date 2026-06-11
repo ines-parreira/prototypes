@@ -164,4 +164,4 @@ const TicketNavbarDropTarget = ({
     )
 }
 
-export default TicketNavbarDropTarget
+export { TicketNavbarDropTarget }

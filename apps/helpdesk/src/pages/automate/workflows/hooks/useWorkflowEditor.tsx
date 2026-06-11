@@ -21,7 +21,7 @@ import {
     useUpsertWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
-import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
+import { useValidateOnVisualBuilderGraphChange } from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 
 import {
@@ -48,14 +48,15 @@ import {
     isPayloadTooLarge,
 } from '../utils/payloadSize'
 import { mapServerErrorsToGraph } from '../utils/serverValidationErrors'
-import useTouchWorkflowGraph from './useTouchWorkflowGraph'
-import useUntouchWorkflowGraph from './useUntouchWorkflowGraph'
-import useValidateWorkflowGraph from './useValidateWorkflowGraph'
+import { useTouchWorkflowGraph } from './useTouchWorkflowGraph'
+import { useUntouchWorkflowGraph } from './useUntouchWorkflowGraph'
+import { useValidateWorkflowGraph } from './useValidateWorkflowGraph'
 import type { VisualBuilderGraphAction } from './useVisualBuilderGraphReducer'
 import { useVisualBuilderGraphReducer } from './useVisualBuilderGraphReducer'
 import { computeNodesPositions } from './useVisualBuilderGraphReducer/utils'
-import useWorkflowTranslations, {
+import {
     emptyTranslatedTexts,
+    useWorkflowTranslations,
 } from './useWorkflowTranslations'
 import { workflowConfigurationFactory } from './utils'
 

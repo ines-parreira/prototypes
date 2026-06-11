@@ -14,7 +14,7 @@ import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ConvertOnboardingCampaignTemplate from '../ConvertOnboardingCampaignTemplate'
+import { ConvertOnboardingCampaignTemplate } from '../ConvertOnboardingCampaignTemplate'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
@@ -27,9 +27,11 @@ const defaultState: Partial<RootState> = {
 jest.mock(
     'pages/convert/onboarding/components/ConvertSimplifiedEditorModal',
     () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-simplified-editor-modal" />
-        })
+        return {
+            ConvertSimplifiedEditorModal: jest.fn(() => {
+                return <div data-testid="mock-simplified-editor-modal" />
+            }),
+        }
     },
 )
 

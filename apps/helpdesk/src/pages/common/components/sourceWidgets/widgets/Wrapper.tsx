@@ -3,10 +3,10 @@ import { useContext } from 'react'
 
 import classnames from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Source, WrapperTemplate } from 'models/widget/types'
 import { isSourceRecord } from 'models/widget/types'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { DragWrapper } from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { getIntegrationById } from 'state/integrations/selectors'
 import {
@@ -14,7 +14,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
-import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
+import { WidgetPanel } from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
 
 import css from './Wrapper.less'
 
@@ -24,7 +24,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function Wrapper({ template, source, children }: Props) {
+export function Wrapper({ template, source, children }: Props) {
     const widget = useContext(WidgetContext)
     const absolutePath = template.absolutePath || []
     const widgetType = widget.type

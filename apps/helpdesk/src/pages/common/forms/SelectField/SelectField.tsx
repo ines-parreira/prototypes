@@ -26,7 +26,7 @@ import {
 
 import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
-import Caption from '../Caption/Caption'
+import { Caption } from '../Caption/Caption'
 import type { Option, SelectableOption, Value } from './types'
 
 import css from './SelectField.less'
@@ -78,7 +78,7 @@ type State = {
  * @date 2026-01-13
  * @type ui-kit-migration
  */
-export default class SelectField extends Component<Props, State> {
+export class SelectField extends Component<Props, State> {
     static defaultProps = {
         id: null,
         allowCustomValue: false,

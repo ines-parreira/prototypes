@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { DropdownMenu } from 'reactstrap'
 
-import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
+import { TicketAssignee } from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 
 type Props = {
     action: Map<string, any>
@@ -17,7 +17,7 @@ type Props = {
     disabled?: boolean
 }
 
-export default class SetAssigneeAction extends Component<Props> {
+export class SetAssigneeAction extends Component<Props> {
     static defaultProps: Pick<Props, 'handleTeams' | 'handleUsers'> = {
         handleTeams: false,
         handleUsers: false,

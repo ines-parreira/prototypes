@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ConfirmationModal from './ConfirmationModal'
+import { ConfirmationModal } from './ConfirmationModal'
 
 type DeleteIntegrationConfirmationModalProps = {
     isOpen: boolean
@@ -11,7 +11,7 @@ type DeleteIntegrationConfirmationModalProps = {
     title?: string
 }
 
-export default function DeleteIntegrationConfirmationModal({
+export function DeleteIntegrationConfirmationModal({
     isOpen,
     setIsOpen,
     onConfirm,

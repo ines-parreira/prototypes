@@ -15,7 +15,7 @@ import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { getSingleHelpCenterResponseFixtureWithTranslation } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation/HelpCenterTranslation'
-import ContactFormInfoSection from '../ContactFormInfoSection'
+import { ContactFormInfoSection } from '../ContactFormInfoSection'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>

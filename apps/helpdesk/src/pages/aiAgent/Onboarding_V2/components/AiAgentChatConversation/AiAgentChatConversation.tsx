@@ -7,11 +7,11 @@ import type { Map } from 'immutable'
 
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 import { GorgiasChatAvatarNameType } from 'models/integration/types'
-import TypingMessage from 'pages/aiAgent/Onboarding_V2/components/TypingMessage/TypingMessage'
+import { TypingMessage } from 'pages/aiAgent/Onboarding_V2/components/TypingMessage/TypingMessage'
 import { removeATags } from 'pages/aiAgent/utils/removeATags'
 import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import AgentMessages from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AgentMessages'
-import CustomerInitialMessages from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/CustomerInitialMessages'
+import { AgentMessages } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AgentMessages'
+import { CustomerInitialMessages } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/CustomerInitialMessages'
 
 import css from './AiAgentChatConversation.less'
 
@@ -195,4 +195,4 @@ const AiAgentChatConversation: FC<Props> = ({
     )
 }
 
-export default AiAgentChatConversation
+export { AiAgentChatConversation }

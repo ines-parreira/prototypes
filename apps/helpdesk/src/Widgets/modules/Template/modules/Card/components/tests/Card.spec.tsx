@@ -11,7 +11,7 @@ import configureMockStore from 'redux-mock-store'
 import { cardTemplate, listTemplate, shopifyWidget } from 'fixtures/widgets'
 import type { CardTemplate, ListTemplate } from 'models/widget/types'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+import { DefaultExportCustomActions as CustomActions } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import type { Button as ButtonType } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import { renderInfobarTemplate } from 'pages/common/utils/infobar'
 import { renderTemplate } from 'pages/common/utils/template'
@@ -25,8 +25,8 @@ import {
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
-import Card, { listMetaFields, NO_DATA_TEXT } from '../../components/Card'
-import UICard from '../../components/views'
+import { Card, listMetaFields, NO_DATA_TEXT } from '../../components/Card'
+import { Card as UICard } from '../../components/views'
 import { canDrop } from '../../helpers/canDrop'
 import * as isDefaultOpenExports from '../../helpers/isDefaultOpen'
 import type { CardEditFormState } from '../../types'
@@ -51,15 +51,17 @@ const getWidgetTitleMock = assumeMock(getWidgetTitle)
 
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions',
-    () => jest.fn(() => <div>CustomActions</div>),
+    () => ({
+        DefaultExportCustomActions: jest.fn(() => <div>CustomActions</div>),
+    }),
 )
 jest.spyOn(isDefaultOpenExports, 'isDefaultOpen')
 
 const CustomActionsMock = assumeMock(CustomActions)
 
 const UICARD_TEST_ID = 'ui-card'
-jest.mock('../../components/views', () =>
-    jest.fn(
+jest.mock('../../components/views', () => ({
+    Card: jest.fn(
         ({
             extensions,
             customActions,
@@ -82,7 +84,7 @@ jest.mock('../../components/views', () =>
             )
         },
     ),
-)
+}))
 const UICardMock = assumeMock(UICard)
 
 describe('Card', () => {

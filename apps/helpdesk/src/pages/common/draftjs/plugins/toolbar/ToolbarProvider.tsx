@@ -121,4 +121,4 @@ const ToolbarProvider = ({
     )
 }
 
-export default ToolbarProvider
+export { ToolbarProvider }

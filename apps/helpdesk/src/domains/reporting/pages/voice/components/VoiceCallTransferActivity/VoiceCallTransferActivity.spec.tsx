@@ -2,10 +2,10 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 
-import VoiceCallTransferActivity from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
+import { VoiceCallTransferActivity } from 'domains/reporting/pages/voice/components/VoiceCallTransferActivity/VoiceCallTransferActivity'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import { VoiceCallSubjectType } from 'models/voiceCall/types'
-import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
+import { VoiceCallSubjectLabel } from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 
 jest.mock('pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel')
 

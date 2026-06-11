@@ -1,1 +1,1 @@
-export { default } from './ConvertInstallModal'
+export { ConvertInstallModal } from './ConvertInstallModal'

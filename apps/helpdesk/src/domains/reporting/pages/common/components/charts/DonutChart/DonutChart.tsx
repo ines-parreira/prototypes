@@ -21,7 +21,7 @@ import { useTheme } from 'core/theme'
 import css from 'domains/reporting/pages/common/components/charts/Chart.less'
 import { ChartTooltip } from 'domains/reporting/pages/common/components/charts/ChartTooltip'
 import { DonutChartTooltip } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChartTooltip'
-import Legend from 'domains/reporting/pages/common/components/charts/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/charts/Legend'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
 import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 import { renderTickLabelAsNumber } from 'domains/reporting/pages/utils'
@@ -264,4 +264,4 @@ const DonutChart = ({
     )
 }
 
-export default DonutChart
+export { DonutChart }

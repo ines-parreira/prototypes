@@ -7,7 +7,7 @@ import _kebabCase from 'lodash/kebabCase'
 import { formatNumber } from 'domains/reporting/pages/common/utils'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 type Props = {
     cell: CampaignTableContentCell

@@ -11,17 +11,17 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import type { DEPRECATED_TagsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import { usePerformancePageAgentPhoneStatuses } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses'
-import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
+import { DefaultExportLiveAgents as LiveAgents } from 'domains/reporting/pages/live/agents/LiveAgents'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { userPerformanceOverview } from 'fixtures/stats'
 import { teams } from 'fixtures/teams'
-import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import type { FeaturePaywall } from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -36,18 +36,19 @@ jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter',
-    () =>
-        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+    () => ({
+        DEPRECATED_TagsStatsFilter: ({
+            value,
+        }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
         ),
+    }),
 )
-jest.mock(
-    'pages/common/components/FeaturePaywall/FeaturePaywall',
-    () =>
-        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
-            return <div>Paywall for {feature}</div>
-        },
-)
+jest.mock('pages/common/components/FeaturePaywall/FeaturePaywall', () => ({
+    FeaturePaywall: ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
+        return <div>Paywall for {feature}</div>
+    },
+}))
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
     () => ({
@@ -82,7 +83,9 @@ jest.mock(
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>,
+    () => ({
+        DEPRECATED_ChannelsStatsFilter: () => <div>ChannelsStatsFilter</div>,
+    }),
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

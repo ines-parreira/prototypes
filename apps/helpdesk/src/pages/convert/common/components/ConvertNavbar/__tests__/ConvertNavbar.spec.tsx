@@ -18,7 +18,7 @@ import { user } from 'fixtures/users'
 import { IntegrationType } from 'models/integration/types'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOnboardingStatusMap } from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
-import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
+import { useCanAddContactFormFlag as useContactFormFlag } from 'pages/convert/common/hooks/useContactFormFlag'
 import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { DndProvider } from 'utils/wrappers/DndProvider'
@@ -31,7 +31,7 @@ jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')
 
 jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
-    default: () => <div>NotificationsButton</div>,
+    NotificationsButton: () => <div>NotificationsButton</div>,
 }))
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')

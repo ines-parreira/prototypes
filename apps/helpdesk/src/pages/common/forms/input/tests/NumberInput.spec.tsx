@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import NumberInput from '../NumberInput'
+import { DefaultExportNumberInput as NumberInput } from '../NumberInput'
 
 describe('<NumberInput />', () => {
     const defaultProps: ComponentProps<typeof NumberInput> = {

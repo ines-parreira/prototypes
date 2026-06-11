@@ -62,4 +62,4 @@ const NoHttpRequestLogsView = ({ step }: NoHttpRequestLogsViewProps) => {
     return <span className={css.bodyDefaultText}>Step was successful</span>
 }
 
-export default NoHttpRequestLogsView
+export { NoHttpRequestLogsView }

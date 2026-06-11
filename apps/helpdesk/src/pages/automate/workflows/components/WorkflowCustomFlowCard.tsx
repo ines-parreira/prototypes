@@ -21,4 +21,4 @@ const WorkflowCustomFlowCard = ({ goToNewWorkflowPage }: Props) => (
     </>
 )
 
-export default WorkflowCustomFlowCard
+export { WorkflowCustomFlowCard }

@@ -1,16 +1,16 @@
-import useAppSelector from 'hooks/useAppSelector'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import { getIntegrationsByAppId } from 'state/integrations/selectors'
 
-import IntegrationRow from './IntegrationRow'
+import { IntegrationRow } from './IntegrationRow'
 
 export type Props = {
     appId: string
     connectUrl: string
 }
 
-export default function IntegrationsList({ appId, connectUrl }: Props) {
+export function IntegrationsList({ appId, connectUrl }: Props) {
     const integrations = useAppSelector(getIntegrationsByAppId(appId))
     return (
         <TableWrapper>

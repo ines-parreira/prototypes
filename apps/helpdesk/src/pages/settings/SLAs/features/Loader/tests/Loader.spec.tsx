@@ -2,14 +2,14 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Loader from '../Loader'
+import { Loader } from '../Loader'
 
-jest.mock('pages/settings/SLAs/features/PageHeader/PageHeader', () => () => (
-    <div>PageHeader</div>
-))
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/settings/SLAs/features/PageHeader/PageHeader', () => ({
+    PageHeader: () => <div>PageHeader</div>,
+}))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 
 describe('<Loader />', () => {
     it('should render a loader', () => {

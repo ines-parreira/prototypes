@@ -12,21 +12,20 @@ import thunk from 'redux-thunk'
 
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsStateWithShopify } from 'fixtures/integrations'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types'
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
-import useHelpCenterOfShop from '../../../../hooks/useHelpCenterOfShop'
-import GorgiasChatCreationWizardStepAutomate from '../GorgiasChatCreationWizardStepAutomate'
+import { useHelpCenterOfShop } from '../../../../hooks/useHelpCenterOfShop'
+import { GorgiasChatCreationWizardStepAutomate } from '../GorgiasChatCreationWizardStepAutomate'
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 
 jest.mock('hooks/useAppDispatch')
 
@@ -76,10 +75,12 @@ jest.mock('models/selfServiceConfiguration/queries', () => ({
     })),
 }))
 jest.mock('../../../../hooks/useHelpCenterOfShop', () => {
-    return jest.fn(() => ({
-        helpCenters: [],
-        isLoadingHelpCenters: false,
-    }))
+    return {
+        useHelpCenterOfShop: jest.fn(() => ({
+            helpCenters: [],
+            isLoadingHelpCenters: false,
+        })),
+    }
 })
 const mockUseGetSelfServiceConfiguration =
     useGetSelfServiceConfiguration as jest.MockedFunction<

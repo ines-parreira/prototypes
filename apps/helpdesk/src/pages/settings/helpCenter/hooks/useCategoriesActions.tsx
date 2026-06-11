@@ -2,8 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { reportError } from '@repo/logging'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     CreateCategoryDto,
     CreateCategoryTranslationDto,
@@ -29,7 +29,7 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import type { CategoriesPositionsType } from '../components/CategoriesTable'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../constants'
 import { getCategoriesToUpdate } from '../utils/getCategoriesToUpdate'
-import useCurrentHelpCenter from './useCurrentHelpCenter'
+import { useCurrentHelpCenter } from './useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'
 
 export const useCategoriesActions = () => {

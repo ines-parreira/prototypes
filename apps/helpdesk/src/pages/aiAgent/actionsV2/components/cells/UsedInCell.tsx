@@ -133,4 +133,4 @@ const UsedInCell = ({ action, shopName }: Props) => {
     )
 }
 
-export default UsedInCell
+export { UsedInCell }

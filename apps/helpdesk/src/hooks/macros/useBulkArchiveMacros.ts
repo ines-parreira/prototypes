@@ -6,7 +6,7 @@ import {
     useBulkArchiveMacros as useBulkArchiveMacrosPrimitive,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

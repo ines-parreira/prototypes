@@ -66,4 +66,4 @@ const UnsavedChangesModal = ({
     )
 }
 
-export default UnsavedChangesModal
+export { UnsavedChangesModal }

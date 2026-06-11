@@ -22,4 +22,4 @@ const AIArticlesLibraryListReviewedState = () => {
     )
 }
 
-export default AIArticlesLibraryListReviewedState
+export { AIArticlesLibraryListReviewedState }

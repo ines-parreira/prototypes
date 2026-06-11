@@ -8,7 +8,7 @@ import { deleteVoiceQueue } from '@gorgias/helpdesk-client'
 import { voiceQueue } from 'fixtures/voiceQueue'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceQueueDelete from '../VoiceQueueDelete'
+import { VoiceQueueDelete } from '../VoiceQueueDelete'
 
 jest.mock('@gorgias/helpdesk-client', () => ({
     deleteVoiceQueue: jest.fn(() => ({

@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { LegacyButton as Button, Separator } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
@@ -16,12 +16,12 @@ import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration
 import { DetectedOpportunitiesBanner } from 'pages/aiAgent/opportunities/components/DetectedOpportunitiesBanner/DetectedOpportunitiesBanner'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
-import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
-import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
+import { AutoSaveBadge } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
+import { CreateKnowledgeSection } from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
-import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
+import { KnowledgeSourceFeedback } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
-import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
+import { MissingKnowledgeSelect } from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
 import type {
     AiAgentBinaryFeedbackEnum,
     KnowledgeResource,
@@ -31,7 +31,7 @@ import {
     AiAgentKnowledgeResourceTypeEnum,
     AutoSaveState,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import { useGoToNextTicket } from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import { useIsEvoliTicket } from 'pages/tickets/detail/hooks/useIsEvoliTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
@@ -535,4 +535,4 @@ const AIAgentSimplifiedFeedback = () => {
     )
 }
 
-export default AIAgentSimplifiedFeedback
+export { AIAgentSimplifiedFeedback }

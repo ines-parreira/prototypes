@@ -8,18 +8,20 @@ import {
     getAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-client'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceCall } from 'models/voiceCall/types'
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 
-import useWrapUpTime from '../useWrapUpTime'
+import { useWrapUpTime } from '../useWrapUpTime'
 
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('services/socketManager', () => ({
-    registerReceivedEvents: jest.fn(),
-    unregisterReceivedEvents: jest.fn(),
+    socketManager: {
+        registerReceivedEvents: jest.fn(),
+        unregisterReceivedEvents: jest.fn(),
+    },
 }))
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

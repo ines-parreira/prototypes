@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import { getIntegrationById } from 'state/integrations/selectors'
 
@@ -18,4 +18,4 @@ function VoiceIntegrationBasicLabel({ integrationId, phoneNumber }: Props) {
     return <>{integrationName}</>
 }
 
-export default VoiceIntegrationBasicLabel
+export { VoiceIntegrationBasicLabel }

@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
-import CampaignStateBadge from './CampaignStateBadge'
+import { CampaignStateBadge } from './CampaignStateBadge'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),

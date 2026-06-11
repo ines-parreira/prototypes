@@ -4,7 +4,7 @@ import { List, Map } from 'immutable'
 
 import { MacroActionName } from 'models/macroAction/types'
 
-import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
+import { MacroMessageActionsHeader } from '../MacroMessageActionsHeader'
 
 const onSelect = jest.fn()
 

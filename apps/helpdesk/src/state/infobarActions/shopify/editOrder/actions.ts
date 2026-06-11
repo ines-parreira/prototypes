@@ -13,7 +13,7 @@ import {
 } from 'business/shopify/draftOrder'
 import type { Product, Variant } from 'constants/integrations/types/shopify'
 import { EditOrderAction } from 'constants/integrations/types/shopify'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'

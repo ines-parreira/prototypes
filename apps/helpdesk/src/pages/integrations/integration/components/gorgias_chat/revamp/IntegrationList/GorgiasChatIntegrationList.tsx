@@ -6,7 +6,7 @@ import type { List, Map } from 'immutable'
 import { Button, Heading, Text } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { ChatIntegrationsTable } from './components/ChatIntegrationsTable/ChatIntegrationsTable'

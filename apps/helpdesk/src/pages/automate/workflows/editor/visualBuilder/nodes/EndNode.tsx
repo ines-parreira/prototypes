@@ -13,9 +13,9 @@ import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useV
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import EdgeBlock from '../components/EdgeBlock'
-import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeIconContent from './VisualBuilderNodeIconContent'
+import { EdgeBlock } from '../components/EdgeBlock'
+import { VisualBuilderNode } from './VisualBuilderNode'
+import { VisualBuilderNodeIconContent } from './VisualBuilderNodeIconContent'
 
 type Props = VisualBuilderNodeProps & {
     action: EndNodeType['data']['action']
@@ -50,7 +50,7 @@ const EndNode = memo(function EndNode({
     )
 })
 
-export default function EndNodeWrapper(node: NodeProps<EndNodeType>) {
+export function EndNodeWrapper(node: NodeProps<EndNodeType>) {
     const commonProps = useVisualBuilderNodeProps(node)
 
     const { visualBuilderGraph } = useVisualBuilderContext()

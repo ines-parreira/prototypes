@@ -47,4 +47,4 @@ const FeedbackCreateResource: React.FC<Props> = ({
     )
 }
 
-export default FeedbackCreateResource
+export { FeedbackCreateResource }

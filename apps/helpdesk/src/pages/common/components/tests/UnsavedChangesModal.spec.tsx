@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import UnsavedChangesModal from '../UnsavedChangesModal'
+import { UnsavedChangesModal } from '../UnsavedChangesModal'
 
 describe('UnsavedChangesModal', () => {
     const defaultProps = {

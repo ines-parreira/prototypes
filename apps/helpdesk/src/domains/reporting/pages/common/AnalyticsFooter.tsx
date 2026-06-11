@@ -2,7 +2,7 @@ import classnames from 'classnames'
 
 import css from 'domains/reporting/pages/common/AnalyticsFooter.less'
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import { getTimezone } from 'state/currentUser/selectors'
 

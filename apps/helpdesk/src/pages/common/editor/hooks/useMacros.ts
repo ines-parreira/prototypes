@@ -6,7 +6,7 @@ type Options = {
     initialFilters: MacrosProperties
 }
 
-export default function useMacros({ initialFilters }: Options) {
+export function useMacros({ initialFilters }: Options) {
     const [filters, setFilters] = useState<MacrosProperties>(
         initialFilters || {},
     )

@@ -10,7 +10,7 @@ import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import SmsIntegrationCreate from '../SmsIntegrationCreate'
+import { SmsIntegrationCreate } from '../SmsIntegrationCreate'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({

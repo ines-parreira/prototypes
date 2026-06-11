@@ -10,11 +10,7 @@ type Props = HTMLProps<HTMLTableSectionElement> & {
     className?: string
 }
 
-export default function TableHead({
-    children,
-    className,
-    ...otherProps
-}: Props) {
+export function TableHead({ children, className, ...otherProps }: Props) {
     return (
         <thead {...otherProps} className={classnames(className)}>
             <tr className={css.headerRow}>{children}</tr>

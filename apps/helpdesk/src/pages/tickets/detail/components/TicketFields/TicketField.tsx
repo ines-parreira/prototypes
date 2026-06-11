@@ -3,10 +3,10 @@ import { memo } from 'react'
 import type { CustomField, CustomFieldState } from 'custom-fields/types'
 import { isCustomFieldSystemReadOnly } from 'custom-fields/types'
 import type { Props as NumberFieldProps } from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
-import NumberField from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
+import { NumberField } from 'pages/tickets/detail/components/TicketFields/components/fields/NumberField'
 
-import DropdownField from './components/fields/DropdownField'
-import TextField from './components/fields/TextField'
+import { DropdownField } from './components/fields/DropdownField'
+import { TextField } from './components/fields/TextField'
 
 type Props = {
     fieldDefinition: CustomField
@@ -62,4 +62,6 @@ function TicketField({ fieldDefinition, fieldState, isRequired }: Props) {
     return <div>Coming soon</div>
 }
 
-export default memo(TicketField)
+const DefaultExportTicketField = memo(TicketField)
+
+export { DefaultExportTicketField }

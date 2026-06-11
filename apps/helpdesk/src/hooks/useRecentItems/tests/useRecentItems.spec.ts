@@ -3,7 +3,7 @@ import { flushPromises, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
-import useRecentItems from 'hooks/useRecentItems/useRecentItems'
+import { useRecentItems } from 'hooks/useRecentItems/useRecentItems'
 
 const mockSetItem = jest.fn().mockResolvedValue(true)
 const mockObserveTableUnsubscribe = jest.fn()

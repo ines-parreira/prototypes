@@ -3,22 +3,22 @@ import { useCallback } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import AIAgentFeedbackBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
-import AIAgentSimplifiedFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'
-import useAiAgentMessageFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { AIAgentFeedbackBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentFeedbackBar'
+import { AIAgentSimplifiedFeedback } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback'
+import { useAiAgentMessageFeedback } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useAiAgentMessageFeedback'
 import { getTicketState } from 'state/ticket/selectors'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
-import TicketListInfo from 'ticket-list-view/components/TicketListInfo'
+import { TicketListInfo } from 'ticket-list-view/components/TicketListInfo'
 
-import useHasAIAgent from './hooks/useHasAIAgent'
+import { useHasAIAgent } from './hooks/useHasAIAgent'
 
 import css from './TicketFeedback.less'
 
-export default function TicketFeedback() {
+export function TicketFeedback() {
     const dispatch = useAppDispatch()
     const hasAIAgent = useHasAIAgent()
     const hasAgentPrivileges = useHasAgentPrivileges()

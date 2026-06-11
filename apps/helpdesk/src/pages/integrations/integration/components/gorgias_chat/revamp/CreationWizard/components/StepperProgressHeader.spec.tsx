@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import Wizard, { WizardContext } from 'pages/common/components/wizard/Wizard'
+import { Wizard, WizardContext } from 'pages/common/components/wizard/Wizard'
 
 import { StepperProgressHeader } from './StepperProgressHeader'
 

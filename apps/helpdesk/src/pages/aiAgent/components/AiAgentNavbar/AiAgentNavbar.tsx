@@ -1,5 +1,5 @@
 import { ActiveContent, Navbar } from 'common/navigation'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { PostOnboardingUserNudges } from 'pages/aiAgent/Overview/components/PostOnboardingUserNudges/PostOnboardingUserNudges'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 

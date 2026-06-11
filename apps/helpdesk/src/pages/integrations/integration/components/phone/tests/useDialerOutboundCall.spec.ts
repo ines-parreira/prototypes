@@ -5,10 +5,12 @@ import type { PhoneIntegration } from 'models/integration/types'
 import * as userSelectors from 'state/currentUser/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
 
-import useDialerOutboundCall from '../useDialerOutboundCall'
-import usePhoneNumbers from '../usePhoneNumbers'
+import { useDialerOutboundCall } from '../useDialerOutboundCall'
+import { usePhoneNumbers } from '../usePhoneNumbers'
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 jest.mock('hooks/integrations/phone/useOutboundCall')
 jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
 jest.mock('libphonenumber-js', () => ({

@@ -9,8 +9,8 @@ import { createBrowserHistory } from 'history'
 import { Router } from 'react-router-dom'
 
 import { mockSearchRank } from 'fixtures/searchRank'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import { SpotlightRow } from 'pages/common/components/Spotlight/SpotlightRow'
 
 describe('<SpotlightRow/>', () => {
     const mockOnClose = jest.fn()

@@ -10,7 +10,7 @@ import { ConnectedChannelsEmptyView } from '../components/ConnectedChannelsEmpty
 
 jest.mock('pages/automate/common/components/AutomatePaywallView', () => ({
     __esModule: true,
-    default: ({ customCta }: { customCta: React.ReactNode }) => (
+    AutomatePaywallView: ({ customCta }: { customCta: React.ReactNode }) => (
         <div>{customCta}</div>
     ),
 }))

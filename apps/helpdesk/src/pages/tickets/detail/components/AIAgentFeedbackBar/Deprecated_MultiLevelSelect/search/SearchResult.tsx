@@ -1,4 +1,4 @@
-import CheckIcon from '../CheckIcon'
+import { CheckIcon } from '../CheckIcon'
 
 import dropdownCss from '../Deprecated_MultiLevelSelect.less'
 import searchCss from './search.less'

@@ -6,7 +6,7 @@ import type { VirtuosoHandle } from 'react-virtuoso'
 
 import type { TicketCompact } from 'ticket-list-view/types'
 
-import useScrollActiveTicketIntoView from '../useScrollActiveTicketIntoView'
+import { useScrollActiveTicketIntoView } from '../useScrollActiveTicketIntoView'
 
 type HookParams = {
     ticketId: number | undefined

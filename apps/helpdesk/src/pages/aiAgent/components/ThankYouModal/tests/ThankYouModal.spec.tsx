@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ThankYouModal from '../ThankYouModal'
+import { ThankYouModal } from '../ThankYouModal'
 
 describe('ThankYouModal', () => {
     const titleTestLabel = 'Test Title'

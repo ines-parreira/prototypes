@@ -6,7 +6,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import EmailIntegrationConnectForm from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
+import { EmailIntegrationConnectForm } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm'
 import type { UseEmailOnboardingHookResult } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import {
     EmailIntegrationOnboardingStep,
@@ -79,8 +79,11 @@ jest.mock(
 )
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons',
-    () =>
-        ({ integration, cancelCallback }: any) => (
+    () => ({
+        EmailIntegrationOnboardingButtons: ({
+            integration,
+            cancelCallback,
+        }: any) => (
             <div className="buttons">
                 <div>
                     <button type="button" onClick={cancelCallback}>
@@ -95,12 +98,14 @@ jest.mock(
                 )}
             </div>
         ),
+    }),
 )
 jest.mock(
     'pages/integrations/integration/components/email/components/EmailGenericModal',
-    () =>
-        ({ children, ...props }: any) =>
+    () => ({
+        EmailGenericModal: ({ children, ...props }: any) =>
             props.showModal ? <div>EmailGenericModal {children}</div> : null,
+    }),
 )
 
 const defaultHookResult: UseEmailOnboardingHookResult = {

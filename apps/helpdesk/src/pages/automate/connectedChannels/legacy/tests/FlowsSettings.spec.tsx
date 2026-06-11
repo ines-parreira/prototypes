@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
-import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 
 import { FlowsSettings } from '../components/FlowsSettings'
 

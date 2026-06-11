@@ -2,12 +2,12 @@ import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import MessageContent from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
+import { MessageContent } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import useOrderDates from './hooks/useOrderDates'
+import { useOrderDates } from './hooks/useOrderDates'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 type Props = {
@@ -69,4 +69,4 @@ const SelfServiceChatIntegrationCancelPage = ({ integration }: Props) => {
     )
 }
 
-export default SelfServiceChatIntegrationCancelPage
+export { SelfServiceChatIntegrationCancelPage }

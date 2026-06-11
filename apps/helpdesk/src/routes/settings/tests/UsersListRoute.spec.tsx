@@ -20,15 +20,16 @@ jest.mock('@repo/users', () => ({
 }))
 jest.mock('pages/Page', () => ({
     __esModule: true,
-    default: (props: { children: React.ReactNode }) => mockPage(props),
+    DefaultExportPage: (props: { children: React.ReactNode }) =>
+        mockPage(props),
 }))
 jest.mock('pages/common/utils/withUserRoleRequired', () => ({
     __esModule: true,
-    default: (Component: unknown) => Component,
+    memoizedWithUserRoleRequired: (Component: unknown) => Component,
 }))
 jest.mock('pages/settings/common/SettingsNavbar/SettingsNavbar', () => ({
     __esModule: true,
-    default: () => null,
+    SettingsNavbar: () => null,
 }))
 jest.mock('../helpers/settingsRenderer', () => ({
     renderAppSettings: jest.fn(() => <div>legacy users list</div>),

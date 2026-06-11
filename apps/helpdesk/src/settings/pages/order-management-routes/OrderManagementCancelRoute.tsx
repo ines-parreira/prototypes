@@ -4,10 +4,10 @@ import type { StaticContext } from 'react-router'
 import type { RouteComponentProps } from 'react-router-dom'
 
 import { AGENT_ROLE } from 'config/user'
-import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
-import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
+import { SelfServiceContactFormsProvider } from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
+import { SelfServiceHelpCentersProvider } from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
 import { CancelOrderFlowViewContainer } from 'pages/automate/orderManagement/CancelOrderFlowViewContainer'
-import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
+import { memoizedWithUserRoleRequired as withUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
 
 type OrderManagementCancelRouteProps = RouteComponentProps<
     {

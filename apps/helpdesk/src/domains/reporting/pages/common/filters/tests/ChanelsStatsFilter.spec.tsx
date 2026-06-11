@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import DEPRECATED_ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
+import { DEPRECATED_ChannelsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
 import {
     initialState,
     mergeStatsFilters,

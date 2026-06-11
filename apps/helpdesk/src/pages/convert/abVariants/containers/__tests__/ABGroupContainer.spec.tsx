@@ -14,7 +14,7 @@ import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ABGroupContainer from '../ABGroupContainer'
+import { ABGroupContainer } from '../ABGroupContainer'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),

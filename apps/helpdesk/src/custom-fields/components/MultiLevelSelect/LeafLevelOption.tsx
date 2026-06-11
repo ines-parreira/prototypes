@@ -5,9 +5,9 @@ import type {
     CustomFieldPrediction,
     CustomFieldValue,
 } from 'custom-fields/types'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
-import CheckIcon from './CheckIcon'
+import { CheckIcon } from './CheckIcon'
 import { isMultiValueAllowed } from './helpers/isMultiValue'
 
 import css from './MultiLevelSelect.less'

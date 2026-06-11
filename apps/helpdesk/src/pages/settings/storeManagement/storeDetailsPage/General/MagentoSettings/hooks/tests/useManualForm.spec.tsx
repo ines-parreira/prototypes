@@ -4,7 +4,7 @@ import { act } from '@testing-library/react'
 import type { Magento2Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
-import useStoreUpdater from '../../../../General/hooks/useStoreUpdater'
+import { useStoreUpdater } from '../../../../General/hooks/useStoreUpdater'
 import { useManualForm } from '../useManualForm'
 
 jest.mock('../../../../General/hooks/useStoreUpdater')

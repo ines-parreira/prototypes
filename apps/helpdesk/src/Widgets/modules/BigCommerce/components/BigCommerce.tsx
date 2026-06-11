@@ -1,7 +1,7 @@
 import { customerCustomization } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Customer'
 import { orderCustomization } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderWidget'
 import { shippingCustomization } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/Shipping'
-import Template from 'Widgets/modules/Template'
+import { Template } from 'Widgets/modules/Template'
 import { CustomizationContext } from 'Widgets/modules/Template/contexts/CustomizationContext'
 import type { TemplateCustomization } from 'Widgets/modules/Template/types'
 import type { WidgetProps } from 'Widgets/modules/Widget'
@@ -25,7 +25,7 @@ export const customization: TemplateCustomization = {
     ],
 }
 
-export default function BigCommerceWidget(props: WidgetProps) {
+export function BigCommerceWidget(props: WidgetProps) {
     // You can set as much contexts as you want here
     return (
         <CustomizationContext.Provider value={customization}>

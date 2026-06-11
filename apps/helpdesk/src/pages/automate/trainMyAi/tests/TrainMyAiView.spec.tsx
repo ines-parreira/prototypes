@@ -20,22 +20,22 @@ import {
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import useHelpCenterArticleTree from 'pages/automate/trainMyAi/hooks/useHelpCenterArticleTree'
-import useUpdateArticleRecommendationPrediction from 'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useHelpCenterArticleTree } from 'pages/automate/trainMyAi/hooks/useHelpCenterArticleTree'
+import { useUpdateArticleRecommendationPrediction } from 'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ARTICLE_RECOMMENDATION } from '../../common/components/constants'
-import TrainMyAiView from '../TrainMyAiView'
+import { TrainMyAiView } from '../TrainMyAiView'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('pages/automate/trainMyAi/hooks/useHelpCenterArticleTree')

@@ -7,7 +7,7 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useCollectionsFromShopifyIntegration } from 'models/integration/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import CollectionSelector from '../CollectionSelector'
+import { CollectionSelector } from '../CollectionSelector'
 
 jest.mock('models/integration/queries')
 

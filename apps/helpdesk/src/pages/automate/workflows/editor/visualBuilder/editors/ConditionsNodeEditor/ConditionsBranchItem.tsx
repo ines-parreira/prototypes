@@ -3,10 +3,10 @@ import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
 import { useAccordionItemContext } from 'pages/common/components/accordion/AccordionItemContext'
-import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { SortableAccordionHeader } from 'pages/common/components/accordion/SortableAccordionHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import { ConditionsBranchBody } from './ConditionsBranchBody'
 

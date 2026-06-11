@@ -10,7 +10,7 @@ import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-manage
 import { AutoQAReportConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 import { SupportPerformanceSatisfactionReportConfig } from 'domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfactionReportConfig'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { BASE_VOICE_OF_CUSTOMER_PATH } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'

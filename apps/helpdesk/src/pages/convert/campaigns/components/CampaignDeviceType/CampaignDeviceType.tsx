@@ -1,4 +1,4 @@
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
 import { DEVICE_TYPE_VALUES } from 'pages/convert/campaigns/constants/triggerValueLabels'
 import type { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'

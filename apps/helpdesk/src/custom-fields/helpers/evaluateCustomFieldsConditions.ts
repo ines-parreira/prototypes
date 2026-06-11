@@ -13,7 +13,7 @@ import type {
     CustomFieldObjectTypes,
 } from 'custom-fields/types'
 
-import resolveTicketPropertyValue from './resolveTicketPropertyValue'
+import { resolveTicketPropertyValue } from './resolveTicketPropertyValue'
 
 type PropertyResolver = (
     _: any,

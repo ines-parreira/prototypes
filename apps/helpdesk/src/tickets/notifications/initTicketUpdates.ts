@@ -1,8 +1,8 @@
 import { registerCategory, registerNotification } from 'common/notifications'
 
-import MessageFailedNotification from './components/MessageFailedNotification'
-import TicketNotification from './components/TicketNotification'
-import UserMentionedNotification from './components/UserMentionedNotification'
+import { MessageFailedNotification } from './components/MessageFailedNotification'
+import { TicketNotification } from './components/TicketNotification'
+import { UserMentionedNotification } from './components/UserMentionedNotification'
 import type { TicketPayload } from './types'
 
 registerCategory({

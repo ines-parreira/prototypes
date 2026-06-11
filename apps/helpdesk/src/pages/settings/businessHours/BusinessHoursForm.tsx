@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import { Input } from 'reactstrap'
 
 import { THEME_NAME, useTheme } from 'core/theme'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import type { BusinessHour } from 'state/currentAccount/types'
 
@@ -54,4 +54,4 @@ const BusinessHoursForm = ({ businessHour, onChange }: Props) => {
     )
 }
 
-export default BusinessHoursForm
+export { BusinessHoursForm }

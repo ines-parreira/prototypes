@@ -4,10 +4,10 @@ import { Duration } from '@gorgias/toolkit'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
-import CollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/CollapsibleDetails'
+import { CollapsibleDetails } from 'pages/tickets/detail/components/TicketVoiceCall/CollapsibleDetails'
 
-import EditQueueModal from './EditQueueModal'
-import SummaryBlock from './SummaryBlock'
+import { EditQueueModal } from './EditQueueModal'
+import { SummaryBlock } from './SummaryBlock'
 import { getVoiceQueueSummaryData } from './utils'
 
 import css from './VoiceQueueSummary.less'
@@ -91,4 +91,4 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
     )
 }
 
-export default VoiceQueueSummary
+export { VoiceQueueSummary }

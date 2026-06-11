@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import TableBody from '../TableBody'
-import TableBodyRow from '../TableBodyRow'
-import TableWrapper from '../TableWrapper'
-import BodyCell from './BodyCell'
+import { DefaultExportTableBody as TableBody } from '../TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from '../TableBodyRow'
+import { TableWrapper } from '../TableWrapper'
+import { BodyCell } from './BodyCell'
 
 const storyConfig: Meta = {
     title: 'General/Table/Body Cell',

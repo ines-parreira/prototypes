@@ -8,9 +8,9 @@ import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashb
 import { useDownloadDashboardData } from 'domains/reporting/hooks/dashboards/useDownloadDashboardData'
 import css from 'domains/reporting/pages/dashboards/DashboardsPageActions.less'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 
 export const DOWNLOAD_REPORT_LABEL = 'Download Data'

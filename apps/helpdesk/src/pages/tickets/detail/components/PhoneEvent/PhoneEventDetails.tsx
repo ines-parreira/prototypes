@@ -11,7 +11,7 @@ type PhoneEventDetailsProps = {
     event: Map<string, any>
 }
 
-export default function PhoneEventDetails({
+export function PhoneEventDetails({
     event,
 }: PhoneEventDetailsProps): JSX.Element {
     const eventType = event.get('type')

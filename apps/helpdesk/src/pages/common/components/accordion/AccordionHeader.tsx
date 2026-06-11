@@ -60,4 +60,4 @@ const AccordionHeader = ({
     )
 }
 
-export default AccordionHeader
+export { AccordionHeader }

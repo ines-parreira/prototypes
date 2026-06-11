@@ -9,10 +9,10 @@ import thunk from 'redux-thunk'
 import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
 import { user as agentUserFixture } from 'fixtures/users'
 import { view as viewFixture } from 'fixtures/views'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
 import { TicketNavbarView } from '../TicketNavbarView'
@@ -32,19 +32,21 @@ jest.mock('react-dnd', () => ({
 const useDragMock = useDrag as jest.Mock
 
 // Mock nested components
-jest.mock('../TicketNavbarDropTarget', () =>
-    jest.fn(({ children }) => children),
-)
+jest.mock('../TicketNavbarDropTarget', () => ({
+    TicketNavbarDropTarget: jest.fn(({ children }) => children),
+}))
 const TicketNavbarDropTargetMock =
     TicketNavbarDropTarget as jest.Mock<JSX.Element>
 
-jest.mock('../TicketNavbarViewLink', () =>
-    jest.fn(({ view, viewCount, className }) => (
-        <div data-testid="TicketNavbarViewLink" className={className}>
-            {view.name} - {viewCount}
-        </div>
-    )),
-)
+jest.mock('../TicketNavbarViewLink', () => ({
+    DefaultExportTicketNavbarViewLink: jest.fn(
+        ({ view, viewCount, className }) => (
+            <div data-testid="TicketNavbarViewLink" className={className}>
+                {view.name} - {viewCount}
+            </div>
+        ),
+    ),
+}))
 // --- Test Setup ---
 
 const defaultView: View = {

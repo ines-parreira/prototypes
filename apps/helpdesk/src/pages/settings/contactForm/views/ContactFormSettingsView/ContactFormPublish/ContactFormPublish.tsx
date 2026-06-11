@@ -11,13 +11,13 @@ import {
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import BackLink from 'pages/common/components/BackLink'
-import useClipboard from 'pages/common/hooks/useClipboard'
+import { BackLink } from 'pages/common/components/BackLink'
+import { useClipboard } from 'pages/common/hooks/useClipboard'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { ContactFormAutoEmbedReadinessStatus } from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
 import type { ContactFormIntegrationWarningBannerProps } from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
-import ContactFormIntegrationWarningBanner from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
-import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
+import { ContactFormIntegrationWarningBanner } from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
+import { ContactFormManualEmbedCard } from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
 import {
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
     CONTACT_FORM_PUBLISH_PATH,
@@ -27,11 +27,11 @@ import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurre
 import { useIsShopifyCredentialsWorking } from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import { useGetPageEmbedments } from 'pages/settings/contactForm/queries'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
-import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
+import { ManageEmbedments } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import settingsCss from 'pages/settings/settings.less'
 
-import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
-import ContactFormMailtoReplacementSection from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
+import { ContactFormAutoEmbedPublishSection } from '../../../components/ContactFormAutoEmbedPublishSection'
+import { ContactFormMailtoReplacementSection } from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
 
 const getBannerDetails = ({
     integrationId,
@@ -203,4 +203,4 @@ const ContactFormPublish = (): JSX.Element => {
     )
 }
 
-export default ContactFormPublish
+export { ContactFormPublish }

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
-import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingBreadcrumbs'
+import { EmailIntegrationOnboardingBreadcrumbs } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingBreadcrumbs'
 
 describe('EmailIntegrationOnboardingBreadcrumbs', () => {
     it('renders the breadcrumb items correctly without integration and not forced onboarding', () => {

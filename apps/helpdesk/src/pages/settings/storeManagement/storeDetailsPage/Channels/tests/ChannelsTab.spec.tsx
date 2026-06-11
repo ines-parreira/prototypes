@@ -6,7 +6,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { mockStoresWithAssignedChannels } from '../../../fixtures'
 import { StoreManagementProvider } from '../../../StoreManagementProvider'
-import ChannelsTab from '../ChannelsTab'
+import { ChannelsTab } from '../ChannelsTab'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)

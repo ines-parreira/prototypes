@@ -21,10 +21,10 @@ import {
 import type { Macro } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { MacroActionName } from 'models/macroAction/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
@@ -267,5 +267,3 @@ export function TicketSubmitButtons({ submit }: Props) {
         </div>
     )
 }
-
-export default TicketSubmitButtons

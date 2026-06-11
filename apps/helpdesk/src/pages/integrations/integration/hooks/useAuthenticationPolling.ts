@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { useHistory } from 'react-router-dom'
 
 import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { IntegrationType } from 'models/integration/constants'
 import {
     fetchIntegration,
@@ -13,9 +13,7 @@ import {
 } from 'state/integrations/actions'
 
 // Ping the integration until the authentication process is done
-export default function useAuthenticationPolling(
-    integration: Map<string, unknown>,
-) {
+export function useAuthenticationPolling(integration: Map<string, unknown>) {
     const isAuthenticationPending =
         integration.getIn(['meta', 'oauth', 'status']) ===
         PENDING_AUTHENTICATION_STATUS

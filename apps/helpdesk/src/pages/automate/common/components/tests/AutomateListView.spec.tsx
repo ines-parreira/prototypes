@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import AutomateListView from '../AutomateListView'
+import { AutomateListView } from '../AutomateListView'
 
 describe('<AutomateListView />', () => {
     it('should render list view with header, secondary navbar and content', () => {

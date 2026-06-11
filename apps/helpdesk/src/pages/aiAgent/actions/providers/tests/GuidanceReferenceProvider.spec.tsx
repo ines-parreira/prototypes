@@ -5,8 +5,8 @@ import type { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledg
 
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 
-import GuidanceReferenceContext from '../GuidanceReferenceContext'
-import GuidanceReferenceProvider, { select } from '../GuidanceReferenceProvider'
+import { GuidanceReferenceContext } from '../GuidanceReferenceContext'
+import { GuidanceReferenceProvider, select } from '../GuidanceReferenceProvider'
 
 jest.mock('models/knowledgeService/queries')
 

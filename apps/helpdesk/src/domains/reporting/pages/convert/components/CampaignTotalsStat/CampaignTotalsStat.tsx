@@ -1,4 +1,4 @@
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,

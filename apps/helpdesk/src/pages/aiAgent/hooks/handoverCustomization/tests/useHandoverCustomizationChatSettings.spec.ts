@@ -13,7 +13,7 @@ import {
     getFirstAvailableChat,
 } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatSettingsComponent.utils'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import {
     HandoverCustomizationFormType,

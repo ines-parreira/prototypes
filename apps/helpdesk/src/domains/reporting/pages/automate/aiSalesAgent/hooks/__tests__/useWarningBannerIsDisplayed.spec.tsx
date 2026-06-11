@@ -6,7 +6,7 @@ import { Router } from 'react-router-dom'
 import { UserRole } from 'config/types/user'
 import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 import { user } from 'fixtures/users'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 
 jest.mock('hooks/useAppSelector')

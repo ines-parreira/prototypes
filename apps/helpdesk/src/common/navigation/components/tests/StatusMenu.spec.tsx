@@ -7,10 +7,10 @@ import { useUpdateUserAvailability, useUserAvailability } from '@repo/users'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 
-import StatusMenu from '../StatusMenu'
+import { StatusMenu } from '../StatusMenu'
 
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
@@ -38,12 +38,12 @@ const isGorgiasApiErrorMock = assumeMock(isGorgiasApiError)
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 123),
+    useAppSelector: jest.fn(() => 123),
 }))
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(() => jest.fn()),
+    useAppDispatch: jest.fn(() => jest.fn()),
 }))
 
 jest.mock('state/notifications/actions', () => ({

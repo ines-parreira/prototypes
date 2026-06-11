@@ -5,7 +5,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
 import { useListActionsApps } from 'models/workflows/queries'
 
-import useApps from '../useApps'
+import { useApps } from '../useApps'
 
 jest.mock('models/integration/queries')
 jest.mock('models/workflows/queries')

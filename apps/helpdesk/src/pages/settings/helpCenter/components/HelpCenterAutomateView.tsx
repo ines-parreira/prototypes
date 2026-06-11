@@ -1,7 +1,7 @@
 import { ConnectedChannelsHelpCenterView } from 'pages/automate/connectedChannels/legacy/components/ConnectedChannelsHelpCenterView'
 
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
+import { HelpCenterPageWrapper } from './HelpCenterPageWrapper'
 
 import css from './HelpCenterAutomateView.less'
 

@@ -1,4 +1,4 @@
-export { default } from './components/AlertBanners'
+export { DefaultExportAlertBanners } from './components/AlertBanners'
 export { BannersContextProvider } from './Context'
 export { useBanners } from './hooks/useBanners'
 export type { AlertBannerProps } from './components/AlertBanner'

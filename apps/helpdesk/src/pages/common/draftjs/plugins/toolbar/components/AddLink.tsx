@@ -31,17 +31,17 @@ import { connect } from 'react-redux'
 import { Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
+import { DefaultExportTextInputWithVariables as TextInputWithVariables } from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import { ModalContext } from 'pages/common/components/modal/Modal'
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import { TabNavigator } from 'pages/common/components/TabNavigator/TabNavigator'
 import {
     addVideo,
     linkifyWithTemplate,
     removeLink,
 } from 'pages/common/draftjs/plugins/utils'
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import type { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
@@ -58,9 +58,9 @@ import { ToolbarContext, withToolbarContext } from '../ToolbarContext'
 import type { ActionInjectedProps } from '../types'
 import { ActionName } from '../types'
 import { getTooltipTourConfiguration } from '../utils'
-import AddUtm from './AddUtm'
-import ToolbarButton from './Button'
-import TourTooltip from './TourTooltip'
+import { AddUtm } from './AddUtm'
+import { DefaultExportButton as ToolbarButton } from './Button'
+import { TourTooltip } from './TourTooltip'
 
 import css from './AddLink.less'
 
@@ -837,4 +837,8 @@ function withAddLinkFlags<P extends { flags?: FeatureFlagsMap }>(
     }
 }
 
-export default connector(withToolbarContext(withAddLinkFlags(AddLinkContainer)))
+const DefaultExportAddLink = connector(
+    withToolbarContext(withAddLinkFlags(AddLinkContainer)),
+)
+
+export { DefaultExportAddLink }

@@ -3,35 +3,39 @@ import type React from 'react'
 import { render } from '@repo/testing'
 import { useParams } from 'react-router-dom'
 
-import TicketWrapper from '../TicketWrapper'
-import useSplitTicketCloseNavigation from '../useSplitTicketCloseNavigation'
+import { TicketWrapper } from '../TicketWrapper'
+import { useSplitTicketCloseNavigation } from '../useSplitTicketCloseNavigation'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
 
-jest.mock('../useSplitTicketCloseNavigation', () => jest.fn())
+jest.mock('../useSplitTicketCloseNavigation', () => ({
+    useSplitTicketCloseNavigation: jest.fn(),
+}))
 
-jest.mock('pages/tickets/detail/TicketDetailContainer', () =>
-    jest.fn(({ onGoToNextTicket, onToggleUnread }) => (
-        <div data-testid="ticket-detail-container">
-            {onGoToNextTicket && (
-                <>
-                    <button onClick={onGoToNextTicket}>
-                        Go to next ticket
+jest.mock('pages/tickets/detail/TicketDetailContainer', () => ({
+    DefaultExportTicketDetailContainer: jest.fn(
+        ({ onGoToNextTicket, onToggleUnread }) => (
+            <div data-testid="ticket-detail-container">
+                {onGoToNextTicket && (
+                    <>
+                        <button onClick={onGoToNextTicket}>
+                            Go to next ticket
+                        </button>
+                        <button onClick={onGoToNextTicket}>Send & Close</button>
+                    </>
+                )}
+                {onToggleUnread && (
+                    <button onClick={() => onToggleUnread('123', true)}>
+                        Toggle unread
                     </button>
-                    <button onClick={onGoToNextTicket}>Send & Close</button>
-                </>
-            )}
-            {onToggleUnread && (
-                <button onClick={() => onToggleUnread('123', true)}>
-                    Toggle unread
-                </button>
-            )}
-        </div>
-    )),
-)
+                )}
+            </div>
+        ),
+    ),
+}))
 
 jest.mock('providers/OutboundTranslationProvider', () => ({
     OutboundTranslationProvider: ({

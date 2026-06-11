@@ -4,10 +4,10 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import AccordionBody from '../AccordionBody'
-import SortableAccordion from '../SortableAccordion'
-import SortableAccordionHeader from '../SortableAccordionHeader'
-import SortableAccordionItem from '../SortableAccordionItem'
+import { AccordionBody } from '../AccordionBody'
+import { SortableAccordion } from '../SortableAccordion'
+import { SortableAccordionHeader } from '../SortableAccordionHeader'
+import { SortableAccordionItem } from '../SortableAccordionItem'
 
 describe('<SortableAccordion />', () => {
     it('should render sortable accordion component', () => {

@@ -24,7 +24,7 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { ViewVisibility } from 'models/view/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 
 jest.mock('@repo/api-resources', () => {
     const axios = jest.requireActual('axios').default

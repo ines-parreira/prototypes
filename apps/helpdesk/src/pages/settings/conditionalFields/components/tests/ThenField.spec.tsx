@@ -14,7 +14,7 @@ import {
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 
-import ThenField from '../ThenField'
+import { DefaultExportThenField as ThenField } from '../ThenField'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)

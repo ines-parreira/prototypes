@@ -6,7 +6,7 @@ import { Button } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from '../../../../../business/types/ticket'
 import * as infobarActions from '../../../../../state/infobar/actions'
-import PrivateReplyButton from '../PrivateReplyButton'
+import { PrivateReplyButton } from '../PrivateReplyButton'
 
 const defaultProps = {
     integrationId: 1,

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import IconTooltip from '../IconTooltip'
+import { IconTooltip } from '../IconTooltip'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 

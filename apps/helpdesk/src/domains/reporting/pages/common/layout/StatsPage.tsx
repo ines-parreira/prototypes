@@ -6,10 +6,10 @@ import classNames from 'classnames'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import css from 'domains/reporting/pages/common/layout/StatsPage.less'
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
 import { NewAutomateStatsOptInBanner } from 'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner'
-import HeaderTitle from 'pages/common/components/HeaderTitle'
-import PageHeader from 'pages/common/components/PageHeader'
+import { HeaderTitle } from 'pages/common/components/HeaderTitle'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 export enum StatsPageBackgroundColor {
     Grey = 'grey',
@@ -87,7 +87,7 @@ type Props = {
  * See `apps/helpdesk/src/domains/reporting/pages/common/layout/AnalyticsPage.tsx`
  * Example usage: `apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentLayout.tsx`
  */
-export default function StatsPage({
+export function StatsPage({
     children,
     backgroundColor,
     titleExtra,

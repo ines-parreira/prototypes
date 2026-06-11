@@ -6,7 +6,7 @@ import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from '../../button/IconButton'
+import { IconButton } from '../../button/IconButton'
 
 import css from './IconButtonTooltip.less'
 
@@ -38,4 +38,9 @@ const LegacyIconButtonTooltip = (
     )
 }
 
-export default forwardRef<HTMLButtonElement, Props>(LegacyIconButtonTooltip)
+const DefaultExportLegacyIconButtonTooltip = forwardRef<
+    HTMLButtonElement,
+    Props
+>(LegacyIconButtonTooltip)
+
+export { DefaultExportLegacyIconButtonTooltip }

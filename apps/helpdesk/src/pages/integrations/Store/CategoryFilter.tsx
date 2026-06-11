@@ -2,10 +2,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { Category } from 'models/integration/types/app'
-import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
+import { ArrowLink } from 'pages/common/components/ArrowLink/ArrowLink'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import {
@@ -16,7 +16,7 @@ import {
 
 import css from './CategoryFilter.less'
 
-export default function CategoryFilter() {
+export function CategoryFilter() {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     const search = useSearch<{ [CATEGORY_URL_PARAM]: string }>()
     const activeCategory = search[CATEGORY_URL_PARAM]

@@ -69,4 +69,4 @@ const ArticleTemplateCard = ({
     )
 }
 
-export default ArticleTemplateCard
+export { ArticleTemplateCard }

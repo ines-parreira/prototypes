@@ -5,7 +5,7 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import DeleteCard from './DeleteCard'
+import { DeleteCard } from './DeleteCard'
 
 describe('DeleteCard', () => {
     const mockOnDeleteIntegration = jest.fn()

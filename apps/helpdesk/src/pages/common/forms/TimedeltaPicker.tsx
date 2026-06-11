@@ -17,8 +17,8 @@ import {
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
 } from 'config'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
 import css from './TimedeltaPicker.less'
 
@@ -127,4 +127,4 @@ const TimedeltaPicker = ({
     )
 }
 
-export default TimedeltaPicker
+export { TimedeltaPicker }

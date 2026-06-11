@@ -3,21 +3,22 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import get from 'lodash/get'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
 import type {
     Components,
     Paths,
 } from '../../../../rest_api/help_center_api/client.generated'
-import DropdownSearch from '../../../common/components/dropdown/DropdownSearch'
-import DropdownSection from '../../../common/components/dropdown/DropdownSection'
-import SelectInputBox, {
+import { DefaultExportDropdownSearch as DropdownSearch } from '../../../common/components/dropdown/DropdownSearch'
+import { DefaultExportDropdownSection as DropdownSection } from '../../../common/components/dropdown/DropdownSection'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'
-import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
+import { useHelpCenterArticleTree } from '../hooks/useHelpCenterArticleTree'
 
 import css from './ArticleSelect.less'
 
@@ -275,4 +276,4 @@ const ArticleSelect = ({
     )
 }
 
-export default ArticleSelect
+export { ArticleSelect }

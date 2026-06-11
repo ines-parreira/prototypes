@@ -13,7 +13,7 @@ export const initialState: ChatsState = fromJS({
 const sortChats = (ticket: Map<any, any>) =>
     -moment(ticket.get('last_message_datetime'))
 
-export default function reducer(
+export function reducer(
     state: ChatsState = initialState,
     action: GorgiasAction,
 ): ChatsState {

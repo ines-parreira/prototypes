@@ -14,4 +14,4 @@ const Card = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ),
 )
 
-export default Card
+export { Card }

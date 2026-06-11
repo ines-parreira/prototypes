@@ -8,9 +8,9 @@ import type {
 import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
 
 import type { RawNotification } from '../types'
-import transformKnockNotification from '../utils/transformKnockNotification'
-import FeedHeader from './FeedHeader'
-import FeedItemComponent from './FeedItem'
+import { transformKnockNotification } from '../utils/transformKnockNotification'
+import { FeedHeader } from './FeedHeader'
+import { DefaultExportFeedItem as FeedItemComponent } from './FeedItem'
 
 import css from './Feed.less'
 
@@ -18,7 +18,7 @@ type Props = {
     onClose?: () => void
 }
 
-export default function Feed({ onClose }: Props) {
+export function Feed({ onClose }: Props) {
     const { feedClient } = useKnockFeed()
 
     const handleClickNotification = useCallback(

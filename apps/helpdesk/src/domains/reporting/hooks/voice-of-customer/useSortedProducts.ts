@@ -18,8 +18,8 @@ import {
     PRODUCT_THUMBNAIL_FIELD,
 } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const useSortedProducts = () => {
     const { sorting } = useAppSelector(getSliceState)

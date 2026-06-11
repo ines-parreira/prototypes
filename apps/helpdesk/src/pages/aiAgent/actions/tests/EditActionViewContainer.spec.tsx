@@ -5,10 +5,10 @@ import { ulid } from 'ulidx'
 
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfiguration } from 'models/workflows/queries'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
-import EditActionViewContainer from '../EditActionViewContainer'
+import { EditActionViewContainer } from '../EditActionViewContainer'
 
 const LocationPath = () => {
     const location = useLocation()
@@ -17,7 +17,9 @@ const LocationPath = () => {
 }
 
 jest.mock('models/workflows/queries')
-jest.mock('../EditActionView', () => () => <div>EditActionView</div>)
+jest.mock('../EditActionView', () => ({
+    EditActionView: () => <div>EditActionView</div>,
+}))
 jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => {
     return {
         __esModule: true,

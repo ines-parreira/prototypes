@@ -16,4 +16,4 @@ VoiceFlowContext.displayName = 'VoiceFlowContext'
 
 export const useVoiceFlowContext = () => useSafeContext(VoiceFlowContext)
 
-export default VoiceFlowContext
+export { VoiceFlowContext }

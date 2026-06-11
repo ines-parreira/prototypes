@@ -59,7 +59,7 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportEditOrderModal: () => null,
     }),
 )
 
@@ -68,7 +68,7 @@ jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => {
     const { CustomerContext } = require('providers/infobar/CustomerContext')
     return {
         __esModule: true,
-        default: function MockDraftOrderModal() {
+        DefaultExportDraftOrderModal: function MockDraftOrderModal() {
             const { customerId } = useContext(CustomerContext)
             return (
                 <div
@@ -85,7 +85,7 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportRefundOrderModal: () => null,
     }),
 )
 
@@ -93,7 +93,7 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportCancelOrderModal: () => null,
     }),
 )
 

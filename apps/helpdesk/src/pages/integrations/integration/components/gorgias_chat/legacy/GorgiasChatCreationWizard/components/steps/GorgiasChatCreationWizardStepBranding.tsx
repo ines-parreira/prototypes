@@ -13,24 +13,24 @@ import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { Launcher } from 'gorgias-design-system/Launcher/Launcher'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import ColorField from 'pages/common/forms/ColorField'
-import InputField from 'pages/common/forms/input/InputField'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { ColorField } from 'pages/common/forms/ColorField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardPreview } from '../GorgiasChatCreationWizardPreview'
+import { GorgiasChatCreationWizardStep } from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepBranding.less'
 
@@ -327,4 +327,4 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepBranding
+export { GorgiasChatCreationWizardStepBranding }

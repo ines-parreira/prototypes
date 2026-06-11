@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
+import { PerformanceTip } from 'domains/reporting/pages/common/components/PerformanceTip'
 
 const storyConfig: Meta = {
     title: 'Stats/MetricCard/PerformanceTip',

@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
+import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
 import type { App } from 'pages/automate/actionsPlatform/types'
 
 import css from './ReusableLLMPromptCallNodeLabel.less'
@@ -26,4 +26,4 @@ const ReusableLLMPromptCallNodeLabel = ({
     )
 }
 
-export default ReusableLLMPromptCallNodeLabel
+export { ReusableLLMPromptCallNodeLabel }

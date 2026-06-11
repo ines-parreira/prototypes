@@ -126,4 +126,4 @@ const serverErrorHandler: Middleware<
     return next(action)
 }
 
-export default serverErrorHandler
+export { serverErrorHandler }

@@ -1,9 +1,10 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PromptModal, {
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import {
+    PromptModal,
     PromptModalContext,
 } from 'pages/common/components/PromptModal'
 
@@ -44,4 +45,4 @@ const DiscardNewHelpCenterPrompt: React.FC<Props> = ({ when }) => (
     </PromptModal>
 )
 
-export default DiscardNewHelpCenterPrompt
+export { DiscardNewHelpCenterPrompt }

@@ -47,4 +47,4 @@ const IconTooltip = ({
     )
 }
 
-export default IconTooltip
+export { IconTooltip }

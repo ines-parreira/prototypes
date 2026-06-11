@@ -32,4 +32,4 @@ const Header = ({ children, alert }: Props) => {
     )
 }
 
-export default Header
+export { Header }

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import EmailIntegrationOnboardingButtons from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
-import OnboardingDomainVerificationPrompt from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt'
-import EmailDomainVerificationContent from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationContent'
-import useDomainVerification from 'pages/integrations/integration/components/email/EmailDomainVerification/useDomainVerification'
+import { EmailIntegrationOnboardingButtons } from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingButtons'
+import { OnboardingDomainVerificationPrompt } from 'pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationPrompt'
+import { EmailDomainVerificationContent } from 'pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationContent'
+import { useDomainVerification } from 'pages/integrations/integration/components/email/EmailDomainVerification/useDomainVerification'
 import { isCommonDomainEmail } from 'pages/integrations/integration/components/email/helpers'
 import { useEmailOnboardingCompleteCheck } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 
@@ -14,7 +14,7 @@ type Props = {
     handleCancel: () => void
 }
 
-export default function EmailIntegrationOnboardingDomainVerification({
+export function EmailIntegrationOnboardingDomainVerification({
     integration,
     handleCancel,
 }: Props) {

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import AdditionalDetails from '../AdditionalDetails'
+import { AdditionalDetails } from '../AdditionalDetails'
 
 describe('AdditionalDetails', () => {
     it('renders without required asterisk', () => {

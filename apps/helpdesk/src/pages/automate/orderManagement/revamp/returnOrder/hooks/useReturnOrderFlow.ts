@@ -9,7 +9,7 @@ import type {
     SelfServiceConfiguration,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { DEFAULT_RETURN_ACTION } from '../../../legacy/returnOrder/constants'
 
@@ -112,5 +112,3 @@ export const useReturnOrderFlow = () => {
         handleSave,
     }
 }
-
-export default useReturnOrderFlow

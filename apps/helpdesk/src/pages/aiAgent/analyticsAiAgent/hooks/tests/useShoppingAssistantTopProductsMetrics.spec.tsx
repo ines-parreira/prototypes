@@ -6,7 +6,7 @@ import { waitFor } from '@testing-library/react'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useBuyThroughRatePerProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useBuyThroughRatePerProduct'
 import { useProductClicksPerProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useProductClicksPerProduct'
 import { useTimesRecommendedPerProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useRecommendedProductCountPerProduct'
@@ -23,7 +23,7 @@ jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useBuyThroughRatePerProduct')
 jest.mock('state/integrations/helpers')
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 
 const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)

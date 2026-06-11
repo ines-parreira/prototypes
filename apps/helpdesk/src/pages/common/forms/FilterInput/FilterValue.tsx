@@ -145,4 +145,6 @@ const FilterValue = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(FilterValue)
+const DefaultExportFilterValue = forwardRef<HTMLDivElement, Props>(FilterValue)
+
+export { DefaultExportFilterValue }

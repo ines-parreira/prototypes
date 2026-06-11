@@ -2,16 +2,16 @@ import React, { memo } from 'react'
 
 import type { NodeProps } from '@xyflow/react'
 
-import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
+import { VisualBuilderActionTag } from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import type { VisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import { useVisualBuilderNodeProps } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import type { ReplaceItemNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import EdgeBlock from '../components/EdgeBlock'
-import NodeDeleteIcon from '../components/NodeDeleteIcon'
+import { EdgeBlock } from '../components/EdgeBlock'
+import { NodeDeleteIcon } from '../components/NodeDeleteIcon'
 import { defaultNodeNames } from './constants'
-import VisualBuilderNode from './VisualBuilderNode'
-import VisualBuilderNodeContent from './VisualBuilderNodeContent'
+import { VisualBuilderNode } from './VisualBuilderNode'
+import { VisualBuilderNodeContent } from './VisualBuilderNodeContent'
 
 type Props = VisualBuilderNodeProps & {
     isErrored: boolean
@@ -43,9 +43,7 @@ const ReplaceItemNode = memo(function ReplaceItemNode({
     )
 })
 
-export default function ReplaceItemNodeWrapper(
-    node: NodeProps<ReplaceItemNodeType>,
-) {
+export function ReplaceItemNodeWrapper(node: NodeProps<ReplaceItemNodeType>) {
     const commonProps = useVisualBuilderNodeProps(node)
 
     return <ReplaceItemNode {...commonProps} isErrored={!!node.data.errors} />

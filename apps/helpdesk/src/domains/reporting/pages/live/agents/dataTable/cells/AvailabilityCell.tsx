@@ -18,7 +18,7 @@ import {
 import type { CellContext } from '@gorgias/axiom'
 
 import type { LiveAgentRow } from 'domains/reporting/pages/live/agents/dataTable/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const AVAILABLE_STATUS_ID = 'available'
 const UNAVAILABLE_STATUS_ID = 'unavailable'

@@ -13,7 +13,7 @@ type Props = {
     onKeyDown?: KeyboardEventHandler<HTMLInputElement>
 }
 
-export default function PeopleSearchInput({
+export function PeopleSearchInput({
     value,
     className,
     autoFocus,

@@ -6,9 +6,9 @@ import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 
-import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
-import BackToActionButton from './components/BackToActionButton'
-import CreateCustomActionButton from './components/CreateCustomActionButton'
+import { ActionsUseCaseTemplatesCards } from './components/ActionsUseCaseTemplatesCards'
+import { BackToActionButton } from './components/BackToActionButton'
+import { CreateCustomActionButton } from './components/CreateCustomActionButton'
 
 import css from './ActionTemplatesView.less'
 
@@ -46,4 +46,4 @@ const ActionTemplatesView = () => {
     )
 }
 
-export default ActionTemplatesView
+export { ActionTemplatesView }

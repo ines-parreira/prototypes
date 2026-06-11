@@ -4,10 +4,10 @@ import { SegmentEvent } from '@repo/logging'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgiasChat'
-import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
-import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
+import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
+import { useIsIntersectingWithBrowserViewport } from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 
-import useLogWizardEvent from '../hooks/useLogWizardEvent'
+import { useLogWizardEvent } from '../hooks/useLogWizardEvent'
 
 import css from './GorgiasChatCreationWizardStep.less'
 
@@ -90,4 +90,4 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStep
+export { GorgiasChatCreationWizardStep }

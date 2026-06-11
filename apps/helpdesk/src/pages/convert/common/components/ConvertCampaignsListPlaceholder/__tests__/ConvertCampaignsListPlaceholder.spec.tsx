@@ -8,7 +8,7 @@ import { useListCampaigns } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
-import ConvertCampaignsListPlaceholder from '../ConvertCampaignsListPlaceholder'
+import { ConvertCampaignsListPlaceholder } from '../ConvertCampaignsListPlaceholder'
 
 jest.mock('hooks/useSearch')
 

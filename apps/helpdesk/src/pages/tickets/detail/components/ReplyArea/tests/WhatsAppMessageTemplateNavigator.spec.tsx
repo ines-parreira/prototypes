@@ -4,7 +4,7 @@ import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { whatsAppMessageTemplates as mockWhatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
 import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 
-import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
+import { WhatsAppMessageTemplateNavigator } from '../WhatsAppMessageTemplateNavigator'
 
 jest.mock('models/whatsAppMessageTemplates/queries', () => ({
     useListWhatsAppMessageTemplates: jest.fn(() => ({
@@ -20,14 +20,15 @@ const mockSelectNewTemplate = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
-    () =>
-        jest.fn(() => ({
+    () => ({
+        useWhatsAppEditor: jest.fn(() => ({
             searchFilter: {
                 language: [],
                 name: '',
             },
             selectNewTemplate: mockSelectNewTemplate,
         })),
+    }),
 )
 
 describe('WhatsAppMessageTemplateNavigator', () => {

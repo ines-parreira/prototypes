@@ -4,14 +4,14 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import infoIcon from 'assets/img/icons/info.svg'
 import { useSearchParam } from 'hooks/useSearchParam'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import css from './VerifyDomainModal.less'
 
-export default function VerifyDomainModal() {
+export function VerifyDomainModal() {
     const [isRedirectParam, setIsRedirectParam] = useSearchParam('is_redirect')
 
     const handleModalClose = () => {

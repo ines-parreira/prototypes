@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import useTrackPagePreview from '../useTrackPagePreview'
+import { useTrackPagePreview } from '../useTrackPagePreview'
 
 describe('useTrackPagePreview', () => {
     it('should return empty ref', () => {

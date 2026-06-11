@@ -13,28 +13,26 @@ import type { Infobar } from '../../../common/components/infobar/Infobar/Infobar
 import { CustomerInfobarContainer } from '../CustomerInfobarContainer'
 
 jest.mock('state/widgets/actions')
-jest.mock(
-    '../../../common/components/infobar/Infobar/Infobar',
-    () =>
-        ({
-            sources,
-            isRouteEditingWidgets,
-            identifier,
-            customer,
-            widgets,
-            context,
-        }: ComponentProps<typeof Infobar>) => (
-            <div>
-                <div>Infobar</div>
-                <div>sources: {JSON.stringify(sources)}</div>
-                <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
-                <div>identifier: {identifier}</div>
-                <div>customer: {customer.toArray()}</div>
-                <div>widgets: {JSON.stringify(widgets)}</div>
-                <div>context: {context}</div>
-            </div>
-        ),
-)
+jest.mock('../../../common/components/infobar/Infobar/Infobar', () => ({
+    Infobar: ({
+        sources,
+        isRouteEditingWidgets,
+        identifier,
+        customer,
+        widgets,
+        context,
+    }: ComponentProps<typeof Infobar>) => (
+        <div>
+            <div>Infobar</div>
+            <div>sources: {JSON.stringify(sources)}</div>
+            <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
+            <div>identifier: {identifier}</div>
+            <div>customer: {customer.toArray()}</div>
+            <div>widgets: {JSON.stringify(widgets)}</div>
+            <div>context: {context}</div>
+        </div>
+    ),
+}))
 
 const mockedSelectContext = assumeMock(selectContext)
 const mockedFetchWidgets = assumeMock(fetchWidgets)

@@ -34,4 +34,4 @@ const CircularProgressBar = ({ size, thickness, progress }: Props) => {
     )
 }
 
-export default CircularProgressBar
+export { CircularProgressBar }

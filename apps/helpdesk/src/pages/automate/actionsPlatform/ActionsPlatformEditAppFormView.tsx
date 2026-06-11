@@ -2,11 +2,11 @@ import { Redirect, useHistory, useParams } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import { useGetActionsApp } from 'models/workflows/queries'
-import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
+import { AutomateFormView } from 'pages/automate/common/components/AutomateFormView'
 
-import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
-import useApps from './hooks/useApps'
-import useEditActionsApp from './hooks/useEditActionsApp'
+import { ActionsPlatformAppForm } from './components/ActionsPlatformAppForm'
+import { useApps } from './hooks/useApps'
+import { useEditActionsApp } from './hooks/useEditActionsApp'
 
 const ActionsPlatformEditAppFormView = () => {
     const history = useHistory()
@@ -65,4 +65,4 @@ const ActionsPlatformEditAppFormView = () => {
     )
 }
 
-export default ActionsPlatformEditAppFormView
+export { ActionsPlatformEditAppFormView }

@@ -8,7 +8,7 @@ import type { ProductDetail } from './types'
 
 import css from './Detail.less'
 
-export default function Header(props: ProductDetail) {
+export function Header(props: ProductDetail) {
     const { image, icon, title, description, categories = [], company } = props
 
     return (

@@ -6,7 +6,7 @@ import type { FindAllGuidancesKnowledgeResourcesResult } from '@gorgias/knowledg
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 
 import type { GuidanceReferenceContextType } from './GuidanceReferenceContext'
-import GuidanceReferenceContext from './GuidanceReferenceContext'
+import { GuidanceReferenceContext } from './GuidanceReferenceContext'
 
 type Props<T extends { id: string }> = {
     actions: Array<T>
@@ -66,4 +66,4 @@ const GuidanceReferenceProvider = <T extends { id: string }>({
     )
 }
 
-export default GuidanceReferenceProvider
+export { GuidanceReferenceProvider }

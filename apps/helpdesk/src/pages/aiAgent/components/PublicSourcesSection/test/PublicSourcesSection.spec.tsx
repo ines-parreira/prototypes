@@ -11,12 +11,12 @@ import {
 } from 'pages/aiAgent/constants'
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
-import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
+import { useHelpCenterCustomDomainHostnames } from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
 
 import { PublicSourcesSection } from '../PublicSourcesSection'
 import type { SourceItem } from '../types'
 
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling', () => ({
     usePublicResourcesPooling: jest.fn(),
 }))
@@ -25,7 +25,7 @@ jest.mock('pages/aiAgent/hooks/usePublicResourcesMutation', () => ({
 }))
 jest.mock(
     'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames',
-    () => jest.fn(),
+    () => ({ useHelpCenterCustomDomainHostnames: jest.fn() }),
 )
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),

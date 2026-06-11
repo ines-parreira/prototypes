@@ -32,7 +32,7 @@ import type {
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import {
     FeatureFlagKey,

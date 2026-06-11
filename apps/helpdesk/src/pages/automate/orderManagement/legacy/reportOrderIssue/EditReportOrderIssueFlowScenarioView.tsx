@@ -5,17 +5,17 @@ import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
+import { ReportOrderIssueScenarioForm } from './components/ReportOrderIssueScenarioForm'
 import type { ReportOrderIssueScenarioFormContextType } from './components/ReportOrderIssueScenarioFormContext'
-import ReportOrderIssueScenarioFormContext from './components/ReportOrderIssueScenarioFormContext'
-import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
-import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
+import { ReportOrderIssueScenarioFormContext } from './components/ReportOrderIssueScenarioFormContext'
+import { useReportOrderIssueFlowScenario } from './hooks/useReportOrderIssueFlowScenario'
+import { ReportOrderIssueFlowScenarioPreview } from './ReportOrderIssueFlowScenarioPreview'
 
 import css from './EditReportOrderIssueFlowScenarioView.less'
 
@@ -168,4 +168,4 @@ const EditReportOrderIssueFlowScenarioView = () => {
     )
 }
 
-export default EditReportOrderIssueFlowScenarioView
+export { EditReportOrderIssueFlowScenarioView }

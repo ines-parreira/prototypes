@@ -42,7 +42,7 @@ import type {
 } from 'models/integration/types/serviceConnection'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { InstallSuccessModal } from 'pages/aiAgent/actionsV2/apps/components'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 const STORE_SEARCH_THRESHOLD = 10
 const MAX_VISIBLE_STORES = 3
@@ -54,7 +54,7 @@ export type Props = {
 
 type Store = { id: number; name: string }
 
-export default function AppActionsConnections({ appId }: Props) {
+export function AppActionsConnections({ appId }: Props) {
     const history = useHistory()
     const { data: storesResponse } = useListStores({ limit: 100 })
     const {

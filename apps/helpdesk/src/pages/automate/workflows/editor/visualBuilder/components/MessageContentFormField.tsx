@@ -8,10 +8,10 @@ import { IntegrationType } from 'models/integration/constants'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import type { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import RichField from 'pages/common/forms/RichField/RichField'
-import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import { RichField } from 'pages/common/forms/RichField/RichField'
+import { DefaultExportTicketAttachments as TicketAttachments } from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import { convertToHTML } from 'utils/editor'
 
 import { useVisualBuilderContext } from '../../../hooks/useVisualBuilder'
@@ -38,7 +38,7 @@ const toolbarActions = [
     ActionName.WorkflowVariable,
 ]
 
-export default function MessageContentFormField({
+export function MessageContentFormField({
     content,
     handleUpdateContent,
     workflowVariables,

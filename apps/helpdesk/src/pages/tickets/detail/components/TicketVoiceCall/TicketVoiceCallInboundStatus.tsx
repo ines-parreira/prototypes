@@ -14,11 +14,11 @@ import {
     getAnsweringVoiceSubject,
     isCallTransfer,
 } from 'models/voiceCall/utils'
-import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
-import VoiceCallSubjectLabel from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
-import TicketVoiceCallEvents from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
+import { VoiceCallAgentLabel } from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallSubjectLabel } from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
+import { TicketVoiceCallEvents } from 'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallEvents'
 
-import CollapsibleDetails from './CollapsibleDetails'
+import { CollapsibleDetails } from './CollapsibleDetails'
 
 import css from './TicketVoiceCallContainer.less'
 

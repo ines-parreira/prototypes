@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import { integrationBase } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
 
-import List from '../List'
+import { List } from '../List'
 
 const integrationsState = {
     integrations: [
@@ -26,9 +26,9 @@ const integrationsState = {
 }
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ integrations: fromJS(integrationsState) })
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 describe('List', () => {
     it('should render a loader', () => {
         const { queryByText } = render(<List />, {

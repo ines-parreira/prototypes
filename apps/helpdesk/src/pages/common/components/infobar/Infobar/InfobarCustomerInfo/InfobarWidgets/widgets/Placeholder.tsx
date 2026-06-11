@@ -3,14 +3,14 @@ import React, { useContext } from 'react'
 
 import classnames from 'classnames'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Template } from 'models/widget/types'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { getIntegrationById } from 'state/integrations/selectors'
 import { removeEditedWidget } from 'state/widgets/actions'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
-import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
+import { WidgetPanel } from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
 
 import css from './Placeholder.less'
 
@@ -21,7 +21,7 @@ type Props = {
     isEditing?: boolean
 }
 
-export default function Placeholder({ template, isEditing }: Props) {
+export function Placeholder({ template, isEditing }: Props) {
     const dispatch = useAppDispatch()
     const widget = useContext(WidgetContext)
     const integration = useAppSelector(

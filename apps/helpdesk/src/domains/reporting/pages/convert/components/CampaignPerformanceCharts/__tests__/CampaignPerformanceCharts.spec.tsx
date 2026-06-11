@@ -2,8 +2,8 @@ import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import CampaignPerformanceCharts from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts/CampaignPerformanceCharts'
-import useCampaignPerformanceTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
+import { CampaignPerformanceCharts } from 'domains/reporting/pages/convert/components/CampaignPerformanceCharts/CampaignPerformanceCharts'
+import { useCampaignPerformanceTimeSeries } from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { campaign } from 'fixtures/campaign'
@@ -28,7 +28,7 @@ jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
     () => ({
         __esModule: true,
-        default: () => {
+        DefaultExportLineChart: () => {
             return <div>LineChart</div>
         },
     }),

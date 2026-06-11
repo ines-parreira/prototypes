@@ -31,7 +31,7 @@ function isInstantChannel(channel: TicketChannel) {
     ].includes(channel)
 }
 
-export default function mapTicketMessageCreatedType(
+export function mapTicketMessageCreatedType(
     notification: Notification<TicketPayload>,
 ) {
     const { type } = notification

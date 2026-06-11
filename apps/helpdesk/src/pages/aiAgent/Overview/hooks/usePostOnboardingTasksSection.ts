@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     postStoreInstallationStepsKeys,
     useGetPostStoreInstallationStepsPure,

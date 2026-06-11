@@ -22,15 +22,15 @@ import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetAccountConfiguration } from 'models/aiAgent/queries'
-import AIAutofill from 'pages/settings/customFields/components/AIAutofill'
-import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
-import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
-import FieldForm from 'pages/settings/customFields/components/FieldForm'
+import { AIAutofill } from 'pages/settings/customFields/components/AIAutofill'
+import { ArchiveConfirmationModal } from 'pages/settings/customFields/components/ArchiveConfirmationModal'
+import { DefaultExportDropdownInput as DropdownInput } from 'pages/settings/customFields/components/DropdownInput'
+import { FieldForm } from 'pages/settings/customFields/components/FieldForm'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -42,16 +42,16 @@ jest.mock('models/aiAgent/queries')
 const useGetAccountConfigurationMock = assumeMock(useGetAccountConfiguration)
 jest.mock('custom-fields/hooks/queries/useUpdateAiAutofill')
 const useUpdateAiAutofillMock = assumeMock(useUpdateAiAutofill)
-jest.mock('pages/settings/customFields/components/AIAutofill', () =>
-    jest.fn(() => <div>AIAutofill</div>),
-)
-jest.mock('pages/settings/customFields/components/DropdownInput', () =>
-    jest.fn(() => <div>Dropdown</div>),
-)
+jest.mock('pages/settings/customFields/components/AIAutofill', () => ({
+    AIAutofill: jest.fn(() => <div>AIAutofill</div>),
+}))
+jest.mock('pages/settings/customFields/components/DropdownInput', () => ({
+    DefaultExportDropdownInput: jest.fn(() => <div>Dropdown</div>),
+}))
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock(
     'pages/settings/customFields/components/ArchiveConfirmationModal',
-    () => jest.fn(() => null),
+    () => ({ ArchiveConfirmationModal: jest.fn(() => null) }),
 )
 const DropdownInputMock = assumeMock(DropdownInput)
 const useUpdateCustomFieldArchiveStatusMock = assumeMock(

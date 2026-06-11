@@ -3,7 +3,7 @@ import React from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 
 export const ConfirmationButton = ({
     confirmationButtonLabel,

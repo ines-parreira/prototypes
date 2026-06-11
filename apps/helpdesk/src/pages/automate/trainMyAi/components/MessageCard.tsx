@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 import type { Paths } from '../../../../rest_api/help_center_api/client.generated'
-import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
+import { useHelpCenterArticleTree } from '../hooks/useHelpCenterArticleTree'
 
 import css from './MessageCard.less'
 
@@ -76,4 +76,4 @@ export const StatefulMessageCard = ({
     )
 }
 
-export default MessageCard
+export { MessageCard }

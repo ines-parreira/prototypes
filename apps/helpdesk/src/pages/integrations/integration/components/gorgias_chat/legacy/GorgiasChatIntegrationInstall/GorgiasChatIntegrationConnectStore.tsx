@@ -6,16 +6,16 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIconFromType } from 'state/integrations/helpers'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -209,4 +209,4 @@ const GorgiasChatIntegrationConnectStore = ({
     )
 }
 
-export default GorgiasChatIntegrationConnectStore
+export { GorgiasChatIntegrationConnectStore }

@@ -28,7 +28,7 @@ type Props = {
     size?: 'normal' | 'small'
 }
 
-export default function EmailVerificationStatusLabel({
+export function EmailVerificationStatusLabel({
     status,
     size = 'normal',
 }: Props) {

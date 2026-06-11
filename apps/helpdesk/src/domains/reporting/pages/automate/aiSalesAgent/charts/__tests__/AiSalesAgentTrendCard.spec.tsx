@@ -5,7 +5,7 @@ import {
     AiSalesAgentChart,
     AiSalesAgentMetricConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import AiSalesAgentTrendCard from 'domains/reporting/pages/automate/aiSalesAgent/charts/AiSalesAgentTrendCard'
+import { AiSalesAgentTrendCard } from 'domains/reporting/pages/automate/aiSalesAgent/charts/AiSalesAgentTrendCard'
 import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { TREND_BADGE_FORMAT } from 'domains/reporting/pages/common/components/TrendBadge'

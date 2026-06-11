@@ -5,7 +5,7 @@ import { screen, within } from '@testing-library/react'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import GuidanceReferenceContext from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
+import { GuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { GuidanceReferenceContextType } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 
 import { ActionUsageTab } from './ActionUsageTab'

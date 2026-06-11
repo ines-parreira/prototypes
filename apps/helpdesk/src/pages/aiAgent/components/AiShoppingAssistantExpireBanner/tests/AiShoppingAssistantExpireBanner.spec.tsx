@@ -3,11 +3,11 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSalesTrialRevampMilestone } from 'pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
-import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
+import { AiShoppingAssistantExpireBanner } from '../AiShoppingAssistantExpireBanner'
 
 jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
     useActivation: jest.fn(() => ({
@@ -17,7 +17,7 @@ jest.mock('pages/aiAgent/Activation/hooks/useActivation', () => ({
 }))
 
 // Mock dependencies
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),

@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import HeaderCell from '../HeaderCell'
+import { HeaderCell } from '../HeaderCell'
 
 describe('<HeaderCell/>', () => {
     const mockOnClick = jest.fn()

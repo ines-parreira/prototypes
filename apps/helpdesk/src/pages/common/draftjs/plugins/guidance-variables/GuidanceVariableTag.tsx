@@ -19,7 +19,7 @@ export type GuidanceVariableTagProps = {
     children: ReactNode
 }
 
-export default function GuidanceVariableTag({
+export function GuidanceVariableTag({
     value,
     size = 'normal',
     onClick,

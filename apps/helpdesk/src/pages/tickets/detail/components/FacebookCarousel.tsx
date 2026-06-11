@@ -3,8 +3,8 @@ import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Group from 'pages/common/components/layout/Group'
-import Slider from 'utils/wrappers/Slider'
+import { Group } from 'pages/common/components/layout/Group'
+import { Slider } from 'utils/wrappers/Slider'
 
 import type { FacebookCarouselTemplate } from '../../../../models/ticket/types'
 
@@ -110,4 +110,4 @@ const FacebookCarousel = ({ data = [] }: Props) => (
     </div>
 )
 
-export default FacebookCarousel
+export { FacebookCarousel }

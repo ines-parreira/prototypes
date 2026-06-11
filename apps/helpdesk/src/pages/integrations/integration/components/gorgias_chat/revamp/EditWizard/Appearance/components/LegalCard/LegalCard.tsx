@@ -6,7 +6,7 @@ import type { EditorState } from 'draft-js'
 import { Card, CheckBoxField, Elevation, Heading, Text } from '@gorgias/axiom'
 
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import { DefaultExportTicketRichField as TicketRichField } from 'pages/common/forms/RichField/TicketRichField'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { convertToHTML } from 'utils/editor'
 

@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import { BASIC_OPERATORS } from 'config'
 import { CustomFieldTreePath } from 'models/rule/types'
 
-import getCustomFieldOperators from '../getCustomFieldOperators'
+import { getCustomFieldOperators } from '../getCustomFieldOperators'
 import { mockCustomField, mockSchemas } from './mocks'
 
 describe('getCustomFieldOperators', () => {

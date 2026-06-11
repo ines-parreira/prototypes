@@ -60,12 +60,12 @@ import {
     KnowledgeMetric,
     SatisfactionMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableHead from 'pages/common/components/table/TableHead'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',

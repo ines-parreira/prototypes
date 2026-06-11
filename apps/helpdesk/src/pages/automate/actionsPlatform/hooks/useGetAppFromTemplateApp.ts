@@ -29,4 +29,4 @@ const useGetAppFromTemplateApp = ({ apps }: Props) => {
     )
 }
 
-export default useGetAppFromTemplateApp
+export { useGetAppFromTemplateApp }

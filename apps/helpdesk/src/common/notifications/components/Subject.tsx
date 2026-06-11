@@ -6,6 +6,6 @@ type Props = {
     children: ReactNode
 }
 
-export default function Subject({ children }: Props) {
+export function Subject({ children }: Props) {
     return <strong className={css.subject}>{children}</strong>
 }

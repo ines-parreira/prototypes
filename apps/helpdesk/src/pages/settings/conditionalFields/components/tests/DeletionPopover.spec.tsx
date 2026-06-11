@@ -7,15 +7,15 @@ import { Router } from 'react-router-dom'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import useDeleteCustomFieldCondition from '../../hooks/useDeleteCustomFieldCondition'
+import { useDeleteCustomFieldCondition } from '../../hooks/useDeleteCustomFieldCondition'
 import { DeletionPopover } from '../DeletionPopover'
 
 jest.spyOn(history, 'push')
-jest.mock('pages/common/components/popover/ConfirmationPopover', () =>
-    jest.fn(
+jest.mock('pages/common/components/popover/ConfirmationPopover', () => ({
+    ConfirmationPopover: jest.fn(
         ({
             content,
             children,
@@ -29,7 +29,7 @@ jest.mock('pages/common/components/popover/ConfirmationPopover', () =>
             </div>
         ),
     ),
-)
+}))
 jest.mock('../../hooks/useDeleteCustomFieldCondition')
 
 const ConfirmationPopoverMock = assumeMock(ConfirmationPopover)

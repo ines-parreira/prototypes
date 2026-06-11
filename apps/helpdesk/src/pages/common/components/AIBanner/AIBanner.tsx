@@ -36,4 +36,4 @@ const AIBanner: FC<Props> = ({
     )
 }
 
-export default AIBanner
+export { AIBanner }

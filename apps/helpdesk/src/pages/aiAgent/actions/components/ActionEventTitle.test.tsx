@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ActionEventTitle from './ActionEventTitle'
+import { ActionEventTitle } from './ActionEventTitle'
 
 const renderComponent = (
     props: Partial<React.ComponentProps<typeof ActionEventTitle>> = {},

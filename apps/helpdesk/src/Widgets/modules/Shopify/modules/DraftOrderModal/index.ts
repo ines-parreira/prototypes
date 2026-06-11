@@ -1,1 +1,1 @@
-export { default } from './components/DraftOrderModal'
+export { DefaultExportDraftOrderModal } from './components/DraftOrderModal'

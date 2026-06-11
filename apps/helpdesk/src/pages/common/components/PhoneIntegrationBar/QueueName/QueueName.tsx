@@ -58,4 +58,4 @@ function QueueName({ queueId, primary }: Props) {
     )
 }
 
-export default QueueName
+export { QueueName }

@@ -10,7 +10,7 @@ import {
 } from 'domains/reporting/hooks/voice-of-customer/useSentimentPerProduct'
 import { useTopIntentPerProduct } from 'domains/reporting/hooks/voice-of-customer/useTopIntentPerProduct'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
+import { TrendBadge } from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { ProductInsightsCellContent } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsCellContent'
 import { ProductTableBodyCell } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductTable'

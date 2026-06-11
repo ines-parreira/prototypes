@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
+import { AutoMergeSettings } from 'pages/settings/autoMerge/AutoMergeSettings'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 

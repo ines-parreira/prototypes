@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { THEME_NAME } from 'core/theme'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 import { FakeOrderTracking } from 'pages/settings/rules/components/FakeOrderTracking'
 import type { AutoReplyWismoSettings } from 'state/rules/types'
 
@@ -56,5 +56,3 @@ export const AutoReplyWismoDemo = ({ settings }: Props) => (
         </div>
     </div>
 )
-
-export default AutoReplyWismoDemo

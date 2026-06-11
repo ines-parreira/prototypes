@@ -1,6 +1,6 @@
 import type { StoreMapping } from 'models/storeMapping/types'
 
-import groupIntegrationsByStore from '../groupIntegrationsByStore'
+import { groupIntegrationsByStore } from '../groupIntegrationsByStore'
 
 describe('groupIntegrationsByStore', () => {
     it('should group channel records from mappings', () => {

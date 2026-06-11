@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
+import { ArrayExpression } from 'pages/common/components/ast/expression/ArrayExpression'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 
 const mockStore = configureMockStore([thunk])

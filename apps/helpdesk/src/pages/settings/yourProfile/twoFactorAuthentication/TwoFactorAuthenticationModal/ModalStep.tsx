@@ -5,10 +5,10 @@ import type {
     AuthenticatorData,
     RecoveryCode,
 } from '../../../../../models/twoFactorAuthentication/types'
-import AppSetupStep from './ModalSteps/AppSetupStep/AppSetupStep'
-import QRCodeStep from './ModalSteps/QRCodeStep/QRCodeStep'
-import RecoveryCodesStep from './ModalSteps/RecoveryCodesStep/RecoveryCodesStep'
-import ValidateVerificationCodeStep from './ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep'
+import { AppSetupStep } from './ModalSteps/AppSetupStep/AppSetupStep'
+import { QRCodeStep } from './ModalSteps/QRCodeStep/QRCodeStep'
+import { RecoveryCodesStep } from './ModalSteps/RecoveryCodesStep/RecoveryCodesStep'
+import { ValidateVerificationCodeStep } from './ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep'
 
 type OwnProps = {
     currentStep: number
@@ -21,7 +21,7 @@ type OwnProps = {
     setIsRecoveryCodesSaved: Dispatch<SetStateAction<boolean>>
 }
 
-export default function ModalStep({
+export function ModalStep({
     currentStep,
     authenticatorData,
     errorText,

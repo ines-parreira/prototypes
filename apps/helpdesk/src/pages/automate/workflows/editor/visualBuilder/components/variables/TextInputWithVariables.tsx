@@ -20,21 +20,22 @@ import createSingleLinePlugin from 'draft-js-single-line-plugin'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
+import { createWorkflowVariablesPlugin } from 'pages/automate/workflows/draftjs/plugins/variables'
 import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
 import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import InputGroup, {
+import { WorkflowVariableDropdown } from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import {
+    InputGroup,
     InputGroupContext,
 } from 'pages/common/forms/input/InputGroup'
 import { insertText } from 'utils'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
-import LiquidFilterPopover from './LiquidFilterPopover'
+import { LiquidFilterPopover } from './LiquidFilterPopover'
 
 import css from './TextInputWithVariables.less'
 
@@ -252,4 +253,8 @@ const TextInputWithVariables = (
     )
 }
 
-export default memo(forwardRef(TextInputWithVariables))
+const DefaultExportTextInputWithVariables = memo(
+    forwardRef(TextInputWithVariables),
+)
+
+export { DefaultExportTextInputWithVariables }

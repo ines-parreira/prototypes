@@ -5,16 +5,16 @@ import { useHistory } from 'react-router-dom'
 import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
-import AutomateListView from 'pages/automate/common/components/AutomateListView'
-import Search from 'pages/common/components/Search'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { AutomateListView } from 'pages/automate/common/components/AutomateListView'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
-import ActionsPlatformAppsTableRow from './components/ActionsPlatformAppsTableRow'
-import useApps from './hooks/useApps'
-import useGetAppFromActionsApp from './hooks/useGetAppFromActionsApp'
+import { ActionsPlatformAppsTableRow } from './components/ActionsPlatformAppsTableRow'
+import { useApps } from './hooks/useApps'
+import { useGetAppFromActionsApp } from './hooks/useGetAppFromActionsApp'
 
 import css from './ActionsPlatformAppsView.less'
 
@@ -119,4 +119,4 @@ const ActionsPlatformAppsView = () => {
     )
 }
 
-export default ActionsPlatformAppsView
+export { ActionsPlatformAppsView }

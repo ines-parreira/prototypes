@@ -9,7 +9,7 @@ import type { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
 import { agentIdFields } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 interface GetShoutoutTopResultsArgs {
     filteredAgents: User[]

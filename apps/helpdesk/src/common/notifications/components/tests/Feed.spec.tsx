@@ -5,9 +5,9 @@ import type { NotificationFeed, RenderItemProps } from '@knocklabs/react'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Feed from '../Feed'
-import type FeedHeader from '../FeedHeader'
-import type FeedItem from '../FeedItem'
+import { Feed } from '../Feed'
+import type { FeedHeader } from '../FeedHeader'
+import type { DefaultExportFeedItem as FeedItem } from '../FeedItem'
 
 let mockItem: RenderItemProps['item']
 
@@ -35,34 +35,33 @@ jest.mock('@knocklabs/react', () => {
             </div>
         ),
         useKnockFeed: jest.fn(),
-    } as typeof import('@knocklabs/react')
+    }
 })
 const useKnockFeedMock = assumeMock(useKnockFeed)
 
-jest.mock(
-    '../FeedHeader',
-    () =>
-        ({ onToggleVisibility }: ComponentProps<typeof FeedHeader>) => (
-            <div>
-                <p>FeedHeader</p>
-                <button type="button" onClick={onToggleVisibility}>
-                    onClose
-                </button>
-            </div>
-        ),
-)
-jest.mock(
-    '../FeedItem',
-    () =>
-        ({ onClick, onToggleRead }: ComponentProps<typeof FeedItem>) => (
-            <div onClick={onClick}>
-                <p>FeedItem</p>
-                <button type="button" onClick={onToggleRead}>
-                    onToggleRead
-                </button>
-            </div>
-        ),
-)
+jest.mock('../FeedHeader', () => ({
+    FeedHeader: ({ onToggleVisibility }: ComponentProps<typeof FeedHeader>) => (
+        <div>
+            <p>FeedHeader</p>
+            <button type="button" onClick={onToggleVisibility}>
+                onClose
+            </button>
+        </div>
+    ),
+}))
+jest.mock('../FeedItem', () => ({
+    DefaultExportFeedItem: ({
+        onClick,
+        onToggleRead,
+    }: ComponentProps<typeof FeedItem>) => (
+        <div onClick={onClick}>
+            <p>FeedItem</p>
+            <button type="button" onClick={onToggleRead}>
+                onToggleRead
+            </button>
+        </div>
+    ),
+}))
 
 const defaultItem = {
     id: '1',

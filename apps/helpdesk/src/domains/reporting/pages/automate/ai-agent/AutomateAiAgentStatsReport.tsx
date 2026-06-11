@@ -10,17 +10,17 @@ import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomate
 import { useAutomateMetricsTrend } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AiAgentStatsDownloadButton } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsDownloadButton'
-import AiAgentStatsFilters from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
+import { AiAgentStatsFilters } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
 import {
     AutomateAiAgentsChart,
     AutomateAiAgentsReportConfig,
 } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { PAGE_TITLE_AI_AGENT } from 'domains/reporting/pages/self-service/constants'
 import {
@@ -28,10 +28,10 @@ import {
     CustomFieldSelect,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { isAiAgentCustomField } from 'pages/aiAgent/util'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { STATS_ROUTES } from 'routes/constants'
 
 const NoActivityBanner = ({
@@ -104,7 +104,7 @@ const NoActivityBannerComponent = ({
     )
 }
 
-export default function AutomateAiAgentStatsReport() {
+export function AutomateAiAgentStatsReport() {
     const { statsFilters } = useAutomateFilters()
     const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
         useState(false)

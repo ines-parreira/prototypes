@@ -7,7 +7,7 @@ type Props = {
     url: string
 }
 
-export default function LearnMoreLink({ children, url }: Props) {
+export function LearnMoreLink({ children, url }: Props) {
     return (
         <a
             href={url}

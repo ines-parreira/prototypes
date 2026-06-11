@@ -5,8 +5,9 @@ import {
     fetchAverageScoreTrend,
     useAverageScoreTrend,
 } from 'domains/reporting/hooks/quality-management/satisfaction/useAverageScoreTrend'
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { averageScoreQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/averageScoreQueryFactory'
 import { averageScoreQueryV2Factory } from 'domains/reporting/models/scopes/satisfactionSurveys'

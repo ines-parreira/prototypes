@@ -16,7 +16,7 @@ type Props = {
     isDomainVerificationWarningVisible: boolean
 }
 
-export default function EmailIntegrationListVerificationStatus({
+export function EmailIntegrationListVerificationStatus({
     integration,
     isDomainVerificationWarningVisible,
 }: Props) {

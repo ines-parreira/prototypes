@@ -15,7 +15,7 @@ import { SmartFollowUpType } from 'models/ticket/types'
 import type { Account } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import Body from '../Body'
+import { Body } from '../Body'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -28,16 +28,15 @@ const store = mockStore({
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock(
-    '../SmartFollowUps',
-    () => (props: { smartFollowUps: SmartFollowUp[] }) => (
+jest.mock('../SmartFollowUps', () => ({
+    SmartFollowUps: (props: { smartFollowUps: SmartFollowUp[] }) => (
         <div>
             {props.smartFollowUps.map((followUp: SmartFollowUp) => (
                 <div key={followUp.text}>{followUp.text}</div>
             ))}
         </div>
     ),
-)
+}))
 
 describe('Body', () => {
     beforeAll(() => {

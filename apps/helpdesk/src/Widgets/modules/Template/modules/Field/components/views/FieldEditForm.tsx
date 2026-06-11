@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { LeafType } from 'models/widget/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 
 import type { FieldEditFormData, HiddenFields } from '../../types'
 
@@ -26,7 +26,7 @@ type Props<T extends LeafType> = {
     onCancel: () => void
 }
 
-export default function FieldEditForm<T extends LeafType>({
+export function FieldEditForm<T extends LeafType>({
     initialData,
     availableTypes,
     hiddenFields = [],

@@ -12,7 +12,7 @@ import { ProductType } from 'models/billing/types'
 import * as billingSelectors from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 
-import withProductEnabledPaywall from '../withProductEnabledPaywall'
+import { withProductEnabledPaywall } from '../withProductEnabledPaywall'
 
 const AnyComponent = () => (
     <div data-testid="paywalled-component">Paywalled component...</div>

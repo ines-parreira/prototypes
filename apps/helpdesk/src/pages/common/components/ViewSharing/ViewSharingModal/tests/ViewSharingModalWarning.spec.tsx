@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import ViewSharingModalWarning from '../ViewSharingModalWarning'
+import { ViewSharingModalWarning } from '../ViewSharingModalWarning'
 
 describe('<ViewSharingModalWarning/>', () => {
     const getTeam = (id: number) => ({ id, name: `Team ${id}` })

@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useSearchParam } from 'hooks/useSearchParam'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { assetsUrl } from 'utils'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceFlowPreview from '../flows/VoiceFlowPreview'
+import { VoiceFlowPreview } from '../flows/VoiceFlowPreview'
 import { SUCCESSFUL_ONBOARDING_PARAM } from './constants'
 
 import css from './VoiceAddedSuccessModal.less'
@@ -73,4 +73,4 @@ function VoiceAddedSuccessModal() {
     )
 }
 
-export default VoiceAddedSuccessModal
+export { VoiceAddedSuccessModal }

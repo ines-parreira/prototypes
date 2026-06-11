@@ -51,4 +51,4 @@ const StatusCell = ({ action, serviceConnectionStatuses, shopName }: Props) => {
     )
 }
 
-export default StatusCell
+export { StatusCell }

@@ -4,7 +4,9 @@ import { useSalesCoupons } from 'models/billing/queries'
 import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
-export default memo(BillingInternalView)
+const DefaultExportBillingInternalView = memo(BillingInternalView)
+
+export { DefaultExportBillingInternalView }
 
 export function BillingInternalView() {
     const { data: billingState, ...billingStateQuery } =

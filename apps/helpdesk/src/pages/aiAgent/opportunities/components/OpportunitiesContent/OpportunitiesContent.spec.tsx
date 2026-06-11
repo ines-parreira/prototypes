@@ -9,7 +9,7 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import { ResourceType } from 'pages/aiAgent/opportunities/types'
 
-import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
+import { DefaultExportOpportunitiesSidebarContext as OpportunitiesSidebarContext } from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
 import { State } from '../../hooks/useOpportunityPageState'
 import type { OpportunityPageState } from '../../hooks/useOpportunityPageState'
@@ -28,7 +28,7 @@ jest.mock('pages/aiAgent/utils/guidance.utils', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 'en-US'),
+    useAppSelector: jest.fn(() => 'en-US'),
 }))
 
 jest.mock('state/ui/helpCenter', () => ({

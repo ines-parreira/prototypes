@@ -7,17 +7,17 @@ import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisua
 import type { MultipleChoicesNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import type { MessageContent } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { Drawer } from 'pages/common/components/Drawer'
-import Caption from 'pages/common/forms/Caption/Caption'
+import { Caption } from 'pages/common/forms/Caption/Caption'
 
-import MessageContentFormField from '../components/MessageContentFormField'
-import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
-import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
-import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
-import ReplyButtonList from '../nodes/MultipleChoicesNode/ReplyButtonList'
+import { MessageContentFormField } from '../components/MessageContentFormField'
+import { TranslationsPreviewField } from '../components/translations/TranslationPreviewField'
+import { TranslationPreviewHeader } from '../components/translations/TranslationPreviewHeader'
+import { NodeEditorDrawerHeader } from '../NodeEditorDrawerHeader'
+import { ReplyButtonList } from '../nodes/MultipleChoicesNode/ReplyButtonList'
 
 import css from './NodeEditor.less'
 
-export default function MultipleChoicesEditor({
+export function MultipleChoicesEditor({
     nodeInEdition,
 }: {
     nodeInEdition: MultipleChoicesNodeType

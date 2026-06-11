@@ -2,14 +2,14 @@ import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { IntegrationType } from 'models/integration/constants'
-import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useValidateActionGraph from '../useValidateActionGraph'
+import { useValidateActionGraph } from '../useValidateActionGraph'
 
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 

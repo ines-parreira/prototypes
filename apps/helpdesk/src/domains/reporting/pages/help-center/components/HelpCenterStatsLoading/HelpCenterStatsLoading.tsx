@@ -1,6 +1,6 @@
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { HELP_CENTER_STATS_TEST_IDS } from 'domains/reporting/pages/help-center/pages/tests/constants'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 type HelpCenterStatsLoadingProps = {
     title: string
@@ -17,4 +17,4 @@ const HelpCenterStatsLoading = ({ title }: HelpCenterStatsLoadingProps) => (
     </div>
 )
 
-export default HelpCenterStatsLoading
+export { HelpCenterStatsLoading }

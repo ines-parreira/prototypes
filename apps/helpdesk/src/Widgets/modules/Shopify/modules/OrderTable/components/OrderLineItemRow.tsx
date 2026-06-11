@@ -15,12 +15,12 @@ import {
 } from 'business/shopify/lineItem'
 import { formatPrice } from 'business/shopify/number'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import IconButton from 'pages/common/components/button/IconButton'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
-import CheckBox from 'pages/common/forms/CheckBox'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { DiscountPopover } from 'Widgets/modules/Shopify/modules/DiscountPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './OrderLineItemRow.less'
@@ -450,4 +450,6 @@ function OrderLineItemRow({
     )
 }
 
-export default memo(OrderLineItemRow)
+const DefaultExportOrderLineItemRow = memo(OrderLineItemRow)
+
+export { DefaultExportOrderLineItemRow }

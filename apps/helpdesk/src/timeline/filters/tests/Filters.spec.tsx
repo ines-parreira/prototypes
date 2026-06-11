@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { InteractionFilterType } from '../../types'
-import Filters from '../Filters'
+import { Filters } from '../Filters'
 import { InteractionType } from '../InteractionType'
 import { RangeFilter } from '../RangeFilter'
 import { TicketStatusFilter } from '../TicketStatusFilter'

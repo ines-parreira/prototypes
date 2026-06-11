@@ -4,8 +4,8 @@ import classnames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import css from './TicketSearchDropdownSelectComponent.less'
 

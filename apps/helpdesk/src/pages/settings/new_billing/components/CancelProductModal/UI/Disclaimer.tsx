@@ -1,4 +1,4 @@
-import CheckBox from 'pages/common/forms/CheckBox'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
 import css from './Disclaimer.less'
 
@@ -35,4 +35,4 @@ const Disclaimer = ({ agreementChecked, onChange }: DisclaimerProps) => {
     )
 }
 
-export default Disclaimer
+export { Disclaimer }

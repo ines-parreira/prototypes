@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import EmojiPicker from '../EmojiPicker'
+import { EmojiPicker } from '../EmojiPicker'
 
 describe('<EmojiPicker/>', () => {
     describe('.render()', () => {

@@ -2,14 +2,14 @@ import Lottie from 'lottie-react'
 
 import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
-import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
+import { TrialTryModal } from 'pages/common/components/TrialTryModal/TrialTryModal'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './RestrictedOpportunityMessage.less'

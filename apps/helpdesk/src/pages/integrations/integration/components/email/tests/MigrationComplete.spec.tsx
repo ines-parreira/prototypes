@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import MigrationComplete from '../EmailMigration/MigrationComplete'
+import { MigrationComplete } from '../EmailMigration/MigrationComplete'
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({

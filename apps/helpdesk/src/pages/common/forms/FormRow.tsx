@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import css from './FormRow.less'
 
-export default function FormRow({
+export function FormRow({
     children,
     className,
 }: {

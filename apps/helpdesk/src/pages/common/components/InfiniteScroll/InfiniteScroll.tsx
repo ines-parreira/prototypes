@@ -87,4 +87,4 @@ const InfiniteScroll = ({
     )
 }
 
-export default InfiniteScroll
+export { InfiniteScroll }

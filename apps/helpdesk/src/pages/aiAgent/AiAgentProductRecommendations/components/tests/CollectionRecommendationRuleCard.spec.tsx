@@ -2,8 +2,8 @@ import { render } from '@repo/testing'
 import { QueryClient } from '@tanstack/react-query'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import usePaginatedProductCollectionsByIds from '../../hooks/usePaginatedProductCollectionsByIds'
-import usePaginatedProductsByIds from '../../hooks/usePaginatedProductsByIds'
+import { usePaginatedProductCollectionsByIds } from '../../hooks/usePaginatedProductCollectionsByIds'
+import { usePaginatedProductsByIds } from '../../hooks/usePaginatedProductsByIds'
 import { CollectionRecommendationRuleCard } from '../CollectionRecommendationRuleCard'
 
 jest.mock('models/ecommerce/queries', () => ({

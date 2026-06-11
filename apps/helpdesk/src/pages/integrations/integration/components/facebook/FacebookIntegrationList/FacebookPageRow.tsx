@@ -1,9 +1,9 @@
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
 
-import FacebookIntegrationLoginButton from '../FacebookLoginButton/FacebookIntegrationLoginButton'
+import { FacebookIntegrationLoginButton } from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
 const FacebookPageRow = ({ integration }: { integration: Map<any, any> }) => {
     const isDisabled = integration.get('deactivated_datetime')
@@ -53,4 +53,4 @@ const FacebookPageRow = ({ integration }: { integration: Map<any, any> }) => {
     )
 }
 
-export default FacebookPageRow
+export { FacebookPageRow }

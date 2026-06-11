@@ -12,7 +12,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
 import { EmbeddedSpqsSettings } from '../EmbeddedSpqsSettings'
-import useSpqInstallationStatus from '../hooks/useSpqInstallationStatus'
+import { useSpqInstallationStatus } from '../hooks/useSpqInstallationStatus'
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')

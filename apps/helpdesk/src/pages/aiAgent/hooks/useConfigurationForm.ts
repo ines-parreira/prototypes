@@ -8,11 +8,11 @@ import _isEqual from 'lodash/isEqual'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { isGorgiasApiError } from 'models/api/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { getStoreConfigurationFromFormValues } from '../components/StoreConfigForm/StoreConfigForm.utils'

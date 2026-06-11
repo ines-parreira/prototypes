@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import useAllIntegrations from 'hooks/useAllIntegrations'
+import { useAllIntegrations } from 'hooks/useAllIntegrations'
 import type {
     EmailIntegration,
     GmailIntegration,

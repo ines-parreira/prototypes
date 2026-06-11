@@ -12,8 +12,9 @@ import type {
     TicketNavbarDragObject,
     TicketNavbarDropResult,
 } from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import TicketNavbarDropTarget, {
+import {
     TicketNavbarDropDirection,
+    TicketNavbarDropTarget,
 } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import type { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
 import type { SectionsState } from 'state/entities/sections/types'
@@ -26,7 +27,7 @@ import {
 } from 'state/ui/ticketNavbar/actions'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import TicketNavbarSection from './TicketNavbarSection'
+import { DefaultExportTicketNavbarSection as TicketNavbarSection } from './TicketNavbarSection'
 import { TicketNavbarView } from './TicketNavbarView'
 
 import css from './TicketNavbarContent.less'
@@ -201,7 +202,9 @@ const connector = connect(
     },
 )
 
-export default connector(TicketNavbarContentContainer)
+const DefaultExportTicketNavbarContent = connector(TicketNavbarContentContainer)
+
+export { DefaultExportTicketNavbarContent }
 
 export const getNextSettings = (
     item: TicketNavbarDragObject,

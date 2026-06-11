@@ -8,7 +8,7 @@ import css from './CellLinkWrapper.less'
 type CellLinkWrapperProps = { children: ReactNode } & ComponentProps<
     typeof Link
 >
-export default function CellLinkWrapper({
+export function CellLinkWrapper({
     children,
     ...linkProps
 }: CellLinkWrapperProps) {

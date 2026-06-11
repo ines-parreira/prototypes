@@ -10,9 +10,9 @@ import {
 import { Cadence, ProductType } from 'models/billing/types'
 
 import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'
-import SummaryBody from '../../UI/SummaryBody'
-import SummaryHeader from '../../UI/SummaryHeader'
-import CancellationSummary from '../CancellationSummary'
+import { SummaryBody } from '../../UI/SummaryBody'
+import { SummaryHeader } from '../../UI/SummaryHeader'
+import { CancellationSummary } from '../CancellationSummary'
 
 jest.mock('../../UI/SummaryBody')
 const SummaryBodyMock = assumeMock(SummaryBody)

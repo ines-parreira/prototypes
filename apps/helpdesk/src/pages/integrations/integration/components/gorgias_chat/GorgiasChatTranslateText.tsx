@@ -5,7 +5,7 @@ import { ChatSettingsTranslateTextSkeleton } from 'pages/integrations/integratio
 import { GorgiasChatIntegrationTranslateTextRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/GorgiasChatIntegrationTranslateText'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
-import GorgiasTranslateText from './legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import { DefaultExportGorgiasTranslateText as GorgiasTranslateText } from './legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 
 type Props = {
     integration: Map<string, unknown>

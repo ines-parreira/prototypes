@@ -4,7 +4,7 @@ import { Duration } from '@gorgias/toolkit'
 import { Banner, Box, Button, Text, ToggleField } from '@gorgias/axiom'
 import { useGetUser } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     getDateAndTimeFormatter,
     getTimezone,

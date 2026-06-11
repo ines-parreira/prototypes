@@ -8,10 +8,10 @@ import _isEqual from 'lodash/isEqual'
 import { Button } from '@gorgias/axiom'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import PageHeader from 'pages/common/components/PageHeader'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import settingsCss from 'pages/settings/settings.less'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getViewsVisibilitySettings } from 'state/currentAccount/selectors'
@@ -154,4 +154,4 @@ const SidebarSettings = () => {
     )
 }
 
-export default SidebarSettings
+export { SidebarSettings }

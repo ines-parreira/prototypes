@@ -10,14 +10,14 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import type { PolicyKey } from 'models/selfServiceConfiguration/types'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
+import { EmptyResponseMessageContentError } from 'pages/automate/common/components/EmptyResponseMessageContentError'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useContactFormsAutomationSettings } from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { ORDER_MANAGEMENT } from '../../common/components/constants'
@@ -26,8 +26,8 @@ import {
     isSelfServiceStandaloneContactFormChannel,
 } from '../../common/hooks/useSelfServiceChannels'
 import { useConnectedChannelsContext } from '../../connectedChannels/ConnectedChannelsContext'
-import OrderManagementFlowItem from './components/OrderManagementFlowItem'
-import OrderManagementPreview from './OrderManagementPreview'
+import { OrderManagementFlowItem } from './components/OrderManagementFlowItem'
+import { OrderManagementPreview } from './OrderManagementPreview'
 
 const AutomationSubscriptionAction = () => {
     const [
@@ -279,4 +279,4 @@ const OrderManagementView = () => {
     )
 }
 
-export default OrderManagementView
+export { OrderManagementView }

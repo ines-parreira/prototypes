@@ -35,4 +35,4 @@ const SummaryLineItem = ({ summaryItem }: CancelledLineItemProps) => {
     )
 }
 
-export default SummaryLineItem
+export { SummaryLineItem }

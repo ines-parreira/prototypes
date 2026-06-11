@@ -5,15 +5,11 @@ import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-types'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../voice/constants'
-import VoiceQueueStatusToggle from '../voice/VoiceQueueStatusToggle'
+import { VoiceQueueStatusToggle } from '../voice/VoiceQueueStatusToggle'
 
 import css from './VoiceQueueBreadcrumbs.less'
 
-export default function VoiceQueueBreadcrumbs({
-    queueId,
-}: {
-    queueId: string
-}) {
+export function VoiceQueueBreadcrumbs({ queueId }: { queueId: string }) {
     const isIdNumber = !isNaN(Number(queueId))
 
     const { data: queue } = useGetVoiceQueue(

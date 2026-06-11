@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import CloseIcon from 'gorgias-design-system/Launcher/icons/CloseIcon'
+import { CloseIcon } from 'gorgias-design-system/Launcher/icons/CloseIcon'
 
 import { getTextColorBasedOnBackground } from '../color-utils'
 
@@ -76,4 +76,4 @@ const PrivacyPolicyDisclaimer: React.FC<Props> = ({
     )
 }
 
-export default PrivacyPolicyDisclaimer
+export { PrivacyPolicyDisclaimer }

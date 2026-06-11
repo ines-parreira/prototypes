@@ -5,7 +5,7 @@ import { debounce } from 'lodash'
 import _flatten from 'lodash/flatten'
 
 import { useInfiniteListBusinessHours } from 'hooks/businessHours/useInfiniteListBusinessHours'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

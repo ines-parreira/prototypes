@@ -18,7 +18,7 @@ import {
     OverflowListShowMore,
 } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import {
     END_OF_TODAY_DATE,
     INTERACTION_FILTER_OPTIONS,

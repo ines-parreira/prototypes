@@ -12,8 +12,8 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { customerInputFieldDefinition } from 'fixtures/customField'
 
-import CustomerField from '../CustomerField'
-import CustomerFields from '../CustomerFields'
+import { CustomerField } from '../CustomerField'
+import { CustomerFields } from '../CustomerFields'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
@@ -25,7 +25,7 @@ jest.mock('../Heading', () => ({
     Heading: () => <div>Heading</div>,
 }))
 jest.mock('../CustomerField', () => {
-    return jest.fn(() => <div>CustomerField</div>)
+    return { CustomerField: jest.fn(() => <div>CustomerField</div>) }
 })
 
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)

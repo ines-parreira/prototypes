@@ -8,14 +8,10 @@ import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
 import { AddButton } from '../AddButton'
 
-jest.mock(
-    '@repo/forms',
-    () =>
-        ({
-            ...jest.requireActual('@repo/forms'),
-            useWatch: jest.fn(),
-        }) as Record<string, unknown>,
-)
+jest.mock('@repo/forms', () => ({
+    ...jest.requireActual('@repo/forms'),
+    useWatch: jest.fn(),
+}))
 
 const useWatchMock = assumeMock(useWatch)
 

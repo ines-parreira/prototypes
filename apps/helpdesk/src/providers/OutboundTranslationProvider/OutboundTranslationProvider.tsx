@@ -17,12 +17,12 @@ import { isDomainEvent } from '@gorgias/events'
 import type { DomainEvent, DomainEventWithType } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
-import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import { ticketReplyCache } from 'state/newMessage/ticketReplyCache'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
 export type OutboundTranslationData = {

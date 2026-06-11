@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 import { emailTicket } from 'state/ticket/tests/fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import AISuggestionContactReason from '../AISuggestionContactReason'
+import { ContactReasonSuggestion as AISuggestionContactReason } from '../AISuggestionContactReason'
 
 const queryClient = mockQueryClient()
 

@@ -46,7 +46,7 @@ const AnalyticsColorTokens: Record<ThemeName, AnalyticsTheme> = {
     [THEME_NAME.Light]: analyticsColorsLight,
 }
 
-export default function withAnalyticsTheme<P extends object>(
+export function withAnalyticsTheme<P extends object>(
     Component: ComponentType<P>,
 ) {
     return (props: P) => {

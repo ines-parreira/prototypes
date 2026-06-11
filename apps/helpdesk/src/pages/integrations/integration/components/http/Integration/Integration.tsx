@@ -34,19 +34,19 @@ import {
     OAUTH2_SECRET_SENTINEL,
     OAuth2TokenLocation,
 } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import { DEFAULT_FORM } from 'pages/integrations/integration/components/http/Integration/constants'
 import { validateHeaderName } from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
-import JSONBody from 'pages/integrations/integration/components/http/Integration/JSONBody'
+import { JSONBody } from 'pages/integrations/integration/components/http/Integration/JSONBody'
 import type { Field } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
-import ObjectListField from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import { ObjectListField } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
-import InfoIconWithTooltip from 'pages/tickets/common/components/InfoIconWithTooltip'
+import { InfoIconWithTooltip } from 'pages/tickets/common/components/InfoIconWithTooltip'
 import {
     activateIntegration,
     deactivateIntegration,
@@ -1023,4 +1023,4 @@ function IntegrationWithFeatureFlag(props: ConnectedProps_) {
     )
 }
 
-export default IntegrationWithFeatureFlag
+export { IntegrationWithFeatureFlag }

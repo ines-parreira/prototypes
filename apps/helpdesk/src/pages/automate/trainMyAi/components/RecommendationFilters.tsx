@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import type { Paths } from 'rest_api/ssp_api/client.generated'
 
-import SelectInputBox, {
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'
-import ArticleSelect from './ArticleSelect'
+import { ArticleSelect } from './ArticleSelect'
 
 import css from './RecommendationFilters.less'
 
@@ -42,7 +43,7 @@ function getFeedbackOptionLabel(feedbackOption: FeedbackOptions) {
           : 'Needed More Help'
 }
 
-export default function RecommendationFilter({
+export function RecommendationFilter({
     helpCenterId,
     articleId,
     showCompleted,

@@ -7,7 +7,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { updateEmailIntegrationDomain } from '@gorgias/helpdesk-client'
 
 import * as helpers from '../../../helpers'
-import EmailDomainVerificationForm from '../EmailDomainVerificationForm'
+import { EmailDomainVerificationForm } from '../EmailDomainVerificationForm'
 
 jest.mock('@gorgias/helpdesk-client')
 

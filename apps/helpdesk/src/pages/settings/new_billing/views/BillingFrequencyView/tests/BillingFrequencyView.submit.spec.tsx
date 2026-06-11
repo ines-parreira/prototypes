@@ -36,8 +36,8 @@ import { ShopifyBillingStatus } from 'state/currentAccount/types'
 import type { RootState } from 'state/types'
 
 import { useBillingPlans } from '../../../hooks/useBillingPlan'
-import useProductCancellations from '../../../hooks/useProductCancellations'
-import BillingFrequencyView from '../BillingFrequencyView'
+import { useProductCancellations } from '../../../hooks/useProductCancellations'
+import { BillingFrequencyView } from '../BillingFrequencyView'
 
 jest.mock('../../../components/ConfirmChangesModal', () => ({
     ConfirmChangesModal: jest
@@ -79,7 +79,7 @@ jest.mock('@repo/billing', () => ({
     ...jest.requireActual('@repo/billing'),
     useBillingState: jest.fn(),
 }))
-jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('state/notifications/actions')
 const mockUseFlag = useFlag as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)

@@ -5,7 +5,7 @@ import {
     contactFormsFetched,
     contactFormUpdated,
 } from '../actions'
-import reducer, { initialState } from '../reducer'
+import { initialState, contactFormReducer as reducer } from '../reducer'
 
 describe('contactForms reducer', () => {
     describe('contactFormDeleted action', () => {

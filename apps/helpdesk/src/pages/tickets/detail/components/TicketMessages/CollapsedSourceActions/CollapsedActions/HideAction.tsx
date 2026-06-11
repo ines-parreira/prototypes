@@ -1,4 +1,4 @@
-import CollapsedAction from './CollapsedAction'
+import { CollapsedAction } from './CollapsedAction'
 
 const HideAction: React.FC<{
     shouldHide: boolean
@@ -19,4 +19,4 @@ const HideAction: React.FC<{
     )
 }
 
-export default HideAction
+export { HideAction }

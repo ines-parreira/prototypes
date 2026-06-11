@@ -9,7 +9,7 @@ import { ListGroup, ListGroupItem } from 'reactstrap'
 import type { AttachmentEnum } from 'common/types'
 import { IntegrationType } from 'models/integration/constants'
 import type { ProductCardDetails } from 'models/integration/types'
-import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
+import { ShopifyProductLine } from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
 import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { getIconFromType } from 'state/integrations/helpers'
 import { insertLink, insertText } from 'utils'
@@ -22,7 +22,7 @@ import {
     mapIntegrationToPickedShopifyIntegration,
     transformProductCardDetailsToProductCardAttachment,
 } from '../utils'
-import Popover from './ButtonPopover'
+import { ButtonPopover as Popover } from './ButtonPopover'
 
 import css from './AddProductLink.less'
 
@@ -248,4 +248,4 @@ const AddProductLink = ({
     )
 }
 
-export default AddProductLink
+export { AddProductLink }

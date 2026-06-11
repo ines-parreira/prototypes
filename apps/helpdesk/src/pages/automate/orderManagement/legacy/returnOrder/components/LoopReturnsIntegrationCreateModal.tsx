@@ -6,15 +6,15 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ContentType, HttpMethod } from 'models/api/types'
 import { HttpIntegrationTriggerType } from 'models/integration/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getAreIntegrationsLoading } from 'state/integrations/selectors'
 
@@ -136,4 +136,4 @@ const LoopReturnsIntegrationCreateModal = ({
     )
 }
 
-export default LoopReturnsIntegrationCreateModal
+export { LoopReturnsIntegrationCreateModal }

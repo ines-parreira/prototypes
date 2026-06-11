@@ -10,14 +10,14 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type { OutlookIntegration } from 'models/integration/types'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 
 import { listUrl } from './hooks/useEmailOnboarding'
 
-export default function useDeleteEmailIntegration(
+export function useDeleteEmailIntegration(
     integration: EmailIntegration | GmailIntegration | OutlookIntegration,
 ) {
     const dispatch = useAppDispatch()

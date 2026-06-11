@@ -7,12 +7,12 @@ import type { LocationDescriptor } from 'history'
 import { useHistory } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketDraft } from 'hooks/useTicketDraft'
 import { DRAFT_TICKET_STORE, isTicketDraftEmpty } from 'hooks/useTicketDraft'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-export default function useHandleTicketDraft() {
+export function useHandleTicketDraft() {
     const history = useHistory()
     const currentUser = useAppSelector(getCurrentUser)
     const localForageRef = useRef<LocalForage>()

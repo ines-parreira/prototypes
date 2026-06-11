@@ -5,7 +5,7 @@ import { useId } from '@gorgias/toolkit-react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 
 import { isMacroDisabled } from '../utils'
 
@@ -103,4 +103,4 @@ function MacroListItem({
     )
 }
 
-export default MacroList
+export { MacroList }

@@ -3,7 +3,7 @@ import { action } from 'storybook/actions'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 
-import ThankYouModal from './ThankYouModal'
+import { ThankYouModal } from './ThankYouModal'
 
 const storyConfig: Meta<typeof ThankYouModal> = {
     title: 'AI Agent/Onboarding/ThankYouModal',

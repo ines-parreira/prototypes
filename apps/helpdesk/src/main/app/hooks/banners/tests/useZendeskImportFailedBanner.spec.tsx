@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ImportStatus } from 'pages/settings/importZendesk/zendesk/types'
 
 import { useZendeskImportFailedBanner } from '../useZendeskImportFailedBanner'
@@ -33,7 +33,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 

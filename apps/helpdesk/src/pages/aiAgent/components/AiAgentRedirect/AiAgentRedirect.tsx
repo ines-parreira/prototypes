@@ -1,11 +1,11 @@
 import { Redirect } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { aiAgentRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
-import StoreIntegrationView from 'pages/automate/common/components/StoreIntegrationView'
+import { StoreIntegrationView } from 'pages/automate/common/components/StoreIntegrationView'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export const AiAgentRedirect = () => {

@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { TabNavigator } from 'pages/common/components/TabNavigator/TabNavigator'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertBundleView from 'pages/convert/bundles/components/ConvertBundleView'
+import { ConvertBundleView } from 'pages/convert/bundles/components/ConvertBundleView'
 import { GeneralSettingsView } from 'pages/convert/settings/components/GeneralSettingsView'
 
 import css from './GeneralSettingsView.less'

@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import CollapsibleSection from './CollapsibleSection'
+import { CollapsibleSection } from './CollapsibleSection'
 
 const storyConfig: Meta<typeof CollapsibleSection> = {
     title: 'AI Agent/Components/CollapsibleSection',

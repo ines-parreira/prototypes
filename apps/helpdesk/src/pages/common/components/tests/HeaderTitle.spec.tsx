@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 
-import HeaderTitle from '../HeaderTitle'
+import { HeaderTitle } from '../HeaderTitle'
 
 describe('<HeaderTitle />', () => {
     it('should render the title', () => {

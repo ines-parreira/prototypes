@@ -7,7 +7,7 @@ import { convertProduct } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo, getProductLabel } from 'models/billing/utils'
 import type { PlanSubscriptionDescriptionProps } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
+import { PlanSubscriptionDescription } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 
 describe('PlanSubscriptionDescription', () => {
     const setSelectedPlanMock = jest.fn()

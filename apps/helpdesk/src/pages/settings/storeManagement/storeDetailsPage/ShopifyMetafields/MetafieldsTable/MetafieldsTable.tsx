@@ -19,13 +19,13 @@ import {
     METAFIELD_CATEGORIES,
     METAFIELD_TYPE_OPTIONS,
 } from '../constants'
-import EmptyMetafieldsState from '../EmptyMetafieldsState'
+import { EmptyMetafieldsState } from '../EmptyMetafieldsState'
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useMetafieldsFiltersHandler } from '../hooks/useMetafieldsFiltersHandler'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
-import ImportMetafieldFlow from '../ImportMetafieldFlow/ImportMetafieldFlow'
-import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
-import ImportAction from './ImportAction'
+import { ImportMetafieldFlow } from '../ImportMetafieldFlow/ImportMetafieldFlow'
+import { RemoveMetafieldConfirmation } from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
+import { ImportAction } from './ImportAction'
 import type { Field, MetafieldsTableMeta } from './types'
 
 import styles from './MetafieldsTable.less'
@@ -41,7 +41,7 @@ type MetafieldsTableProps<TData, TValue> = {
     data: TData[]
     isLoading?: boolean
 }
-export default function MetafieldsTable<TData, TValue>({
+export function MetafieldsTable<TData, TValue>({
     columns,
     data,
     isLoading = false,

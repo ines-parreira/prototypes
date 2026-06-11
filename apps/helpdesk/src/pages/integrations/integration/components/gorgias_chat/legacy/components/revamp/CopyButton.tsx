@@ -55,4 +55,4 @@ const CopyButton = ({
     )
 }
 
-export default CopyButton
+export { CopyButton }

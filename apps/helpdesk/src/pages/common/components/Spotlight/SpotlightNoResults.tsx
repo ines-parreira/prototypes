@@ -31,4 +31,4 @@ const SpotlightNoResults = ({
     )
 }
 
-export default SpotlightNoResults
+export { SpotlightNoResults }

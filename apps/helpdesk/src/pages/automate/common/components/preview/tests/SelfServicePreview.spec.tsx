@@ -7,11 +7,11 @@ import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
+import { SelfServicePreviewContext } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import SelfServicePreview from '../SelfServicePreview'
+import { SelfServicePreview } from '../SelfServicePreview'
 
 const queryClient = mockQueryClient()
 describe('<SelfServicePreview />', () => {

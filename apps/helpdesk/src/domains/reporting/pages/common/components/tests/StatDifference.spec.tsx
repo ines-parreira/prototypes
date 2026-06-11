@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import StatDifference from 'domains/reporting/pages/common/components/StatDifference'
+import { StatDifference } from 'domains/reporting/pages/common/components/StatDifference'
 
 describe('<StatDifference />', () => {
     const minProps: ComponentProps<typeof StatDifference> = {

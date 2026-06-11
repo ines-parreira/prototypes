@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
-import HttpRequestLogsView from '../HttpRequestLogsView'
+import { HttpRequestLogsView } from '../HttpRequestLogsView'
 
 describe('<HttpRequestLogsView />', () => {
     const mockLogEntry: Components.Schemas.HttpRequestEventsResponseDto[0] = {

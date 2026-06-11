@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'

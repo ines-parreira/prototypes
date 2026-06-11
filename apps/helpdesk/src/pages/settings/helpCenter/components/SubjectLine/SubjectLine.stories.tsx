@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import type { SubjectLineProps } from './SubjectLine'
-import SubjectLine from './SubjectLine'
+import { SubjectLine } from './SubjectLine'
 
 const storyConfig: Meta = {
     title: 'Help Center/SubjectLine',

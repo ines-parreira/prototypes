@@ -4,7 +4,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import css from 'domains/reporting/pages/support-performance/components/MetricTip.less'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 
 type SuccessLevel =
     | 'neutral'
@@ -20,7 +20,7 @@ type Props = {
     type?: SuccessLevel
 }
 
-export default function MetricTip({
+export function MetricTip({
     children,
     className,
     hint,

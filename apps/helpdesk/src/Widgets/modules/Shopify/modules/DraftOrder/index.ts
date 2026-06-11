@@ -1,1 +1,1 @@
-export { default as DraftOrderMetafields } from './components/DraftOrderMetafields'
+export { WrappedDraftOrderMetafields as DraftOrderMetafields } from './components/DraftOrderMetafields'

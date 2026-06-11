@@ -17,4 +17,4 @@ const createConfig = (
     })
 }
 
-export default createConfig
+export { createConfig }

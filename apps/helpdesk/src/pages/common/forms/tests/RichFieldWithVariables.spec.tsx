@@ -3,9 +3,11 @@ import React from 'react'
 import { render } from '@repo/testing'
 import _noop from 'lodash/noop'
 
-import RichFieldWithVariables from '../RichFieldWithVariables'
+import { RichFieldWithVariables } from '../RichFieldWithVariables'
 
-jest.mock('../RichField/TicketRichField', () => () => <div></div>)
+jest.mock('../RichField/TicketRichField', () => ({
+    DefaultExportTicketRichField: () => <div></div>,
+}))
 
 describe('RichFieldWithVariables', () => {
     it('should render an input with variable dropdowns', () => {

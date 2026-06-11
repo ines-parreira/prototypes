@@ -7,8 +7,10 @@ import { LoopReturnsIntegrationCreateModal } from './LoopReturnsIntegrationCreat
 
 const mockDispatch = jest.fn(() => Promise.resolve())
 
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
-jest.mock('hooks/useAppSelector', () => () => false)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: () => false }))
 jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(() => ({ type: 'MOCK_ACTION' })),
 }))

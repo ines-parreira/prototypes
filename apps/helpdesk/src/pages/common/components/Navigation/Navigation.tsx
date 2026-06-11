@@ -1,6 +1,6 @@
 import { MultiButton } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 type Props = {
     className?: string
@@ -10,7 +10,7 @@ type Props = {
     fetchPrevItems: () => void
 }
 
-export default function Navigation({
+export function Navigation({
     className,
     hasNextItems,
     fetchNextItems,

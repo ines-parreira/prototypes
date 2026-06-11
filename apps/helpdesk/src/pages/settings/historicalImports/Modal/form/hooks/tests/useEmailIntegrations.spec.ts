@@ -6,7 +6,7 @@ import { useEmailIntegrations } from '../useEmailIntegrations'
 
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAllIntegrations: jest.fn(),
 }))
 
 jest.mock('pages/integrations/integration/components/email/helpers', () => ({
@@ -14,7 +14,7 @@ jest.mock('pages/integrations/integration/components/email/helpers', () => ({
 }))
 
 const mockUseAllIntegrations = jest.mocked(
-    require('hooks/useAllIntegrations').default,
+    require('hooks/useAllIntegrations').useAllIntegrations,
 )
 
 const mockIsBaseEmailIntegration = jest.mocked(

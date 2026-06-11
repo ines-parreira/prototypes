@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import NoSearchTable from 'domains/reporting/pages/help-center/components/NoSearchTable/NoSearchTable'
+import { NoSearchTable } from 'domains/reporting/pages/help-center/components/NoSearchTable/NoSearchTable'
 import { useNoSearchResultsMetrics } from 'domains/reporting/pages/help-center/hooks/useNoSearchResultsMetrics'
 
 jest.mock(

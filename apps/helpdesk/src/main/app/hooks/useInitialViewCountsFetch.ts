@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react'
 
 import { useHasNewViewCountScheduler } from '@repo/views'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchVisibleViewsCounts } from 'state/views/actions'
 
-export default function useInitialViewCountsFetch() {
+export function useInitialViewCountsFetch() {
     const dispatch = useAppDispatch()
     const { value: hasNewScheduler, isLoading } = useHasNewViewCountScheduler()
     const hasFetched = useRef(false)

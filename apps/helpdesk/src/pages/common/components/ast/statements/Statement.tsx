@@ -3,14 +3,14 @@ import React from 'react'
 
 import { connect } from 'react-redux'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
 import { getSchemas } from 'state/schemas/selectors'
 
-import UnknownSyntax from '../UnknownSyntax'
-import BlockStatement from './BlockStatement'
-import ExpressionStatement from './ExpressionStatement'
-import IfStatement from './IfStatement'
+import { UnknownSyntax } from '../UnknownSyntax'
+import { BlockStatement } from './BlockStatement'
+import { ExpressionStatement } from './ExpressionStatement'
+import { IfStatement } from './IfStatement'
 
 const types = {
     IfStatement,
@@ -26,4 +26,6 @@ const Statement = (props: StatementProps) => {
     return <Component {...props} schemas={schemas} depth={depth} />
 }
 
-export default connect()(Statement)
+const DefaultExportStatement = connect()(Statement)
+
+export { DefaultExportStatement }

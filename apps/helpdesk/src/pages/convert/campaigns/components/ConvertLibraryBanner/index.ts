@@ -1,1 +1,1 @@
-export { default } from './ConvertLibraryBanner'
+export { ConvertLibraryBanner } from './ConvertLibraryBanner'

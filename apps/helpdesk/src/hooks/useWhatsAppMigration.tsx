@@ -6,7 +6,7 @@ import { isValidPhoneNumber } from 'libphonenumber-js'
 import { get, isEmpty, isString, noop } from 'lodash'
 import { useDebouncedEffect, useLocalStorage } from '@gorgias/toolkit-react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     getMigrationProgress,
     registerNumber,
@@ -156,7 +156,7 @@ export const WhatsAppMigrationContextProvider = ({
     )
 }
 
-export default function useWhatsAppMigration(): Migration {
+export function useWhatsAppMigration(): Migration {
     return useContext(WhatsAppMigrationContext)
 }
 

@@ -4,11 +4,11 @@ import React, { useContext } from 'react'
 import { assumeMock, render } from '@repo/testing'
 
 import type { LeafTemplate } from 'models/widget/types'
-import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { CustomizationContext, Template } from 'Widgets/modules/Template'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
 import { formatRechargeDateTime } from '../../helpers/formatRechargeDateTime'
-import RechargeWidget, { customization } from '../Recharge'
+import { customization, RechargeWidget } from '../Recharge'
 
 jest.mock('Widgets/modules/Template', () => {
     const templateExports: Record<string, unknown> = jest.requireActual(
@@ -17,7 +17,7 @@ jest.mock('Widgets/modules/Template', () => {
     return {
         __esModule: true,
         ...templateExports,
-        default: jest.fn(),
+        Template: jest.fn(),
     }
 })
 jest.mock('../../helpers/formatRechargeDateTime')

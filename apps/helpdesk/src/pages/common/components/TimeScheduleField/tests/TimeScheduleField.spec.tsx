@@ -4,7 +4,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from 'pages/settings/businessHours/constants'
 
-import TimeScheduleField from '../TimeScheduleField'
+import { TimeScheduleField } from '../TimeScheduleField'
 
 const defaultFormValues = {
     business_hours_config: {

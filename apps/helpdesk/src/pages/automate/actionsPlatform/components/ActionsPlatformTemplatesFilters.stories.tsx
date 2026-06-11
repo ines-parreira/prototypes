@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { IntegrationType } from 'models/integration/constants'
-import ActionsPlatformTemplatesFilters from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplatesFilters'
+import { ActionsPlatformTemplatesFilters } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplatesFilters'
 
 const storyConfig: Meta = {
     title: 'General/ActionsPlatformTemplatesFilters',

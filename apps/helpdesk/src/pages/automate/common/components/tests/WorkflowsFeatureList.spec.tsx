@@ -5,20 +5,22 @@ import { screen } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
 
-import useLanguagesMismatchWarnings from '../../../workflows/hooks/useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from '../../../workflows/hooks/useLanguagesMismatchWarnings'
 import { WorkflowChannelSupportContext } from '../../../workflows/hooks/useWorkflowChannelSupport'
-import WorkflowItem from '../WorkflowItem'
+import { WorkflowItem } from '../WorkflowItem'
 import type { Entrypoint } from '../WorkflowsFeatureList'
-import WorkflowsFeatureList from '../WorkflowsFeatureList'
+import { WorkflowsFeatureList } from '../WorkflowsFeatureList'
 
 jest.mock('../../../workflows/hooks/useLanguagesMismatchWarnings', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useLanguagesMismatchWarnings: jest.fn(),
 }))
 
 jest.mock('../WorkflowItem', () => ({
     __esModule: true,
-    default: jest.fn(() => <div data-testid="workflow-item">WorkflowItem</div>),
+    WorkflowItem: jest.fn(() => (
+        <div data-testid="workflow-item">WorkflowItem</div>
+    )),
 }))
 
 const mockGetUnsupportedNodeTypes = jest.fn().mockReturnValue([])

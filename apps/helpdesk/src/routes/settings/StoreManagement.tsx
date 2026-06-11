@@ -6,7 +6,7 @@ import {
     StoreManagementPage,
     StoreManagementProvider,
 } from 'pages/settings/storeManagement'
-import StoreDetailsPage from 'pages/settings/storeManagement/storeDetailsPage/StoreDetailsPage'
+import { StoreDetailsPage } from 'pages/settings/storeManagement/storeDetailsPage/StoreDetailsPage'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

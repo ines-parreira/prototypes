@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import MoneyAmount from '../MoneyAmount'
+import { MoneyAmount } from '../MoneyAmount'
 
 describe('<MoneyAmount/>', () => {
     describe('render()', () => {

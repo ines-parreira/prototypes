@@ -1,8 +1,8 @@
 import { Button } from '@gorgias/axiom'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { assetsUrl } from 'utils'
 
 import css from './SuccessModal.less'
@@ -55,4 +55,4 @@ const SuccessModal: React.FC<Props> = ({
     </Modal>
 )
 
-export default SuccessModal
+export { SuccessModal }

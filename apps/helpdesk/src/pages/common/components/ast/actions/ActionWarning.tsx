@@ -9,7 +9,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function ActionWarning({ children }: Props) {
+export function ActionWarning({ children }: Props) {
     return (
         <span className={classnames('alert-warning', css.wrapper)}>
             {children}

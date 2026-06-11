@@ -34,7 +34,7 @@ jest.mock('AIJourney/queries/useJourneys/useJourneys', () => ({
     useJourneys: jest.fn(),
 }))
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
     getStoresConfigurations: jest.fn(),
@@ -46,7 +46,8 @@ jest.mock('models/aiAgent/queries', () => ({
 }))
 
 const mockUseParams = useParams as jest.Mock
-const mockUseAppSelector = require('hooks/useAppSelector') as jest.Mock
+const mockUseAppSelector = require('hooks/useAppSelector')
+    .useAppSelector as jest.Mock
 const mockUseJourneyData =
     require('AIJourney/queries/useJourneyData/useJourneyData').useJourneyData
 const mockUseJourneys =

@@ -12,8 +12,8 @@ import { toJS } from 'utils'
 
 import type { Campaign } from '../../../campaigns/types/Campaign'
 import { useGetOrCreateChannelConnection } from '../../hooks/useGetOrCreateChannelConnection'
-import ConvertCampaignsNewHomeInfobar from './ConvertCampaignsNewHomeInfobar'
-import ConvertCampaignsTablePlaceholder from './ConvertCampaignsTablePlaceholder'
+import { ConvertCampaignsNewHomeInfobar } from './ConvertCampaignsNewHomeInfobar'
+import { ConvertCampaignsTablePlaceholder } from './ConvertCampaignsTablePlaceholder'
 
 import css from './ConvertCampaignsListPlaceholder.less'
 
@@ -100,4 +100,4 @@ const ConvertCampaignsListPlaceholder = ({ integration }: Props) => {
     )
 }
 
-export default ConvertCampaignsListPlaceholder
+export { ConvertCampaignsListPlaceholder }

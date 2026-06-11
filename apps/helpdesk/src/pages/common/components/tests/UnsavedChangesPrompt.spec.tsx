@@ -6,8 +6,8 @@ import { BrowserRouter } from 'react-router-dom'
 
 import type { UnsavedChangesModalProps } from '../UnsavedChangesModal'
 import type { UnsavedChangesPromptTrigger } from '../UnsavedChangesPrompt'
-import UnsavedChangesPrompt from '../UnsavedChangesPrompt'
-import useUnsavedChangesPrompt from '../useUnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from '../UnsavedChangesPrompt'
+import { useUnsavedChangesPrompt } from '../useUnsavedChangesPrompt'
 
 const mockUseUnsavedChangesPromptProps = {
     isOpen: true,
@@ -22,7 +22,7 @@ jest.mock('../useUnsavedChangesPrompt')
 // Mock the modal component
 jest.mock('../UnsavedChangesModal', () => ({
     __esModule: true,
-    default: ({
+    UnsavedChangesModal: ({
         isOpen,
         onClose,
         onSave,

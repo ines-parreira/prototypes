@@ -28,7 +28,7 @@ import type {
     UpdateServiceConnectionRequest,
 } from 'models/integration/types/serviceConnection'
 import { deriveSingleValueLabel } from 'pages/aiAgent/actionsV2/apps/components'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 export type Props = {
     appId: string
@@ -72,7 +72,7 @@ const EMPTY_FORM: FormState = {
     scopes: '',
 }
 
-export default function AppConnectionEdit() {
+export function AppConnectionEdit() {
     const { appId, connectionId } = useParams<{
         appId: string
         connectionId: string

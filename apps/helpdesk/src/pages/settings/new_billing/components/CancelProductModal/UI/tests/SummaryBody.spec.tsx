@@ -2,9 +2,9 @@ import { assumeMock, render } from '@repo/testing'
 
 import { Cadence } from 'models/billing/types'
 
-import SummaryBody from '../SummaryBody'
-import SummaryLineItem from '../SummaryLineItem'
-import SummaryTotal from '../SummaryTotal'
+import { SummaryBody } from '../SummaryBody'
+import { SummaryLineItem } from '../SummaryLineItem'
+import { SummaryTotal } from '../SummaryTotal'
 
 jest.mock('../SummaryLineItem')
 const SummaryLineItemMock = assumeMock(SummaryLineItem)

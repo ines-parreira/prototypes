@@ -8,11 +8,12 @@ import type {
     IvrForwardCallMenuAction,
     IvrMenuAction,
 } from 'models/integration/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -148,4 +149,4 @@ const IvrMenuActionSelect = ({
     )
 }
 
-export default IvrMenuActionSelect
+export { IvrMenuActionSelect }

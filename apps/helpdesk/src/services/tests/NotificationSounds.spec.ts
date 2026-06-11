@@ -1,6 +1,6 @@
 import { flushPromises } from '@repo/testing'
 
-import NotificationSounds, { sounds } from '../NotificationSounds'
+import { NotificationSounds, sounds } from '../NotificationSounds'
 
 describe('NotificationSounds', () => {
     let audioContext: jest.Mock

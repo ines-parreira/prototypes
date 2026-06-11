@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 
 type RadioFieldSetProps = ComponentProps<typeof RadioFieldSet>
 
@@ -15,7 +15,7 @@ type RadioButtonFieldProps = {
  * @date 2026-03-11
  * @type ui-kit-migration
  */
-export default function RadioButtonField({
+export function RadioButtonField({
     value,
     ...radioFieldSetProps
 }: RadioButtonFieldProps) {

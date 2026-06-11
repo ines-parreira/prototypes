@@ -8,7 +8,7 @@ interface Props {
     onChange: (page: number) => void
 }
 
-export default function ActionEventsNumberedPagination({
+export function ActionEventsNumberedPagination({
     page,
     count,
     onChange,

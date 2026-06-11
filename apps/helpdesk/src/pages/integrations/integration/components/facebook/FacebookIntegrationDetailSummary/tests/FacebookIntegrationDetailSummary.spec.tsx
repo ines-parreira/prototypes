@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import logo from 'assets/img/icons/logo.png'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import FacebookIntegrationDetailSummary from '../FacebookIntegrationDetailSummary'
+import { FacebookIntegrationDetailSummary } from '../FacebookIntegrationDetailSummary'
 
 describe('<FacebookIntegrationDetailSummary/>', () => {
     let store: MockStoreEnhanced

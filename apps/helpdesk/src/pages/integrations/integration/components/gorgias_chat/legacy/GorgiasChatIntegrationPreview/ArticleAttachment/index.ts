@@ -1,3 +1,3 @@
-export { default } from './ArticleAttachment'
+export { ArticleAttachment } from './ArticleAttachment'
 
 export * from './types/ArticleAttachmentSchema'

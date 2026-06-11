@@ -8,7 +8,7 @@ import { fromJS } from 'immutable'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
@@ -16,7 +16,7 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 import { useHasAccessToAILibrary } from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+import { HelpCenterPageWrapper } from '../HelpCenterPageWrapper'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('@repo/feature-flags', () => ({
@@ -61,7 +61,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 })
 jest.mock('pages/settings/billing/automate/AutomateSubscriptionModal', () => ({
     __esModule: true,
-    default: () => null,
+    AutomateSubscriptionModal: () => null,
 }))
 const windowOpenMock = jest.fn().mockReturnValue({
     focus: jest.fn(),

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import _xor from 'lodash/xor'
 
-export default function useExpandedMessages() {
+export function useExpandedMessages() {
     const [messages, setMessages] = useState<number[]>([])
 
     const toggleMessage = useCallback((messageId: number | undefined) => {

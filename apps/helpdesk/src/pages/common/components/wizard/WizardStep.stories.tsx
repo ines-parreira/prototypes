@@ -2,8 +2,8 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Wizard from './Wizard'
-import WizardStep from './WizardStep'
+import { Wizard } from './Wizard'
+import { WizardStep } from './WizardStep'
 
 const storyConfig: Meta = {
     title: 'General/Wizard container/WizardStep',

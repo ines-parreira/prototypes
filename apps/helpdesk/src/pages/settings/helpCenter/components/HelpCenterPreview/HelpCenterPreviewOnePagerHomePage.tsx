@@ -43,4 +43,4 @@ const HelpCenterPreviewOnePagerHomePage = () => {
     )
 }
 
-export default HelpCenterPreviewOnePagerHomePage
+export { HelpCenterPreviewOnePagerHomePage }

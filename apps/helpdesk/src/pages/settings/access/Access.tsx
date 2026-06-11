@@ -12,13 +12,13 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import googleLogo from 'assets/img/integrations/google.svg'
 import microsoftLogo from 'assets/img/integrations/microsoft.svg'
-import useAppSelector from 'hooks/useAppSelector'
-import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import Skip2faAfterSso from 'pages/settings/access/Skip2faAfterSso'
-import SsoEnforcement from 'pages/settings/access/SsoEnforcement'
-import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
+import { Skip2faAfterSso } from 'pages/settings/access/Skip2faAfterSso'
+import { SsoEnforcement } from 'pages/settings/access/SsoEnforcement'
+import { TwoFactorAuthenticationEnforcement } from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import { submitSetting } from 'state/currentAccount/actions'
 import { UPDATE_ACCOUNT_SETTING } from 'state/currentAccount/constants'
 import {
@@ -37,8 +37,8 @@ import {
 } from 'state/currentAccount/types'
 import type { RootState } from 'state/types'
 
-import CustomSsoProviders from './CustomSsoProviders'
-import SsoToggleButton from './SsoToggleButton'
+import { CustomSsoProviders } from './CustomSsoProviders'
+import { SsoToggleButton } from './SsoToggleButton'
 
 import css from '../settings.less'
 
@@ -479,4 +479,6 @@ const connector = connect(
     },
 )
 
-export default connector(AccessContainer)
+const DefaultExportAccess = connector(AccessContainer)
+
+export { DefaultExportAccess }

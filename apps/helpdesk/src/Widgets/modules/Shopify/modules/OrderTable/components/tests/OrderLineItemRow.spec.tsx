@@ -16,7 +16,7 @@ import {
 } from 'fixtures/shopify'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import OrderLineItemRow from '../OrderLineItemRow'
+import { DefaultExportOrderLineItemRow as OrderLineItemRow } from '../OrderLineItemRow'
 
 jest.mock(
     'lodash/debounce',

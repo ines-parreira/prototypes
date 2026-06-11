@@ -2,14 +2,14 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import type { RootState } from 'state/types'
 
-import ActionsPlatformStepsView from '../ActionsPlatformStepsView'
-import useApps from '../hooks/useApps'
-import useDeleteActionTemplate from '../hooks/useDeleteActionTemplate'
+import { ActionsPlatformStepsView } from '../ActionsPlatformStepsView'
+import { useApps } from '../hooks/useApps'
+import { useDeleteActionTemplate } from '../hooks/useDeleteActionTemplate'
 
 jest.mock('models/workflows/queries')
 jest.mock('hooks/useGetDateAndTimeFormat')

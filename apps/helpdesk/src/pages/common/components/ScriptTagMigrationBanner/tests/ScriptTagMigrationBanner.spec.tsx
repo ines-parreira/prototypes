@@ -5,8 +5,8 @@ import { fromJS } from 'immutable'
 import { UserRole } from 'config/types/user'
 import { integrationsState } from 'fixtures/integrations'
 
-import useStoresRequiringScriptTagMigration from '../hooks/useStoresRequiringScriptTagMigration'
-import ScriptTagMigrationBanner from '../ScriptTagMigrationBanner'
+import { useStoresRequiringScriptTagMigration } from '../hooks/useStoresRequiringScriptTagMigration'
+import { ScriptTagMigrationBanner } from '../ScriptTagMigrationBanner'
 
 jest.mock('../hooks/useStoresRequiringScriptTagMigration')
 

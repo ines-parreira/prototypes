@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
-import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
+import { TwoFactorAuthenticationDisableModal } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 
 import { OwnershipModal } from '../OwnershipModal'
 import { Statuses } from '../Statuses'
@@ -18,7 +18,9 @@ jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal',
     () => ({
         __esModule: true,
-        default: jest.fn(() => <div>TwoFactorAuthenticationDisableModal</div>),
+        TwoFactorAuthenticationDisableModal: jest.fn(() => (
+            <div>TwoFactorAuthenticationDisableModal</div>
+        )),
     }),
 )
 

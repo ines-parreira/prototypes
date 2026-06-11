@@ -12,10 +12,12 @@ const mockPayInvoice = jest.fn()
 const mockConfirmInvoicePayment = jest.fn()
 
 jest.mock('services/gorgiasApi', () => {
-    return jest.fn().mockImplementation(() => ({
-        payInvoice: mockPayInvoice,
-        confirmInvoicePayment: mockConfirmInvoicePayment,
-    }))
+    return {
+        GorgiasApi: jest.fn().mockImplementation(() => ({
+            payInvoice: mockPayInvoice,
+            confirmInvoicePayment: mockConfirmInvoicePayment,
+        })),
+    }
 })
 
 const server = setupServer()

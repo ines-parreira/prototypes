@@ -4,8 +4,8 @@ import { useState } from 'react'
 import classNames from 'classnames'
 import { Card, CardBody, CardHeader, Collapse } from 'reactstrap'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { InstallationCodeSnippet } from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 
 import type { InstructionTab } from './types'
 
@@ -171,4 +171,4 @@ const InstructionsCard = ({
     )
 }
 
-export default InstructionsCard
+export { InstructionsCard }

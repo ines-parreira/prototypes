@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
 
 const storyConfig: Meta<typeof DashboardGridCell> = {
     title: 'Stats/DashboardGridCell',

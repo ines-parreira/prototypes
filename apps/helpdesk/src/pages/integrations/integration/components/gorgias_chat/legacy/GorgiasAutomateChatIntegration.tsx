@@ -5,12 +5,12 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/legacy/components/ConnectedChannelsChatView'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 import { Tab } from '../../../types'
-import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
+import { GorgiasChatIntegrationHeader } from './GorgiasChatIntegrationHeader'
 
 import css from './GorgiasAutomateChatIntegration.less'
 

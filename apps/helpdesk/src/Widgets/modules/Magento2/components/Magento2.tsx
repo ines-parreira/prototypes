@@ -1,5 +1,5 @@
 import type { TemplateCustomization } from 'Widgets/modules/Template'
-import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { CustomizationContext, Template } from 'Widgets/modules/Template'
 import type { WidgetProps } from 'Widgets/modules/Widget'
 
 import { customerCustomization } from './Customer'
@@ -18,7 +18,7 @@ export const customization: TemplateCustomization = {
     ],
 }
 
-export default function Magento2Widget(props: WidgetProps) {
+export function Magento2Widget(props: WidgetProps) {
     // You can set as much contexts as you want here
     return (
         <CustomizationContext.Provider value={customization}>

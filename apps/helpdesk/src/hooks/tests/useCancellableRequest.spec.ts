@@ -3,7 +3,7 @@ import { renderHook } from '@repo/testing'
 import type { AxiosResponse, CancelToken } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import useCancellableRequest from '../useCancellableRequest'
+import { useCancellableRequest } from '../useCancellableRequest'
 
 describe('useCancellableRequest', () => {
     const mockApi = new MockAdapter(client)

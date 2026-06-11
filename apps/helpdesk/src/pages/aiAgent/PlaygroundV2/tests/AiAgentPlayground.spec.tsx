@@ -164,7 +164,7 @@ jest.mock(
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => ({
+    useAppSelector: jest.fn(() => ({
         get: jest.fn((key: string) => {
             if (key === 'domain') return 'test-domain'
             return null

@@ -9,8 +9,8 @@ import { fromJS } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
@@ -20,20 +20,21 @@ import {
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { Tab } from 'pages/integrations/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
-import useShopifyThemeAppExtension from '../../../hooks/useShopifyThemeAppExtension'
-import useThemeAppExtensionInstallation, {
+import { GorgiasChatIntegrationConnectStore } from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
+import { useShopifyThemeAppExtension } from '../../../hooks/useShopifyThemeAppExtension'
+import {
     getGorgiasMainThemeAppExtensionId,
+    useThemeAppExtensionInstallation,
 } from '../../../hooks/useThemeAppExtensionInstallation'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
-import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardPreview } from '../GorgiasChatCreationWizardPreview'
+import { GorgiasChatCreationWizardStep } from '../GorgiasChatCreationWizardStep'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
 
@@ -301,4 +302,4 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepInstallation
+export { GorgiasChatCreationWizardStepInstallation }

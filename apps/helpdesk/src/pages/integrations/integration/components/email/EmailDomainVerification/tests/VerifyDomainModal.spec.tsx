@@ -3,7 +3,7 @@ import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useSearchParam } from 'hooks/useSearchParam'
 
-import VerifyDomainModal from '../VerifyDomainModal'
+import { VerifyDomainModal } from '../VerifyDomainModal'
 
 jest.mock('hooks/useSearchParam')
 

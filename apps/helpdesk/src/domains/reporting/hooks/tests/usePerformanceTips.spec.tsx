@@ -8,7 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import { usePerformanceTips } from 'domains/reporting/hooks/usePerformanceTips'
 import { MetricName } from 'domains/reporting/services/constants'
 import * as tipProvider from 'domains/reporting/services/supportPerformanceTipService'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()

@@ -1,1 +1,1 @@
-export { default } from './WizardFooter'
+export { WizardFooter } from './WizardFooter'

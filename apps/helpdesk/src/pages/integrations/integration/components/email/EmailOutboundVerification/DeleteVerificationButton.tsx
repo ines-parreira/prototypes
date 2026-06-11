@@ -3,10 +3,10 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { deleteVerification } from 'models/singleSenderVerification/resources'
 import type { SenderVerification } from 'models/singleSenderVerification/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { removeVerification } from 'state/entities/singleSenderVerification/actions'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
     onConfirm?: (verification?: SenderVerification) => void
 }
 
-export default function DeleteVerificationButton({
+export function DeleteVerificationButton({
     isLoading,
     isDisabled,
     verification,

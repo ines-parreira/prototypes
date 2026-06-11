@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import TopProductItem from '../TopProductItem'
+import { TopProductItem } from '../TopProductItem'
 
 const product = {
     id: 1,

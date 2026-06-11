@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 
 import { Box, Button, Heading, Modal, Text } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { CONV_LAUNCHER_ESTIMATED_INFLUENCED_GMV } from 'pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings'
 import { CONV_STARTERS_ESTIMATED_INFLUENCED_GMV } from 'pages/aiAgent/components/CustomerEngagementSettings/ConversationStartersSettings'
 import { useGmvUsdOver30Days } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days'

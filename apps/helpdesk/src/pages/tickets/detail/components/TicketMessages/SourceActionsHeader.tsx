@@ -4,16 +4,16 @@ import { Duration } from '@gorgias/toolkit'
 import { useDebouncedValue, useElementSize } from '@gorgias/toolkit-react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'
-import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
+import { PrivateReply } from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
 import { getIsCurrentHelpdeskLegacy } from 'state/billing/selectors'
 import * as infobarActions from 'state/infobar/actions'
 
-import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
-import IntentsFeedback from './IntentsFeedback/IntentsFeedback'
+import { CollapsedSourceActions } from './CollapsedSourceActions/CollapsedSourceActions'
+import { IntentsFeedback } from './IntentsFeedback/IntentsFeedback'
 
 import css from './SourceActionsHeader.less'
 
@@ -22,7 +22,7 @@ type Props = {
     containerRef?: React.RefObject<HTMLElement>
 }
 
-export default function SourceActionsHeader({ message, containerRef }: Props) {
+export function SourceActionsHeader({ message, containerRef }: Props) {
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
 
     const dispatch = useAppDispatch()

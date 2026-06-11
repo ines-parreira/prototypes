@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import { toast } from '@gorgias/axiom'
 
 import { LANGUAGE } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 
 import { useLanguagesTable } from './useLanguagesTable'

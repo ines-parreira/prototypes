@@ -14,8 +14,8 @@ import {
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
-import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformTemplateVisualBuilderView } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
+import { useValidateOnVisualBuilderGraphChange } from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
     useVisualBuilder,
     VisualBuilderContext,
@@ -30,14 +30,14 @@ import {
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 import { useSupportActionTracking } from '../actions/hooks/useSupportActionTracking'
-import useThreeplIntegrations from '../actions/hooks/useThreeplIntegrations'
-import useTouchActionGraph from '../actions/hooks/useTouchActionGraph'
-import useUpsertAction from '../actions/hooks/useUpsertAction'
-import useValidateActionGraph from '../actions/hooks/useValidateActionGraph'
-import StoreAppsProvider from '../actions/providers/StoreAppsProvider'
+import { useThreeplIntegrations } from '../actions/hooks/useThreeplIntegrations'
+import { useTouchActionGraph } from '../actions/hooks/useTouchActionGraph'
+import { useUpsertAction } from '../actions/hooks/useUpsertAction'
+import { useValidateActionGraph } from '../actions/hooks/useValidateActionGraph'
+import { StoreAppsProvider } from '../actions/providers/StoreAppsProvider'
 import type { StoreWorkflowsConfiguration } from '../actions/types'
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import { BuildAdvancedModeModal } from './components/BuildAdvancedModeModal'
@@ -440,4 +440,4 @@ const ActionCreateWizardView = () => {
     )
 }
 
-export default ActionCreateWizardView
+export { ActionCreateWizardView }

@@ -14,7 +14,7 @@ type Props = {
     onSelect: () => void
 }
 
-export default function MenuItem({
+export function MenuItem({
     isActive,
     isDeprecated,
     children,

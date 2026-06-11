@@ -23,7 +23,7 @@ import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUse
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {

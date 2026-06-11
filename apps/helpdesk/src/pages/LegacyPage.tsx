@@ -8,9 +8,9 @@ import { Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import IconButton from 'pages/common/components/button/IconButton'
-import FullPage from 'pages/common/components/FullPage'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportFullPage as FullPage } from 'pages/common/components/FullPage'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { openPanel } from 'state/layout/actions'
 
@@ -93,4 +93,6 @@ const LegacyPage = ({
     )
 }
 
-export default memo(LegacyPage, _isEqual)
+const DefaultExportLegacyPage = memo(LegacyPage, _isEqual)
+
+export { DefaultExportLegacyPage }

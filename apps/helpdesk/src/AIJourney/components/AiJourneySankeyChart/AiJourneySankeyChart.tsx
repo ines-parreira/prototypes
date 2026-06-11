@@ -10,7 +10,7 @@ import { useAIJourneySankeyMetrics } from 'AIJourney/hooks'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const AiJourneySankeyChart = ({
     integrationId,

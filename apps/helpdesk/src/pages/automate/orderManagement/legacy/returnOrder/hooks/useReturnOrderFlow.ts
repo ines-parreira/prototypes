@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { DEFAULT_RETURN_ACTION } from '../constants'
 
@@ -46,4 +46,4 @@ const useReturnOrderFlow = (shopName: string) => {
     }
 }
 
-export default useReturnOrderFlow
+export { useReturnOrderFlow }

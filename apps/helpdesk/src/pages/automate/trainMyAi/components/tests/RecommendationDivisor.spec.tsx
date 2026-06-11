@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import RecommendationDivisor from '../RecommendationDivisor'
+import { RecommendationDivisor } from '../RecommendationDivisor'
 
 describe('<RecommendationDivisor />', () => {
     it('should render component', () => {

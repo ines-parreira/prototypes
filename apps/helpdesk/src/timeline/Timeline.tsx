@@ -3,7 +3,7 @@ import { memo, useState } from 'react'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import Filters from './filters/Filters'
+import { Filters } from './filters/Filters'
 import { useTimelineFilters } from './filters/hooks/useTimelineFilters'
 import { useTimelineData } from './hooks/useTimelineData'
 import { NoResults } from './NoResults'
@@ -102,4 +102,6 @@ const Timeline = ({
     )
 }
 
-export default memo(Timeline)
+const DefaultExportTimeline = memo(Timeline)
+
+export { DefaultExportTimeline }

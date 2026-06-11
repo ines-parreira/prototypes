@@ -15,8 +15,8 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import type { ViewCategoryNavbar } from 'models/view/types'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
 import type { TicketNavbarElement } from './TicketNavbarContent'

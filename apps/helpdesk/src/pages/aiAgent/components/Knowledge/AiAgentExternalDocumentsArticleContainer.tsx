@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     CONTENT_TYPE,
     HeaderType,
@@ -11,7 +11,7 @@ import { useGetIngestedFileArticles } from 'pages/aiAgent/hooks/useGetIngestedFi
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import AiAgentExternalSourceArticlesView from './AiAgentExternalSourceArticlesView'
+import { AiAgentExternalSourceArticlesView } from './AiAgentExternalSourceArticlesView'
 
 import css from '../../AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer.less'
 
@@ -51,4 +51,4 @@ const AiAgentExternalDocumentsArticleContainer = () => {
     )
 }
 
-export default AiAgentExternalDocumentsArticleContainer
+export { AiAgentExternalDocumentsArticleContainer }

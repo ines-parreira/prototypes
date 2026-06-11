@@ -10,7 +10,7 @@ import { setupServer } from 'msw/node'
 import { mockPrepareCallMonitoringHandler } from '@gorgias/helpdesk-mocks'
 
 import { TwilioSocketEventType } from 'business/twilio'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     MONITORING_GENERIC_ERROR,
     MONITORING_SWITCH_ERROR,
@@ -24,7 +24,7 @@ import {
     sendTwilioSocketEvent,
 } from '../twilioCall.utils'
 import { useMonitoringCall } from '../useMonitoringCall'
-import useVoiceDevice from '../useVoiceDevice'
+import { useVoiceDevice } from '../useVoiceDevice'
 
 const server = setupServer()
 

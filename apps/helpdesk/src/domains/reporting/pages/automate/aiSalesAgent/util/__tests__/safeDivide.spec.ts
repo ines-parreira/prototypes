@@ -1,4 +1,4 @@
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
+import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 
 describe('safeDivide', () => {
     test.each([

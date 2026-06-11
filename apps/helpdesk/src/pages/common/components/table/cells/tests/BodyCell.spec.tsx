@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import BodyCell from '../BodyCell'
+import { BodyCell } from '../BodyCell'
 
 describe('<BodyCell/>', () => {
     it('should render', () => {

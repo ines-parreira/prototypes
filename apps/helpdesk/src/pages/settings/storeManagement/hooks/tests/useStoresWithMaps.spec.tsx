@@ -2,11 +2,11 @@ import { renderHook } from '@repo/testing'
 
 import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
-import useAllIntegrations from 'hooks/useAllIntegrations'
+import { useAllIntegrations } from 'hooks/useAllIntegrations'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 
-import useStoresWithMaps from '../useStoresWithMaps'
+import { useStoresWithMaps } from '../useStoresWithMaps'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useGetStoreMappingsByAccountId: jest.fn(),
@@ -14,7 +14,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAllIntegrations: jest.fn(),
 }))
 
 describe('useStoresWithMaps', () => {

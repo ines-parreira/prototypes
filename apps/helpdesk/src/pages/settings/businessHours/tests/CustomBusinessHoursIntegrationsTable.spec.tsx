@@ -21,7 +21,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type { CustomBusinessHoursContextState } from '../CustomBusinessHoursContext'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
-import CustomBusinessHoursIntegrationsTable from '../CustomBusinessHoursIntegrationsTable'
+import { CustomBusinessHoursIntegrationsTable } from '../CustomBusinessHoursIntegrationsTable'
 
 const queryClient = mockQueryClient()
 const server = setupServer()

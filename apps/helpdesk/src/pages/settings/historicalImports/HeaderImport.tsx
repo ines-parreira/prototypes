@@ -2,8 +2,8 @@ import classnames from 'classnames'
 
 import { Box, Button } from '@gorgias/axiom'
 
-import IconLink from 'core/ui/components/IconLink'
-import PageHeader from 'pages/common/components/PageHeader'
+import { IconLink } from 'core/ui/components/IconLink'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 
 import importCss from './Import.less'

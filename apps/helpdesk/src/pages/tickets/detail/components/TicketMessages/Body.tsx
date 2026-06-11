@@ -5,14 +5,14 @@ import { Col, Container, Row } from 'reactstrap'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import type { TicketMessage } from 'models/ticket/types'
-import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
-import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+import { ProductEmbeddedCard } from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
+import { TicketMessageEmbeddedCard } from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import { mapQuotedTweetTicketMessageToEmbeddedCard } from 'pages/common/components/TicketMessageEmbeddedCard/utils'
-import FacebookCarousel from 'pages/tickets/detail/components/FacebookCarousel'
+import { FacebookCarousel } from 'pages/tickets/detail/components/FacebookCarousel'
 
-import Content from './Content'
+import { Content } from './Content'
 import { useSmartFollowUps } from './hooks/useSmartFollowUps'
-import SmartFollowUps from './SmartFollowUps'
+import { SmartFollowUps } from './SmartFollowUps'
 
 import css from './Body.less'
 
@@ -93,4 +93,4 @@ const Body = ({
     )
 }
 
-export default Body
+export { Body }

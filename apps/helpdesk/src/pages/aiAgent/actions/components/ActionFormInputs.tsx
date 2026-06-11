@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { Input } from '../types'
-import ActionFormInput from './ActionFormInput'
+import { ActionFormInput } from './ActionFormInput'
 
 import css from './ActionFormInputs.less'
 
@@ -116,4 +116,4 @@ const ActionFormInputs = ({
     )
 }
 
-export default ActionFormInputs
+export { ActionFormInputs }

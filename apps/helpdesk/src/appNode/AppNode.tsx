@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import cn from 'classnames'
 
-import AppNodeContext from './AppNodeContext'
+import { DefaultExportAppNodeContext as AppNodeContext } from './AppNodeContext'
 
 import css from './AppNode.less'
 
@@ -12,7 +12,7 @@ type Props = {
     className?: string
 }
 
-export default function AppNode({ children, className }: Props) {
+export function AppNode({ children, className }: Props) {
     const [appNode, setAppNode] = useState<HTMLDivElement | null>(null)
 
     return (

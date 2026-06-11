@@ -16,21 +16,17 @@ import type { RootState } from 'state/types'
 
 import { TicketMacros } from '../TicketMacros'
 
-jest.mock(
-    'pages/tickets/common/macros/components/MacroNoResults',
-    () =>
-        ({ newAction }: { newAction: () => void }) => (
-            <div onClick={newAction}>No macros found</div>
-        ),
-)
-jest.mock(
-    'pages/tickets/common/macros/components/MacroList',
-    () => () => 'Macro list',
-)
-jest.mock(
-    'pages/tickets/common/macros/MacroContainer',
-    () => () => 'MacroContainer',
-)
+jest.mock('pages/tickets/common/macros/components/MacroNoResults', () => ({
+    MacroNoResults: ({ newAction }: { newAction: () => void }) => (
+        <div onClick={newAction}>No macros found</div>
+    ),
+}))
+jest.mock('pages/tickets/common/macros/components/MacroList', () => ({
+    MacroList: () => 'Macro list',
+}))
+jest.mock('pages/tickets/common/macros/MacroContainer', () => ({
+    MacroContainer: () => 'MacroContainer',
+}))
 
 const mockStore = configureMockStore([thunk])
 

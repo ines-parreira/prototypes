@@ -14,7 +14,7 @@ import type { SLATemplate } from 'pages/settings/SLAs/config/templates'
 
 import css from './Templates.less'
 
-export default function Templates({
+export function Templates({
     className,
     templates: allTemplates,
     showSeeAllTemplates,

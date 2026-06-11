@@ -1,6 +1,6 @@
 import { categories, notifications } from '../data'
-import registerCategory from '../registerCategory'
-import registerNotification from '../registerNotification'
+import { registerCategory } from '../registerCategory'
+import { registerNotification } from '../registerNotification'
 import type { CategoryConfig, NotificationConfig } from '../types'
 
 jest.mock('../data', () => ({

@@ -5,7 +5,7 @@ import { isAxiosError } from 'axios'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     ContactForm,
     CreateContactFormDto,

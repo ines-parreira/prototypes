@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -126,4 +126,4 @@ const AiAgentMainViewContainer = () => {
     return null
 }
 
-export default AiAgentMainViewContainer
+export { AiAgentMainViewContainer }

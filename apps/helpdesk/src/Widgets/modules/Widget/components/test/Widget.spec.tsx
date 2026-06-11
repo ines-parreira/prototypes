@@ -4,10 +4,10 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
+import { Placeholder } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
-import Template from 'Widgets/modules/Template'
-import Widget from 'Widgets/modules/Widget'
+import { Template } from 'Widgets/modules/Template'
+import { Widget } from 'Widgets/modules/Widget'
 
 import { getWidgetByType } from '../../helpers/getWidgetByType'
 
@@ -16,16 +16,12 @@ jest.mock('../../helpers/getWidgetByType')
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder',
 )
-jest.mock(
-    'Widgets/contexts/WidgetContext',
-    () =>
-        ({
-            ...jest.requireActual('Widgets/contexts/WidgetContext'),
-            WidgetContextProvider: jest.fn(
-                ({ children }: { children?: ReactNode }) => children,
-            ),
-        }) as Record<string, unknown>,
-)
+jest.mock('Widgets/contexts/WidgetContext', () => ({
+    ...jest.requireActual('Widgets/contexts/WidgetContext'),
+    WidgetContextProvider: jest.fn(
+        ({ children }: { children?: ReactNode }) => children,
+    ),
+}))
 const TemplateMock = assumeMock(Template)
 const PlaceholderMock = assumeMock(Placeholder)
 const WidgetContextProviderMock = assumeMock(WidgetContextProvider)

@@ -1,6 +1,6 @@
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { openPanel } from 'state/layout/actions'
 
 export function MobileTicketHeaderActions() {

@@ -12,9 +12,9 @@ import {
 } from 'models/workflows/queries'
 import type { RootState } from 'state/types'
 
-import useStoreWorkflows from '../hooks/useStoreWorkflows'
+import { useStoreWorkflows } from '../hooks/useStoreWorkflows'
 import { useStoreWorkflowsApi } from '../hooks/useStoreWorkflowsApi'
-import WorkflowsView from '../WorkflowsView'
+import { WorkflowsView } from '../WorkflowsView'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),

@@ -11,7 +11,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Partner } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { ConsultingAgencyPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/ConsultingAgencyPartnerSection'
 
 jest.mock('hooks/useAppDispatch')

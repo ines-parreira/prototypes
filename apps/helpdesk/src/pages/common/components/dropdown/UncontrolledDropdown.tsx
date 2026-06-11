@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React, { useCallback, useEffect, useState } from 'react'
 
-import Dropdown from './Dropdown'
+import { Dropdown } from './Dropdown'
 
 type Props = Omit<ComponentProps<typeof Dropdown>, 'isOpen' | 'onToggle'>
 
@@ -11,7 +11,7 @@ type Props = Omit<ComponentProps<typeof Dropdown>, 'isOpen' | 'onToggle'>
  * @date 2026-03-11
  * @type ui-kit-migration
  */
-export default function UncontrolledDropdown({ target, ...other }: Props) {
+export function UncontrolledDropdown({ target, ...other }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleToggle = useCallback(() => setIsOpen(!isOpen), [isOpen])

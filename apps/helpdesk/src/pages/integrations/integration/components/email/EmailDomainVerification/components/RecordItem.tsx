@@ -3,11 +3,11 @@ import { useId } from '@gorgias/toolkit-react'
 
 import type { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
-import CopyButton from './CopyButton'
-import RecordDiffStatus from './RecordDiffStatus'
+import { CopyButton } from './CopyButton'
+import { RecordDiffStatus } from './RecordDiffStatus'
 
 import css from './RecordItem.less'
 
@@ -45,4 +45,4 @@ const RecordItem = ({ record }: Props) => {
     )
 }
 
-export default RecordItem
+export { RecordItem }

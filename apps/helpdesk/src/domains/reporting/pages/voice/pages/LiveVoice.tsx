@@ -7,22 +7,22 @@ import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import LiveVoiceAgentsSection from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
-import LiveVoiceCallTable from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
-import LiveVoiceFilters from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters'
-import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { LiveVoiceAgentsSection } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
+import { LiveVoiceCallTable } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
+import { LiveVoiceFilters } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters'
+import { LiveVoiceMetrics } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
 import {
     LIVE_VOICE_PAGE_TITLE,
     LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
 } from 'domains/reporting/pages/voice/constants/liveVoice'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 import css from 'domains/reporting/pages/voice/pages/LiveVoice.less'
-import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
+import { VoicePaywall } from 'domains/reporting/pages/voice/VoicePaywall'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
-import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
+import { withProductEnabledPaywall } from 'pages/common/utils/withProductEnabledPaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 function LiveVoice() {
@@ -88,7 +88,7 @@ function LiveVoice() {
     )
 }
 
-export default withProductEnabledPaywall(
+const DefaultExportLiveVoice = withProductEnabledPaywall(
     ProductType.Voice,
     AccountFeature.PhoneNumber,
     VoicePaywall,
@@ -99,3 +99,5 @@ export default withProductEnabledPaywall(
         } as PaywallConfig,
     },
 )(LiveVoice)
+
+export { DefaultExportLiveVoice }

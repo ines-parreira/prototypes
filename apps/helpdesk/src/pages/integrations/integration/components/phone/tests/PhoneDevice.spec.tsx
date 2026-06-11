@@ -3,8 +3,8 @@ import type React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import PhoneDevice from '../PhoneDevice'
-import PhoneDeviceDialer from '../PhoneDeviceDialer'
+import { PhoneDevice } from '../PhoneDevice'
+import { PhoneDeviceDialer } from '../PhoneDeviceDialer'
 
 jest.mock('pages/integrations/integration/components/phone/PhoneDeviceDialer')
 

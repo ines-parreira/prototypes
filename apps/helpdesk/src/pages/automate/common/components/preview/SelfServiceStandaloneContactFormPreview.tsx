@@ -3,11 +3,11 @@ import React, { memo } from 'react'
 import { Route, useLocation } from 'react-router-dom'
 
 import type { ContactForm } from 'models/contactForm/types'
-import StandaloneContactFormPreview from 'pages/settings/contactForm/components/StandaloneContactFormPreview/StandaloneContactFormPreview'
+import { StandaloneContactFormPreview } from 'pages/settings/contactForm/components/StandaloneContactFormPreview/StandaloneContactFormPreview'
 import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
-import SelfServiceStandaloneContactFormHomePage from './SelfServiceStandaloneContactFormHomePage'
+import { SelfServiceStandaloneContactFormHomePage } from './SelfServiceStandaloneContactFormHomePage'
 
 type Props = {
     contactForm: ContactForm
@@ -34,4 +34,8 @@ const SelfServiceStandaloneContactFormPreview = (props: Props) => {
     )
 }
 
-export default memo(SelfServiceStandaloneContactFormPreview)
+const DefaultExportSelfServiceStandaloneContactFormPreview = memo(
+    SelfServiceStandaloneContactFormPreview,
+)
+
+export { DefaultExportSelfServiceStandaloneContactFormPreview }

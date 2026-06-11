@@ -10,16 +10,18 @@ import { ResponseTextPreview } from '../ResponseTextPreview'
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
-jest.mock(
-    'pages/common/forms/RichField/TicketRichField',
-    () =>
-        ({ value }: { value: { html: string; text: string } }) => (
-            <div>
-                TicketRichField: <div>{value.text}</div>
-                <div>{value.html}</div>
-            </div>
-        ),
-)
+jest.mock('pages/common/forms/RichField/TicketRichField', () => ({
+    DefaultExportTicketRichField: ({
+        value,
+    }: {
+        value: { html: string; text: string }
+    }) => (
+        <div>
+            TicketRichField: <div>{value.text}</div>
+            <div>{value.html}</div>
+        </div>
+    ),
+}))
 
 describe('<ResponseTextPreview />', () => {
     beforeEach(() => {

@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FacebookCarousel from '../FacebookCarousel'
+import { FacebookCarousel } from '../FacebookCarousel'
 
 describe('FacebookCarousel component', () => {
     const defaultProps: ComponentProps<typeof FacebookCarousel> = {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import statusPageManager from 'services/statusPageManager/statusPageManager'
+import { statusPageManager } from 'services/statusPageManager/statusPageManager'
 
 export function useStatusPageManager() {
     useEffect(() => {

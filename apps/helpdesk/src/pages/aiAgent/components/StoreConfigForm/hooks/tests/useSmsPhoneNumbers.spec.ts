@@ -2,7 +2,7 @@ import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useSmsPhoneNumbers } from '../useSmsPhoneNumbers'
 

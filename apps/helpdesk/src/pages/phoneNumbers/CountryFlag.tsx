@@ -24,5 +24,3 @@ export function CountryFlag({
         </div>
     )
 }
-
-export default CountryFlag

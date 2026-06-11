@@ -42,7 +42,7 @@ jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
 }))
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 'en-US'),
+    useAppSelector: jest.fn(() => 'en-US'),
 }))
 jest.mock('state/ui/helpCenter', () => ({
     getViewLanguage: jest.fn(() => 'en-US'),

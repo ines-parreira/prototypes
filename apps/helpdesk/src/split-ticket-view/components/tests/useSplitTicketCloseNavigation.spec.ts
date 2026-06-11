@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import { useViewId } from 'tickets/core/hooks'
 
-import useSplitTicketCloseNavigation from '../useSplitTicketCloseNavigation'
+import { useSplitTicketCloseNavigation } from '../useSplitTicketCloseNavigation'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

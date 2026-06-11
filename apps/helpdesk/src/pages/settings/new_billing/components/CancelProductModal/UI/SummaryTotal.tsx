@@ -19,4 +19,4 @@ const SummaryTotal = ({ total, cadence }: CancellationTotalProps) => {
     )
 }
 
-export default SummaryTotal
+export { SummaryTotal }

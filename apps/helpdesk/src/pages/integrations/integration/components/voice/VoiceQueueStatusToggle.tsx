@@ -12,10 +12,10 @@ import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import type { VoiceQueue } from '@gorgias/helpdesk-types'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-types'
 
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import css from './VoiceQueueStatusToggle.less'
 
@@ -24,7 +24,7 @@ type Props = {
     isEnabled: boolean
 }
 
-export default function VoiceQueueStatusToggle({ queueId, isEnabled }: Props) {
+export function VoiceQueueStatusToggle({ queueId, isEnabled }: Props) {
     const [localEnabled, setLocalEnabled] = useState(isEnabled)
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
         useState(false)

@@ -5,11 +5,11 @@ import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { user } from 'fixtures/users'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
-import useHandleTicketDraft from '../useHandleTicketDraft'
+import { useHandleTicketDraft } from '../useHandleTicketDraft'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 const mockSetItem = jest.fn()

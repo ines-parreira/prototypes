@@ -5,7 +5,7 @@ import { screen } from '@testing-library/react'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 
-import FeedbackEvents from '../FeedbackEvents'
+import { FeedbackEvents } from '../FeedbackEvents'
 import { TicketEventEnum } from '../types'
 import { messageFeedback } from './fixtures'
 

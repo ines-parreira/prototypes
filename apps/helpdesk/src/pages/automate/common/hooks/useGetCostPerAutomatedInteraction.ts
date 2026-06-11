@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
 const FIXED_COST_PER_AUTOMATED_INTERACTION = 0.85

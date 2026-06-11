@@ -9,8 +9,8 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { NO_DATA_AVAILABLE_COMPONENT_TEXT } from 'domains/reporting/pages/common/components/NoDataAvailable'
-import ScoredSurveysChart from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
-import ScoredSurveysTable from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
+import { ScoredSurveysChart } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
+import { ScoredSurveysTable } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { NumberedPagination } from 'pages/common/components/Paginations'
 

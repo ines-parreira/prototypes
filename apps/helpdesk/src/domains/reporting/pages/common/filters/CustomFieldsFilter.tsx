@@ -10,7 +10,7 @@ import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useCl
 import { getCustomFieldValueSerializer } from 'domains/reporting/models/queryFactories/utils'
 import type { CustomFieldFilter } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
+import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { LogicalOperatorLabel } from 'domains/reporting/pages/common/components/Filter/constants'
 import { customFieldsFilterLogicalOperators } from 'domains/reporting/pages/common/filters/constants'
@@ -78,7 +78,7 @@ const getOptions = (activeFields: CustomField[], customFieldId: number) => {
     return fieldOptions
 }
 
-export default function CustomFieldsFilter({
+export function CustomFieldsFilter({
     value: inputValue,
     dispatchUpdate,
     dispatchStatFiltersDirty = noop,

@@ -9,7 +9,7 @@ import { useRouteParser } from './useRouteParser'
 
 const httpConfig = getIntegrationConfig(IntegrationType.Http)
 
-export default function Breadcrumbs() {
+export function Breadcrumbs() {
     const {
         isDetail,
         isList,

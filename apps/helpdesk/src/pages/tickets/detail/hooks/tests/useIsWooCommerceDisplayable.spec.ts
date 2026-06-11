@@ -1,13 +1,13 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { WOOCOMMERCE_WIDGET_TYPE } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
 
-import useIsWooCommerceDisplayable from '../useIsWooCommerceDisplayable'
+import { useIsWooCommerceDisplayable } from '../useIsWooCommerceDisplayable'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 

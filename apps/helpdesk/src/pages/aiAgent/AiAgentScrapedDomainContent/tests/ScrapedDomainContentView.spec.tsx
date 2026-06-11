@@ -3,10 +3,12 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { CONTENT_TYPE } from '../constant'
-import ScrapedDomainContentView from '../ScrapedDomainContentView'
+import { ScrapedDomainContentView } from '../ScrapedDomainContentView'
 
 const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}))
 jest.mock('state/notifications/actions')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

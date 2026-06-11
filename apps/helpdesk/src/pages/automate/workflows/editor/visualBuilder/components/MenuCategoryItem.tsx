@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from 'pages/common/components/dropdown/DropdownItemLabel'
 
 type Props = {
     label: string
@@ -29,4 +29,4 @@ const MenuCategoryItem = ({ label, onClick, icon }: Props) => {
     )
 }
 
-export default MenuCategoryItem
+export { MenuCategoryItem }

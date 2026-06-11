@@ -3,6 +3,6 @@ export * from 'state/entities/helpCenter/helpCentersAutomationSettings/selectors
 export * from 'state/entities/helpCenter/helpCentersAutomationSettings/types'
 
 export {
-    default,
+    helpCenterAutomationSettingsReducer,
     initialState,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings/reducer'

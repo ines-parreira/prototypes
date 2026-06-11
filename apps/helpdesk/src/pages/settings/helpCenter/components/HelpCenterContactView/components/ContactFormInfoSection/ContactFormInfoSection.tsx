@@ -7,11 +7,11 @@ import { useLocalStorage } from '@gorgias/toolkit-react'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { EmailContactInfoDto } from 'models/helpCenter/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import {
     isBaseEmailAddress,
     isGenericEmailIntegration,
@@ -21,10 +21,10 @@ import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/He
 import settingsCss from 'pages/settings/settings.less'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
-import ToggleInput from '../../../../../../common/forms/ToggleInput'
-import SubjectLines from '../../../SubjectLines/SubjectLines'
+import { ToggleInput } from '../../../../../../common/forms/ToggleInput'
+import { SubjectLines } from '../../../SubjectLines/SubjectLines'
 import { MAX_DESCRIPTION_LENGTH } from '../../constants'
-import ContactCard from '../ContactCard'
+import { ContactCard } from '../ContactCard'
 
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import css from './ContactFormInfoSection.less'
@@ -246,4 +246,4 @@ const ContactFormInfoSection = () => {
     )
 }
 
-export default ContactFormInfoSection
+export { ContactFormInfoSection }

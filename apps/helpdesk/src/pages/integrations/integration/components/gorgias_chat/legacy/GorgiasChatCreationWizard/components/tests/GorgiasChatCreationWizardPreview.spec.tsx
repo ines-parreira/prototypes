@@ -14,7 +14,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
-import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
+import { GorgiasChatCreationWizardPreview } from '../GorgiasChatCreationWizardPreview'
 
 const mockStore = configureMockStore([thunk])
 

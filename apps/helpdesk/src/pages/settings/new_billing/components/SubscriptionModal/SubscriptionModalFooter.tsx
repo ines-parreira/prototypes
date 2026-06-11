@@ -7,7 +7,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
 
@@ -55,4 +55,4 @@ const SubscriptionModalFooter = ({
     )
 }
 
-export default SubscriptionModalFooter
+export { SubscriptionModalFooter }

@@ -30,11 +30,11 @@ import { useAppNode } from 'appNode'
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import { UserRole } from 'config/types/user'
 import { IntlDisplayNames } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
-import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportEditableTitle as EditableTitle } from 'pages/common/components/EditableTitle/EditableTitle'
+import { DefaultExportMergeTicketsContainer as MergeTicketsContainer } from 'pages/common/components/MergeTickets/MergeTicketsContainer'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTimezone } from 'state/currentUser/selectors'
 import {
@@ -60,20 +60,20 @@ import {
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { hasRole } from 'utils'
 
-import Snooze from './Snooze'
+import { Snooze } from './Snooze'
 import type { Action } from './TicketActions'
-import TicketActions from './TicketActions'
-import TicketAssignee from './TicketDetails/TicketAssignee/TicketAssignee'
-import TicketSnooze from './TicketDetails/TicketSnooze'
-import TicketSpam from './TicketDetails/TicketSpam'
-import TicketStatus from './TicketDetails/TicketStatus'
-import TicketTags from './TicketDetails/TicketTags'
-import TicketTrash from './TicketDetails/TicketTrash'
+import { TicketActions } from './TicketActions'
+import { TicketAssignee } from './TicketDetails/TicketAssignee/TicketAssignee'
+import { TicketSnooze } from './TicketDetails/TicketSnooze'
+import { TicketSpam } from './TicketDetails/TicketSpam'
+import { TicketStatus } from './TicketDetails/TicketStatus'
+import { TicketTags } from './TicketDetails/TicketTags'
+import { TicketTrash } from './TicketDetails/TicketTrash'
 import { TicketHeaderToggle } from './TicketHeaderToggle'
-import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
-import TicketPriorityDropdown from './TicketPriorityDropdown'
+import { TicketNavigationArrowPagination } from './TicketNavigation/TicketNavigationArrowPagination'
+import { TicketPriorityDropdown } from './TicketPriorityDropdown'
 import { TicketSubjectLoadingState } from './TicketSubjectLoadingState'
-import TicketSummaryPopover from './TicketSummaryPopover'
+import { TicketSummaryPopover } from './TicketSummaryPopover'
 
 import css from './TicketHeader.less'
 
@@ -573,4 +573,4 @@ const TicketHeader = ({
     )
 }
 
-export default TicketHeader
+export { TicketHeader }

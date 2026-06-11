@@ -2,7 +2,7 @@ import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import type { InstructionsCardProps } from '../InstructionsCard'
-import InstructionsCard from '../InstructionsCard'
+import { InstructionsCard } from '../InstructionsCard'
 import type { InstructionTab } from '../types'
 
 const tabA: InstructionTab = {

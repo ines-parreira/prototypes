@@ -5,8 +5,8 @@ import { Button } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreConfiguration } from 'models/aiAgent/types'
-import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { AIBanner } from 'pages/common/components/AIBanner/AIBanner'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 
 import type { FormValues, UpdateValue } from '../../types'
 import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'

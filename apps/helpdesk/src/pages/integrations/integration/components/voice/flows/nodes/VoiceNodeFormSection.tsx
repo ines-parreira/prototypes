@@ -22,4 +22,4 @@ function VoiceNodeFormSection({
     )
 }
 
-export default VoiceNodeFormSection
+export { VoiceNodeFormSection }

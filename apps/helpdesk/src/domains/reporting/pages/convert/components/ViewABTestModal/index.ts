@@ -1,1 +1,1 @@
-export { default } from 'domains/reporting/pages/convert/components/ViewABTestModal/ViewABTestModal'
+export { ViewABTestModal } from 'domains/reporting/pages/convert/components/ViewABTestModal/ViewABTestModal'

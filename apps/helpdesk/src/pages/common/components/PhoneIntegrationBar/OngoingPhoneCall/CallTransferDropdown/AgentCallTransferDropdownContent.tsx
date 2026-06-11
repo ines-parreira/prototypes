@@ -4,15 +4,15 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import type { AgentWithStatus } from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
 import { AgentLabel } from 'pages/common/utils/labels'
 import { getHumanAgentsJS } from 'state/agents/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
-import DropdownSection from '../../../dropdown/DropdownSection'
+import { DefaultExportDropdownSection as DropdownSection } from '../../../dropdown/DropdownSection'
 import {
     getAvailabilityBadgeColor,
     getAvailabilityStatus,
@@ -125,4 +125,4 @@ const AgentDropdownItem = ({
     )
 }
 
-export default AgentCallTransferDropdownContent
+export { AgentCallTransferDropdownContent }

@@ -21,15 +21,15 @@ import type {
     CustomFieldAIManagedType,
     CustomFieldObjectTypes,
 } from 'custom-fields/types'
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import PageHeader from 'pages/common/components/PageHeader'
-import Search from 'pages/common/components/Search'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import Video from 'pages/common/components/Video/Video'
-import List from 'pages/settings/customFields/components/List'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { Video } from 'pages/common/components/Video/Video'
+import { List } from 'pages/settings/customFields/components/List'
 import settingsCss from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
@@ -62,7 +62,7 @@ const EDUCATIONAL_CONTENT = {
     },
 } as const
 
-export default function CustomFields({
+export function CustomFields({
     objectType,
 }: {
     objectType: CustomFieldObjectTypes

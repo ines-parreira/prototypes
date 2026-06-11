@@ -21,10 +21,10 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import type { SearchResultType } from 'services/gorgiasApi'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 
 import type { SearchInputResultProps, SearchInputSubResultProps } from './types'
 import { getSearchResultUniqueId } from './utils'
@@ -68,7 +68,7 @@ type State<ResultType extends SearchResultType, SubResultType> = {
     hoveredIndex: number
 }
 
-export default class SearchInput<
+export class SearchInput<
     ResultType extends SearchResultType,
     SubResultType extends SearchResultType,
 > extends Component<

@@ -9,7 +9,7 @@ import {
 import type { IntentMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import type { IntentMetric } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 const getTooltipText = (metricName: IntentMetric) =>
     DomainsConfig[MetricsConfig[metricName].domain].modalTriggerTooltipText

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
 import {
     AiAgentOnboardingWizardStep,
@@ -17,8 +17,8 @@ import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 import type { StoreState } from 'state/types'
 

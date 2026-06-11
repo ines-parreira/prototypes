@@ -19,7 +19,7 @@ import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
 import type { Rating } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 
 import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
 import { useRatingScore } from '../../hooks/useRatingScore'
@@ -283,5 +283,3 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
         </footer>
     )
 }
-
-export default HelpCenterEditModalFooter

@@ -1,12 +1,12 @@
 import { useGetUser } from '@gorgias/helpdesk-queries'
 
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
 type Props = {
     userId: number
 }
 
-export default function DimensionUser({ userId }: Props) {
+export function DimensionUser({ userId }: Props) {
     const { data, isError, isLoading } = useGetUser<{ data: { name: string } }>(
         userId,
     )

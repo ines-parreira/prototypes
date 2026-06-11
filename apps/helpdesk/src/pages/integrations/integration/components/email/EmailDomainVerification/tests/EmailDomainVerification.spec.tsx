@@ -6,14 +6,16 @@ import { screen } from '@testing-library/react'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { getDomainFromEmailAddress } from '../../helpers'
-import DomainVerificationProvider from '../DomainVerificationProvider'
-import EmailDomainVerification from '../EmailDomainVerification'
-import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
-import EmailDomainVerificationContent from '../EmailDomainVerificationContent'
+import { DomainVerificationProvider } from '../DomainVerificationProvider'
+import { EmailDomainVerification } from '../EmailDomainVerification'
+import { EmailDomainVerificationActionButtons } from '../EmailDomainVerificationActionButtons'
+import { EmailDomainVerificationContent } from '../EmailDomainVerificationContent'
 
-jest.mock('../EmailDomainVerificationSupportContentSidebar', () => () => (
-    <div>SidebarContent</div>
-))
+jest.mock('../EmailDomainVerificationSupportContentSidebar', () => ({
+    EmailDomainVerificationSupportContentSidebar: () => (
+        <div>SidebarContent</div>
+    ),
+}))
 jest.mock('../../helpers')
 jest.mock('../EmailDomainVerificationContent')
 jest.mock('../EmailDomainVerificationActionButtons')
@@ -35,7 +37,9 @@ const integration = {
     },
 } as EmailIntegration
 
-jest.mock('../VerifyDomainModal', () => () => <div>VerifyDomainModal</div>)
+jest.mock('../VerifyDomainModal', () => ({
+    VerifyDomainModal: () => <div>VerifyDomainModal</div>,
+}))
 
 describe('EmailDomainVerification', () => {
     const renderComponent = () =>

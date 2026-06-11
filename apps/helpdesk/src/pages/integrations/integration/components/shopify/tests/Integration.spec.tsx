@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import * as actions from 'state/integrations/actions'
 
-import Integration from '../Integration'
+import { Integration } from '../Integration'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

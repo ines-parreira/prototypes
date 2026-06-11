@@ -7,7 +7,7 @@ import {
     CardTitle,
 } from 'pages/aiAgent/Onboarding_V2/components/Card'
 
-import TopElementsItem from './TopElementItem/TopElementItem'
+import { TopElementItem as TopElementsItem } from './TopElementItem/TopElementItem'
 import type { TopElement } from './types'
 
 import css from './TopElementsCard.less'
@@ -44,4 +44,4 @@ const TopElementsCard = ({ title, topElements, isLoading }: Props) => {
     )
 }
 
-export default TopElementsCard
+export { TopElementsCard }

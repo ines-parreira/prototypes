@@ -5,9 +5,9 @@ import _flatten from 'lodash/flatten'
 
 import { Box, LegacyLabel as Label, toast } from '@gorgias/axiom'
 
-import useInfiniteListBusinessHoursIntegrations from 'hooks/businessHours/useInfiniteListBusinessHoursIntegrations'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import SourceIcon from 'pages/common/components/SourceIcon'
+import { useInfiniteListBusinessHoursIntegrations } from 'hooks/businessHours/useInfiniteListBusinessHoursIntegrations'
+import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
 
 import css from './LinkedIntegrationsList.less'
 
@@ -15,7 +15,7 @@ type Props = {
     businessHoursId: number
 }
 
-export default function LinkedIntegrationsList({ businessHoursId }: Props) {
+export function LinkedIntegrationsList({ businessHoursId }: Props) {
     const { data, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
         useInfiniteListBusinessHoursIntegrations(businessHoursId, undefined, {
             staleTime: Duration.seconds(15),

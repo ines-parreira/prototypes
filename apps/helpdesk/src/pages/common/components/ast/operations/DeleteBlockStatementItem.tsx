@@ -15,7 +15,7 @@ type Props = {
     type: string
 }
 
-export default class DeleteBlockStatementItem extends Component<Props> {
+export class DeleteBlockStatementItem extends Component<Props> {
     _handleClick = () => {
         const { actions, parent } = this.props
         actions.modifyCodeAST(parent, null, RuleOperation.Delete)

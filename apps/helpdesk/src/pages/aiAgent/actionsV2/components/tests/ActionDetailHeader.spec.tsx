@@ -2,8 +2,8 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import GuidanceReferenceContext from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
+import { useUpsertAction } from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { GuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 

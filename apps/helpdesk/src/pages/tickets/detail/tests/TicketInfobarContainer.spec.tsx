@@ -20,7 +20,7 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
-import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import { useHasAIAgent } from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -66,7 +66,7 @@ const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     __esModule: true,
-    default: () => <div>TicketFeedback</div>,
+    TicketFeedback: () => <div>TicketFeedback</div>,
     useHasAIAgent: jest.fn(),
 }))
 
@@ -97,7 +97,7 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportEditOrderShippingAddressModal: () => null,
     }),
 )
 
@@ -109,20 +109,20 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportEditOrderModal: () => null,
     }),
 )
 
 jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
     __esModule: true,
-    default: () => null,
+    DefaultExportDraftOrderModal: () => null,
 }))
 
 jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportRefundOrderModal: () => null,
     }),
 )
 
@@ -130,7 +130,7 @@ jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal',
     () => ({
         __esModule: true,
-        default: () => null,
+        DefaultExportCancelOrderModal: () => null,
     }),
 )
 
@@ -140,10 +140,15 @@ jest.mock('tickets/ticket-timeline', () => ({
 
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm',
-    () =>
-        ({ isCustomerSyncFormOpen }: { isCustomerSyncFormOpen: boolean }) => (
+    () => ({
+        CustomerSyncForm: ({
+            isCustomerSyncFormOpen,
+        }: {
+            isCustomerSyncFormOpen: boolean
+        }) => (
             <div>CustomerSyncForm isOpen:{String(isCustomerSyncFormOpen)}</div>
         ),
+    }),
 )
 
 jest.mock('state/currentUser/selectors')
@@ -173,7 +178,7 @@ jest.mock('state/ui/ticketAIAgentFeedback')
 
 jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
     __esModule: true,
-    default: ({
+    IntegrationTabContent: ({
         widgetType,
         sourcePaths,
     }: {
@@ -193,7 +198,7 @@ jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
 
 jest.mock('pages/tickets/detail/WooCommerceTabContent', () => ({
     __esModule: true,
-    default: () => <div>WooCommerceTabContent</div>,
+    WooCommerceTabContent: () => <div>WooCommerceTabContent</div>,
 }))
 
 jest.mock('state/integrations/selectors', () => ({
@@ -209,36 +214,34 @@ jest.mock(
             getIntegrationsData: jest.fn(),
         }) as Record<string, unknown>,
 )
-jest.mock(
-    'pages/common/components/infobar/Infobar/Infobar',
-    () =>
-        ({
-            sources,
-            isRouteEditingWidgets,
-            identifier,
-            customer,
-            widgets,
-            context,
-        }: ComponentProps<typeof Infobar>) => (
-            <div>
-                <div>Infobar</div>
-                <div>sources: {JSON.stringify(sources)}</div>
-                <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
-                <div>identifier: {identifier}</div>
-                <div>customer: {customer.toArray()}</div>
-                <div>widgets: {JSON.stringify(widgets)}</div>
-                <div>context: {context}</div>
-            </div>
-        ),
-)
+jest.mock('pages/common/components/infobar/Infobar/Infobar', () => ({
+    Infobar: ({
+        sources,
+        isRouteEditingWidgets,
+        identifier,
+        customer,
+        widgets,
+        context,
+    }: ComponentProps<typeof Infobar>) => (
+        <div>
+            <div>Infobar</div>
+            <div>sources: {JSON.stringify(sources)}</div>
+            <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
+            <div>identifier: {identifier}</div>
+            <div>customer: {customer.toArray()}</div>
+            <div>widgets: {JSON.stringify(widgets)}</div>
+            <div>context: {context}</div>
+        </div>
+    ),
+}))
 
 jest.mock('pages/tickets/detail/hooks/useIsIntegrationDisplayable', () => ({
     __esModule: true,
-    default: jest.fn(() => false),
+    useIsIntegrationDisplayable: jest.fn(() => false),
 }))
 const useIsIntegrationDisplayableMock = jest.mocked(
     jest.requireMock('pages/tickets/detail/hooks/useIsIntegrationDisplayable')
-        .default,
+        .useIsIntegrationDisplayable,
 ) as jest.Mock
 
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)

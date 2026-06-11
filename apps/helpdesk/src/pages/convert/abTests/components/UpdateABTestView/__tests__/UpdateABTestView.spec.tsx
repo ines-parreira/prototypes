@@ -13,7 +13,7 @@ import { useListABTests, useUpdateABTest } from 'models/convert/abTest/queries'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import type { RootState } from 'state/types'
 
-import UpdateABTestView from '../UpdateABTestView'
+import { UpdateABTestView } from '../UpdateABTestView'
 
 jest.mock('models/convert/abTest/queries')
 const useListABTestMock = assumeMock(useListABTests)

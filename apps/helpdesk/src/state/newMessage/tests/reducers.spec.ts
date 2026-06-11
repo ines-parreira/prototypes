@@ -6,7 +6,7 @@ import { TicketVia } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
-import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
+import { addMention } from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import type { GorgiasAction } from 'state/types'
 import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
 
@@ -18,9 +18,9 @@ import {
 import * as types from '../constants'
 import { NEW_MESSAGE_FETCH_TICKET_SUCCESS } from '../constants'
 import * as emailExtraUtils from '../emailExtraUtils'
-import reducer, { initialState, makeNewMessage } from '../reducers'
+import { initialState, makeNewMessage, reducer } from '../reducers'
 import * as responseUtils from '../responseUtils'
-import ticketReplyCache from '../ticketReplyCache'
+import { ticketReplyCache } from '../ticketReplyCache'
 import type { NewMessage, ReplyAreaState } from '../types'
 import { getMessageContextSnapshot } from './testUtils'
 

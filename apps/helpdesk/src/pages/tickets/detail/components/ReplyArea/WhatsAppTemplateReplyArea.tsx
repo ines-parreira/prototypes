@@ -1,14 +1,14 @@
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
-import WhatsAppMessageTemplateSearch from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateSearch'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { WhatsAppMessageTemplateMessage } from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
+import { WhatsAppMessageTemplateSearch } from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateSearch'
 
-import WhatsAppMessageTemplateNavigator from './WhatsAppMessageTemplateNavigator'
+import { WhatsAppMessageTemplateNavigator } from './WhatsAppMessageTemplateNavigator'
 
 import css from './WhatsAppTemplateReplyArea.less'
 
-export default function WhatsAppMessageTemplateReplyArea() {
+export function WhatsAppMessageTemplateReplyArea() {
     const { isTemplateListVisible, selectedTemplate, cleanupEditorState } =
         useWhatsAppEditor()
 

@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import type { CustomSSOProviders } from 'state/currentAccount/types'
 
-import CustomSsoProviders from '../CustomSsoProviders'
+import { CustomSsoProviders } from '../CustomSsoProviders'
 
 jest.mock('uuid', () => ({
     v4: jest.fn(),
@@ -17,14 +17,14 @@ jest.mock('uuid', () => ({
 
 jest.mock('../../../../hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 
 describe('CustomSsoProviders', () => {
     const mockOnUpdate = jest.fn()
     const mockUuid = uuidv4 as jest.Mock
     const mockUseAppSelector =
-        require('../../../../hooks/useAppSelector').default
+        require('../../../../hooks/useAppSelector').useAppSelector
 
     const mockStore = configureStore({
         reducer: {

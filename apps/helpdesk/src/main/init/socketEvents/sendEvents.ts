@@ -66,4 +66,4 @@ const sendEvents: SendEvent[] = [
     },
 ]
 
-export default sendEvents
+export { sendEvents }

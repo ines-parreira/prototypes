@@ -10,7 +10,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 import { BPOPartner, Partner } from '@gorgias/helpdesk-types'
 
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { convertPartnerEnumToOptions } from 'pages/settings/new_billing/components/ConsultingAgencyPartnerDropdown/utils'
 import css from 'pages/settings/new_billing/views/PaymentInformationView/components/PartnerFields.less'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'

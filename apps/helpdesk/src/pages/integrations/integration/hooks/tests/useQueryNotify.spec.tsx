@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom'
 
 import { Toaster } from '@gorgias/axiom'
 
-import useQueryNotify from '../useQueryNotify'
+import { useQueryNotify } from '../useQueryNotify'
 
 const renderUseQueryNotify = (initialEntries: string[]) => {
     // Pre-mount the Toaster so it's subscribed before the hook's first

@@ -6,6 +6,6 @@ type Props = {
     children: ReactNode
 }
 
-export default function PhoneBarInnerContent({ children }: Props) {
+export function PhoneBarInnerContent({ children }: Props) {
     return <div className={css.container}>{children}</div>
 }

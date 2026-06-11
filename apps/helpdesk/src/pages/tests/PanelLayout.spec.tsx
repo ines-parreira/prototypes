@@ -7,7 +7,7 @@ import { Panel, Panels } from 'panels'
 import { LayoutKeys } from 'split-ticket-view/constants'
 
 import type { PanelLayoutConfig } from '../PanelLayout'
-import PanelLayout from '../PanelLayout'
+import { PanelLayout } from '../PanelLayout'
 
 jest.mock('panels', () => ({
     Panel: jest.fn(),

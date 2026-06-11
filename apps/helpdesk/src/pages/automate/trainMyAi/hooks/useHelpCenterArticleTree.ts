@@ -70,4 +70,4 @@ const useHelpCenterArticleTree = (
     }
 }
 
-export default useHelpCenterArticleTree
+export { useHelpCenterArticleTree }

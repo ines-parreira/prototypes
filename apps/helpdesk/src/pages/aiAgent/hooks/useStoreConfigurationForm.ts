@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'

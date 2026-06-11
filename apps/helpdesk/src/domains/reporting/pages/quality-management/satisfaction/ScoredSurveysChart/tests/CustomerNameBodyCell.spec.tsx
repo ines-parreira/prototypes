@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
-import CustomerNameBodyCell from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
+import { CustomerNameBodyCell } from 'domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
 
 describe('<CustomerNameBodyCell>', () => {
     it('should render customer name', () => {

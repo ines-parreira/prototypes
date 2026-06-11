@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import type { EmailMigrationBannerStatus } from 'models/integration/types'
 import { EmailMigrationStatus } from 'models/integration/types'
 
-import EmailMigration from '../EmailMigration/EmailMigration'
+import { EmailMigration } from '../EmailMigration/EmailMigration'
 
 jest.mock('react-router-dom', () => {
     return {
@@ -15,15 +15,15 @@ jest.mock('react-router-dom', () => {
         Redirect: jest.fn(({ to }: { to: string }) => `Redirected to ${to}`),
     } as Record<string, unknown>
 })
-jest.mock('../EmailMigration/MigrationComplete', () => () => (
-    <div data-testid="migration-complete" />
-))
-jest.mock('../EmailMigration/MigrationInProgress', () => () => (
-    <div data-testid="migration-pending" />
-))
-jest.mock('../EmailMigration/StartMigration', () => () => (
-    <div data-testid="migration-not-started" />
-))
+jest.mock('../EmailMigration/MigrationComplete', () => ({
+    MigrationComplete: () => <div data-testid="migration-complete" />,
+}))
+jest.mock('../EmailMigration/MigrationInProgress', () => ({
+    MigrationInProgress: () => <div data-testid="migration-pending" />,
+}))
+jest.mock('../EmailMigration/StartMigration', () => ({
+    StartMigration: () => <div data-testid="migration-not-started" />,
+}))
 describe('EmailMigration', () => {
     const renderComponent = (
         migrationBannerStatus: EmailMigrationBannerStatus | null,

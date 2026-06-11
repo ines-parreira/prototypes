@@ -7,10 +7,10 @@ import type Editor from 'draft-js-plugins-editor'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
+import { DefaultExportTextInputWithVariables as TextInputWithVariables } from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './ReplyButtonItem.less'
@@ -33,7 +33,7 @@ type ReplyButtonItemProps = {
     onBlur?: () => void
 }
 
-export default function ReplyButtonItem({
+export function ReplyButtonItem({
     onMove,
     onDrop,
     onCancel,

@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom'
 import dotError from 'assets/img/icons/dot-error.svg'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import css from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationNavigation.less'
 

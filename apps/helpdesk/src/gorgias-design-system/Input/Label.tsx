@@ -82,5 +82,3 @@ export const Label: React.FC<HTMLAttributes<HTMLDivElement> & LabelProps> = ({
         </StyledLabel>
     )
 }
-
-export default Label

@@ -86,4 +86,4 @@ const PlaygroundActionsModal: React.FC<PlaygroundActionsModalProps> = ({
     )
 }
 
-export default PlaygroundActionsModal
+export { PlaygroundActionsModal }

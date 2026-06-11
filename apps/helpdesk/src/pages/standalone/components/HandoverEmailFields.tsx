@@ -6,7 +6,7 @@ import type { FieldErrors, UseFormSetValue } from 'react-hook-form'
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import type { EmailItem } from 'pages/standalone/components/HandoverEmailDropdown'
 import { HandoverEmailDropdown } from 'pages/standalone/components/HandoverEmailDropdown'
 import css from 'pages/standalone/components/HandoverEmailFields.less'

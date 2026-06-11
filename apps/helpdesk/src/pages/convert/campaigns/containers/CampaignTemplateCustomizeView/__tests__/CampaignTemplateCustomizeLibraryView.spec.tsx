@@ -23,7 +23,7 @@ import { SCHEDULE_LIMITED_TIME_OFFER } from 'pages/convert/campaigns/templates/l
 import { SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD } from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
-import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
+import { CampaignTemplateCustomizeLibraryView } from '../CampaignTemplateCustomizeLibraryView'
 
 const mockStore = configureMockStore()
 
@@ -58,9 +58,11 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
-    return jest.fn(() => {
-        return <div data-testid="mock-convert-subscription-modal" />
-    })
+    return {
+        ConvertSubscriptionModal: jest.fn(() => {
+            return <div data-testid="mock-convert-subscription-modal" />
+        }),
+    }
 })
 
 const defaultState = {

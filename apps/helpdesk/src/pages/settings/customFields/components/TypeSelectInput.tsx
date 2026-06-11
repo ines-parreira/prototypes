@@ -5,10 +5,11 @@ import type {
     ExhaustiveUIDataType,
     SupportedUIDataType,
 } from 'custom-fields/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -20,7 +21,7 @@ interface TypeSelectInputProps {
     isDisabled?: boolean
 }
 
-export default function TypeSelectInput(props: TypeSelectInputProps) {
+export function TypeSelectInput(props: TypeSelectInputProps) {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
 

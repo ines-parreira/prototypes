@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { useHistory, useParams } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'

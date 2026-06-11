@@ -12,18 +12,18 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import useAppSelector from 'hooks/useAppSelector'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsFeedbackMutating } from 'models/knowledgeService/queries'
-import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
+import { DefaultExportSelectInputBox as SelectInputBox } from 'pages/common/forms/input/SelectInputBox'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import type { KnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import {
     SIMPLIFIED_RESOURCE_LABELS,
     SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
-import KnowledgeSourceIcon from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
-import KnowledgeSourcePopover from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
+import { KnowledgeSourceIcon } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon'
+import { DefaultExportKnowledgeSourcePopover as KnowledgeSourcePopover } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover'
 import type {
     KnowledgeResource,
     SuggestedResource,
@@ -578,7 +578,7 @@ const MissingKnowledgeSelect = ({
     )
 }
 
-export default MissingKnowledgeSelect
+export { MissingKnowledgeSelect }
 
 type KnowledgeTagProps = {
     choice?: ChoiceOption & { displayLabel: string }

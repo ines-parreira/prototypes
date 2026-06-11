@@ -14,7 +14,7 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
-import Caption from './Caption/Caption'
+import { Caption } from './Caption/Caption'
 
 import css from './ToggleInput.less'
 
@@ -103,4 +103,4 @@ const ToggleInput = ({
     )
 }
 
-export default ToggleInput
+export { ToggleInput }

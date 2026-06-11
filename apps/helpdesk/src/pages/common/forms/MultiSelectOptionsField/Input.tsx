@@ -21,7 +21,7 @@ type Props = {
     id?: string
 }
 
-export default class Input extends Component<Props> {
+export class Input extends Component<Props> {
     inputRef = React.createRef<HTMLInputElement>()
 
     componentDidMount() {

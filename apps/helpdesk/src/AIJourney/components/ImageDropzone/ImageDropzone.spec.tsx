@@ -5,7 +5,7 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { GenericAttachment } from 'common/types'
-import uploadFiles from 'common/utils/uploadFiles'
+import { uploadFiles } from 'common/utils/uploadFiles'
 import { getFileTooLargeError } from 'utils/file'
 
 import type { UploadedImageAttachment } from './ImageDropzone'

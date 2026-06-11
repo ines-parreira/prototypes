@@ -8,16 +8,20 @@ import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/em
 import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import { VerificationStatus } from 'models/singleSenderVerification/types'
 
-import SingleSenderVerificationTableRow from '../EmailMigration/SingleSenderVerificationTableRow'
+import { SingleSenderVerificationTableRow } from '../EmailMigration/SingleSenderVerificationTableRow'
 
 const mockCreateVerification = jest.fn()
-jest.mock('../hooks/useCreateSingleSenderVerification', () => () => ({
-    createVerification: mockCreateVerification,
+jest.mock('../hooks/useCreateSingleSenderVerification', () => ({
+    useCreateSingleSenderVerification: () => ({
+        createVerification: mockCreateVerification,
+    }),
 }))
 
 const mockDeleteVerification = jest.fn()
-jest.mock('../hooks/useDeleteSingleSenderVerification', () => () => ({
-    deleteVerification: mockDeleteVerification,
+jest.mock('../hooks/useDeleteSingleSenderVerification', () => ({
+    useDeleteSingleSenderVerification: () => ({
+        deleteVerification: mockDeleteVerification,
+    }),
 }))
 
 const mockNewSenderDetails = {
@@ -28,24 +32,22 @@ const mockNewSenderDetails = {
     zip: 'zip',
     email: 'email@gorgias.com',
 }
-jest.mock(
-    '../EmailMigration/SingleSenderVerificationFormModal',
-    () =>
-        ({
-            onConfirm,
-        }: {
-            onConfirm: (values: typeof mockNewSenderDetails) => void
-        }) => (
-            <div data-testid="single-sender-verification-form-modal">
-                <button
-                    data-testid="confirm-submit-details-button"
-                    onClick={() => onConfirm(mockNewSenderDetails)}
-                >
-                    confirm
-                </button>
-            </div>
-        ),
-)
+jest.mock('../EmailMigration/SingleSenderVerificationFormModal', () => ({
+    SingleSenderVerificationFormModal: ({
+        onConfirm,
+    }: {
+        onConfirm: (values: typeof mockNewSenderDetails) => void
+    }) => (
+        <div data-testid="single-sender-verification-form-modal">
+            <button
+                data-testid="confirm-submit-details-button"
+                onClick={() => onConfirm(mockNewSenderDetails)}
+            >
+                confirm
+            </button>
+        </div>
+    ),
+}))
 
 const failedIntegration = {
     ...migrationOutboundVerificationUnverifiedSingleSender.integrations[0],

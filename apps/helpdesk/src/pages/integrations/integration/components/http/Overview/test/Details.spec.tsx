@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import Details from '../Details'
+import { Details } from '../Details'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})

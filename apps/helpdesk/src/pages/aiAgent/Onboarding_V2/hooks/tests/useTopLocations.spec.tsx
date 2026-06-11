@@ -8,7 +8,7 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { shopifyIntegration } from 'fixtures/integrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 import { useTopLocations } from '../useTopLocations'
 

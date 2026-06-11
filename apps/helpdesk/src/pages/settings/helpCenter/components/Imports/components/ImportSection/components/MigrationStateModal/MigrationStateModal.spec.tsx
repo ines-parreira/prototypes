@@ -15,7 +15,7 @@ import {
 } from '../../fixtures/migration-sessions'
 import { MigrationStatus } from '../../types'
 import { parseSessionStats } from '../../utils'
-import MigrationStateModal from './MigrationStateModal'
+import { MigrationStateModal } from './MigrationStateModal'
 
 const provider = migrationProviders[0]
 

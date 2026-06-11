@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import UpdatePaymentTermsPage from '../UpdatePaymentTerms'
+import { UpdatePaymentTerms as UpdatePaymentTermsPage } from '../UpdatePaymentTerms'
 
 jest.mock(
     'pages/settings/new_billing/hooks/useUpdatePaymentTermsWithSideEffects',

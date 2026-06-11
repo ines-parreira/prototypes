@@ -4,7 +4,7 @@ import {
     getLast28DaysDateRange,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GuidanceContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types'
 import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
@@ -20,7 +20,7 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),

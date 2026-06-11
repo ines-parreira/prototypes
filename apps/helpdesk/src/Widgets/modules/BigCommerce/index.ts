@@ -1,1 +1,1 @@
-export { default } from './components/BigCommerce'
+export { BigCommerceWidget } from './components/BigCommerce'

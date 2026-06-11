@@ -62,7 +62,7 @@ describe('useKnowledgeHub', () => {
 
         jest.mocked(
             require('pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames')
-                .default,
+                .useHelpCenterCustomDomainHostnames,
         ).mockReturnValue({
             customDomainHostnames: [],
         })
@@ -275,7 +275,7 @@ describe('useKnowledgeHub', () => {
 
             jest.mocked(
                 require('pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames')
-                    .default,
+                    .useHelpCenterCustomDomainHostnames,
             ).mockReturnValue({
                 customDomainHostnames: ['custom.domain.com'],
             })
@@ -302,7 +302,7 @@ describe('useKnowledgeHub', () => {
 
             jest.mocked(
                 require('pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames')
-                    .default,
+                    .useHelpCenterCustomDomainHostnames,
             ).mockReturnValue({
                 customDomainHostnames: null,
             })

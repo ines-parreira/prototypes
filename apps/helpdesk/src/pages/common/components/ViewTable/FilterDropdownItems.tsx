@@ -19,7 +19,7 @@ type Props = {
     onMeItemClick: () => void
 }
 
-export default function FilterDropdownItems({
+export function FilterDropdownItems({
     field,
     isLoading,
     onItemClick,

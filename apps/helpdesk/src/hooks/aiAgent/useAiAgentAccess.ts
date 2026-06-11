@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { getCurrentAutomatePlan } from 'state/billing/selectors'
 

@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 import { TicketChannel } from 'business/types/ticket'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { useApplicationsAutomationSettings } from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useSelfServiceChannels } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 type UseOrderManagementParams = {
     shopName: string

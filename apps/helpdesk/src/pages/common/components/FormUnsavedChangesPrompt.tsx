@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form'
 import { toast } from '@gorgias/axiom'
 
 import type { UnsavedChangesModalProps } from 'pages/common/components/UnsavedChangesModal'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 type Props<T extends FieldValues> = {
     onSave: ComponentProps<typeof Form<T>>['onValidSubmit']
@@ -45,4 +45,4 @@ function FormUnsavedChangesPrompt<T extends FieldValues>({
     )
 }
 
-export default FormUnsavedChangesPrompt
+export { FormUnsavedChangesPrompt }

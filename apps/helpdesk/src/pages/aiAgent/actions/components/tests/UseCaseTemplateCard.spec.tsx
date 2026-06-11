@@ -7,12 +7,14 @@ import { ulid } from 'ulidx'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
-import UseCaseTemplateCard from '../UseCaseTemplateCard'
+import { UseCaseTemplateCard } from '../UseCaseTemplateCard'
 
 jest.mock('../UseCaseTemplateModal', () => {
-    return ({ onClose }: { onClose: () => void }) => (
-        <div onClick={onClose}>UseCaseTemplateModal</div>
-    )
+    return {
+        UseCaseTemplateModal: ({ onClose }: { onClose: () => void }) => (
+            <div onClick={onClose}>UseCaseTemplateModal</div>
+        ),
+    }
 })
 
 const b = new WorkflowConfigurationBuilder({

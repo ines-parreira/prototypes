@@ -2,7 +2,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import css from './WasThisHelpfulCard.less'
 
-export default function WasThisHelpfulCard() {
+export function WasThisHelpfulCard() {
     return (
         <div className={css.container}>
             <div className={css.question}>Was this helpful?</div>

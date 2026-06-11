@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import CheckBoxFieldSet from '../CheckBoxFieldSet'
+import { CheckBoxFieldSet } from '../CheckBoxFieldSet'
 
 describe('<CheckBoxFieldSet/>', () => {
     it('should display the title, subtitle and checkboxes', () => {

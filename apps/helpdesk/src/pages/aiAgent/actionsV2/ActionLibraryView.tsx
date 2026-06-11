@@ -7,19 +7,19 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { handleError } from 'pages/aiAgent/actions/hooks/errorHandler'
-import GuidanceReferenceProvider from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
-import StoreAppsProvider from 'pages/aiAgent/actions/providers/StoreAppsProvider'
-import StoreTrackstarProvider from 'pages/aiAgent/actions/providers/StoreTrackstarProvider'
+import { GuidanceReferenceProvider } from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
+import { StoreAppsProvider } from 'pages/aiAgent/actions/providers/StoreAppsProvider'
+import { StoreTrackstarProvider } from 'pages/aiAgent/actions/providers/StoreTrackstarProvider'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import ActionLibraryEmptyState from './components/ActionLibraryEmptyState'
-import ActionLibraryHeader from './components/ActionLibraryHeader'
-import ActionLibrarySearch from './components/ActionLibrarySearch'
-import ActionLibraryUpdatesBanner from './components/ActionLibraryUpdatesBanner/ActionLibraryUpdatesBanner'
-import ActionsTable from './components/ActionsTable'
+import { ActionLibraryEmptyState } from './components/ActionLibraryEmptyState'
+import { ActionLibraryHeader } from './components/ActionLibraryHeader'
+import { ActionLibrarySearch } from './components/ActionLibrarySearch'
+import { ActionLibraryUpdatesBanner } from './components/ActionLibraryUpdatesBanner/ActionLibraryUpdatesBanner'
+import { ActionsTable } from './components/ActionsTable'
 import type { SortColumn } from './components/ActionsTable'
-import ActivitySection from './components/ActivitySection'
+import { ActivitySection } from './components/ActivitySection'
 import {
     ACTION_LIBRARY_DESCRIPTION,
     ACTION_LIBRARY_PAGE_SIZE_OPTIONS,
@@ -226,4 +226,4 @@ const ActionLibraryView = () => {
     )
 }
 
-export default ActionLibraryView
+export { ActionLibraryView }

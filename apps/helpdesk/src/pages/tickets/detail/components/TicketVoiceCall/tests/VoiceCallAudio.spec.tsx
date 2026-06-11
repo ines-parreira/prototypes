@@ -9,18 +9,19 @@ import {
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
 
-import DownloadableDeletableRecording from '../../PhoneEvent/DownloadableDeletableRecording'
-import VoiceCallAudio from '../VoiceCallAudio'
+import { DownloadableDeletableRecording } from '../../PhoneEvent/DownloadableDeletableRecording'
+import { VoiceCallAudio } from '../VoiceCallAudio'
 
-jest.mock('../../PhoneEvent/DownloadableDeletableRecording', () =>
-    jest.fn(() => null),
-)
+jest.mock('../../PhoneEvent/DownloadableDeletableRecording', () => ({
+    DownloadableDeletableRecording: jest.fn(() => null),
+}))
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 
 const renderComponent = (audio: VoiceCallRecording) => {

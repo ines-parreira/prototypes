@@ -20,7 +20,7 @@ import {
 } from 'domains/reporting/hooks/timeSeries'
 import { setOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export const useTicketCountPerTag = () => {
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(

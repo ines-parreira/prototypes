@@ -47,9 +47,9 @@ const allPermissions = [
     ADS_MANAGEMENT,
 ].join(',')
 
-jest.mock('pages/common/components/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
+jest.mock('pages/common/components/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
 
 describe('FacebookIntegrationSetup', () => {
     const minProps: ComponentProps<typeof FacebookIntegrationSetupContainer> = {

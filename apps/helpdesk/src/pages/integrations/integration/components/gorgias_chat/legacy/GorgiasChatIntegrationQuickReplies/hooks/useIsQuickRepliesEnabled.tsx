@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountCreatedDatetime } from 'state/currentAccount/selectors'
 
 const useIsQuickRepliesEnabled = () => {
@@ -22,4 +22,4 @@ const useIsQuickRepliesEnabled = () => {
     )
 }
 
-export default useIsQuickRepliesEnabled
+export { useIsQuickRepliesEnabled }

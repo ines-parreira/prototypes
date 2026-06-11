@@ -28,8 +28,9 @@ import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import GorgiasChatIntegrationPreferencesWrapper, {
+import {
     GorgiasChatIntegrationPreferencesComponent,
+    GorgiasChatIntegrationPreferencesWrapper,
 } from '../GorgiasChatIntegrationPreferences'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -52,14 +53,18 @@ jest.mock('models/selfServiceConfiguration/resources')
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
-    () => () => {
-        return <div data-testid="GorgiasChatIntegrationHeader" />
-    },
+    () => ({
+        GorgiasChatIntegrationHeader: () => {
+            return <div data-testid="GorgiasChatIntegrationHeader" />
+        },
+    }),
 )
 
-jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
-    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-})
+jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => ({
+    GorgiasChatIntegrationConnectedChannel: () => {
+        return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+    },
+}))
 
 const mockUseStoreIntegration = jest.fn()
 const mockUseRevampShouldShowChatPreview = jest.fn()
@@ -71,7 +76,7 @@ jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
 
 jest.mock('../../hooks/useShouldShowChatSettingsRevamp', () => ({
     __esModule: true,
-    default: (storeIntegration: any) =>
+    useShouldShowChatSettingsRevamp: (storeIntegration: any) =>
         mockUseRevampShouldShowChatPreview(storeIntegration),
 }))
 

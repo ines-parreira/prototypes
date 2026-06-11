@@ -3,14 +3,14 @@ import { act } from '@testing-library/react'
 import type { CountryCode } from 'libphonenumber-js'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types/phone'
 import type { UserSearchResult } from 'models/search/types'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 
-import useDialerOutboundCall from '../useDialerOutboundCall'
-import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
-import usePhoneNumbers from '../usePhoneNumbers'
+import { useDialerOutboundCall } from '../useDialerOutboundCall'
+import { usePhoneDeviceDialer } from '../usePhoneDeviceDialer'
+import { usePhoneNumbers } from '../usePhoneNumbers'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('../useDialerOutboundCall')

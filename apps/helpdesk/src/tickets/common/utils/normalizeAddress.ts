@@ -3,9 +3,9 @@ import parsePhoneNumber from 'libphonenumber-js'
 import type { TicketChannel } from 'business/types/ticket'
 import { TicketMessageSourceType } from 'business/types/ticket'
 
-import isPhoneBasedSource from './isPhoneBasedSource'
+import { isPhoneBasedSource } from './isPhoneBasedSource'
 
-export default function normalizeAddress(
+export function normalizeAddress(
     address: string,
     sourceType:
         | TicketMessageSourceType

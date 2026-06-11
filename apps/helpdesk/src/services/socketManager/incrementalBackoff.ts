@@ -3,7 +3,7 @@ export type IncrementalBackoffOptions = {
     maxDelay: number
 }
 
-export default class IncrementalBackoff {
+export class IncrementalBackoff {
     private initialDelay: number
     private maxDelay: number
     private backoffAttempt = 1

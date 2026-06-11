@@ -4,21 +4,21 @@ import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import { getCurrentUserState } from 'state/currentUser/selectors'
 
-import ChangePassword from './ChangePassword'
-import TwoFactorAuthenticationSection from './twoFactorAuthentication/TwoFactorAuthenticationSection'
+import { DefaultExportChangePassword as ChangePassword } from './ChangePassword'
+import { TwoFactorAuthenticationSection } from './twoFactorAuthentication/TwoFactorAuthenticationSection'
 import { buildPasswordAnd2FaText } from './twoFactorAuthentication/utils'
 import { isRecentLogin } from './utils'
 
-export default function PasswordAnd2FA() {
+export function PasswordAnd2FA() {
     const currentUser = useAppSelector(getCurrentUserState)
 
     const hasPassword = useMemo(() => {

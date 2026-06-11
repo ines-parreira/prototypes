@@ -299,4 +299,6 @@ export function BarChart({
     )
 }
 
-export default withAnalyticsTheme<Props>(BarChart)
+const DefaultExportBarChart = withAnalyticsTheme<Props>(BarChart)
+
+export { DefaultExportBarChart }

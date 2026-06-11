@@ -6,7 +6,7 @@ import { screen } from '@testing-library/react'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import RecommendationFilters from '../RecommendationFilters'
+import { RecommendationFilter as RecommendationFilters } from '../RecommendationFilters'
 
 const queryClient = mockQueryClient()
 describe('<RecommendationFilters />', () => {

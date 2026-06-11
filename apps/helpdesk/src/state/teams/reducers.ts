@@ -10,7 +10,7 @@ export const initialState: TeamsState = fromJS({
     all: {},
 })
 
-export default function reducer(
+export function reducer(
     state: TeamsState = initialState,
     action: GorgiasAction,
 ): TeamsState {

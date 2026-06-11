@@ -7,7 +7,7 @@ import {
     tagsFetched,
     tagUpdated,
 } from '../actions'
-import reducer from '../reducer'
+import { tagsReducer as reducer } from '../reducer'
 
 describe('tags reducer', () => {
     describe('createTag action', () => {

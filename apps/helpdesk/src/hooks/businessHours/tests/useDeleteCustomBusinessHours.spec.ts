@@ -8,7 +8,7 @@ import {
     mockDeleteBusinessHoursHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import useDeleteCustomBusinessHours from '../useDeleteCustomBusinessHours'
+import { useDeleteCustomBusinessHours } from '../useDeleteCustomBusinessHours'
 
 const server = setupServer()
 

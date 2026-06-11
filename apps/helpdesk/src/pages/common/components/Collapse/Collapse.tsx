@@ -117,4 +117,4 @@ const Collapse = ({
     )
 }
 
-export default Collapse
+export { Collapse }

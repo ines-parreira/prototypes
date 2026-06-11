@@ -5,10 +5,10 @@ import { Col, Collapse, Container, Row } from 'reactstrap'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { ProductDetails } from 'models/ticket/types'
-import StarRating from 'pages/common/components/StarRating'
+import { StarRating } from 'pages/common/components/StarRating'
 import { getIconFromUrl } from 'utils'
 
-import GenericCard from '../GenericCard/GenericCard'
+import { GenericCard } from '../GenericCard/GenericCard'
 
 import css from './ProductEmbeddedCard.less'
 
@@ -16,7 +16,7 @@ type Props = {
     product: ProductDetails
 }
 
-export default function ProductEmbeddedCard(props: Props) {
+export function ProductEmbeddedCard(props: Props) {
     const { product } = props
     const [isOpen, setIsOpen] = useState(false)
 

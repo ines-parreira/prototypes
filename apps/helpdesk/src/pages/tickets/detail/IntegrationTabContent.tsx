@@ -15,7 +15,7 @@ import { getSourcePathFromContext, itemsWithContext } from 'state/widgets/utils'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 import type { WidgetProps } from 'Widgets/modules/Widget'
 
-import WidgetEditionTools from './WidgetEditionTools'
+import { WidgetEditionTools } from './WidgetEditionTools'
 
 import css from './TicketInfobarContainer.less'
 
@@ -28,7 +28,7 @@ type Props = {
     customerId?: number | null
 }
 
-export default function IntegrationTabContent({
+export function IntegrationTabContent({
     sources,
     widgets,
     widgetType,

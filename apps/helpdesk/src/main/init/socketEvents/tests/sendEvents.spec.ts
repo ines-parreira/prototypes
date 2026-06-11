@@ -1,7 +1,7 @@
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import sendEvents from '../sendEvents'
+import { sendEvents } from '../sendEvents'
 
 describe('sendEvents', () => {
     it('is array', () => {

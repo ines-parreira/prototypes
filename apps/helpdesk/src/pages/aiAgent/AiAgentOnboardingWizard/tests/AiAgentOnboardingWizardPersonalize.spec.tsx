@@ -7,10 +7,10 @@ import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 
 import {
     AiAgentChannel,
@@ -18,15 +18,14 @@ import {
     ToneOfVoice,
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
-import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
+import { useCustomToneOfVoicePreview } from '../../hooks/useCustomToneOfVoicePreview'
 import type { FormValues } from '../../types'
-import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
+import { AiAgentOnboardingWizardStepPersonalize } from '../AiAgentOnboardingWizardPersonalize'
 import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
-jest.mock(
-    'pages/automate/common/hooks/useSelfServiceChatChannels',
-    () => () => mockChatChannels.slice(0, 2),
-)
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    useSelfServiceChatChannels: () => mockChatChannels.slice(0, 2),
+}))
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)

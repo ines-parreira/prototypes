@@ -8,8 +8,8 @@ import type {
     TableRowSet,
     TableView,
 } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { AccountSettingTableConfig } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch, StoreState } from 'state/types'
 

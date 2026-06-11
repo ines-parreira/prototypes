@@ -5,7 +5,7 @@ import { InboxSidebar } from '../sidebars/InboxSidebar'
 
 jest.mock('pages/tickets/navbar/TicketNavbar', () => ({
     __esModule: true,
-    default: () => <div>TicketNavbar</div>,
+    DefaultExportTicketNavbar: () => <div>TicketNavbar</div>,
 }))
 
 const legacyBridgeTestProps = {

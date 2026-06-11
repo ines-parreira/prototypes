@@ -15,7 +15,7 @@ import type {
 } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { isHourCell } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { hourFromHourIndex } from 'domains/reporting/pages/support-performance/busiest-times-of-days/utils'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 
 export const BusiestTimesOfDaysCellContent = ({
     isLoading,

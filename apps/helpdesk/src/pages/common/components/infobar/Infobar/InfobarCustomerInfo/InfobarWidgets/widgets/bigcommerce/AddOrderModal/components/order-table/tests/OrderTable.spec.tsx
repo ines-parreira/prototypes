@@ -8,7 +8,7 @@ import {
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
 
-import OrderTable from '../OrderTable'
+import { OrderTable } from '../OrderTable'
 
 const lineItems = [bigCommerceLineItemFixture()]
 const product = bigCommerceProductFixture()

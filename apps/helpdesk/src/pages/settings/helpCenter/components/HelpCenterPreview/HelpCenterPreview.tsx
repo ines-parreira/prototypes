@@ -48,4 +48,4 @@ const HelpCenterPreview = ({ children, name, logoUrl }: Props) => {
     )
 }
 
-export default HelpCenterPreview
+export { HelpCenterPreview }

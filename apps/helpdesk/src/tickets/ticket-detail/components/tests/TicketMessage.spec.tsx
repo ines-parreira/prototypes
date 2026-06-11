@@ -44,13 +44,15 @@ jest.mock('models/ticket/predicates', () => ({
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SmartFollowUps',
-    () => (props: { smartFollowUps: SmartFollowUp[] }) => (
-        <div>
-            {props.smartFollowUps.map((followUp: SmartFollowUp) => (
-                <div key={followUp.text}>{followUp.text}</div>
-            ))}
-        </div>
-    ),
+    () => ({
+        SmartFollowUps: (props: { smartFollowUps: SmartFollowUp[] }) => (
+            <div>
+                {props.smartFollowUps.map((followUp: SmartFollowUp) => (
+                    <div key={followUp.text}>{followUp.text}</div>
+                ))}
+            </div>
+        ),
+    }),
 )
 
 jest.mock('@repo/feature-flags')

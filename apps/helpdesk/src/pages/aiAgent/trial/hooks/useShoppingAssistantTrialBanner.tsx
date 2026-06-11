@@ -5,7 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'

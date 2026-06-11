@@ -5,8 +5,8 @@ import { assumeMock, render } from '@repo/testing'
 import { useDrillDownDataV2 } from 'domains/reporting/hooks/useDrillDownData'
 import { formatVoiceDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import { getVoiceDrillDownColumns } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
-import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
-import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
+import { VoiceCallDrillDownTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
+import { VoiceCallTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 
 jest.mock(

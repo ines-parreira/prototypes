@@ -10,17 +10,17 @@ import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 import { Button, toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { CursorDirection, OrderDirection } from 'models/api/types'
 import { fetchTeams } from 'models/team/resources'
 import type { FetchTeamsOptions, Team } from 'models/team/types'
 import { TeamSortableProperties } from 'models/team/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import Loader from 'pages/common/components/Loader/Loader'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
-import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
+import { TeamCreationModal } from 'pages/settings/teams/TeamCreationModal'
 import { FETCH_TEAMS_SUCCESS } from 'state/teams/constants'
 
 import css from './List.less'
@@ -184,4 +184,4 @@ const TeamList = () => {
     )
 }
 
-export default TeamList
+export { TeamList }

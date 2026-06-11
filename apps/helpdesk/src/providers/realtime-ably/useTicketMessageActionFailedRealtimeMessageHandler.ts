@@ -6,7 +6,7 @@ import { isRecord } from '@repo/utils'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { UseChannelProps } from '@gorgias/realtime'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
 
 import { parseMessageData } from './parseMessageData'

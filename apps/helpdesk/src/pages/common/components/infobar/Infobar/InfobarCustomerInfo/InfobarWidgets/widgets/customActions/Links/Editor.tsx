@@ -8,12 +8,12 @@ import { Popover, PopoverBody } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Link,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { AppContext } from 'providers/infobar/AppContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -40,7 +40,7 @@ const defaultLink = {
     label: '',
 }
 
-export default function Editor(props: Props) {
+export function Editor(props: Props) {
     const {
         target,
         isEditing = false,

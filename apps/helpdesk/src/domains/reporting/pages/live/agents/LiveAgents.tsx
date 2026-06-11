@@ -8,7 +8,7 @@ import {
     stats as statsConfig,
     USERS_PERFORMANCE_OVERVIEW,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     AgentAvailabilityStatCell,
     LegacyStatsFilters,
@@ -20,17 +20,17 @@ import type {
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
 import { StatType } from 'domains/reporting/models/stat/types'
-import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
-import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { DefaultExportTableStat as TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
+import { StatCurrentDate } from 'domains/reporting/pages/common/components/StatCurrentDate'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import css from 'domains/reporting/pages/live/agents/LiveAgents.less'
 import { LiveAgentsFilters } from 'domains/reporting/pages/live/agents/LiveAgentsFilters'
-import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
+import { DefaultExportStatsFiltersContext as StatsFiltersContext } from 'domains/reporting/pages/StatsFiltersContext'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import Navigation from 'pages/common/components/Navigation/Navigation'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Navigation } from 'pages/common/components/Navigation/Navigation'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 import { usePerformancePageAgentPhoneStatuses } from './hooks/usePerformancePageAgentPhoneStatuses'
@@ -303,6 +303,8 @@ const formatUserPerformanceData = (
     })
 }
 
-export default withFeaturePaywall(AccountFeature.UsersLiveStatistics)(
-    LiveAgents,
-)
+const DefaultExportLiveAgents = withFeaturePaywall(
+    AccountFeature.UsersLiveStatistics,
+)(LiveAgents)
+
+export { DefaultExportLiveAgents }

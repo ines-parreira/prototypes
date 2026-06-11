@@ -1,10 +1,10 @@
 import { render, userEvent } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import AutoSaveBadge from '../AutoSaveBadge'
+import { AutoSaveBadge } from '../AutoSaveBadge'
 
 jest.useFakeTimers()
 

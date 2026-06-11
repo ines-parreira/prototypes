@@ -5,9 +5,9 @@ import { Heading } from '@gorgias/axiom'
 import { textLimit } from 'pages/aiAgent/components/GuidanceEditor/guidanceTextContent.utils'
 import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
-import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import { ToolbarProvider } from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import { RichField } from 'pages/common/forms/RichField/RichField'
 
 import css from './KnowledgeEditorGuidanceReadView.less'
 

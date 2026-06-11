@@ -9,9 +9,9 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import CheckBox from 'pages/common/forms/CheckBox'
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Option } from 'pages/common/forms/SelectField/types'
 
 import type { Input } from '../types'
@@ -178,4 +178,4 @@ const ActionFormInput = ({
     )
 }
 
-export default ActionFormInput
+export { ActionFormInput }

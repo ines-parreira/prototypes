@@ -5,8 +5,8 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { LegacyButton as Button, MultiButton } from '@gorgias/axiom'
 
-import Wizard, { WizardContext } from './Wizard'
-import WizardStep from './WizardStep'
+import { Wizard, WizardContext } from './Wizard'
+import { WizardStep } from './WizardStep'
 
 const storyConfig: Meta = {
     title: 'General/Wizard container/Wizard',

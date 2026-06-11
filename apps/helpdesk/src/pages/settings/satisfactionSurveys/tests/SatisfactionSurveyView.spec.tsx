@@ -8,22 +8,26 @@ import { fromJS } from 'immutable'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
+import { RichFieldWithVariables } from 'pages/common/forms/RichFieldWithVariables'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettings } from 'state/currentAccount/selectors'
 import type { AccountSettingSatisfactionSurvey } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import SatisfactionSurveyView from '../SatisfactionSurveyView'
+import { SatisfactionSurveyView } from '../SatisfactionSurveyView'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
-jest.mock('pages/common/forms/RichFieldWithVariables', () =>
-    jest.fn(() => <div>RichFieldWithVariables</div>),
-)
-jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
-jest.mock('hooks/useAppDispatch', () => () => (anything: unknown) => anything)
+jest.mock('pages/common/forms/RichFieldWithVariables', () => ({
+    RichFieldWithVariables: jest.fn(() => <div>RichFieldWithVariables</div>),
+}))
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => unknown) => fn(),
+}))
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => (anything: unknown) => anything,
+}))
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentAccount/actions', () => ({
     submitSetting: jest.fn(() => Promise.resolve()),

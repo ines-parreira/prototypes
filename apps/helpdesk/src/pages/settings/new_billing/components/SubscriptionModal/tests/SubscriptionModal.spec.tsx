@@ -11,7 +11,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
-import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
+import { SubscriptionModal } from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
 import type { RootState } from 'state/types'
 
 describe('SubscriptionModal', () => {

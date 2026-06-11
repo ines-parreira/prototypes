@@ -31,7 +31,7 @@ import { useToolbarContext } from '../ToolbarContext'
 import type { ActionInjectedProps } from '../types'
 import { ActionName } from '../types'
 import { getTooltipTourConfiguration } from '../utils'
-import Popover from './ButtonPopover'
+import { ButtonPopover as Popover } from './ButtonPopover'
 
 import css from './AddDiscountCode.less'
 
@@ -246,4 +246,4 @@ const AddDiscountCode = ({
     )
 }
 
-export default AddDiscountCode
+export { AddDiscountCode }

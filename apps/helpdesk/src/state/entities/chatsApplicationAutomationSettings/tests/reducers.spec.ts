@@ -4,7 +4,7 @@ import {
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
 } from '../actions'
-import reducer from '../reducer'
+import { chatsApplicationAutomationSettingsReducer as reducer } from '../reducer'
 
 const applicationAutomationSettings1: ChatApplicationAutomationSettings = {
     id: 1,

@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 
 import { TicketChannel } from 'business/types/ticket'
-import MergeCustomersModal from 'pages/common/components/MergeCustomers/MergeCustomersModal'
+import { MergeCustomersModal } from 'pages/common/components/MergeCustomers/MergeCustomersModal'
 import { mergeCustomers } from 'state/customers/actions'
 
 const address1 = 'pierre@gorgias.io'

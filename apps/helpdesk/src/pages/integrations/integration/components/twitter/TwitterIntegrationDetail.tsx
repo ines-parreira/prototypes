@@ -17,9 +17,9 @@ import {
 } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import PageHeader from 'pages/common/components/PageHeader'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import type {
@@ -36,7 +36,7 @@ type Props = {
     redirectUri: string
 }
 
-export default function TwitterIntegrationDetail({
+export function TwitterIntegrationDetail({
     integration,
     actions,
     redirectUri,

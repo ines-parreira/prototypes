@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import React, { useMemo } from 'react'
 
-import UpgradeButton from 'pages/common/components/UpgradeButton'
+import { UpgradeButton } from 'pages/common/components/UpgradeButton'
 
-export default function AutomateSubscriptionButton({
+export function AutomateSubscriptionButton({
     state,
     label,
     onClick,

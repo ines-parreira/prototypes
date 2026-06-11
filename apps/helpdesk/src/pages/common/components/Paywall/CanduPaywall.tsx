@@ -1,9 +1,9 @@
 import type { ComponentProps, ComponentType, ReactNode } from 'react'
 import React from 'react'
 
-import useHasCanduContent from 'hooks/candu/useHasCanduContent'
+import { useHasCanduContent } from 'hooks/candu/useHasCanduContent'
 
-import PageHeader from '../PageHeader'
+import { PageHeader } from '../PageHeader'
 
 type Props = {
     title: string
@@ -44,4 +44,4 @@ export const withCanduPaywall = (props: Omit<Props, 'children'>) => {
     }
 }
 
-export default CanduPaywall
+export { CanduPaywall }

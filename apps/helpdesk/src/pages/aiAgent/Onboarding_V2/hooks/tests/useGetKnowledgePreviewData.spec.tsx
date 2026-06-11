@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { useAverageDiscountPercentage } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageDiscountPercentage'
 import { useAverageOrdersPerDayTrend } from 'domains/reporting/pages/automate/aiSalesAgent/useAverageOrdersPerDayTrend'
 import { mockedAverageOrders } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/constants'
-import useTopProducts from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks'
+import { useTopProducts } from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding_V2/hooks/useGetAverageOrderValue'
 import { useGetRepeatRate } from 'pages/aiAgent/Onboarding_V2/hooks/useGetRepeatRate'
 

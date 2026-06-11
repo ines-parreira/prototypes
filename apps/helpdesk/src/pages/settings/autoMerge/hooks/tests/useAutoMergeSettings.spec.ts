@@ -1,15 +1,15 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { defaultAutoMergeSettings } from 'pages/settings/autoMerge/constants'
-import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
+import { useAutoMergeSettings } from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
 import { submitSetting } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('state/currentAccount/actions', () => ({
     submitSetting: jest.fn(() => 'submit-setting'),
 }))

@@ -1,1 +1,1 @@
-export { default } from './components/List'
+export { List } from './components/List'

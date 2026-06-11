@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 
-import SearchRankScenarioContext from './SearchRankScenarioContext'
+import { DefaultExportSearchRankScenarioContext as SearchRankScenarioContext } from './SearchRankScenarioContext'
 
-export default function useSearchRankScenarioContext() {
+export function useSearchRankScenarioContext() {
     const context = useContext(SearchRankScenarioContext)
     if (!context) {
         throw new Error(

@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'

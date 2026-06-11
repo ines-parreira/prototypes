@@ -43,7 +43,7 @@ import {
 import { initialState as productInsightsInitialState } from 'domains/reporting/state/ui/stats/productInsightsSlice'
 import { PRODUCT_NAME_FIELD } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import { OrderDirection } from 'models/api/types'
-import configureStore from 'store/configureStore'
+import { configureStore } from 'store/configureStore'
 import type { InitialRootState } from 'types'
 
 const productId = 'some-product-id'

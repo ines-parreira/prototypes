@@ -5,7 +5,7 @@ import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillD
 import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
@@ -272,4 +272,4 @@ const KnowledgeSourceSideBar = ({
     )
 }
 
-export default KnowledgeSourceSideBar
+export { KnowledgeSourceSideBar }

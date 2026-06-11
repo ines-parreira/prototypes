@@ -7,17 +7,18 @@ import * as voiceCallQueries from 'models/voiceCall/queries'
 import type { VoiceCall, VoiceCallRecording } from 'models/voiceCall/types'
 import { VoiceCallRecordingType } from 'models/voiceCall/types'
 
-import TicketVoiceCallAudios from '../TicketVoiceCallAudios'
-import VoiceCallAudio from '../VoiceCallAudio'
+import { TicketVoiceCallAudios } from '../TicketVoiceCallAudios'
+import { VoiceCallAudio } from '../VoiceCallAudio'
 
-jest.mock('../VoiceCallAudio', () => jest.fn(() => null))
+jest.mock('../VoiceCallAudio', () => ({ VoiceCallAudio: jest.fn(() => null) }))
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 
 const useListRecordingSpy = jest.spyOn(voiceCallQueries, 'useListRecordings')

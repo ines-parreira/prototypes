@@ -298,4 +298,6 @@ const connector = connect(
     }),
 )
 
-export default connector(Error)
+const DefaultExportError = connector(Error)
+
+export { DefaultExportError }

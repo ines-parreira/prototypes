@@ -5,13 +5,13 @@ import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
 import type { FormData } from '../WrapperEditActions'
-import WrapperEditActions from '../WrapperEditActions'
-import WrapperEditForm from '../WrapperEditForm'
+import { WrapperEditActions } from '../WrapperEditActions'
+import { WrapperEditForm } from '../WrapperEditForm'
 
 const MOCK_EDIT_FORM_ID = 'wrapper-edit-form'
-jest.mock('../WrapperEditForm', () =>
-    jest.fn(() => <div data-testid={MOCK_EDIT_FORM_ID} />),
-)
+jest.mock('../WrapperEditForm', () => ({
+    WrapperEditForm: jest.fn(() => <div data-testid={MOCK_EDIT_FORM_ID} />),
+}))
 const WrapperEditFormMock = assumeMock(WrapperEditForm)
 
 describe('WrapperEditActions', () => {

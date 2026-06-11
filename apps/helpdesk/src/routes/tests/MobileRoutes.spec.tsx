@@ -4,15 +4,17 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
-import LegacyPage from 'pages/LegacyPage'
-import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
-import TicketList from 'pages/tickets/list/TicketList'
-import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
-import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
+import { DefaultExportLegacyPage as LegacyPage } from 'pages/LegacyPage'
+import { DefaultExportTicketInfobarContainer as TicketInfobarContainer } from 'pages/tickets/detail/TicketInfobarContainer'
+import { TicketList } from 'pages/tickets/list/TicketList'
+import { DefaultExportTicketNavbar as TicketNavbar } from 'pages/tickets/navbar/TicketNavbar'
+import { TicketWrapper } from 'split-ticket-view/components/TicketWrapper'
 
 import { MobileRoutes } from '../MobileRoutes'
 
-jest.mock('pages/LegacyPage', () => jest.fn(() => <div>LegacyPage</div>))
+jest.mock('pages/LegacyPage', () => ({
+    DefaultExportLegacyPage: jest.fn(() => <div>LegacyPage</div>),
+}))
 
 describe('MobileRoutes', () => {
     it.each([

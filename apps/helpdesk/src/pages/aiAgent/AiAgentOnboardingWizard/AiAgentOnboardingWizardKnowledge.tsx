@@ -11,14 +11,16 @@ import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
-import HelpCenterSelect, {
+import {
     EMPTY_HELP_CENTER_ID,
+    HelpCenterSelect,
 } from 'pages/automate/common/components/HelpCenterSelect'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import WizardFooter, {
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import {
     FOOTER_BUTTONS,
+    WizardFooter,
 } from 'pages/common/components/wizard/WizardFooter'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import { WizardStepSkeleton } from 'pages/common/components/wizard/WizardStepSkeleton'
 
 import { ExternalFilesSection } from '../components/Knowledge/ExternalFilesSection'
 import { CreatePublicSourcesSection } from '../components/StoreConfigForm/StoreConfigForm'
@@ -354,4 +356,4 @@ const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
     )
 }
 
-export default AiAgentOnboardingWizardStepKnowledge
+export { AiAgentOnboardingWizardStepKnowledge }

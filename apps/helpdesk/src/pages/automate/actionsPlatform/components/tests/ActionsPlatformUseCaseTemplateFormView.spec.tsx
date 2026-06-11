@@ -7,7 +7,7 @@ import { produce } from 'immer'
 import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import ActionsPlatformUseCaseTemplateFormView from '../ActionsPlatformUseCaseTemplateFormView'
+import { ActionsPlatformUseCaseTemplateFormView } from '../ActionsPlatformUseCaseTemplateFormView'
 
 describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
     it('should dispatch SET_CATEGORY action on category change', () => {

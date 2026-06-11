@@ -14,7 +14,7 @@ import {
     isLegacyTicketChannel,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
-import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
+import { getChannelFromSourceType } from 'tickets/common/utils/getChannelFromSourceType'
 
 export type {
     Channel,

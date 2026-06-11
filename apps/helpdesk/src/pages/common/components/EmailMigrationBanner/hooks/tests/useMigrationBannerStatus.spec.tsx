@@ -3,7 +3,7 @@ import { act, screen } from '@testing-library/react'
 
 import { fetchEmailMigrationBannerStatus } from 'models/integration/resources/email'
 
-import useMigrationBannerStatus from '../useMigrationBannerStatus'
+import { useMigrationBannerStatus } from '../useMigrationBannerStatus'
 
 jest.mock('models/integration/resources/email')
 const mockFetchEmailMigrationBannerStatus =

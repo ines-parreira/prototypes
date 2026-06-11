@@ -5,8 +5,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 import type {
     OnDropPolicyFn,
@@ -17,7 +17,7 @@ import type {
 } from 'pages/settings/SLAs/features/SLAList/types'
 import { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
 
-import CellLinkWrapper from './CellLinkWrapper'
+import { CellLinkWrapper } from './CellLinkWrapper'
 import { columnOrder, getTableCell } from './config'
 
 import css from './TableRow.less'
@@ -30,7 +30,7 @@ type TableRowProps = {
     onDropPolicy: OnDropPolicyFn
     isSubmitting: boolean
 }
-export default function TableRow({
+export function TableRow({
     policy,
     onToggle,
     dragItem,

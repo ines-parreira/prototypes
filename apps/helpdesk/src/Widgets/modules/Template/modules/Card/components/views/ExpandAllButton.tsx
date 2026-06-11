@@ -13,7 +13,7 @@ import css from './ExpandAllButton.less'
 export const FOLD_TITLE = 'Fold all'
 export const EXPAND_TITLE = 'Unfold all'
 
-export default function ExpandAllButton() {
+export function ExpandAllButton() {
     const buttonRef = useRef<HTMLElement>(null)
     const [shouldClose, setShouldClose] = useState(true)
 

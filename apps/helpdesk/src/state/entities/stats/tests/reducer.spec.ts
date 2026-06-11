@@ -1,6 +1,6 @@
 import { firstResponseTime } from '../../../../fixtures/stats'
 import { statFetched } from '../actions'
-import reducer from '../reducer'
+import { sectionsReducer as reducer } from '../reducer'
 
 describe('stats reducer', () => {
     describe('statFetched action', () => {

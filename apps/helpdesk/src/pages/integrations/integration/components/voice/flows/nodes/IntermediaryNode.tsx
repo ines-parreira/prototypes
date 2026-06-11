@@ -1,7 +1,7 @@
 import type { NodeProps } from 'core/ui/flows'
 import { AddStepButton, NodeWrapper } from 'core/ui/flows'
 
-import AddStepMenuContent from '../AddStepMenuContent'
+import { AddStepMenuContent } from '../AddStepMenuContent'
 import { FINAL_NODES_TYPES } from '../constants'
 import type { IntermediaryNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'

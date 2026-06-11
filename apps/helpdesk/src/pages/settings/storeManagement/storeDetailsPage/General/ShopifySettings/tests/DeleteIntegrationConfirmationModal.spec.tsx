@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import DeleteIntegrationConfirmationModal from '../DeleteIntegrationConfirmationModal'
+import { DeleteIntegrationConfirmationModal } from '../DeleteIntegrationConfirmationModal'
 
 describe('<DeleteIntegrationConfirmationModal />', () => {
     const defaultProps = {

@@ -13,4 +13,4 @@ const SortableAccordionItemContext =
 export const useSortableAccordionItemContext = () =>
     useContext(SortableAccordionItemContext)
 
-export default SortableAccordionItemContext
+export { SortableAccordionItemContext }

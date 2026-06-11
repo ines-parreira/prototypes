@@ -6,7 +6,7 @@ import Immutable from 'immutable'
  * https://github.com/immutable-js/immutable-js/wiki/Converting-from-JS-objects#custom-conversion
  * https://stackoverflow.com/a/40663730/3443247
  */
-export default function fromAST<T>(js: T): any {
+export function fromAST<T>(js: T): any {
     return typeof js !== 'object' || js === null
         ? js
         : Array.isArray(js)

@@ -3,8 +3,8 @@ import { Form, toFormErrors } from '@repo/forms'
 import type { BusinessHoursCreate } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursCreate } from '@gorgias/helpdesk-validators'
 
-import useAppSelector from 'hooks/useAppSelector'
-import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { FormUnsavedChangesPrompt } from 'pages/common/components/FormUnsavedChangesPrompt'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import type { BusinessHoursCreateFormValues } from './types'
@@ -19,10 +19,7 @@ type Props = {
     onSubmit: (values: BusinessHoursCreate) => void
 }
 
-export default function CreateCustomBusinessHoursForm({
-    children,
-    onSubmit,
-}: Props) {
+export function CreateCustomBusinessHoursForm({ children, onSubmit }: Props) {
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
     const defaultTimezone = businessHoursSettings?.data?.timezone
     const { clientSideValidation } = useCustomBusinessHoursForm()

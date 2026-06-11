@@ -4,8 +4,8 @@ import classnames from 'classnames'
 
 import type { CardTemplate, Source } from 'models/widget/types'
 
-import ActionButtons from './ActionButtons'
-import Links from './Links'
+import { DefaultExportActionButtons as ActionButtons } from './ActionButtons'
+import { DefaultExportLinks as Links } from './Links'
 
 import css from './CustomActions.less'
 
@@ -44,4 +44,6 @@ function CustomActions(props: Props) {
     )
 }
 
-export default memo(CustomActions)
+const DefaultExportCustomActions = memo(CustomActions)
+
+export { DefaultExportCustomActions }

@@ -19,4 +19,4 @@ const Screen = ({ children, name, ...props }: Props) => {
     ) : null
 }
 
-export default Screen
+export { Screen }

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import cn from 'classnames'
 
 import type { AccordionContextType } from './AccordionContext'
-import AccordionContext from './AccordionContext'
+import { AccordionContext } from './AccordionContext'
 
 import css from './Accordion.less'
 
@@ -85,4 +85,4 @@ const Accordion = <T extends string | string[] | null>({
     )
 }
 
-export default Accordion
+export { Accordion }

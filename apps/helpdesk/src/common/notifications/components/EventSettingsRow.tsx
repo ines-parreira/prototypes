@@ -1,15 +1,15 @@
 import cn from 'classnames'
 
-import SourceIcon from 'pages/common/components/SourceIcon'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import CheckBox from 'pages/common/forms/CheckBox'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import { DefaultExportSourceIcon as SourceIcon } from 'pages/common/components/SourceIcon'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
 import type { SoundValue } from 'services/NotificationSounds'
 
 import { channels } from '../data'
 import type { NotificationConfig, Setting } from '../types'
-import SoundSelect from './SoundSelect'
+import { SoundSelect } from './SoundSelect'
 
 import css from './EventSettingsRow.less'
 
@@ -20,7 +20,7 @@ type Props = {
     onChangeSound: (sound: '' | SoundValue) => void
 }
 
-export default function EventSettingsRow({
+export function EventSettingsRow({
     config,
     setting,
     onChangeChannel,

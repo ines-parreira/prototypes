@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useBulkUnarchiveMacros as useBulkUnarchiveMacrosPrimitive } from '@gorgias/helpdesk-queries'
 
 import { useBulkUnarchiveMacros } from 'hooks/macros/useBulkUnarchiveMacros'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -22,7 +22,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacrosPrimitive)
 const mockMutateBulkUnarchive = jest.fn()
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('@tanstack/react-query', () => ({

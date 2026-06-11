@@ -33,4 +33,4 @@ const AiAgentFormChangesContext = createContext<AiAgentFormChangesContextType>({
 export const useAiAgentFormChangesContext = () =>
     useContext(AiAgentFormChangesContext)
 
-export default AiAgentFormChangesContext
+export { AiAgentFormChangesContext }

@@ -8,7 +8,7 @@ import { Button } from '@gorgias/axiom'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'
 import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'

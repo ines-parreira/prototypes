@@ -4,7 +4,7 @@ import parsePhoneNumber from 'libphonenumber-js'
 
 import { Button, Text } from '@gorgias/axiom'
 
-import goToTicket from 'common/utils/goToTicket'
+import { goToTicket } from 'common/utils/goToTicket'
 
 type Props = {
     name: Maybe<string>
@@ -13,7 +13,7 @@ type Props = {
     leadingSlot?: string | ReactNode
 }
 
-export default function PhoneCustomerName({
+export function PhoneCustomerName({
     name,
     phoneNumber,
     ticketId,

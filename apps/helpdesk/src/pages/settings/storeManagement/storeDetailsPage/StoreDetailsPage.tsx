@@ -14,20 +14,20 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 import { useStoreManagementState } from '../StoreManagementProvider'
-import ChannelsTab from './Channels/ChannelsTab'
-import General from './General/General'
-import useStoreGetter from './General/hooks/useStoreGetter'
-import ShopifyMetafields from './ShopifyMetafields/ShopifyMetafields'
-import StoreManagementStoreSelector from './StoreManagmentStoreSelector'
+import { ChannelsTab } from './Channels/ChannelsTab'
+import { General } from './General/General'
+import { useStoreGetter } from './General/hooks/useStoreGetter'
+import { ShopifyMetafields } from './ShopifyMetafields/ShopifyMetafields'
+import { StoreManagementStoreSelector } from './StoreManagmentStoreSelector'
 
 import css from './StoreDetailsPage.less'
 
-export default function StoreDetailsPage() {
+export function StoreDetailsPage() {
     const { id } = useParams<{ id: string }>()
     const enableShopifyMetafieldIngestion = useFlag(
         FeatureFlagKey.EnableShopifyMetafieldsIngestionUI,

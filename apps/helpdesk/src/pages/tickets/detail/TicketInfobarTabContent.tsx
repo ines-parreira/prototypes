@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { TicketInfobarTab } from '@repo/navigation'
 
-import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
+import { TicketFeedback } from 'pages/tickets/detail/components/TicketFeedback'
 
 import { AutoQAInfobarPanel } from './AutoQAInfobarPanel'
 import { TicketCustomerSections } from './TicketCustomerSections/TicketCustomerSections'

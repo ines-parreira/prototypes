@@ -2,8 +2,8 @@ import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
 import type { Tag } from 'models/aiAgent/types'
 import type { FormValues } from 'pages/aiAgent/types'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import InputField from 'pages/common/forms/input/InputField'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './TicketTagsFormComponent.less'
 

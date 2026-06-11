@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Literal from 'pages/common/components/ast/Literal'
+import { Literal } from 'pages/common/components/ast/Literal'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
 

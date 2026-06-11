@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './FlowSettingsItem.less'

@@ -12,10 +12,10 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 
-import ActionEventsHeader from './components/ActionEventsHeader'
-import ActionEventSidePanel from './components/ActionEventSidePanel'
-import ActionEventsList from './components/ActionEventsList'
-import ActionEventsNumberedPagination from './components/ActionEventsNumberedPagination'
+import { ActionEventsHeader } from './components/ActionEventsHeader'
+import { ActionEventSidePanel } from './components/ActionEventSidePanel'
+import { ActionEventsList } from './components/ActionEventsList'
+import { ActionEventsNumberedPagination } from './components/ActionEventsNumberedPagination'
 import type { LlmTriggeredExecution } from './types'
 
 import css from './ActionEventsContent.less'
@@ -39,7 +39,7 @@ type Props = {
     hideBackButton?: boolean
 }
 
-export default function ActionEventsContent({ hideBackButton }: Props = {}) {
+export function ActionEventsContent({ hideBackButton }: Props = {}) {
     const location = useLocation()
     const history = useHistory()
 

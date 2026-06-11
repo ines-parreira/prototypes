@@ -19,7 +19,7 @@ import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResource
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
-import AiAgentExternalSourceArticlesView from '../AiAgentExternalSourceArticlesView'
+import { AiAgentExternalSourceArticlesView } from '../AiAgentExternalSourceArticlesView'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 
 import type { SettingsBannerType } from '../constants'
 import { BannerText } from '../constants'

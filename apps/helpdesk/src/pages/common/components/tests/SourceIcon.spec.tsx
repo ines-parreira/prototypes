@@ -9,7 +9,7 @@ import { IntegrationType } from 'models/integration/types'
 import { getChannelBySlug } from 'services/channels'
 import { SYSTEM_SOURCE_TYPES, USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
-import SourceIcon from '../SourceIcon'
+import { DefaultExportSourceIcon as SourceIcon } from '../SourceIcon'
 
 beforeEach(() => {
     jest.spyOn(appQueryClient, 'getQueryData').mockReturnValue({

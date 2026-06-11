@@ -28,14 +28,14 @@ import {
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
-import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import { AIBanner } from 'pages/common/components/AIBanner/AIBanner'
 import { SteppedSlider } from 'pages/common/components/SteppedSlider/SteppedSlider'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import IconInput from 'pages/common/forms/input/IconInput'
-import InputField from 'pages/common/forms/input/InputField'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { IconTooltip } from 'pages/common/forms/IconTooltip/IconTooltip'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
-import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
+import { AiShoppingAssistantExpireBanner } from '../AiShoppingAssistantExpireBanner'
 
 import css from './SalesSettings.less'
 

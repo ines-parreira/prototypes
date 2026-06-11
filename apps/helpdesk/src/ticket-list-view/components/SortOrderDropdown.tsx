@@ -5,10 +5,10 @@ import cn from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
 import { sortOrderOptions } from '../hooks/useSortOrder'
@@ -20,7 +20,7 @@ type Props = {
     value: ListViewItemsUpdatesOrderBy
 }
 
-export default function SortingDropdown({ onChange, value }: Props) {
+export function SortingDropdown({ onChange, value }: Props) {
     const targetRef = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
 

@@ -3,10 +3,10 @@ import { useCustomerFieldValues } from 'custom-fields/hooks/queries/useCustomerF
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomFieldValue } from 'custom-fields/types'
 
-import CustomerField from './CustomerField'
+import { CustomerField } from './CustomerField'
 import { Heading } from './Heading'
 
-export default function CustomerFields({ customerId }: { customerId: number }) {
+export function CustomerFields({ customerId }: { customerId: number }) {
     const {
         data: definitionsData,
         isLoading: isDefinitionLoading,

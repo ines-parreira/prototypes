@@ -17,14 +17,14 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
-import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { AutomateSubscriptionButton } from 'pages/settings/billing/automate/AutomateSubscriptionButton'
+import { AutomateSubscriptionModal } from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import {
     CONTACT_FORM_AUTOMATE_PATH,
     CONTACT_FORM_BASE_PATH,
@@ -39,9 +39,9 @@ import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFo
 import { useContactFormIdParam } from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
 import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
-import ContactFormCustomization from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization'
-import ContactFormPreferences from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
-import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
+import { ContactFormCustomization } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization'
+import { ContactFormPreferences } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
+import { ContactFormPublish } from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentContactForm } from 'state/entities/contactForm/contactForms'
 import { changeContactFormId } from 'state/ui/contactForm'
@@ -298,4 +298,4 @@ const ContactFormSettingsView = (): JSX.Element => {
     )
 }
 
-export default ContactFormSettingsView
+export { ContactFormSettingsView }

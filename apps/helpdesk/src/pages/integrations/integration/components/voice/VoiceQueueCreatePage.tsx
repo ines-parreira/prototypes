@@ -4,17 +4,17 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { CreateVoiceQueue } from '@gorgias/helpdesk-queries'
 import { useCreateVoiceQueues } from '@gorgias/helpdesk-queries'
 
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
-import VoiceFormSubmitButton from './VoiceFormSubmitButton'
-import VoiceQueueEditOrCreateForm from './VoiceQueueEditOrCreateForm'
-import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
+import { VoiceFormSubmitButton } from './VoiceFormSubmitButton'
+import { VoiceQueueEditOrCreateForm } from './VoiceQueueEditOrCreateForm'
+import { VoiceQueueSettingsForm } from './VoiceQueueSettingsForm'
 
 import css from './VoiceQueueCreatePage.less'
 
-export default function VoiceQueueCreatePage() {
+export function VoiceQueueCreatePage() {
     const history = useHistory()
     const { mutate: createQueue } = useCreateVoiceQueues({
         mutation: {

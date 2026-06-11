@@ -42,4 +42,4 @@ const AutomateViewEmptyStateBanner = ({
     )
 }
 
-export default AutomateViewEmptyStateBanner
+export { AutomateViewEmptyStateBanner }

@@ -7,11 +7,11 @@ import type { AIArticle } from 'models/helpCenter/types'
 import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import type { AIArticleArchiveModalHandle } from '../AIArticleArchiveModal'
-import AIArticleArchiveModal, { ArchiveReason } from '../AIArticleArchiveModal'
+import { AIArticleArchiveModal, ArchiveReason } from '../AIArticleArchiveModal'
 
 jest.mock('pages/common/forms/SelectField/SelectField', () => ({
     __esModule: true,
-    default: ({
+    SelectField: ({
         options,
         onChange,
     }: {

@@ -36,7 +36,7 @@ afterAll(() => {
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
     __esModule: true,
-    default: () => <div>Filters Panel</div>,
+    FiltersPanelWrapper: () => <div>Filters Panel</div>,
 }))
 
 jest.mock('domains/reporting/pages/common/AnalyticsFooter', () => ({

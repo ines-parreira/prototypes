@@ -3,7 +3,7 @@ import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import ActionSelect from '../ActionSelect'
+import { ActionSelect } from '../ActionSelect'
 import { actionsConfig } from '../config'
 
 const commonProps = {

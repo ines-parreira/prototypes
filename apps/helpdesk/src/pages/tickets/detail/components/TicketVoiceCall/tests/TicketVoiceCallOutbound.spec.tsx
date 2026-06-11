@@ -4,7 +4,7 @@ import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import type { OutboundVoiceCall, VoiceCall } from 'models/voiceCall/types'
 
-import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
+import { TicketVoiceCallOutbound } from '../TicketVoiceCallOutbound'
 
 jest.mock('hooks/integrations/phone/useMonitoringCall', () => ({
     useMonitoringCall: () => ({
@@ -14,15 +14,16 @@ jest.mock('hooks/integrations/phone/useMonitoringCall', () => ({
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 
-jest.mock('pages/common/utils/DatetimeLabel', () => () => (
-    <div>DatetimeLabel</div>
-))
+jest.mock('pages/common/utils/DatetimeLabel', () => ({
+    DatetimeLabel: () => <div>DatetimeLabel</div>,
+}))
 
 jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
     useAgentDetails: (agentId: number) => ({
@@ -43,14 +44,19 @@ jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
 
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallOutboundStatus',
-    () =>
-        ({ voiceCall }: { voiceCall: VoiceCall }) => (
-            <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>
-        ),
+    () => ({
+        TicketVoiceCallOutboundStatus: ({
+            voiceCall,
+        }: {
+            voiceCall: VoiceCall
+        }) => <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>,
+    }),
 )
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallDuration',
-    () => () => <div>TicketVoiceCallDuration</div>,
+    () => ({
+        TicketVoiceCallDuration: () => <div>TicketVoiceCallDuration</div>,
+    }),
 )
 
 describe('TicketVoiceCallOutbound', () => {

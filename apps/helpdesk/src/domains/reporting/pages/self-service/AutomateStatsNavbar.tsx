@@ -19,7 +19,7 @@ import {
 import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import UpgradeIcon from 'pages/common/components/UpgradeIcon'
+import { UpgradeIcon } from 'pages/common/components/UpgradeIcon'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { STATS_ROUTES } from 'routes/constants'
 

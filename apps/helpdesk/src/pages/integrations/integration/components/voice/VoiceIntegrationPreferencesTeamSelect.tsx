@@ -5,12 +5,13 @@ import { Emoji } from 'emoji-mart'
 import pluralize from 'pluralize'
 
 import { useListTeams } from 'models/team/queries'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import Caption from 'pages/common/forms/Caption/Caption'
-import SelectInputBox, {
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownSearch as DropdownSearch } from 'pages/common/components/dropdown/DropdownSearch'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
@@ -23,7 +24,7 @@ type Props = {
 
 export const NO_TEAM_SELECTED_LABEL = 'Route to all available agents'
 
-export default function VoiceIntegrationPreferencesTeamSelect({
+export function VoiceIntegrationPreferencesTeamSelect({
     value,
     onChange,
 }: Props) {

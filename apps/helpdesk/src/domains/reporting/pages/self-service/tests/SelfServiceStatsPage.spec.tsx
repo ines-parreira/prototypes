@@ -10,10 +10,11 @@ import {
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
-import SelfServiceStatsPageWithPaywall, {
+import {
     SelfServiceStatsPage,
+    SelfServiceStatsPageWithPaywall,
 } from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
@@ -81,7 +82,9 @@ jest.mock('models/selfServiceConfiguration/queries', () => ({
     })),
 }))
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
     () => ({

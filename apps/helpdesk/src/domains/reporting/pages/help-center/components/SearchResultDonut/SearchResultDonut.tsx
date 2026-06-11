@@ -1,6 +1,6 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import DonutChart from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DonutChart } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import css from 'domains/reporting/pages/help-center/components/SearchResultDonut/SearchResultDonut.less'
@@ -46,4 +46,4 @@ const SearchResultDonut = ({ chartId, dashboard }: DashboardChartProps) => {
     )
 }
 
-export default SearchResultDonut
+export { SearchResultDonut }

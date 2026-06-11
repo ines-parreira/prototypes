@@ -32,16 +32,16 @@ import type {
     FacebookIntegrationSettings,
 } from 'models/integration/types'
 import { isFacebookIntegration } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 import type { Props as CheckBoxFieldSetProps } from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
-import CheckBoxFieldSet from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
-import FacebookIntegrationDetailSummary from 'pages/integrations/integration/components/facebook/FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
-import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
-import FacebookIntegrationLoginButton from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookIntegrationLoginButton'
+import { CheckBoxFieldSet } from 'pages/integrations/integration/components/facebook/CheckBoxFieldSet/CheckBoxFieldSet'
+import { FacebookIntegrationDetailSummary } from 'pages/integrations/integration/components/facebook/FacebookIntegrationDetailSummary/FacebookIntegrationDetailSummary'
+import { FacebookIntegrationNavigation } from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
+import { FacebookIntegrationLoginButton } from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookIntegrationLoginButton'
 import {
     canEnableMetaSetting,
     FacebookRole,
@@ -596,4 +596,8 @@ const connector = connect(
     },
 )
 
-export default connector(FacebookIntegrationDetail)
+const DefaultExportFacebookIntegrationDetail = connector(
+    FacebookIntegrationDetail,
+)
+
+export { DefaultExportFacebookIntegrationDetail }

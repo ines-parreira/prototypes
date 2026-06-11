@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import HomePageLink from '../HomePageLink'
+import { HomePageLink } from '../HomePageLink'
 
 describe('<HomePageLink />', () => {
     it('should render the link', () => {

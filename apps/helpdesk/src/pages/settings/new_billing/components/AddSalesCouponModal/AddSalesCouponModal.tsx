@@ -11,12 +11,12 @@ import {
 import { isGorgiasApiError } from 'models/api/types'
 import { getBillingStateQuery } from 'models/billing/queries'
 import { addSalesCoupon, deleteSalesCoupon } from 'models/billing/resources'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 
 import css from './AddSalesCouponModal.less'
 
@@ -28,7 +28,7 @@ interface AddSalesCouponModalProps {
     alreadyAppliedCoupon: string | undefined
 }
 
-export default function AddSalesCouponModal({
+export function AddSalesCouponModal({
     onCloseModal,
     isModalOpen,
     title,

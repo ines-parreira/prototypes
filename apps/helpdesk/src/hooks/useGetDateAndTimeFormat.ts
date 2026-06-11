@@ -1,10 +1,8 @@
 import type { DateAndTimeFormatting } from '@repo/utils'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 
-export default function useGetDateAndTimeFormat(
-    formatType: DateAndTimeFormatting,
-) {
+export function useGetDateAndTimeFormat(formatType: DateAndTimeFormatting) {
     return useAppSelector(getDateAndTimeFormatter)(formatType)
 }

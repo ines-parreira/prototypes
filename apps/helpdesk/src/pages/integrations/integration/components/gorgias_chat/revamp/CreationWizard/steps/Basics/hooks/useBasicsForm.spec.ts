@@ -7,7 +7,7 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardInstallationMethod,

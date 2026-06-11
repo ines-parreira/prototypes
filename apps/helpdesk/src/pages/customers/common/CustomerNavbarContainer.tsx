@@ -52,4 +52,6 @@ const connector = connect(
     },
 )
 
-export default connector(CustomerNavbarContainer)
+const DefaultExportCustomerNavbarContainer = connector(CustomerNavbarContainer)
+
+export { DefaultExportCustomerNavbarContainer }

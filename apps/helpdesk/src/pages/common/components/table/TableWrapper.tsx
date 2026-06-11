@@ -10,7 +10,7 @@ type Props = HTMLProps<HTMLTableElement> & {
     height?: 'comfortable' | 'compact'
 }
 
-export default function TableWrapper({
+export function TableWrapper({
     className,
     children,
     height,

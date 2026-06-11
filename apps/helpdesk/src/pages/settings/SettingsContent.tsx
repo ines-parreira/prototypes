@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import css from './SettingsContent.less'
 
-export default function SettingsContent({
+export function SettingsContent({
     children,
     className,
     fullWidth = false,

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ModalBanners from '../ModalBanners'
+import { ModalBanners } from '../ModalBanners'
 
 describe('<ModalBanners />', () => {
     describe('render()', () => {

@@ -1,5 +1,6 @@
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { voiceCallsAchievedExposuresQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

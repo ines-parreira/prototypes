@@ -7,7 +7,7 @@ import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/
 import { aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getTimezone } from 'state/currentUser/selectors'

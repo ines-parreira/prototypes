@@ -1,13 +1,13 @@
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
 
 type Props = {
     integration: Map<string, any>
 }
 
-export default function TwitterIntegrationListItem({
+export function TwitterIntegrationListItem({
     integration,
 }: Props): JSX.Element {
     const integrationId = integration.get('id')

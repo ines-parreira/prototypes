@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
 import type { LlmTriggeredExecution } from '../../types'
-import ActionEventRow from '../ActionEventRow'
+import { ActionsRow as ActionEventRow } from '../ActionEventRow'
 
 describe('<ActionEventRow />', () => {
     const mockOnClick = jest.fn()

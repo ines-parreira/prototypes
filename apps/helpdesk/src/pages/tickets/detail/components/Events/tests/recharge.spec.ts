@@ -1,6 +1,6 @@
 import { fromJS, Map } from 'immutable'
 
-import rechargeEvent from '../recharge'
+import { rechargeEvent } from '../recharge'
 
 describe('rechargeEvent', () => {
     const actionConfig = {

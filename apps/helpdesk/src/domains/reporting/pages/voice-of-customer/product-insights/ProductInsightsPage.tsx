@@ -1,4 +1,5 @@
-import StatsPage, {
+import {
+    StatsPage,
     StatsPageBackgroundColor,
 } from 'domains/reporting/pages/common/layout/StatsPage'
 import { VoCSidePanel } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanel/VoCSidePanel'

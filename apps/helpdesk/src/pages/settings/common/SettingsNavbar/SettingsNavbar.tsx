@@ -11,7 +11,7 @@ import { Navigation } from 'components/Navigation/Navigation'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
@@ -20,8 +20,8 @@ import {
 } from 'routes/constants'
 
 import { AutomateUpgradeBadge } from './AutomateUpgradeBadge'
-import Item from './Item'
-import Section from './Section'
+import { Item } from './Item'
+import { Section } from './Section'
 
 import css from './SettingsNavbar.less'
 
@@ -368,4 +368,4 @@ const SettingsNavbar = () => {
     )
 }
 
-export default SettingsNavbar
+export { SettingsNavbar }

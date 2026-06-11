@@ -84,4 +84,4 @@ const SelfServiceHelpCenterReportIssueReasonsPage = ({ helpCenter }: Props) => {
     )
 }
 
-export default SelfServiceHelpCenterReportIssueReasonsPage
+export { SelfServiceHelpCenterReportIssueReasonsPage }

@@ -8,7 +8,7 @@ import type {
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 export type OrderManagementFlow = {
     key: PolicyKey

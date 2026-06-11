@@ -9,7 +9,7 @@ import type { ShopifyIntegration } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { useReturnOrderFlowViewContext } from '../../ReturnOrderFlowViewContext'
-import ReturnOrderAutomatedResponseAction from '../ReturnOrderAutomatedResponseAction'
+import { ReturnOrderAutomatedResponseAction } from '../ReturnOrderAutomatedResponseAction'
 
 jest.mock('../../ReturnOrderFlowViewContext')
 

@@ -5,9 +5,9 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { AircallIntegration } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {
     activateIntegration,
@@ -19,7 +19,7 @@ type Props = {
     integration: AircallIntegration
 }
 
-export default function AircallIntegrationListItem({
+export function AircallIntegrationListItem({
     integration,
 }: Props): JSX.Element {
     const [isDisabled, setIsDisabled] = useState(

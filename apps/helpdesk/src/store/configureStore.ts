@@ -7,10 +7,10 @@ let configureStore: (initialState: InitialRootState) => Store
 
 if (envVars.NODE_ENV === NodeEnv.Production) {
     // eslint-disable-next-line
-    configureStore = require('./configureStore.prod').default
+    configureStore = require('./configureStore.prod').configureStore
 } else {
     // eslint-disable-next-line
-    configureStore = require('./configureStore.dev').default
+    configureStore = require('./configureStore.dev').configureStore
 }
 
-export default configureStore
+export { configureStore }

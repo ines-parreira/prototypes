@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useMacros from '../useMacros'
+import { useMacros } from '../useMacros'
 
 describe('useMacros', () => {
     it('should return the default state', () => {

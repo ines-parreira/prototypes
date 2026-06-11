@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { SearchTermsTable } from 'domains/reporting/pages/help-center/components/SearchTermsTable/SearchTermsTable'

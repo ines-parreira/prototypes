@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ActionWarning from '../ActionWarning'
+import { ActionWarning } from '../ActionWarning'
 
 describe('<ActionWarning />', () => {
     it('should render a warning', () => {

@@ -35,11 +35,11 @@ import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
-import AiAgentFormChangesProvider from 'pages/aiAgent/providers/AiAgentFormChangesProvider'
+import { AiAgentFormChangesProvider } from 'pages/aiAgent/providers/AiAgentFormChangesProvider'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { FormValues } from 'pages/aiAgent/types'
 import * as util from 'pages/aiAgent/util'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
@@ -49,7 +49,7 @@ import { StoreConfigForm } from '../StoreConfigForm'
 
 jest.mock('pages/aiAgent/providers/AiAgentFormChangesProvider', () => ({
     __esModule: true,
-    default: jest.fn(({ children }) => children),
+    AiAgentFormChangesProvider: jest.fn(({ children }) => children),
 }))
 jest.mock('../hooks/useVerifyChannelsActivation')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -80,7 +80,7 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
 }))
 jest.mock('pages/common/forms/RichField/RichField', () => ({
     __esModule: true,
-    default: ({ placeholder, value, onBlur }: any) => (
+    RichField: ({ placeholder, value, onBlur }: any) => (
         <textarea
             placeholder={placeholder}
             defaultValue={value?.text || ''}
@@ -163,7 +163,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useSelfServiceChatChannels: jest.fn(),
 }))
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('hooks/useSearchParam', () => ({
@@ -205,7 +205,7 @@ mockedUsePublicResources.mockReturnValue({
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: () => mockDispatch,
+    useAppDispatch: () => mockDispatch,
 }))
 jest.mock('@repo/feature-flags')
 const useFlagMock = jest.mocked(useFlag)

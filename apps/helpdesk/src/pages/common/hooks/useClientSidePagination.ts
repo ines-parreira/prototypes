@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function useClientSidePagination<T>({
+export function useClientSidePagination<T>({
     items,
     itemsPerPage,
 }: {

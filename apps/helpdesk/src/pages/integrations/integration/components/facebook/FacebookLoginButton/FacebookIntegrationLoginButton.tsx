@@ -3,10 +3,10 @@ import React from 'react'
 
 import type { LegacyButtonIntent } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getFacebookRedirectUri } from 'state/integrations/selectors'
 
-import FacebookLoginButton from './FacebookLoginButton'
+import { FacebookLoginButton } from './FacebookLoginButton'
 
 type Props = {
     children?: ReactNode
@@ -40,4 +40,4 @@ const FacebookIntegrationLoginButton: FC<Props> = ({
     )
 }
 
-export default FacebookIntegrationLoginButton
+export { FacebookIntegrationLoginButton }

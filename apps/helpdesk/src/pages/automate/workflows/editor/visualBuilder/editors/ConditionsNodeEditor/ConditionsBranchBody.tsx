@@ -19,12 +19,12 @@ import type {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
 import { Condition } from 'pages/common/components/Condition/Condition'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import type WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
-import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
+import type { WorkflowVariableDropdown } from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
+import { WorkflowVariablePicker } from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 
 import { BooleanConditionType } from './conditions/BooleanConditionType'
 import { DateConditionType } from './conditions/DateConditionType'

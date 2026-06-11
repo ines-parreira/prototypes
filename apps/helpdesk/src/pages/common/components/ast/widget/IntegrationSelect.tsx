@@ -6,8 +6,8 @@ import _isNumber from 'lodash/isNumber'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import TextInput from 'pages/common/forms/input/TextInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { RenderLabel } from 'pages/common/utils/labels'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { fetchIntegrations } from 'state/integrations/actions'
@@ -78,4 +78,6 @@ const connector = connect(
         fetchIntegrations,
     },
 )
-export default connector(IntegrationSelectContainer)
+const DefaultExportIntegrationSelect = connector(IntegrationSelectContainer)
+
+export { DefaultExportIntegrationSelect }

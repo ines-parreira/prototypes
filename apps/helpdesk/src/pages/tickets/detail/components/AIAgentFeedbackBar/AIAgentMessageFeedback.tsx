@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useFeedbackTracking } from '@repo/ai-agent'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { ReportIssueOption } from 'models/aiAgentFeedback/constants'
 import type {
     DeleteMessageFeedback,
@@ -22,17 +22,17 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
-import InfoIconWithTooltip from '../../../common/components/InfoIconWithTooltip'
+import { InfoIconWithTooltip } from '../../../common/components/InfoIconWithTooltip'
 import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
 import { useAIAgentSendFeedback } from '../../hooks/useAIAgentSendFeedback'
-import FeedbackCreateResource from './FeedbackCreateResource'
-import FeedbackEvents from './FeedbackEvents'
-import FeedbackNote from './FeedbackNote'
-import FeedbackOrders from './FeedbackOrders'
-import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
-import FeedbackReportIssue from './FeedbackReportIssue'
+import { FeedbackCreateResource } from './FeedbackCreateResource'
+import { FeedbackEvents } from './FeedbackEvents'
+import { FeedbackOrders as FeedbackNote } from './FeedbackNote'
+import { FeedbackOrders } from './FeedbackOrders'
+import { FeedbackOtherResourcesSelect } from './FeedbackOtherResourcesSelect'
+import { ReportIssueSelect as FeedbackReportIssue } from './FeedbackReportIssue'
 import { FeedbackResourceSection } from './FeedbackResourceSection'
-import FeedbackStatusBadge from './FeedbackStatusBadge'
+import { FeedbackStatusBadge } from './FeedbackStatusBadge'
 import type { FeedbackStatus } from './types'
 import { ResourceSection } from './types'
 import { getActionUrl, getGuidanceUrl, getKnowledgeUrl } from './utils'
@@ -416,4 +416,4 @@ const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
     )
 }
 
-export default AIAgentMessageFeedback
+export { AIAgentMessageFeedback }

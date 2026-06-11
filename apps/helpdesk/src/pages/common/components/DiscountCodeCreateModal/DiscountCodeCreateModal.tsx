@@ -22,7 +22,7 @@ import {
     toast,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     DISCOUNT_CHOICES,
     DISCOUNT_TYPE,
@@ -30,15 +30,15 @@ import {
     DISCOUNT_USE_TYPE,
 } from 'models/discountCodes/constants'
 import type { DiscountCode } from 'models/discountCodes/types'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import Errors from 'pages/common/forms/Errors'
-import NumberInput from 'pages/common/forms/input/NumberInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { Errors } from 'pages/common/forms/Errors'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import {
     AppliesTypeEnum,
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
-import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
+import { CustomerSegmentSelector } from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
 import { getTicketState } from 'state/ticket/selectors'
 
 import css from './DiscountCodeCreateModal.less'
@@ -434,4 +434,6 @@ function DiscountCodeCreateModal({ onSubmit, onClose, integration }: Props) {
     )
 }
 
-export default memo(DiscountCodeCreateModal)
+const DefaultExportDiscountCodeCreateModal = memo(DiscountCodeCreateModal)
+
+export { DefaultExportDiscountCodeCreateModal }

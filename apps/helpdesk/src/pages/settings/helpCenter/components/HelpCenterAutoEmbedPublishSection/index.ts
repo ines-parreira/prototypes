@@ -1,1 +1,1 @@
-export { default } from './HelpCenterAutoEmbedPublishSection'
+export { HelpCenterAutoEmbedPublishSection } from './HelpCenterAutoEmbedPublishSection'

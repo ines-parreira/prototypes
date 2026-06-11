@@ -2,19 +2,19 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import cn from 'classnames'
 
-import useAppSelector from 'hooks/useAppSelector'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import {
     getCurrentUser,
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
 
-import UserMenu from './UserMenu'
+import { UserMenu } from './UserMenu'
 
 import css from './UserMenuWithToggle.less'
 
-export default function UserMenuWithToggle() {
+export function UserMenuWithToggle() {
     const currentUser = useAppSelector(getCurrentUser)
     const isAvailable = useAppSelector(getIsAvailable)
     const [isOpen, setIsOpen] = useState(false)

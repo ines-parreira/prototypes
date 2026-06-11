@@ -22,7 +22,7 @@ import {
 } from '@gorgias/axiom'
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
@@ -32,16 +32,16 @@ import {
     isHelpdesk,
     isStarterTier,
 } from 'models/billing/utils'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { TicketPurpose } from 'state/billing/types'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import AutoUpgradeToggle from '../AutoUpgradeToggle'
-import CancelProductModal from '../CancelProductModal/CancelProductModal'
-import CounterText from '../CounterText'
+import { AutoUpgradeToggle } from '../AutoUpgradeToggle'
+import { CancelProductModal } from '../CancelProductModal/CancelProductModal'
+import { CounterText } from '../CounterText'
 
 import css from './ProductPlanSelection.less'
 
@@ -621,4 +621,4 @@ const ProductPlanSelection = ({
     )
 }
 
-export default ProductPlanSelection
+export { ProductPlanSelection }

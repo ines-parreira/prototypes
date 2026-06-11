@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
 
-import DropdownButton from 'pages/common/components/button/DropdownButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownButton as DropdownButton } from 'pages/common/components/button/DropdownButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -117,4 +117,4 @@ const CreateKnowledgeSection = ({
     )
 }
 
-export default CreateKnowledgeSection
+export { CreateKnowledgeSection }

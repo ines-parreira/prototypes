@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { discountCodesOfferedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { AISalesAgentDiscountCodesOfferedQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentConversations'

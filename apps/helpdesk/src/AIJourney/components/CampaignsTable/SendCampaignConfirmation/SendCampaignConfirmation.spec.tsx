@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import SendCampaignConfirmation from './SendCampaignConfirmation'
+import { SendCampaignConfirmation } from './SendCampaignConfirmation'
 
 describe('SendCampaignConfirmation', () => {
     const defaultProps = {

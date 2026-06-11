@@ -1,4 +1,4 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { IntegrationType } from 'models/integration/constants'
 import { hasIntegrationOfTypes } from 'state/integrations/selectors'

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import { useParams } from 'react-router'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import type { EmailItem } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'

@@ -7,8 +7,9 @@ import colorTokens from '@gorgias/design-tokens/tokens/colors'
 
 import { useTheme } from 'core/theme'
 import css from 'domains/reporting/pages/common/components/charts/Chart.less'
-import DonutChart, {
+import {
     DONUT_TOOLTIP_TARGET,
+    DonutChart,
 } from 'domains/reporting/pages/common/components/charts/DonutChart/DonutChart'
 import { useCustomTooltip } from 'domains/reporting/pages/common/useCustomTooltip'
 
@@ -22,7 +23,10 @@ jest.mock('react-chartjs-2', () => ({
     },
 }))
 
-jest.mock('core/theme')
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 const useThemeMock = assumeMock(useTheme)
 
 jest.mock('domains/reporting/pages/common/useCustomTooltip')

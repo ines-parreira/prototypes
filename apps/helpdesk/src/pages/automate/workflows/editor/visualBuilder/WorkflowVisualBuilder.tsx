@@ -23,7 +23,7 @@ import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
 import { useSearchParam } from 'hooks/useSearchParam'
-import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
+import { FitViewIcon } from 'pages/automate/common/components/FitViewIcon'
 
 import { useTheme } from '../../../../../core/theme'
 import { withVisualBuilderContext } from '../../hooks/useVisualBuilder'
@@ -36,22 +36,22 @@ import type {
     VisualBuilderNode,
 } from '../../models/visualBuilderGraph.types'
 import { VisualBuilderBackground } from './components/VisualBuilderBackground'
-import CustomEdge from './CustomEdge'
+import { CustomEdge } from './CustomEdge'
 import { TestFlowEditor } from './editors/TestFlowEditor'
-import NodeEditorDrawer from './NodeEditorDrawer'
-import AutomatedMessageNode from './nodes/AutomatedMessageNode'
-import ChannelTriggerNode from './nodes/ChannelTriggerNode'
-import ConditionsNode from './nodes/ConditionsNode'
-import EndNode from './nodes/EndNode'
-import FileUploadNode from './nodes/FileUploadNode'
-import HttpRequestNode from './nodes/HttpRequestNode'
-import LiquidTemplateNode from './nodes/LiquidTemplateNode'
-import MultipleChoicesNode from './nodes/MultipleChoicesNode'
-import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
-import OrderSelectionNode from './nodes/OrderSelectionNode'
-import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
-import TextReplyNode from './nodes/TextReplyNode'
-import WorkflowsPublisher from './publisher/WorkflowsPublisher'
+import { NodeEditorDrawer } from './NodeEditorDrawer'
+import { AutomatedMessageNodeWrapper as AutomatedMessageNode } from './nodes/AutomatedMessageNode'
+import { ChannelTriggerNodeWrapper as ChannelTriggerNode } from './nodes/ChannelTriggerNode'
+import { ConditionsNodeWrapper as ConditionsNode } from './nodes/ConditionsNode'
+import { EndNodeWrapper as EndNode } from './nodes/EndNode'
+import { FileUploadNodeWrapper as FileUploadNode } from './nodes/FileUploadNode'
+import { HttpRequestNodeWrapper as HttpRequestNode } from './nodes/HttpRequestNode'
+import { LiquidTemplateNodeWrapper as LiquidTemplateNode } from './nodes/LiquidTemplateNode'
+import { MultipleChoicesNodeWrapper as MultipleChoicesNode } from './nodes/MultipleChoicesNode'
+import { OrderLineItemSelectionNodeWrapper as OrderLineItemSelectionNode } from './nodes/OrderLineItemSelectionNode'
+import { OrderSelectionNodeWrapper as OrderSelectionNode } from './nodes/OrderSelectionNode'
+import { ShopperAuthenticationNodeWrapper as ShopperAuthenticationNode } from './nodes/ShopperAuthenticationNode'
+import { TextReplyNodeWrapper as TextReplyNode } from './nodes/TextReplyNode'
+import { WorkflowsPublisher } from './publisher/WorkflowsPublisher'
 
 import css from './WorkflowVisualBuilder.less'
 
@@ -265,6 +265,8 @@ function withProviders<T extends object>(Component: React.FC<T>): React.FC<T> {
     )
 }
 
-export default withProviders(
+const DefaultExportWorkflowVisualBuilder = withProviders(
     withVisualBuilderContext(WorkflowVisualBuilderWrapped),
 )
+
+export { DefaultExportWorkflowVisualBuilder }

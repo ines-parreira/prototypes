@@ -21,8 +21,8 @@ jest.mock('@repo/forms', () => ({
 
 jest.mock('../utils/useDeleteNode')
 
-jest.mock('pages/common/forms/PreviewRadioFieldSet', () =>
-    jest.fn(({ onChange, ...props }) => (
+jest.mock('pages/common/forms/PreviewRadioFieldSet', () => ({
+    PreviewRadioFieldSet: jest.fn(({ onChange, ...props }) => (
         <div data-testid="preview-radio-fieldset">
             <button
                 data-testid="route-to-internal-number"
@@ -41,7 +41,7 @@ jest.mock('pages/common/forms/PreviewRadioFieldSet', () =>
             <div data-testid="fieldset-props">{JSON.stringify(props)}</div>
         </div>
     )),
-)
+}))
 
 const useFormContextMock = assumeMock(useFormContext)
 const useDeleteNodeMock = assumeMock(useDeleteNode)

@@ -3,10 +3,10 @@ import { useGridSize } from '@gorgias/toolkit-react'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { TicketFieldsActionMenu } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsActionMenu'
 import { TicketFieldsBlankState } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsBlankState'
@@ -15,7 +15,7 @@ import {
     TicketFieldsReportConfig,
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export function SupportPerformanceTicketInsights() {
     const getGridCellSize = useGridSize()

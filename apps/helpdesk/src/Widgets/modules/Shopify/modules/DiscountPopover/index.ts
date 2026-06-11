@@ -1,1 +1,1 @@
-export { default } from './components/DiscountPopover'
+export { DiscountPopover } from './components/DiscountPopover'

@@ -6,7 +6,7 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Bundle } from 'models/convert/bundle/types'
 import {
     BundleInstallationMethodResponse,
@@ -189,4 +189,4 @@ const ConvertBundle1ClickInstallCard = ({
     )
 }
 
-export default ConvertBundle1ClickInstallCard
+export { ConvertBundle1ClickInstallCard }

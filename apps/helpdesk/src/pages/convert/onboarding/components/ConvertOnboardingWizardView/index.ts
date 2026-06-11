@@ -1,1 +1,1 @@
-export { default } from './ConvertOnboardingWizardView'
+export { ConvertOnboardingWizardView } from './ConvertOnboardingWizardView'

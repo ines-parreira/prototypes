@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import Caption from '../Caption'
+import { Caption } from '../Caption'
 
 describe('<Caption />', () => {
     it('should render a caption', () => {

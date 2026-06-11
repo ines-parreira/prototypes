@@ -1,4 +1,4 @@
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { ChannelsCardExtra } from 'domains/reporting/pages/support-performance/channels/ChannelsCardExtra'
 import { ChannelsTable } from 'domains/reporting/pages/support-performance/channels/ChannelsTable'

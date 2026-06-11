@@ -1,6 +1,6 @@
 import { useTagsTimeSeries } from 'domains/reporting/hooks/ticket-insights/useTagsTimeSeries'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { formatLabeledTooltipTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import { LINES_COLORS } from 'domains/reporting/pages/constants'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'

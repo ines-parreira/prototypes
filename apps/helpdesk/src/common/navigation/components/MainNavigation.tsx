@@ -10,8 +10,8 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
 
@@ -20,7 +20,7 @@ import {
     MenuItemName,
     useMainNavigationItems,
 } from '../hooks/useMainNavigationItems'
-import NavbarLink from './NavbarLink'
+import { NavbarLink } from './NavbarLink'
 
 import css from './MainNavigation.less'
 
@@ -30,7 +30,7 @@ type Props = {
     activeContent: MenuItemName
 }
 
-export default function MainNavigation({ activeContent }: Props) {
+export function MainNavigation({ activeContent }: Props) {
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
 

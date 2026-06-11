@@ -14,7 +14,7 @@ import { useDownloadPerformanceOverviewAgentData } from 'domains/reporting/pages
 import { usePerformanceOverviewAgentMetrics } from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/usePerformanceOverviewAgentMetrics'
 import { humanizeAgent } from 'domains/reporting/pages/performance/utils/humanizeAgent'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     DownloadTableButton,
     useDownloadTableAction,

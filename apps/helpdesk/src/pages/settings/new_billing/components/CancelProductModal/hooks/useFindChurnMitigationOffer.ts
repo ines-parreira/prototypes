@@ -20,4 +20,4 @@ const useFindChurnMitigationOfferId = (
     )
 }
 
-export default useFindChurnMitigationOfferId
+export { useFindChurnMitigationOfferId }

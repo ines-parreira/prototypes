@@ -7,12 +7,12 @@ import {
     SMS_CANCELLATION_SCENARIO,
     VOICE_CANCELLATION_SCENARIO,
 } from '../../scenarios'
-import Feature from '../../UI/Feature'
-import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
+import { Feature } from '../../UI/Feature'
+import { ProductFeaturesFOMO } from '../ProductFeaturesFOMO'
 
-jest.mock('../../UI/Feature', () =>
-    jest.fn(() => <div data-testid="feature"></div>),
-)
+jest.mock('../../UI/Feature', () => ({
+    Feature: jest.fn(() => <div data-testid="feature"></div>),
+}))
 const MockFeature = assumeMock(Feature)
 
 describe('ProductFeaturesFOMO', () => {

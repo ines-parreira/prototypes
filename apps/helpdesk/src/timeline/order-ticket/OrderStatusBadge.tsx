@@ -26,4 +26,4 @@ const OrderStatusBadge = ({ status }: { status: FinancialStatus }) => {
     )
 }
 
-export default OrderStatusBadge
+export { OrderStatusBadge }

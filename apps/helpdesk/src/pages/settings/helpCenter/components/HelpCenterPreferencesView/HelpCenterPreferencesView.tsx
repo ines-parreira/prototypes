@@ -1,7 +1,7 @@
-import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../hooks/useCurrentHelpCenter'
 import { useHelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
-import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+import { HelpCenterPageWrapper } from '../HelpCenterPageWrapper'
 import { AvailableLanguagesTags } from './components/AvailableLanguagesTags'
 import { DefaultLanguageSelect } from './components/DefaultLanguageSelect'
 import { FooterActions } from './components/FooterActions/FooterActions'
@@ -39,5 +39,3 @@ export const HelpCenterPreferencesView: React.FC = () => {
         </HelpCenterPageWrapper>
     )
 }
-
-export default HelpCenterPreferencesView

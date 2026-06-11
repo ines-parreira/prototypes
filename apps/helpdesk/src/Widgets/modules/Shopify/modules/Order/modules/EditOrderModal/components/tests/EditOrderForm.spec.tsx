@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import EditOrderFormContainer from '../EditOrderForm'
+import { EditOrderForm as EditOrderFormContainer } from '../EditOrderForm'
 
 const minProps = {
     currencyCode: 'USD',

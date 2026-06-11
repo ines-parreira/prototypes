@@ -18,13 +18,13 @@ import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
-import useSyncWidgetEditSession from 'hooks/useSyncWidgetEditSession'
+import { useSyncWidgetEditSession } from 'hooks/useSyncWidgetEditSession'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
-import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import { useHasAIAgent } from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -39,7 +39,7 @@ import {
     getWidgetsState,
 } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
-import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
+import { DefaultExportEditOrderShippingAddressModal as ConnectedEditOrderShippingAddressModal } from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useCreateOrder } from './hooks/useCreateOrder'
@@ -438,4 +438,6 @@ const connector = connect((state: RootState) => ({
     isOpenedPanel: layoutSelectors.isOpenedPanel('infobar')(state),
 }))
 
-export default connector(TicketInfobarContainer)
+const DefaultExportTicketInfobarContainer = connector(TicketInfobarContainer)
+
+export { DefaultExportTicketInfobarContainer }

@@ -3,7 +3,7 @@ import React from 'react'
 
 import type { GroupOptions } from 'sortablejs'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     cancelDrag,
     drag,
@@ -11,7 +11,7 @@ import {
     stopWidgetEdition,
 } from 'state/widgets/actions'
 
-import ReactSortable, { isSortableEvent } from './ReactSortable'
+import { isSortableEvent, ReactSortable } from './ReactSortable'
 
 type Props = {
     children: ReactNode
@@ -104,4 +104,4 @@ function DragWrapper({
     )
 }
 
-export default DragWrapper
+export { DragWrapper }

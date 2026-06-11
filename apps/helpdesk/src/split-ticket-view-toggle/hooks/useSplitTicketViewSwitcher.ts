@@ -3,12 +3,12 @@ import { useEffect, useMemo, useRef } from 'react'
 import { matchPath, useHistory, useLocation } from 'react-router-dom'
 import { useIsMobileResolution, usePrevious } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
 import { getActiveView } from 'state/views/selectors'
 import { isStrictTicketPath } from 'utils'
 
-import useSplitTicketView from './useSplitTicketView'
+import { useSplitTicketView } from './useSplitTicketView'
 
 interface LocationState {
     skipRedirect?: boolean
@@ -18,7 +18,7 @@ const directTicketPathRegexp = /^\/app\/ticket\/\d+$/
 const excludedTicketSubPathRegexp =
     /^\/app\/ticket\/\d+\/(?:edit-widgets|print)$/
 
-export default function useSplitTicketViewSwitcher() {
+export function useSplitTicketViewSwitcher() {
     const history = useHistory()
     const {
         pathname: path,

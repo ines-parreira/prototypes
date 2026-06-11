@@ -7,4 +7,6 @@ type ThemeContextType = {
     theme: Theme
 }
 
-export default createContext<ThemeContextType | null>(null)
+const DefaultExportThemeContext = createContext<ThemeContextType | null>(null)
+
+export { DefaultExportThemeContext }

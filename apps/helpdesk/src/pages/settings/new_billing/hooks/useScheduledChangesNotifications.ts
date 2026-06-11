@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSubscription } from 'models/billing/queries'
 import type { Plan, ScheduledChange } from 'models/billing/types'
 import { getAvailablePlansMapByPlanId } from 'state/billing/selectors'
@@ -14,7 +14,7 @@ export type ScheduledBillingUpdate = {
     typeOfChange?: 'UPGRADE' | 'DOWNGRADE'
 }
 
-export default function useScheduledChangesNotifications() {
+export function useScheduledChangesNotifications() {
     const shouldUseUpdates = useFlag(FeatureFlagKey.ShowBillingRamps)
 
     const plansMap = useAppSelector(getAvailablePlansMapByPlanId)

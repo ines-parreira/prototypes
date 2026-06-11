@@ -1,5 +1,6 @@
-import useMetricTrend, {
+import {
     fetchMetricTrend,
+    useMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { satisfactionScoreQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/satisfactionScoreQueryFactory'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

@@ -57,7 +57,7 @@ function getChannelLanguageLabel(l: ChannelLanguage): string {
     return 'Unknown'
 }
 
-export default function useLanguagesMismatchWarnings(
+export function useLanguagesMismatchWarnings(
     channelType: SelfServiceChannelType,
     integrationId: number,
     channelLanguages: ChannelLanguage[],

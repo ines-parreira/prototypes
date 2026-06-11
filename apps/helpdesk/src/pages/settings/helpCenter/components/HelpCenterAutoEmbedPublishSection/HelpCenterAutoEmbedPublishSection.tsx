@@ -3,9 +3,9 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
-import HelpCenterAutoEmbedCard from '../HelpCenterAutoEmbedCard'
+import { HelpCenterAutoEmbedCard } from '../HelpCenterAutoEmbedCard'
 import type { HelpCenterAutoEmbedWarningBannerProps } from '../HelpCenterAutoEmbedWarningBanner'
-import HelpCenterAutoEmbedWarningBanner from '../HelpCenterAutoEmbedWarningBanner'
+import { HelpCenterAutoEmbedWarningBanner } from '../HelpCenterAutoEmbedWarningBanner'
 import { HelpCenterAutoEmbedReadinessStatus } from './types'
 
 import css from './HelpCenterAutoEmbedPublishSection.less'
@@ -67,4 +67,4 @@ const HelpCenterAutoEmbedPublishSection = (
     )
 }
 
-export default HelpCenterAutoEmbedPublishSection
+export { HelpCenterAutoEmbedPublishSection }

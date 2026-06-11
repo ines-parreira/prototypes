@@ -17,10 +17,10 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import AiAgentStatsFilters from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
-import AutomateAiAgentStatsReport from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
+import { AiAgentStatsFilters } from 'domains/reporting/pages/automate/ai-agent/AiAgentStatsFilters'
+import { AutomateAiAgentStatsReport } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
 import { getTimeSeriesFormattedData } from 'domains/reporting/pages/automate/overview/utils'
-import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
+import { DefaultExportLineChart as LineChart } from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { TicketDistributionChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable'
 import type { TwoDimensionalDataItem } from 'domains/reporting/pages/types'
@@ -29,12 +29,9 @@ import { agents } from 'fixtures/agents'
 import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-jest.mock(
-    'hooks/useAppSelector',
-    () =>
-        (fn: () => any): any =>
-            fn(),
-)
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => any): any => fn(),
+}))
 
 jest.mock('domains/reporting/state/stats/selectors')
 jest.mock('state/currentUser/selectors')
@@ -75,21 +72,18 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-jest.mock(
-    'domains/reporting/pages/common/layout/StatsPage',
-    () =>
-        ({ children }: PropsWithChildren<any>) => (
-            <>
-                <div>stats-page</div>
-                <>{children}</>
-            </>
-        ),
-)
+jest.mock('domains/reporting/pages/common/layout/StatsPage', () => ({
+    StatsPage: ({ children }: PropsWithChildren<any>) => (
+        <>
+            <div>stats-page</div>
+            <>{children}</>
+        </>
+    ),
+}))
 
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => () => <div>filters-panel</div>,
-)
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: () => <div>filters-panel</div>,
+}))
 
 jest.mock(
     'domains/reporting/pages/common/components/Table/EditTableColumns',

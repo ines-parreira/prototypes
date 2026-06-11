@@ -19,7 +19,7 @@ import {
     EngagementSettingsCardTitle,
 } from './card/EngagementSettingsCard'
 import { EmbeddedSpqSettingsDrawer } from './EmbeddedSpqSettingsDrawer'
-import useSpqInstallationStatus from './hooks/useSpqInstallationStatus'
+import { useSpqInstallationStatus } from './hooks/useSpqInstallationStatus'
 
 import css from './EmbeddedSpqsSettings.less'
 

@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
-import withStoreIntegrations from 'pages/automate/common/utils/withStoreIntegrations'
+import { withStoreIntegration as withStoreIntegrations } from 'pages/automate/common/utils/withStoreIntegrations'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

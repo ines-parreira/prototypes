@@ -26,12 +26,13 @@ import {
 } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import Widget from 'Widgets/modules/Widget'
+import { Widget } from 'Widgets/modules/Widget'
 
-import InfobarWidgets, {
+import {
     findHTTPIntegrationRelatedWidget,
+    InfobarWidgets,
 } from '../InfobarWidgets'
-import Placeholder from '../widgets/Placeholder'
+import { Placeholder } from '../widgets/Placeholder'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

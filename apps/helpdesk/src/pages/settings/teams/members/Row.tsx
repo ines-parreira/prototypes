@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import type { Member } from 'models/team/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import IconButton from 'pages/common/components/button/IconButton'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { RoleLabel } from 'pages/common/utils/labels'
 
 import css from './Row.less'
@@ -26,7 +26,7 @@ type State = {
     isDeleting: boolean
 }
 
-export default class Row extends Component<Props, State> {
+export class Row extends Component<Props, State> {
     state = {
         isDeleting: false,
     }

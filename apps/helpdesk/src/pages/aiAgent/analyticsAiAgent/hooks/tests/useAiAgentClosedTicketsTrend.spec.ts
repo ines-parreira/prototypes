@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { aiAgentAllAgentsClosedTicketsQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

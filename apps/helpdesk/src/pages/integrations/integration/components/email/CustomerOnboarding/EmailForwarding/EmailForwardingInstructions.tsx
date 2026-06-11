@@ -2,7 +2,7 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import IconLink from 'core/ui/components/IconLink'
+import { IconLink } from 'core/ui/components/IconLink'
 import css from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationForwardingSetupForm.less'
 
 const EmailForwardingInstructions = ({ email }: { email: string }) => {
@@ -32,4 +32,4 @@ const EmailForwardingInstructions = ({ email }: { email: string }) => {
     )
 }
 
-export default EmailForwardingInstructions
+export { EmailForwardingInstructions }

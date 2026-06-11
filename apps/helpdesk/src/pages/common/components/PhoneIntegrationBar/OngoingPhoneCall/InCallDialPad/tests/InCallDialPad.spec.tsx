@@ -4,7 +4,7 @@ import type { Call } from '@twilio/voice-sdk'
 
 import { mockIncomingCall } from 'tests/twilioMocks'
 
-import InCallDialPad from '../InCallDialPad'
+import { InCallDialPad } from '../InCallDialPad'
 
 const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#']
 
@@ -24,30 +24,28 @@ jest.mock('popper.js', () => {
     }
 })
 
-jest.mock(
-    'pages/integrations/integration/components/phone/DialPad',
-    () =>
-        ({
-            onDigitClick,
-            onChange,
-            value,
-        }: {
-            onDigitClick: (digit: string) => void
-            onChange: (value: string) => void
-            value: string
-        }) => {
-            return digits.map((digit) => (
-                <div
-                    key={digit}
-                    data-testid={`digit-${digit}`}
-                    onClick={() => {
-                        onDigitClick(digit)
-                        onChange(`${value}${digit}`)
-                    }}
-                />
-            ))
-        },
-)
+jest.mock('pages/integrations/integration/components/phone/DialPad', () => ({
+    DialPad: ({
+        onDigitClick,
+        onChange,
+        value,
+    }: {
+        onDigitClick: (digit: string) => void
+        onChange: (value: string) => void
+        value: string
+    }) => {
+        return digits.map((digit) => (
+            <div
+                key={digit}
+                data-testid={`digit-${digit}`}
+                onClick={() => {
+                    onDigitClick(digit)
+                    onChange(`${value}${digit}`)
+                }}
+            />
+        ))
+    },
+}))
 
 describe('<InCallDialPad />', () => {
     it('should render as closed', async () => {

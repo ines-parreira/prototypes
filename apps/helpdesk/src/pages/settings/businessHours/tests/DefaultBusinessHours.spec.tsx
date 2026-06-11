@@ -17,15 +17,15 @@ import type {
 import { useAppNode } from 'appNode'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import DefaultBusinessHours from '../DefaultBusinessHours'
+import { DefaultBusinessHours } from '../DefaultBusinessHours'
 
 jest.mock('appNode')
 const mockUseAppNode = assumeMock(useAppNode)
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
-jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => () => (
-    <div>Form Unsaved Changes Prompt</div>
-))
+jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => ({
+    FormUnsavedChangesPrompt: () => <div>Form Unsaved Changes Prompt</div>,
+}))
 const mockBusinessHoursData: AccountSettingBusinessHoursTyped = {
     id: 1,
     type: 'business-hours',

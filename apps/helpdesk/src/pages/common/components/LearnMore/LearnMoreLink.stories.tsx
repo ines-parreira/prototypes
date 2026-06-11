@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import LearnMoreLink from './LearnMoreLink'
+import { LearnMoreLink } from './LearnMoreLink'
 
 const meta: Meta = {
     title: 'Common/Components/LearnMoreLink',

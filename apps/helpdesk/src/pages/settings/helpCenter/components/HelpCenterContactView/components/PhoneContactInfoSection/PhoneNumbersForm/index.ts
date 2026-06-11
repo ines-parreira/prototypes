@@ -1,1 +1,1 @@
-export { default } from './PhoneNumbersForm'
+export { PhoneNumbersForm } from './PhoneNumbersForm'

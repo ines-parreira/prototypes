@@ -8,7 +8,7 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/components/Card'
 import type { Product } from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/types'
 
-import TopProductItem, { TopProductItemSkeleton } from './TopProductItem'
+import { TopProductItem, TopProductItemSkeleton } from './TopProductItem'
 
 import css from './TopProductsCard.less'
 
@@ -41,4 +41,4 @@ const TopProductsCard = ({ className, title, isLoading, products }: Props) => {
     )
 }
 
-export default TopProductsCard
+export { TopProductsCard }

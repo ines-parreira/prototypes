@@ -14,10 +14,10 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
-import CopyButton from 'components/CopyButton/CopyButton'
+import { CopyButton } from 'components/CopyButton/CopyButton'
 import { Badge } from 'gorgias-design-system/Badge/Badge'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 

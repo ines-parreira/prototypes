@@ -34,4 +34,4 @@ const MigrationInProgressActions: React.FC<Props> = ({
     )
 }
 
-export default MigrationInProgressActions
+export { MigrationInProgressActions }

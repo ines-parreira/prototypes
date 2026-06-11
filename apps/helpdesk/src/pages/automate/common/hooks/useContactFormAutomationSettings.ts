@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 
-import useContactFormsAutomationSettings from './useContactFormsAutomationSettings'
+import { useContactFormsAutomationSettings } from './useContactFormsAutomationSettings'
 
 const useContactFormAutomationSettings = (contactFormId: number) => {
     const contactFormIds = useMemo(() => [contactFormId], [contactFormId])
@@ -44,4 +44,4 @@ const useContactFormAutomationSettings = (contactFormId: number) => {
     }
 }
 
-export default useContactFormAutomationSettings
+export { useContactFormAutomationSettings }

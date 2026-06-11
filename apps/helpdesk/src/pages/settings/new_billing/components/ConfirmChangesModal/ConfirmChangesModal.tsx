@@ -20,7 +20,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
 import { ProductType } from 'models/billing/types'
 import type { Cadence } from 'models/billing/types'
 

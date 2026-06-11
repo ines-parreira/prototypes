@@ -9,46 +9,44 @@ import { useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import SLAListController from '../SLAListController'
-import useGetSLAPolicies from '../useGetSLAPolicies'
+import { SLAListController } from '../SLAListController'
+import { useGetSLAPolicies } from '../useGetSLAPolicies'
 
 jest.mock('../useGetSLAPolicies')
 const mockUseGetSLAPolicies = useGetSLAPolicies as jest.Mock
 
-jest.mock('pages/settings/SLAs/features/Loader/Loader', () => () => (
-    <div>Loader</div>
-))
-jest.mock('pages/settings/SLAs/features/LandingPage/LandingPage', () => () => (
-    <div>LandingPage</div>
-))
-jest.mock(
-    '../../views/SLAListView',
-    () =>
-        ({
-            onTogglePolicy,
-            onPolicyPriorityChange,
-        }: {
-            onTogglePolicy: (id: string, active: boolean) => void
-            onPolicyPriorityChange: (id: string, priority: number) => void
-        }) => (
-            <div>
-                <button
-                    type="button"
-                    onClick={() => onTogglePolicy('policy-1', true)}
-                >
-                    toggle-policy
-                </button>
-                <button
-                    type="button"
-                    onClick={() => onPolicyPriorityChange('policy-1', 5)}
-                >
-                    change-priority
-                </button>
-            </div>
-        ),
-)
+jest.mock('pages/settings/SLAs/features/Loader/Loader', () => ({
+    Loader: () => <div>Loader</div>,
+}))
+jest.mock('pages/settings/SLAs/features/LandingPage/LandingPage', () => ({
+    LandingPage: () => <div>LandingPage</div>,
+}))
+jest.mock('../../views/SLAListView', () => ({
+    SLAListView: ({
+        onTogglePolicy,
+        onPolicyPriorityChange,
+    }: {
+        onTogglePolicy: (id: string, active: boolean) => void
+        onPolicyPriorityChange: (id: string, priority: number) => void
+    }) => (
+        <div>
+            <button
+                type="button"
+                onClick={() => onTogglePolicy('policy-1', true)}
+            >
+                toggle-policy
+            </button>
+            <button
+                type="button"
+                onClick={() => onPolicyPriorityChange('policy-1', 5)}
+            >
+                change-priority
+            </button>
+        </div>
+    ),
+}))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 
 jest.mock('@gorgias/helpdesk-queries')
 const mockUseUpdateSlaPolicy = useUpdateSlaPolicy as jest.Mock

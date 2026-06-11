@@ -1,6 +1,6 @@
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
 import {
     getCurrentHelpdeskMaxIntegrations,
     getCurrentHelpdeskPlanName,
@@ -8,7 +8,7 @@ import {
 import { getCurrentSubscription } from 'state/currentAccount/selectors'
 import { getActiveIntegrations } from 'state/integrations/selectors'
 
-export default function LimitWarning({ className }: { className?: string }) {
+export function LimitWarning({ className }: { className?: string }) {
     const helpdeskName = useAppSelector(getCurrentHelpdeskPlanName)
     const activeIntegrationsNumber = useAppSelector(getActiveIntegrations).size
     const maxIntegrations = useAppSelector(getCurrentHelpdeskMaxIntegrations)

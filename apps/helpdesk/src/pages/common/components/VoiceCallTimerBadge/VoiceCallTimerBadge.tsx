@@ -12,7 +12,7 @@ type Props = {
     datetime: string
 }
 
-export default function VoiceCallTimerBadge({ datetime }: Props) {
+export function VoiceCallTimerBadge({ datetime }: Props) {
     const [displayedDuration, setDisplayedDuration] = useState(
         getFormattedDurationOngoingCall(datetime),
     )

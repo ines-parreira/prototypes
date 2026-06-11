@@ -28,10 +28,10 @@ import type { HelpCenter } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import type { Integration } from 'models/integration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
-import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useHelpCentersAutomationSettings as useHelpCenterAutomationSettings } from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
-import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { WizardStep } from 'pages/common/components/wizard/WizardStep'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
@@ -46,7 +46,7 @@ import type { StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
-import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
+import { HelpCenterCreationWizardStepAutomate } from '../HelpCenterCreationWizardStepAutomate'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),

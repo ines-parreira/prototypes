@@ -4,7 +4,7 @@ import { useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import Detail from '..'
+import { Detail } from '..'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: { NewUsersListPage: 'new-users-list-page' },

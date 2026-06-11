@@ -5,9 +5,9 @@ import { fromJS } from 'immutable'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { view } from 'fixtures/views'
-import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import Left from 'pages/common/components/ViewTable/Filters/Left'
-import QAScoreSelect from 'pages/common/components/ViewTable/Filters/QAScoreSelect'
+import { CustomFieldSelect } from 'pages/common/components/ast/widget/CustomFieldSelect'
+import { Left } from 'pages/common/components/ViewTable/Filters/Left'
+import { QAScoreSelect } from 'pages/common/components/ViewTable/Filters/QAScoreSelect'
 
 import { QaScoreDimensions } from '../utils/qaScoreDimensions'
 

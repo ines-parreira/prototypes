@@ -16,7 +16,7 @@ import {
     INSTAGRAM_PRIVATE_REPLY_ACTION,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
 } from '../constants'
-import PrivateReplyEvent from '../PrivateReplyEvent'
+import { PrivateReplyEvent } from '../PrivateReplyEvent'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

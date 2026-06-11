@@ -12,14 +12,14 @@ import { IntegrationType } from 'models/integration/constants'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ArticleLandingPage from '../ArticleLandingPage'
+import { ArticleLandingPage } from '../ArticleLandingPage'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(

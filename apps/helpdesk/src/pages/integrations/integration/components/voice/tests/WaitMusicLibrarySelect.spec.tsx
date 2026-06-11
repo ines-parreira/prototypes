@@ -4,11 +4,14 @@ import { fireEvent } from '@testing-library/react'
 import type { VoiceQueueWaitMusicLibrary } from '@gorgias/helpdesk-queries'
 
 import { STATIC_WAIT_MUSIC_LIBRARY } from '../waitMusicLibraryConstants'
-import WaitMusicLibrarySelect from '../WaitMusicLibrarySelect'
+import { WaitMusicLibrarySelect } from '../WaitMusicLibrarySelect'
 
-jest.mock(
-    '../CircularAudioPlayer',
-    () => (props: { src: string; isActive: boolean; onPlay: () => null }) => {
+jest.mock('../CircularAudioPlayer', () => ({
+    CircularAudioPlayer: (props: {
+        src: string
+        isActive: boolean
+        onPlay: () => null
+    }) => {
         return (
             <div data-testid="circular-audio-player">
                 <span>{props.src}</span>
@@ -17,7 +20,7 @@ jest.mock(
             </div>
         )
     },
-)
+}))
 
 describe('<WaitMusicLibrarySelect />', () => {
     const onChangeMock = jest.fn()

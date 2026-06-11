@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { HttpIntegration } from 'models/integration/types'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import {
     activateIntegration,
     deactivateIntegration,
@@ -18,7 +18,7 @@ import {
     getIntegrationsLoading,
 } from 'state/integrations/selectors'
 
-import NoIntegration from '../../NoIntegration'
+import { NoIntegration } from '../../NoIntegration'
 import { BASE_PATH } from '../constants'
 
 import css from './List.less'
@@ -93,4 +93,4 @@ function List() {
     )
 }
 
-export default List
+export { List }

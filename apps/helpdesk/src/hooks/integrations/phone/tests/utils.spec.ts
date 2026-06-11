@@ -37,7 +37,7 @@ import {
 } from 'hooks/integrations/phone/utils'
 import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
-import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
+import { slice } from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 
 jest.mock('common/notifications')
 jest.mock('@repo/logging')

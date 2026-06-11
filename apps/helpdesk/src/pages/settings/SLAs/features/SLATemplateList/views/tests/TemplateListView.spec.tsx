@@ -2,11 +2,13 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import TemplateListView from '../TemplateListView'
+import { TemplateListView } from '../TemplateListView'
 
 const mockTemplates = 'MockTemplates'
 
-jest.mock('../Templates', () => jest.fn(() => <div>{mockTemplates}</div>))
+jest.mock('../Templates', () => ({
+    Templates: jest.fn(() => <div>{mockTemplates}</div>),
+}))
 
 describe('<TemplateListView />', () => {
     it('should display the navigation links in header', () => {

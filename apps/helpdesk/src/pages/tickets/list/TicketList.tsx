@@ -14,14 +14,14 @@ import { useTitle } from '@gorgias/toolkit-react'
 
 import type { Ticket } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EntityType } from 'models/view/types'
-import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
-import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import { CreateTicketButton } from 'pages/common/components/CreateTicket/CreateTicketButton'
+import { SearchRankScenarioProvider } from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
+import { DefaultExportViewTable as ViewTable } from 'pages/common/components/ViewTable/ViewTable'
 import { isCreationUrl, isSearchUrl } from 'pages/common/utils/url'
-import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import { MacroContainer } from 'pages/tickets/common/macros/MacroContainer'
 import { TicketListActions } from 'pages/tickets/list/components/TicketListActions'
 import css from 'pages/tickets/list/TicketList.less'
 import { fetchTags } from 'state/tags/actions'
@@ -199,4 +199,4 @@ const TicketList = () => {
     )
 }
 
-export default TicketList
+export { TicketList }

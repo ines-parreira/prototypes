@@ -10,7 +10,7 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
 import type { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChartCard } from 'domains/reporting/pages/support-performance/components/OverviewChartCard'
 import { SupportPerformanceTip } from 'domains/reporting/pages/support-performance/components/SupportPerformanceTip'
@@ -24,7 +24,7 @@ import {
     PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import SupportPerformanceOverviewReport from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReport'
+import { SupportPerformanceOverviewReport } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReport'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -95,14 +95,15 @@ const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: (
+        props: ComponentProps<typeof FiltersPanelWrapper>,
+    ) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
     },
-)
+}))
 
 jest.mock(
     'domains/reporting/pages/support-performance/overview/charts/ZeroTouchTicketsTrendCard',

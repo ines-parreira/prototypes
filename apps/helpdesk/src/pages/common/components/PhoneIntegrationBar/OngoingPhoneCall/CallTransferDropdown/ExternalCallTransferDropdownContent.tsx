@@ -1,7 +1,7 @@
 import type { UserSearchResult } from 'models/search/types'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import PhoneDeviceDialerInput from 'pages/integrations/integration/components/phone/PhoneDeviceDialerInput'
-import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { PhoneDeviceDialerInput } from 'pages/integrations/integration/components/phone/PhoneDeviceDialerInput'
+import { usePhoneNumbers } from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 
 import css from './CallTransferDropdown.less'
 
@@ -44,4 +44,4 @@ const ExternalCallTransferDropdownContent = ({
     )
 }
 
-export default ExternalCallTransferDropdownContent
+export { ExternalCallTransferDropdownContent }

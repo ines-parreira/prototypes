@@ -12,11 +12,11 @@ import type {
 } from 'domains/reporting/hooks/quality-management/satisfaction/useCommentHighlights'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import css from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.less'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import IconButton from 'pages/common/components/button/IconButton'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { Separator } from 'pages/common/components/Separator/Separator'
-import StarRating from 'pages/common/components/StarRating'
-import Slider from 'utils/wrappers/Slider'
+import { StarRating } from 'pages/common/components/StarRating'
+import { Slider } from 'utils/wrappers/Slider'
 
 const VIEW_TICKET = 'View Ticket'
 const MAX_COMMENT_LENGTH = 350
@@ -34,7 +34,7 @@ const NO_DATA_ITEM = {
 
 export const UNASSIGNED_TICKET_LABEL = 'Unassigned ticket'
 
-export default function CommentHighlightsCarousel({
+export function CommentHighlightsCarousel({
     isFetching,
     data,
 }: FormattedCommentHighlightQueryData) {

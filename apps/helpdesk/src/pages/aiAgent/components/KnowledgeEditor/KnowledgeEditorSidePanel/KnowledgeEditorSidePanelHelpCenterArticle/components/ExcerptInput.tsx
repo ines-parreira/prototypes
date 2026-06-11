@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import TextArea from 'pages/common/forms/TextArea'
+import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import { HELP_CENTER_TITLE_MAX_LENGTH } from 'pages/settings/helpCenter/constants'
 
 import css from '../KnowledgeEditorSidePanelSectionHelpCenterArticleSettings.less'

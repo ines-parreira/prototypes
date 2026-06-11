@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import FormSectionCard from '../FormSectionCard'
+import { FormSectionCard } from '../FormSectionCard'
 
 describe('FormSectionCard', () => {
     it('renders children', () => {

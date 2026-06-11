@@ -58,4 +58,4 @@ const dndUploadPlugin = (
     }
 }
 
-export default dndUploadPlugin
+export { dndUploadPlugin }

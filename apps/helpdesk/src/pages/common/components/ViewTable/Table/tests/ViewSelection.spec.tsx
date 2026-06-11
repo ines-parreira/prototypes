@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { view } from 'fixtures/views'
 
-import ViewSelection from '../ViewSelection'
+import { ViewSelection } from '../ViewSelection'
 
 const mockStore = configureMockStore()
 const state = {

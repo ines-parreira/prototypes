@@ -13,11 +13,11 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
 import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
-import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
+import { TicketBodyElement } from 'pages/tickets/detail/components/TicketBodyElement'
 import * as ticketSelectors from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 
-import MessageQuoteContext from './MessageQuoteContext'
+import { MessageQuoteContext } from './MessageQuoteContext'
 
 import css from './TicketBody.less'
 
@@ -166,4 +166,8 @@ const connector = connect((state: RootState) => ({
     groupedElements: ticketSelectors.getTicketBodyElements(state),
 }))
 
-export default connector(TicketBodyNonVirtualized)
+const DefaultExportTicketBodyNonVirtualized = connector(
+    TicketBodyNonVirtualized,
+)
+
+export { DefaultExportTicketBodyNonVirtualized }

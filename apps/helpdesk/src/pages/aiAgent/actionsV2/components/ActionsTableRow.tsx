@@ -3,17 +3,17 @@ import type { KeyboardEvent } from 'react'
 import { useHistory } from 'react-router-dom'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 import { ACTION_LIBRARY_APP_COLUMN_WIDTH } from '../constants'
 import type { ServiceConnectionStatuses } from '../hooks/useServiceConnectionStatuses'
-import AutonomousCell from './cells/AutonomousCell'
-import NameCell from './cells/NameCell'
-import ProviderCell from './cells/ProviderCell'
-import QuickActionsCell from './cells/QuickActionsCell'
-import StatusCell from './cells/StatusCell'
-import UsedInCell from './cells/UsedInCell'
+import { AutonomousCell } from './cells/AutonomousCell'
+import { NameCell } from './cells/NameCell'
+import { ProviderCell } from './cells/ProviderCell'
+import { QuickActionsCell } from './cells/QuickActionsCell'
+import { StatusCell } from './cells/StatusCell'
+import { UsedInCell } from './cells/UsedInCell'
 
 import css from './ActionsTableRow.less'
 
@@ -88,4 +88,4 @@ const ActionsTableRow = ({
     )
 }
 
-export default ActionsTableRow
+export { ActionsTableRow }

@@ -1,6 +1,6 @@
 import type { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 
-import WhatsAppMessageTemplateLine from './WhatsAppMessageTemplateLine'
+import { WhatsAppMessageTemplateLine } from './WhatsAppMessageTemplateLine'
 
 import css from './WhatsAppMessageTemplateMessage.less'
 
@@ -11,7 +11,7 @@ type Props = {
     onChange?: (value: string[]) => void
 }
 
-export default function WhatsAppMessageTemplateBody({
+export function WhatsAppMessageTemplateBody({
     template,
     isPreview,
     value = [],

@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { TicketChannel } from 'business/types/ticket'
 import type { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
-import ChannelListCell from '../ChannelListCell'
+import { ChannelListCell } from '../ChannelListCell'
 
 const mockUISLAPolicy = {
     id: '123',

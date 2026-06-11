@@ -8,7 +8,7 @@ import { Popover } from 'reactstrap'
 import { Box, Button, Icon, LegacyButton } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
+import { EmojiPicker } from 'pages/common/components/EmojiPicker/EmojiPicker'
 
 import css from './EmojiSelect.less'
 
@@ -133,4 +133,4 @@ const EmojiSelect = ({
     )
 }
 
-export default EmojiSelect
+export { EmojiSelect }

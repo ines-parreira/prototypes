@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { linkToShopifyIntegration } from 'pages/settings/contactForm/utils/navigation'
 
 import { HelpCenterAutoEmbedReadinessStatus } from '../HelpCenterAutoEmbedPublishSection/types'
@@ -49,4 +49,4 @@ const HelpCenterAutoEmbedWarningBanner = (
     return null
 }
 
-export default HelpCenterAutoEmbedWarningBanner
+export { HelpCenterAutoEmbedWarningBanner }

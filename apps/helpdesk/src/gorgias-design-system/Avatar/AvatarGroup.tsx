@@ -39,4 +39,4 @@ const AvatarGroup: FC<HTMLAttributes<HTMLDivElement>> = ({
     return <StyledAvatarGroup {...props}>{children}</StyledAvatarGroup>
 }
 
-export default AvatarGroup
+export { AvatarGroup }

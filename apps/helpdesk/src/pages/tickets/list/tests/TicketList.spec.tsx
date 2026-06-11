@@ -5,13 +5,13 @@ import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { view as fixtureView } from 'fixtures/views'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { EntityType } from 'models/view/types'
-import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
+import { CreateTicketButton } from 'pages/common/components/CreateTicket/CreateTicketButton'
 import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
-import type MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import type { MacroContainer } from 'pages/tickets/common/macros/MacroContainer'
 import * as TicketListActionsModule from 'pages/tickets/list/components/TicketListActions'
-import TicketList from 'pages/tickets/list/TicketList'
+import { TicketList } from 'pages/tickets/list/TicketList'
 import { fetchTags } from 'state/tags/actions'
 import { updateSelectedItemsIds } from 'state/views/actions'
 
@@ -41,19 +41,20 @@ const updateSelectedItemsIdsMock = assumeMock(updateSelectedItemsIds)
 
 jest.mock(
     'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
-    () =>
-        ({ children }: { children?: ReactNode }) => (
-            <div data-testid="search-rank-scenario-provider">{children}</div>
-        ),
+    () => ({
+        SearchRankScenarioProvider: ({
+            children,
+        }: {
+            children?: ReactNode
+        }) => <div data-testid="search-rank-scenario-provider">{children}</div>,
+    }),
 )
 const mockItemsIds = fromJS([111])
-jest.mock(
-    'pages/tickets/common/macros/MacroContainer',
-    () =>
-        ({ onComplete }: ComponentProps<typeof MacroContainer>) => (
-            <div onClick={() => onComplete?.(mockItemsIds)}>MacroContainer</div>
-        ),
-)
+jest.mock('pages/tickets/common/macros/MacroContainer', () => ({
+    MacroContainer: ({ onComplete }: ComponentProps<typeof MacroContainer>) => (
+        <div onClick={() => onComplete?.(mockItemsIds)}>MacroContainer</div>
+    ),
+}))
 
 const mockHistoryPush = jest.fn()
 
@@ -124,7 +125,7 @@ MockCreateTicketButton.mockImplementation(() => <div>CreateTicketButton</div>)
 
 describe('<TicketList />', () => {
     beforeEach(() => {
-        jest.spyOn(ViewTable, 'default').mockImplementation(
+        jest.spyOn(ViewTable, 'DefaultExportViewTable').mockImplementation(
             ({
                 items,
                 isUpdate,
@@ -214,7 +215,7 @@ describe('<TicketList />', () => {
 
     it('should render ViewTable with tickets', () => {
         const spy = jest
-            .spyOn(ViewTable, 'default')
+            .spyOn(ViewTable, 'DefaultExportViewTable')
             .mockImplementation(() => <div />)
 
         render(<TicketList />, {
@@ -240,7 +241,7 @@ describe('<TicketList />', () => {
 
     it('should render Search ViewTable with tickets_with_highlights', () => {
         const spy = jest
-            .spyOn(ViewTable, 'default')
+            .spyOn(ViewTable, 'DefaultExportViewTable')
             .mockImplementation(() => <div />)
 
         render(<TicketList />, {
@@ -324,7 +325,7 @@ describe('<TicketList />', () => {
             mockShouldShowTranslatedContent.mockReturnValue(false)
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -358,7 +359,7 @@ describe('<TicketList />', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -395,7 +396,7 @@ describe('<TicketList />', () => {
             }
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -429,7 +430,7 @@ describe('<TicketList />', () => {
             mockShouldShowTranslatedContent.mockReturnValue(true)
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -467,7 +468,7 @@ describe('<TicketList />', () => {
             )
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -518,7 +519,9 @@ describe('<TicketList />', () => {
         it('should call shouldShowTranslatedContent with correct language for each ticket', () => {
             mockShouldShowTranslatedContent.mockReturnValue(false)
 
-            jest.spyOn(ViewTable, 'default').mockImplementation(() => <div />)
+            jest.spyOn(ViewTable, 'DefaultExportViewTable').mockImplementation(
+                () => <div />,
+            )
 
             render(<TicketList />, {
                 storeState: {
@@ -564,7 +567,7 @@ describe('<TicketList />', () => {
             }
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -601,7 +604,7 @@ describe('<TicketList />', () => {
             }
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -642,7 +645,7 @@ describe('<TicketList />', () => {
             }
 
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             render(<TicketList />, {
@@ -692,7 +695,7 @@ describe('<TicketList />', () => {
         it('should pass selectedItemsIds to TicketListActions', () => {
             const selectedIds = fromJS([1, 2, 3])
 
-            jest.spyOn(ViewTable, 'default').mockImplementation(
+            jest.spyOn(ViewTable, 'DefaultExportViewTable').mockImplementation(
                 ({
                     ActionsComponent,
                 }: ComponentProps<typeof ViewTable.ViewTableContainer>) => {
@@ -715,7 +718,7 @@ describe('<TicketList />', () => {
 
         it('should provide the same ActionsComponent reference when selectedItemsIds does not change', () => {
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             const { rerender } = renderTicketList()
@@ -731,7 +734,7 @@ describe('<TicketList />', () => {
 
         it('should provide a new ActionsComponent reference when selectedItemsIds changes', () => {
             const spy = jest
-                .spyOn(ViewTable, 'default')
+                .spyOn(ViewTable, 'DefaultExportViewTable')
                 .mockImplementation(() => <div />)
 
             let storeState = createStoreState(fromJS([1]))

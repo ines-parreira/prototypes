@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 import type { VoiceQueueIntegration } from '@gorgias/helpdesk-queries'
 
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
-import usePhoneNumbers from '../phone/usePhoneNumbers'
+import { usePhoneNumbers } from '../phone/usePhoneNumbers'
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 
 import css from './VoiceQueueSettingsLinkedIntegrations.less'
@@ -17,7 +17,7 @@ type VoiceQueueSettingsLinkedIntegrationsProps = {
     integrations: VoiceQueueIntegration[]
 }
 
-export default function VoiceQueueSettingsLinkedIntegrations({
+export function VoiceQueueSettingsLinkedIntegrations({
     integrations,
 }: VoiceQueueSettingsLinkedIntegrationsProps) {
     const [showIntegrations, setShowIntegrations] = useState(false)

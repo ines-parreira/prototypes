@@ -3,22 +3,22 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useParams } from 'react-router-dom'
 
-import useOrderBy from 'hooks/useOrderBy'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
-import GuidanceReferenceProvider from '../providers/GuidanceReferenceProvider'
-import StoreAppsProvider from '../providers/StoreAppsProvider'
-import StoreTrackstarProvider from '../providers/StoreTrackstarProvider'
+import { GuidanceReferenceProvider } from '../providers/GuidanceReferenceProvider'
+import { StoreAppsProvider } from '../providers/StoreAppsProvider'
+import { StoreTrackstarProvider } from '../providers/StoreTrackstarProvider'
 import type {
     StoresWorkflowConfiguration,
     StoreWorkflowsConfiguration,
 } from '../types'
-import ActionsRow from './ActionsRow'
+import { ActionsRow } from './ActionsRow'
 
 import css from './ActionsList.less'
 
@@ -26,7 +26,7 @@ type Props = {
     actions: StoresWorkflowConfiguration
 }
 
-export default function ActionsList({ actions }: Props) {
+export function ActionsList({ actions }: Props) {
     const { shopName, shopType } = useParams<{
         shopType: 'shopify'
         shopName: string

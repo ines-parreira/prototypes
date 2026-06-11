@@ -5,7 +5,7 @@ import { ListGroup, ListGroupItem } from 'reactstrap'
 import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
-import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
+import { ProductRecommendationScenarioPicker } from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
 import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type Props = {
@@ -89,4 +89,4 @@ const ProductAutomations = ({
     )
 }
 
-export default ProductAutomations
+export { ProductAutomations }

@@ -7,7 +7,7 @@ import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
 import { voiceQueue } from 'fixtures/voiceQueue'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceQueueEditPage from '../VoiceQueueEditPage'
+import { VoiceQueueEditPage } from '../VoiceQueueEditPage'
 
 jest.mock('@gorgias/helpdesk-client', () => ({
     getVoiceQueue: jest.fn(),
@@ -17,25 +17,31 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 const getVoiceQueueMock = assumeMock(getVoiceQueue)
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
-jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
-    <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
-))
+jest.mock('../VoiceQueueEditOrCreateForm', () => ({
+    VoiceQueueEditOrCreateForm: () => (
+        <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
+    ),
+}))
 
-jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
-    <button type="submit">{children}</button>
-))
+jest.mock('../VoiceFormSubmitButton', () => ({
+    VoiceFormSubmitButton: ({ children }: any) => (
+        <button type="submit">{children}</button>
+    ),
+}))
 
-jest.mock('../VoiceQueueSettingsForm', () => ({ children, onSubmit }: any) => (
-    <form
-        data-testid="settings-form"
-        onSubmit={(e) => {
-            e.preventDefault()
-            onSubmit({ name: 'Test Queue', id: '123' })
-        }}
-    >
-        {children}
-    </form>
-))
+jest.mock('../VoiceQueueSettingsForm', () => ({
+    VoiceQueueSettingsForm: ({ children, onSubmit }: any) => (
+        <form
+            data-testid="settings-form"
+            onSubmit={(e) => {
+                e.preventDefault()
+                onSubmit({ name: 'Test Queue', id: '123' })
+            }}
+        >
+            {children}
+        </form>
+    ),
+}))
 
 const mockQueue = voiceQueue
 

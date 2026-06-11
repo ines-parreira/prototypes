@@ -5,12 +5,12 @@ import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { isDropdownInput } from 'custom-fields/helpers/typeGuards'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useListTags from 'tags/useListTags'
+import { useListTags } from 'tags/useListTags'
 
 import type { ConditionItem } from '../views/ConditionsSelect/types'
 import { mapFiltersToConditions } from './mapConditionFilters'
 
-export default function useResolveConditions(filters?: SLAPolicyFilter[]): {
+export function useResolveConditions(filters?: SLAPolicyFilter[]): {
     conditions: ConditionItem[]
     isLoading: boolean
 } {

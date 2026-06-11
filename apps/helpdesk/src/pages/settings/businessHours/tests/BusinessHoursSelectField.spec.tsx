@@ -16,7 +16,7 @@ import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'
 import { useBusinessHoursSearch } from 'hooks/businessHours/useBusinessHoursSearch'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import BusinessHoursSelectField from '../BusinessHoursSelectField'
+import { BusinessHoursSelectField } from '../BusinessHoursSelectField'
 
 jest.mock(
     '@gorgias/axiom',
@@ -32,29 +32,31 @@ jest.mock('hooks/businessHours/useBusinessHours')
 jest.mock('hooks/useAppSelector')
 
 jest.mock('../AddCustomBusinessHoursModal', () => {
-    return function MockAddCustomBusinessHoursModal({
-        isOpen,
-        onClose,
-        onCreateSuccess,
-    }: {
-        isOpen: boolean
-        onClose: () => void
-        onCreateSuccess: (id: number) => void
-    }) {
-        return isOpen ? (
-            <div data-testid="add-custom-business-hours-modal">
-                <div>Add Custom Business Hours Modal</div>
-                <button onClick={onClose}>Close Modal</button>
-                <button
-                    onClick={() => {
-                        onClose()
-                        onCreateSuccess(1)
-                    }}
-                >
-                    Add Business Hours
-                </button>
-            </div>
-        ) : null
+    return {
+        AddCustomBusinessHoursModal: function MockAddCustomBusinessHoursModal({
+            isOpen,
+            onClose,
+            onCreateSuccess,
+        }: {
+            isOpen: boolean
+            onClose: () => void
+            onCreateSuccess: (id: number) => void
+        }) {
+            return isOpen ? (
+                <div data-testid="add-custom-business-hours-modal">
+                    <div>Add Custom Business Hours Modal</div>
+                    <button onClick={onClose}>Close Modal</button>
+                    <button
+                        onClick={() => {
+                            onClose()
+                            onCreateSuccess(1)
+                        }}
+                    >
+                        Add Business Hours
+                    </button>
+                </div>
+            ) : null
+        },
     }
 })
 

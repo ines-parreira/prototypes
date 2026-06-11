@@ -10,7 +10,7 @@ import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashb
 import { AddChartToDashboardModal } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal'
 import { AddToDashboardPicker } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddToDashboardPicker'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 

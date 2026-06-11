@@ -6,9 +6,9 @@ import { useDebouncedCallback } from '@gorgias/toolkit-react'
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'
 
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
 import type { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
-import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
+import { DefaultExportSelectInputBox as SelectInputBox } from 'pages/common/forms/input/SelectInputBox'
 
 import type { AiAgentBadInteractionReason } from '../types'
 import {

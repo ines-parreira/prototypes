@@ -17,4 +17,4 @@ const InstallationStep = ({ index, children }: Props) => {
     )
 }
 
-export default InstallationStep
+export { InstallationStep }

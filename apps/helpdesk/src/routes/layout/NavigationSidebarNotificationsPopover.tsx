@@ -7,7 +7,7 @@ import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Popover } from '@gorgias/axiom'
 
-import getNotificationConfig from 'common/notifications/utils/getNotificationConfig'
+import { getNotificationConfig } from 'common/notifications/utils/getNotificationConfig'
 
 import { NavigationSidebarNotificationsButton } from './NavigationSidebarNotificationsButton'
 

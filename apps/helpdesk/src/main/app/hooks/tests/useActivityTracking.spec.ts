@@ -1,7 +1,7 @@
 import * as activityTracker from '@repo/activity-tracker'
 import { renderHook } from '@repo/testing'
 
-import useActivityTracker from '../useActivityTracker'
+import { useActivityTracker } from '../useActivityTracker'
 
 jest.mock('@repo/activity-tracker')
 

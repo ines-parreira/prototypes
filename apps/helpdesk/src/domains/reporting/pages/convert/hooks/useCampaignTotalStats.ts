@@ -3,7 +3,7 @@ import { useGetTotalsStat } from 'domains/reporting/pages/convert/hooks/stats/us
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import { useGetCurrencyForStore } from 'domains/reporting/pages/convert/hooks/useGetCurrencyForStore'
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'
 
 export const useCampaignTotalStats = () => {

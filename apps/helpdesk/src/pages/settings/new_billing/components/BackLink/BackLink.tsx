@@ -16,4 +16,4 @@ const BackLink = () => {
     )
 }
 
-export default BackLink
+export { BackLink }

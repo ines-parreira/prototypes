@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 
-import type Client from '../../Client'
-import Context from '../../Context'
-import useNotifications from '../useNotifications'
+import type { Client } from '../../Client'
+import { DefaultExportContext as Context } from '../../Context'
+import { useNotifications } from '../useNotifications'
 
 describe('useNotifications', () => {
     it('should throw an error if it is used outside of the provider', () => {

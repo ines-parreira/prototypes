@@ -23,7 +23,7 @@ type GlobalNavigationItemProps<E extends React.ElementType> =
         tooltipDelay?: TooltipDelayValue
     }
 
-export default function GlobalNavigationItem<E extends React.ElementType>({
+export function GlobalNavigationItem<E extends React.ElementType>({
     as,
     label,
     children,

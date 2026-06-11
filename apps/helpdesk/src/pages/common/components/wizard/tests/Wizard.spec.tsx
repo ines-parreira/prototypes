@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { render } from '@repo/testing'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
-import Wizard, { WizardContext } from '../Wizard'
+import { Wizard, WizardContext } from '../Wizard'
 
 describe('<Wizard />', () => {
     const defaultProps = {

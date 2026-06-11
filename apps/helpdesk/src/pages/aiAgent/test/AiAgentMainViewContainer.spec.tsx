@@ -7,7 +7,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { Wizard } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { IntegrationType } from 'models/integration/types'
@@ -17,7 +17,7 @@ import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacFo
 import { getHasAutomate } from 'state/billing/selectors'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
-import AiAgentMainViewContainer from '../AiAgentMainViewContainer'
+import { AiAgentMainViewContainer } from '../AiAgentMainViewContainer'
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
@@ -28,10 +28,9 @@ const LocationPath = () => {
     return <div>{location.pathname}</div>
 }
 
-jest.mock(
-    'pages/settings/billing/automate/AutomateSubscriptionModal',
-    () => () => <div>Automate Subscription Modal</div>,
-)
+jest.mock('pages/settings/billing/automate/AutomateSubscriptionModal', () => ({
+    AutomateSubscriptionModal: () => <div>Automate Subscription Modal</div>,
+}))
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
     getHasAutomate: jest.fn(),

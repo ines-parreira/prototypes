@@ -30,4 +30,4 @@ const MousePointer = ({ isHovering, isAlignedToRight, children }: Props) => {
     )
 }
 
-export default MousePointer
+export { MousePointer }

@@ -8,11 +8,11 @@ import { toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
-import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import { ticketReplyCache } from 'state/newMessage/ticketReplyCache'
 
 import {
     OutboundTranslationProvider,
@@ -26,7 +26,8 @@ jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
-const mockUseAppDispatch = require('hooks/useAppDispatch').default as jest.Mock
+const mockUseAppDispatch = require('hooks/useAppDispatch')
+    .useAppDispatch as jest.Mock
 
 jest.mock('state/newMessage/actions')
 const mockSetTranslationState = setTranslationState as unknown as jest.Mock

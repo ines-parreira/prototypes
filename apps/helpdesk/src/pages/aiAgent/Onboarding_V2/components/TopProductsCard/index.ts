@@ -1,1 +1,1 @@
-export { default } from './TopProductsCard'
+export { TopProductsCard } from './TopProductsCard'

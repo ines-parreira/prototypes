@@ -10,13 +10,13 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { DELAY_SURVEY_FOR } from 'config'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import PageHeader from 'pages/common/components/PageHeader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { RichFieldWithVariables } from 'pages/common/forms/RichFieldWithVariables'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import { useGetContactFormList } from 'pages/settings/contactForm/queries'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettings } from 'state/currentAccount/selectors'
@@ -226,4 +226,4 @@ function SatisfactionSurveyView() {
     )
 }
 
-export default SatisfactionSurveyView
+export { SatisfactionSurveyView }

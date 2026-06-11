@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PrioritySelect from '../PrioritySelect'
+import { PrioritySelect } from '../PrioritySelect'
 
 const mockStore = configureMockStore([thunk])
 

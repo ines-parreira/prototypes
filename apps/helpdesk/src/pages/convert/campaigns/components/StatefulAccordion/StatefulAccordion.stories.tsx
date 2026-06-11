@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import Accordion from 'pages/common/components/accordion/Accordion'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
 
 import { StatefulAccordion } from './StatefulAccordion'
 

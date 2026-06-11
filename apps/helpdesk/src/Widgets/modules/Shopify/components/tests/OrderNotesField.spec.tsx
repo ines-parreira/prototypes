@@ -17,8 +17,10 @@ jest.mock('@repo/logging', () => ({
         ShopifyEditOrderNoteEditStarted: 'ShopifyEditOrderNoteEditStarted',
     },
 }))
-jest.mock('hooks/useAppSelector', () => () => customerId)
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: () => customerId }))
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
 }))

@@ -7,7 +7,7 @@ import { cleanup, screen } from '@testing-library/react'
 import type { AgentLabel } from 'pages/common/utils/labels'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
-import VoiceCallAgentLabel from '../VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { VoiceCallAgentLabel } from '../VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 jest.mock('pages/common/utils/labels', () => ({
     AgentLabel: (props: ComponentProps<typeof AgentLabel>) => (

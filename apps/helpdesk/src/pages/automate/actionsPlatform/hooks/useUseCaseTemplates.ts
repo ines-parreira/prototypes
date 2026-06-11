@@ -19,4 +19,4 @@ const useUseCaseTemplates = () => {
     }
 }
 
-export default useUseCaseTemplates
+export { useUseCaseTemplates }

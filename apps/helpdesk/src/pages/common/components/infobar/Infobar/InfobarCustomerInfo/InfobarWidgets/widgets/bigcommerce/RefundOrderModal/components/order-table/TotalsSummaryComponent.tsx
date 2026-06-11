@@ -19,7 +19,7 @@ import {
     calculateOrderSubtotal,
     calculateOrderTotal,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../../types'
 import { BigCommerceRefundActionType } from '../../types'

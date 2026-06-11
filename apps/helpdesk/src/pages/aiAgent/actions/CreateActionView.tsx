@@ -19,8 +19,8 @@ import {
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
-import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
+import { ActionsPlatformTemplateVisualBuilderView } from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
+import { useValidateOnVisualBuilderGraphChange } from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
     useVisualBuilder,
     VisualBuilderContext,
@@ -35,21 +35,21 @@ import {
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFooter'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { useUnsavedChangesPrompt } from 'pages/common/components/useUnsavedChangesPrompt'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
-import ActionFormView from './components/ActionFormView'
+import { ActionFormView } from './components/ActionFormView'
 import { useSupportActionTracking } from './hooks/useSupportActionTracking'
-import useThreeplIntegrations from './hooks/useThreeplIntegrations'
-import useTouchActionGraph from './hooks/useTouchActionGraph'
-import useUpsertAction from './hooks/useUpsertAction'
-import useValidateActionGraph from './hooks/useValidateActionGraph'
-import StoreAppsProvider from './providers/StoreAppsProvider'
+import { useThreeplIntegrations } from './hooks/useThreeplIntegrations'
+import { useTouchActionGraph } from './hooks/useTouchActionGraph'
+import { useUpsertAction } from './hooks/useUpsertAction'
+import { useValidateActionGraph } from './hooks/useValidateActionGraph'
+import { StoreAppsProvider } from './providers/StoreAppsProvider'
 import type { StoreWorkflowsConfiguration } from './types'
 
 import css from './CreateActionView.less'
@@ -434,4 +434,4 @@ const CreateActionView = () => {
     )
 }
 
-export default CreateActionView
+export { CreateActionView }

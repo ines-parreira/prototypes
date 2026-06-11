@@ -7,10 +7,10 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import ItemWithTooltip from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
+import { ItemWithTooltip } from 'pages/common/components/ItemWithTooltip/ItemWithTooltip'
 
 import { HeaderType, IngestionLogStatus } from './constant'
-import SyncDomainConfirmationModal from './SyncDomainConfirmationModal'
+import { SyncDomainConfirmationModal } from './SyncDomainConfirmationModal'
 import {
     getFormattedSyncDate,
     getFormattedSyncDatetime,
@@ -150,4 +150,4 @@ const AiAgentScrapedDomainContentHeader = ({
     )
 }
 
-export default AiAgentScrapedDomainContentHeader
+export { AiAgentScrapedDomainContentHeader }

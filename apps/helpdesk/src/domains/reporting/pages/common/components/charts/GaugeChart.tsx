@@ -4,7 +4,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
 
 import css from 'domains/reporting/pages/common/components/charts/GaugeChart.less'
-import Legend from 'domains/reporting/pages/common/components/charts/Legend'
+import { Legend } from 'domains/reporting/pages/common/components/charts/Legend'
 import {
     DEFAULT_LOCALE,
     formatNumber,
@@ -25,11 +25,7 @@ type Props = {
     restLabel?: string
 }
 
-export default function GaugeChart({
-    className,
-    data,
-    restLabel = 'Others',
-}: Props) {
+export function GaugeChart({ className, data, restLabel = 'Others' }: Props) {
     const total = useMemo(
         () => data.reduce((acc, { value }) => acc + value, 0),
         [data],

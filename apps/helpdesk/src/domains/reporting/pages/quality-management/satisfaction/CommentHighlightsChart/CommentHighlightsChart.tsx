@@ -2,13 +2,13 @@ import React, { useMemo } from 'react'
 
 import { useCommentHighlights } from 'domains/reporting/hooks/quality-management/satisfaction/useCommentHighlights'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import CommentHighlightsCarousel from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
-import CommentHighlightCsatSentimentToggle from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
+import { CommentHighlightsCarousel } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
+import { CommentHighlightsToggle as CommentHighlightCsatSentimentToggle } from 'domains/reporting/pages/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
 import { getCommentHighlightsCsatSentiment } from 'domains/reporting/state/ui/stats/qualityManagementSlice'
 import { CsatSentiment } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const COMMENT_HIGHLIGHTS = {
     TITLE: 'Comment Highlights',
@@ -21,7 +21,7 @@ const QUERY_SCORES = {
     [CsatSentiment.Negative]: ['1', '2', '3'],
 }
 
-export default function CommentHighlightsChart(props: DashboardChartProps) {
+export function CommentHighlightsChart(props: DashboardChartProps) {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const commentHighlightsCsatSentiment = useAppSelector(
         getCommentHighlightsCsatSentiment,

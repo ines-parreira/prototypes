@@ -8,7 +8,8 @@ import configureMockStore from 'redux-mock-store'
 
 import { UserRole } from 'config/types/user'
 
-import DownloadableDeletableRecording, {
+import {
+    DownloadableDeletableRecording,
     useDownloadRecording,
 } from '../DownloadableDeletableRecording'
 

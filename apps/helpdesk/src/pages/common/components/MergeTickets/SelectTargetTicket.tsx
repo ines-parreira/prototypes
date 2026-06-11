@@ -8,8 +8,8 @@ import { connect } from 'react-redux'
 import * as viewsConfig from 'config/views'
 import { EntityType } from 'models/view/types'
 import css from 'pages/common/components/MergeTickets/SelectTargetTicket.less'
-import Search from 'pages/common/components/Search'
-import Table from 'pages/common/components/ViewTable/Table'
+import { DefaultExportSearch as Search } from 'pages/common/components/Search'
+import { DefaultExportTable as Table } from 'pages/common/components/ViewTable/Table'
 import { searchTickets } from 'state/mergeTickets/actions'
 
 type Props = ConnectedProps<typeof connector> & {
@@ -135,4 +135,6 @@ const connector = connect(null, {
     search: searchTickets,
 })
 
-export default connector(SelectTargetTicket)
+const DefaultExportSelectTargetTicket = connector(SelectTargetTicket)
+
+export { DefaultExportSelectTargetTicket }

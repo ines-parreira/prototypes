@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     CouponSummary,
     ProductUsages,
@@ -16,12 +16,14 @@ import { ProductType, SubscriptionStatus } from 'models/billing/types'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 
-import AddSalesCouponModal from '../../AddSalesCouponModal'
-import UpcomingInvoiceCard from '../UpcomingInvoiceCard'
+import { AddSalesCouponModal } from '../../AddSalesCouponModal'
+import { UpcomingInvoiceCard } from '../UpcomingInvoiceCard'
 
-jest.mock('../../AddSalesCouponModal/AddSalesCouponModal', () =>
-    jest.fn(() => <div data-testid="add-sales-coupon-modal"></div>),
-)
+jest.mock('../../AddSalesCouponModal/AddSalesCouponModal', () => ({
+    AddSalesCouponModal: jest.fn(() => (
+        <div data-testid="add-sales-coupon-modal"></div>
+    )),
+}))
 const AddSalesCouponModalMock = assumeMock(AddSalesCouponModal)
 
 const endOfCurrentCycleDatetime = '2024-06-25T09:27:00+00:00'

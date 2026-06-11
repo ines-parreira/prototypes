@@ -12,8 +12,8 @@ import type {
     ReportIssueCaseReason,
     ReportIssueCaseReasonAction,
 } from 'models/selfServiceConfiguration/types'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { SortableAccordionHeader } from 'pages/common/components/accordion/SortableAccordionHeader'
 
 import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
 import { ScenarioReasonAction } from './ScenarioReasonAction'

@@ -7,7 +7,7 @@ import { assumeMock, render } from '@repo/testing'
 import type { Notification } from 'common/notifications'
 
 import type { EmailDomainPayload } from '../../types'
-import DomainVerificationNotification from '../DomainVerificationNotification'
+import { DomainVerificationNotification } from '../DomainVerificationNotification'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

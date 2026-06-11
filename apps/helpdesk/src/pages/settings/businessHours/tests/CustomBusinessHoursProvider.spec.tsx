@@ -4,7 +4,7 @@ import { act, waitFor } from '@testing-library/react'
 import type { IntegrationWithBusinessHoursAndStore } from '@gorgias/helpdesk-types'
 
 import { useCustomBusinessHoursContext } from '../CustomBusinessHoursContext'
-import CustomBusinessHoursProvider from '../CustomBusinessHoursProvider'
+import { CustomBusinessHoursProvider } from '../CustomBusinessHoursProvider'
 
 describe('CustomBusinessHoursProvider', () => {
     it('should render the children', () => {

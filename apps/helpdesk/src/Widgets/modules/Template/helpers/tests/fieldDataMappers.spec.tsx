@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 import React from 'react'
 
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
@@ -6,16 +6,24 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
 import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
 import { getStringFromData, getValueFromData } from '../fieldDataMappers'
 
 jest.mock('pages/common/utils/DatetimeLabel', () => {
-    return jest.fn(() => null)
+    return { DatetimeLabel: jest.fn(() => null) }
+})
+jest.mock('@gorgias/axiom', () => {
+    return {
+        ...jest.requireActual('@gorgias/axiom'),
+        LegacyBadge: jest.fn(
+            ({ children }: { children?: ReactNode }) => children,
+        ),
+    }
 })
 jest.mock('pages/common/components/StarRating', () => {
-    return jest.fn(() => null)
+    return { StarRating: jest.fn(() => null) }
 })
 const DatetimeLabelMock = assumeMock(DatetimeLabel)
 

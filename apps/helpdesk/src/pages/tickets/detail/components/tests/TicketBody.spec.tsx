@@ -12,8 +12,8 @@ import { voiceCall } from 'fixtures/voiceCalls'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useSearch } from 'hooks/useSearch'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
-import TicketBody from 'pages/tickets/detail/components/TicketBody'
-import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
+import { TicketBody } from 'pages/tickets/detail/components/TicketBody'
+import { TicketBodyElement } from 'pages/tickets/detail/components/TicketBodyElement'
 import type { ShoppingAssistantEvent } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import {
     InfluencedOrderSource,
@@ -33,18 +33,16 @@ const mockVirtuoso = jest.fn<
     [VirtuosoProps<unknown, unknown>]
 >()
 
-jest.mock('pages/tickets/detail/components/TicketBodyElement', () =>
-    jest.fn(({ index }: { index: number }) => <p>TicketBodyElement {index}</p>),
-)
+jest.mock('pages/tickets/detail/components/TicketBodyElement', () => ({
+    TicketBodyElement: jest.fn(({ index }: { index: number }) => (
+        <p>TicketBodyElement {index}</p>
+    )),
+}))
 
-jest.mock(
-    'state/queries/selectors',
-    () =>
-        ({
-            ...jest.requireActual('state/queries/selectors'),
-            getQueryTimestamp: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>,
-)
+jest.mock('state/queries/selectors', () => ({
+    ...jest.requireActual('state/queries/selectors'),
+    getQueryTimestamp: jest.fn(() => jest.fn()),
+}))
 
 jest.mock('state/billing/selectors')
 
@@ -76,14 +74,10 @@ const mockUseSearch = assumeMock(useSearch)
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
-jest.mock(
-    'state/queries/selectors',
-    () =>
-        ({
-            ...jest.requireActual('state/queries/selectors'),
-            getQueryData: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>,
-)
+jest.mock('state/queries/selectors', () => ({
+    ...jest.requireActual('state/queries/selectors'),
+    getQueryData: jest.fn(() => jest.fn()),
+}))
 const mockGetQueryData = assumeMock(getQueryData)
 
 jest.mock(

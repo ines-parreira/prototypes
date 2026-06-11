@@ -8,7 +8,7 @@ import * as reactstrap from 'reactstrap'
 
 import type { AppliedDiscount } from 'constants/integrations/types/shopify'
 import { DiscountType } from 'constants/integrations/types/shopify'
-import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover/components/DiscountPopover'
+import { DiscountPopover } from 'Widgets/modules/Shopify/modules/DiscountPopover/components/DiscountPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 jest.mock('@repo/logging', () => {

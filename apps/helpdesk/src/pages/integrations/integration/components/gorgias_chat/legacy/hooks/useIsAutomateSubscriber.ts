@@ -11,4 +11,4 @@ const useIsAutomateSubscriber = (
     return Boolean(hasAccess && shopName && shopType)
 }
 
-export default useIsAutomateSubscriber
+export { useIsAutomateSubscriber }

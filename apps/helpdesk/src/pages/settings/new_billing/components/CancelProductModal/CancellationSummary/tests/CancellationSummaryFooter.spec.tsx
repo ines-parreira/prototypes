@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import CancellationSummaryFooter from '../CancellationSummaryFooter'
+import { CancellationSummaryFooter } from '../CancellationSummaryFooter'
 
 describe('CancellationSummaryFooter', () => {
     const onConfirmMock = jest.fn()

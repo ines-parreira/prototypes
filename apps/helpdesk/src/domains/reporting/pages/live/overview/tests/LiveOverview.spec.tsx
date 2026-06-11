@@ -13,9 +13,9 @@ import {
     OPEN_TICKETS_ASSIGNMENT_STATUSES,
     USERS_STATUSES,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import LiveOverview from 'domains/reporting/pages/live/overview/LiveOverview'
+import { DefaultExportLiveOverview as LiveOverview } from 'domains/reporting/pages/live/overview/LiveOverview'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
@@ -25,19 +25,17 @@ import {
     usersStatuses,
 } from 'fixtures/stats'
 import { teams } from 'fixtures/teams'
-import type FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import type { FeaturePaywall } from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Line: () => <canvas /> }))
-jest.mock(
-    'pages/common/components/FeaturePaywall/FeaturePaywall',
-    () =>
-        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
-            return <div>Paywall for {feature}</div>
-        },
-)
+jest.mock('pages/common/components/FeaturePaywall/FeaturePaywall', () => ({
+    FeaturePaywall: ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
+        return <div>Paywall for {feature}</div>
+    },
+}))
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
     () => ({
@@ -52,7 +50,9 @@ jest.mock(
 )
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>,
+    () => ({
+        DEPRECATED_ChannelsStatsFilter: () => <div>ChannelsStatsFilter</div>,
+    }),
 )
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 

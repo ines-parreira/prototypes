@@ -10,15 +10,15 @@ import {
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
 import { isCustomFieldAIManagedType } from 'custom-fields/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
-import EditFieldForm from './components/EditFieldForm'
+import { EditFieldForm } from './components/EditFieldForm'
 
-export default function EditCustomField({
+export function EditCustomField({
     objectType,
 }: {
     objectType: CustomFieldObjectTypes

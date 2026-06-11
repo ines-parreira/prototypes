@@ -5,4 +5,7 @@ export type OpportunitiesSidebarContextType = {
     setIsSidebarVisible: (value: boolean) => void
 } | null
 
-export default createContext<OpportunitiesSidebarContextType>(null)
+const DefaultExportOpportunitiesSidebarContext =
+    createContext<OpportunitiesSidebarContextType>(null)
+
+export { DefaultExportOpportunitiesSidebarContext }

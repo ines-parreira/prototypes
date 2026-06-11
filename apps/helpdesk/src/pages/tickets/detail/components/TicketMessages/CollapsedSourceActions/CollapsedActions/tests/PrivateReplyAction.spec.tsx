@@ -6,7 +6,7 @@ import { Dropdown } from 'reactstrap'
 
 import { message } from 'models/ticket/tests/mocks'
 
-import PrivateReplyAction from '../PrivateReplyAction'
+import { PrivateReplyAction } from '../PrivateReplyAction'
 
 const renderAction = ({ isFacebookComment = false } = {}) =>
     render(

@@ -7,7 +7,7 @@ import {
     UPSERT_MACRO,
     UPSERT_MACROS,
 } from '../constants'
-import reducer from '../reducer'
+import { reducer } from '../reducer'
 
 describe('macro reducer', () => {
     describe('UPSERT_MACRO', () => {

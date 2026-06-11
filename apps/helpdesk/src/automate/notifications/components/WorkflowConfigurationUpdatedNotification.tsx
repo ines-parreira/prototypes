@@ -16,7 +16,7 @@ type Props = {
     notification: Notification<WorkflowConfigurationUpdatedNotificationPayload>
 } & ContentProps
 
-export default function WorkflowConfigurationUpdatedNotification({
+export function WorkflowConfigurationUpdatedNotification({
     notification,
     ...props
 }: Props) {

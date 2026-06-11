@@ -9,14 +9,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { phoneNumbers as phoneNumberFixtures } from 'fixtures/newPhoneNumber'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import { IntegrationType } from 'models/integration/types'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { initialState } from 'state/twilio/voiceDevice'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockDevice } from 'tests/twilioMocks'
 
-import ClickablePhoneNumber from '../ClickablePhoneNumber'
+import { ClickablePhoneNumber } from '../ClickablePhoneNumber'
 
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 

@@ -10,18 +10,18 @@ import type {
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
 import { AUTOMATED_RESPONSE } from 'models/selfServiceConfiguration/types'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { AutomateViewContent } from 'pages/automate/common/components/AutomateViewContent'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import CancelOrderFlowPreview from './CancelOrderFlowPreview'
+import { CancelOrderFlowPreview } from './CancelOrderFlowPreview'
 import type { CancelOrderFlowViewContextType } from './CancelOrderFlowViewContext'
-import CancelOrderFlowViewContext from './CancelOrderFlowViewContext'
-import CancelOrderEligibility from './components/CancelOrderEligibility'
-import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
+import { CancelOrderFlowViewContext } from './CancelOrderFlowViewContext'
+import { CancelOrderEligibility } from './components/CancelOrderEligibility'
+import { CancelOrderResponseMessageContent } from './components/CancelOrderResponseMessageContent'
 import { DEFAULT_RESPONSE_MESSAGE_CONTENT } from './constants'
-import useCancelOrderFlow from './hooks/useCancelOrderFlow'
+import { useCancelOrderFlow } from './hooks/useCancelOrderFlow'
 
 const CancelOrderFlowView = () => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -167,4 +167,4 @@ const CancelOrderFlowView = () => {
     )
 }
 
-export default CancelOrderFlowView
+export { CancelOrderFlowView }

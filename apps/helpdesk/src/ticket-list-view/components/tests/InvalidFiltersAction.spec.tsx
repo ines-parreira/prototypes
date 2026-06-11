@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
-import InvalidFiltersAction from '../InvalidFiltersAction'
+import { InvalidFiltersAction } from '../InvalidFiltersAction'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock

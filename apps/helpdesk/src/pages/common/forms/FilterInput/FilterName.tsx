@@ -56,4 +56,4 @@ const FilterName = ({
     )
 }
 
-export default FilterName
+export { FilterName }

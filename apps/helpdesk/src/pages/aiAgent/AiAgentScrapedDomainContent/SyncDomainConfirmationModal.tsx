@@ -6,10 +6,10 @@ import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AlertType } from 'pages/common/components/Alert/Alert'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 
 import css from './SyncDomainConfirmationModal.less'
 
@@ -63,4 +63,4 @@ const SyncDomainConfirmationModal = ({
     )
 }
 
-export default SyncDomainConfirmationModal
+export { SyncDomainConfirmationModal }

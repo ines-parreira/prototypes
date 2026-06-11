@@ -8,7 +8,7 @@ import * as emailResources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import * as dateUtils from 'utils/date'
 
-import MigrationOutboundVerification from '../EmailMigration/MigrationOutboundVerification'
+import { MigrationOutboundVerification } from '../EmailMigration/MigrationOutboundVerification'
 
 jest.useFakeTimers()
 
@@ -19,7 +19,7 @@ jest.mock('models/integration/resources/email', () => ({
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment') as jest.Mock
 
 const mockFetchMigrationStatus = jest.fn()
-jest.spyOn(migrationBannerHook, 'default').mockImplementation(
+jest.spyOn(migrationBannerHook, 'useMigrationBannerStatus').mockImplementation(
     () => mockFetchMigrationStatus,
 )
 

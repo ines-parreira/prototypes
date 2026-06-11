@@ -1,7 +1,7 @@
 import type { UserSearchResult } from 'models/search/types'
 
-import DialPad from './DialPad'
-import PhoneSearchResultsContent from './PhoneSearchResultsContent'
+import { DialPad } from './DialPad'
+import { PhoneSearchResultsContent } from './PhoneSearchResultsContent'
 
 import css from './PhoneDevice.less'
 
@@ -16,7 +16,7 @@ type Props = {
     highlightedResultIndex: number | null
 }
 
-export default function PhoneDeviceDialerBody({
+export function PhoneDeviceDialerBody({
     value,
     onChange,
     results,

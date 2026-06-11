@@ -11,18 +11,18 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Loader from 'pages/common/components/Loader/Loader'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
-import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
-import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { GroupAddon } from 'pages/common/forms/input/GroupAddon'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
+import { BackToConvertButton } from 'pages/convert/onboarding/components/BackToConvertButton'
+import { SyncNotification } from 'pages/integrations/integration/components/SyncNotification'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
-import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
-import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
+import { useAuthenticationPolling } from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import { useQueryNotify } from 'pages/integrations/integration/hooks/useQueryNotify'
+import { PendingChangesModal } from 'pages/settings/helpCenter/components/PendingChangesModal'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -35,11 +35,7 @@ type Props = {
     redirectUri: string
 }
 
-export default function Integration({
-    integration,
-    loading,
-    redirectUri,
-}: Props) {
+export function Integration({ integration, loading, redirectUri }: Props) {
     const dispatch = useAppDispatch()
     useQueryNotify()
 

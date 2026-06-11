@@ -2,7 +2,7 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import InputPrompt from 'gorgias-design-system/Input/InputPrompt'
+import { InputPrompt } from 'gorgias-design-system/Input/InputPrompt'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -39,4 +39,4 @@ const EmailCaptureMessage: React.FC<Props> = ({
     )
 }
 
-export default EmailCaptureMessage
+export { EmailCaptureMessage }

@@ -2,21 +2,20 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceCall } from 'models/voiceCall/types'
 
-import useWrapUpTime from '../useWrapUpTime'
-import WrapUpCallBar from '../WrapUpCallBar'
+import { useWrapUpTime } from '../useWrapUpTime'
+import { WrapUpCallBar } from '../WrapUpCallBar'
 
 jest.mock('../useWrapUpTime')
-jest.mock(
-    '../PhoneIntegrationName/PhoneIntegrationName',
-    () => (props: { integrationId: number }) => (
+jest.mock('../PhoneIntegrationName/PhoneIntegrationName', () => ({
+    DefaultExportPhoneIntegrationName: (props: { integrationId: number }) => (
         <div data-testid="phone-integration-name">
             Phone Integration Name (ID: {props.integrationId})
         </div>
     ),
-)
+}))
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 
 jest.mock('@repo/feature-flags')

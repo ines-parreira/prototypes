@@ -62,4 +62,4 @@ const MigrationPartiallySucceededActions: React.FC<Props> = ({ state }) => {
     )
 }
 
-export default MigrationPartiallySucceededActions
+export { MigrationPartiallySucceededActions }

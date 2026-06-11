@@ -44,7 +44,9 @@ jest.mock('state/integrations/helpers', () => ({
 }))
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const fetchShopifyCollectionsMock = assumeMock(fetchShopifyCollections)
 const fetchIntegrationProductsMock = assumeMock(fetchIntegrationProducts)

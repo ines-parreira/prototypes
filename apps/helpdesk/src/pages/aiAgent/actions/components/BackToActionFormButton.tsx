@@ -4,7 +4,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-export default function BackToActionFormButton() {
+export function BackToActionFormButton() {
     const { shopName, id } = useParams<{
         id: string
         shopName: string

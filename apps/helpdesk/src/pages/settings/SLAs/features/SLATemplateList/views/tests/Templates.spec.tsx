@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 
 import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
 
-import Templates from '../Templates'
+import { Templates } from '../Templates'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

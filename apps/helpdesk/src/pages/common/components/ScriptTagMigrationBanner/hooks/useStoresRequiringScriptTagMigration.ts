@@ -3,7 +3,7 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
 import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { GorgiasChatInstallationMethod } from 'models/integration/types'
@@ -129,4 +129,4 @@ const useStoresRequiringScriptTagMigration = () => {
     return shopifyIntegrationsRequiringScriptTagMigration
 }
 
-export default useStoresRequiringScriptTagMigration
+export { useStoresRequiringScriptTagMigration }

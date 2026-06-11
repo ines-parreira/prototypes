@@ -1,7 +1,7 @@
 import { registerNotification } from 'common/notifications'
 
-import ImportEmailFailedNotification from './components/ImportEmailFailedNotification'
-import ImportEmailSuccessNotification from './components/ImportEmailSuccessNotification'
+import { ImportEmailFailedNotification } from './components/ImportEmailFailedNotification'
+import { ImportEmailSuccessNotification } from './components/ImportEmailSuccessNotification'
 
 registerNotification({
     type: 'import.failed',

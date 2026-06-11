@@ -7,7 +7,7 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
-import BotMessages from '../BotMessages'
+import { BotMessages } from '../BotMessages'
 import { ChatIntegrationPreviewContext } from '../ChatIntegrationPreview'
 
 describe('<BotMessages />', () => {

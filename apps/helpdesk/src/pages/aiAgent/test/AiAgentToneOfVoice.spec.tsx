@@ -95,7 +95,12 @@ jest.mock(
     'pages/aiAgent/components/CollapsibleSection/CollapsibleSection',
     () => ({
         __esModule: true,
-        default: ({ title, isExpanded, onToggle, children }: any) => (
+        CollapsibleSection: ({
+            title,
+            isExpanded,
+            onToggle,
+            children,
+        }: any) => (
             <div>
                 <button onClick={onToggle} aria-expanded={isExpanded}>
                     {title}

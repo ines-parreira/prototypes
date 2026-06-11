@@ -8,14 +8,14 @@ import {
     useGetWorkflowConfiguration,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import useGetAppImageUrl from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
+import { useGetAppImageUrl } from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
 import type {
     LlmTriggeredExecution,
     TemplateConfiguration,
 } from 'pages/aiAgent/actions/types'
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
-import FailedWorkflowMessage from '../AiAgentFailedWorkflowMessage'
+import { FailedWorkflowMessage } from '../AiAgentFailedWorkflowMessage'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/actions/hooks/useGetAppImageUrl')

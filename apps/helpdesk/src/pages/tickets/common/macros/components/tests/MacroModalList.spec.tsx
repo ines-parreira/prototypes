@@ -9,7 +9,7 @@ import type { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
-import MacroModalList from '../MacroModalList'
+import { MacroModalList } from '../MacroModalList'
 
 const mockStore = configureMockStore([thunk])
 
@@ -50,9 +50,9 @@ const shortcutEventMock = {
     preventDefault: jest.fn(),
 } as unknown as jest.Mocked<Event>
 
-jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
-    <div>MacroFiltersMock</div>
-))
+jest.mock('pages/common/components/MacroFilters/MacroFilters', () => ({
+    MacroFilters: () => <div>MacroFiltersMock</div>,
+}))
 
 describe('<MacroModalList />', () => {
     const macros = [

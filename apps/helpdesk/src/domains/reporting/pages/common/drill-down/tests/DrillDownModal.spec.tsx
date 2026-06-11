@@ -19,7 +19,7 @@ import { LegacyDrillDownTable } from 'domains/reporting/pages/common/drill-down/
 import { LegacyTicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/LegacyTicketDrillDownTableContent'
 import { CampaignSalesDrillDownTableContent } from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
-import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
+import { VoiceCallDrillDownTableContent } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { closeDrillDownModal } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {

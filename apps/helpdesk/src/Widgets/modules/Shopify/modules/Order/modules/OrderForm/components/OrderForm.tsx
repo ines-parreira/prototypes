@@ -5,8 +5,8 @@ import type { List, Map } from 'immutable'
 
 import { aggregateMaximumRefundableByGateway } from 'business/shopify/refund'
 
-import OrderFooter from './OrderFooter'
-import OrderTable from './OrderTable'
+import { OrderFooter } from './OrderFooter'
+import { DefaultExportOrderTable as OrderTable } from './OrderTable'
 
 type Props = {
     shopName: string
@@ -26,7 +26,7 @@ type Props = {
     onNotifyChange: (newValue: boolean) => void
 }
 
-export default function OrderForm({
+export function OrderForm({
     shopName,
     loading,
     reason,

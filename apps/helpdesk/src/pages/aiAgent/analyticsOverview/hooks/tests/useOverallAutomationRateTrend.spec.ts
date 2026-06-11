@@ -1,7 +1,8 @@
 import { renderHook } from '@repo/testing'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { dynamicOverallAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -13,7 +14,7 @@ import {
 
 jest.mock('domains/reporting/hooks/useStatsMetricTrend', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStatsMetricTrend: jest.fn(),
     fetchStatsMetricTrend: jest.fn(),
 }))
 

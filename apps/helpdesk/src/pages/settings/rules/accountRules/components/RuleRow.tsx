@@ -11,14 +11,14 @@ import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { createRule, deactivateRule, deleteRule } from 'models/rule/resources'
-import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { ConfirmationPopover } from 'pages/common/components/popover/ConfirmationPopover'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 import { getSortedRuleRecipes } from 'state/entities/ruleRecipes/selectors'
 import {
@@ -425,5 +425,3 @@ export function RuleRow({
         </tr>
     )
 }
-
-export default RuleRow

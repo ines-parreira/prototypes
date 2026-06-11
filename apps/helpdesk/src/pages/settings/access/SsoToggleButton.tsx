@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 
 import client from '@repo/api-resources'
 
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import { ToggleInput } from 'pages/common/forms/ToggleInput'
 
 import { ConfirmationModal } from '../helpCenter/components/ConfirmationModal'
 
@@ -83,5 +83,3 @@ export const SsoToggleButton = (props: Props) => {
         </>
     )
 }
-
-export default SsoToggleButton

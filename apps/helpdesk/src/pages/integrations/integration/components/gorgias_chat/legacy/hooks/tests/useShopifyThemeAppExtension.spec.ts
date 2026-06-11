@@ -3,8 +3,8 @@ import { act, waitFor } from '@testing-library/react'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 
-import useShopifyThemeAppExtension from '../useShopifyThemeAppExtension'
-import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
+import { useShopifyThemeAppExtension } from '../useShopifyThemeAppExtension'
+import { useThemeAppExtensionInstallation } from '../useThemeAppExtensionInstallation'
 
 jest.mock('../useThemeAppExtensionInstallation')
 

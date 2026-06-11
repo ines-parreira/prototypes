@@ -4,7 +4,7 @@ import React from 'react'
 import type { LocationDescriptor } from 'history'
 import { Link } from 'react-router-dom'
 
-import BaseCard from './BaseCard'
+import { BaseCard } from './BaseCard'
 
 import css from './Card.less'
 
@@ -23,4 +23,4 @@ function CustomCardLink<T>({ to, ...props }: Props<T>) {
     )
 }
 
-export default CustomCardLink
+export { CustomCardLink }

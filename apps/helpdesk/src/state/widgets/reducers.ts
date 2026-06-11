@@ -40,7 +40,7 @@ export const initialState: WidgetsState = fromJS({
     },
 })
 
-export default function reducer(
+export function reducer(
     state: WidgetsState = initialState,
     action: GorgiasAction,
 ): WidgetsState {

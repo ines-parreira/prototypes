@@ -36,7 +36,7 @@ export const TICKET_STORE_ID_FILTER_SCHEMA_DEFINITION = {
     },
 }
 
-export default function toInitialStoreState(initialState: GorgiasInitialState) {
+export function toInitialStoreState(initialState: GorgiasInitialState) {
     const nextState: Record<string, any> = {
         ...initialState,
     }

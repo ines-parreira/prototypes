@@ -7,8 +7,8 @@ import type { Map } from 'immutable'
 import type { GorgiasChatAvatarSettings } from 'models/integration/types'
 
 import type { AgentMessage } from './AgentMessages'
-import AgentMessages from './AgentMessages'
-import CustomerInitialMessages from './CustomerInitialMessages'
+import { AgentMessages } from './AgentMessages'
+import { CustomerInitialMessages } from './CustomerInitialMessages'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -67,4 +67,4 @@ const MessageContent: FC<Props> = ({
         </div>
     ) : null
 
-export default MessageContent
+export { MessageContent }

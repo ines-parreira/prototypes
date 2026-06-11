@@ -1,10 +1,10 @@
 import { renderHook } from '@repo/testing'
 import { useHasNewViewCountScheduler } from '@repo/views'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchVisibleViewsCounts } from 'state/views/actions'
 
-import useInitialViewCountsFetch from '../useInitialViewCountsFetch'
+import { useInitialViewCountsFetch } from '../useInitialViewCountsFetch'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('@repo/views', () => ({

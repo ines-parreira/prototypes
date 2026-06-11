@@ -10,7 +10,7 @@ type Props = {
     queueIds: number[]
 }
 
-export default function VoiceQueueProvider({ children, queueIds }: Props) {
+export function VoiceQueueProvider({ children, queueIds }: Props) {
     const [fetchedQueues, setFetchedQueues] = useState<
         Record<number, VoiceQueue>
     >({})

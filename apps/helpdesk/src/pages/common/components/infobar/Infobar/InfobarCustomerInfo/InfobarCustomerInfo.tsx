@@ -12,15 +12,15 @@ import { Link } from 'react-router-dom'
 import { Button, Separator } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
-import DEPRECATED_Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar as DEPRECATED_Avatar } from 'pages/common/components/Avatar/Avatar'
 import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
-import ShopifyCustomerProfileSync from 'pages/common/components/ShopifyCustomerProfileSync/ShopifyCustomerProfileSync'
+import { ShopifyCustomerProfileSync } from 'pages/common/components/ShopifyCustomerProfileSync/ShopifyCustomerProfileSync'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
@@ -30,14 +30,14 @@ import * as actions from 'state/widgets/actions'
 import { itemsWithContext } from 'state/widgets/utils'
 import { isCurrentlyOnCustomerPage } from 'utils'
 
-import AddAppSuggestion from './AddAppSuggestion'
-import CustomerChannels from './CustomerChannels'
-import CustomerFields from './CustomerFields'
-import CustomerNote from './CustomerNote'
-import CustomerOptionsDropdownButton from './CustomerOptionsDropdown'
+import { AddAppSuggestion } from './AddAppSuggestion'
+import { CustomerChannels } from './CustomerChannels'
+import { CustomerFields } from './CustomerFields'
+import { CustomerNote } from './CustomerNote'
+import { CustomerOptionsDropdownButton } from './CustomerOptionsDropdown'
 import { CustomerTimelineWidget } from './CustomerTimelineWidget'
 import { useShouldShowProfileSync } from './helpers'
-import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
+import { InfobarWidgets } from './InfobarWidgets/InfobarWidgets'
 import { InstagramSection } from './InstagramSection'
 
 import css from './InfobarCustomerInfo.less'
@@ -373,4 +373,4 @@ const InfobarCustomerInfo = ({
     )
 }
 
-export default InfobarCustomerInfo
+export { InfobarCustomerInfo }

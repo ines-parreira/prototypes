@@ -13,10 +13,10 @@ import type {
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { ChannelLanguage } from 'pages/automate/common/types'
-import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import { useLanguagesMismatchWarnings } from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import ChannelWarning from '../helper/ChannelWarning'
+import { ChannelWarning } from '../helper/ChannelWarning'
 
 import css from '../WorkflowsPublisher.less'
 
@@ -148,4 +148,4 @@ const ChannelToggle = ({
         </div>
     )
 }
-export default ChannelToggle
+export { ChannelToggle }

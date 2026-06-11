@@ -7,11 +7,11 @@ import {
 } from '@gorgias/axiom'
 
 import type { User } from 'config/types/user'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
+import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
+import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import css from './RequestTrialModal.less'
 
@@ -150,4 +150,4 @@ const RequestTrialModal = ({
     )
 }
 
-export default RequestTrialModal
+export { RequestTrialModal }

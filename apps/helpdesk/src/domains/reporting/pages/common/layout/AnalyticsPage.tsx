@@ -5,7 +5,7 @@ import { Box, Heading, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import css from 'domains/reporting/pages/common/layout/AnalyticsPage.less'
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
 import { useSearchParam } from 'hooks/useSearchParam'
 
 type TabConfig = {

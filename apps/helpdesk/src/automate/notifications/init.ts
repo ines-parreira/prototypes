@@ -1,8 +1,8 @@
 import { registerCategory, registerNotification } from 'common/notifications'
 import { AUTOMATE_ICON } from 'pages/common/components/SourceIcon'
 
-import AiAgentNotification from './components/AiAgentNotification'
-import WorkflowConfigurationUpdatedNotification from './components/WorkflowConfigurationUpdatedNotification'
+import { AiAgentNotification } from './components/AiAgentNotification'
+import { WorkflowConfigurationUpdatedNotification } from './components/WorkflowConfigurationUpdatedNotification'
 import {
     AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,

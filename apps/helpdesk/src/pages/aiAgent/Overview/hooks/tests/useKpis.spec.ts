@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
+import { useStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { allAgentsAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { IntegrationType } from 'models/integration/types'

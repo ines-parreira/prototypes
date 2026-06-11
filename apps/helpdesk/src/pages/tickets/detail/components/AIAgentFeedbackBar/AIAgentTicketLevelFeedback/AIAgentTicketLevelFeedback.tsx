@@ -4,13 +4,13 @@ import { v4 as uuidv4 } from 'uuid'
 
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import type { useGetFeedback } from 'models/knowledgeService/queries'
 import { getTicketState } from 'state/ticket/selectors'
 
 import { useGetAiAgentFeedback } from '../../../../../../models/aiAgentFeedback/queries'
-import FeedbackInternalNote from '../FeedbackInternalNote'
+import { FeedbackInternalNote } from '../FeedbackInternalNote'
 import { FeedbackRating } from '../types'
 import { AIAgentFeedbackRatingSection } from './AIAgentFeedbackRatingSection'
 import { AIAgentFeedbackReasonSection } from './AIAgentFeedbackReasonSection'

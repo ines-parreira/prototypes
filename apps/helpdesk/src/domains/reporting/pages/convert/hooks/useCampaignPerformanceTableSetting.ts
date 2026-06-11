@@ -10,7 +10,7 @@ import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/u
 import { useGetChatForStore } from 'domains/reporting/pages/convert/hooks/useGetChatForStore'
 import type { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
 import type { TableView } from 'domains/reporting/state/ui/stats/types'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetSettingsList } from 'models/convert/settings/queries'
 import type { SettingRequest } from 'models/convert/settings/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'

@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import type { Magento2Integration } from 'models/integration/types'
 
-import useStoreUpdater from '../../hooks/useStoreUpdater'
+import { useStoreUpdater } from '../../hooks/useStoreUpdater'
 
 interface useMagentoSettingsFormProps {
     integration: Magento2Integration

@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import { DEPRECATED_Modal } from 'pages/common/components/DEPRECATED_Modal'
 
 import css from './CloseModal.less'
 

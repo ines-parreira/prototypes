@@ -24,7 +24,7 @@ import { ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 
 import type { ProductCardProps } from '../ProductCard'
-import ProductCard from '../ProductCard'
+import { ProductCard } from '../ProductCard'
 
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),

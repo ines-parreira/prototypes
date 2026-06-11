@@ -17,7 +17,7 @@ import {
     FilterKey,
     TagFilterInstanceId,
 } from 'domains/reporting/models/stat/types'
-import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import type { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'domains/reporting/pages/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import { SLA_ACHIEVEMENT_RATE_METRIC_TITLE } from 'domains/reporting/pages/voice/constants/liveVoice'
@@ -37,7 +37,7 @@ import {
 } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { useVoiceCallAverageTimeTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend'
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
-import VoiceOverview from 'domains/reporting/pages/voice/pages/VoiceOverview'
+import { DefaultExportVoiceOverview as VoiceOverview } from 'domains/reporting/pages/voice/pages/VoiceOverview'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 import { account } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
@@ -66,23 +66,24 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallCountTrend')
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallAverageTimeTrend')
-jest.mock('domains/reporting/pages/voice/VoicePaywall', () => () => (
-    <div>VoicePaywall</div>
-))
+jest.mock('domains/reporting/pages/voice/VoicePaywall', () => ({
+    VoicePaywall: () => <div>VoicePaywall</div>,
+}))
 jest.mock(
     'domains/reporting/pages/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton',
 )
 const VoiceOverviewDownloadDataButtonMock = assumeMock(
     VoiceOverviewDownloadDataButton,
 )
-jest.mock(
-    'domains/reporting/pages/common/filters/FiltersPanelWrapper',
-    () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    FiltersPanelWrapper: (
+        props: ComponentProps<typeof FiltersPanelWrapper>,
+    ) => {
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
     },
-)
+}))
 
 assumeMock(useVoiceCallCountTrend).mockReturnValue({
     data: { prevValue: 10, value: 15 },
@@ -96,7 +97,7 @@ assumeMock(useVoiceCallAverageTimeTrend).mockReturnValue({
 })
 const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
     VoiceCallCallerExperienceMetric,
-    'default',
+    'VoiceCallCallerExperienceMetric',
 )
 
 jest.mock('@repo/feature-flags', () => ({

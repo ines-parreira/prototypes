@@ -1,3 +1,3 @@
-import Mine from './Mine'
+import { Mine } from './Mine'
 
-export default Mine
+export { Mine }

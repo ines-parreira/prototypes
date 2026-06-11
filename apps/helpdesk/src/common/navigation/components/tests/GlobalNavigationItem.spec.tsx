@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
-import GlobalNavigationItem from 'common/navigation/components/GlobalNavigationItem'
+import { GlobalNavigationItem } from 'common/navigation/components/GlobalNavigationItem'
 import css from 'common/navigation/components/GlobalNavigationItem.less'
 
 describe('GlobalNavigationItem', () => {

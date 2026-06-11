@@ -4,10 +4,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import type { CampaignSuggestCopyResponse } from 'models/convert/campaign/types'
-import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import { AIBanner } from 'pages/common/components/AIBanner/AIBanner'
 import { VerticalTextCarousel } from 'pages/common/components/VerticalTextCarousel/VerticalTextCarousel'
 import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'

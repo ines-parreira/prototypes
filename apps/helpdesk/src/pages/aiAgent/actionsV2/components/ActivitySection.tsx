@@ -10,7 +10,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { ActivityAlert } from '../hooks/useActivityAlerts'
 import { useActivityAlerts } from '../hooks/useActivityAlerts'
 import type { ServiceConnectionStatuses } from '../hooks/useServiceConnectionStatuses'
-import ActivityCard from './ActivityCard'
+import { ActivityCard } from './ActivityCard'
 
 import css from './ActivitySection.less'
 
@@ -117,4 +117,4 @@ const ActivitySection = ({
     )
 }
 
-export default ActivitySection
+export { ActivitySection }

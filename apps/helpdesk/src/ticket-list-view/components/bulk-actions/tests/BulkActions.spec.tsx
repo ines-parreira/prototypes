@@ -9,46 +9,46 @@ import { JobType } from '@gorgias/helpdesk-types'
 import { UserRole } from 'config/types/user'
 import { useBulkAction } from 'jobs'
 
-import type AssignUser from '../AssignUser'
-import BulkActions from '../BulkActions'
-import type CloseTickets from '../CloseTickets'
-import type MoreActions from '../MoreActions'
+import type { AssignUser } from '../AssignUser'
+import { BulkActions } from '../BulkActions'
+import type { CloseTickets } from '../CloseTickets'
+import type { MoreActions } from '../MoreActions'
 
-jest.mock(
-    '../AssignUser',
-    () =>
-        ({ onClick }: ComponentProps<typeof AssignUser>) => (
-            <button onClick={onClick}>AssignUserMock</button>
-        ),
-)
-jest.mock(
-    '../CloseTickets',
-    () =>
-        ({ isDisabled, onClick }: ComponentProps<typeof CloseTickets>) => (
-            <button disabled={isDisabled} onClick={onClick}>
-                CloseTicketsMock
-            </button>
-        ),
-)
+jest.mock('../AssignUser', () => ({
+    AssignUser: ({ onClick }: ComponentProps<typeof AssignUser>) => (
+        <button onClick={onClick}>AssignUserMock</button>
+    ),
+}))
+jest.mock('../CloseTickets', () => ({
+    CloseTickets: ({
+        isDisabled,
+        onClick,
+    }: ComponentProps<typeof CloseTickets>) => (
+        <button disabled={isDisabled} onClick={onClick}>
+            CloseTicketsMock
+        </button>
+    ),
+}))
 const mockJobType = JobType.DeleteTicket
-jest.mock(
-    '../MoreActions',
-    () =>
-        ({ isDisabled, launchJob }: ComponentProps<typeof MoreActions>) => (
-            <button
-                disabled={isDisabled}
-                onClick={() =>
-                    launchJob({
-                        label: 'Delete',
-                        type: mockJobType,
-                        event: 'delete',
-                    })
-                }
-            >
-                MoreActionsMock
-            </button>
-        ),
-)
+jest.mock('../MoreActions', () => ({
+    MoreActions: ({
+        isDisabled,
+        launchJob,
+    }: ComponentProps<typeof MoreActions>) => (
+        <button
+            disabled={isDisabled}
+            onClick={() =>
+                launchJob({
+                    label: 'Delete',
+                    type: mockJobType,
+                    event: 'delete',
+                })
+            }
+        >
+            MoreActionsMock
+        </button>
+    ),
+}))
 
 const mockCreateJob = jest.fn()
 jest.mock('jobs/useBulkAction')

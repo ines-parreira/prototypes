@@ -3,7 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
-import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
+import { BillingStartView as NewBilling } from 'pages/settings/new_billing/views/BillingStartView'
 
 import { renderAppSettings } from './helpers/settingsRenderer'
 

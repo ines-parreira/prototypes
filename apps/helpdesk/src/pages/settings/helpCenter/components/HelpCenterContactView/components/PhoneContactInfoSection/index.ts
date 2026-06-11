@@ -1,1 +1,1 @@
-export { default } from './PhoneContactInfoSection'
+export { PhoneContactInfoSection } from './PhoneContactInfoSection'

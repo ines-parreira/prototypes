@@ -17,11 +17,11 @@ import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automat
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import type { KnowledgeMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
-import RelativeTime from 'pages/common/components/RelativeTime'
+import { RelativeTime } from 'pages/common/components/RelativeTime'
 
 import css from './SkillEditorSidePanelRecentTicketsSection.less'
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 
 import css from './MigrationBaseModalBody.less'
 
@@ -13,4 +13,4 @@ const MigrationBaseModal: React.FC<Props> = ({ children }) => {
     return <ModalBody className={css.wrapper}>{children}</ModalBody>
 }
 
-export default MigrationBaseModal
+export { MigrationBaseModal }

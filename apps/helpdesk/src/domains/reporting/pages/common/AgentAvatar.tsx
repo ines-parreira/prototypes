@@ -4,7 +4,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { User } from 'config/types/user'
 import css from 'domains/reporting/pages/common/AgentAvatar.less'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
 
 export const AgentAvatar = ({
     agent,

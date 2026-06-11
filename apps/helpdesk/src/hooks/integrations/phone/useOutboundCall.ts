@@ -7,9 +7,9 @@ import {
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
-import useVoiceDevice from './useVoiceDevice'
+import { useVoiceDevice } from './useVoiceDevice'
 
 type Options = {
     fromAddress: string

@@ -8,7 +8,7 @@ import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import StoreFilter from 'domains/reporting/pages/common/filters/StoreFilter'
+import { StoreFilter } from 'domains/reporting/pages/common/filters/StoreFilter'
 import * as billingFixtures from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'

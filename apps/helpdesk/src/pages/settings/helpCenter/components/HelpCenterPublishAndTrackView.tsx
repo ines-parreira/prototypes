@@ -12,19 +12,19 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
-import useAppDispatch from 'hooks/useAppDispatch'
-import Accordion from 'pages/common/components/accordion/Accordion'
-import AccordionBody from 'pages/common/components/accordion/AccordionBody'
-import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
-import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import BackLink from 'pages/common/components/BackLink'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { Accordion } from 'pages/common/components/accordion/Accordion'
+import { AccordionBody } from 'pages/common/components/accordion/AccordionBody'
+import { AccordionHeader } from 'pages/common/components/accordion/AccordionHeader'
+import { AccordionItem } from 'pages/common/components/accordion/AccordionItem'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { LinkAlert } from 'pages/common/components/Alert/LinkAlert'
+import { BackLink } from 'pages/common/components/BackLink'
 import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
-import CopyText from 'pages/common/components/CopyText'
-import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
-import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
-import InputField from 'pages/common/forms/input/InputField'
+import { CopyText } from 'pages/common/components/CopyText'
+import { InstallationCodeSnippet } from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
+import { TabNavigator } from 'pages/common/components/TabNavigator/TabNavigator'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { useGetPageEmbedments } from 'pages/settings/helpCenter/queries'
 import settingsCss from 'pages/settings/settings.less'
 import type { Paths } from 'rest_api/help_center_api/client.generated'
@@ -41,7 +41,7 @@ import {
     MANUALLY_EMBED_TABS,
     ManuallyEmbedOptions,
 } from '../constants'
-import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterActions } from '../hooks/useHelpCenterActions'
 import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
 import { useStoreIntegrationByShopName } from '../hooks/useStoreIntegrationByShopName'
@@ -53,10 +53,10 @@ import {
 } from '../utils/validations'
 import { ConnectToShopSection } from './ConnectToShopSection'
 import { CustomDomain } from './CustomDomain'
-import GoogleAnalyticsSection from './GoogleAnalyticSection'
-import HelpCenterAutoEmbedPublishSection from './HelpCenterAutoEmbedPublishSection'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import ManageEmbedments from './ManageEmbedments'
+import { GoogleAnalyticsSection } from './GoogleAnalyticSection'
+import { HelpCenterAutoEmbedPublishSection } from './HelpCenterAutoEmbedPublishSection'
+import { HelpCenterPageWrapper } from './HelpCenterPageWrapper'
+import { ManageEmbedments } from './ManageEmbedments'
 import { SubdomainSection } from './SubdomainSection'
 import { UpdateToggle } from './UpdateToggle'
 
@@ -629,5 +629,3 @@ export const HelpCenterInstallationView: React.FC = () => {
         </HelpCenterPageWrapper>
     )
 }
-
-export default HelpCenterInstallationView

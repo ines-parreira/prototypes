@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 
-import AddArticleCard from '../AddArticleCard'
+import { AddArticleCard } from '../AddArticleCard'
 
 describe('AddArticleCard', () => {
     it('should call onCreateArticle when clicked and canUpdateArticle is true', () => {

@@ -7,7 +7,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useInviteAgent } from 'hooks/agents/useInviteAgent'
-import InputField from 'pages/common/forms/input/InputField'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 
 import type { AgentState } from './types'
 

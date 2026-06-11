@@ -11,14 +11,16 @@ import { ViewField } from 'models/view/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { fetchViewItems, setOrderDirection } from 'state/views/actions'
 
-import HeaderCell from '../HeaderCell'
+import { HeaderCell } from '../HeaderCell'
 
 jest.mock('state/views/actions')
 const fetchViewItemsMock = assumeMock(fetchViewItems)
 const setOrderDirectionMock = assumeMock(setOrderDirection)
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const mockActionsComponent = 'ACTIONS'
 const ActionsComponent = () => <div>{mockActionsComponent}</div>

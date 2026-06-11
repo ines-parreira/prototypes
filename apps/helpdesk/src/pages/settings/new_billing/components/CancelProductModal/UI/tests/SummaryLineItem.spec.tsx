@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 
 import { Cadence } from 'models/billing/types'
 
-import SummaryLineItem from '../SummaryLineItem'
+import { SummaryLineItem } from '../SummaryLineItem'
 
 describe('SummaryLineItem', () => {
     it.each([true, false])(

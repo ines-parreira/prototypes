@@ -7,8 +7,8 @@ import type {
 } from 'models/helpCenter/types'
 import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
 
-import AIArticleRow from '../AIArticleRow/AIArticleRow'
-import AIArticlesToggleButton from '../AIArticlesToggleButton'
+import { AIArticleRow } from '../AIArticleRow/AIArticleRow'
+import { AIArticlesToggleButton } from '../AIArticlesToggleButton'
 
 import css from './AIArticlesLibraryList.less'
 
@@ -78,4 +78,4 @@ const AIArticlesList = ({
     </>
 )
 
-export default AIArticlesList
+export { AIArticlesList }

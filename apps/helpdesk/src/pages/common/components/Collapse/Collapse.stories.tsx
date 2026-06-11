@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import Collapse from './Collapse'
+import { Collapse } from './Collapse'
 
 const storyConfig: Meta = {
     title: 'General/Collapse',

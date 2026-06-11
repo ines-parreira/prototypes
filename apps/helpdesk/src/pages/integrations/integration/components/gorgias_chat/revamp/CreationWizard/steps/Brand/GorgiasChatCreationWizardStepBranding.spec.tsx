@@ -17,10 +17,10 @@ import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import Wizard from 'pages/common/components/wizard/Wizard'
+import { Wizard } from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
-import GorgiasChatCreationWizardStepBranding from './GorgiasChatCreationWizardStepBranding'
+import { GorgiasChatCreationWizardStepBranding } from './GorgiasChatCreationWizardStepBranding'
 
 type LogoUploadProps = {
     url?: string
@@ -39,10 +39,9 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',

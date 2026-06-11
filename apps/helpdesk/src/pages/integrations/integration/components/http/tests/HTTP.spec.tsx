@@ -10,7 +10,7 @@ import {
     INTEGRATIONS_LIST_PATH,
     NEW_INTEGRATION_PATH,
 } from '../constants'
-import HTTP from '../HTTP'
+import { Http as HTTP } from '../HTTP'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -22,29 +22,30 @@ const useParamsMock = useParams as jest.Mock
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ integrations: fromJS({ integrations: [] }) })
 
-jest.mock('pages/common/components/PageHeader', () => () => <div>Header</div>)
+jest.mock('pages/common/components/PageHeader', () => ({
+    PageHeader: () => <div>Header</div>,
+}))
 jest.mock(
     'pages/integrations/integration/components/http/SecondaryNavigation',
-    () => () => <div>Nav</div>,
+    () => ({ SecondaryNavigation: () => <div>Nav</div> }),
 )
 jest.mock(
     'pages/integrations/integration/components/http/Overview/Details',
-    () => () => <div>Details</div>,
+    () => ({ Details: () => <div>Details</div> }),
 )
 jest.mock(
     'pages/integrations/integration/components/http/Overview/List',
-    () => () => <div>List</div>,
+    () => ({ List: () => <div>List</div> }),
 )
-jest.mock(
-    'pages/integrations/integration/components/http/Integration',
-    () => () => <div>Integration</div>,
-)
-jest.mock('pages/integrations/integration/components/http/Events', () => () => (
-    <div>Events</div>
-))
-jest.mock('pages/integrations/integration/components/http/Event', () => () => (
-    <div>Event</div>
-))
+jest.mock('pages/integrations/integration/components/http/Integration', () => ({
+    Integration: () => <div>Integration</div>,
+}))
+jest.mock('pages/integrations/integration/components/http/Events', () => ({
+    Events: () => <div>Events</div>,
+}))
+jest.mock('pages/integrations/integration/components/http/Event', () => ({
+    Event: () => <div>Event</div>,
+}))
 
 describe('HTTP', () => {
     it.each([

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 
 import * as selectors from '../../../../../state/teams/selectors'
 import type { RootState } from '../../../../../state/types'
-import Select from './ReactSelect'
+import { Select } from './ReactSelect'
 
 type OwnProps = {
     onChange: (value: number) => void
@@ -64,4 +64,6 @@ const connector = connect((state: RootState) => ({
     teams: selectors.getTeams(state),
 }))
 
-export default connector(AssigneeTeamSelectContainer)
+const DefaultExportAssigneeTeamSelect = connector(AssigneeTeamSelectContainer)
+
+export { DefaultExportAssigneeTeamSelect }

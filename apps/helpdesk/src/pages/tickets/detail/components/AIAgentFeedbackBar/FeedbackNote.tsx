@@ -1,6 +1,6 @@
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import TextArea from '../../../../../gorgias-design-system/Input/TextArea'
+import { TextArea } from '../../../../../gorgias-design-system/Input/TextArea'
 
 import feedbackCreateResourceCss from './FeedbackCreateResource.less'
 import css from './FeedbackNote.less'
@@ -31,4 +31,4 @@ const FeedbackOrders: React.FC<Props> = ({ onBlur, value }) => {
     )
 }
 
-export default FeedbackOrders
+export { FeedbackOrders }

@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import CheckboxCard from 'pages/common/components/CheckboxCard/CheckboxCard'
+import { CheckboxCard } from 'pages/common/components/CheckboxCard/CheckboxCard'
 
 import css from './PersonalitySelector.less'
 

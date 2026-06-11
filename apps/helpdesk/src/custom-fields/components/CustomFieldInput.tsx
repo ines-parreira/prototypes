@@ -1,4 +1,4 @@
-import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
+import { MultiLevelSelect } from 'custom-fields/components/MultiLevelSelect'
 import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
 import {
     isDropdownInput,
@@ -8,7 +8,7 @@ import {
 import type { CustomField, CustomFieldValue } from 'custom-fields/types'
 
 import type { MultiLevelSelectProps } from './MultiLevelSelect/MultiLevelSelect'
-import StealthInput from './StealthInput'
+import { DefaultExportStealthInput as StealthInput } from './StealthInput'
 
 export type CustomFieldInputProps = {
     id: string
@@ -29,7 +29,7 @@ export type CustomFieldInputProps = {
     className?: string
 }
 
-export default function CustomFieldInput({
+export function CustomFieldInput({
     field,
     value,
     hasError = false,

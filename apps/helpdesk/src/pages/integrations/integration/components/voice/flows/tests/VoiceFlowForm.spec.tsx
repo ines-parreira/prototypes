@@ -12,14 +12,14 @@ import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 import type { ValidationError } from '@gorgias/helpdesk-validators'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
-import useAppSelector from 'hooks/useAppSelector'
-import InputField from 'pages/common/forms/input/InputField'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { VoiceFlowNodeType } from '../constants'
 import { useVoiceFlowForm } from '../utils/useVoiceFlowForm'
-import VoiceFlowForm from '../VoiceFlowForm'
+import { VoiceFlowForm } from '../VoiceFlowForm'
 
 jest.mock('@gorgias/helpdesk-validators', () => ({
     validateCallRoutingFlow: jest.fn(),
@@ -30,15 +30,17 @@ const mockFormUnsavedChangesPrompt = jest.fn((_args: any) => (
     <div>FormUnsavedChangesPrompt</div>
 ))
 
-jest.mock('../../VoiceFormSubmitButton', () => ({ children }: any) => (
-    <button type="submit">{children}</button>
-))
+jest.mock('../../VoiceFormSubmitButton', () => ({
+    VoiceFormSubmitButton: ({ children }: any) => (
+        <button type="submit">{children}</button>
+    ),
+}))
 jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => {
     const { forwardRef } = jest.requireActual('react')
 
     return {
         __esModule: true,
-        default: forwardRef((props: any) =>
+        FormUnsavedChangesPrompt: forwardRef((props: any) =>
             mockFormUnsavedChangesPrompt(props as any),
         ),
     }

@@ -3,8 +3,8 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useHelpCenterArticleTree from '../../hooks/useHelpCenterArticleTree'
-import ArticleSelectPreview from '../ArticleSelectPreview'
+import { useHelpCenterArticleTree } from '../../hooks/useHelpCenterArticleTree'
+import { ArticleSelectPreview } from '../ArticleSelectPreview'
 
 jest.mock('../../hooks/useHelpCenterArticleTree')
 

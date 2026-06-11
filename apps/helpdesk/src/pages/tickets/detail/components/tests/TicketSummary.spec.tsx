@@ -3,16 +3,17 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
+import { useGetDateAndTimeFormat } from 'hooks/useGetDateAndTimeFormat'
+import { useTicketSummary } from 'pages/tickets/detail/hooks/useTicketSummary'
 
-import TicketSummarySection, {
+import {
     AISummaryIcon,
     SummaryBody,
     SummaryBodySkeleton,
     SummaryInfo,
     SummarySkeleton,
     TicketSummaryButton,
+    TicketSummarySection,
 } from '../TicketSummary'
 
 jest.mock('@repo/utils', () => ({
@@ -22,12 +23,12 @@ jest.mock('@repo/utils', () => ({
 
 jest.mock('pages/tickets/detail/hooks/useTicketSummary', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useTicketSummary: jest.fn(),
 }))
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useGetDateAndTimeFormat: jest.fn(),
 }))
 
 const useTicketSummaryMock = useTicketSummary as jest.Mock

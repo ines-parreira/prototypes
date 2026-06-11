@@ -20,8 +20,8 @@ import {
     OBJECT_TYPE_SETTINGS,
 } from 'custom-fields/constants'
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import Loader from 'pages/common/components/Loader/Loader'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 import { getText, saveFileAsDownloaded } from 'utils/file'
 
@@ -241,5 +241,3 @@ export const DropdownCSVImport = ({
         </>
     )
 }
-
-export default DropdownCSVImport

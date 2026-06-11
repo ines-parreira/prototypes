@@ -15,7 +15,7 @@ import {
 } from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
-import GorgiasChatCreationWizard from './GorgiasChatCreationWizard'
+import { GorgiasChatCreationWizard } from './GorgiasChatCreationWizard'
 
 const mockUseAiAgentAccess = jest.fn()
 
@@ -23,17 +23,16 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: () => mockUseAiAgentAccess(),
 }))
 
-jest.mock(
-    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false,
-)
+jest.mock('pages/common/hooks/useIsIntersectingWithBrowserViewport', () => ({
+    useIsIntersectingWithBrowserViewport: () => false,
+}))
 jest.mock('pages/common/hooks/useCollapsibleColumn')
 
 const mockWizardSteps = jest.fn()
 
 jest.mock('pages/common/components/wizard/Wizard', () => ({
     __esModule: true,
-    default: ({
+    Wizard: ({
         children,
         steps,
     }: {
@@ -47,7 +46,7 @@ jest.mock('pages/common/components/wizard/Wizard', () => ({
 
 jest.mock('pages/common/components/wizard/WizardStep', () => ({
     __esModule: true,
-    default: ({
+    WizardStep: ({
         children,
         name,
     }: {
@@ -58,17 +57,17 @@ jest.mock('pages/common/components/wizard/WizardStep', () => ({
 
 jest.mock('./steps/Basics/GorgiasChatCreationWizardStepBasics', () => ({
     __esModule: true,
-    default: () => <div>Basics Step</div>,
+    GorgiasChatCreationWizardStepBasics: () => <div>Basics Step</div>,
 }))
 
 jest.mock('./steps/Brand/GorgiasChatCreationWizardStepBranding', () => ({
     __esModule: true,
-    default: () => <div>Branding Step</div>,
+    GorgiasChatCreationWizardStepBranding: () => <div>Branding Step</div>,
 }))
 
 jest.mock('./steps/Automate/GorgiasChatCreationWizardStepAutomate', () => ({
     __esModule: true,
-    default: () => <div>Automate Step</div>,
+    GorgiasChatCreationWizardStepAutomate: () => <div>Automate Step</div>,
 }))
 
 jest.mock(

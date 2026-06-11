@@ -9,7 +9,7 @@ import { useShopifySettingsForm } from '../useShopifySettingsForm'
 const mockUpdateIntegration = jest.fn()
 jest.mock('../useStoreUpdater', () => ({
     __esModule: true,
-    default: () => ({
+    useStoreUpdater: () => ({
         updateIntegration: mockUpdateIntegration,
         isUpdating: false,
     }),

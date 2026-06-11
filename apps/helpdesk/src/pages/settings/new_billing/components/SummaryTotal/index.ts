@@ -1,2 +1,2 @@
-export { default } from './SummaryTotal'
+export { SummaryTotal } from './SummaryTotal'
 export type { SummaryTotalProps } from './SummaryTotal'

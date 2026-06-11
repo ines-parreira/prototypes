@@ -5,9 +5,9 @@ import { screen, waitFor } from '@testing-library/react'
 
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
-import ToolbarProvider from '../../ToolbarProvider'
+import { ToolbarProvider } from '../../ToolbarProvider'
 import type { WorkflowVariablePickerProps } from '../WorkflowVariablePicker'
-import WorkflowVariablePicker from '../WorkflowVariablePicker'
+import { WorkflowVariablePicker } from '../WorkflowVariablePicker'
 
 const workflowVariables: WorkflowVariableList = [
     {

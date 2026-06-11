@@ -6,10 +6,10 @@ import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
-import mockedVirtuoso from 'tests/mockedVirtuoso'
+import { mockedVirtuoso } from 'tests/mockedVirtuoso'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
-import VoiceQueueList from '../VoiceQueueList'
+import { VoiceQueueList } from '../VoiceQueueList'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 

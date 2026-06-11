@@ -13,7 +13,7 @@ import {
     FACEBOOK_PRIVATE_REPLY_ACTION,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
 } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
-import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
+import { TicketBodyElement } from 'pages/tickets/detail/components/TicketBodyElement'
 import { InfluencedOrderSource } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import type { RootState } from 'state/types'
 
@@ -21,38 +21,40 @@ jest.mock('@repo/logging')
 
 jest.mock('pages/tickets/detail/components/AuditLogEvent', () => ({
     __esModule: true,
-    default: () => <p>AuditLogEvent</p>,
+    DefaultExportAuditLogEvent: () => <p>AuditLogEvent</p>,
     contentfulEventTypesValues: ['TicketMessageCreated'],
 }))
 
-jest.mock('pages/tickets/detail/components/Event', () => () => <p>Event</p>)
+jest.mock('pages/tickets/detail/components/Event', () => ({
+    EventContainer: () => <p>Event</p>,
+}))
 
-jest.mock('pages/tickets/detail/components/PhoneEvent/PhoneEvent', () => () => (
-    <p>PhoneEvent</p>
-))
+jest.mock('pages/tickets/detail/components/PhoneEvent/PhoneEvent', () => ({
+    PhoneEvent: () => <p>PhoneEvent</p>,
+}))
 
 jest.mock(
     'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent',
-    () => () => <p>PrivateReplyEvent</p>,
+    () => ({ PrivateReplyEvent: () => <p>PrivateReplyEvent</p> }),
 )
 
 jest.mock(
     'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion',
-    () => () => <p>RuleSuggestion</p>,
+    () => ({ RuleSuggestion: () => <p>RuleSuggestion</p> }),
 )
 
-jest.mock('pages/tickets/detail/components/SatisfactionSurvey', () => () => (
-    <p>SatisfactionSurvey</p>
-))
+jest.mock('pages/tickets/detail/components/SatisfactionSurvey', () => ({
+    SatisfactionSurvey: () => <p>SatisfactionSurvey</p>,
+}))
 
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCall',
-    () => () => <p>Voice call</p>,
+    () => ({ TicketVoiceCall: () => <p>Voice call</p> }),
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/TicketMessages',
-    () => () => <p>TicketMessages</p>,
+    () => ({ TicketMessages: () => <p>TicketMessages</p> }),
 )
 
 jest.mock(

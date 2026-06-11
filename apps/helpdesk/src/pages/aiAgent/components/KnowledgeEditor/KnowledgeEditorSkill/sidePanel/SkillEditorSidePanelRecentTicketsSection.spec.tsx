@@ -42,7 +42,7 @@ jest.mock('pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip', () => ({
 
 jest.mock('pages/common/components/RelativeTime', () => ({
     __esModule: true,
-    default: () => <span>1 hour ago</span>,
+    RelativeTime: () => <span>1 hour ago</span>,
 }))
 
 const mockUseSkillPerformanceFromContext =

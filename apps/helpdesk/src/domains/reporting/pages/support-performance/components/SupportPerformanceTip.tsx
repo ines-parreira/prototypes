@@ -3,7 +3,7 @@ import { sanitizeHtmlDefault } from '@repo/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { usePerformanceTips } from 'domains/reporting/hooks/usePerformanceTips'
-import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
+import { PerformanceTip } from 'domains/reporting/pages/common/components/PerformanceTip'
 import type { MetricName } from 'domains/reporting/services/constants'
 
 export const SupportPerformanceTip = ({

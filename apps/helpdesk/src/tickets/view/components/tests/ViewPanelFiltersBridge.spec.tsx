@@ -12,8 +12,8 @@ import { ViewField } from '@gorgias/helpdesk-types'
 
 import * as viewsConfig from 'config/views'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
 import { getDefaultCustomFieldOperator } from 'pages/common/components/ViewTable/Filters/utils'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -87,11 +87,11 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppDispatch: jest.fn(),
 }))
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useAppSelector: jest.fn(),
 }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -131,12 +131,12 @@ jest.mock('pages/common/components/ViewTable/AddFilterDropdown', () => ({
 
 jest.mock('pages/common/components/ViewTable/Filters/ViewFilters', () => ({
     __esModule: true,
-    default: () => <div>ViewFilters</div>,
+    ViewFilters: () => <div>ViewFilters</div>,
 }))
 
 jest.mock('pages/common/components/ViewSharing/ViewSharingButton', () => ({
     __esModule: true,
-    default: () => <button>Share view</button>,
+    DefaultExportViewSharingButton: () => <button>Share view</button>,
 }))
 
 jest.mock('pages/common/components/ViewTable/Filters/utils', () => ({

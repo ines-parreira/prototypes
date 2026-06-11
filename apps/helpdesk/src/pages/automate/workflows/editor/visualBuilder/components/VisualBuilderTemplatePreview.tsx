@@ -10,7 +10,7 @@ import {
     useReactFlow,
 } from '@xyflow/react'
 
-import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
+import { FitViewIcon } from 'pages/automate/common/components/FitViewIcon'
 import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
@@ -32,16 +32,16 @@ import type {
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import CustomEdge from '../CustomEdge'
-import AutomatedMessageNode from '../nodes/AutomatedMessageNode'
-import ChannelTriggerNode from '../nodes/ChannelTriggerNode'
-import EndNode from '../nodes/EndNode'
-import FileUploadNode from '../nodes/FileUploadNode'
-import HttpRequestNode from '../nodes/HttpRequestNode'
-import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
-import OrderSelectionNode from '../nodes/OrderSelectionNode'
-import ShopperAuthenticationNode from '../nodes/ShopperAuthenticationNode'
-import TextReplyNode from '../nodes/TextReplyNode'
+import { CustomEdge } from '../CustomEdge'
+import { AutomatedMessageNodeWrapper as AutomatedMessageNode } from '../nodes/AutomatedMessageNode'
+import { ChannelTriggerNodeWrapper as ChannelTriggerNode } from '../nodes/ChannelTriggerNode'
+import { EndNodeWrapper as EndNode } from '../nodes/EndNode'
+import { FileUploadNodeWrapper as FileUploadNode } from '../nodes/FileUploadNode'
+import { HttpRequestNodeWrapper as HttpRequestNode } from '../nodes/HttpRequestNode'
+import { MultipleChoicesNodeWrapper as MultipleChoicesNode } from '../nodes/MultipleChoicesNode'
+import { OrderSelectionNodeWrapper as OrderSelectionNode } from '../nodes/OrderSelectionNode'
+import { ShopperAuthenticationNodeWrapper as ShopperAuthenticationNode } from '../nodes/ShopperAuthenticationNode'
+import { TextReplyNodeWrapper as TextReplyNode } from '../nodes/TextReplyNode'
 import { VisualBuilderBackground } from './VisualBuilderBackground'
 
 import css from '../WorkflowVisualBuilder.less'
@@ -154,4 +154,8 @@ function withProviders<
     }
 }
 
-export default withProviders(VisualBuilderTemplatePreview)
+const DefaultExportVisualBuilderTemplatePreview = withProviders(
+    VisualBuilderTemplatePreview,
+)
+
+export { DefaultExportVisualBuilderTemplatePreview }

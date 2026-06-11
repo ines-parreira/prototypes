@@ -31,19 +31,19 @@ import {
 } from 'config/integrations/gorgias_chat'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
 import { FlagLanguageItem } from 'pages/common/components/LanguageBulletList'
-import PageHeader from 'pages/common/components/PageHeader'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
-import useIsAutomateSubscriber from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsAutomateSubscriber'
-import useIntegrationPageViewLogEvent from 'pages/integrations/integration/hooks/useIntegrationPageViewLogEvent'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { useIsAutomateSubscriber } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsAutomateSubscriber'
+import { useIntegrationPageViewLogEvent } from 'pages/integrations/integration/hooks/useIntegrationPageViewLogEvent'
 import type {
     Texts,
     TextsLegacyMonoLanguage,
@@ -56,13 +56,14 @@ import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
-import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
-import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
-import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
-import translationsAvailableKeys, {
+import { GorgiasTranslateExitModal } from './GorgiasTranslateExitModal'
+import { GorgiasTranslateInputGroup } from './GorgiasTranslateInputGroup'
+import { GorgiasTranslateTextBackLink } from './GorgiasTranslateTextBackLink'
+import {
     deleteUnusedKeys,
+    translationsAvailableKeys,
 } from './translations-available-keys'
-import isEqualTextsPerLanguage from './utils/CompareTextsPerLanguage'
+import { isEqualTextsPerLanguage } from './utils/CompareTextsPerLanguage'
 
 import css from './GorgiasTranslateText.less'
 
@@ -1027,10 +1028,12 @@ function GorgiasTranslateText({
     )
 }
 
-export default connect(
+const DefaultExportGorgiasTranslateText = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(GorgiasTranslateText)
+
+export { DefaultExportGorgiasTranslateText }
 
 function getSelectedLanguage(
     languageValue: LanguageChat,

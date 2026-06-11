@@ -5,18 +5,19 @@ import classnames from 'classnames'
 import loopReturns from 'assets/img/integrations/loop-returns.png'
 import type { ReturnAction } from 'models/selfServiceConfiguration/types'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import Alert from 'pages/common/components/Alert/Alert'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
 import { DEFAULT_RETURN_ACTION } from '../constants'
-import useLoopReturnsIntegrations from '../hooks/useLoopReturnsIntegrations'
-import LoopReturnsIntegrationCreateModal from './LoopReturnsIntegrationCreateModal'
-import ReturnOrderAutomatedResponseAction from './ReturnOrderAutomatedResponseAction'
+import { useLoopReturnsIntegrations } from '../hooks/useLoopReturnsIntegrations'
+import { LoopReturnsIntegrationCreateModal } from './LoopReturnsIntegrationCreateModal'
+import { ReturnOrderAutomatedResponseAction } from './ReturnOrderAutomatedResponseAction'
 
 import css from './ReturnOrderAction.less'
 
@@ -197,4 +198,4 @@ const ReturnOrderAction = ({ action, onChange }: Props) => {
     )
 }
 
-export default ReturnOrderAction
+export { ReturnOrderAction }

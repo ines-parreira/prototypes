@@ -1,8 +1,8 @@
 import { registerCategory, registerNotification } from 'common/notifications'
 
-import TicketNotification from './components/TicketNotification'
+import { TicketNotification } from './components/TicketNotification'
 import type { TicketPayload } from './types'
-import mapTicketMessageCreatedType from './utils/mapTicketMessageCreatedType'
+import { mapTicketMessageCreatedType } from './utils/mapTicketMessageCreatedType'
 
 registerCategory({
     type: 'ticket-message-created',

@@ -22,21 +22,21 @@ import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { isOtherCadenceUpgrade } from 'models/billing/utils'
-import Alert from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Alert } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { useIsPaymentMethodMissing } from 'pages/settings/new_billing/hooks/useIsPaymentMethodMissing'
-import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
+import { useProductCancellations } from 'pages/settings/new_billing/hooks/useProductCancellations'
 import type { TicketPurpose } from 'state/billing/types'
 
-import BackLink from '../../components/BackLink/BackLink'
-import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
-import Card from '../../components/Card/Card'
+import { BackLink } from '../../components/BackLink/BackLink'
+import { BillingFrequency } from '../../components/BillingFrequency/BillingFrequency'
+import { Card } from '../../components/Card/Card'
 import { ConfirmChangesModal } from '../../components/ConfirmChangesModal'
-import SummaryFooter from '../../components/SummaryFooter/SummaryFooter'
+import { SummaryFooter } from '../../components/SummaryFooter/SummaryFooter'
 import { SummaryItem } from '../../components/SummaryItem/SummaryItem'
-import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
+import { SummaryTotal } from '../../components/SummaryTotal/SummaryTotal'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
 import { isPendingInvoiceError } from '../../utils/isPendingInvoiceError'
 import { isVersionConflictError } from '../../utils/isVersionConflictError'
@@ -510,4 +510,4 @@ const BillingFrequencyView = ({
     )
 }
 
-export default BillingFrequencyView
+export { BillingFrequencyView }

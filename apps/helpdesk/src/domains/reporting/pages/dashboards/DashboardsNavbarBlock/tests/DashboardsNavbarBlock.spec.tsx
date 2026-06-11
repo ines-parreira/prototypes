@@ -39,7 +39,9 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/currentUser/selectors', () => ({
     ...jest.requireActual('state/currentUser/selectors'),

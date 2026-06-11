@@ -8,9 +8,9 @@ import { useLocation } from 'react-router-dom'
 import { useGetActionsApp } from 'models/workflows/queries'
 import type { RootState } from 'state/types'
 
-import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'
-import useApps from '../hooks/useApps'
-import useEditActionsApp from '../hooks/useEditActionsApp'
+import { ActionsPlatformEditAppFormView } from '../ActionsPlatformEditAppFormView'
+import { useApps } from '../hooks/useApps'
+import { useEditActionsApp } from '../hooks/useEditActionsApp'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionsApp')

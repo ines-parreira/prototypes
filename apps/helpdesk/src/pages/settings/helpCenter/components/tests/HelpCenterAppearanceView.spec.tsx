@@ -11,7 +11,7 @@ import { FontCatalogueModal } from 'pages/settings/common/FontSelectField/compon
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'

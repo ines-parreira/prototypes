@@ -1,7 +1,8 @@
 import type { MetricTrend } from '@repo/reporting'
 
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { revenuePerInteractionQueryV2Factory } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

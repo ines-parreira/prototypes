@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 
-import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat'
+import { FacebookIntegrationCustomerChat } from '../FacebookIntegrationCustomerChat'
 
 describe('<FacebookIntegrationCustomerChat />', () => {
     it('should show the warning banner if an integration already setup messenger on shopify', () => {

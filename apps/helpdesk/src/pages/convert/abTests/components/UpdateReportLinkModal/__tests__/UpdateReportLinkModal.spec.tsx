@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 
-import UpdateReportLinkModal from '../UpdateReportLinkModal'
+import { UpdateReportLinkModal } from '../UpdateReportLinkModal'
 
 describe('UpdateReportLinkModal', () => {
     it('validation error', () => {

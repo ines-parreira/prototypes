@@ -11,7 +11,7 @@ import type {
     HandoverCustomizationChatSettingsDrawerContent,
     HandoverCustomizationChatSettingsDrawerProps,
 } from '../HandoverCustomizationChatSettingsDrawer'
-import HandoverCustomizationChatSettingsDrawer from '../HandoverCustomizationChatSettingsDrawer'
+import { HandoverCustomizationChatSettingsDrawer } from '../HandoverCustomizationChatSettingsDrawer'
 
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',

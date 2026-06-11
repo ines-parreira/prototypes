@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import PeopleSearchResults from '../PeopleSearchResults'
+import { PeopleSearchResults } from '../PeopleSearchResults'
 
 const teams: Map<any, any> = fromJS({
     all: {

@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-export default function parseTimeDelta(timedelta: string) {
+export function parseTimeDelta(timedelta: string) {
     const timedeltaRegex = /^(?<value>\d+)(?<unit>[mhd])$/
     // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
     const groups = timedelta.match(timedeltaRegex)?.groups

@@ -12,9 +12,9 @@ import {
 import type { SupportedTicketQAScoreDimension } from '../config'
 import { dimensionOrderOfManualDimensions } from '../config'
 import type { DimensionSummary } from '../types'
-import useSaveState from './useSaveState'
+import { useSaveState } from './useSaveState'
 
-export default function useAutoQA(ticketId: number) {
+export function useAutoQA(ticketId: number) {
     const { data, isError, isLoading, refetch } =
         useListTicketQaScoreDimensions(ticketId)
     const { isLoading: isSaving, mutate: upsertTicketQaScoreDimension } =

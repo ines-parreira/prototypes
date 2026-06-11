@@ -10,8 +10,8 @@ import { mockListBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import ListCustomBusinessHours from '../ListCustomBusinessHours'
-import ListCustomBusinessHoursTableRow from '../ListCustomBusinessHoursTableRow'
+import { ListCustomBusinessHours } from '../ListCustomBusinessHours'
+import { ListCustomBusinessHoursTableRow } from '../ListCustomBusinessHoursTableRow'
 
 const queryClient = mockQueryClient()
 const server = setupServer()

@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { AUTOMATED_RESPONSE } from 'models/selfServiceConfiguration/types'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import { DEFAULT_RESPONSE_MESSAGE_CONTENT } from '../constants'
 
@@ -48,4 +48,4 @@ const useCancelOrderFlow = (shopName: string) => {
     }
 }
 
-export default useCancelOrderFlow
+export { useCancelOrderFlow }

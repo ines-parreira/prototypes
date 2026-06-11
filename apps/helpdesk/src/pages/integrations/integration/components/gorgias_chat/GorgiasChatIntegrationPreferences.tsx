@@ -1,13 +1,13 @@
 import type { ComponentProps } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { ChatSettingsPreferencesSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/ChatSettingsPreferencesSkeleton'
 import { GorgiasChatIntegrationPreferencesRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/GorgiasChatIntegrationPreferences'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
-import GorgiasChatIntegrationPreferencesLegacy from './legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences'
+import { GorgiasChatIntegrationPreferencesWrapper as GorgiasChatIntegrationPreferencesLegacy } from './legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences'
 
 type Props = ComponentProps<typeof GorgiasChatIntegrationPreferencesLegacy>
 

@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 
-import socketManager from 'services/socketManager'
+import { socketManager } from 'services/socketManager'
 import type {
     ServerMessage,
     VoiceCallWrapUpTimeEndedEvent,
 } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
 
-import PhoneBarContainer from './PhoneBarContainer/PhoneBarContainer'
+import { PhoneBarContainer } from './PhoneBarContainer/PhoneBarContainer'
 
 type Props = {
     children: ReactNode
@@ -16,7 +16,7 @@ type Props = {
     callId: number
 }
 
-export default function ActiveWrapUpCallBar({
+export function ActiveWrapUpCallBar({
     children,
     clearWrapUpTime,
     callId,

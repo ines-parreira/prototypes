@@ -7,10 +7,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useAppSelector from 'hooks/useAppSelector'
-import type MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import { useAppSelector } from 'hooks/useAppSelector'
+import type { MacroContainer } from 'pages/tickets/common/macros/MacroContainer'
 
-import ApplyMacro from '../ApplyMacro'
+import { ApplyMacro } from '../ApplyMacro'
 
 const mockStore = configureMockStore([thunk])
 
@@ -18,17 +18,18 @@ jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = useAppSelector as jest.Mock
 
 const mockItemsIds = fromJS([])
-jest.mock(
-    'pages/tickets/common/macros/MacroContainer',
-    () =>
-        ({ onComplete, closeModal }: ComponentProps<typeof MacroContainer>) => (
-            <div>
-                MacroContainerMock
-                <div onClick={closeModal}>closeModal</div>
-                <div onClick={() => onComplete?.(mockItemsIds)}>onComplete</div>
-            </div>
-        ),
-)
+jest.mock('pages/tickets/common/macros/MacroContainer', () => ({
+    MacroContainer: ({
+        onComplete,
+        closeModal,
+    }: ComponentProps<typeof MacroContainer>) => (
+        <div>
+            MacroContainerMock
+            <div onClick={closeModal}>closeModal</div>
+            <div onClick={() => onComplete?.(mockItemsIds)}>onComplete</div>
+        </div>
+    ),
+}))
 
 describe('<ApplyMacro />', () => {
     const minProps = {

@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 
-import contactFormsReducer, {
+import {
     initialState as contactFormsInitialState,
+    contactFormReducer as contactFormsReducer,
 } from 'state/entities/contactForm/contactForms'
-import contactFormsAutomationSettingsReducer, {
+import {
     initialState as contactFormsAutomationSettingsInitialState,
+    contactFormAutomationSettingsReducer as contactFormsAutomationSettingsReducer,
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
 
 export const initialState = {
@@ -12,7 +14,9 @@ export const initialState = {
     contactFormsAutomationSettings: contactFormsAutomationSettingsInitialState,
 }
 
-export default combineReducers({
+const DefaultExportReducer = combineReducers({
     contactForms: contactFormsReducer,
     contactFormsAutomationSettings: contactFormsAutomationSettingsReducer,
 })
+
+export { DefaultExportReducer }

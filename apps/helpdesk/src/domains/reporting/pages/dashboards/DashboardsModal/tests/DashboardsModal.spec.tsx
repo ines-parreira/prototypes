@@ -32,7 +32,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 jest.mock('@repo/tickets', () => ({
     formatPhoneNumberInternational: jest.fn((n: string) => n),

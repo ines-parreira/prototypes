@@ -130,7 +130,7 @@ const mockChannel = {
 
 const mockedUseSelfServiceChatChannels = jest.requireMock(
     'pages/automate/common/hooks/useSelfServiceChatChannels',
-).default as jest.MockedFunction<() => unknown[]>
+).useSelfServiceChatChannels as jest.MockedFunction<() => unknown[]>
 
 const mockHandleFlowAdd = jest.fn()
 const mockHandleFlowRemove = jest.fn()

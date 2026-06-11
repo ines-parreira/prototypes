@@ -7,7 +7,7 @@ import { fetchTicketsByTicketIds } from 'models/ticket/resources'
 
 import type { TicketCompact } from '../types'
 
-export default function useTicketData(
+export function useTicketData(
     visibleStaleTicketIds: number[],
     markUpdated: (ticketIds: number[]) => void,
     ticketId?: number,

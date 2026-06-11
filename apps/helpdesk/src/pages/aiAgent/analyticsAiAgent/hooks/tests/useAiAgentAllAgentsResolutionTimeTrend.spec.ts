@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import useStatsMetricTrend, {
+import {
     fetchStatsMetricTrend,
+    useStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -21,12 +22,12 @@ const statsFilters: StatsFilters = {
 
 jest.mock('domains/reporting/hooks/useStatsMetricTrend', () => ({
     __esModule: true,
-    default: jest.fn(),
+    useStatsMetricTrend: jest.fn(),
     fetchStatsMetricTrend: jest.fn(),
     getStatsTrendHook: jest.fn(() => (...args: unknown[]) => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         const mod = require('domains/reporting/hooks/useStatsMetricTrend')
-        return mod.default(...args)
+        return mod.useStatsMetricTrend(...args)
     }),
     getStatsTrendFetch: jest.fn(() => (...args: unknown[]) => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports

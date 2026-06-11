@@ -26,7 +26,7 @@ type Props = {
     notification: Notification<AiAgentNotificationPayload>
 } & ContentProps
 
-export default function AiAgentNotification({ notification, ...props }: Props) {
+export function AiAgentNotification({ notification, ...props }: Props) {
     const payload = notification.payload
     const { aiAgentTicketViewId } = useAccountStoreConfiguration({
         storeNames: [payload.shop_name],

@@ -3,20 +3,22 @@ import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasAgentPrivileges } from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
-import useAutoQA from '../../hooks/useAutoQA'
-import AutoQA from '../AutoQA'
+import { useAutoQA } from '../../hooks/useAutoQA'
+import { AutoQA } from '../AutoQA'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('../../hooks/useAutoQA', () => jest.fn())
+jest.mock('../../hooks/useAutoQA', () => ({ useAutoQA: jest.fn() }))
 const useAutoQAMock = useAutoQA as jest.Mock
 
-jest.mock('hooks/useHasAgentPrivileges', () => jest.fn())
+jest.mock('hooks/useHasAgentPrivileges', () => ({
+    useHasAgentPrivileges: jest.fn(),
+}))
 const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.Mock
 
 jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
@@ -27,17 +29,22 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
 jest.mock('@repo/tickets/feature-flags')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
-jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)
-jest.mock('../Dimension', () => () => <p>Dimension</p>)
-jest.mock('../SaveBadge', () => ({ state }: { state: string }) => (
-    <div data-testid="save-badge">{state}</div>
-))
+jest.mock('../AutoQASkeleton', () => ({
+    AutoQASkeleton: () => <div>Loading...</div>,
+}))
+jest.mock('../Dimension', () => ({ Dimension: () => <p>Dimension</p> }))
+jest.mock('../SaveBadge', () => ({
+    SaveBadge: ({ state }: { state: string }) => (
+        <div data-testid="save-badge">{state}</div>
+    ),
+}))
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge',
-    () =>
-        ({ state }: { state: number }) => (
+    () => ({
+        AutoSaveBadge: ({ state }: { state: number }) => (
             <div data-testid="auto-save-badge">{state}</div>
         ),
+    }),
 )
 
 describe('AutoQA', () => {

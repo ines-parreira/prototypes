@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom'
 import { Button } from '@gorgias/axiom'
 
 import GenericStoreIcon from 'assets/img/icons/generic-store.svg'
-import PageHeader from 'pages/common/components/PageHeader'
+import { PageHeader } from 'pages/common/components/PageHeader'
 
 import css from './NoStoresPage.less'
 
-export default function NoStoresPage() {
+export function NoStoresPage() {
     return (
         <div className="full-width">
             <PageHeader title="Store Management"></PageHeader>

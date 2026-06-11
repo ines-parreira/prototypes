@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { User } from '@gorgias/helpdesk-queries'
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 export type TicketPresenceState = {
@@ -13,9 +13,7 @@ export type TicketPresenceState = {
     hasBoth: boolean
 }
 
-export default function useCollisionDetection(
-    ticketId: number,
-): TicketPresenceState {
+export function useCollisionDetection(ticketId: number): TicketPresenceState {
     const currentUser = useAppSelector(getCurrentUser)
     const { getTicketActivity } = useAgentActivity()
     const ticketActivity = getTicketActivity(ticketId)

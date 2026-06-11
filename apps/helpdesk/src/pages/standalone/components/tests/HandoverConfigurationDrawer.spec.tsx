@@ -139,7 +139,7 @@ describe('<HandoverConfigurationDrawer />', () => {
         jest.clearAllMocks()
 
         // Mock useAppSelector
-        jest.spyOn(useAppSelectorModule, 'default').mockImplementation(
+        jest.spyOn(useAppSelectorModule, 'useAppSelector').mockImplementation(
             mockUseAppSelector,
         )
         mockUseAppSelector.mockReturnValue(mockEmailIntegrations)

@@ -2,7 +2,7 @@ import { Redirect, useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import CancelOrderFlowView from './CancelOrderFlowView'
+import { CancelOrderFlowView } from './CancelOrderFlowView'
 
 const CancelOrderFlowViewContainer = () => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -15,4 +15,4 @@ const CancelOrderFlowViewContainer = () => {
     return <CancelOrderFlowView />
 }
 
-export default CancelOrderFlowViewContainer
+export { CancelOrderFlowViewContainer }

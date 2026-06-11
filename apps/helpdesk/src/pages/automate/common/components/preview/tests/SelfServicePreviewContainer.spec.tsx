@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import SelfServicePreviewContainer from '../SelfServicePreviewContainer'
+import { SelfServicePreviewContainer } from '../SelfServicePreviewContainer'
 
 describe('<SelfServicePreviewChannelSelect />', () => {
     it('should render component', () => {

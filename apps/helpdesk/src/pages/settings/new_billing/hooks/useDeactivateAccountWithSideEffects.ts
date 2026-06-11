@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     getBillingStateQuery,

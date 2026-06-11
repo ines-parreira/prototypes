@@ -4,13 +4,13 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { AppOAuthPermission } from 'config/oauthPermissions'
 
-import AppPermission from './AppPermission'
+import { AppPermission } from './AppPermission'
 
 interface Props {
     permissions: AppOAuthPermission[]
 }
 
-export default function AppPermissions({ permissions }: Props) {
+export function AppPermissions({ permissions }: Props) {
     const [showAll, setShowAll] = useState(false)
 
     if (permissions.length === 0) {

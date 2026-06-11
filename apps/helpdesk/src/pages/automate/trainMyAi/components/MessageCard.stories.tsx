@@ -3,7 +3,7 @@ import React from 'react'
 
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
-import MessageCard from './MessageCard'
+import { MessageCard } from './MessageCard'
 
 const storyConfig: Meta<typeof MessageCard> = {
     title: 'TrainMyAi/MessageCard',

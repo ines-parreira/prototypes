@@ -8,8 +8,8 @@ import {
 
 import { slaPolicy3 } from 'pages/settings/SLAs/fixtures/fixtures'
 
-import makeMappedFormSLAPolicy from '../makeMappedFormSLAPolicy'
-import useFormValues from '../useFormValues'
+import { makeMappedFormSLAPolicy } from '../makeMappedFormSLAPolicy'
+import { useFormValues } from '../useFormValues'
 
 describe('useFormValues', () => {
     it('should map provided policy to form values correctly', () => {

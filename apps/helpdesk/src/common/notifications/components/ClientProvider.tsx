@@ -3,14 +3,14 @@ import type { ReactNode } from 'react'
 
 import { useKnockFeed } from '@knocklabs/react'
 
-import Client from '../Client'
-import Context from '../Context'
+import { Client } from '../Client'
+import { DefaultExportContext as Context } from '../Context'
 
 type Props = {
     children: ReactNode
 }
 
-export default function ClientProvider({ children }: Props) {
+export function ClientProvider({ children }: Props) {
     const { feedClient } = useKnockFeed()
     const clientRef = useRef<Client | null>(null)
     if (!clientRef.current) {

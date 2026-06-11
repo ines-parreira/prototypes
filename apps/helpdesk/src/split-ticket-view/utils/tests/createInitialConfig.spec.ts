@@ -1,7 +1,7 @@
 import type { Config } from 'panels'
 
 import { LayoutKeys } from '../../constants'
-import createInitialConfig from '../createInitialConfig'
+import { createInitialConfig } from '../createInitialConfig'
 
 const defaultConfig: Config = [
     [100, 100, 100],

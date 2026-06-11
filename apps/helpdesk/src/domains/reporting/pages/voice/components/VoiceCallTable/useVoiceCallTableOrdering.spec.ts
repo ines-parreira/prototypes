@@ -2,8 +2,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
-import useVoiceCallTableOrdering from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
-import useOrderBy from 'hooks/useOrderBy'
+import { useVoiceCallTableOrdering } from 'domains/reporting/pages/voice/components/VoiceCallTable/useVoiceCallTableOrdering'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('hooks/useOrderBy')

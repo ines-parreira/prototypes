@@ -12,10 +12,10 @@ import type {
     BigCommerceConsignment,
     BigCommerceShippingOption,
 } from 'models/integration/types'
-import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import Loader from 'pages/common/components/Loader/Loader'
+import { MoneyAmount } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import { Loader } from 'pages/common/components/Loader/Loader'
 import type { RadioFieldOption } from 'pages/common/forms/RadioFieldSet'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { RadioFieldSet } from 'pages/common/forms/RadioFieldSet'
 
 import { PopoverContainer } from './components/popover-container/PopoverContainer'
 

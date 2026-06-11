@@ -4,32 +4,32 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
+import { useWhatsAppEditor } from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 
 import { NewTicketPageEditor } from './NewTicketPageEditor'
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
-    () => jest.fn(),
+    () => ({ useWhatsAppEditor: jest.fn() }),
 )
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(() => ({ hasAccess: true })),
 }))
 
-jest.mock('pages/common/editor/hooks/useForm', () =>
-    jest.fn((submit) => ({
+jest.mock('pages/common/editor/hooks/useForm', () => ({
+    useForm: jest.fn((submit) => ({
         formRef: { current: null },
         onSubmit: submit,
     })),
-)
+}))
 
-jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () =>
-    jest.fn(() => ({ languages: [], tags: [] })),
-)
+jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => ({
+    useInitialMacroFilters: jest.fn(() => ({ languages: [], tags: [] })),
+}))
 
-jest.mock('pages/common/editor/hooks/useMacros', () =>
-    jest.fn(() => ({
+jest.mock('pages/common/editor/hooks/useMacros', () => ({
+    useMacros: jest.fn(() => ({
         hasShown: false,
         filters: { languages: [], tags: [] },
         isActive: false,
@@ -38,16 +38,16 @@ jest.mock('pages/common/editor/hooks/useMacros', () =>
         onChangeFilters: jest.fn(),
         onChangeQuery: jest.fn(),
     })),
-)
+}))
 
-jest.mock('pages/common/editor/hooks/useMacrosSearch', () =>
-    jest.fn(() => ({
+jest.mock('pages/common/editor/hooks/useMacrosSearch', () => ({
+    useMacrosSearch: jest.fn(() => ({
         data: [],
         fetchNextPage: jest.fn(),
         isLoading: false,
         nextCursor: null,
     })),
-)
+}))
 
 jest.mock('pages/common/editor/components/EditorContainer', () => ({
     EditorContainer: ({
@@ -80,26 +80,36 @@ jest.mock('pages/common/editor/components/EditorReplyChannelContainer', () => ({
     ),
 }))
 
-jest.mock('pages/tickets/detail/components/ReplyArea/ChannelSelect', () =>
-    jest.fn(() => <div>ChannelSelect</div>),
-)
+jest.mock('pages/tickets/detail/components/ReplyArea/ChannelSelect', () => ({
+    ChannelSelect: jest.fn(() => <div>ChannelSelect</div>),
+}))
 
 jest.mock(
     'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields',
-    () => jest.fn(() => <div>MessageSourceFields</div>),
+    () => ({
+        MessageSourceFields: jest.fn(() => <div>MessageSourceFields</div>),
+    }),
 )
 
-jest.mock('pages/tickets/detail/components/ReplyArea/TicketReplyArea', () =>
-    jest.fn(() => <div>TicketReplyArea</div>),
-)
+jest.mock('pages/tickets/detail/components/ReplyArea/TicketReplyArea', () => ({
+    TicketReplyAreaWithStandaloneAiContext: jest.fn(() => (
+        <div>TicketReplyArea</div>
+    )),
+}))
 
-jest.mock('pages/tickets/detail/components/ReplyForm', () =>
-    jest.fn(({ children }) => <div data-testid="reply-form">{children}</div>),
-)
+jest.mock('pages/tickets/detail/components/ReplyForm', () => ({
+    ReplyForm: jest.fn(({ children }) => (
+        <div data-testid="reply-form">{children}</div>
+    )),
+}))
 
 jest.mock(
     'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea',
-    () => jest.fn(() => <div>WhatsAppMessageTemplateReplyArea</div>),
+    () => ({
+        WhatsAppMessageTemplateReplyArea: jest.fn(() => (
+            <div>WhatsAppMessageTemplateReplyArea</div>
+        )),
+    }),
 )
 
 jest.mock(
@@ -115,10 +125,11 @@ const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
 const mockTicketReplyArea = jest.mocked(
     jest.requireMock(
         'pages/tickets/detail/components/ReplyArea/TicketReplyArea',
-    ),
+    ).TicketReplyAreaWithStandaloneAiContext,
 )
 const mockUseMacrosSearch = jest.mocked(
-    jest.requireMock('pages/common/editor/hooks/useMacrosSearch'),
+    jest.requireMock('pages/common/editor/hooks/useMacrosSearch')
+        .useMacrosSearch,
 )
 
 const renderComponent = (

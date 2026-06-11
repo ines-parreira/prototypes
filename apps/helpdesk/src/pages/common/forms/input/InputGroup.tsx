@@ -3,7 +3,8 @@ import React, { createContext, useContext, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
 
-import Group, {
+import {
+    Group,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 
@@ -25,7 +26,7 @@ export const InputGroupContext = createContext<InputGroupContextState | null>(
     null,
 )
 
-export default function InputGroup({
+export function InputGroup({
     children,
     className,
     hasError,

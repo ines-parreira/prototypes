@@ -16,7 +16,7 @@ import { useLocation } from 'react-router-dom'
 import { LegacyButton as Button, Icon } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import { useIsEvoliTicket } from 'pages/tickets/detail/hooks/useIsEvoliTicket'

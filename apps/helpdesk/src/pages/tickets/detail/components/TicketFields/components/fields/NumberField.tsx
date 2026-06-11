@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import Label from 'custom-fields/components/Label'
-import StealthInput from 'custom-fields/components/StealthInput'
+import { DefaultExportLabel as Label } from 'custom-fields/components/Label'
+import { DefaultExportStealthInput as StealthInput } from 'custom-fields/components/StealthInput'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import type { CustomFieldState } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
@@ -46,7 +46,7 @@ function numberOrUndefined(value?: string) {
     return Number(value)
 }
 
-export default function NumberField({
+export function NumberField({
     id,
     label,
     fieldState,

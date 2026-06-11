@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import { shopifyDataMappers } from '../Mappings'
-import ProductSearchInput from '../ProductSearchInput'
+import { ProductSearchInput } from '../ProductSearchInput'
 
 describe('<ProductSearchInput/>', () => {
     describe('render()', () => {

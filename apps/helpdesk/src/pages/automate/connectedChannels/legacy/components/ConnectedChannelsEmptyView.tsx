@@ -2,7 +2,7 @@ import { Link, useRouteMatch } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
-import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
+import { AutomatePaywallView } from 'pages/automate/common/components/AutomatePaywallView'
 import { AutomateFeatures } from 'pages/automate/common/types'
 
 import css from './EmptyView.less'

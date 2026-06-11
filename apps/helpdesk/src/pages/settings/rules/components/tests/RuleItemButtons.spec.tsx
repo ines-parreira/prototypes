@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import RuleItemButtons from '../RuleItemButtons'
+import { RuleItemButtons } from '../RuleItemButtons'
 
 describe('<RuleItemButtons />', () => {
     const minProps: ComponentProps<typeof RuleItemButtons> = {

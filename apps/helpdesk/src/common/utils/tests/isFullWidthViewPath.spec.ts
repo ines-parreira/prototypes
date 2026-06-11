@@ -1,4 +1,4 @@
-import isFullWidthViewPath from '../isFullWidthViewPath'
+import { isFullWidthViewPath } from '../isFullWidthViewPath'
 
 describe('isFullWidthViewPath', () => {
     it('should return true if the path is for a full width view without a slug', () => {

@@ -1,6 +1,6 @@
 import { useCallbackRef } from '@gorgias/toolkit-react'
 
-import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { useInjectStyleToCandu } from 'hooks/candu/useInjectStyleToCandu'
 
 export const OverviewView = () => {
     const [canduElements, setCanduElements] = useCallbackRef()

@@ -6,10 +6,10 @@ import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
-import IconInput from 'pages/common/forms/input/IconInput'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconInput } from 'pages/common/forms/input/IconInput'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { SEARCH_URL_PARAM } from './constants'
@@ -31,7 +31,7 @@ function trackSearch(searchValue: string, domain: string) {
     })
 }
 
-export default function Search() {
+export function Search() {
     const history = useHistory()
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     const search = useSearch<{ [SEARCH_URL_PARAM]: string }>()

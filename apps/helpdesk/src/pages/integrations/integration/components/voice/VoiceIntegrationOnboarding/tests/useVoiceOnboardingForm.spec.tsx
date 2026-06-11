@@ -12,7 +12,7 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

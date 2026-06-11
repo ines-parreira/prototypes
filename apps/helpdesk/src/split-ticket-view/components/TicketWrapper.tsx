@@ -4,21 +4,18 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useTicketMessageTranslationDisplay } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
-import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
+import { DefaultExportTicketDetailContainer as TicketDetailContainer } from 'pages/tickets/detail/TicketDetailContainer'
 import { OutboundTranslationProvider } from 'providers/OutboundTranslationProvider'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
-import useSplitTicketCloseNavigation from './useSplitTicketCloseNavigation'
+import { useSplitTicketCloseNavigation } from './useSplitTicketCloseNavigation'
 
 type Props = {
     isOnSplitTicketView?: boolean
     onToggleUnread?: OnToggleUnreadFn
 }
 
-export default function TicketWrapper({
-    isOnSplitTicketView,
-    onToggleUnread,
-}: Props) {
+export function TicketWrapper({ isOnSplitTicketView, onToggleUnread }: Props) {
     const { ticketId } = useParams<{ ticketId: string }>()
     const onGoToNextTicket = useSplitTicketCloseNavigation({
         isOnSplitTicketView,

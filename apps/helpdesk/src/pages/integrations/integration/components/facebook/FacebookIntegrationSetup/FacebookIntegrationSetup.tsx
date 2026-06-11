@@ -26,11 +26,11 @@ import {
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import { IntegrationType } from 'models/integration/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import Loader from 'pages/common/components/Loader/Loader'
-import PageHeader from 'pages/common/components/PageHeader'
-import Pagination from 'pages/common/components/Pagination'
-import CheckBox from 'pages/common/forms/CheckBox'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Pagination } from 'pages/common/components/Pagination'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
@@ -903,4 +903,8 @@ const connector = connect(
     },
 )
 
-export default connector(FacebookIntegrationSetupContainer)
+const DefaultExportFacebookIntegrationSetup = connector(
+    FacebookIntegrationSetupContainer,
+)
+
+export { DefaultExportFacebookIntegrationSetup }

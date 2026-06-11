@@ -10,7 +10,7 @@ import {
     getAgentSorting,
     getFilteredAgents,
 } from 'domains/reporting/state/ui/stats/agentAvailabilitySlice'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const AGENTS_AVAILABILITY_REPORT_FILE_NAME =
     'agents-availability-metrics'

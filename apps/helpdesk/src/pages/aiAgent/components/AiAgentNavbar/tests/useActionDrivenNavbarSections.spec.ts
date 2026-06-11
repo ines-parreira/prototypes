@@ -3,7 +3,7 @@ import { act } from '@testing-library/react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentLastSelectedShop } from 'pages/aiAgent/hooks/useAiAgentLastSelectedShop'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'

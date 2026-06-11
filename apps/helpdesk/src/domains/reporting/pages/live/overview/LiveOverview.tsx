@@ -9,23 +9,23 @@ import {
     SUPPORT_VOLUME_PER_HOUR,
     USERS_STATUSES,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     LegacyStatsFilters,
     OneDimensionalChart,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
-import MultiResourceKeyMetricStat from 'domains/reporting/pages/common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
-import LineStat from 'domains/reporting/pages/common/components/charts/LineStat'
-import KeyMetricStatWrapper from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
-import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { MultiResourceKeyMetricStat } from 'domains/reporting/pages/common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
+import { DefaultExportLineStat as LineStat } from 'domains/reporting/pages/common/components/charts/LineStat'
+import { KeyMetricStatWrapper } from 'domains/reporting/pages/common/components/KeyMetricStatWrapper'
+import { StatCurrentDate } from 'domains/reporting/pages/common/components/StatCurrentDate'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import css from 'domains/reporting/pages/live/overview/LiveOverview.less'
 import { LiveOverviewFilters } from 'domains/reporting/pages/live/overview/LiveOverviewFilters'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
-import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { memoizedWithFeaturePaywall as withFeaturePaywall } from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 const LIVE_OVERVIEW_STAT_NAME = 'live-overview'
@@ -145,6 +145,8 @@ function LiveOverview() {
     )
 }
 
-export default withFeaturePaywall(AccountFeature.OverviewLiveStatistics)(
-    LiveOverview,
-)
+const DefaultExportLiveOverview = withFeaturePaywall(
+    AccountFeature.OverviewLiveStatistics,
+)(LiveOverview)
+
+export { DefaultExportLiveOverview }

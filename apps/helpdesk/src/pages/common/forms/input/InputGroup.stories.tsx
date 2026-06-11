@@ -5,15 +5,18 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
+import { DefaultExportDropdownQuickSelect as DropdownQuickSelect } from 'pages/common/components/dropdown/DropdownQuickSelect'
 
-import InputGroup from './InputGroup'
-import NumberInput from './NumberInput'
-import SelectInputBox, { SelectInputBoxContext } from './SelectInputBox'
-import TextInput from './TextInput'
+import { InputGroup } from './InputGroup'
+import { DefaultExportNumberInput as NumberInput } from './NumberInput'
+import {
+    DefaultExportSelectInputBox as SelectInputBox,
+    SelectInputBoxContext,
+} from './SelectInputBox'
+import { DefaultExportTextInput as TextInput } from './TextInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/InputGroup',

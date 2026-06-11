@@ -5,11 +5,11 @@ import { DropdownItem } from 'reactstrap'
 
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/filters/AgentsStatsFilter.less'
-import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import SelectStatsFilter from 'domains/reporting/pages/common/SelectStatsFilter'
+import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
+import { SelectStatsFilter } from 'domains/reporting/pages/common/SelectStatsFilter'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getLabelledHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import { getLabelledTeamsJS } from 'state/teams/selectors'
 
@@ -28,7 +28,7 @@ export const agentsStatsFilterLabels = {
  * @date 2024-07-19
  * @type feature-component
  */
-export default function DEPRECATED_AgentsStatsFilter({
+export function DEPRECATED_AgentsStatsFilter({
     value = [],
     variant = 'fill',
 }: Props) {

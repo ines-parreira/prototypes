@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as widgetActions from 'state/widgets/actions'
 import type { WidgetEnvironment } from 'state/widgets/types'
 
@@ -10,7 +10,7 @@ type Props = {
     isEditSessionRequested: boolean
 }
 
-export default function useSyncWidgetEditSession({
+export function useSyncWidgetEditSession({
     context,
     isEditSessionActive,
     isEditSessionRequested,

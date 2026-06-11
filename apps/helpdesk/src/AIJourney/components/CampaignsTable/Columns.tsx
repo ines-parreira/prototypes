@@ -16,8 +16,8 @@ import { MetricCell } from 'AIJourney/components/MetricCell/MetricCell'
 
 import type { UpdatableJourneyCampaignState } from '../../constants'
 import type { TableRow } from '../../pages/Campaigns/Campaigns'
-import CampaignName from './CampaignName/CampaignName'
-import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
+import { CampaignName } from './CampaignName/CampaignName'
+import { CampaignStateBadge } from './CampaignStateBadge/CampaignStateBadge'
 import { MoreOptions } from './MoreOptions/MoreOptions'
 import type { CampaignsTableMeta } from './types'
 

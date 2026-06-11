@@ -2,9 +2,9 @@ import { Link, NavLink, useRouteMatch } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/constants'
-import Header from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { PageHeader as Header } from 'pages/common/components/PageHeader'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { StoreSelector } from 'pages/common/components/StoreSelector/StoreSelector'
 import { useStoreSelector } from 'settings/automate'
 
 import css from './OrderManagementSettings.less'

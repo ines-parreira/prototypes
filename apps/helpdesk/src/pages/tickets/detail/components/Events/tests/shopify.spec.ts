@@ -1,6 +1,6 @@
 import { fromJS, Map } from 'immutable'
 
-import shopifyEvent from '../shopify'
+import { shopifyEvent } from '../shopify'
 
 describe('shopifyEvent', () => {
     const actionConfig = {

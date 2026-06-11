@@ -8,8 +8,8 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportActionButton as ActionButton } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtons.less'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { EditionContext } from 'providers/infobar/EditionContext'
@@ -102,4 +102,4 @@ function ActionButtonsGroup({ actions, payload }: Props) {
     )
 }
 
-export default ActionButtonsGroup
+export { ActionButtonsGroup }

@@ -22,7 +22,7 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import type { TopIntentsRowProps } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/types'
 import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerMetricConfig'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 
 export const IntentRows = ({
     level,

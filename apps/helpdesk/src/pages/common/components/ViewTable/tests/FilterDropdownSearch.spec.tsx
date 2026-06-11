@@ -8,10 +8,10 @@ import { fromJS } from 'immutable'
 
 import { getTicketViewField } from 'config/views'
 import { ViewField } from 'models/view/types'
-import type Search from 'pages/common/components/Search'
+import type { DefaultExportSearch as Search } from 'pages/common/components/Search'
 import { fieldEnumSearch } from 'state/views/actions'
 
-import FilterDropdownSearch from '../FilterDropdownSearch'
+import { FilterDropdownSearch } from '../FilterDropdownSearch'
 
 jest.mock('state/views/actions')
 const fieldEnumSearchMock = fieldEnumSearch as jest.MockedFunction<
@@ -20,25 +20,27 @@ const fieldEnumSearchMock = fieldEnumSearch as jest.MockedFunction<
 
 const mockSearchChangeValue = jest.fn()
 jest.mock('pages/common/components/Search', () => {
-    return ({
-        autoFocus,
-        searchDebounceTime,
-        onChange,
-    }: ComponentProps<typeof Search>) => {
-        return (
-            <div>
-                <span data-testid="auto-focus">
-                    {autoFocus ? 'true' : 'false'}
-                </span>
-                <span data-testid="search-debounce-time">
-                    {searchDebounceTime}
-                </span>
-                <button
-                    data-testid="search-change"
-                    onClick={() => onChange?.(mockSearchChangeValue())}
-                />
-            </div>
-        )
+    return {
+        DefaultExportSearch: ({
+            autoFocus,
+            searchDebounceTime,
+            onChange,
+        }: ComponentProps<typeof Search>) => {
+            return (
+                <div>
+                    <span data-testid="auto-focus">
+                        {autoFocus ? 'true' : 'false'}
+                    </span>
+                    <span data-testid="search-debounce-time">
+                        {searchDebounceTime}
+                    </span>
+                    <button
+                        data-testid="search-change"
+                        onClick={() => onChange?.(mockSearchChangeValue())}
+                    />
+                </div>
+            )
+        },
     }
 })
 describe('FilterDropdownSearch', () => {

@@ -9,10 +9,11 @@ import {
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import WizardFooter, {
+import {
     FOOTER_BUTTONS,
+    WizardFooter,
 } from 'pages/common/components/wizard/WizardFooter'
-import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import { WizardStepSkeleton } from 'pages/common/components/wizard/WizardStepSkeleton'
 import {
     HELP_CENTER_STEPS_DESCRIPTIONS,
     HELP_CENTER_STEPS_LABELS,
@@ -25,9 +26,9 @@ import { getEnabledArticlesCount } from '../../HelpCenterCreationWizardUtils'
 import { useGetHelpCenterArticles } from '../../hooks/useGetHelpCenterArticles'
 import { useHelpCenterArticlesForm } from '../../hooks/useHelpCenterArticlesForm'
 import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
-import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
-import HelpCenterWizardArticlePreview from '../HelpCenterWizardArticlePreview/HelpCenterWizardArticlePreview'
-import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
+import { ArticleEditor } from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
+import { HelpCenterWizardArticlePreview } from '../HelpCenterWizardArticlePreview/HelpCenterWizardArticlePreview'
+import { ArticleSection } from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
 
 type Props = {
     helpCenter: HelpCenter
@@ -193,4 +194,4 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     )
 }
 
-export default HelpCenterCreationWizardStepArticles
+export { HelpCenterCreationWizardStepArticles }

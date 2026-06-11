@@ -13,11 +13,11 @@ import {
     disconnectDevice,
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useHasPhone from 'hooks/useHasPhone'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHasPhone } from 'hooks/useHasPhone'
 import { LAST_USED_INTEGRATION_STORAGE_KEY } from 'pages/integrations/integration/components/voice/constants'
-import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
+import { slice } from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { isActive } from 'state/currentUser/selectors'
 import { initialState } from 'state/twilio/voiceDevice'
 
@@ -25,7 +25,7 @@ import { Context } from './VoiceDeviceContext'
 
 const { actions: contextActions, reducer } = slice
 
-export default function VoiceDeviceProvider({
+export function VoiceDeviceProvider({
     children,
 }: {
     children: React.ReactNode

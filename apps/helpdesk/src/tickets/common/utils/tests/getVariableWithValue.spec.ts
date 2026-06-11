@@ -1,6 +1,6 @@
 import { VARIABLES } from 'tickets/common/config'
 
-import getVariableWithValue from '../getVariableWithValue'
+import { getVariableWithValue } from '../getVariableWithValue'
 
 describe('getVariableWithValue', () => {
     it('undefined if unknown value', () => {

@@ -1,4 +1,4 @@
-import voiceDeviceSlice from '../voiceDeviceSlice'
+import { slice as voiceDeviceSlice } from '../voiceDeviceSlice'
 
 const reducer = voiceDeviceSlice.reducer
 const {

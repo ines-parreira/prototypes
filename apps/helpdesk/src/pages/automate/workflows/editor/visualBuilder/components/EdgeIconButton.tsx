@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react'
 import classnames from 'classnames'
 
 import type { BaseEdgeButtonProps } from './BaseEdgeButton'
-import BaseEdgeButton from './BaseEdgeButton'
+import { DefaultExportBaseEdgeButton as BaseEdgeButton } from './BaseEdgeButton'
 
 import css from './EdgeIconButton.less'
 
@@ -23,4 +23,8 @@ const EdgeIconButton = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(EdgeIconButton)
+const DefaultExportEdgeIconButton = forwardRef<HTMLDivElement, Props>(
+    EdgeIconButton,
+)
+
+export { DefaultExportEdgeIconButton }

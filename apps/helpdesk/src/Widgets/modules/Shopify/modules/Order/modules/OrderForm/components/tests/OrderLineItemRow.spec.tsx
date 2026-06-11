@@ -12,7 +12,7 @@ import {
     shopifyPriceSetFixture,
 } from 'fixtures/shopify'
 
-import OrderLineItemRow from '../OrderLineItemRow'
+import { DefaultExportOrderLineItemRow as OrderLineItemRow } from '../OrderLineItemRow'
 
 describe('<OrderLineItemRow/>', () => {
     let onChange: jest.MockedFunction<any>

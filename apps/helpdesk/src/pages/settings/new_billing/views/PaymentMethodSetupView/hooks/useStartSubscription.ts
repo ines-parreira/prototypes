@@ -6,9 +6,9 @@ import { useHistory } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import GorgiasApi from 'services/gorgiasApi'
+import { GorgiasApi } from 'services/gorgiasApi'
 import { setCurrentSubscription } from 'state/currentAccount/actions'
 import { getIsCurrentSubscriptionTrialingOrCanceled } from 'state/currentAccount/selectors'
 

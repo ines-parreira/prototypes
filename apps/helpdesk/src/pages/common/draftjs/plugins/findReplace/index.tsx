@@ -14,7 +14,7 @@ import type {
     Plugin,
     PluginMethods,
 } from '../types'
-import FindReplaceDialog from './FindReplaceDialog'
+import { FindReplaceDialog } from './FindReplaceDialog'
 
 import css from './FindReplaceDialog.less'
 
@@ -355,4 +355,4 @@ const createFindReplacePlugin = (): FindReplacePlugin => {
     }
 }
 
-export default createFindReplacePlugin
+export { createFindReplacePlugin }

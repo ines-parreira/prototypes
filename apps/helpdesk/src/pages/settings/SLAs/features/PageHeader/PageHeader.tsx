@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SectionPageHeader } from 'config/pages'
-import Header from 'pages/common/components/PageHeader'
+import { PageHeader as Header } from 'pages/common/components/PageHeader'
 
 import css from './PageHeader.less'
 
@@ -14,7 +14,7 @@ type PageHeaderProps = {
     showTemplateButton?: boolean
 }
 
-export default function PageHeader({
+export function PageHeader({
     secondaryBreadcrumb,
     showCreateButtons = true,
     showTemplateButton = true,

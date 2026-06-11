@@ -1,7 +1,7 @@
 import { useParams } from 'react-router'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useStoreIntegrations } from 'pages/automate/common/hooks/useStoreIntegrations'
 
 type UseShopNameResolutionReturn = {
     /**

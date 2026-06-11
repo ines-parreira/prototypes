@@ -64,4 +64,4 @@ const useHumanReadableOrderConditions = ({ variables, conditions }: Props) => {
     }, [variables, conditions])
 }
 
-export default useHumanReadableOrderConditions
+export { useHumanReadableOrderConditions }

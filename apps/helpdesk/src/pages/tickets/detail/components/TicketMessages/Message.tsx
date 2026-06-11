@@ -15,7 +15,7 @@ import type {
     TicketMessage as TicketMessageType,
 } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
@@ -23,10 +23,10 @@ import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
 
 import { useMessageQuote } from '../MessageQuoteContext'
-import Body from './Body'
-import Errors from './Errors'
-import ReplyDetailsCard from './ReplyDetailsCard'
-import SourceActionsHeader from './SourceActionsHeader'
+import { Body } from './Body'
+import { Errors } from './Errors'
+import { ReplyDetailsCard } from './ReplyDetailsCard'
+import { SourceActionsHeader } from './SourceActionsHeader'
 import { TranslationsDropdown } from './TranslationsDropdown/TranslationsDropdown'
 
 import css from './Message.less'
@@ -40,7 +40,7 @@ type Props = {
     messagePosition: number
 }
 
-export default function Message({
+export function Message({
     message,
     setStatus,
     showSourceDetails,

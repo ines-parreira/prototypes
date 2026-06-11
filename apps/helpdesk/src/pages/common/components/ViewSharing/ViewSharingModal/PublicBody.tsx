@@ -1,4 +1,4 @@
-export default function PublicBody() {
+export function PublicBody() {
     return (
         <div className="m-3">
             <p>

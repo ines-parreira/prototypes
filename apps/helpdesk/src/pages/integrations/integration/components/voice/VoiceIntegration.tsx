@@ -9,20 +9,20 @@ import {
 
 import { Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     IntegrationType,
     isPhoneIntegration,
     isStandardPhoneIntegration,
 } from 'models/integration/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import ConnectLink from 'pages/integrations/components/ConnectLink'
-import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
-import VoiceIntegrationIVRPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
-import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
-import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { ConnectLink } from 'pages/integrations/components/ConnectLink'
+import { PhoneIntegrationBreadcrumbs } from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import { PhoneIntegrationsList } from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
+import { VoiceIntegrationIvr } from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
+import { VoiceIntegrationIVRPreferences } from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences'
+import { VoiceIntegrationSecondaryNavigation } from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
+import { VoiceIntegrationVoicemail } from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
 import {
     getIntegrationById,
     getPhoneIntegrations,
@@ -30,13 +30,13 @@ import {
 
 import { getDefaultRoutes } from '../../utils/defaultRoutes'
 import { PHONE_INTEGRATION_BASE_URL as baseURL } from './constants'
-import VoiceIntegrationDetails from './VoiceIntegrationDetails'
-import VoiceIntegrationFlowPage from './VoiceIntegrationFlowPage'
-import VoiceIntegrationOnboarding from './VoiceIntegrationOnboarding/VoiceIntegrationOnboarding'
-import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
-import VoiceIntegrationSettingsPage from './VoiceIntegrationSettingsPage'
+import { VoiceIntegrationDetails } from './VoiceIntegrationDetails'
+import { VoiceIntegrationFlowPage } from './VoiceIntegrationFlowPage'
+import { VoiceIntegrationOnboarding } from './VoiceIntegrationOnboarding/VoiceIntegrationOnboarding'
+import { VoiceIntegrationQueueRoutes } from './VoiceIntegrationQueueRoutes'
+import { VoiceIntegrationSettingsPage } from './VoiceIntegrationSettingsPage'
 
-export default function VoiceIntegration() {
+export function VoiceIntegration() {
     const { integrationId } = useParams<{ integrationId: string }>()
 
     const { pathname: path } = useLocation<LocationState>()

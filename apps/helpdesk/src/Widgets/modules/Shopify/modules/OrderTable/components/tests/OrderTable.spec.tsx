@@ -11,7 +11,7 @@ import {
 } from 'fixtures/shopify'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import OrderTable from '../OrderTable'
+import { DefaultExportOrderTable as OrderTable } from '../OrderTable'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 jest.mock('@repo/logging')

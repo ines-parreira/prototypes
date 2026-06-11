@@ -4,16 +4,16 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { MacroActionName } from 'models/macroAction/types'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { MultiSelectField } from 'pages/common/forms/MultiSelectField'
+import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 import type { Option, Value } from 'pages/common/forms/SelectField/types'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { InstallationError } from 'pages/settings/rules/ruleLibrary/constants'
-import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
+import { ResponseAction } from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 import type { AutoReplyFAQSettings } from 'state/rules/types'
 
@@ -203,5 +203,3 @@ export const AutoReplyFAQEditor = ({
         </div>
     )
 }
-
-export default AutoReplyFAQEditor

@@ -2,13 +2,13 @@ import React, { useCallback, useRef } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
 
 interface UnsavedChangesContainerProps {
     handleUpdate: (values: Record<string, string>) => void
 }
 
-export default function UnsavedChangesContainer({
+export function UnsavedChangesContainer({
     handleUpdate,
 }: UnsavedChangesContainerProps) {
     const promptRef = useRef<{ onLeaveContext: () => void }>(null)

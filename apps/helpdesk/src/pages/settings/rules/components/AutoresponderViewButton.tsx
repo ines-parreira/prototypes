@@ -5,8 +5,8 @@ import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { createTag, fetchTags } from 'models/tag/resources'
 import type { TagDraft } from 'models/tag/types'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
@@ -113,5 +113,3 @@ export const AutoresponderViewButton = ({ recipeSlug }: Props) => {
         </Button>
     )
 }
-
-export default AutoresponderViewButton

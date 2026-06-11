@@ -6,7 +6,7 @@ import { render, userEvent } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import SearchInput from 'pages/common/forms/SearchInput/SearchInput'
+import { SearchInput } from 'pages/common/forms/SearchInput/SearchInput'
 import type {
     SearchInputResultProps,
     SearchInputSubResultProps,

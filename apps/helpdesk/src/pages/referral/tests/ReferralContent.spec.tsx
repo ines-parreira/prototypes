@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ReferralContent from '../ReferralContent'
+import { ReferralContent } from '../ReferralContent'
 
 describe('<ReferralContent />', () => {
     it('should display an empty container', () => {

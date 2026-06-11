@@ -13,8 +13,8 @@ import tiktokShopIcon from 'assets/img/icons/channels/tiktok-shop.svg'
 import whatsappIcon from 'assets/img/icons/channels/whatsapp.svg'
 import type { Integration } from 'models/integration/types'
 
-import getDeduplicatedChannelTypes from '../../helpers/getDeduplicatedChannelTypes'
-import sortChannels from '../../helpers/sortChannels'
+import { getDeduplicatedChannelTypes } from '../../helpers/getDeduplicatedChannelTypes'
+import { sortChannels } from '../../helpers/sortChannels'
 
 import css from './ChannelListCell.less'
 
@@ -35,10 +35,7 @@ interface ChannelListCellProps {
     storeId: number
 }
 
-export default function ChannelListCell({
-    channels,
-    storeId,
-}: ChannelListCellProps) {
+export function ChannelListCell({ channels, storeId }: ChannelListCellProps) {
     const tooltipId = `tooltip-${storeId}`
 
     const sortedChannels = useMemo(() => {

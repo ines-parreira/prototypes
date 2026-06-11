@@ -12,7 +12,7 @@ import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
-import SearchQueryModal from 'domains/reporting/pages/help-center/components/SearchQueryModal/SearchQueryModal'
+import { SearchQueryModal } from 'domains/reporting/pages/help-center/components/SearchQueryModal/SearchQueryModal'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),

@@ -34,7 +34,7 @@ export const defaultSound = {
     volume: 5,
 } as const
 
-export default class NotificationSounds {
+export class NotificationSounds {
     private audioCtx: AudioContext
     private gainNode: GainNode
 

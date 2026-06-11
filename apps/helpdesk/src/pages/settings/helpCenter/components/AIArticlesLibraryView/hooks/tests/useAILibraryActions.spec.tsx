@@ -4,16 +4,16 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
-import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { AILibraryArticleItemsFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import useAILibraryActions from '../useAILibraryActions'
+import { useAILibraryActions } from '../useAILibraryActions'
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 jest.mock('pages/settings/helpCenter/queries')
 
 const queryClient = mockQueryClient()
@@ -22,7 +22,9 @@ const useUpsertArticleTemplateReviewMock = assumeMock(
 )
 
 const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockedDispatch,
+}))
 
 const mockedUpsertArticleTemplateReview = jest.fn()
 

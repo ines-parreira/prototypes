@@ -2,10 +2,10 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import IconButton from 'pages/common/components/button/IconButton'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
-import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
+import { DefaultExportTextInputWithVariables as TextInputWithVariables } from '../../components/variables/TextInputWithVariables'
 
 import css from '../NodeEditor.less'
 
@@ -112,4 +112,4 @@ const FormUrlencoded = ({
     )
 }
 
-export default FormUrlencoded
+export { FormUrlencoded }

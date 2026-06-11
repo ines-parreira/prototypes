@@ -11,4 +11,4 @@ const SettingsCard = forwardRef<
     <div ref={ref} className={cn(css.cardContainer, className)} {...props} />
 ))
 
-export default SettingsCard
+export { SettingsCard }

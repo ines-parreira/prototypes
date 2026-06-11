@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import type { CustomField } from 'custom-fields/types'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Row from 'pages/settings/customFields/components/Row'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
+import { Row } from 'pages/settings/customFields/components/Row'
 
 import css from './List.less'
 
@@ -21,7 +21,7 @@ export type Props = {
     }) => void
 }
 
-export default function List({ customFields, canReorder, onReorder }: Props) {
+export function List({ customFields, canReorder, onReorder }: Props) {
     const [draggedFields, setDraggedFields] = useState<CustomField[]>([])
 
     useEffect(() => {

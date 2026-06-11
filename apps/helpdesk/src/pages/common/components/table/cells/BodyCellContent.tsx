@@ -34,4 +34,4 @@ const BodyCellContent = ({
     )
 }
 
-export default BodyCellContent
+export { BodyCellContent }

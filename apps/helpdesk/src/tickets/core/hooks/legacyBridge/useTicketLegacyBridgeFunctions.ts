@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
 import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useAppSelector from 'hooks/useAppSelector'
-import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useHandleTicketDraft } from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import useIsToggleEnabled from 'split-ticket-view-toggle/components/useIsToggleEnabled'
+import { useIsToggleEnabled } from 'split-ticket-view-toggle/components/useIsToggleEnabled'
 import { humanizeChannel } from 'state/ticket/utils'
 import { getActiveView } from 'state/views/selectors'
 

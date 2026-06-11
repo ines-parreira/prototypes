@@ -10,10 +10,10 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Article } from 'models/helpCenter/types'
-import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import { ARTICLES_PER_PAGE } from 'pages/settings/helpCenter/constants'
 import { useArticlesActions } from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import { getUncategorizedArticles } from 'state/entities/helpCenter/articles'

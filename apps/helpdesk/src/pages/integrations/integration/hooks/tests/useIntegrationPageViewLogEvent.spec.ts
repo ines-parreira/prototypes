@@ -2,7 +2,7 @@ import * as segmentTracker from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { Map } from 'immutable'
 
-import useIntegrationPageViewLogEvent from '../useIntegrationPageViewLogEvent'
+import { useIntegrationPageViewLogEvent } from '../useIntegrationPageViewLogEvent'
 
 const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
 const { SegmentEvent } = segmentTracker

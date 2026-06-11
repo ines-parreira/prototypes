@@ -8,12 +8,12 @@ import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { IconButton } from 'pages/common/components/button/IconButton'
+import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
+import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
+import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
 
-import useCount from '../hooks/useCount'
+import { useCount } from '../hooks/useCount'
 
 import css from './FeedHeader.less'
 
@@ -27,7 +27,7 @@ type FeedHeaderProps = NotificationFeedHeaderProps & {
     onToggleVisibility: () => void
 }
 
-export default function FeedHeader({
+export function FeedHeader({
     filterStatus,
     setFilterStatus,
     onToggleVisibility,

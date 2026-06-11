@@ -24,7 +24,7 @@ function notifyByIntent(intent: ToastIntent | undefined, message: string) {
 }
 
 // Display a notification based on some query params
-export default function useQueryNotify() {
+export function useQueryNotify() {
     const search = useSearch<{
         error?: string
         message?: string

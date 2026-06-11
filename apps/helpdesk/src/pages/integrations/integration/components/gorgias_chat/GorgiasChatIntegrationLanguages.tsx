@@ -5,7 +5,7 @@ import { ChatSettingsLanguagesSkeleton } from 'pages/integrations/integration/co
 import { GorgiasChatIntegrationLanguagesRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/GorgiasChatIntegrationLanguages'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
-import GorgiasChatIntegrationLanguagesLegacy from './legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages'
+import { GorgiasChatIntegrationLanguages as GorgiasChatIntegrationLanguagesLegacy } from './legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages'
 
 type Props = ComponentProps<typeof GorgiasChatIntegrationLanguagesLegacy>
 

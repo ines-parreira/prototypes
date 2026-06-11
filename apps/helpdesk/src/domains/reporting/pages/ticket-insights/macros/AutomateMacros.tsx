@@ -4,27 +4,27 @@ import {
     MESSAGES_SENT_PER_MACRO,
     stats as statsConfig,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import type {
     LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'domains/reporting/models/stat/types'
-import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
-import ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
-import DEPRECATED_IntegrationsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import PeriodStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { DefaultExportTableStat as TableStat } from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
+import { DEPRECATED_ChannelsStatsFilter as ChannelsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
+import { DEPRECATED_IntegrationsStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import { DEPRECATED_PeriodStatsFilter as PeriodStatsFilter } from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
+import { StatWrapper } from 'domains/reporting/pages/common/layout/StatWrapper'
 import {
     getMessagingAndAppIntegrationsStatsFilter,
     getStatsFilters,
     getStatsMessagingAndAppIntegrations,
 } from 'domains/reporting/state/stats/selectors'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 export const AUTOMATION_MACROS_STAT_NAME = 'automation-macros'
 
-export default function AutomateMacros() {
+export function AutomateMacros() {
     const messagingIntegrations = useAppSelector(
         getStatsMessagingAndAppIntegrations,
     )

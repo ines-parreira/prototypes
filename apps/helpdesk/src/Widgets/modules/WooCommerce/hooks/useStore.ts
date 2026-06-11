@@ -2,7 +2,7 @@ import { useContext } from 'react'
 
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import type { EcommerceIntegrationMeta } from 'models/integration/types'

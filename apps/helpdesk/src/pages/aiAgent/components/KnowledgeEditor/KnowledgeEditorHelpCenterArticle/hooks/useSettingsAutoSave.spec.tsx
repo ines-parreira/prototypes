@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type {
     ArticleWithLocalTranslation,

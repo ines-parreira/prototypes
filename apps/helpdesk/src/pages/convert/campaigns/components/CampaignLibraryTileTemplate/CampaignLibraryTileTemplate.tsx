@@ -30,4 +30,4 @@ const CampainLibraryTileTemplate = ({ template, integrationId }: Props) => {
     )
 }
 
-export default CampainLibraryTileTemplate
+export { CampainLibraryTileTemplate }

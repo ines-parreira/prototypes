@@ -5,15 +5,15 @@ import {
     WhatsAppMigrationContextProvider,
     WhatsAppMigrationStep,
 } from 'hooks/useWhatsAppMigration'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
-import WhatsAppMigrationConnect from './WhatsAppMigrationConnect'
-import WhatsAppMigrationDebug from './WhatsAppMigrationDebug'
-import WhatsAppMigrationForm from './WhatsAppMigrationForm'
-import WhatsAppMigrationPreamble from './WhatsAppMigrationPreamble'
-import WhatsAppMigrationVerificationForm from './WhatsAppMigrationVerificationForm'
+import { WhatsAppMigrationConnect } from './WhatsAppMigrationConnect'
+import { WhatsAppMigrationVerificationForm as WhatsAppMigrationDebug } from './WhatsAppMigrationDebug'
+import { WhatsAppMigrationForm } from './WhatsAppMigrationForm'
+import { WhatsAppMigrationPreamble } from './WhatsAppMigrationPreamble'
+import { WhatsAppMigrationVerificationForm } from './WhatsAppMigrationVerificationForm'
 
-export default function WhatsAppIntegrationMigration(): JSX.Element | null {
+export function WhatsAppIntegrationMigration(): JSX.Element | null {
     const { step } = useSearch<{ step: string | undefined }>()
     const debugEnabled = useFlag(FeatureFlagKey.WhatsAppMigrationsDebug)
 

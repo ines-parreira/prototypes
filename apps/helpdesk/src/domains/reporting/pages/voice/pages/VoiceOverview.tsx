@@ -3,10 +3,10 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'
-import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
-import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
-import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
+import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { DashboardGridCell } from 'domains/reporting/pages/common/layout/DashboardGridCell'
+import { DashboardSection } from 'domains/reporting/pages/common/layout/DashboardSection'
+import { StatsPage } from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { VoiceOverviewDownloadDataButton } from 'domains/reporting/pages/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
@@ -17,9 +17,9 @@ import {
     VoiceOverviewChart,
     VoiceOverviewReportConfig,
 } from 'domains/reporting/pages/voice/pages/VoiceOverviewReportConfig'
-import VoicePaywall from 'domains/reporting/pages/voice/VoicePaywall'
+import { VoicePaywall } from 'domains/reporting/pages/voice/VoicePaywall'
 import { ProductType } from 'models/billing/types'
-import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
+import { withProductEnabledPaywall } from 'pages/common/utils/withProductEnabledPaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 
 function VoiceOverview() {
@@ -172,8 +172,10 @@ function VoiceOverview() {
     )
 }
 
-export default withProductEnabledPaywall(
+const DefaultExportVoiceOverview = withProductEnabledPaywall(
     ProductType.Voice,
     AccountFeature.PhoneNumber,
     VoicePaywall,
 )(VoiceOverview)
+
+export { DefaultExportVoiceOverview }

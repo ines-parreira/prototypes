@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import ActionEventsCollapsableVariables from '../ActionEventsCollapsableVariables'
+import { CollapsableVariables as ActionEventsCollapsableVariables } from '../ActionEventsCollapsableVariables'
 
 describe('<ActionEventsCollapsableVariables />', () => {
     it('should render component', () => {

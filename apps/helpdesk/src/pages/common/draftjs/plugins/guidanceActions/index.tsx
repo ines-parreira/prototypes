@@ -1,6 +1,6 @@
 import type { ContentBlock, ContentState, EditorState } from 'draft-js'
 
-import GuidanceActionTag from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
+import { GuidanceActionTag } from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
 import type {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
@@ -8,7 +8,7 @@ import type {
 
 import { attachGuidanceActionEntities } from './utils'
 
-export default function createGuidanceActionsPlugin() {
+export function createGuidanceActionsPlugin() {
     return {
         decorators: [
             {

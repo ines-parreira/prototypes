@@ -1,2 +1,2 @@
-export { default } from './InstructionsCard'
+export { InstructionsCard } from './InstructionsCard'
 export * from './types'

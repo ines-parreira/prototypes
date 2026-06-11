@@ -8,9 +8,9 @@ import configureMockStore from 'redux-mock-store'
 
 import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
 
-import Expression from '../../expression/Expression'
+import { Expression } from '../../expression/Expression'
 import { ConsequentStatement } from '../ConsequentStatement'
-import Statement from '../Statement'
+import { DefaultExportStatement as Statement } from '../Statement'
 
 const mockStore = configureMockStore()
 const defaultStore = {

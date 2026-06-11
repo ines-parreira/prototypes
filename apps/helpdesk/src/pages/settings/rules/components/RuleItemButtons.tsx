@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
 
 import css from './RuleItemButtons.less'
 
@@ -67,5 +67,3 @@ export const RuleItemButtons = ({
         </div>
     )
 }
-
-export default RuleItemButtons

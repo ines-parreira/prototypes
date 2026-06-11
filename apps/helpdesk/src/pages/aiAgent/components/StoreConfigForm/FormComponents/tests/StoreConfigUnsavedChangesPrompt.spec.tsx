@@ -3,14 +3,14 @@ import { screen } from '@testing-library/react'
 
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useAiAgentFormChangesContext } from 'pages/aiAgent/providers/AiAgentFormChangesContext'
-import AiAgentFormChangesProvider from 'pages/aiAgent/providers/AiAgentFormChangesProvider'
+import { AiAgentFormChangesProvider } from 'pages/aiAgent/providers/AiAgentFormChangesProvider'
 
 import { StoreConfigUnsavedChangesPrompt } from '../StoreConfigUnsavedChangesPrompt'
 
 jest.mock('pages/common/components/UnsavedChangesPrompt', () => ({
     __esModule: true,
     ...jest.requireActual('pages/common/components/UnsavedChangesPrompt'),
-    default: ({
+    UnsavedChangesPrompt: ({
         when,
         shouldShowSaveButton,
         body,

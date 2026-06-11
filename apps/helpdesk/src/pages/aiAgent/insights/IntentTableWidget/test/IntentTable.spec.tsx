@@ -13,7 +13,7 @@ import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { pageSet } from 'domains/reporting/state/ui/stats/insightsSlice'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     IntentTable,
     IntentTableWithDefaultState,
@@ -22,8 +22,8 @@ import {
 import { TableLabels } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import type { PaginatedIntents } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('hooks/useAppSelector')

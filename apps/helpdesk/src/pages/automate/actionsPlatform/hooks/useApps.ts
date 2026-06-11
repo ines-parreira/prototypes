@@ -99,4 +99,4 @@ const useApps = <T extends App['type'] = App['type']>(
     return { isLoading, apps, actionsApps }
 }
 
-export default useApps
+export { useApps }

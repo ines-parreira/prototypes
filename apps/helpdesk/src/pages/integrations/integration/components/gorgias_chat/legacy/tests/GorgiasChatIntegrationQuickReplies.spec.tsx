@@ -15,21 +15,26 @@ import { integrationsState } from 'fixtures/integrations'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import * as ChatIntegrationPreviewModule from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import GorgiasChatIntegrationQuickRepliesWithHook, {
+import {
     GorgiasChatIntegrationQuickRepliesComponent,
+    GorgiasChatIntegrationQuickRepliesWithHook,
 } from '../GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
 import * as useRevampShouldShowChatPreviewModule from '../hooks/useShouldShowChatSettingsRevamp'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
-    () => () => {
-        return <div data-testid="GorgiasChatIntegrationHeader" />
-    },
+    () => ({
+        GorgiasChatIntegrationHeader: () => {
+            return <div data-testid="GorgiasChatIntegrationHeader" />
+        },
+    }),
 )
-jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
-    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-})
+jest.mock('../GorgiasChatIntegrationConnectedChannel', () => ({
+    GorgiasChatIntegrationConnectedChannel: () => {
+        return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+    },
+}))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
@@ -83,7 +88,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 domain: 'test-domain',
             }),
         } as unknown as RootState)
-        chatPreviewSpy = jest.spyOn(ChatIntegrationPreviewModule, 'default')
+        chatPreviewSpy = jest.spyOn(
+            ChatIntegrationPreviewModule,
+            'ChatIntegrationPreview',
+        )
     })
     afterEach(() => {
         chatPreviewSpy.mockRestore()
@@ -222,7 +230,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should render chat preview when hook returns shouldShowPreviewForRevamp as true', () => {
                 jest.spyOn(
                     useRevampShouldShowChatPreviewModule,
-                    'default',
+                    'useShouldShowChatSettingsRevamp',
                 ).mockReturnValue({
                     shouldShowRevamp: false,
                     shouldShowPreviewForRevamp: true,
@@ -264,7 +272,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
             it('should call useRevampShouldShowChatPreview with the correct Shopify store integration', () => {
                 const useRevampSpy = jest
-                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .spyOn(
+                        useRevampShouldShowChatPreviewModule,
+                        'useShouldShowChatSettingsRevamp',
+                    )
                     .mockReturnValue({
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
@@ -308,7 +319,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
             it('should call useRevampShouldShowChatPreview with the correct BigCommerce store integration', () => {
                 const useRevampSpy = jest
-                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .spyOn(
+                        useRevampShouldShowChatPreviewModule,
+                        'useShouldShowChatSettingsRevamp',
+                    )
                     .mockReturnValue({
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
@@ -354,7 +368,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
             it('should call useRevampShouldShowChatPreview with the correct Magento2 store integration', () => {
                 const useRevampSpy = jest
-                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .spyOn(
+                        useRevampShouldShowChatPreviewModule,
+                        'useShouldShowChatSettingsRevamp',
+                    )
                     .mockReturnValue({
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
@@ -400,7 +417,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should not render chat preview when hook returns shouldShowPreviewForRevamp as false', () => {
                 jest.spyOn(
                     useRevampShouldShowChatPreviewModule,
-                    'default',
+                    'useShouldShowChatSettingsRevamp',
                 ).mockReturnValue({
                     shouldShowRevamp: true,
                     shouldShowPreviewForRevamp: false,
@@ -421,7 +438,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should not render chat preview when shop_integration_id is not found in integrations', () => {
                 jest.spyOn(
                     useRevampShouldShowChatPreviewModule,
-                    'default',
+                    'useShouldShowChatSettingsRevamp',
                 ).mockReturnValue({
                     shouldShowRevamp: true,
                     shouldShowPreviewForRevamp: false,
@@ -445,7 +462,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
             it('should call useRevampShouldShowChatPreview with undefined when no shop_integration_id exists', () => {
                 const useRevampSpy = jest
-                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .spyOn(
+                        useRevampShouldShowChatPreviewModule,
+                        'useShouldShowChatSettingsRevamp',
+                    )
                     .mockReturnValue({
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
@@ -466,7 +486,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
             it('should call useRevampShouldShowChatPreview with undefined when shop_integration_id is not found', () => {
                 const useRevampSpy = jest
-                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .spyOn(
+                        useRevampShouldShowChatPreviewModule,
+                        'useShouldShowChatSettingsRevamp',
+                    )
                     .mockReturnValue({
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
@@ -491,7 +514,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
             it('should call useRevampShouldShowChatPreview with undefined when integration type is not supported', () => {
                 const useRevampSpy = jest
-                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .spyOn(
+                        useRevampShouldShowChatPreviewModule,
+                        'useShouldShowChatSettingsRevamp',
+                    )
                     .mockReturnValue({
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,

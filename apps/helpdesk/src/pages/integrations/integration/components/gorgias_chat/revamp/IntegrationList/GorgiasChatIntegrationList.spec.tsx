@@ -19,8 +19,10 @@ jest.mock('state/integrations/helpers', () => ({
 }))
 
 jest.mock('pages/common/components/Loader/Loader', () => {
-    return function MockLoader() {
-        return <div data-testid="loader">Loading...</div>
+    return {
+        Loader: function MockLoader() {
+            return <div data-testid="loader">Loading...</div>
+        },
     }
 })
 

@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import PhoneBarInnerContent from './PhoneBarInnerContent'
+import { PhoneBarInnerContent } from './PhoneBarInnerContent'
 
 describe('<PhoneBarInnerContent />', () => {
     it('renders children correctly', () => {

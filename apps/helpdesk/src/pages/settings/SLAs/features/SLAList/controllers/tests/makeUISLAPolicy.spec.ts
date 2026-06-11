@@ -1,6 +1,6 @@
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
-import makeUISLAPolicy from '../makeUISLAPolicy'
+import { makeUISLAPolicy } from '../makeUISLAPolicy'
 
 describe('makeUISLAPolicy', () => {
     it('should transform provided polict', () => {

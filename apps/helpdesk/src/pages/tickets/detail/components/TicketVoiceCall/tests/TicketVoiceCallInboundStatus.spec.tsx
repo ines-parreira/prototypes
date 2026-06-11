@@ -24,8 +24,8 @@ import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 
 jest.mock(
     'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel',
-    () =>
-        ({ subject }: { subject: VoiceCallSubject }) => {
+    () => ({
+        VoiceCallSubjectLabel: ({ subject }: { subject: VoiceCallSubject }) => {
             if (subject.type === 'agent') {
                 return (
                     <div data-interactable="true">
@@ -41,26 +41,32 @@ jest.mock(
                 )
             }
         },
+    }),
 )
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () =>
-        ({ agentId }: { agentId: number }) => (
+    () => ({
+        VoiceCallAgentLabel: ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
         ),
+    }),
 )
 
-jest.mock('../TicketVoiceCallEvents', () => ({ callId }: any) => (
-    <div data-testid="ticket-voice-call-events">{callId}</div>
-))
+jest.mock('../TicketVoiceCallEvents', () => ({
+    TicketVoiceCallEvents: ({ callId }: any) => (
+        <div data-testid="ticket-voice-call-events">{callId}</div>
+    ),
+}))
 
-jest.mock('../CollapsibleDetails', () => ({ title, children }: any) => (
-    <div data-testid="collapsible-details">
-        <div>{title}</div>
-        <div>{children}</div>
-    </div>
-))
+jest.mock('../CollapsibleDetails', () => ({
+    CollapsibleDetails: ({ title, children }: any) => (
+        <div data-testid="collapsible-details">
+            <div>{title}</div>
+            <div>{children}</div>
+        </div>
+    ),
+}))
 
 jest.mock('models/voiceCall/types', () => {
     const originalModule = jest.requireActual('models/voiceCall/types')

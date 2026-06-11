@@ -13,9 +13,9 @@ import {
 
 import { Button, toast } from '@gorgias/axiom'
 
-import PageHeader from 'pages/common/components/PageHeader'
-import Detail from 'pages/common/components/ProductDetail'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { Detail } from 'pages/common/components/ProductDetail'
+import { SecondaryNavbar } from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {
     CONTACT_FORM_ABOUT_PATH,
     CONTACT_FORM_CREATE_PATH,
@@ -23,7 +23,7 @@ import {
     CONTACT_FORM_PAGE_TITLE,
 } from 'pages/settings/contactForm/constants'
 import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/ContactFormStartView/constants'
-import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
+import { ManageContactForms } from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
 import { notEmpty } from 'utils'
 
 import { useGetContactFormList } from '../../queries'
@@ -131,4 +131,4 @@ const ContactFormStartView = (): JSX.Element => {
     )
 }
 
-export default ContactFormStartView
+export { ContactFormStartView }

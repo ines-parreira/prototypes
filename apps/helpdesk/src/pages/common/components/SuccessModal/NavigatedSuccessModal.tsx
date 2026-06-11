@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
 
-import SuccessModal from './SuccessModal'
+import { SuccessModal } from './SuccessModal'
 
 export enum NavigatedSuccessModalName {
     GorgiasChatManualInstallation = 'gorgias-chat-manual-installation',
@@ -34,4 +34,4 @@ const NavigatedSuccessModal: React.FC<Props> = ({ name, ...props }) => {
     return <SuccessModal {...props} isOpen={isOpen} onClose={onClose} />
 }
 
-export default NavigatedSuccessModal
+export { NavigatedSuccessModal }

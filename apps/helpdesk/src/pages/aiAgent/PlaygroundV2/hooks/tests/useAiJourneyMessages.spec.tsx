@@ -12,7 +12,7 @@ import {
     useJourneys,
     useUpdateJourney,
 } from 'AIJourney/queries'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useTriggerAIJourney } from 'models/aiAgent/queries'
 import {
     AIJourneyProvider,

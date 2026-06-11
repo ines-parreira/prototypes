@@ -15,8 +15,8 @@ import {
 } from './constant'
 import { usePaginatedProductIntegration } from './hooks/usePaginatedProductIntegration'
 import { useSelectedProductAndDetail } from './hooks/useSelectedProductAndDetail'
-import ScrapedDomainContentView from './ScrapedDomainContentView'
-import ScrapedDomainSelectedContent from './ScrapedDomainSelectedContent'
+import { ScrapedDomainContentView } from './ScrapedDomainContentView'
+import { ScrapedDomainSelectedContent } from './ScrapedDomainSelectedContent'
 
 type Props = {
     shopName: string
@@ -133,4 +133,4 @@ const AiAgentScrapedDomainProductsView = ({
     )
 }
 
-export default AiAgentScrapedDomainProductsView
+export { AiAgentScrapedDomainProductsView }

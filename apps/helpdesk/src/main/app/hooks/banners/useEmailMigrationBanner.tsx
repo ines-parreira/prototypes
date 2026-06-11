@@ -5,10 +5,10 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { BannerCategories, useBanners } from 'AlertBanners'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { EmailMigrationStatus } from 'models/integration/types'
 import { computeEmailMigrationStatusBanner } from 'pages/common/components/EmailMigrationBanner/helpers'
-import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
+import { useMigrationBannerStatus } from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import { getEmailMigrationStatus } from 'state/integrations/selectors'
 
 const MIGRATION_PAGE_URL = '/app/settings/channels/email/migration'

@@ -1,13 +1,14 @@
-import useWhatsAppMigration, {
+import {
     getStepFromStatus,
+    useWhatsAppMigration,
     WhatsAppMigrationStatus,
 } from 'hooks/useWhatsAppMigration'
 
-import SteppedNavBar from '../email/SteppedNavBar/SteppedNavBar'
+import { SteppedNavBar } from '../email/SteppedNavBar/SteppedNavBar'
 
 import css from './WhatsAppMigrationSteppedNavBar.less'
 
-export default function WhatsAppMigrationSteppedNavBar(): JSX.Element {
+export function WhatsAppMigrationSteppedNavBar(): JSX.Element {
     const migration = useWhatsAppMigration()
     const currentStepIndex = parseInt(migration.currentStep) - 1
     const stepFromStatus = getStepFromStatus(migration.status)

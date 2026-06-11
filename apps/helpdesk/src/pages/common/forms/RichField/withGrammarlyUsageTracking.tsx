@@ -20,7 +20,7 @@ function findGrammarlyOnPage(): boolean {
     return document.getElementsByTagName(GRAMMARLY_EXTENSION_TAG).length > 0
 }
 
-export default function withGrammarlyUsageTracking<Props>(
+export function withGrammarlyUsageTracking<Props>(
     WrappedComponent: ComponentType<Props & InjectedProps>,
 ): ComponentType<Props> {
     class Wrapper extends Component<Props, State> {

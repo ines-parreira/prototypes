@@ -7,12 +7,12 @@ import type {
 } from '@gorgias/helpdesk-queries'
 
 import type { OutlookIntegration } from 'models/integration/types'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import LinkButton from 'pages/common/components/button/LinkButton'
+import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
 
-import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
+import { useDeleteEmailIntegration } from '../useDeleteEmailIntegration'
 import { SUPPORT_EMAIL } from './constants'
-import useDomainVerification from './useDomainVerification'
+import { useDomainVerification } from './useDomainVerification'
 
 import css from './EmailDomainVerification.less'
 
@@ -20,9 +20,7 @@ type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
 }
 
-export default function EmailDomainVerificationActionButtons({
-    integration,
-}: Props) {
+export function EmailDomainVerificationActionButtons({ integration }: Props) {
     const {
         domain,
         isCreatingDomain,

@@ -11,8 +11,8 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import { useConvertGeneralSettings } from 'domains/reporting/pages/convert/hooks/useConvertGeneralSettings'
-import InputField from 'pages/common/forms/input/InputField'
-import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
+import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
+import { CampaignPreview } from 'pages/convert/campaigns/components/CampaignPreview'
 import type { StepProps } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import { transformTransitoryToAttachment } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'

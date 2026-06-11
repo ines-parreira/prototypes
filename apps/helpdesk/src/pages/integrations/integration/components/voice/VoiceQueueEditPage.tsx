@@ -9,20 +9,20 @@ import {
     useUpdateVoiceQueue,
 } from '@gorgias/helpdesk-queries'
 
-import Loader from 'pages/common/components/Loader/Loader'
-import SettingsContent from 'pages/settings/SettingsContent'
-import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import { Loader } from 'pages/common/components/Loader/Loader'
+import { SettingsContent } from 'pages/settings/SettingsContent'
+import { SettingsPageContainer } from 'pages/settings/SettingsPageContainer'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
 import { getVoiceQueueEditableFields } from './utils'
-import VoiceFormSubmitButton from './VoiceFormSubmitButton'
-import VoiceQueueDelete from './VoiceQueueDelete'
-import VoiceQueueEditOrCreateForm from './VoiceQueueEditOrCreateForm'
-import VoiceQueueSettingsForm from './VoiceQueueSettingsForm'
+import { VoiceFormSubmitButton } from './VoiceFormSubmitButton'
+import { VoiceQueueDelete } from './VoiceQueueDelete'
+import { VoiceQueueEditOrCreateForm } from './VoiceQueueEditOrCreateForm'
+import { VoiceQueueSettingsForm } from './VoiceQueueSettingsForm'
 
 import css from './VoiceQueueEditPage.less'
 
-export default function VoiceQueueEditPage() {
+export function VoiceQueueEditPage() {
     const history = useHistory()
     const { id: idParam } = useParams<{ id: string }>()
     const id = Number(idParam)

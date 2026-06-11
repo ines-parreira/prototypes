@@ -22,4 +22,4 @@ const LandingBanner = () => (
     </div>
 )
 
-export default LandingBanner
+export { LandingBanner }

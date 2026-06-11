@@ -4,16 +4,16 @@ import classNames from 'classnames'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import useOrderBy from 'hooks/useOrderBy'
+import { useOrderBy } from 'hooks/useOrderBy'
 import { OrderDirection } from 'models/api/types'
-import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
+import { HeaderCellProperty } from 'pages/common/components/table/cells/HeaderCellProperty'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import type { LlmTriggeredExecution } from '../types'
-import ActionEventRow from './ActionEventRow'
+import { ActionsRow as ActionEventRow } from './ActionEventRow'
 
 import css from './ActionEventsList.less'
 
@@ -25,7 +25,7 @@ type Props = {
     onSelectedExecutionIdChange: (executionId: string) => void
 }
 
-export default function ActionEventsList({
+export function ActionEventsList({
     executions,
     onChangeOrder,
     isLoading,

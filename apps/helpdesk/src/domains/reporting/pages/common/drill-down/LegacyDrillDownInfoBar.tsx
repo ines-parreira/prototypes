@@ -9,7 +9,7 @@ import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/Dri
 import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownInfobar.less'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
-import Loader from 'pages/common/components/Loader/Loader'
+import { Loader } from 'pages/common/components/Loader/Loader'
 
 const getTheInfoLabel = (totalResults: number, objectType: string) => {
     if (totalResults < DRILLDOWN_QUERY_LIMIT) {

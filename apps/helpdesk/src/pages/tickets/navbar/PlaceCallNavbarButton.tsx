@@ -15,12 +15,12 @@ import {
     MICROPHONE_PERMISSION_ERROR_MESSAGE,
 } from 'business/twilio'
 import { Navigation } from 'components/Navigation/Navigation'
-import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import useHasPhone from 'hooks/useHasPhone'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import DeactivatedViewIcon from 'pages/common/components/DeactivatedViewIcon'
-import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
-import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
+import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
+import { useHasPhone } from 'hooks/useHasPhone'
+import { DefaultExportButtonIconLabel as ButtonIconLabel } from 'pages/common/components/button/ButtonIconLabel'
+import { DeactivatedViewIcon } from 'pages/common/components/DeactivatedViewIcon'
+import { PhoneDevice } from 'pages/integrations/integration/components/phone/PhoneDevice'
+import { useMicrophonePermissions } from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 import css from './PlaceCallNavbarButton.less'
 

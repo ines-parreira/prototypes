@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import FieldContainer from './FieldContainer'
-import FieldLabel from './FieldLabel'
-import FieldValue from './FieldValue'
+import { FieldContainer } from './FieldContainer'
+import { FieldLabel } from './FieldLabel'
+import { FieldValue } from './FieldValue'
 
 import css from './StaticField.less'
 
@@ -14,7 +14,7 @@ type Props = {
     isNotBold?: boolean
 }
 
-export default function StaticField({
+export function StaticField({
     children,
     label,
     isDisabled = false,

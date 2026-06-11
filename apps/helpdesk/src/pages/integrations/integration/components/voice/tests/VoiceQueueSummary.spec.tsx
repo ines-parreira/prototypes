@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
-import VoiceQueueSummary from '../VoiceQueueSummary'
+import { VoiceQueueSummary } from '../VoiceQueueSummary'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
@@ -13,15 +13,17 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
 const useGetTeamMock = assumeMock(useGetTeam)
 
-jest.mock('../EditQueueModal', () => ({ isOpen, onClose, queue }: any) => (
-    <div
-        data-testid="edit-queue-modal"
-        data-is-open={isOpen}
-        data-queue-id={queue?.id}
-    >
-        <button onClick={onClose}>Close Modal</button>
-    </div>
-))
+jest.mock('../EditQueueModal', () => ({
+    EditQueueModal: ({ isOpen, onClose, queue }: any) => (
+        <div
+            data-testid="edit-queue-modal"
+            data-is-open={isOpen}
+            data-queue-id={queue?.id}
+        >
+            <button onClick={onClose}>Close Modal</button>
+        </div>
+    ),
+}))
 
 describe('VoiceQueueSummary', () => {
     const queue_id = 1

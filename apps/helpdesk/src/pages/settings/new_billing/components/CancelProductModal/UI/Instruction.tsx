@@ -16,4 +16,4 @@ const Instruction = ({ children, isRequired = false }: InstructionProps) => {
     )
 }
 
-export default Instruction
+export { Instruction }

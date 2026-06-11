@@ -5,14 +5,14 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { assetsUrl } from 'utils'
 
-import HeroImageCarousel from '../HeroImageCarousel/HeroImageCarousel'
-import PaywallView from './PaywallView'
-import PaywallViewActionButtons from './PaywallViewActionButtons'
-import PaywallViewChecklist from './PaywallViewChecklist'
-import PaywallViewChecklistItem from './PaywallViewChecklistItem'
-import PaywallViewHeader from './PaywallViewHeader'
-import PaywallViewLeftContainer from './PaywallViewLeftContainer'
-import PaywallViewRightContainer from './PaywallViewRightContainer'
+import { HeroImageCarousel } from '../HeroImageCarousel/HeroImageCarousel'
+import { PaywallView } from './PaywallView'
+import { PaywallViewActionButtons } from './PaywallViewActionButtons'
+import { PaywallViewChecklist } from './PaywallViewChecklist'
+import { PaywallViewChecklistItem } from './PaywallViewChecklistItem'
+import { PaywallViewHeader } from './PaywallViewHeader'
+import { PaywallViewLeftContainer } from './PaywallViewLeftContainer'
+import { PaywallViewRightContainer } from './PaywallViewRightContainer'
 
 const meta: Meta = {
     title: 'Layout/PaywallView',

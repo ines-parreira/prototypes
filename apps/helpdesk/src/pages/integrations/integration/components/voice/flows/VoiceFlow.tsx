@@ -19,7 +19,7 @@ import { nodeTypes } from './nodeTypes'
 import type { VoiceFlowNode } from './types'
 import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from './utils'
 import { VoiceFlowEdge, VoiceFlowPreviewEdge } from './VoiceFlowEdge'
-import VoiceFlowProvider from './VoiceFlowProvider'
+import { VoiceFlowProvider } from './VoiceFlowProvider'
 
 const edgeTypes = {
     default: VoiceFlowEdge,

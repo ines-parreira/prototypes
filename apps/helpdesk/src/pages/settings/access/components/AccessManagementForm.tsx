@@ -1,8 +1,8 @@
 import { Box, LegacyTextField as TextField } from '@gorgias/axiom'
 
-import CopyButton from 'components/CopyButton/CopyButton'
-import InputGroup from 'pages/common/forms/input/InputGroup'
-import TextInput from 'pages/common/forms/input/TextInput'
+import { CopyButton } from 'components/CopyButton/CopyButton'
+import { InputGroup } from 'pages/common/forms/input/InputGroup'
+import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
 import { useAccessManagementForm } from '../hooks'
 import type { ModalMode } from '../types'

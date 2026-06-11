@@ -5,13 +5,13 @@ import { Col, Row } from 'reactstrap'
 
 import type { GenericAttachment } from 'common/types'
 import type { Actor, Meta, Source } from 'models/ticket/types'
-import Avatar from 'pages/common/components/Avatar/Avatar'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
-import TicketMessageMeta from 'pages/tickets/detail/components/TicketMessages/Meta'
+import { Avatar } from 'pages/common/components/Avatar/Avatar'
+import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
+import { DefaultExportTicketAttachments as TicketAttachments } from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import { Meta as TicketMessageMeta } from 'pages/tickets/detail/components/TicketMessages/Meta'
 
-import GenericCard from '../GenericCard/GenericCard'
-import SourceIcon from '../SourceIcon'
+import { GenericCard } from '../GenericCard/GenericCard'
+import { DefaultExportSourceIcon as SourceIcon } from '../SourceIcon'
 
 import css from './TicketMessageEmbeddedCard.less'
 
@@ -28,7 +28,7 @@ type Props = {
     attachments?: List<GenericAttachment>
 }
 
-export default function TicketMessageEmbeddedCard({
+export function TicketMessageEmbeddedCard({
     integrationId,
     messageId,
     externalId,

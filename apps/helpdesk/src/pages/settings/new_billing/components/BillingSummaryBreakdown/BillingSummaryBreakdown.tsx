@@ -9,7 +9,7 @@ import { ProductType } from '@repo/billing'
 import { Box, Text } from '@gorgias/axiom'
 
 import { SummaryItem } from '../SummaryItem'
-import SummaryTotal from '../SummaryTotal'
+import { SummaryTotal } from '../SummaryTotal'
 
 type BillingSummaryBreakdownProps = {
     selectedPlans: SelectedPlans

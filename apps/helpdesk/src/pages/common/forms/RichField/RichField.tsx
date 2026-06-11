@@ -18,7 +18,7 @@ import {
     isValidSelectionKey,
 } from 'utils/editor'
 
-import RichFieldEditor from './RichFieldEditor'
+import { DefaultExportRichFieldEditor as RichFieldEditor } from './RichFieldEditor'
 
 export type Props = {
     allowExternalChanges?: boolean
@@ -35,7 +35,7 @@ type State = {
     isFocused: boolean
 }
 
-export default class RichField extends Component<Props, State> {
+export class RichField extends Component<Props, State> {
     // Synchronous mirror of `this.state.editorState` to avoid stale reads
     // between batched/async `setState` calls (e.g. in _didHTMLChanged).
     _latestEditorState: EditorState | null = null

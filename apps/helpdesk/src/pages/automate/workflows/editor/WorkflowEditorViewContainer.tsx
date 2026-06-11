@@ -14,11 +14,11 @@ import { useAutomateBaseURL } from 'settings/automate/hooks/useAutomateBaseURL'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import type { Notification } from 'state/notifications/types'
 
-import WorkflowEditorView from './WorkflowEditorView'
+import { DefaultExportWorkflowEditorView as WorkflowEditorView } from './WorkflowEditorView'
 
 const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 
-export default function WorkflowEditorViewContainer() {
+export function WorkflowEditorViewContainer() {
     const { shopType, shopName, editWorkflowId } = useParams<{
         shopType: string
         shopName: string

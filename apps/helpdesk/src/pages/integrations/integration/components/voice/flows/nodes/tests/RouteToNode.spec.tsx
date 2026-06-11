@@ -21,17 +21,21 @@ import type {
 import { FlowProvider } from 'core/ui/flows'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
-import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
-import VoiceFlowProvider from '../../VoiceFlowProvider'
+import { TextToSpeechContext } from '../../../VoiceMessageTTS/TextToSpeechContext'
+import { VoiceFlowProvider } from '../../VoiceFlowProvider'
 import { RouteToNode } from '../RouteToNode'
 
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceQueueSelectField.tsx',
-    () => () => <div>VoiceQueueSelectField</div>,
+    () => ({ VoiceQueueSelectField: () => <div>VoiceQueueSelectField</div> }),
 )
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationSelectField.tsx',
-    () => () => <div>VoiceIntegrationSelectField</div>,
+    () => ({
+        VoiceIntegrationSelectField: () => (
+            <div>VoiceIntegrationSelectField</div>
+        ),
+    }),
 )
 
 const server = setupServer()

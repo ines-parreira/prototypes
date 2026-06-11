@@ -16,31 +16,32 @@ import {
     useArticleRecommendationPredictions,
 } from 'models/articleRecommendationPrediction/queries'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-import LinkButton from 'pages/common/components/button/LinkButton'
-import Paywall from 'pages/common/components/Paywall/Paywall'
-import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
+import { AutomateView } from 'pages/automate/common/components/AutomateView'
+import { useSelfServiceConfiguration } from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
+import { LinkButton } from 'pages/common/components/button/LinkButton'
+import { Paywall } from 'pages/common/components/Paywall/Paywall'
+import { ProgressBar } from 'pages/common/components/ProgressBar/ProgressBar'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { assetsUrl } from '../../../utils'
 import { ARTICLE_RECOMMENDATION } from '../common/components/constants'
-import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
+import { useApplicationsAutomationSettings } from '../common/hooks/useApplicationsAutomationSettings'
 import { useHelpCenterPublishedArticlesCount } from '../common/hooks/useHelpCenterPublishedArticlesCount'
 import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
-import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChannels'
+import { useSelfServiceChatChannels } from '../common/hooks/useSelfServiceChatChannels'
 import { getArticleRecommendationNavItems } from '../common/utils/getArticleRecommendationNavItems'
-import Header from './components/Header'
+import { Header } from './components/Header'
 import { StatefulMessageCard as MessageCard } from './components/MessageCard'
-import PreviewSection from './components/PreviewSection'
-import RecommendationDivisor from './components/RecommendationDivisor'
-import RecommendationFilterNoResults from './components/RecommendationFilterNoResults'
+import { TrainMyAiPreview as PreviewSection } from './components/PreviewSection'
+import { RecommendationDivisor } from './components/RecommendationDivisor'
+import { RecommendationFilterNoResults } from './components/RecommendationFilterNoResults'
 import type { FeedbackOptions } from './components/RecommendationFilters'
-import RecommendationFilters, {
+import {
     DEFAULT_FEEDBACK_OPTIONS,
+    RecommendationFilter as RecommendationFilters,
 } from './components/RecommendationFilters'
-import RecommendationPagination from './components/RecommendationPagination'
+import { RecommendationPagination } from './components/RecommendationPagination'
 import { RecommendationDisabled } from './components/TrainMyAiAlerts'
 
 import css from './TrainMyAiView.less'
@@ -648,4 +649,4 @@ const TrainMyAiView = () => {
     )
 }
 
-export default TrainMyAiView
+export { TrainMyAiView }

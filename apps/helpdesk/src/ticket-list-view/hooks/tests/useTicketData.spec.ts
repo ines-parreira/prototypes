@@ -2,7 +2,7 @@ import { flushPromises, renderHook } from '@repo/testing'
 import * as ReactQuery from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
-import useTicketData from '../useTicketData'
+import { useTicketData } from '../useTicketData'
 
 // TODO(React18): Remove this once we upgrade to React 18
 describe.skip('useTicketData', () => {

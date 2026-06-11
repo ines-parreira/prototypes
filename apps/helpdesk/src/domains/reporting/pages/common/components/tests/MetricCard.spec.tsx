@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
+import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 
 jest.mock(

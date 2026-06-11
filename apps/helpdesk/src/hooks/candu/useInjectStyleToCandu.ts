@@ -131,4 +131,4 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
     }, [injectStyle, ref])
 }
 
-export default useInjectStyleToCandu
+export { useInjectStyleToCandu }

@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import useStaleTickets from '../useStaleTickets'
+import { useStaleTickets } from '../useStaleTickets'
 
 describe('useStaleTickets', () => {
     const initialPartials = [

@@ -12,7 +12,7 @@ import {
     mapLanguageOptionsToLanguageDropdown,
 } from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 import { updateOrCreateIntegration } from 'state/integrations/actions'

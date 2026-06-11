@@ -39,4 +39,4 @@ const CounterText = ({ plan, type, cadence }: CounterTextProps) => {
     )
 }
 
-export default CounterText
+export { CounterText }

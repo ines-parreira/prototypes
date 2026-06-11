@@ -7,7 +7,7 @@ import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { integrationsState } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
-import VoiceIntegrationIVRPreferencesForm from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferencesForm'
+import { VoiceIntegrationIVRPreferencesForm } from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferencesForm'
 
 import {
     useDeletePhoneIntegration,
@@ -18,9 +18,8 @@ jest.mock('../useVoiceSettingsForm')
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const useDeletePhoneIntegrationMock = assumeMock(useDeletePhoneIntegration)
 
-jest.mock(
-    'pages/common/components/FormUnsavedChangesPrompt',
-    () => (props: any) => (
+jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => ({
+    FormUnsavedChangesPrompt: (props: any) => (
         <div
             data-testid="unsaved-changes-prompt"
             onClick={() => props.onSave()}
@@ -28,11 +27,13 @@ jest.mock(
             FormUnsavedChangesPrompt
         </div>
     ),
-)
+}))
 
-jest.mock('../VoiceIntegrationSettingsFormGeneralSection', () => () => (
-    <div>VoiceIntegrationSettingsFormGeneralSection</div>
-))
+jest.mock('../VoiceIntegrationSettingsFormGeneralSection', () => ({
+    VoiceIntegrationSettingsFormGeneralSection: () => (
+        <div>VoiceIntegrationSettingsFormGeneralSection</div>
+    ),
+}))
 
 describe('<VoiceIntegrationIVRPreferencesForm /> - Form State Tests', () => {
     const phoneIntegration = integrationsState.integrations.find(

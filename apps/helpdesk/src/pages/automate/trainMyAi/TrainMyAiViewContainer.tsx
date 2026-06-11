@@ -2,9 +2,9 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-import AutomatePaywallView from '../common/components/AutomatePaywallView'
+import { AutomatePaywallView } from '../common/components/AutomatePaywallView'
 import { AutomateFeatures } from '../common/types'
-import TrainMyAiView from './TrainMyAiView'
+import { TrainMyAiView } from './TrainMyAiView'
 
 const TrainMyAiViewContainer = () => {
     const { shopName } = useParams<{
@@ -22,4 +22,4 @@ const TrainMyAiViewContainer = () => {
     return <TrainMyAiView key={key} />
 }
 
-export default TrainMyAiViewContainer
+export { TrainMyAiViewContainer }

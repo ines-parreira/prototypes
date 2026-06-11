@@ -8,8 +8,8 @@ import {
     INTENTS_BREAKDOWN_PER_DAY,
     INTENTS_OVERVIEW,
 } from 'domains/reporting/config/stats'
-import useStatResource from 'domains/reporting/hooks/useStatResource'
-import AutomateIntents from 'domains/reporting/pages/ticket-insights/intents/AutomateIntents'
+import { useStatResource } from 'domains/reporting/hooks/useStatResource'
+import { AutomateIntents } from 'domains/reporting/pages/ticket-insights/intents/AutomateIntents'
 import { fromLegacyStatsFilters } from 'domains/reporting/state/stats/utils'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import {
@@ -37,7 +37,9 @@ jest.mock(
 )
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>,
+    () => ({
+        DEPRECATED_ChannelsStatsFilter: () => <div>ChannelsStatsFilter</div>,
+    }),
 )
 
 const useStatResourceMock = useStatResource as jest.MockedFunction<

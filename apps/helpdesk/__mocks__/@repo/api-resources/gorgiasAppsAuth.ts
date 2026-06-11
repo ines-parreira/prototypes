@@ -22,4 +22,4 @@ export class GorgiasAppAuthService {
     )
 }
 
-export default gorgiasAppsAuthInterceptor
+export { gorgiasAppsAuthInterceptor }

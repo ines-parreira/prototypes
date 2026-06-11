@@ -68,4 +68,8 @@ const DropdownHeader = (
     )
 }
 
-export default forwardRef<HTMLDivElement, Props>(DropdownHeader)
+const DefaultExportDropdownHeader = forwardRef<HTMLDivElement, Props>(
+    DropdownHeader,
+)
+
+export { DefaultExportDropdownHeader }

@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { useDrag } from 'react-dnd'
 
 import type { ViewCategoryNavbar } from 'models/view/types'
-import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import { TicketNavbarDropTarget } from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
 import css from './TicketNavbarBlock.less'

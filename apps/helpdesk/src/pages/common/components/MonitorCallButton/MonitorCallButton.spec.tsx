@@ -17,7 +17,7 @@ import type { VoiceCall } from 'models/voiceCall/types'
 import { MonitoringErrorCode } from 'models/voiceCall/types'
 import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
 
-import MonitorCallButton from './MonitorCallButton'
+import { MonitorCallButton } from './MonitorCallButton'
 
 jest.mock('hooks/integrations/phone/useMonitoringCall')
 jest.mock('hooks/integrations/phone/monitoring.utils')

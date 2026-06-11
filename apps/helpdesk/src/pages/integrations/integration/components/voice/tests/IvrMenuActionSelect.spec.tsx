@@ -6,7 +6,7 @@ import { act } from '@testing-library/react'
 import type { IvrMenuAction } from 'models/integration/types'
 import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 
-import IvrMenuActionSelect from '../IvrMenuActionSelect'
+import { IvrMenuActionSelect } from '../IvrMenuActionSelect'
 
 describe('<IvrMenuActionSelect />', () => {
     const mockOnChange = jest.fn()

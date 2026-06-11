@@ -10,7 +10,7 @@ import { fromJS } from 'immutable'
 import { toast } from '@gorgias/axiom'
 
 import { account } from 'fixtures/account'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     BillingState,
     CouponSummary,

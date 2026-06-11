@@ -11,7 +11,7 @@ import { DismissOpportunityModal } from './DismissOpportunityModal'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 'test-user-id'),
+    useAppSelector: jest.fn(() => 'test-user-id'),
 }))
 describe('DismissOpportunityModal', () => {
     const mockOnClose = jest.fn()

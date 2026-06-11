@@ -18,10 +18,10 @@ import type {
 import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import { getHelpCenterTranslationsResponseFixture } from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'
-import useCurrentHelpCenter from '../../../../../hooks/useCurrentHelpCenter'
+import { useCurrentHelpCenter } from '../../../../../hooks/useCurrentHelpCenter'
 import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation/HelpCenterTranslation'
 import { useSupportedLocales } from '../../../../../providers/SupportedLocales'
-import PhoneContactInfoSection from '../PhoneContactInfoSection'
+import { PhoneContactInfoSection } from '../PhoneContactInfoSection'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,

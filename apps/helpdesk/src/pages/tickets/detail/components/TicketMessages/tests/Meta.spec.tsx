@@ -13,7 +13,7 @@ import type { ManagedRule } from 'state/rules/types'
 import { ManagedRulesSlugs, RuleType } from 'state/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import Meta from '../Meta'
+import { Meta } from '../Meta'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 

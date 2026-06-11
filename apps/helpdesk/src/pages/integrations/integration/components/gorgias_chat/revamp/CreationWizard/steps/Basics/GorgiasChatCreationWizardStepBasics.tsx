@@ -19,8 +19,8 @@ import {
     GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -30,7 +30,7 @@ import {
     isShopifyIntegration,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import { useNavigateWizardSteps } from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { LanguagePicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LanguagePicker'
 import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/GorgiasChatCreationWizardStep'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
@@ -38,10 +38,10 @@ import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import { CHAT_REDESIGN_FULL_MIGRATION_DATE } from '../../../common/hooks/useChatRedesignOptIn'
 import { GorgiasChatCreationWizardFooter } from '../../components/GorgiasChatCreationWizardFooter'
-import SaveChangesPrompt from '../../components/SaveChangesPrompt'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { SaveChangesPrompt } from '../../components/SaveChangesPrompt'
+import { useLogWizardEvent } from '../../hooks/useLogWizardEvent'
 import { ChatTitleField } from './ChatTitleField'
-import DiscardNewChatPrompt from './DiscardNewChatPrompt'
+import { DiscardNewChatPrompt } from './DiscardNewChatPrompt'
 import { useBasicsForm } from './hooks/useBasicsForm'
 import { InstallationPlatformSettings } from './InstallationPlatformSettings'
 import { LiveChatAvailabilitySettings } from './LiveChatAvailabilitySettings'
@@ -439,4 +439,4 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatCreationWizardStepBasics
+export { GorgiasChatCreationWizardStepBasics }

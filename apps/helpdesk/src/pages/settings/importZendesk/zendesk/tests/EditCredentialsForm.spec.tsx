@@ -9,7 +9,7 @@ import type {
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
 
-import EditCredentialsForm from '../EditCredentialsForm'
+import { EditCredentialsForm } from '../EditCredentialsForm'
 import { ImportStatus } from '../types'
 
 const mockUpdateOrCreateIntegration = jest.fn()

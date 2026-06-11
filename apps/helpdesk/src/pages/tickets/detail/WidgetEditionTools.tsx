@@ -6,7 +6,7 @@ import type { List, Map } from 'immutable'
 
 import { Button } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import * as actions from 'state/widgets/actions'
 import type { WidgetEnvironment, WidgetsState } from 'state/widgets/types'
 
@@ -17,7 +17,7 @@ type Props = {
     context: WidgetEnvironment
 }
 
-export default function WidgetEditionTools({ widgets, context }: Props) {
+export function WidgetEditionTools({ widgets, context }: Props) {
     const dispatch = useAppDispatch()
     const { onSetEditingWidgetType } = useTicketInfobarNavigation()
 

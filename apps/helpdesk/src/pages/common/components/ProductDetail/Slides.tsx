@@ -5,15 +5,15 @@ import classNames from 'classnames'
 import { Modal } from 'reactstrap'
 
 import { useAppNode } from 'appNode'
-import IconButton from 'pages/common/components/button/IconButton'
+import { IconButton } from 'pages/common/components/button/IconButton'
 import { assetsUrl } from 'utils'
-import Slider from 'utils/wrappers/Slider'
+import { Slider } from 'utils/wrappers/Slider'
 
 import type { ProductDetail } from './types'
 
 import css from './Detail.less'
 
-export default function Slides(props: Pick<ProductDetail, 'screenshots'>) {
+export function Slides(props: Pick<ProductDetail, 'screenshots'>) {
     const { screenshots = [] } = props
     const [isModalOpen, setModalOpen] = useState(false)
     const [initialSlide, setInitialSlide] = useState(0)

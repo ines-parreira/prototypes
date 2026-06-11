@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 import { submitSetting } from 'state/currentUser/actions'
 import {
     getCurrentUser,
@@ -12,7 +12,7 @@ import {
     getPreferences,
 } from 'state/currentUser/selectors'
 
-import AvailabilityToggle from '../AvailabilityToggle'
+import { AvailabilityToggle } from '../AvailabilityToggle'
 
 jest.mock(
     '@repo/logging',
@@ -23,10 +23,12 @@ jest.mock(
         }) as typeof import('@repo/logging'),
 )
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
+jest.mock('hooks/useAppSelector', () => ({
+    useAppSelector: (fn: () => void) => fn(),
+}))
 
 jest.mock('state/currentUser/actions', () => ({ submitSetting: jest.fn() }))
 

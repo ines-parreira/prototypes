@@ -6,21 +6,21 @@ import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
-import PageHeader from 'pages/common/components/PageHeader'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import CheckBox from 'pages/common/forms/CheckBox'
-import NumberInput from 'pages/common/forms/input/NumberInput'
+import { DefaultExportDropdownItemLabel as DropdownItemLabel } from 'pages/common/components/dropdown/DropdownItemLabel'
+import { PageHeader } from 'pages/common/components/PageHeader'
+import { UnsavedChangesPrompt } from 'pages/common/components/UnsavedChangesPrompt'
+import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
+import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 import autoMergeSettingsCss from 'pages/settings/autoMerge/AutoMergeSettings.less'
 import {
     defaultAutoMergeSettings,
     MAX_MERGING_WINDOW_DAYS,
 } from 'pages/settings/autoMerge/constants'
-import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
-import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
+import { useAutoMerge } from 'pages/settings/autoMerge/hooks/useAutoMerge'
+import { useAutoMergeSettings } from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
 import css from 'pages/settings/settings.less'
 
-export default function AutoMergeSettings() {
+export function AutoMergeSettings() {
     const { initialAutoMergeSettings, saveAutoMergeSettings } =
         useAutoMergeSettings()
     const autoMergeSettings = useAutoMerge(initialAutoMergeSettings)

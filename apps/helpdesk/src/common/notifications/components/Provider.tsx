@@ -3,14 +3,14 @@ import React, { useMemo } from 'react'
 
 import { KnockFeedProvider, KnockProvider } from '@knocklabs/react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
-import useAuthentication from '../hooks/useAuthentication'
-import useNotificationsContext from '../hooks/useNotificationsContext'
-import OverlayContext from '../OverlayContext'
-import ClientProvider from './ClientProvider'
+import { useAuthentication } from '../hooks/useAuthentication'
+import { useNotificationsContext } from '../hooks/useNotificationsContext'
+import { DefaultExportOverlayContext as OverlayContext } from '../OverlayContext'
+import { ClientProvider } from './ClientProvider'
 
 import '@knocklabs/react/dist/index.css'
 
@@ -20,7 +20,7 @@ type Props = {
 
 export const KNOCK_FEED_ID = '975be13d-82a9-4ac4-b8d6-7b6abd4516ae'
 
-export default function Provider({ children }: Props) {
+export function Provider({ children }: Props) {
     const ctx = useNotificationsContext()
 
     const currentAccountId = useAppSelector(getCurrentAccountId)

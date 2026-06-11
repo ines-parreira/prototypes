@@ -5,7 +5,7 @@ import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import { aiJourneyTotalNumberOfSalesConversationsQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 type UseAIJourneyOptOutRateOptions = {

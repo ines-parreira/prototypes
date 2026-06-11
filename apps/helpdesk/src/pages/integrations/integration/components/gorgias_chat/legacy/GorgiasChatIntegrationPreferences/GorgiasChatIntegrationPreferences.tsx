@@ -44,18 +44,20 @@ import {
     GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
-import NavigatedSuccessModal, {
+import {
+    NavigatedSuccessModal,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import NavigatedSuccessModalRevamped, {
+import {
     NavigatedSuccessModalNameRevamped,
+    NavigatedSuccessModal as NavigatedSuccessModalRevamped,
 } from 'pages/common/components/SuccessModal/revamp/NavigatedSuccessModal'
 import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
-import Caption from 'pages/common/forms/Caption/Caption'
-import type RichField from 'pages/common/forms/RichField/RichField'
-import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { Caption } from 'pages/common/forms/Caption/Caption'
+import type { RichField } from 'pages/common/forms/RichField/RichField'
+import { DefaultExportTicketRichField as TicketRichField } from 'pages/common/forms/RichField/TicketRichField'
+import { GorgiasChatIntegrationHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { Tab } from 'pages/integrations/integration/types'
 import type {
@@ -92,26 +94,26 @@ import {
 import { updateOrCreateIntegration } from '../../../../../../../state/integrations/actions'
 import { getIntegrationsByTypes } from '../../../../../../../state/integrations/selectors'
 import type { RootState } from '../../../../../../../state/types'
-import PageHeader from '../../../../../../common/components/PageHeader'
-import RadioFieldSet from '../../../../../../common/forms/RadioFieldSet'
-import SelectField from '../../../../../../common/forms/SelectField/SelectField'
+import { PageHeader } from '../../../../../../common/components/PageHeader'
+import { RadioFieldSet } from '../../../../../../common/forms/RadioFieldSet'
+import { SelectField } from '../../../../../../common/forms/SelectField/SelectField'
 import { isGenericEmailIntegration } from '../../../email/helpers'
 import { CustomizeTranslationsButton } from '../components/CustomizeTranslationsButton'
 import { multiLanguageInitialTextsEmptyData } from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
-import translationsAvailableKeys from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
-import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
-import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
-import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
-import ConversationTimestamp from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
-import CustomerInitialMessages from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
-import DisabledEmailCaptureMessagePreview from '../GorgiasChatIntegrationPreview/DisabledEmailCaptureMessage'
-import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
-import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
-import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
-import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
-import useShouldShowChatSettingsRevamp from '../hooks/useShouldShowChatSettingsRevamp'
-import ControlTicketVolumeControls from './ControlTicketVolumeControls'
+import { translationsAvailableKeys } from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
+import { AutoResponder as AutoResponderPreview } from '../GorgiasChatIntegrationPreview/AutoResponder'
+import { ChatHomePreview } from '../GorgiasChatIntegrationPreview/ChatHomePreview'
+import { ChatIntegrationPreview } from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { ChatIntegrationPreviewContent } from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
+import { ConversationTimestamp } from '../GorgiasChatIntegrationPreview/ConversationTimestamp'
+import { CustomerInitialMessages } from '../GorgiasChatIntegrationPreview/CustomerInitialMessages'
+import { DisabledEmailCaptureMessage as DisabledEmailCaptureMessagePreview } from '../GorgiasChatIntegrationPreview/DisabledEmailCaptureMessage'
+import { OfflineMessages } from '../GorgiasChatIntegrationPreview/OfflineMessages'
+import { OptionalEmailCapture as OptionalEmailCapturePreview } from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
+import { RequiredEmailCapture as RequiredEmailCapturePreview } from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
+import { GorgiasChatIntegrationPreviewContainer } from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import { useShouldShowChatSettingsRevamp } from '../hooks/useShouldShowChatSettingsRevamp'
+import { ControlTicketVolumeControls } from './ControlTicketVolumeControls'
 
 import css from './GorgiasChatIntegrationPreferences.less'
 
@@ -1752,4 +1754,4 @@ const GorgiasChatIntegrationPreferencesWrapper = (props: WrapperProps) => {
     )
 }
 
-export default GorgiasChatIntegrationPreferencesWrapper
+export { GorgiasChatIntegrationPreferencesWrapper }

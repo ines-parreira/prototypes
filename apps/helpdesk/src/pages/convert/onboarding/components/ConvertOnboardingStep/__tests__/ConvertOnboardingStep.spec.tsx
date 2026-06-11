@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 
-import ConvertOnboardingStep from '../ConvertOnboardingStep'
+import { ConvertOnboardingStep } from '../ConvertOnboardingStep'
 
 describe('ConvertOnboardingStep', () => {
     const defaultProps = {

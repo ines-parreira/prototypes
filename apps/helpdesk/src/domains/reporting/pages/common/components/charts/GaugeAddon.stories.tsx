@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import GaugeAddon from 'domains/reporting/pages/common/components/charts/GaugeAddon'
+import { GaugeAddon } from 'domains/reporting/pages/common/components/charts/GaugeAddon'
 
 const storyConfig: Meta = {
     title: 'Stats/GaugeAddon',

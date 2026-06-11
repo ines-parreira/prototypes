@@ -148,4 +148,4 @@ const ConversationHeader: React.FC<
     )
 }
 
-export default ConversationHeader
+export { ConversationHeader }

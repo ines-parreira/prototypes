@@ -4,10 +4,10 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { OrderDirection } from 'models/api/types'
 
-import TableHead from '../TableHead'
-import TableWrapper from '../TableWrapper'
-import HeaderCell from './HeaderCell'
-import HeaderCellProperty from './HeaderCellProperty'
+import { TableHead } from '../TableHead'
+import { TableWrapper } from '../TableWrapper'
+import { HeaderCell } from './HeaderCell'
+import { HeaderCellProperty } from './HeaderCellProperty'
 
 const storyConfig: Meta = {
     title: 'General/Table/Header Cell',

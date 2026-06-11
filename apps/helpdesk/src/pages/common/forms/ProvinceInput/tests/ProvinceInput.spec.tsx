@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 
-import ProvinceInput from '../ProvinceInput'
+import { ProvinceInput } from '../ProvinceInput'
 
 jest.mock('@repo/logging')
 

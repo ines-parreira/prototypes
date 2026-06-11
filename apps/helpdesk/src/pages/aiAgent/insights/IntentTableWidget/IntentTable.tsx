@@ -10,7 +10,7 @@ import { useEffectOnce, useMeasure } from '@gorgias/toolkit-react'
 
 import { useAIAgentInsightsDataset } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'
-import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
+import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import {
@@ -18,19 +18,19 @@ import {
     isSortingMetricLoading,
     pageSet,
 } from 'domains/reporting/state/ui/stats/insightsSlice'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     Intent,
     PaginatedIntents,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { NumberedPagination } from 'pages/common/components/Paginations'
-import TableBody from 'pages/common/components/table/TableBody'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
+import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
-import TableHead from 'pages/common/components/table/TableHead'
-import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { TableHead } from 'pages/common/components/table/TableHead'
+import { TableWrapper } from 'pages/common/components/table/TableWrapper'
 
 import { useIntentQuery } from './hooks/useIntentQuery'
 import { LoadingIntentCellContent } from './IntentTableCells'

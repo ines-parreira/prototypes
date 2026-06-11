@@ -9,7 +9,7 @@ import {
 } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 
-import NavbarPanel from '../NavbarPanel'
+import { NavbarPanel } from '../NavbarPanel'
 
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 const mockUseNavBar = useNavBar as jest.MockedFunction<typeof useNavBar>

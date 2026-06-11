@@ -1,15 +1,15 @@
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { useAppSelector } from 'hooks/useAppSelector'
 import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import { getShowShopifyCheckoutChatBanner } from 'state/integrations/selectors'
 
 import type { Tab } from '../../../types'
-import GorgiasChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
-import GorgiasChatIntegrationNotInstalledBanner from './GorgiasChatIntegrationNotInstalledBanner'
-import GorgiasChatIntegrationOutdatedSnippetBanner from './GorgiasChatIntegrationOutdatedSnippetBanner'
-import GorgiasChatShopifyCheckoutBanner from './GorgiasChatShopifyCheckoutChatBanner'
-import useChatMigrationBanner from './hooks/useChatMigrationBanner'
+import { GorgiasChatIntegrationNavigation } from './GorgiasChatIntegrationNavigation'
+import { GorgiasChatIntegrationNotInstalledBanner } from './GorgiasChatIntegrationNotInstalledBanner'
+import { GorgiasChatIntegrationOutdatedSnippetBanner } from './GorgiasChatIntegrationOutdatedSnippetBanner'
+import { GorgiasChatShopifyCheckoutBanner } from './GorgiasChatShopifyCheckoutChatBanner'
+import { useChatMigrationBanner } from './hooks/useChatMigrationBanner'
 import { useShouldShowShopifyCheckoutChatBanner } from './hooks/useShouldShowShopifyCheckoutChatBanner'
 
 type Props = {
@@ -57,4 +57,4 @@ const GorgiasChatIntegrationHeader: React.FC<Props> = ({
     )
 }
 
-export default GorgiasChatIntegrationHeader
+export { GorgiasChatIntegrationHeader }

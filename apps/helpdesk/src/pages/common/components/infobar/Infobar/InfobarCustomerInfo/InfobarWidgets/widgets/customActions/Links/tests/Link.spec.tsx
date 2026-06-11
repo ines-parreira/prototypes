@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import { agents } from 'fixtures/agents'
 
-import Link from '../Link'
+import { Link } from '../Link'
 
 const mockStore = configureMockStore([thunk])
 

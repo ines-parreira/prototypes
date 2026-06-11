@@ -1,5 +1,5 @@
 import type { IncrementalBackoffOptions } from '../incrementalBackoff'
-import IncrementalBackoff from '../incrementalBackoff'
+import { IncrementalBackoff } from '../incrementalBackoff'
 
 jest.useFakeTimers()
 
