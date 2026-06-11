@@ -47,6 +47,11 @@ export {
     getAllViewsOrdered,
 } from './hooks/useAllViewsOrdered'
 export { useAllViewSections } from './hooks/useAllViewSections'
+export {
+    useDefaultViews,
+    useDefaultViewsError,
+    useDefaultViewsLoading,
+} from './hooks/useDefaultViews'
 export { usePrivateViews, getPrivateViews } from './hooks/usePrivateViews'
 export { usePrivateViewSections } from './hooks/usePrivateViewSections'
 export {

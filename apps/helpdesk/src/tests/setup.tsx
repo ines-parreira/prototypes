@@ -467,6 +467,18 @@ jest.mock('@repo/feature-flags', () => {
         getMockedFlagValue(actual.FeatureFlagKey.TicketNavViewSourceSdk, false),
     )
 
+    const useDefaultViewsSourceSdkFlag = jest.fn(() =>
+        getMockedFlagValue(actual.FeatureFlagKey.DefaultViewsSourceSdk, false),
+    )
+
+    const useDefaultViewsSourceSdkFlagWithLoading = jest.fn(() => ({
+        isLoading: false,
+        value: getMockedFlagValue(
+            actual.FeatureFlagKey.DefaultViewsSourceSdk,
+            false,
+        ),
+    }))
+
     const useTicketNavViewSourceSdkFlagWithLoading = jest.fn(() => ({
         isLoading: false,
         value: getMockedFlagValue(
@@ -494,6 +506,8 @@ jest.mock('@repo/feature-flags', () => {
         useHelpdeskV2MS2Flag,
         useHelpdeskV2MS4Dash6Flag,
         useHelpdeskV2WayfindingMS1Flag,
+        useDefaultViewsSourceSdkFlag,
+        useDefaultViewsSourceSdkFlagWithLoading,
         useTicketNavViewSourceSdkFlag,
         useTicketNavViewSourceSdkFlagWithLoading,
     }

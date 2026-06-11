@@ -62,7 +62,7 @@ export function getSystemViews(): SystemView[] {
     return selectSystemViews(views, ordering.views_top, ordering.views_bottom)
 }
 
-function selectSystemViews(
+export function selectSystemViews(
     views: View[],
     topOrdering: Record<string, { display_order: number }>,
     bottomOrdering: Record<string, { display_order: number }>,

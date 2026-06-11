@@ -224,6 +224,7 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketMessageActionFailedToAbly = 'linear.task_HELP-5485.migrate-ticket-message-action-failed-to-ably',
     TicketMessagesAssignedToWrongTicketDebugging = 'linear-HELP-6492-ticket-messages-assigned-to-wrong-ticket-debugging',
+    DefaultViewsSourceSdk = 'linear-help-6676-default-views-source-sdk',
     TicketNavViewSourceSdk = 'linear-help-6446-ticket-nav-view-source-sdk',
     TicketThreadLoadingState = 'linear-HELP-6428-ticket-thread-loading-state',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',

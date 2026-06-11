@@ -17,6 +17,10 @@ export { useHelpdeskV2BaselineFlag } from './shared-flags/useHelpdeskV2BaselineF
 export { useHelpdeskV2MS4Dash6Flag } from './shared-flags/useHelpdeskV2MS4Dash6Flag'
 export { useSidebarCreateButtonsFlag } from './shared-flags/useSidebarCreateButtonsFlag'
 export {
+    useDefaultViewsSourceSdkFlag,
+    useDefaultViewsSourceSdkFlagWithLoading,
+} from './shared-flags/useDefaultViewsSourceSdkFlag'
+export {
     useTicketNavViewSourceSdkFlag,
     useTicketNavViewSourceSdkFlagWithLoading,
 } from './shared-flags/useTicketNavViewSourceSdkFlag'

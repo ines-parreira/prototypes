@@ -1,3 +1,13 @@
+import {
+    useDefaultViewsSourceSdkFlagWithLoading,
+    useHelpdeskV2WayfindingMS1Flag,
+} from '@repo/feature-flags'
+import {
+    useDefaultViews as useSdkDefaultViews,
+    useDefaultViewsError as useSdkDefaultViewsError,
+    useDefaultViewsLoading as useSdkDefaultViewsLoading,
+} from '@repo/views'
+
 import { useListAccountSettings, useListViews } from '@gorgias/helpdesk-queries'
 import type { View } from '@gorgias/helpdesk-types'
 
@@ -5,9 +15,27 @@ import { renderHook } from '../../../tests/render.utils'
 import { getOrderedSystemViews, useDefaultViews } from '../useDefaultViews'
 
 vi.mock('@gorgias/helpdesk-queries')
+vi.mock('@repo/feature-flags', () => ({
+    useDefaultViewsSourceSdkFlagWithLoading: vi.fn(),
+    useHelpdeskV2WayfindingMS1Flag: vi.fn(),
+}))
+vi.mock('@repo/views', () => ({
+    useDefaultViews: vi.fn(),
+    useDefaultViewsError: vi.fn(),
+    useDefaultViewsLoading: vi.fn(),
+}))
 
 const mockUseListViews = vi.mocked(useListViews)
 const mockUseListAccountSettings = vi.mocked(useListAccountSettings)
+const mockUseHelpdeskV2WayfindingMS1Flag = vi.mocked(
+    useHelpdeskV2WayfindingMS1Flag,
+)
+const mockUseDefaultViewsSourceSdkFlagWithLoading = vi.mocked(
+    useDefaultViewsSourceSdkFlagWithLoading,
+)
+const mockUseSdkDefaultViews = vi.mocked(useSdkDefaultViews)
+const mockUseSdkDefaultViewsLoading = vi.mocked(useSdkDefaultViewsLoading)
+const mockUseSdkDefaultViewsError = vi.mocked(useSdkDefaultViewsError)
 
 describe('getOrderedSystemViews', () => {
     it('should return system views sorted by SYSTEM_VIEW_DEFINITIONS order', () => {
@@ -110,6 +138,23 @@ describe('useDefaultViews', () => {
     ]
 
     beforeEach(() => {
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: false,
+            value: false,
+        })
+        mockUseSdkDefaultViews.mockImplementation((options) => [
+            {
+                id: options?.isVisible ? 102 : 101,
+                name: 'Closed',
+                category: 'system',
+                uri: options?.isVisible ? '/api/views/102' : '/api/views/101',
+                icon: 'check-circle',
+            },
+        ])
+        mockUseSdkDefaultViewsLoading.mockReturnValue(false)
+        mockUseSdkDefaultViewsError.mockReturnValue(false)
+
         mockUseListViews.mockReturnValue({
             data: allSystemViews,
             isLoading: false,
@@ -139,6 +184,125 @@ describe('useDefaultViews', () => {
             'Trash',
             'Spam',
         ])
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isEnabled: false,
+        })
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isVisible: true,
+            isEnabled: false,
+        })
+    })
+
+    it('should use the legacy source when wayfinding is enabled but the SDK source flag is disabled', () => {
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: false,
+            value: false,
+        })
+
+        const { result } = renderHook(() => useDefaultViews())
+
+        expect(result.current.defaultSystemViews.map((v) => v.name)).toEqual([
+            'Inbox',
+            'Unassigned',
+            'All',
+            'Snoozed',
+            'Closed',
+            'Trash',
+            'Spam',
+        ])
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isEnabled: false,
+        })
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isVisible: true,
+            isEnabled: false,
+        })
+    })
+
+    it('should hold in loading state when wayfinding is enabled and the SDK source flag is loading', () => {
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: true,
+            value: false,
+        })
+
+        const { result } = renderHook(() => useDefaultViews())
+
+        expect(result.current).toEqual({
+            defaultSystemViews: [],
+            visibleSystemViews: [],
+            visibilitySettingId: undefined,
+            isLoading: true,
+            isError: false,
+        })
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isEnabled: false,
+        })
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isVisible: true,
+            isEnabled: false,
+        })
+        expect(mockUseListAccountSettings).toHaveBeenCalledWith(
+            { type: 'views-visibility' },
+            expect.objectContaining({
+                query: expect.objectContaining({
+                    enabled: false,
+                }),
+            }),
+        )
+    })
+
+    it('should use SDK default views when wayfinding and the SDK source flag are enabled', () => {
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: false,
+            value: true,
+        })
+
+        const { result } = renderHook(() => useDefaultViews())
+
+        expect(result.current.defaultSystemViews.map((v) => v.name)).toEqual([
+            'Closed',
+        ])
+        expect(result.current.visibleSystemViews.map((v) => v.name)).toEqual([
+            'Closed',
+        ])
+        expect(result.current.visibilitySettingId).toBe(42)
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isEnabled: true,
+        })
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isVisible: true,
+            isEnabled: true,
+        })
+    })
+
+    it('should not use SDK default views when only the SDK source flag is enabled', () => {
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: false,
+            value: true,
+        })
+
+        const { result } = renderHook(() => useDefaultViews())
+
+        expect(result.current.defaultSystemViews.map((v) => v.name)).toEqual([
+            'Inbox',
+            'Unassigned',
+            'All',
+            'Snoozed',
+            'Closed',
+            'Trash',
+            'Spam',
+        ])
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isEnabled: false,
+        })
+        expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
+            isVisible: true,
+            isEnabled: false,
+        })
     })
 
     it('should return all views as visible when hidden_views is empty', () => {
