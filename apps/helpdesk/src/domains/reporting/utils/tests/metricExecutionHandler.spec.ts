@@ -590,6 +590,40 @@ describe('metricExecutionHandler', () => {
                 'Next function failed in live mode for test-metric: Forbidden',
             )
         })
+
+        it('should not report a 400 ECONNREFUSED error to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError(
+                'Request failed with status code 400',
+            )
+            axiosError.response = {
+                status: 400,
+                data: {
+                    error: {
+                        msg: 'Invalid request',
+                        data: 'Error: connect ECONNREFUSED 10.69.10.142:3030',
+                    },
+                },
+                statusText: 'Bad Request',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
     })
 
     describe('complete mode', () => {
@@ -650,6 +684,36 @@ describe('metricExecutionHandler', () => {
             )
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect((result.data as any).data[0]).toBe(42)
+        })
+
+        it('should not report a 400 ECONNREFUSED error to Sentry', async () => {
+            const axiosError = new AxiosError(
+                'Request failed with status code 400',
+            )
+            axiosError.response = {
+                status: 400,
+                data: {
+                    error: {
+                        msg: 'Invalid request',
+                        data: 'Error: connect ECONNREFUSED 10.69.10.142:3030',
+                    },
+                },
+                statusText: 'Bad Request',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
         })
     })
 

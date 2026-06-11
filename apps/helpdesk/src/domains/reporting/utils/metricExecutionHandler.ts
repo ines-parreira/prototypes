@@ -143,11 +143,16 @@ export async function metricExecutionHandler<
             // Skip Sentry reporting for transient errors to avoid noise
             // Transient errors: 202 (accepted but not ready), 429 (rate limit), 5xx (server errors), network errors
             // Skip errors caused by invalid CSRF tokens -> 'Something went wrong. Please reload this page.'
+            const isECONNREFUSEDError =
+                typeof reason?.error?.data === 'string' &&
+                reason.error.data.includes('ECONNREFUSED')
+
             const isTransientError =
                 (isAxiosError && isTransientErrorStatus(statusCode)) ||
                 isTransientErrorMessage(errorMessage) ||
                 reason?.error?.msg ===
-                    'Something went wrong. Please reload this page.'
+                    'Something went wrong. Please reload this page.' ||
+                isECONNREFUSEDError
 
             if (isTransientError) {
                 throw e
