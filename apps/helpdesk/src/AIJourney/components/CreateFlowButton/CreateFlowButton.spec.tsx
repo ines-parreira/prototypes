@@ -9,6 +9,7 @@ const mockHistoryPush = jest.fn()
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiJourneyMultiInstanceFlows: 'ai-journey-multi-instance-flows',
+        AiJourneyCustomFlowEnabled: 'ai-journey-custom-flow-enabled',
     },
     useFlag: jest.fn(() => false),
 }))
@@ -42,7 +43,9 @@ describe('<CreateFlowButton />', () => {
 
     describe('when AiJourneyMultiInstanceFlows flag is ON', () => {
         beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockImplementation(
+                (key: string) => key === 'ai-journey-multi-instance-flows',
+            )
             window.USER_IMPERSONATED = true
         })
 
@@ -86,7 +89,7 @@ describe('<CreateFlowButton />', () => {
             ).toBeInTheDocument()
         })
 
-        it('does not show campaign or custom flow options', async () => {
+        it('does not show campaign or custom flow options when custom flow flag is OFF', async () => {
             const user = userEvent.setup()
             render(<CreateFlowButton />)
 
@@ -130,6 +133,41 @@ describe('<CreateFlowButton />', () => {
             expect(mockHistoryPush).toHaveBeenCalledWith(
                 '/app/ai-journey/my-shop/welcome/setup',
             )
+        })
+
+        describe('when AiJourneyCustomFlowEnabled flag is also ON', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
+
+            it('shows Custom flow option in the dropdown', async () => {
+                const user = userEvent.setup()
+                render(<CreateFlowButton />)
+
+                await user.click(
+                    screen.getByRole('button', { name: /create flow/i }),
+                )
+
+                expect(
+                    screen.getByRole('menuitem', { name: /custom flow/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('navigates to custom flow setup path when Custom Flow is selected', async () => {
+                const user = userEvent.setup()
+                render(<CreateFlowButton />)
+
+                await user.click(
+                    screen.getByRole('button', { name: /create flow/i }),
+                )
+                await user.click(
+                    screen.getByRole('menuitem', { name: /custom flow/i }),
+                )
+
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/my-shop/custom/setup',
+                )
+            })
         })
     })
 })

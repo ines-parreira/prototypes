@@ -23,8 +23,6 @@ type journeysTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     onEditColumns?: () => void
-    onAddCustomFlow?: () => void
-    showAddCustomFlow?: boolean
     isLoading?: boolean
     integrationId?: number
     initialSorting?: SortingState
@@ -34,8 +32,6 @@ export const JourneysTable = <TData, TValue>({
     columns,
     data,
     onEditColumns,
-    onAddCustomFlow,
-    showAddCustomFlow = false,
     isLoading = false,
     integrationId,
     initialSorting,
@@ -89,24 +85,6 @@ export const JourneysTable = <TData, TValue>({
                         bottomRow={{
                             left: ['totalCount'],
                             right: [
-                                ...(showAddCustomFlow
-                                    ? [
-                                          {
-                                              key: 'add-custom-flow',
-                                              content: (
-                                                  <Button
-                                                      onClick={onAddCustomFlow}
-                                                      intent="regular"
-                                                      leadingSlot="add"
-                                                      size="sm"
-                                                      variant="secondary"
-                                                  >
-                                                      Add Custom Flow
-                                                  </Button>
-                                              ),
-                                          },
-                                      ]
-                                    : []),
                                 {
                                     key: 'date-format',
                                     content: (

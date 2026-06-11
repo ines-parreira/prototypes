@@ -2,7 +2,7 @@ import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -692,90 +692,6 @@ describe('<Flows />', () => {
                     integrationId: '123',
                 }),
             )
-        })
-    })
-
-    describe('"Add Custom Flow" button', () => {
-        it('should render exactly one "Add Custom Flow" button (in TableToolbar, not PageHeader)', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
-                    return true
-                return false
-            })
-
-            renderComponent()
-
-            const buttons = screen.getAllByRole('button', {
-                name: /add custom flow/i,
-            })
-            expect(buttons).toHaveLength(1)
-        })
-
-        it('should show "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is on', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
-                    return true
-                return false
-            })
-
-            renderComponent()
-
-            expect(
-                screen.getByRole('button', { name: /add custom flow/i }),
-            ).toBeInTheDocument()
-        })
-
-        it('should hide "Add Custom Flow" button when AiJourneyCustomFlowEnabled flag is off', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
-                    return false
-                return true
-            })
-
-            renderComponent()
-
-            expect(
-                screen.queryByRole('button', { name: /add custom flow/i }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should navigate to custom flow setup when "Add Custom Flow" is clicked', async () => {
-            const user = userEvent.setup()
-
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
-                    return true
-                return false
-            })
-
-            renderComponent()
-
-            const button = screen.getByRole('button', {
-                name: /add custom flow/i,
-            })
-            await user.click(button)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByRole('button', { name: /add custom flow/i }),
-                ).toBeInTheDocument()
-            })
-        })
-    })
-
-    describe('Feature flags', () => {
-        it('should show Win-back flow when feature flag is enabled', () => {
-            mockUseFlag.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiJourneyCustomFlowEnabled)
-                    return true
-                return false
-            })
-
-            renderComponent()
-
-            expect(
-                screen.getByRole('button', { name: /add custom flow/i }),
-            ).toBeInTheDocument()
         })
     })
 

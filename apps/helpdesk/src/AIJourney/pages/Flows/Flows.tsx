@@ -1,9 +1,8 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { MetricConfigItem } from '@repo/reporting'
 import { ConfigureMetricsModal } from '@repo/reporting'
-import { useHistory } from 'react-router-dom'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { ColumnDef } from '@gorgias/axiom'
@@ -18,7 +17,6 @@ import {
     journeysColumns,
     metricColumns,
 } from 'AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns'
-import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import {
     DEFAULT_TABLE_METRICS,
     EMPTY_TABLE_METRICS,
@@ -84,13 +82,6 @@ export const Flows = () => {
 
     const { journeys, currentIntegration, isLoadingJourneys, shopName } =
         useJourneyContext()
-
-    const history = useHistory()
-    const handleAddCustomFlow = useCallback(() => {
-        history.push(
-            `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CUSTOM}/${STEPS_NAMES.SETUP}`,
-        )
-    }, [history, shopName])
 
     const isImpersonated = !!window.USER_IMPERSONATED
 
@@ -250,8 +241,6 @@ export const Flows = () => {
                     columns={visibleColumns}
                     data={tableRows || []}
                     onEditColumns={() => setIsMetricsEditModalOpen(true)}
-                    onAddCustomFlow={handleAddCustomFlow}
-                    showAddCustomFlow={!!isAiJourneyCustomFlowEnabled}
                     isLoading={isLoadingJourneys}
                     integrationId={integrationId}
                     initialSorting={[{ id: 'updated_datetime', desc: true }]}

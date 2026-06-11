@@ -25,6 +25,9 @@ export const CreateFlowButton = () => {
     const isMultiInstanceEnabled =
         useFlag(FeatureFlagKey.AiJourneyMultiInstanceFlows) &&
         !!window.USER_IMPERSONATED
+    const isCustomFlowEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCustomFlowEnabled,
+    )
     const { shopName } = useJourneyContext()
     const history = useHistory()
 
@@ -62,6 +65,13 @@ export const CreateFlowButton = () => {
                     onAction={() => handleCreate(type)}
                 />
             ))}
+            {isCustomFlowEnabled && (
+                <MenuItem
+                    id={JourneyTypeEnum.Custom}
+                    label={JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.Custom]}
+                    onAction={() => handleCreate(JourneyTypeEnum.Custom)}
+                />
+            )}
         </Menu>
     )
 }
