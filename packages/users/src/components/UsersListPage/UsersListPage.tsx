@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react'
 
-import { FullHeightPanel } from '@repo/layout'
 import { UserRole } from '@repo/permissions'
 
 import {
     Button,
     DataTable,
     DataTableSearch,
+    Panel,
     PanelHeader,
     toast,
 } from '@gorgias/axiom'
@@ -42,7 +42,13 @@ export function UsersListPage() {
     }, [isError])
 
     return (
-        <FullHeightPanel>
+        <Panel
+            flexDirection="column"
+            w="100%"
+            h="100%"
+            minHeight={0}
+            overflow="auto"
+        >
             <PanelHeader
                 title="Users"
                 trailingSlot={
@@ -67,7 +73,7 @@ export function UsersListPage() {
             >
                 <DataTableSearch placeholder="Search users..." />
             </DataTable>
-        </FullHeightPanel>
+        </Panel>
     )
 }
 
