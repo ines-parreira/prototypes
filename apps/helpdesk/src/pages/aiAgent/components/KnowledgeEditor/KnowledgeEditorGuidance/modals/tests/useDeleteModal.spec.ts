@@ -487,6 +487,27 @@ describe('useDeleteModal', () => {
         })
     })
 
+    describe('onDiscardDraft', () => {
+        it('should dispatch SET_MODAL with "discard" payload', () => {
+            const { result } = renderHook(() => useDeleteModal())
+
+            act(() => {
+                result.current.onDiscardDraft()
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODAL',
+                payload: 'discard',
+            })
+        })
+
+        it('should be exposed in the return value shape', () => {
+            const { result } = renderHook(() => useDeleteModal())
+
+            expect(typeof result.current.onDiscardDraft).toBe('function')
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useDeleteModal())
@@ -496,8 +517,10 @@ describe('useDeleteModal', () => {
             expect(result.current).toHaveProperty('hasBothVersions')
             expect(result.current).toHaveProperty('onClose')
             expect(result.current).toHaveProperty('onDelete')
+            expect(result.current).toHaveProperty('onDiscardDraft')
             expect(typeof result.current.onClose).toBe('function')
             expect(typeof result.current.onDelete).toBe('function')
+            expect(typeof result.current.onDiscardDraft).toBe('function')
         })
     })
 })

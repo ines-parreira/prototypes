@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { GuidanceModeType } from '../context/types'
@@ -7,6 +7,7 @@ import { KnowledgeEditorGuidanceDeleteModal } from './KnowledgeEditorGuidanceDel
 
 const mockOnClose = jest.fn()
 const mockOnDelete = jest.fn()
+const mockOnDiscardDraft = jest.fn()
 
 const mockUseDeleteModal = jest.fn()
 const mockUseGuidanceContext = jest.fn()
@@ -25,6 +26,7 @@ const defaultMockState = {
     hasBothVersions: false,
     onClose: mockOnClose,
     onDelete: mockOnDelete,
+    onDiscardDraft: mockOnDiscardDraft,
 }
 
 const defaultContextState = {
@@ -71,10 +73,13 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('displays full message when both draft and published versions exist', () => {
+        it('displays full message when both versions exist in edit mode', () => {
             mockUseDeleteModal.mockReturnValue({
                 ...defaultMockState,
                 hasBothVersions: true,
+            })
+            mockUseGuidanceContext.mockReturnValue({
+                state: { mode: 'edit' as GuidanceModeType },
             })
 
             render(<KnowledgeEditorGuidanceDeleteModal />)
@@ -112,11 +117,11 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('renders Delete button', () => {
+    it('renders Delete guidance button', () => {
         render(<KnowledgeEditorGuidanceDeleteModal />)
 
         expect(
-            screen.getByRole('button', { name: /Delete/i }),
+            screen.getByRole('button', { name: /Delete guidance/i }),
         ).toBeInTheDocument()
     })
 
@@ -128,7 +133,7 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
             name: /Back to editing/i,
         })
 
-        await act(() => user.click(backButton))
+        await user.click(backButton)
 
         expect(mockOnClose).toHaveBeenCalledTimes(1)
         expect(mockOnDelete).not.toHaveBeenCalled()
@@ -148,20 +153,22 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
             name: /Cancel/i,
         })
 
-        await act(() => user.click(cancelButton))
+        await user.click(cancelButton)
 
         expect(mockOnClose).toHaveBeenCalledTimes(1)
         expect(mockOnDelete).not.toHaveBeenCalled()
     })
 
-    it('calls onDelete when Delete button is clicked', async () => {
+    it('calls onDelete when Delete guidance button is clicked', async () => {
         const user = userEvent.setup()
 
         render(<KnowledgeEditorGuidanceDeleteModal />)
 
-        const deleteButton = screen.getByRole('button', { name: /^Delete$/i })
+        const deleteButton = screen.getByRole('button', {
+            name: /Delete guidance/i,
+        })
 
-        await act(() => user.click(deleteButton))
+        await user.click(deleteButton)
 
         expect(mockOnDelete).toHaveBeenCalledTimes(1)
     })
@@ -201,7 +208,7 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
         expect(cancelButton).toBeDisabled()
     })
 
-    it('disables Delete button while deleting', () => {
+    it('disables Delete guidance button while deleting', () => {
         mockUseDeleteModal.mockReturnValue({
             ...defaultMockState,
             isDeleting: true,
@@ -209,8 +216,98 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
 
         render(<KnowledgeEditorGuidanceDeleteModal />)
 
-        const deleteButton = screen.getByText('Delete').closest('button')
+        const deleteButton = screen.getByRole('button', {
+            name: /Delete guidance/i,
+        })
 
         expect(deleteButton).toBeDisabled()
+    })
+
+    describe('when hasBothVersions is true and mode is read', () => {
+        beforeEach(() => {
+            mockUseDeleteModal.mockReturnValue({
+                ...defaultMockState,
+                hasBothVersions: true,
+            })
+            mockUseGuidanceContext.mockReturnValue({
+                state: { mode: 'read' as GuidanceModeType },
+            })
+        })
+
+        it('renders "Discard draft" button', () => {
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            expect(
+                screen.getByRole('button', { name: /Discard draft/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders "Delete guidance" button', () => {
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            expect(
+                screen.getByRole('button', { name: /Delete guidance/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('does NOT render the plain "Delete" button', () => {
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            expect(
+                screen.queryByRole('button', { name: /^Delete$/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders "Cancel" button', () => {
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            expect(
+                screen.getByRole('button', { name: /Cancel/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('calls onDiscardDraft when "Discard draft" is clicked', async () => {
+            const user = userEvent.setup()
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            await user.click(
+                screen.getByRole('button', { name: /Discard draft/i }),
+            )
+
+            expect(mockOnDiscardDraft).toHaveBeenCalledTimes(1)
+            expect(mockOnDelete).not.toHaveBeenCalled()
+        })
+
+        it('calls onDelete when "Delete guidance" is clicked', async () => {
+            const user = userEvent.setup()
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            await user.click(
+                screen.getByRole('button', { name: /Delete guidance/i }),
+            )
+
+            expect(mockOnDelete).toHaveBeenCalledTimes(1)
+            expect(mockOnDiscardDraft).not.toHaveBeenCalled()
+        })
+
+        it('disables all three buttons while isDeleting is true', () => {
+            mockUseDeleteModal.mockReturnValue({
+                ...defaultMockState,
+                hasBothVersions: true,
+                isDeleting: true,
+            })
+
+            render(<KnowledgeEditorGuidanceDeleteModal />)
+
+            expect(
+                screen.getByRole('button', { name: /Cancel/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /Delete guidance/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /Discard draft/i }),
+            ).toBeDisabled()
+        })
     })
 })

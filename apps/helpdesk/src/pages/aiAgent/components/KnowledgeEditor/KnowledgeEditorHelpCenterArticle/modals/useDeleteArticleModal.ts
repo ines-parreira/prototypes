@@ -46,5 +46,7 @@ export const useDeleteArticleModal = () => {
         hasBothVersions,
         onClose: () => dispatch({ type: 'CLOSE_MODAL' }),
         onDelete,
+        onDiscardDraft: () =>
+            dispatch({ type: 'SET_MODAL', payload: 'discard-draft' }),
     }
 }

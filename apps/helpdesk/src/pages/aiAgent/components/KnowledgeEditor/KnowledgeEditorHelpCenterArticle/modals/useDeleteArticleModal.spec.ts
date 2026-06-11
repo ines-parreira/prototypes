@@ -509,6 +509,27 @@ describe('useDeleteArticleModal', () => {
         })
     })
 
+    describe('onDiscardDraft', () => {
+        it('should dispatch SET_MODAL with "discard-draft" payload', () => {
+            const { result } = renderHook(() => useDeleteArticleModal())
+
+            act(() => {
+                result.current.onDiscardDraft()
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODAL',
+                payload: 'discard-draft',
+            })
+        })
+
+        it('should be exposed in the return value shape', () => {
+            const { result } = renderHook(() => useDeleteArticleModal())
+
+            expect(typeof result.current.onDiscardDraft).toBe('function')
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useDeleteArticleModal())
@@ -518,11 +539,13 @@ describe('useDeleteArticleModal', () => {
             expect(result.current).toHaveProperty('hasBothVersions')
             expect(result.current).toHaveProperty('onClose')
             expect(result.current).toHaveProperty('onDelete')
+            expect(result.current).toHaveProperty('onDiscardDraft')
             expect(typeof result.current.isOpen).toBe('boolean')
             expect(typeof result.current.isDeleting).toBe('boolean')
             expect(typeof result.current.hasBothVersions).toBe('boolean')
             expect(typeof result.current.onClose).toBe('function')
             expect(typeof result.current.onDelete).toBe('function')
+            expect(typeof result.current.onDiscardDraft).toBe('function')
         })
     })
 })
