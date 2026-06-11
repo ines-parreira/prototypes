@@ -51,7 +51,7 @@ describe('HomeSidebar', () => {
         mockUseCurrentUserRole.mockReturnValue({
             isAdmin: true,
             hasRole: jest.fn().mockReturnValue(true),
-            currentUser: { id: 1, role: { name: 'viewer' } },
+            currentUser: { id: 1, role: { name: 'observer-agent' } },
         })
     })
 

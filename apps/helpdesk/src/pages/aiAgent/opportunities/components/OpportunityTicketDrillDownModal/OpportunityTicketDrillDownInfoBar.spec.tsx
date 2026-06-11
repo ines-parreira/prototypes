@@ -234,7 +234,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             const noPermissionsState = {
                 currentUser: fromJS({
                     ...user,
-                    role: { name: 'viewer' },
+                    role: { name: 'observer-agent' },
                 }),
             } as RootState
             render(<OpportunityTicketDrillDownInfoBar {...defaultProps} />, {

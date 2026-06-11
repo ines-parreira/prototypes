@@ -3,6 +3,7 @@ import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
 import { mockUser } from '@gorgias/helpdesk-mocks'
+import type { UserRoleName } from '@gorgias/helpdesk-types'
 
 import { ROLE_CONFIG, UserRoleTag } from '../UserRoleTag'
 
@@ -43,7 +44,10 @@ describe('UserRoleTag', () => {
     it('renders the raw role for an unknown role', () => {
         render(
             <UserRoleTag
-                user={mockUser({ id: 1, role: { name: 'wizard' } })}
+                user={mockUser({
+                    id: 1,
+                    role: { name: 'wizard' as UserRoleName },
+                })}
             />,
         )
 

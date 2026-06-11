@@ -47,7 +47,7 @@ const setupMocks = ({
     mockUseCurrentUserRole.mockReturnValue({
         isAdmin,
         hasRole: jest.fn().mockReturnValue(hasRole),
-        currentUser: { id: 1, role: { name: 'viewer' } },
+        currentUser: { id: 1, role: { name: 'observer-agent' } },
     })
 }
 

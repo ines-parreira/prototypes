@@ -3,6 +3,7 @@ import { assumeMock, render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 
 import { mockUser } from '@gorgias/helpdesk-mocks'
+import type { UserRoleName } from '@gorgias/helpdesk-types'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { useAllUsers } from '../../hooks/useAllUsers'
@@ -153,7 +154,7 @@ describe('UsersListPage', () => {
             id: 12,
             name: 'Merlin',
             email: 'merlin@example.com',
-            role: { name: 'wizard' },
+            role: { name: 'wizard' as UserRoleName },
         })
         const rolelessUser = mockUser({
             id: 13,

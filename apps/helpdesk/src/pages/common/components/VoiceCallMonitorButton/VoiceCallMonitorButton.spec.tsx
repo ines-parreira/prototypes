@@ -97,7 +97,7 @@ describe('VoiceCallMonitorButton', () => {
             mockGetCurrentUserHandler(async () =>
                 HttpResponse.json({
                     id: 1,
-                    role: { name: 'viewer' },
+                    role: { name: 'observer-agent' },
                 }),
             ).handler,
         )
