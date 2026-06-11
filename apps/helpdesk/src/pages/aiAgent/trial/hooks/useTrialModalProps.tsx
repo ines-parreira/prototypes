@@ -56,24 +56,24 @@ import { useTrialFinishSetupModal } from './useTrialFinishSetupModal'
 
 export const EXTERNAL_URLS = {
     BOOK_DEMO_SHOPPING_ASSISTANT:
-        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+        'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
     SHOPPING_ASSISTANT_INFO:
         'https://www.gorgias.com/ai-agent/shopping-assistant',
     // Shopping Assistant trial specific URLs with sidebar UTM parameters
     SHOPPING_ASSISTANT_TRIAL_LEARN_MORE:
         'https://www.gorgias.com/ai-agent/shopping-assistant?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
     SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO:
-        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
+        'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
     AI_AGENT_TRIAL_LEARN_MORE:
         'https://www.gorgias.com/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
     AI_AGENT_TRIAL_BOOK_DEMO:
-        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
+        'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_sidebar',
     SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL:
         'https://www.gorgias.com/ai-agent/shopping-assistant?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
     AI_AGENT_TRIAL_LEARN_MORE_PAYWALL:
         'https://www.gorgias.com/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
     BOOK_DEMO_AIAGENT:
-        'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+        'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
 } as const
 
 const AI_AGENT_TRIAL_FEATURES: TrialFeature[] = [

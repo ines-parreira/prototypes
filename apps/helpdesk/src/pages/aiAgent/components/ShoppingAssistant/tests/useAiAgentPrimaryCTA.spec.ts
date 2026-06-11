@@ -423,7 +423,7 @@ describe('useAiAgentPrimaryCTA', () => {
         await act(() => result.current.button.onClick?.())
 
         expect(mockWindowOpen).toHaveBeenCalledWith(
-            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+            'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
             '_blank',
         )
     })

@@ -423,7 +423,7 @@ describe('useAiAgentCtas', () => {
                         await act(() => secondaryButtonOnClick())
 
                         expect(mockWindowOpen).toHaveBeenCalledWith(
-                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+                            'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
                             '_blank',
                         )
                         expect(
@@ -511,7 +511,7 @@ describe('useAiAgentCtas', () => {
                         await act(() => secondaryButtonOnClick())
 
                         expect(mockWindowOpen).toHaveBeenCalledWith(
-                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+                            'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
                             '_blank',
                         )
                         expect(
@@ -600,7 +600,7 @@ describe('useAiAgentCtas', () => {
                         await act(() => secondaryButtonOnClick())
 
                         expect(mockWindowOpen).toHaveBeenCalledWith(
-                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                            'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                             '_blank',
                         )
                         expect(
@@ -677,7 +677,7 @@ describe('useAiAgentCtas', () => {
                         await act(() => secondaryButtonOnClick())
 
                         expect(mockWindowOpen).toHaveBeenCalledWith(
-                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                            'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                             '_blank',
                         )
                         expect(

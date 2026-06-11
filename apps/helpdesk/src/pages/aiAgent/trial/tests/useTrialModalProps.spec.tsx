@@ -708,7 +708,7 @@ describe('useTrialModalProps', () => {
                     result.current.trialStartedBanner.primaryAction?.onClick(),
                 )
                 expect(mockWindowOpen).toHaveBeenCalledWith(
-                    'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                    'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                     '_blank',
                 )
             })
@@ -776,7 +776,7 @@ describe('useTrialModalProps', () => {
                 result.current.trialAlertBanner.primaryAction?.onClick(),
             )
             expect(mockWindowOpen).toHaveBeenCalledWith(
-                'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                'https://www.gorgias.com/demo/customers/ai-agent?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
                 '_blank',
             )
         })
