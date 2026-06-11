@@ -2672,7 +2672,7 @@ importers:
         version: 0.9.142
       '@gorgias/toolkit':
         specifier: catalog:toolkit
-        version: 0.2.0
+        version: 0.3.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3455,7 +3455,7 @@ importers:
         version: 0.9.142
       '@gorgias/toolkit':
         specifier: catalog:toolkit
-        version: 0.2.0
+        version: 0.3.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
