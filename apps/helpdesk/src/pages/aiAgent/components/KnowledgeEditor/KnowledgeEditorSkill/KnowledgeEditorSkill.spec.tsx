@@ -125,6 +125,10 @@ jest.mock('models/helpCenter/queries', () => ({
         isError: false,
         refetch: jest.fn(),
     })),
+    useGetWizard: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
 }))
 
 jest.mock('@gorgias/helpdesk-queries', () => ({

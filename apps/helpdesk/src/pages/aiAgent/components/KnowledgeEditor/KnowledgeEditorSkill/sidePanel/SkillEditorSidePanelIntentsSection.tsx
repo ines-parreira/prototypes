@@ -46,6 +46,9 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
     const skillIntentIds = useSkillEditorStore(
         useShallow((storeState) => storeState.state.intents),
     )
+    const isReadOnly = useSkillEditorStore(
+        (storeState) => !!storeState.config.isReadOnly,
+    )
     const { unlinkIntent } = usePersistLinkedIntentsSkill()
 
     const handleUnlinkIntent = (intentId: string) => {
@@ -61,7 +64,7 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
             size="sm"
             leadingSlot={<Icon name="add-plus" />}
             onClick={() => setIsModalOpen(true)}
-            isDisabled={linkButton.isDisabled}
+            isDisabled={linkButton.isDisabled || isReadOnly}
             isLoading={unlinkingIntentId !== null && linkButton.isUpdating}
         >
             Link intents
@@ -149,7 +152,9 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                                     key={item.intentId}
                                     {...item}
                                     onClose={
-                                        showLinkButton && linkButton.canUnlink
+                                        showLinkButton &&
+                                        linkButton.canUnlink &&
+                                        !isReadOnly
                                             ? () =>
                                                   handleUnlinkIntent(
                                                       item.intentId,

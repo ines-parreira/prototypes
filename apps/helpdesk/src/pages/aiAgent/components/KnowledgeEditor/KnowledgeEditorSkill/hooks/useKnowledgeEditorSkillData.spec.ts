@@ -1,9 +1,13 @@
 import { renderHook } from '@repo/testing'
 
-import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
+import {
+    useGetArticleTranslationVersion,
+    useGetWizard,
+} from 'models/helpCenter/queries'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
+import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
 import { useKnowledgeEditorSkillData } from './useKnowledgeEditorSkillData'
 
@@ -26,6 +30,14 @@ const mockUseGetArticleTranslationVersion =
     useGetArticleTranslationVersion as jest.MockedFunction<
         typeof useGetArticleTranslationVersion
     >
+const mockUseGetWizard = useGetWizard as jest.MockedFunction<
+    typeof useGetWizard
+>
+
+const mockWizard = (overrides: { status?: SkillWizardStatus } = {}) =>
+    ({
+        status: overrides.status ?? SkillWizardStatus.InProgress,
+    }) as any
 
 describe('useKnowledgeEditorSkillData', () => {
     beforeEach(() => {
@@ -45,6 +57,10 @@ describe('useKnowledgeEditorSkillData', () => {
             availableSkillsTemplates: [],
         })
         mockUseGetArticleTranslationVersion.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        } as any)
+        mockUseGetWizard.mockReturnValue({
             data: undefined,
             isLoading: false,
         } as any)
@@ -91,6 +107,102 @@ describe('useKnowledgeEditorSkillData', () => {
             )
 
             expect(result.current.initialMode).toBe('read')
+        })
+
+        it('returns read mode when the wizard is not completed', () => {
+            mockUseGetWizard.mockReturnValue({
+                data: mockWizard({ status: SkillWizardStatus.InProgress }),
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorSkillData({
+                    shopName: 'test-shop',
+                    skillId: '42',
+                }),
+            )
+
+            expect(result.current.initialMode).toBe('read')
+        })
+
+        it('returns edit mode when the wizard is completed', () => {
+            mockUseGetWizard.mockReturnValue({
+                data: mockWizard({ status: SkillWizardStatus.Completed }),
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorSkillData({
+                    shopName: 'test-shop',
+                    skillId: '42',
+                }),
+            )
+
+            expect(result.current.initialMode).toBe('edit')
+        })
+
+        it('returns edit mode when there is no wizard data', () => {
+            mockUseGetWizard.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorSkillData({
+                    shopName: 'test-shop',
+                    skillId: '42',
+                }),
+            )
+
+            expect(result.current.initialMode).toBe('edit')
+        })
+
+        it('lets skillMode override the wizard-driven read mode', () => {
+            mockUseGetWizard.mockReturnValue({
+                data: mockWizard({ status: SkillWizardStatus.InProgress }),
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorSkillData({
+                    shopName: 'test-shop',
+                    skillId: '42',
+                    skillMode: 'edit',
+                }),
+            )
+
+            expect(result.current.initialMode).toBe('edit')
+        })
+    })
+
+    describe('isWizardLoading', () => {
+        it('reflects the wizard query loading state for an existing skill', () => {
+            mockUseGetWizard.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorSkillData({
+                    shopName: 'test-shop',
+                    skillId: '42',
+                }),
+            )
+
+            expect(result.current.isWizardLoading).toBe(true)
+        })
+
+        it('is false in create mode even if the wizard query reports loading', () => {
+            mockUseGetWizard.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorSkillData({ shopName: 'test-shop' }),
+            )
+
+            expect(result.current.isWizardLoading).toBe(false)
         })
     })
 

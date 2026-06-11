@@ -19,6 +19,8 @@ const TOOLTIP_MESSAGES = {
         'You are viewing a past version. Switch to the current version to change knowledge settings.',
     READ_MODE_IN_PREVIEW_TOOLTIP:
         'This skill is in read-only mode. Switch to edit mode to change knowledge settings.',
+    READ_ONLY_TOOLTIP:
+        'This skill is in read-only mode and cannot be changed here.',
 }
 
 type Props = {
@@ -36,6 +38,7 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
         isViewingHistoricalVersion,
         isViewingPublishedWithDraft,
         isReadInPreview,
+        isReadOnly,
         updateUseSupportingKnowledge,
         hasPublishedVersion,
         isUpdating: isSaving,
@@ -73,7 +76,8 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
         isDiffMode ||
         isViewingHistoricalVersion ||
         isReadInPreview ||
-        isViewingPublishedWithDraft
+        isViewingPublishedWithDraft ||
+        isReadOnly
 
     const toggle = useMemo(
         () => (
@@ -95,7 +99,9 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
               ? TOOLTIP_MESSAGES.KNOWLEDGE_HISTORICAL_VERSION_TOOLTIP
               : isViewingPublishedWithDraft
                 ? TOOLTIP_MESSAGES.KNOWLEDGE_PUBLISHED_WITH_DRAFT_TOOLTIP
-                : TOOLTIP_MESSAGES.READ_MODE_IN_PREVIEW_TOOLTIP
+                : isReadOnly
+                  ? TOOLTIP_MESSAGES.READ_ONLY_TOOLTIP
+                  : TOOLTIP_MESSAGES.READ_MODE_IN_PREVIEW_TOOLTIP
 
         return (
             <Tooltip trigger={toggle}>
@@ -107,6 +113,7 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
         isDiffMode,
         isViewingHistoricalVersion,
         isViewingPublishedWithDraft,
+        isReadOnly,
         isDisabled,
     ])
 

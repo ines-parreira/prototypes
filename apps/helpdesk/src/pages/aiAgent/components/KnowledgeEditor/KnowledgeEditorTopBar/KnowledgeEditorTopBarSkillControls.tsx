@@ -79,6 +79,7 @@ export const SkillToolbarControls = () => {
         visibility,
         hasPublishedVersion,
         historicalPublishedDatetime,
+        isReadOnly,
         onClose,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
@@ -93,6 +94,7 @@ export const SkillToolbarControls = () => {
             hasPublishedVersion: !!storeState.state.skill?.publishedVersionId,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
+            isReadOnly: storeState.config.isReadOnly,
             onClose: storeState.config.onClose,
         })),
     )
@@ -207,6 +209,10 @@ export const SkillToolbarControls = () => {
         visibility,
         hasPublishedVersion,
     )
+
+    if (isReadOnly) {
+        return null
+    }
 
     const versionHistoryButton = (
         <VersionHistoryButton

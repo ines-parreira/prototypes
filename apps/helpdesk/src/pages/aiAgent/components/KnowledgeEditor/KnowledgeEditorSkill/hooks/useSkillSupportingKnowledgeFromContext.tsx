@@ -23,6 +23,7 @@ export const useSkillSupportingKnowledgeFromContext = () => {
         isUpdating,
         isAutoSaving,
         isPreview,
+        isReadOnly,
         useSupportingContent,
         mode,
         historicalVersionUseSupportingContent,
@@ -43,6 +44,7 @@ export const useSkillSupportingKnowledgeFromContext = () => {
             isUpdating: storeState.state.isUpdating,
             isAutoSaving: storeState.state.isAutoSaving,
             isPreview: storeState.config.isPreviewMode,
+            isReadOnly: storeState.config.isReadOnly,
             useSupportingContent: storeState.state.useSupportingContent,
             mode: storeState.state.mode,
             historicalVersionUseSupportingContent:
@@ -149,6 +151,7 @@ export const useSkillSupportingKnowledgeFromContext = () => {
         isViewingHistoricalVersion,
         isViewingPublishedWithDraft,
         isReadInPreview,
+        isReadOnly: !!isReadOnly,
         updateUseSupportingKnowledge,
         isCurrent,
         hasPublishedVersion,

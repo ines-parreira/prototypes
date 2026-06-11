@@ -1,11 +1,15 @@
 import { useMemo } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
+import {
+    useGetArticleTranslationVersion,
+    useGetWizard,
+} from 'models/helpCenter/queries'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
+import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
 import type { SkillModeType } from '../context'
 
@@ -68,6 +72,16 @@ export const useKnowledgeEditorSkillData = ({
         (article?.publishedVersionId === initialVersionData.id ||
             article?.draftVersionId === initialVersionData.id)
 
+    const { data: wizardData, isLoading: isWizardLoading } = useGetWizard(
+        helpCenter?.id ?? 0,
+        { enabled: !!helpCenter?.id && !isCreateMode },
+    )
+
+    const isWizardIncomplete = useMemo(() => {
+        if (isCreateMode || !articleId || !wizardData) return false
+        return wizardData.status !== SkillWizardStatus.Completed
+    }, [isCreateMode, articleId, wizardData])
+
     const { allSkillsTemplates } = useSkillsTemplates()
 
     const skillTemplate = useMemo<SkillTemplate | undefined>(() => {
@@ -76,7 +90,8 @@ export const useKnowledgeEditorSkillData = ({
     }, [templateId, allSkillsTemplates])
 
     const initialMode: SkillModeType =
-        skillMode ?? (isCreateMode ? 'create' : 'edit')
+        skillMode ??
+        (isCreateMode ? 'create' : isWizardIncomplete ? 'read' : 'edit')
 
     return {
         helpCenter,
@@ -84,10 +99,12 @@ export const useKnowledgeEditorSkillData = ({
         article,
         isArticleLoading: isGuidanceArticleLoading,
         isArticleFetching: isGuidanceArticleFetching,
+        isWizardLoading: !isCreateMode && isWizardLoading,
         isError,
         error,
         skillTemplate,
         initialMode,
+        isReadOnly: isWizardIncomplete,
         initialVersionData: isCurrentVersion ? undefined : initialVersionData,
         isInitialVersionLoading: !!initialVersionId && isVersionQueryLoading,
     }

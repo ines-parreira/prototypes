@@ -118,10 +118,12 @@ export const KnowledgeEditorSkill = ({
         article,
         isArticleLoading,
         isArticleFetching,
+        isWizardLoading,
         isError,
         error,
         skillTemplate,
         initialMode,
+        isReadOnly,
         initialVersionData,
         isInitialVersionLoading,
     } = useKnowledgeEditorSkillData({
@@ -195,6 +197,7 @@ export const KnowledgeEditorSkill = ({
             shopType,
             skillTemplate,
             initialMode,
+            isReadOnly,
             skill: article,
             helpCenter,
             onClose,
@@ -212,6 +215,7 @@ export const KnowledgeEditorSkill = ({
         shopType,
         skillTemplate,
         initialMode,
+        isReadOnly,
         article,
         helpCenter,
         onClose,
@@ -226,7 +230,8 @@ export const KnowledgeEditorSkill = ({
     ])
     const isLoading =
         (!!skillId && skillId !== 'new' && isArticleLoading) ||
-        isInitialVersionLoading
+        isInitialVersionLoading ||
+        isWizardLoading
 
     const isSidePanelLoading =
         !!skillId &&

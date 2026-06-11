@@ -78,6 +78,7 @@ const defaultSupportingKnowledgeHook = {
     isViewingHistoricalVersion: false,
     isViewingPublishedWithDraft: false,
     isReadInPreview: false,
+    isReadOnly: false,
 }
 
 const defaultTopKnowledgesHook = {
@@ -225,6 +226,26 @@ describe('SkillEditorSidePanelKnowledgeSection', () => {
             expect(
                 await screen.findByText(
                     /This skill is in read-only mode\. Switch to edit mode to change knowledge settings\./i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('disables the toggle and shows a tooltip when the skill is read-only', async () => {
+            const user = userEvent.setup()
+            mockUseSkillSupportingKnowledgeFromContext.mockReturnValue({
+                ...defaultSupportingKnowledgeHook,
+                isReadOnly: true,
+            })
+
+            renderComponent()
+
+            expect(screen.getByRole('switch')).toBeDisabled()
+
+            await user.hover(screen.getByRole('switch'))
+
+            expect(
+                await screen.findByText(
+                    /This skill is in read-only mode and cannot be changed here\./i,
                 ),
             ).toBeInTheDocument()
         })

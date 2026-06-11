@@ -65,9 +65,14 @@ jest.mock('./hooks/usePersistLinkedIntentsSkill', () => ({
     }),
 }))
 
+let mockIsReadOnly = false
+
 jest.mock('../context/KnowledgeEditorSkillContext', () => ({
     useSkillEditorStore: (selector: Function) =>
-        selector({ state: { intents: ['order::status', 'order::cancel'] } }),
+        selector({
+            state: { intents: ['order::status', 'order::cancel'] },
+            config: { isReadOnly: mockIsReadOnly },
+        }),
 }))
 
 const defaultHookReturn = {
@@ -99,6 +104,9 @@ const setup = (overrides?: Partial<typeof defaultHookReturn>) => {
 }
 
 describe('SkillEditorSidePanelIntentsSection', () => {
+    beforeEach(() => {
+        mockIsReadOnly = false
+    })
     afterEach(() => jest.clearAllMocks())
 
     it('renders title and subtitle', () => {
@@ -218,5 +226,38 @@ describe('SkillEditorSidePanelIntentsSection', () => {
             ['order::status', 'order::cancel'],
             expect.any(Function),
         )
+    })
+
+    describe('read-only mode', () => {
+        beforeEach(() => {
+            mockIsReadOnly = true
+        })
+
+        it('disables the Link intents button', () => {
+            setup()
+
+            expect(
+                screen.getByRole('button', { name: /Link intents/ }),
+            ).toBeDisabled()
+        })
+
+        it('does not render the unlink button on intent tags', () => {
+            setup({
+                items: [
+                    {
+                        intentId: 'order::status',
+                        label: 'Order / Status',
+                        showLeadingDot: false,
+                    },
+                ],
+                intentsCount: 1,
+            })
+
+            expect(
+                screen.queryByRole('button', {
+                    name: 'Unlink Order / Status',
+                }),
+            ).not.toBeInTheDocument()
+        })
     })
 })

@@ -514,6 +514,34 @@ describe('SkillToolbarControls', () => {
         })
     })
 
+    describe('read-only mode', () => {
+        it('renders no header actions when the skill is read-only', () => {
+            setStoreData({
+                config: { isPreviewMode: false, isReadOnly: true },
+                state: {
+                    mode: 'read',
+                    skill: {
+                        id: 1,
+                        isCurrent: undefined,
+                        publishedVersionId: null,
+                        draftVersionId: 1,
+                    },
+                },
+            })
+            render(<SkillToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /delete/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /enable/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('version-history'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('busy state', () => {
         it('disables buttons when isUpdating', () => {
             setStoreData({
