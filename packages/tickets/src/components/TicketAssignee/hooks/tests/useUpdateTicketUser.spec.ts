@@ -72,6 +72,45 @@ afterAll(() => {
 })
 
 describe('useUpdateTicketUser', () => {
+    it('keeps the selected assignee visible while the update request is pending', async () => {
+        let resolveUpdateRequest!: () => void
+        const pendingUpdateRequest = new Promise<void>((resolve) => {
+            resolveUpdateRequest = resolve
+        })
+
+        server.use(
+            mockUpdateTicketHandler(async ({ request }) => {
+                updateTicketRequestBody = await request.json()
+                await pendingUpdateRequest
+                return HttpResponse.json(updateTicketResponse)
+            }).handler,
+        )
+
+        const { result } = renderHook(useTicketAssignmentHarness)
+
+        await waitFor(() => {
+            expect(result.current.assigneeName).toBe('Unassigned')
+        })
+
+        let updateTicketUserPromise!: Promise<void>
+        act(() => {
+            updateTicketUserPromise =
+                result.current.updateTicketUser(currentUser)
+        })
+
+        await waitFor(() => {
+            expect(updateTicketRequestBody).toEqual({
+                assignee_user: { id: currentUser.id },
+            })
+            expect(result.current.assigneeName).toBe('Current User')
+        })
+
+        resolveUpdateRequest()
+        await act(async () => {
+            await updateTicketUserPromise
+        })
+    })
+
     it('keeps self assignment visible when the follow-up ticket refetch is stale', async () => {
         const { result } = renderHook(useTicketAssignmentHarness)
 

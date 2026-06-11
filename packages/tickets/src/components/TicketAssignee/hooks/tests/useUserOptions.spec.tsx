@@ -116,6 +116,88 @@ describe('useUserOptions', () => {
         expect(result.current.userSections[0].id).toBe('others')
     })
 
+    it('should keep the selected current user option available without showing it when searching', async () => {
+        const { result } = renderHook(() =>
+            useUserOptions({ currentAssignee: mockTicketUser(currentUser) }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        act(() => {
+            result.current.setSearch('jane')
+        })
+
+        await waitFor(() => {
+            expect(
+                result.current.userSections.map((section) => section.id),
+            ).toEqual(['others'])
+        })
+
+        expect(result.current.userSections[0].items).not.toContainEqual({
+            id: currentUser.id,
+            label: currentUser.name,
+        })
+        expect(result.current.userSections[0].items).not.toContainEqual({
+            id: currentUser.id,
+            label: 'Assign yourself',
+        })
+        expect(result.current.selectedOption).toEqual({
+            id: currentUser.id,
+            label: 'Assign yourself',
+        })
+    })
+
+    it('should keep a selected user separate from unrelated search results', async () => {
+        const selectedUser = mockTicketUser({
+            id: 123,
+            name: 'Selected User',
+            email: 'selected@example.com',
+            meta: {
+                profile_picture_url: 'https://example.com/selected-user.jpg',
+            },
+        })
+        const { result } = renderHook(() =>
+            useUserOptions({ currentAssignee: selectedUser }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        act(() => {
+            result.current.setSearch('jane')
+        })
+
+        await waitFor(() => {
+            expect(
+                result.current.userSections.map((section) => section.id),
+            ).toEqual(['selected', 'others'])
+        })
+
+        expect(result.current.userSections[0]).toEqual({
+            id: 'selected',
+            name: '',
+            items: [{ id: selectedUser.id, label: selectedUser.name }],
+        })
+        expect(result.current.userSections[1].items).not.toContainEqual({
+            id: selectedUser.id,
+            label: selectedUser.name,
+        })
+        expect(result.current.selectedOption).toEqual({
+            id: selectedUser.id,
+            label: selectedUser.name,
+        })
+        expect(result.current.usersMap.get(selectedUser.id)).toMatchObject({
+            id: selectedUser.id,
+            name: selectedUser.name,
+            meta: {
+                profile_picture_url: 'https://example.com/selected-user.jpg',
+            },
+        })
+    })
+
     it('should return a usersMap for user lookup', async () => {
         const { result } = renderHook(() =>
             useUserOptions({ currentAssignee: null }),

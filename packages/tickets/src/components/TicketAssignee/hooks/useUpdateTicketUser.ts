@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -7,7 +7,7 @@ import type {
     HttpResponse,
     Ticket,
     TicketUser,
-    UpdateTicketAssigneeUser,
+    User,
 } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
@@ -16,25 +16,25 @@ import { patchTicketInViewListCache } from '../../../utils/optimisticUpdates/vie
 export function useUpdateTicketUser(ticketId: number) {
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.getTicket(ticketId)
+    const optimisticAssigneeUserRef = useRef<TicketUser | null>(null)
 
     const { mutateAsync: mutateAsyncUpdateTicket, isLoading } = useUpdateTicket(
         {
             mutation: {
-                onMutate: async (data) => {
+                onMutate: async () => {
                     await queryClient.cancelQueries({ queryKey })
                     queryClient.setQueryData<HttpResponse<Ticket> | undefined>(
                         queryKey,
                         (old) => {
                             if (!old) return old
                             const previousTicket = old.data
-                            const nextUser = data.data.assignee_user ?? null
 
                             return {
                                 ...old,
                                 data: {
                                     ...previousTicket,
                                     assignee_user:
-                                        nextUser as TicketUser | null,
+                                        optimisticAssigneeUserRef.current,
                                 },
                             }
                         },
@@ -45,7 +45,10 @@ export function useUpdateTicketUser(ticketId: number) {
     )
 
     const updateTicketUser = useCallback(
-        async (user: UpdateTicketAssigneeUser | null) => {
+        async (user: User | TicketUser | null) => {
+            const optimisticAssigneeUser = user ? (user as TicketUser) : null
+            optimisticAssigneeUserRef.current = optimisticAssigneeUser
+
             try {
                 const response = await mutateAsyncUpdateTicket({
                     id: ticketId,
@@ -54,7 +57,7 @@ export function useUpdateTicketUser(ticketId: number) {
                     },
                 })
                 const assigneeUser =
-                    response.data.assignee_user ?? (user as TicketUser | null)
+                    response.data.assignee_user ?? optimisticAssigneeUser
                 queryClient.setQueryData<HttpResponse<Ticket> | undefined>(
                     queryKey,
                     {
@@ -73,6 +76,8 @@ export function useUpdateTicketUser(ticketId: number) {
                 })
             } catch {
                 toast.error('Failed to update user assignment')
+            } finally {
+                optimisticAssigneeUserRef.current = null
             }
         },
         [mutateAsyncUpdateTicket, queryClient, queryKey, ticketId],

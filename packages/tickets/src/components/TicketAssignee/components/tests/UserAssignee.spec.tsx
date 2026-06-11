@@ -161,11 +161,41 @@ describe('UserAssignee', () => {
         expect(options[0]).toHaveTextContent('Unassigned')
     })
 
+    it('should keep the current user selected while searching for another user', async () => {
+        const { user } = render(
+            <UserAssignee
+                ticketId={ticketId}
+                currentAssignee={currentTicketAssignee}
+            />,
+        )
+
+        const select = await waitUntilLoaded()
+        await user.click(select)
+
+        const searchInput = await screen.findByRole('searchbox')
+        await user.type(searchInput, 'jane')
+
+        await waitFor(() => {
+            const trigger = screen.getAllByLabelText('User selection')[0]
+            expect(trigger).toHaveTextContent(currentTicketAssignee.name)
+            expect(trigger).not.toHaveTextContent('Unassigned')
+        })
+
+        const options = await screen.findAllByRole('option')
+        expect(options.map((option) => option.textContent)).not.toContain(
+            'Assign yourself',
+        )
+        expect(screen.getByText('Assign to others')).toBeInTheDocument()
+    })
+
     it('should render and include current assignee in options when not in loaded users list', async () => {
         const notLoadedUser = mockTicketUser({
             id: 123,
             name: 'Random User',
             email: 'random@example.com',
+            meta: {
+                profile_picture_url: 'https://example.com/random-user.jpg',
+            },
         })
         const notLoadedAssignee = mockTicketUser(notLoadedUser)
 
@@ -177,6 +207,11 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
+        expect(select.querySelector('[data-name="image"]')).toBeInTheDocument()
+        expect(
+            select.querySelector('[data-name="user"]'),
+        ).not.toBeInTheDocument()
+
         await act(async () => {
             await user.click(select)
         })
