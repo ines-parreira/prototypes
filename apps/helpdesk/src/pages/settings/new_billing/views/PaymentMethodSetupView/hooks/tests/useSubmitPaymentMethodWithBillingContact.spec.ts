@@ -4,8 +4,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import { setupServer } from 'msw/node'
 
-import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
+import { mockConfirmBillingPaymentMethodSetupHandler } from '@gorgias/helpdesk-mocks'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 
@@ -24,13 +25,29 @@ jest.mock('@stripe/react-stripe-js', () => ({
 
 jest.mock('@repo/logging')
 
-jest.mock('@gorgias/helpdesk-client')
-
 const mockedServer = new MockAdapter(client)
+const confirmBillingPaymentMethodSetupMock =
+    mockConfirmBillingPaymentMethodSetupHandler()
+const server = setupServer(confirmBillingPaymentMethodSetupMock.handler)
 
 describe('useSubmitPaymentMethodWithBillingContact hook', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        mockedServer.reset()
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should call updateBillingContact and submitPaymentMethod on submit', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
+        const waitForConfirmRequest =
+            confirmBillingPaymentMethodSetupMock.waitForRequest(server)
 
         const { result } = renderHook(useSubmitPaymentMethodWithBillingContact)
 
@@ -40,10 +57,10 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
             } as any)
         })
 
-        await waitFor(() => {
-            expect(
-                assumeMock(confirmBillingPaymentMethodSetup),
-            ).toHaveBeenCalledWith({ id: 'test_setup_intent_id' }, undefined)
+        await waitForConfirmRequest(async (request) => {
+            await expect(request.json()).resolves.toEqual({
+                id: 'test_setup_intent_id',
+            })
         })
 
         expect(mockedServer.history.put[0].data).toEqual(
@@ -110,9 +127,21 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
 
     it('should return isLoading as true if submitPaymentMethod is loading', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
+        server.use(
+            mockConfirmBillingPaymentMethodSetupHandler(
+                () =>
+                    new Promise(() => {
+                        // Never resolves
+                    }),
+            ).handler,
+        )
 
         assumeMock(useStripe).mockReturnValue({
-            confirmSetup: jest.fn().mockResolvedValue(new Promise(() => {})),
+            confirmSetup: jest.fn().mockResolvedValue({
+                setupIntent: {
+                    id: 'test_setup_intent_id',
+                },
+            }),
         } as any)
 
         const { result } = renderHook(useSubmitPaymentMethodWithBillingContact)

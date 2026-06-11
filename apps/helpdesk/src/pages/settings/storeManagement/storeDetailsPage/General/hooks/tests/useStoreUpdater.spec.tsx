@@ -1,44 +1,48 @@
 import { renderHook } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useUpdateIntegration } from '@gorgias/helpdesk-queries'
+import { mockUpdateIntegrationHandler } from '@gorgias/helpdesk-mocks'
 
 import { useStoreUpdater } from '../useStoreUpdater'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useUpdateIntegration: jest.fn(),
-}))
+const updateIntegrationHandler = mockUpdateIntegrationHandler()
+const server = setupServer(updateIntegrationHandler.handler)
 
 describe('useStoreUpdater', () => {
     const mockRefetchStore = jest.fn()
-    const mockMutate = jest.fn()
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useUpdateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockMutate,
-            isLoading: false,
-        })
     })
 
-    it('initializes with correct mutation options', () => {
-        renderHook(() => useStoreUpdater(mockRefetchStore))
-
-        expect(useUpdateIntegration).toHaveBeenCalledWith({
-            mutation: {
-                onSuccess: expect.any(Function),
-                onError: expect.any(Function),
-            },
-        })
+    afterEach(() => {
+        server.resetHandlers()
     })
 
-    it('calls success notification and refetches store on successful update', async () => {
-        renderHook(() => useStoreUpdater(mockRefetchStore))
+    afterAll(() => {
+        server.close()
+    })
 
-        const onSuccess = (useUpdateIntegration as jest.Mock).mock.calls[0][0]
-            .mutation.onSuccess
+    it('returns an update mutation', () => {
+        const { result } = renderHook(() => useStoreUpdater(mockRefetchStore))
 
-        onSuccess()
+        expect(result.current.updateIntegration).toEqual(expect.any(Function))
+        expect(result.current.isUpdating).toBe(false)
+    })
+
+    it('shows success notification and refetches store on successful update', async () => {
+        const { result } = renderHook(() => useStoreUpdater(mockRefetchStore))
+
+        result.current.updateIntegration({
+            id: 1,
+            data: { name: 'Store' },
+        } as any)
 
         const toastEl = await screen.findByRole('status', {
             name: 'Integration successfully updated',
@@ -47,13 +51,19 @@ describe('useStoreUpdater', () => {
         expect(mockRefetchStore).toHaveBeenCalled()
     })
 
-    it('calls error notification on failed update', async () => {
-        renderHook(() => useStoreUpdater(mockRefetchStore))
+    it('shows error notification on failed update', async () => {
+        server.use(
+            mockUpdateIntegrationHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
 
-        const onError = (useUpdateIntegration as jest.Mock).mock.calls[0][0]
-            .mutation.onError
+        const { result } = renderHook(() => useStoreUpdater(mockRefetchStore))
 
-        onError()
+        result.current.updateIntegration({
+            id: 1,
+            data: { name: 'Store' },
+        } as any)
 
         const toastEl = await screen.findByRole('status', {
             name: 'Failed to update connection',

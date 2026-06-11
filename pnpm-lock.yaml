@@ -1275,8 +1275,8 @@ importers:
         specifier: catalog:rest-api-sdk
         version: 0.2.63(@types/node@24.12.2)(typescript@6.0.3)
       '@gorgias/oxlint-custom-rules':
-        specifier: 0.4.0
-        version: 0.4.0(oxlint@1.51.0)
+        specifier: 0.5.0
+        version: 0.5.0(oxlint@1.51.0)
       '@gorgias/static-analysis':
         specifier: 0.3.0
         version: 0.3.0(@types/node@24.12.2)
@@ -1725,8 +1725,8 @@ importers:
   config:
     devDependencies:
       '@gorgias/oxlint-custom-rules':
-        specifier: 0.4.0
-        version: 0.4.0(oxlint@1.51.0)
+        specifier: 0.5.0
+        version: 0.5.0(oxlint@1.51.0)
       '@testing-library/jest-dom':
         specifier: catalog:test
         version: 6.9.1
@@ -6089,8 +6089,8 @@ packages:
   '@gorgias/knowledge-service-validators@0.2.58':
     resolution: {integrity: sha512-9v60jyFufCDP4MotJS7lwPwuWqp7f1RtRvjyeA5SvW9M54BpYm4Fo4jv7kxKeEqLsnUMPXBXec2MmlzXwKPJSQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-validators/0.2.58/5db2d7c3804ab27c71311a177c51f295efcc1a38}
 
-  '@gorgias/oxlint-custom-rules@0.4.0':
-    resolution: {integrity: sha512-0OS+3EPmbb2QwMekhx0dikSzUbiydhA+5K2KM90sG7rKEghygmsn/o3nGY+SpH5S1qApbWRNW4NNf4y6YOQKfw==, tarball: https://npm.pkg.github.com/download/@gorgias/oxlint-custom-rules/0.4.0/bf0a14498fddee510acb87ea9b28cb5ad3d6cb28}
+  '@gorgias/oxlint-custom-rules@0.5.0':
+    resolution: {integrity: sha512-06WEFBDpp9uX/g9EZPgc2fKxUOASsFUh3VpNwtiSukfbSnzxQzcDI6mSh4GM0d+2YwEQeWgNwfCh0v4KdA2V1g==, tarball: https://npm.pkg.github.com/download/@gorgias/oxlint-custom-rules/0.5.0/efedf84a0156e35c49d03cf5d635db34583d0271}
     peerDependencies:
       oxlint: ^1
 
@@ -20577,7 +20577,7 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/oxlint-custom-rules@0.4.0(oxlint@1.51.0)':
+  '@gorgias/oxlint-custom-rules@0.5.0(oxlint@1.51.0)':
     dependencies:
       oxlint: 1.51.0
 

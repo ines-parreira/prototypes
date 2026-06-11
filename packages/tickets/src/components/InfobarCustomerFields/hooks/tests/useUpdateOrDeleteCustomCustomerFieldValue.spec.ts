@@ -1,48 +1,43 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import {
-    useDeleteCustomerCustomFieldValue,
-    useUpdateCustomerCustomFieldValue,
-} from '@gorgias/helpdesk-queries'
+    mockListCustomerCustomFieldsValuesHandler,
+    mockUpdateCustomerCustomFieldValueHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../tests/render.utils'
 import { useUpdateOrDeleteCustomCustomerFieldValue } from '../useUpdateOrDeleteCustomCustomerFieldValue'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useUpdateCustomerCustomFieldValue: vi.fn(),
-        useDeleteCustomerCustomFieldValue: vi.fn(),
-        useListCustomerCustomFieldsValues: vi.fn(() => ({ data: undefined })),
-    }
-})
-
-const mockedUseUpdateCustomerCustomFieldValue = vi.mocked(
-    useUpdateCustomerCustomFieldValue,
-)
-const mockedUseDeleteCustomerCustomFieldValue = vi.mocked(
-    useDeleteCustomerCustomFieldValue,
+const server = setupServer(
+    mockListCustomerCustomFieldsValuesHandler().handler,
+    mockUpdateCustomerCustomFieldValueHandler().handler,
 )
 
 describe('useUpdateOrDeleteCustomCustomerFieldValue', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         vi.clearAllMocks()
     })
 
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should show error toast when update fails', async () => {
-        const mutateAsyncUpdate = vi.fn().mockRejectedValue(new Error('fail'))
-        const mutateAsyncDelete = vi.fn().mockResolvedValue(undefined)
-        mockedUseUpdateCustomerCustomFieldValue.mockReturnValue({
-            mutateAsync: mutateAsyncUpdate,
-        } as any)
-        mockedUseDeleteCustomerCustomFieldValue.mockReturnValue({
-            mutateAsync: mutateAsyncDelete,
-        } as any)
+        server.use(
+            mockUpdateCustomerCustomFieldValueHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useUpdateOrDeleteCustomCustomerFieldValue(123),

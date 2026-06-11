@@ -1,11 +1,14 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type { EmailDomain, HttpResponse } from '@gorgias/helpdesk-client'
 import {
-    getEmailIntegrationDomain,
-    verifyEmailIntegrationDomain,
-} from '@gorgias/helpdesk-client'
+    mockDeleteEmailIntegrationDomainHandler,
+    mockGetEmailIntegrationDomainHandler,
+    mockVerifyEmailIntegrationDomainHandler,
+} from '@gorgias/helpdesk-mocks'
+import type { EmailDomain } from '@gorgias/helpdesk-types'
 
 import {
     parseRecordsCurrentValues,
@@ -14,11 +17,7 @@ import {
 import type { UseDomainVerificationRequestHookOptions } from '../DEPRECATED_useDomainVerification'
 import { DEPRECATED_useDomainVerification } from '../DEPRECATED_useDomainVerification'
 
-jest.mock('@gorgias/helpdesk-client')
 jest.mock('../../helpers')
-
-const getDomainMock = assumeMock(getEmailIntegrationDomain)
-const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
 
 const populateCurrentValuesForDNSRecordsMock = assumeMock(
     populateCurrentValuesForDNSRecords,
@@ -47,17 +46,48 @@ const getEmailDomain = ({ verified } = { verified: false }): EmailDomain => ({
     },
 })
 
+const getDomainHandler = mockGetEmailIntegrationDomainHandler(async () =>
+    HttpResponse.json(getEmailDomain()),
+)
+const verifyDomainHandler = mockVerifyEmailIntegrationDomainHandler()
+
+const server = setupServer(
+    getDomainHandler.handler,
+    verifyDomainHandler.handler,
+    mockDeleteEmailIntegrationDomainHandler().handler,
+)
+
 const render = (options?: UseDomainVerificationRequestHookOptions) =>
     renderHook(() => DEPRECATED_useDomainVerification('gorgias.com', options))
 
 describe('DEPRECATED_useDomainVerification()', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        jest.clearAllMocks()
         localStorage.clear()
+        populateCurrentValuesForDNSRecordsMock.mockImplementation((records) =>
+            Promise.resolve(records),
+        )
         parseRecordsCurrentValuesMock.mockImplementation((records) => records)
     })
 
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should have an initial state', async () => {
-        getDomainMock.mockReturnValue(Promise.reject())
+        server.use(
+            mockGetEmailIntegrationDomainHandler(async () =>
+                HttpResponse.json(null as never, { status: 404 }),
+            ).handler,
+        )
 
         const { result } = render()
 
@@ -78,8 +108,10 @@ describe('DEPRECATED_useDomainVerification()', () => {
     describe('domain state', () => {
         it('should return the domain if it was fetched successfully', async () => {
             const domain = getEmailDomain()
-            getDomainMock.mockReturnValue(
-                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
 
             const { result } = render()
@@ -89,16 +121,27 @@ describe('DEPRECATED_useDomainVerification()', () => {
             })
         })
 
-        it('should return undefined if it does not exist', () => {
-            getDomainMock.mockReturnValue(Promise.reject())
+        it('should return undefined if it does not exist', async () => {
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(null as never, { status: 404 }),
+                ).handler,
+            )
 
             const { result } = render()
 
-            expect(result.current.domain).toEqual(undefined)
+            await waitFor(() => {
+                expect(result.current.isFetching).toEqual(false)
+                expect(result.current.domain).toEqual(undefined)
+            })
         })
 
         it('should return isFetching when it is being fetched', async () => {
-            getDomainMock.mockReturnValue(Promise.reject())
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(null as never, { status: 404 }),
+                ).handler,
+            )
 
             const { result } = render()
 
@@ -111,8 +154,10 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
         it('should populate current values with results from querying DNS', async () => {
             const domain = getEmailDomain()
-            getDomainMock.mockReturnValue(
-                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
             parseRecordsCurrentValuesMock.mockImplementation((records) =>
                 records.map((record) => ({
@@ -150,10 +195,10 @@ describe('DEPRECATED_useDomainVerification()', () => {
                 data: { sending_dns_records: undefined },
             } as unknown as EmailDomain
 
-            getDomainMock.mockReturnValue(
-                Promise.resolve({
-                    data: domain,
-                } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
 
             render()
@@ -221,8 +266,10 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
         it('should not be pending if the domain has been verified', async () => {
             const domain = getEmailDomain({ verified: true })
-            getDomainMock.mockReturnValue(
-                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
 
             const { result } = render()
@@ -243,10 +290,12 @@ describe('DEPRECATED_useDomainVerification()', () => {
         describe('verifyDomain', () => {
             it('should return trigger the verify mutation when calling verifyDomain', async () => {
                 const domain = getEmailDomain({ verified: false })
-                getDomainMock.mockReturnValue(
-                    Promise.resolve({
-                        data: domain,
-                    } as HttpResponse<EmailDomain>),
+                const waitForVerifyDomainRequest =
+                    verifyDomainHandler.waitForRequest(server)
+                server.use(
+                    mockGetEmailIntegrationDomainHandler(async () =>
+                        HttpResponse.json(domain),
+                    ).handler,
                 )
 
                 const { result } = render()
@@ -254,11 +303,13 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
                 result.current.verifyDomain()
 
-                await waitFor(() => {
-                    expect(verifyEmailIntegrationDomain).toHaveBeenCalledWith(
-                        'gorgias.com',
-                        undefined,
+                await waitForVerifyDomainRequest(async (request) => {
+                    expect(new URL(request.url).pathname).toBe(
+                        '/api/integrations/domains/gorgias.com/verify',
                     )
+                })
+
+                await waitFor(() => {
                     expect(result.current.isVerifying).toEqual(false)
                     expect(result.current.isRequested).toEqual(true)
                     expect(result.current.isPending).toEqual(true)
@@ -275,10 +326,6 @@ describe('DEPRECATED_useDomainVerification()', () => {
             })
 
             it('should show notification on success', async () => {
-                verifyDomainMock.mockReturnValue(
-                    Promise.resolve({} as HttpResponse<void>),
-                )
-
                 const { result } = render()
                 result.current.verifyDomain()
 
@@ -291,7 +338,11 @@ describe('DEPRECATED_useDomainVerification()', () => {
             })
 
             it('should show notification on error', async () => {
-                verifyDomainMock.mockReturnValue(Promise.reject())
+                server.use(
+                    mockVerifyEmailIntegrationDomainHandler(async () =>
+                        HttpResponse.json(null as never, { status: 500 }),
+                    ).handler,
+                )
 
                 const { result } = render()
                 result.current.verifyDomain()

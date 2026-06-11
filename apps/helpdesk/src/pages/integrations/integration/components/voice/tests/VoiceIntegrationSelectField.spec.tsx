@@ -1,17 +1,14 @@
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useGetIntegration } from '@gorgias/helpdesk-queries'
+import { mockGetIntegrationHandler } from '@gorgias/helpdesk-mocks'
 
 import { usePhoneNumbers } from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 
 import { useInfiniteListVoiceIntegrations } from '../hooks/useInfiniteListVoiceIntegrations'
 import { VoiceIntegrationSelectField } from '../VoiceIntegrationSelectField'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetIntegration: jest.fn(),
-}))
 
 jest.mock(
     '@gorgias/axiom',
@@ -29,8 +26,6 @@ const useInfiniteListVoiceIntegrationsMock = assumeMock(
 
 jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
 const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
-
-const useGetIntegrationMock = assumeMock(useGetIntegration)
 
 const handleChange = jest.fn()
 const renderComponent = (value?: number, hiddenIntegrations?: number[]) =>
@@ -86,16 +81,16 @@ const useInfiniteListVoiceIntegrationsResponseBase = {
     refetch: jest.fn(),
 }
 
+const server = setupServer()
+
 describe('<VoiceIntegrationSelectField />', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         usePhoneNumbersMock.mockReturnValue({
             getPhoneNumberById: (id: number) => mockPhoneNumbers[id],
-        } as any)
-
-        useGetIntegrationMock.mockReturnValue({
-            data: null,
-            isFetching: false,
-            error: null,
         } as any)
 
         useInfiniteListVoiceIntegrationsMock.mockReturnValue({
@@ -110,6 +105,14 @@ describe('<VoiceIntegrationSelectField />', () => {
             },
             ...useInfiniteListVoiceIntegrationsResponseBase,
         } as any)
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should display the selected integration name', () => {
@@ -164,7 +167,7 @@ describe('<VoiceIntegrationSelectField />', () => {
         expect(handleChange).toHaveBeenCalledWith(2)
     })
 
-    it('should fetch the integration data when the integration is not found in the list', () => {
+    it('should fetch the integration data when the integration is not found in the list', async () => {
         useInfiniteListVoiceIntegrationsMock.mockReturnValue({
             data: {
                 pages: [
@@ -178,15 +181,17 @@ describe('<VoiceIntegrationSelectField />', () => {
             ...useInfiniteListVoiceIntegrationsResponseBase,
         } as any)
 
-        useGetIntegrationMock.mockReturnValue({
-            data: { data: mockIntegrations[0] },
-            isFetching: false,
-            error: null,
-        } as any)
+        server.use(
+            mockGetIntegrationHandler(async () =>
+                HttpResponse.json(mockIntegrations[0] as any),
+            ).handler,
+        )
 
         renderComponent(mockIntegrations[0].id)
 
-        expect(screen.getByText(mockIntegrations[0].name)).toBeInTheDocument()
+        expect(
+            await screen.findByText(mockIntegrations[0].name),
+        ).toBeInTheDocument()
     })
 
     it('should disable input when there is an error', () => {

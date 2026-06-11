@@ -5,8 +5,10 @@ import userEvent from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
+import { mockPutCallParticipantOnHoldHandler } from '@gorgias/helpdesk-mocks'
 
 import { TwilioSocketEventType } from 'business/twilio'
 import { goToTicket } from 'common/utils/goToTicket'
@@ -28,8 +30,6 @@ jest.mock('@twilio/voice-sdk')
 
 jest.mock('common/utils/goToTicket')
 const goToTicketMock = goToTicket as jest.MockedFunction<typeof goToTicket>
-
-jest.mock('@gorgias/helpdesk-queries')
 
 jest.unmock('services/socketManager')
 jest.unmock('services/socketManager/socketManager')
@@ -101,10 +101,9 @@ jest.mock('../../QueueName/QueueName', () => ({
     ),
 }))
 
-const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
-
 jest.mock('pages/common/hooks/useCustomSound')
 const useCustomSoundMock = assumeMock(useCustomSound)
+const server = setupServer(mockPutCallParticipantOnHoldHandler().handler)
 
 describe('<OngoingPhoneCall/>', () => {
     let storeState: Partial<RootState>
@@ -118,6 +117,10 @@ describe('<OngoingPhoneCall/>', () => {
         twilioCallUtils,
         'sendTwilioSocketEvent',
     )
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
 
     const integration = {
         id: integrationId,
@@ -151,15 +154,16 @@ describe('<OngoingPhoneCall/>', () => {
             }),
         }
 
-        mockUsePutCallParticipantOnHold.mockReturnValue({
-            mutate: jest.fn(),
-        })
-
         useCustomSoundMock.mockReturnValue({ playSound: playSoundMock })
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     const renderComponent = (state: Partial<RootState>, call: Call) => {
@@ -262,11 +266,12 @@ describe('<OngoingPhoneCall/>', () => {
         })
     })
 
-    it('should call endpoint to put call on hold', () => {
-        const mockMutate = jest.fn()
-        mockUsePutCallParticipantOnHold.mockReturnValue({
-            mutate: mockMutate,
-        })
+    it('should call endpoint to put call on hold', async () => {
+        const putCallParticipantOnHoldMock =
+            mockPutCallParticipantOnHoldHandler()
+        const waitForPutCallParticipantOnHoldRequest =
+            putCallParticipantOnHoldMock.waitForRequest(server)
+        server.use(putCallParticipantOnHoldMock.handler)
         const call = mockIncomingCall(integrationId) as Call
 
         renderComponent(storeState, {
@@ -278,19 +283,23 @@ describe('<OngoingPhoneCall/>', () => {
         } as any)
 
         fireEvent.click(screen.getByLabelText('Hold phone call'))
-        expect(mockMutate).toHaveBeenCalledWith({
-            data: {
+
+        await waitForPutCallParticipantOnHoldRequest(async (request) => {
+            await expect(request.json()).resolves.toEqual({
                 hold_state: true,
                 participant_call_sid: 'fake-call-sid',
-            },
+            })
         })
     })
 
     it('should change hold state on success', async () => {
-        const mockMutate = jest.fn()
-        mockUsePutCallParticipantOnHold.mockReturnValue({
-            mutate: mockMutate,
-        })
+        const holdRequests: unknown[] = []
+        server.use(
+            mockPutCallParticipantOnHoldHandler(async ({ request }) => {
+                holdRequests.push(await request.json())
+                return new HttpResponse(null, { status: 200 })
+            }).handler,
+        )
         const call = mockIncomingCall(integrationId) as Call
 
         renderComponent(storeState, {
@@ -301,40 +310,22 @@ describe('<OngoingPhoneCall/>', () => {
             },
         } as any)
 
-        act(() => {
-            ;(
-                mockUsePutCallParticipantOnHold as jest.MockedFunction<
-                    typeof usePutCallParticipantOnHold
-                >
-            ).mock.calls[0][0]?.mutation?.onSuccess!(
-                '' as any,
-                { data: { hold_state: true } } as any,
-                '' as any,
-            )
-        })
+        fireEvent.click(screen.getByLabelText('Hold phone call'))
 
         await waitFor(() => {
+            expect(holdRequests).toContainEqual({
+                hold_state: true,
+                participant_call_sid: 'fake-call-sid',
+            })
             expect(screen.getByText('pause_circle_outline')).toBeInTheDocument()
         })
 
         fireEvent.click(screen.getByLabelText('Take off hold on phone call'))
-        expect(mockMutate).toHaveBeenCalledWith({
-            data: {
+        await waitFor(() => {
+            expect(holdRequests).toContainEqual({
                 hold_state: false,
                 participant_call_sid: 'fake-call-sid',
-            },
-        })
-
-        act(() => {
-            ;(
-                mockUsePutCallParticipantOnHold as jest.MockedFunction<
-                    typeof usePutCallParticipantOnHold
-                >
-            ).mock.calls[0][0]?.mutation?.onSuccess!(
-                '' as any,
-                { data: { hold_state: false } } as any,
-                '' as any,
-            )
+            })
         })
         await waitFor(() => {
             expect(screen.getByText('pause')).toBeInTheDocument()
@@ -342,10 +333,11 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should display error notification when hold fails', async () => {
-        const mockMutate = jest.fn()
-        mockUsePutCallParticipantOnHold.mockReturnValue({
-            mutate: mockMutate,
-        })
+        server.use(
+            mockPutCallParticipantOnHoldHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
         const call = mockIncomingCall(integrationId) as Call
 
         renderComponent(storeState, {
@@ -356,17 +348,7 @@ describe('<OngoingPhoneCall/>', () => {
             },
         } as any)
 
-        act(() => {
-            ;(
-                mockUsePutCallParticipantOnHold as jest.MockedFunction<
-                    typeof usePutCallParticipantOnHold
-                >
-            ).mock.calls[0][0]?.mutation?.onError!(
-                '' as any,
-                '' as any,
-                '' as any,
-            )
-        })
+        fireEvent.click(screen.getByLabelText('Hold phone call'))
 
         await waitFor(() => {
             expect(

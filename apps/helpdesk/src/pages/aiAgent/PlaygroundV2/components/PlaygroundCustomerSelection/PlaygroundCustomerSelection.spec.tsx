@@ -3,8 +3,15 @@ import type { ComponentProps } from 'react'
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { getTicket } from '@gorgias/helpdesk-client'
+import {
+    mockGetTicketHandler,
+    mockTicket,
+    mockTicketCustomer,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 
 import { useSearchCustomer, useSearchTickets } from 'models/aiAgent/queries'
 
@@ -22,20 +29,39 @@ jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
     useSearchTickets: jest.fn(),
 }))
-jest.mock('@gorgias/helpdesk-client', () => ({
-    getTicket: jest.fn(),
-}))
 jest.mock('../../contexts/CoreContext', () => ({
     useCoreContext: jest.fn(),
 }))
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 const mockUseSearchTickets = jest.mocked(useSearchTickets)
-const mockGetTicket = jest.mocked(getTicket)
 const mockUseCoreContext = jest.mocked(useCoreContext)
 const mockOnCustomerChange = jest.fn()
 const mockOnTicketChange = jest.fn()
 const mockSenderType = SenderTypeValues.NEW_CUSTOMER
 const mockOnSenderTypeChange = jest.fn()
+
+const fullTicket = mockTicket({
+    id: 123,
+    subject: 'Test Ticket Subject',
+    customer: mockTicketCustomer({
+        id: 456,
+        name: 'Test Customer',
+        email: 'test@example.com',
+    }),
+    messages: [
+        mockTicketMessage({
+            id: 1,
+            from_agent: false,
+            stripped_text: 'Test message content',
+            created_datetime: '2023-01-01T10:00:00Z',
+        }),
+    ],
+})
+const getTicketHandler = mockGetTicketHandler(async () =>
+    HttpResponse.json(fullTicket),
+)
+const server = setupServer(getTicketHandler.handler)
+
 const renderComponent = (
     props?: Partial<ComponentProps<typeof PlaygroundCustomerSelection>>,
 ) => {
@@ -53,12 +79,15 @@ const renderComponent = (
     )
 }
 describe('PlaygroundCustomerSelection', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.useFakeTimers()
         mockOnCustomerChange.mockClear()
         mockOnTicketChange.mockClear()
         mockOnSenderTypeChange.mockClear()
-        mockGetTicket.mockClear()
         mockUseCoreContext.mockReturnValue({
             shouldFocusCustomerSelection: false,
             setShouldFocusCustomerSelection: jest.fn(),
@@ -96,29 +125,13 @@ describe('PlaygroundCustomerSelection', () => {
                 },
             }),
         } as unknown as ReturnType<typeof useSearchTickets>)
-        // Mock getTicket to return a full ticket
-        mockGetTicket.mockResolvedValue({
-            data: {
-                id: 123,
-                subject: 'Test Ticket Subject',
-                customer: {
-                    id: 456,
-                    name: 'Test Customer',
-                    email: 'test@example.com',
-                },
-                messages: [
-                    {
-                        id: 1,
-                        from_agent: false,
-                        stripped_text: 'Test message content',
-                        created_datetime: '2023-01-01T10:00:00Z',
-                    },
-                ],
-            },
-        } as any)
     })
     afterEach(() => {
         jest.useRealTimers()
+        server.resetHandlers()
+    })
+    afterAll(() => {
+        server.close()
     })
     test('renders with default props', () => {
         renderComponent()
@@ -180,6 +193,7 @@ describe('PlaygroundCustomerSelection', () => {
     })
     test('real ticket search integration - searches and selects ticket', async () => {
         const user = userEvent.setup({ delay: null })
+        const waitForGetTicketRequest = getTicketHandler.waitForRequest(server)
         mockUseSearchTickets.mockReturnValue({
             isLoading: false,
             error: null,
@@ -219,8 +233,10 @@ describe('PlaygroundCustomerSelection', () => {
             /Test Ticket Subject.*Test Customer.*123/,
         )
         await user.click(ticketOption)
+        await waitForGetTicketRequest(async (request) => {
+            expect(new URL(request.url).pathname).toBe('/api/tickets/123')
+        })
         await waitFor(() => {
-            expect(mockGetTicket).toHaveBeenCalledWith(123)
             expect(mockOnTicketChange).toHaveBeenCalledWith({
                 customer: {
                     id: 456,

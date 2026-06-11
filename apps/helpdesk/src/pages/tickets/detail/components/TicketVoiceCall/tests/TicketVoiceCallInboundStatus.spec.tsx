@@ -1,12 +1,12 @@
 import { assumeMock, render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
     mockGetVoiceQueueHandler,
     mockVoiceQueue,
 } from '@gorgias/helpdesk-mocks'
-import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 import { PhoneRingingBehaviour } from '@gorgias/helpdesk-types'
 
 import type { VoiceCall, VoiceCallSubject } from 'models/voiceCall/types'
@@ -88,9 +88,6 @@ jest.mock('models/voiceCall/utils', () => {
 const getInboundDisplayStatusMock = assumeMock(getInboundDisplayStatus)
 const getAnsweringVoiceSubjectMock = assumeMock(getAnsweringVoiceSubject)
 const isCallTransferMock = assumeMock(isCallTransfer)
-
-jest.mock('@gorgias/helpdesk-queries')
-const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
 
 const server = setupServer()
 
@@ -199,19 +196,14 @@ describe('TicketVoiceCallInboundStatus', () => {
 
     describe('Calling', () => {
         it('should render "Calling agents" when display status is "Calling" and distribution mode is "Broadcast"', async () => {
-            const mockGetVoiceQueue = mockGetVoiceQueueHandler()
-            mockGetVoiceQueue.data = mockVoiceQueue({
+            const voiceQueue = mockVoiceQueue({
                 distribution_mode: PhoneRingingBehaviour.Broadcast,
             })
-            server.use(mockGetVoiceQueue.handler)
-
-            useGetVoiceQueueMock.mockReturnValue({
-                data: {
-                    data: mockGetVoiceQueue.data,
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+            server.use(
+                mockGetVoiceQueueHandler(async () =>
+                    HttpResponse.json(voiceQueue),
+                ).handler,
+            )
 
             getInboundDisplayStatusMock.mockReturnValue(
                 VoiceCallDisplayStatus.Calling,
@@ -227,19 +219,14 @@ describe('TicketVoiceCallInboundStatus', () => {
         })
 
         it('should render "Calling <agent> when display status is "Calling" and distribution mode is "Round Robin"', async () => {
-            const mockGetVoiceQueue = mockGetVoiceQueueHandler()
-            mockGetVoiceQueue.data = mockVoiceQueue({
+            const voiceQueue = mockVoiceQueue({
                 distribution_mode: PhoneRingingBehaviour.RoundRobin,
             })
-            server.use(mockGetVoiceQueue.handler)
-
-            useGetVoiceQueueMock.mockReturnValue({
-                data: {
-                    data: mockGetVoiceQueue.data,
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+            server.use(
+                mockGetVoiceQueueHandler(async () =>
+                    HttpResponse.json(voiceQueue),
+                ).handler,
+            )
 
             getInboundDisplayStatusMock.mockReturnValue(
                 VoiceCallDisplayStatus.Calling,
@@ -263,19 +250,14 @@ describe('TicketVoiceCallInboundStatus', () => {
             })
 
             it('should render "Transferring to agents" when display status is "Calling", is a transfer, and distribution mode is "Broadcast"', async () => {
-                const mockGetVoiceQueue = mockGetVoiceQueueHandler()
-                mockGetVoiceQueue.data = mockVoiceQueue({
+                const voiceQueue = mockVoiceQueue({
                     distribution_mode: PhoneRingingBehaviour.Broadcast,
                 })
-                server.use(mockGetVoiceQueue.handler)
-
-                useGetVoiceQueueMock.mockReturnValue({
-                    data: {
-                        data: mockGetVoiceQueue.data,
-                    },
-                    isLoading: false,
-                    isError: false,
-                } as any)
+                server.use(
+                    mockGetVoiceQueueHandler(async () =>
+                        HttpResponse.json(voiceQueue),
+                    ).handler,
+                )
 
                 getInboundDisplayStatusMock.mockReturnValue(
                     VoiceCallDisplayStatus.Calling,
@@ -296,19 +278,14 @@ describe('TicketVoiceCallInboundStatus', () => {
             })
 
             it('should render "Transferring to <agent>" when display status is "Calling", is a transfer, and distribution mode is "Round Robin"', async () => {
-                const mockGetVoiceQueue = mockGetVoiceQueueHandler()
-                mockGetVoiceQueue.data = mockVoiceQueue({
+                const voiceQueue = mockVoiceQueue({
                     distribution_mode: PhoneRingingBehaviour.RoundRobin,
                 })
-                server.use(mockGetVoiceQueue.handler)
-
-                useGetVoiceQueueMock.mockReturnValue({
-                    data: {
-                        data: mockGetVoiceQueue.data,
-                    },
-                    isLoading: false,
-                    isError: false,
-                } as any)
+                server.use(
+                    mockGetVoiceQueueHandler(async () =>
+                        HttpResponse.json(voiceQueue),
+                    ).handler,
+                )
 
                 getInboundDisplayStatusMock.mockReturnValue(
                     VoiceCallDisplayStatus.Calling,
@@ -332,11 +309,10 @@ describe('TicketVoiceCallInboundStatus', () => {
             })
 
             it('should render "Transferring to" with loading skeleton when queue is loading', async () => {
-                useGetVoiceQueueMock.mockReturnValue({
-                    data: null,
-                    isLoading: true,
-                    isError: false,
-                } as any)
+                server.use(
+                    mockGetVoiceQueueHandler(() => new Promise(() => undefined))
+                        .handler,
+                )
 
                 getInboundDisplayStatusMock.mockReturnValue(
                     VoiceCallDisplayStatus.Calling,

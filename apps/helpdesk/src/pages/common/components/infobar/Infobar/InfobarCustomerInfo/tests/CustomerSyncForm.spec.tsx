@@ -1,13 +1,16 @@
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { fromJS, Map } from 'immutable'
+import { Map } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import { toast } from '@gorgias/axiom'
 import {
-    useListCustomerIntegrationsWithChannelDefault,
-    useScheduleShopifyCreateNewCustomerAction,
-    useScheduleShopifyUpdateCustomerAction,
-} from '@gorgias/helpdesk-queries'
+    mockListCustomerIntegrationsWithChannelDefaultHandler,
+    mockListCustomerIntegrationsWithChannelDefaultResponse,
+    mockScheduleShopifyCreateNewCustomerActionHandler,
+    mockScheduleShopifyUpdateCustomerActionHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -17,12 +20,6 @@ import { CustomerSyncForm } from '../CustomerSyncForm/CustomerSyncForm'
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = assumeMock(useAppDispatch)
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useListCustomerIntegrationsWithChannelDefault: jest.fn(),
-    useScheduleShopifyCreateNewCustomerAction: jest.fn(),
-    useScheduleShopifyUpdateCustomerAction: jest.fn(),
-}))
-
 const activeCustomer = Map({
     id: 123,
     name: 'John Smith',
@@ -31,33 +28,68 @@ const activeCustomer = Map({
 
 const state = {}
 
-const createMockMutation = (overrides = {}) => ({
-    mutate: jest.fn(),
-    isLoading: false,
-    isSuccess: false,
-    isError: false,
-    ...overrides,
+const defaultHandlers = [
+    mockListCustomerIntegrationsWithChannelDefaultHandler(async () =>
+        HttpResponse.json(
+            mockListCustomerIntegrationsWithChannelDefaultResponse({
+                integrations: [],
+            }),
+        ),
+    ).handler,
+    mockScheduleShopifyCreateNewCustomerActionHandler().handler,
+    mockScheduleShopifyUpdateCustomerActionHandler().handler,
+]
+
+const server = setupServer(...defaultHandlers)
+
+const createShopifyIntegrationsResponse = (hasCustomerData?: boolean) => ({
+    integrations: [
+        {
+            integration_id: 1,
+            integration_name: 'store1',
+            integration_type: SHOPIFY_INTEGRATION_TYPE,
+            has_customer_data: false,
+            default: false,
+        },
+        {
+            integration_id: 2,
+            integration_name: 'store2',
+            integration_type: SHOPIFY_INTEGRATION_TYPE,
+            has_customer_data: hasCustomerData ?? false,
+            default: true,
+        },
+    ],
 })
 
 const setupMockIntegrations = (hasCustomerData?: boolean) => {
-    ;(
-        useListCustomerIntegrationsWithChannelDefault as jest.Mock
-    ).mockReturnValue({
-        data: fromJS([
-            {
-                id: 1,
-                name: 'store1',
-                type: SHOPIFY_INTEGRATION_TYPE,
-            },
-            {
-                id: 2,
-                name: 'store2',
-                type: SHOPIFY_INTEGRATION_TYPE,
-                default: true,
-                ...(hasCustomerData !== undefined && { hasCustomerData }),
-            },
-        ]),
+    server.use(
+        mockListCustomerIntegrationsWithChannelDefaultHandler(async () =>
+            HttpResponse.json(
+                createShopifyIntegrationsResponse(hasCustomerData) as never,
+            ),
+        ).handler,
+    )
+}
+
+const waitForDefaultStore = async () => {
+    await screen.findByText('store2')
+}
+
+const createPendingResponse = () => {
+    let resolveResponse!: (response: HttpResponse<undefined>) => void
+    const response = new Promise<HttpResponse<undefined>>((resolve) => {
+        resolveResponse = resolve
     })
+
+    return {
+        response,
+        resolve: () =>
+            resolveResponse(
+                new HttpResponse(null, {
+                    status: 200,
+                }) as HttpResponse<undefined>,
+            ),
+    }
 }
 
 const renderCustomerSyncForm = (props = {}) => {
@@ -161,27 +193,22 @@ const getExpectedDataWithoutAddress = (includePhone = true) => ({
 })
 
 describe('CustomerSyncForm', () => {
-    const mockCreateShopifyCustomer = createMockMutation()
-    const mockUpdateShopifyCustomer = createMockMutation()
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
 
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseAppDispatch.mockReturnValue(jest.fn())
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockImplementation(() => mockCreateShopifyCustomer)
-        ;(
-            useScheduleShopifyUpdateCustomerAction as jest.Mock
-        ).mockImplementation(() => mockUpdateShopifyCustomer)
-        ;(
-            useListCustomerIntegrationsWithChannelDefault as jest.Mock
-        ).mockReturnValue({
-            data: fromJS([]),
-        })
     })
 
     afterEach(() => {
+        server.resetHandlers()
         toast.dismiss()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('renders the form correctly', () => {
@@ -196,21 +223,11 @@ describe('CustomerSyncForm', () => {
     })
 
     it('resets the email after render when integrations are unstable', async () => {
-        ;(
-            useListCustomerIntegrationsWithChannelDefault as jest.Mock
-        ).mockImplementation(() => ({
-            data: fromJS([
-                {
-                    id: 2,
-                    name: 'store2',
-                    type: SHOPIFY_INTEGRATION_TYPE,
-                    default: true,
-                    hasCustomerData: false,
-                },
-            ]),
-        }))
+        setupMockIntegrations(false)
 
         const { rerender } = renderCustomerSyncForm()
+
+        await waitForDefaultStore()
 
         rerender(
             <CustomerSyncForm
@@ -265,31 +282,33 @@ describe('CustomerSyncForm', () => {
         'handles form submission when %s a customer with address',
         async (_, hasCustomerData) => {
             setupMockIntegrations(hasCustomerData)
+            const shopifyCustomerActionMock = hasCustomerData
+                ? mockScheduleShopifyUpdateCustomerActionHandler()
+                : mockScheduleShopifyCreateNewCustomerActionHandler()
+            const waitForShopifyCustomerActionRequest =
+                shopifyCustomerActionMock.waitForRequest(server)
+            server.use(shopifyCustomerActionMock.handler)
             const setIsCustomerSyncFormOpen = jest.fn()
 
             renderCustomerSyncForm({ setIsCustomerSyncFormOpen })
+            await waitForDefaultStore()
 
             fillBasicForm()
             await fillAddressForm()
             fireEvent.click(screen.getByText('Sync Profile'))
 
             const expectedData = getExpectedDataWithAddress()
-            const expectedCall = {
-                integrationId: 2,
-                data: expectedData,
-                ...(hasCustomerData && { params: { customer_id: 123 } }),
-            }
-
-            await waitFor(() => {
+            await waitForShopifyCustomerActionRequest(async (request) => {
+                const url = new URL(request.url)
+                expect(url.pathname).toBe(
+                    `/api/ecom/integrations/2/customers/${
+                        hasCustomerData ? 'update' : 'create'
+                    }`,
+                )
                 if (hasCustomerData) {
-                    expect(
-                        mockUpdateShopifyCustomer.mutate,
-                    ).toHaveBeenCalledWith(expectedCall)
-                } else {
-                    expect(
-                        mockCreateShopifyCustomer.mutate,
-                    ).toHaveBeenCalledWith(expectedCall)
+                    expect(url.searchParams.get('customer_id')).toBe('123')
                 }
+                await expect(request.json()).resolves.toEqual(expectedData)
             })
         },
     )
@@ -301,107 +320,95 @@ describe('CustomerSyncForm', () => {
         'handles form submission when %s a customer without address',
         async (_, hasCustomerData) => {
             setupMockIntegrations(hasCustomerData)
+            const shopifyCustomerActionMock = hasCustomerData
+                ? mockScheduleShopifyUpdateCustomerActionHandler()
+                : mockScheduleShopifyCreateNewCustomerActionHandler()
+            const waitForShopifyCustomerActionRequest =
+                shopifyCustomerActionMock.waitForRequest(server)
+            server.use(shopifyCustomerActionMock.handler)
 
             renderCustomerSyncForm()
+            await waitForDefaultStore()
 
             fillBasicForm()
             fireEvent.click(screen.getByText('Sync Profile'))
 
             const expectedData = getExpectedDataWithoutAddress()
-            const expectedCall = {
-                integrationId: 2,
-                data: expectedData,
-                ...(hasCustomerData && { params: { customer_id: 123 } }),
-            }
-
-            if (hasCustomerData) {
-                expect(mockUpdateShopifyCustomer.mutate).toHaveBeenCalledWith(
-                    expectedCall,
+            await waitForShopifyCustomerActionRequest(async (request) => {
+                const url = new URL(request.url)
+                expect(url.pathname).toBe(
+                    `/api/ecom/integrations/2/customers/${
+                        hasCustomerData ? 'update' : 'create'
+                    }`,
                 )
-            } else {
-                expect(mockCreateShopifyCustomer.mutate).toHaveBeenCalledWith(
-                    expectedCall,
-                )
-            }
+                if (hasCustomerData) {
+                    expect(url.searchParams.get('customer_id')).toBe('123')
+                }
+                await expect(request.json()).resolves.toEqual(expectedData)
+            })
         },
     )
 
     it('dispatches error notification on create customer error', async () => {
-        const mockCreateCustomerError = {
-            status: 400,
-            message: 'Custom error message',
-        }
-
-        const { rerender } = renderCustomerSyncForm()
-
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(
-            createMockMutation({
-                isError: true,
-                error: mockCreateCustomerError,
-            }),
+        setupMockIntegrations(false)
+        server.use(
+            mockScheduleShopifyCreateNewCustomerActionHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
         )
-        rerender(
-            <CustomerSyncForm
-                activeCustomer={activeCustomer}
-                isCustomerSyncFormOpen
-                setIsCustomerSyncFormOpen={jest.fn()}
-            />,
-        )
+
+        renderCustomerSyncForm()
+        await waitForDefaultStore()
+
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
 
         await waitFor(() => {
             expect(
-                screen.getByRole('status', { name: 'Custom error message' }),
+                screen.getByRole('status', {
+                    name: 'There was an error syncing the customer',
+                }),
             ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
     it('dispatches error notification on update customer error', async () => {
-        const mockUpdateCustomerError = {
-            status: 400,
-            message: 'Custom error message',
-        }
-
-        const { rerender } = renderCustomerSyncForm()
-
-        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
-            createMockMutation({
-                isError: true,
-                error: mockUpdateCustomerError,
-            }),
+        setupMockIntegrations(true)
+        server.use(
+            mockScheduleShopifyUpdateCustomerActionHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
         )
-        rerender(
-            <CustomerSyncForm
-                activeCustomer={activeCustomer}
-                isCustomerSyncFormOpen
-                setIsCustomerSyncFormOpen={jest.fn()}
-            />,
-        )
+
+        renderCustomerSyncForm()
+        await waitForDefaultStore()
+
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
 
         await waitFor(() => {
             expect(
-                screen.getByRole('status', { name: 'Custom error message' }),
+                screen.getByRole('status', {
+                    name: 'There was an error syncing the customer',
+                }),
             ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
     it('dispatches loading notification when create customer sync is in progress', async () => {
-        const { rerender } = renderCustomerSyncForm()
+        setupMockIntegrations(false)
+        const pendingResponse = createPendingResponse()
+        server.use(
+            mockScheduleShopifyCreateNewCustomerActionHandler(
+                () => pendingResponse.response,
+            ).handler,
+        )
 
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(createMockMutation({ isLoading: true }))
-        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
-            createMockMutation(),
-        )
-        rerender(
-            <CustomerSyncForm
-                activeCustomer={activeCustomer}
-                isCustomerSyncFormOpen
-                setIsCustomerSyncFormOpen={jest.fn()}
-            />,
-        )
+        renderCustomerSyncForm()
+        await waitForDefaultStore()
+
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
 
         await waitFor(() => {
             expect(
@@ -410,24 +417,23 @@ describe('CustomerSyncForm', () => {
                 }),
             ).toHaveAttribute('data-intent', 'info')
         })
+        pendingResponse.resolve()
     })
 
     it('dispatches loading notification when update customer sync is in progress', async () => {
-        const { rerender } = renderCustomerSyncForm()
+        setupMockIntegrations(true)
+        const pendingResponse = createPendingResponse()
+        server.use(
+            mockScheduleShopifyUpdateCustomerActionHandler(
+                () => pendingResponse.response,
+            ).handler,
+        )
 
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(createMockMutation())
-        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
-            createMockMutation({ isLoading: true }),
-        )
-        rerender(
-            <CustomerSyncForm
-                activeCustomer={activeCustomer}
-                isCustomerSyncFormOpen
-                setIsCustomerSyncFormOpen={jest.fn()}
-            />,
-        )
+        renderCustomerSyncForm()
+        await waitForDefaultStore()
+
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
 
         await waitFor(() => {
             expect(
@@ -436,26 +442,24 @@ describe('CustomerSyncForm', () => {
                 }),
             ).toHaveAttribute('data-intent', 'info')
         })
+        pendingResponse.resolve()
     })
 
     it('dismisses the loading notification when sync succeeds', async () => {
         const dismissSpy = jest.spyOn(toast, 'dismiss')
-
-        const { rerender } = renderCustomerSyncForm()
-
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(createMockMutation({ isLoading: true }))
-        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
-            createMockMutation(),
+        setupMockIntegrations(false)
+        const pendingResponse = createPendingResponse()
+        server.use(
+            mockScheduleShopifyCreateNewCustomerActionHandler(
+                () => pendingResponse.response,
+            ).handler,
         )
-        rerender(
-            <CustomerSyncForm
-                activeCustomer={activeCustomer}
-                isCustomerSyncFormOpen
-                setIsCustomerSyncFormOpen={jest.fn()}
-            />,
-        )
+
+        renderCustomerSyncForm()
+        await waitForDefaultStore()
+
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
 
         await waitFor(() => {
             expect(
@@ -465,16 +469,7 @@ describe('CustomerSyncForm', () => {
             ).toHaveAttribute('data-intent', 'info')
         })
 
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(createMockMutation({ isSuccess: true }))
-        rerender(
-            <CustomerSyncForm
-                activeCustomer={activeCustomer}
-                isCustomerSyncFormOpen
-                setIsCustomerSyncFormOpen={jest.fn()}
-            />,
-        )
+        pendingResponse.resolve()
 
         await waitFor(() => {
             expect(dismissSpy).toHaveBeenCalledWith('customer-sync-to-shopify')
@@ -484,35 +479,37 @@ describe('CustomerSyncForm', () => {
     })
 
     it('closes form when the message success on create customer action', async () => {
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(createMockMutation({ isSuccess: true }))
-        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
-            createMockMutation(),
-        )
+        setupMockIntegrations(false)
 
         const mockSetIsCustomerSyncFormOpen = jest.fn()
         renderCustomerSyncForm({
             setIsCustomerSyncFormOpen: mockSetIsCustomerSyncFormOpen,
         })
+        await waitForDefaultStore()
 
-        expect(mockSetIsCustomerSyncFormOpen).toHaveBeenCalled()
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
+
+        await waitFor(() => {
+            expect(mockSetIsCustomerSyncFormOpen).toHaveBeenCalledWith(false)
+        })
     })
 
     it('closes form when the message success on update customer action', async () => {
-        ;(
-            useScheduleShopifyCreateNewCustomerAction as jest.Mock
-        ).mockReturnValue(createMockMutation())
-        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
-            createMockMutation({ isSuccess: true }),
-        )
+        setupMockIntegrations(true)
 
         const mockSetIsCustomerSyncFormOpen = jest.fn()
         renderCustomerSyncForm({
             setIsCustomerSyncFormOpen: mockSetIsCustomerSyncFormOpen,
         })
+        await waitForDefaultStore()
 
-        expect(mockSetIsCustomerSyncFormOpen).toHaveBeenCalled()
+        fillBasicForm()
+        fireEvent.click(screen.getByText('Sync Profile'))
+
+        await waitFor(() => {
+            expect(mockSetIsCustomerSyncFormOpen).toHaveBeenCalledWith(false)
+        })
     })
 
     it.each([
@@ -521,12 +518,16 @@ describe('CustomerSyncForm', () => {
     ])(
         'handles form submission with falsy defaultAddressPhone when %s a customer (value: %s)',
         async (_, hasCustomerData) => {
-            const mutationMock = hasCustomerData
-                ? mockUpdateShopifyCustomer
-                : mockCreateShopifyCustomer
             setupMockIntegrations(hasCustomerData)
+            const shopifyCustomerActionMock = hasCustomerData
+                ? mockScheduleShopifyUpdateCustomerActionHandler()
+                : mockScheduleShopifyCreateNewCustomerActionHandler()
+            const waitForShopifyCustomerActionRequest =
+                shopifyCustomerActionMock.waitForRequest(server)
+            server.use(shopifyCustomerActionMock.handler)
 
             renderCustomerSyncForm()
+            await waitForDefaultStore()
 
             fillBasicForm()
             await fillAddressForm(false)
@@ -539,18 +540,17 @@ describe('CustomerSyncForm', () => {
             fireEvent.click(screen.getByText('Sync Profile'))
 
             const expectedData = getExpectedDataWithAddress(true, false)
-            const expectedCall = {
-                integrationId: 2,
-                data: expectedData,
-                ...(hasCustomerData && { params: { customer_id: 123 } }),
-            }
-
-            await waitFor(() => {
+            await waitForShopifyCustomerActionRequest(async (request) => {
+                const url = new URL(request.url)
+                expect(url.pathname).toBe(
+                    `/api/ecom/integrations/2/customers/${
+                        hasCustomerData ? 'update' : 'create'
+                    }`,
+                )
                 if (hasCustomerData) {
-                    expect(mutationMock.mutate).toHaveBeenCalledWith(
-                        expectedCall,
-                    )
+                    expect(url.searchParams.get('customer_id')).toBe('123')
                 }
+                await expect(request.json()).resolves.toEqual(expectedData)
             })
         },
     )

@@ -1,12 +1,11 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router-dom'
 
+import { mockGetIntegrationHandler } from '@gorgias/helpdesk-mocks'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
-import {
-    useGetIntegration,
-    useUpdateAllPhoneSettings,
-} from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { integrationsState } from 'fixtures/integrations'
@@ -21,19 +20,17 @@ const phoneIntegration = integrationsState.integrations.find(
 jest.mock('../VoiceIntegrationSettingsForm', () => ({
     VoiceIntegrationSettingsForm: () => <div>VoiceIntegrationSettingsForm</div>,
 }))
-jest.mock('@gorgias/helpdesk-queries')
-const useGetIntegrationMock = assumeMock(useGetIntegration)
-useGetIntegrationMock.mockReturnValue({
-    data: { data: phoneIntegration },
-    isFetching: false,
-} as any)
-const useUpdateAllPhoneSettingsMock = assumeMock(useUpdateAllPhoneSettings)
-useUpdateAllPhoneSettingsMock.mockReturnValue({ mutate: jest.fn() } as any)
 const CurrentPath = () => {
     const location = useLocation()
 
     return <output aria-label="Current path">{location.pathname}</output>
 }
+
+const server = setupServer(
+    mockGetIntegrationHandler(async () => HttpResponse.json(phoneIntegration))
+        .handler,
+)
+
 describe('VoiceIntegrationSettings', () => {
     const renderComponent = (storeState: RootState) => {
         return render(
@@ -48,24 +45,41 @@ describe('VoiceIntegrationSettings', () => {
             },
         )
     }
-    it('should render', () => {
-        const { getByText } = renderComponent({} as RootState)
-        expect(getByText('VoiceIntegrationSettingsForm')).toBeInTheDocument()
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should render', async () => {
+        renderComponent({} as RootState)
+        expect(
+            await screen.findByText('VoiceIntegrationSettingsForm'),
+        ).toBeInTheDocument()
     })
     it('should not render without valid integration', () => {
-        useGetIntegrationMock.mockReturnValue({
-            data: { data: {} },
-            isFetching: false,
-        } as any)
+        server.use(
+            mockGetIntegrationHandler(async () => HttpResponse.json({} as any))
+                .handler,
+        )
+
         const { queryByText } = renderComponent({} as RootState)
         expect(queryByText('VoiceIntegrationSettingsForm')).toBeNull()
     })
     it('should redirect to phone integrations page if get integration fails', async () => {
-        useGetIntegrationMock.mockReturnValue({
-            data: { data: {} },
-            isFetching: false,
-            isError: true,
-        } as any)
+        server.use(
+            mockGetIntegrationHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
+
         const { queryByText } = renderComponent({} as RootState)
         expect(queryByText('VoiceIntegrationSettingsForm')).toBeNull()
         const toastEl = await screen.findByRole('status', {
@@ -77,10 +91,11 @@ describe('VoiceIntegrationSettings', () => {
         )
     })
     it('should not render while loading integration', () => {
-        useGetIntegrationMock.mockReturnValue({
-            data: { data: {} },
-            isFetching: true,
-        } as any)
+        server.use(
+            mockGetIntegrationHandler(() => new Promise(() => undefined))
+                .handler,
+        )
+
         const { queryByText } = renderComponent({} as RootState)
         expect(queryByText('VoiceIntegrationSettingsForm')).toBeNull()
     })

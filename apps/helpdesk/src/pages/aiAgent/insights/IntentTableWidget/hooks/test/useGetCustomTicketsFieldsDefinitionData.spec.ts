@@ -1,6 +1,11 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { listCustomFields } from '@gorgias/helpdesk-client'
+import {
+    mockListCustomFieldsHandler,
+    mockListCustomFieldsResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -13,10 +18,29 @@ import {
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
-jest.mock('@gorgias/helpdesk-client')
 
 const useCustomFieldDefinitionsMock = jest.mocked(useCustomFieldDefinitions)
-const listCustomFieldsMock = assumeMock(listCustomFields)
+const customFields = [
+    { id: '1', managed_type: AI_MANAGED_TYPES.AI_OUTCOME },
+    { id: '2', managed_type: AI_MANAGED_TYPES.AI_INTENT },
+    { id: '3', managed_type: AI_MANAGED_TYPES.MANAGED_SENTIMENT },
+] as unknown as CustomField[]
+const listCustomFieldsHandler = mockListCustomFieldsHandler(async () =>
+    HttpResponse.json(mockListCustomFieldsResponse({ data: customFields })),
+)
+const server = setupServer(listCustomFieldsHandler.handler)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useGetCustomTicketsFieldsDefinitionData', () => {
     it('should return the correct custom field IDs for outcome and intent', () => {
@@ -121,19 +145,6 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
 
 describe('fetchCustomTicketsFieldsDefinitionData', () => {
     it('should return correct IDs for all field types', async () => {
-        listCustomFieldsMock.mockResolvedValue({
-            data: {
-                data: [
-                    { id: '1', managed_type: AI_MANAGED_TYPES.AI_OUTCOME },
-                    { id: '2', managed_type: AI_MANAGED_TYPES.AI_INTENT },
-                    {
-                        id: '3',
-                        managed_type: AI_MANAGED_TYPES.MANAGED_SENTIMENT,
-                    },
-                ] as unknown as CustomField[],
-            },
-        } as Awaited<ReturnType<typeof listCustomFields>>)
-
         const result = await fetchCustomTicketsFieldsDefinitionData()
 
         expect(result).toEqual({
@@ -144,16 +155,20 @@ describe('fetchCustomTicketsFieldsDefinitionData', () => {
     })
 
     it('should return fallback values when fields are not found', async () => {
-        listCustomFieldsMock.mockResolvedValue({
-            data: {
-                data: [
-                    {
-                        id: '3',
-                        managed_type: 'OTHER_TYPE',
-                    } as unknown as CustomField,
-                ],
-            },
-        } as Awaited<ReturnType<typeof listCustomFields>>)
+        server.use(
+            mockListCustomFieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomFieldsResponse({
+                        data: [
+                            {
+                                id: '3',
+                                managed_type: 'OTHER_TYPE',
+                            } as unknown as CustomField,
+                        ],
+                    }),
+                ),
+            ).handler,
+        )
 
         const result = await fetchCustomTicketsFieldsDefinitionData()
 
@@ -165,9 +180,15 @@ describe('fetchCustomTicketsFieldsDefinitionData', () => {
     })
 
     it('should return fallback values when fields list is empty', async () => {
-        listCustomFieldsMock.mockResolvedValue({
-            data: { data: [] as CustomField[] },
-        } as Awaited<ReturnType<typeof listCustomFields>>)
+        server.use(
+            mockListCustomFieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomFieldsResponse({
+                        data: [],
+                    }),
+                ),
+            ).handler,
+        )
 
         const result = await fetchCustomTicketsFieldsDefinitionData()
 
@@ -179,12 +200,22 @@ describe('fetchCustomTicketsFieldsDefinitionData', () => {
     })
 
     it('should call listCustomFields with activeParams', async () => {
-        listCustomFieldsMock.mockResolvedValue({
-            data: { data: [] as CustomField[] },
-        } as Awaited<ReturnType<typeof listCustomFields>>)
+        const waitForListCustomFieldsRequest =
+            listCustomFieldsHandler.waitForRequest(server)
 
         await fetchCustomTicketsFieldsDefinitionData()
 
-        expect(listCustomFieldsMock).toHaveBeenCalledWith(activeParams)
+        await waitForListCustomFieldsRequest(async (request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(Object.fromEntries(searchParams.entries())).toMatchObject(
+                Object.fromEntries(
+                    Object.entries(activeParams).map(([key, value]) => [
+                        key,
+                        String(value),
+                    ]),
+                ),
+            )
+        })
     })
 })

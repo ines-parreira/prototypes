@@ -1,7 +1,9 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useSearch } from '@gorgias/helpdesk-queries'
+import { mockSearchHandler, mockSearchResponse } from '@gorgias/helpdesk-mocks'
 
 import * as searchTypes from 'models/search/types'
 
@@ -15,11 +17,13 @@ jest.mock(
             debounce: jest.fn((fn: () => void) => fn),
         }) as Record<string, any>,
 )
-jest.mock('@gorgias/helpdesk-queries')
-
-const useSearchMock = assumeMock(useSearch)
 
 jest.spyOn(searchTypes, 'isUserSearchResult').mockReturnValue(true)
+
+const searchHandler = mockSearchHandler(async () =>
+    HttpResponse.json(mockSearchResponse({ data: [] })),
+)
+const server = setupServer(searchHandler.handler)
 
 describe('usePhoneDeviceDialerCustomerSuggestions', () => {
     const onEnter = jest.fn()
@@ -36,15 +40,20 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
         )
     }
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
-        useSearchMock.mockReturnValue({
-            isFetching: false,
-            data: {
-                data: {
-                    data: [],
-                },
-            },
-        } as any)
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should initialize with default values', () => {
@@ -58,16 +67,26 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
         )
     })
 
-    it('should update highlightedResultIndex on arrow key down', () => {
-        const { result } = setup()
+    it('should update highlightedResultIndex on arrow key down', async () => {
         const customers = [
             { id: 1 },
             { id: 2 },
         ] as searchTypes.UserSearchResult[]
-        useSearchMock.mockReturnValue({
-            isFetching: false,
-            data: { data: { data: customers } },
-        } as any)
+        server.use(
+            mockSearchHandler(async () =>
+                HttpResponse.json(mockSearchResponse({ data: customers })),
+            ).handler,
+        )
+
+        const { result } = setup()
+
+        act(() => {
+            result.current.debouncedSearchCustomers('123')
+        })
+
+        await waitFor(() => {
+            expect(result.current.customers).toEqual(customers)
+        })
 
         act(() => {
             result.current.handleInputKeyDown({
@@ -101,16 +120,26 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
         expect(onEnter).toHaveBeenCalled()
     })
 
-    it('should call onCustomerSelect on Enter key when a customer is highlighted', () => {
-        const { result } = setup()
+    it('should call onCustomerSelect on Enter key when a customer is highlighted', async () => {
         const customers = [
             { id: 1 },
             { id: 2 },
         ] as searchTypes.UserSearchResult[]
-        useSearchMock.mockReturnValue({
-            isFetching: false,
-            data: { data: { data: customers } },
-        } as any)
+        server.use(
+            mockSearchHandler(async () =>
+                HttpResponse.json(mockSearchResponse({ data: customers })),
+            ).handler,
+        )
+
+        const { result } = setup()
+
+        act(() => {
+            result.current.debouncedSearchCustomers('123')
+        })
+
+        await waitFor(() => {
+            expect(result.current.customers).toEqual(customers)
+        })
 
         act(() => {
             result.current.handleInputKeyDown({

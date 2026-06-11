@@ -1,8 +1,10 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
+import { mockDeleteIntegrationHandler } from '@gorgias/helpdesk-mocks'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
@@ -10,7 +12,6 @@ import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 
 import { useDeleteEmailIntegration } from '../useDeleteEmailIntegration'
 
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppDispatch')
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -20,13 +21,18 @@ jest.mock('@repo/routing', () => ({
 }))
 jest.mock('models/api/types')
 
-const useDeleteIntegrationMock = assumeMock(useDeleteIntegration)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const isGorgiasApiErrorMock = assumeMock(isGorgiasApiError)
+const deleteIntegrationHandler = mockDeleteIntegrationHandler()
+const server = setupServer(deleteIntegrationHandler.handler)
 
 describe('useDeleteEmailIntegration', () => {
     const mockDispatch = jest.fn()
     const mockPush = jest.fn()
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
 
     beforeEach(() => {
         history.push = mockPush
@@ -34,70 +40,57 @@ describe('useDeleteEmailIntegration', () => {
         useAppDispatchMock.mockReturnValue(mockDispatch)
     })
 
-    it('should handle successful deletion', () => {
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should handle successful deletion', async () => {
         const integration = { id: 'test-id' }
-        const mutate = jest.fn()
-        useDeleteIntegrationMock.mockReturnValue({
-            mutate,
-            isLoading: false,
-        } as any)
+        const waitForDeleteIntegrationRequest =
+            deleteIntegrationHandler.waitForRequest(server)
 
         const { result } = renderHook(() =>
             useDeleteEmailIntegration(integration as any),
         )
 
-        act(() => {
-            result.current.deleteIntegration()
-        })
+        result.current.deleteIntegration()
 
-        expect(mutate).toHaveBeenCalledWith(
-            expect.objectContaining({
-                id: 'test-id',
-            }),
-        )
-
-        act(() => {
-            useDeleteIntegrationMock.mock.lastCall?.[0]?.mutation?.onSuccess?.(
-                null as any,
-                null as any,
-                null as any,
+        await waitForDeleteIntegrationRequest(async (request) => {
+            expect(new URL(request.url).pathname).toBe(
+                '/api/integrations/test-id',
             )
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: DELETE_INTEGRATION_SUCCESS,
-            id: integration.id,
+        await waitFor(() => {
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: DELETE_INTEGRATION_SUCCESS,
+                id: integration.id,
+            })
+            expect(mockPush).toHaveBeenCalledWith(expect.any(String))
         })
-        expect(mockPush).toHaveBeenCalledWith(expect.any(String))
     })
 
     it('should handle deletion error', async () => {
         const integration = { id: 'test-id' }
-        const mutate = jest.fn()
-        const errorResponse = {
-            response: { data: { error: { msg: 'Error message' } } },
-        }
-        useDeleteIntegrationMock.mockReturnValue({
-            mutate,
-            isLoading: false,
-        } as any)
         isGorgiasApiErrorMock.mockReturnValue(true)
+        server.use(
+            mockDeleteIntegrationHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Error message' } } as never,
+                    { status: 400 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useDeleteEmailIntegration(integration as any),
         )
 
-        act(() => {
-            result.current.deleteIntegration()
-        })
-
-        act(() => {
-            useDeleteIntegrationMock.mock.lastCall?.[0]?.mutation?.onError?.(
-                errorResponse,
-                null as any,
-                null as any,
-            )
-        })
+        result.current.deleteIntegration()
 
         await waitFor(() => {
             const toast = screen.getByRole('status', { name: 'Error message' })
@@ -107,28 +100,18 @@ describe('useDeleteEmailIntegration', () => {
 
     it('should handle deletion error with default message', async () => {
         const integration = { id: 'test-id' }
-        const mutate = jest.fn()
-        useDeleteIntegrationMock.mockReturnValue({
-            mutate,
-            isLoading: false,
-        } as any)
         isGorgiasApiErrorMock.mockReturnValue(false)
+        server.use(
+            mockDeleteIntegrationHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useDeleteEmailIntegration(integration as any),
         )
 
-        act(() => {
-            result.current.deleteIntegration()
-        })
-
-        act(() => {
-            useDeleteIntegrationMock.mock.lastCall?.[0]?.mutation?.onError?.(
-                null as any,
-                null as any,
-                null as any,
-            )
-        })
+        result.current.deleteIntegration()
 
         await waitFor(() => {
             const toast = screen.getByRole('status', {

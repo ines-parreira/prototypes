@@ -1,19 +1,34 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { delay, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import * as api from '@gorgias/helpdesk-queries'
+import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 
 import { WithSlaEmptyState } from 'domains/reporting/pages/sla/components/WithSlaEmptyState'
 import { CONTENT_HEADER_TEXT } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
 
-jest.mock('@gorgias/helpdesk-queries')
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('WithSlaEmptyState', () => {
     it('should render loading skeleton when policies loading', () => {
-        jest.spyOn(api, 'useListSlaPolicies').mockReturnValue({
-            isLoading: true,
-            data: undefined,
-        } as any)
+        const mockListSlaPolicies = mockListSlaPoliciesHandler(async () => {
+            await delay('infinite')
+            return HttpResponse.json(mockListSlaPolicies.data)
+        })
+        server.use(mockListSlaPolicies.handler)
 
         render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
@@ -22,36 +37,37 @@ describe('WithSlaEmptyState', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render Empty state when no policies', () => {
-        jest.spyOn(api, 'useListSlaPolicies').mockReturnValue({
-            isLoading: false,
-            data: { data: { data: [] } },
-        } as any)
+    it('should render Empty state when no policies', async () => {
+        const mockListSlaPolicies = mockListSlaPoliciesHandler(async () =>
+            HttpResponse.json({
+                data: [],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: null,
+                uri: '',
+            }),
+        )
+        server.use(mockListSlaPolicies.handler)
 
         render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
-        expect(screen.getByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
+        expect(await screen.findByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
     })
 
-    it('should render children', () => {
-        jest.spyOn(api, 'useListSlaPolicies').mockReturnValue({
-            isLoading: false,
-            data: { data: { data: [{}] } },
-        } as any)
+    it('should render children', async () => {
+        const mockListSlaPolicies = mockListSlaPoliciesHandler()
+        server.use(mockListSlaPolicies.handler)
         const child = 'something'
 
         render(<WithSlaEmptyState>{child}</WithSlaEmptyState>)
 
-        expect(screen.getByText(child)).toBeInTheDocument()
+        expect(await screen.findByText(child)).toBeInTheDocument()
     })
 
-    it('should pass targetChannel to useListSlaPolicies', () => {
-        const useListSlaPoliciesSpy = jest
-            .spyOn(api, 'useListSlaPolicies')
-            .mockReturnValue({
-                isLoading: false,
-                data: { data: { data: [{}] } },
-            } as any)
+    it('should pass targetChannel to useListSlaPolicies', async () => {
+        const mockListSlaPolicies = mockListSlaPoliciesHandler()
+        const waitForListSlaPoliciesRequest =
+            mockListSlaPolicies.waitForRequest(server)
+        server.use(mockListSlaPolicies.handler)
 
         render(
             <WithSlaEmptyState targetChannel="phone">
@@ -59,23 +75,23 @@ describe('WithSlaEmptyState', () => {
             </WithSlaEmptyState>,
         )
 
-        expect(useListSlaPoliciesSpy).toHaveBeenCalledWith({
-            target_channel: 'phone',
+        await waitForListSlaPoliciesRequest((request) => {
+            const url = new URL(request.url)
+            expect(url.searchParams.get('target_channel')).toBe('phone')
         })
     })
 
-    it('should call useListSlaPolicies without targetChannel when not provided', () => {
-        const useListSlaPoliciesSpy = jest
-            .spyOn(api, 'useListSlaPolicies')
-            .mockReturnValue({
-                isLoading: false,
-                data: { data: { data: [{}] } },
-            } as any)
+    it('should call useListSlaPolicies without targetChannel when not provided', async () => {
+        const mockListSlaPolicies = mockListSlaPoliciesHandler()
+        const waitForListSlaPoliciesRequest =
+            mockListSlaPolicies.waitForRequest(server)
+        server.use(mockListSlaPolicies.handler)
 
         render(<WithSlaEmptyState>something</WithSlaEmptyState>)
 
-        expect(useListSlaPoliciesSpy).toHaveBeenCalledWith({
-            target_channel: undefined,
+        await waitForListSlaPoliciesRequest((request) => {
+            const url = new URL(request.url)
+            expect(url.searchParams.has('target_channel')).toBe(false)
         })
     })
 })

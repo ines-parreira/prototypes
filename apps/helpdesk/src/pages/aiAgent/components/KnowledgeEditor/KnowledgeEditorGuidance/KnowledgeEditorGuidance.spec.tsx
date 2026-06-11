@@ -4,9 +4,15 @@ import { render as renderPrimitive } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {
+    mockGetCurrentUserHandler,
+    mockGetUserHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { toImmutable } from 'common/utils'
 import {
@@ -204,13 +210,11 @@ jest.mock('models/helpCenter/mutations', () => ({
     useUpdateArticle: () => ({ mutateAsync: jest.fn() }),
 }))
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetUser: () => ({ data: undefined }),
-    useGetCurrentUser: () => ({ data: undefined }),
-}))
-
 const queryClient = mockQueryClient()
+const server = setupServer(
+    mockGetCurrentUserHandler().handler,
+    mockGetUserHandler().handler,
+)
 const defaultState = {
     currentUser: fromJS({
         timezone: 'America/New_York',
@@ -229,6 +233,10 @@ const render = (
 ) => renderPrimitive(ui, { storeState: defaultState, ...options })
 
 describe('KnowledgeEditorGuidance', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
         useAiAgentHelpCenterState.mockReturnValue({
@@ -300,6 +308,14 @@ describe('KnowledgeEditorGuidance', () => {
             outcomeCustomFieldId: 0,
             intentCustomFieldId: 0,
         })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('renders in edit mode and allows publishing when viewing draft', async () => {

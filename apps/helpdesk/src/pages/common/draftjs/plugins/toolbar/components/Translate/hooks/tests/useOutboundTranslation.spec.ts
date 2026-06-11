@@ -1,11 +1,13 @@
 import { renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useParams } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
-import type { Language } from '@gorgias/helpdesk-queries'
-import { useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
+import { mockTranslateTicketDraftHandler } from '@gorgias/helpdesk-mocks'
+import type { Language } from '@gorgias/helpdesk-types'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -24,11 +26,10 @@ jest.mock('react-router-dom', () => ({
 }))
 const mockUseParams = useParams as jest.Mock
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useTranslateTicketDraft: jest.fn(),
-}))
-const mockUseTranslateTicketDraft = useTranslateTicketDraft as jest.Mock
+const translateTicketDraftHandler = mockTranslateTicketDraftHandler(
+    async () => new HttpResponse(null, { status: 200 }),
+)
+const server = setupServer(translateTicketDraftHandler.handler)
 
 jest.mock('providers/OutboundTranslationProvider/OutboundTranslationProvider')
 const mockUseOutboundTranslationContext =
@@ -48,7 +49,6 @@ const mockClearTranslationState = clearTranslationState as unknown as jest.Mock
 describe('useOutboundTranslation', () => {
     const mockGetEditorState = jest.fn()
     const mockSetEditorState = jest.fn()
-    const mockTranslateTicketDraft = jest.fn()
     const mockDispatch = jest.fn()
     const mockRegisterTranslationDraft = jest.fn()
     const mockUnregisterTranslationDraft = jest.fn()
@@ -76,15 +76,20 @@ describe('useOutboundTranslation', () => {
             if (selector === getOriginalContentState) return mockOriginalContent
             return null
         })
-        mockUseTranslateTicketDraft.mockReturnValue({
-            mutate: mockTranslateTicketDraft,
-            isLoading: false,
-        })
         mockUseOutboundTranslationContext.mockReturnValue(mockContext)
+    })
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
     })
 
     afterEach(() => {
         toast.dismiss()
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     describe('initialization', () => {
@@ -113,6 +118,8 @@ describe('useOutboundTranslation', () => {
 
     describe('requestTranslation', () => {
         it('requests translation with correct parameters', async () => {
+            const waitForTranslateTicketDraftRequest =
+                translateTicketDraftHandler.waitForRequest(server)
             const { result } = renderHook(() =>
                 useOutboundTranslation(mockGetEditorState, mockSetEditorState),
             )
@@ -121,20 +128,28 @@ describe('useOutboundTranslation', () => {
                 await result.current.requestTranslation('fr' as Language)
             })
 
+            await waitForTranslateTicketDraftRequest(async (request) => {
+                await expect(request.json()).resolves.toEqual({
+                    language: 'fr',
+                    draft_id: expect.any(String),
+                    stripped_html: '<div>Hello world</div>',
+                })
+            })
             expect(mockRegisterTranslationDraft).toHaveBeenCalledWith(
                 '123',
                 expect.any(String),
             )
-            expect(mockTranslateTicketDraft).toHaveBeenCalledWith({
-                data: {
-                    language: 'fr',
-                    draft_id: expect.any(String),
-                    stripped_html: '<div>Hello world</div>',
-                },
-            })
         })
 
         it('does not request translation when content is empty', async () => {
+            let translateRequestCount = 0
+            server.use(
+                mockTranslateTicketDraftHandler(async () => {
+                    translateRequestCount += 1
+
+                    return new HttpResponse(null, { status: 200 })
+                }).handler,
+            )
             const emptyEditorState = EditorState.createWithContent(
                 ContentState.createFromText(''),
             )
@@ -148,11 +163,13 @@ describe('useOutboundTranslation', () => {
                 await result.current.requestTranslation('fr' as Language)
             })
 
-            expect(mockTranslateTicketDraft).not.toHaveBeenCalled()
+            expect(translateRequestCount).toBe(0)
             expect(mockRegisterTranslationDraft).not.toHaveBeenCalled()
         })
 
         it('does not register draft when no ticketId', async () => {
+            const waitForTranslateTicketDraftRequest =
+                translateTicketDraftHandler.waitForRequest(server)
             mockUseParams.mockReturnValue({ ticketId: undefined })
 
             const { result } = renderHook(() =>
@@ -164,7 +181,13 @@ describe('useOutboundTranslation', () => {
             })
 
             expect(mockRegisterTranslationDraft).not.toHaveBeenCalled()
-            expect(mockTranslateTicketDraft).toHaveBeenCalled()
+            await waitForTranslateTicketDraftRequest(async (request) => {
+                await expect(request.json()).resolves.toEqual({
+                    language: 'fr',
+                    draft_id: expect.any(String),
+                    stripped_html: '<div>Hello world</div>',
+                })
+            })
         })
     })
 
@@ -210,17 +233,23 @@ describe('useOutboundTranslation', () => {
             expect(result.current.isTranslating).toBe(true)
         })
 
-        it('shows loading state from API request', () => {
-            mockUseTranslateTicketDraft.mockReturnValue({
-                mutate: mockTranslateTicketDraft,
-                isLoading: true,
-            })
+        it('shows loading state from API request', async () => {
+            server.use(
+                mockTranslateTicketDraftHandler(() => new Promise(() => {}))
+                    .handler,
+            )
 
             const { result } = renderHook(() =>
                 useOutboundTranslation(mockGetEditorState, mockSetEditorState),
             )
 
-            expect(result.current.isTranslating).toBe(true)
+            act(() => {
+                void result.current.requestTranslation('fr' as Language)
+            })
+
+            await waitFor(() => {
+                expect(result.current.isTranslating).toBe(true)
+            })
         })
 
         it('returns false when no ticketId', () => {
@@ -240,25 +269,24 @@ describe('useOutboundTranslation', () => {
 
     describe('error handling', () => {
         it('unregisters draft and shows error notification on translation error', async () => {
-            mockUseTranslateTicketDraft.mockReturnValue({
-                mutate: mockTranslateTicketDraft,
-                isLoading: false,
-                isError: false,
-            })
+            server.use(
+                mockTranslateTicketDraftHandler(
+                    async () => new HttpResponse(null, { status: 500 }),
+                ).handler,
+            )
 
-            const { rerender } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useOutboundTranslation(mockGetEditorState, mockSetEditorState),
             )
 
-            mockUseTranslateTicketDraft.mockReturnValue({
-                mutate: mockTranslateTicketDraft,
-                isLoading: false,
-                isError: true,
+            act(() => {
+                void result.current.requestTranslation('fr' as Language)
             })
-            rerender()
 
-            expect(mockUnregisterTranslationDraft).toHaveBeenCalledWith('123')
             await waitFor(() => {
+                expect(mockUnregisterTranslationDraft).toHaveBeenCalledWith(
+                    '123',
+                )
                 expect(
                     screen.getByRole('status', {
                         name: 'Translation on ticket 123 failed. Please retry.',
@@ -269,22 +297,19 @@ describe('useOutboundTranslation', () => {
 
         it('shows error message for new tickets', async () => {
             mockUseParams.mockReturnValue({ ticketId: 'new' })
-            mockUseTranslateTicketDraft.mockReturnValue({
-                mutate: mockTranslateTicketDraft,
-                isLoading: false,
-                isError: false,
-            })
+            server.use(
+                mockTranslateTicketDraftHandler(
+                    async () => new HttpResponse(null, { status: 500 }),
+                ).handler,
+            )
 
-            const { rerender } = renderHook(() =>
+            const { result } = renderHook(() =>
                 useOutboundTranslation(mockGetEditorState, mockSetEditorState),
             )
 
-            mockUseTranslateTicketDraft.mockReturnValue({
-                mutate: mockTranslateTicketDraft,
-                isLoading: false,
-                isError: true,
+            act(() => {
+                void result.current.requestTranslation('fr' as Language)
             })
-            rerender()
 
             await waitFor(() => {
                 expect(

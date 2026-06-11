@@ -1,4 +1,12 @@
 import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetBillingInternalEstimatesSubscriptionHandler,
+    mockGetBillingInternalEstimatesSubscriptionResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     basicMonthlyAutomationPlan,
@@ -11,11 +19,21 @@ import { ProductType } from 'models/billing/types'
 import { useInternalConfirmChangesEstimate } from './useInternalConfirmChangesEstimate'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
-const mockUseGetBillingInternalEstimatesSubscription = jest.fn()
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetBillingInternalEstimatesSubscription: (...args: unknown[]) =>
-        mockUseGetBillingInternalEstimatesSubscription(...args),
-}))
+let estimateRequests: URL[] = []
+
+const estimateHandler = mockGetBillingInternalEstimatesSubscriptionHandler(
+    async ({ request }) => {
+        estimateRequests.push(new URL(request.url))
+
+        return HttpResponse.json(
+            mockGetBillingInternalEstimatesSubscriptionResponse({
+                balance_due: 2500,
+            }),
+        )
+    },
+)
+
+const server = setupServer(estimateHandler.handler)
 
 function makeResolved(
     overrides: Partial<ResolvedPlan> & { productType: ProductType },
@@ -42,31 +60,33 @@ const defaultPlans: ResolvedPlan[] = [
 ]
 
 describe('useInternalConfirmChangesEstimate', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockUseGetBillingInternalEstimatesSubscription.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        })
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
     })
 
-    it('disables query when modal is closed', () => {
+    beforeEach(() => {
+        estimateRequests = []
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    it('disables query when modal is closed', async () => {
         renderHook(() =>
             useInternalConfirmChangesEstimate(false, defaultPlans, 123),
         )
 
-        expect(
-            mockUseGetBillingInternalEstimatesSubscription,
-        ).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: false }),
-            }),
-        )
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(0)
+        })
     })
 
-    it('disables query when helpdesk has no resolved plan', () => {
+    it('disables query when helpdesk has no resolved plan', async () => {
         const noHelpdeskPlans: ResolvedPlan[] = [
             makeResolved({ productType: ProductType.Helpdesk }),
             ...defaultPlans.slice(1),
@@ -76,17 +96,12 @@ describe('useInternalConfirmChangesEstimate', () => {
             useInternalConfirmChangesEstimate(true, noHelpdeskPlans, 123),
         )
 
-        expect(
-            mockUseGetBillingInternalEstimatesSubscription,
-        ).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: false }),
-            }),
-        )
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(0)
+        })
     })
 
-    it('enables query and builds params from resolved plans', () => {
+    it('enables query and builds params from resolved plans', async () => {
         const plans: ResolvedPlan[] = [
             makeResolved({
                 productType: ProductType.Helpdesk,
@@ -106,26 +121,24 @@ describe('useInternalConfirmChangesEstimate', () => {
 
         renderHook(() => useInternalConfirmChangesEstimate(true, plans, 456))
 
-        const [params, options] =
-            mockUseGetBillingInternalEstimatesSubscription.mock.calls[0]
-        expect(params).toEqual(
-            expect.objectContaining({
-                new_helpdesk_plan_id: proMonthlyHelpdeskPlan.plan_id,
-                new_automate_plan_id: basicMonthlyAutomationPlan.plan_id,
-                new_voice_plan_id: undefined,
-                new_sms_plan_id: undefined,
-                new_convert_plan_id: undefined,
-                subscription_resource_version: 456,
-            }),
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+
+        const params = estimateRequests[0].searchParams
+        expect(params.get('new_helpdesk_plan_id')).toBe(
+            proMonthlyHelpdeskPlan.plan_id,
         )
-        expect(options).toEqual(
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: true }),
-            }),
+        expect(params.get('new_automate_plan_id')).toBe(
+            basicMonthlyAutomationPlan.plan_id,
         )
+        expect(params.has('new_voice_plan_id')).toBe(false)
+        expect(params.has('new_sms_plan_id')).toBe(false)
+        expect(params.has('new_convert_plan_id')).toBe(false)
+        expect(params.get('subscription_resource_version')).toBe('456')
     })
 
-    it('omits plan id for products marked as removed', () => {
+    it('omits plan id for products marked as removed', async () => {
         const plans: ResolvedPlan[] = [
             makeResolved({
                 productType: ProductType.Helpdesk,
@@ -145,36 +158,58 @@ describe('useInternalConfirmChangesEstimate', () => {
 
         renderHook(() => useInternalConfirmChangesEstimate(true, plans, 456))
 
-        const [params] =
-            mockUseGetBillingInternalEstimatesSubscription.mock.calls[0]
-        expect(params.new_voice_plan_id).toBeUndefined()
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+
+        expect(estimateRequests[0].searchParams.has('new_voice_plan_id')).toBe(
+            false,
+        )
     })
 
-    it('passes subscription_renewal_ramp_resource_version when provided', () => {
+    it('passes subscription_renewal_ramp_resource_version when provided', async () => {
         renderHook(() =>
             useInternalConfirmChangesEstimate(true, defaultPlans, 100, 200),
         )
 
-        const [params] =
-            mockUseGetBillingInternalEstimatesSubscription.mock.calls[0]
-        expect(params.subscription_resource_version).toBe(100)
-        expect(params.subscription_renewal_ramp_resource_version).toBe(200)
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+
+        const params = estimateRequests[0].searchParams
+        expect(params.get('subscription_resource_version')).toBe('100')
+        expect(params.get('subscription_renewal_ramp_resource_version')).toBe(
+            '200',
+        )
     })
 
-    it('unwraps response body and converts balance_due from cents via select', () => {
-        renderHook(() =>
+    it('unwraps response body and converts balance_due from cents via select', async () => {
+        const { result } = renderHook(() =>
             useInternalConfirmChangesEstimate(true, defaultPlans, 100),
         )
 
-        const [, options] =
-            mockUseGetBillingInternalEstimatesSubscription.mock.calls[0]
-        const { select } = options.query
-
-        expect(select({ data: { balance_due: 2500 } })).toEqual({
-            balance_due: 25,
+        await waitFor(() => {
+            expect(result.current.data?.balance_due).toBe(25)
         })
-        expect(select({ data: { balance_due: null } })).toEqual({
-            balance_due: null,
+    })
+
+    it('keeps null balance_due unchanged', async () => {
+        server.use(
+            mockGetBillingInternalEstimatesSubscriptionHandler(async () =>
+                HttpResponse.json(
+                    mockGetBillingInternalEstimatesSubscriptionResponse({
+                        balance_due: null,
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(() =>
+            useInternalConfirmChangesEstimate(true, defaultPlans, 101),
+        )
+
+        await waitFor(() => {
+            expect(result.current.data?.balance_due).toBeNull()
         })
     })
 })

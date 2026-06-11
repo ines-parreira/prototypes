@@ -1,54 +1,62 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import { useCreateBillingPaymentMethodSetup } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockCreateBillingPaymentMethodSetupHandler,
+    mockCreateBillingPaymentMethodSetupResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { useSetupIntent } from '../useSetupIntent'
 
-jest.mock('@gorgias/helpdesk-queries')
+const createBillingPaymentMethodSetupMock =
+    mockCreateBillingPaymentMethodSetupHandler(async () =>
+        HttpResponse.json(
+            mockCreateBillingPaymentMethodSetupResponse({
+                client_secret: 'test_client_secret',
+            }),
+        ),
+    )
 
-const renderUseSetupIntentHook = (
-    useCreateBillingPaymentMethodSetupReturnValue: Partial<
-        ReturnType<typeof useCreateBillingPaymentMethodSetup>
-    > = {},
-) => {
-    const mockMutate = jest.fn()
-
-    assumeMock(useCreateBillingPaymentMethodSetup).mockReturnValue({
-        mutate: mockMutate,
-        ...useCreateBillingPaymentMethodSetupReturnValue,
-    } as any)
-
-    return {
-        ...renderHook(useSetupIntent),
-        mockMutate,
-    }
-}
+const server = setupServer(createBillingPaymentMethodSetupMock.handler)
 
 describe('useSetupIntent hook', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should call startSetupIntent on mount', async () => {
-        const { mockMutate } = renderUseSetupIntentHook()
+        const waitForSetupIntentRequest =
+            createBillingPaymentMethodSetupMock.waitForRequest(server)
+
+        renderHook(useSetupIntent)
+
+        await waitForSetupIntentRequest()
+    })
+
+    it('should return the client secret from setupIntent', async () => {
+        const { result } = renderHook(useSetupIntent)
 
         await waitFor(() => {
-            expect(mockMutate).toHaveBeenCalledTimes(1)
+            expect(result.current.clientSecret).toBe('test_client_secret')
         })
     })
 
-    it('should return the client secret from setupIntent', () => {
-        const { result } = renderUseSetupIntentHook({
-            data: { data: { client_secret: 'test_client_secret' } } as any,
+    it('should return status properties', async () => {
+        const { result } = renderHook(useSetupIntent)
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
         })
-
-        expect(result.current.clientSecret).toBe('test_client_secret')
-    })
-
-    it('should return status properties', () => {
-        const { result } = renderUseSetupIntentHook({
-            isLoading: false,
-            isError: false,
-        })
-
-        expect(result.current.isLoading).toBe(false)
         expect(result.current.isError).toBe(false)
     })
 })

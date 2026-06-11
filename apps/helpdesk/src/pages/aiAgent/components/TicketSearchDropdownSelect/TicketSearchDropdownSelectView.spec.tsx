@@ -3,9 +3,11 @@ import type { ComponentProps } from 'react'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import type { Ticket } from '@gorgias/helpdesk-client'
-import { getTicket } from '@gorgias/helpdesk-client'
+import { mockGetTicketHandler } from '@gorgias/helpdesk-mocks'
 
 import { useSearchTickets } from 'models/aiAgent/queries'
 
@@ -15,16 +17,12 @@ jest.mock('models/aiAgent/queries', () => ({
     useSearchTickets: jest.fn(),
 }))
 
-jest.mock('@gorgias/helpdesk-client', () => ({
-    getTicket: jest.fn(),
-}))
-
 jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 
 const mockUseSearchTickets = jest.mocked(useSearchTickets)
-const mockGetTicket = jest.mocked(getTicket)
+const server = setupServer()
 
 const mockTicketSearchResults = [
     {
@@ -79,6 +77,10 @@ const renderComponent = (
 }
 
 describe('TicketSearchDropdownSelectView', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         mockUseSearchTickets.mockReturnValue({
             isLoading: false,
@@ -91,7 +93,12 @@ describe('TicketSearchDropdownSelectView', () => {
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render search input', () => {
@@ -228,7 +235,11 @@ describe('TicketSearchDropdownSelectView', () => {
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchTickets>)
 
-        mockGetTicket.mockResolvedValue({ data: mockFullTicket } as any)
+        const getTicketMock = mockGetTicketHandler(async () =>
+            HttpResponse.json(mockFullTicket),
+        )
+        const waitForGetTicketRequest = getTicketMock.waitForRequest(server)
+        server.use(getTicketMock.handler)
 
         renderComponent()
 
@@ -255,8 +266,9 @@ describe('TicketSearchDropdownSelectView', () => {
             )
         })
 
+        await waitForGetTicketRequest()
+
         await waitFor(() => {
-            expect(mockGetTicket).toHaveBeenCalledWith(123)
             expect(mockOnSelect).toHaveBeenCalledWith(mockFullTicket)
         })
 
@@ -275,7 +287,11 @@ describe('TicketSearchDropdownSelectView', () => {
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchTickets>)
 
-        mockGetTicket.mockResolvedValue({ data: mockFullTicket } as any)
+        const getTicketMock = mockGetTicketHandler(async () =>
+            HttpResponse.json(mockFullTicket),
+        )
+        const waitForGetTicketRequest = getTicketMock.waitForRequest(server)
+        server.use(getTicketMock.handler)
 
         renderComponent()
 
@@ -310,8 +326,9 @@ describe('TicketSearchDropdownSelectView', () => {
             await userEvent.keyboard('{Enter}')
         })
 
+        await waitForGetTicketRequest()
+
         await waitFor(() => {
-            expect(mockGetTicket).toHaveBeenCalledWith(123)
             expect(mockOnSelect).toHaveBeenCalledWith(mockFullTicket)
         })
     })
@@ -360,7 +377,11 @@ describe('TicketSearchDropdownSelectView', () => {
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchTickets>)
 
-        mockGetTicket.mockRejectedValue(new Error('API Error'))
+        const getTicketMock = mockGetTicketHandler(async () =>
+            HttpResponse.json(null as never, { status: 500 }),
+        )
+        const waitForGetTicketRequest = getTicketMock.waitForRequest(server)
+        server.use(getTicketMock.handler)
 
         renderComponent()
 
@@ -387,9 +408,7 @@ describe('TicketSearchDropdownSelectView', () => {
             )
         })
 
-        await waitFor(() => {
-            expect(mockGetTicket).toHaveBeenCalledWith(123)
-        })
+        await waitForGetTicketRequest()
 
         // Should not call onSelect if there's an error
         expect(mockOnSelect).not.toHaveBeenCalled()

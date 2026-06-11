@@ -5,10 +5,20 @@ import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useParams } from 'react-router-dom'
 
+import {
+    mockGetTicketHandler,
+    mockListEventsHandler,
+    mockListEventsResponse,
+    mockListVoiceCallsHandler,
+    mockListVoiceCallsResponse,
+    mockTicket,
+    mockTicketCustomer,
+} from '@gorgias/helpdesk-mocks'
 import type { CustomField, TicketCompact } from '@gorgias/helpdesk-queries'
-import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useTicketList } from 'timeline/hooks/useTicketList'
@@ -33,11 +43,6 @@ jest.mock('@repo/navigation', () => ({
     useTicketInfobarNavigation: jest.fn(),
 }))
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetTicket: jest.fn(),
-}))
-
 jest.mock('timeline/hooks/useTicketList', () => ({
     useTicketList: jest.fn(),
 }))
@@ -55,9 +60,6 @@ jest.mock('../useTicketTimelineData', () => ({
 }))
 
 const mockUseParams = useParams as jest.MockedFunction<typeof useParams>
-const mockUseGetTicket = useGetTicket as jest.MockedFunction<
-    typeof useGetTicket
->
 const mockUseTicketList = useTicketList as jest.MockedFunction<
     typeof useTicketList
 >
@@ -117,6 +119,39 @@ const createMockTicket = (
     ...overrides,
 })
 
+const getTicketHandler = mockGetTicketHandler(async () =>
+    HttpResponse.json(
+        mockTicket({
+            id: 456,
+            customer: mockTicketCustomer({
+                id: 123,
+                email: 'test@example.com',
+            }),
+        }),
+    ),
+)
+const server = setupServer(
+    getTicketHandler.handler,
+    mockListEventsHandler(async () =>
+        HttpResponse.json(mockListEventsResponse({ data: [] })),
+    ).handler,
+    mockListVoiceCallsHandler(async () =>
+        HttpResponse.json(mockListVoiceCallsResponse({ data: [] })),
+    ).handler,
+)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 function renderTicketTimelineWidgetContainer(
     props: ComponentProps<typeof TicketTimelineWidgetContainer> = {},
 ) {
@@ -134,14 +169,6 @@ describe('TicketTimelineWidgetContainer', () => {
 
     const defaultMockValues = {
         useParams: { ticketId: '1' },
-        useGetTicket: {
-            data: {
-                data: {
-                    id: 1,
-                    customer: { id: 123, email: 'test@example.com' },
-                },
-            },
-        } as any,
         useTicketList: {
             tickets: [],
             isLoading: false,
@@ -180,7 +207,6 @@ describe('TicketTimelineWidgetContainer', () => {
 
         // Set default mocks
         mockUseParams.mockReturnValue(defaultMockValues.useParams)
-        mockUseGetTicket.mockReturnValue(defaultMockValues.useGetTicket)
         mockUseTicketList.mockReturnValue(defaultMockValues.useTicketList)
         mockUseTicketInfobarNavigation.mockReturnValue({
             activeTab: TicketInfobarTab.Customer,
@@ -1067,14 +1093,6 @@ describe('CurrentTicketTimelineWidgetContainer', () => {
         jest.clearAllMocks()
 
         mockUseParams.mockReturnValue({ ticketId: '456' })
-        mockUseGetTicket.mockReturnValue({
-            data: {
-                data: {
-                    id: 456,
-                    customer: { id: 123, email: 'test@example.com' },
-                },
-            },
-        } as any)
         mockUseTicketList.mockReturnValue({
             tickets: [],
             isLoading: false,
@@ -1101,15 +1119,17 @@ describe('CurrentTicketTimelineWidgetContainer', () => {
         mockUseGetCustomer.mockReturnValue({ data: undefined } as any)
     })
 
-    it('derives the shopper and active ticket from the current ticket route', () => {
+    it('derives the shopper and active ticket from the current ticket route', async () => {
+        const waitForGetTicketRequest = getTicketHandler.waitForRequest(server)
+
         render(<CurrentTicketTimelineWidgetContainer />)
 
-        expect(mockUseGetTicket).toHaveBeenCalledWith(456, undefined, {
-            query: {
-                enabled: true,
-            },
+        await waitForGetTicketRequest(async (request) => {
+            expect(new URL(request.url).pathname).toBe('/api/tickets/456')
         })
-        expect(mockUseTicketList).toHaveBeenCalledWith(123)
+        await waitFor(() => {
+            expect(mockUseTicketList).toHaveBeenCalledWith(123)
+        })
         expect(mockUseTicketTimelineData).toHaveBeenCalledWith(
             expect.objectContaining({
                 activeTicketId: '456',

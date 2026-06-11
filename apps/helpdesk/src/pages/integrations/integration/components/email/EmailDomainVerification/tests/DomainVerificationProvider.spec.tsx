@@ -1,12 +1,14 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type { EmailDomain, HttpResponse } from '@gorgias/helpdesk-client'
 import {
-    getEmailIntegrationDomain,
-    updateEmailIntegrationDomain,
-    verifyEmailIntegrationDomain,
-} from '@gorgias/helpdesk-client'
+    mockGetEmailIntegrationDomainHandler,
+    mockUpdateEmailIntegrationDomainHandler,
+    mockVerifyEmailIntegrationDomainHandler,
+} from '@gorgias/helpdesk-mocks'
+import type { EmailDomain } from '@gorgias/helpdesk-types'
 
 import {
     parseRecordsCurrentValues,
@@ -15,14 +17,7 @@ import {
 import { DomainVerificationProvider } from '../DomainVerificationProvider'
 import { useDomainVerification } from '../useDomainVerification'
 
-jest.mock('@gorgias/helpdesk-client')
 jest.mock('../../helpers')
-
-const getDomainMock = assumeMock(getEmailIntegrationDomain)
-const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
-const updateEmailIntegrationDomainMock = assumeMock(
-    updateEmailIntegrationDomain,
-)
 
 const populateCurrentValuesForDNSRecordsMock = assumeMock(
     populateCurrentValuesForDNSRecords,
@@ -51,6 +46,18 @@ const getEmailDomain = ({ verified } = { verified: false }): EmailDomain => ({
     },
 })
 
+const getDomainHandler = mockGetEmailIntegrationDomainHandler(async () =>
+    HttpResponse.json(getEmailDomain()),
+)
+const verifyDomainHandler = mockVerifyEmailIntegrationDomainHandler()
+const updateDomainHandler = mockUpdateEmailIntegrationDomainHandler()
+
+const server = setupServer(
+    getDomainHandler.handler,
+    verifyDomainHandler.handler,
+    updateDomainHandler.handler,
+)
+
 const render = () =>
     renderHook(() => useDomainVerification(), {
         wrapper: ({ children }) => (
@@ -61,13 +68,30 @@ const render = () =>
     })
 
 describe('DomainVerificationProvider', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        jest.clearAllMocks()
         localStorage.clear()
         parseRecordsCurrentValuesMock.mockImplementation((records) => records)
     })
 
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should have an initial state', async () => {
-        getDomainMock.mockReturnValue(Promise.reject())
+        server.use(
+            mockGetEmailIntegrationDomainHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
 
         const { result } = render()
         expect(result.current.isFetching).toEqual(true)
@@ -85,8 +109,10 @@ describe('DomainVerificationProvider', () => {
     describe('domain state', () => {
         it('should return the domain if it was fetched successfully', async () => {
             const domain = getEmailDomain()
-            getDomainMock.mockReturnValue(
-                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
 
             const { result } = render()
@@ -96,16 +122,27 @@ describe('DomainVerificationProvider', () => {
             })
         })
 
-        it('should return undefined if it does not exist', () => {
-            getDomainMock.mockReturnValue(Promise.reject())
+        it('should return undefined if it does not exist', async () => {
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(null as never, { status: 500 }),
+                ).handler,
+            )
 
             const { result } = render()
 
-            expect(result.current.domain).toEqual(undefined)
+            await waitFor(() => {
+                expect(result.current.isFetching).toEqual(false)
+                expect(result.current.domain).toEqual(undefined)
+            })
         })
 
         it('should return isFetching when it is being fetched', async () => {
-            getDomainMock.mockReturnValue(Promise.reject())
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(null as never, { status: 500 }),
+                ).handler,
+            )
 
             const { result } = render()
 
@@ -119,8 +156,10 @@ describe('DomainVerificationProvider', () => {
 
         it('should populate current values with results from querying DNS', async () => {
             const domain = getEmailDomain()
-            getDomainMock.mockReturnValue(
-                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
             parseRecordsCurrentValuesMock.mockImplementation((records) =>
                 records.map((record) => ({
@@ -158,10 +197,10 @@ describe('DomainVerificationProvider', () => {
                 data: { sending_dns_records: undefined },
             } as unknown as EmailDomain
 
-            getDomainMock.mockReturnValue(
-                Promise.resolve({
-                    data: domain,
-                } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
 
             render()
@@ -229,8 +268,10 @@ describe('DomainVerificationProvider', () => {
 
         it('should not be pending if the domain has been verified', async () => {
             const domain = getEmailDomain({ verified: true })
-            getDomainMock.mockReturnValue(
-                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(domain),
+                ).handler,
             )
 
             const { result } = render()
@@ -251,10 +292,12 @@ describe('DomainVerificationProvider', () => {
         describe('verifyDomain', () => {
             it('should return trigger the verify mutation when calling verifyDomain', async () => {
                 const domain = getEmailDomain({ verified: false })
-                getDomainMock.mockReturnValue(
-                    Promise.resolve({
-                        data: domain,
-                    } as HttpResponse<EmailDomain>),
+                const waitForVerifyDomainRequest =
+                    verifyDomainHandler.waitForRequest(server)
+                server.use(
+                    mockGetEmailIntegrationDomainHandler(async () =>
+                        HttpResponse.json(domain),
+                    ).handler,
                 )
 
                 const { result } = render()
@@ -262,11 +305,13 @@ describe('DomainVerificationProvider', () => {
 
                 result.current.verifyDomain()
 
-                await waitFor(() => {
-                    expect(verifyEmailIntegrationDomain).toHaveBeenCalledWith(
-                        'gorgias.com',
-                        undefined,
+                await waitForVerifyDomainRequest(async (request) => {
+                    expect(new URL(request.url).pathname).toBe(
+                        '/api/integrations/domains/gorgias.com/verify',
                     )
+                })
+
+                await waitFor(() => {
                     expect(result.current.isVerifying).toEqual(false)
                     expect(result.current.isRequested).toEqual(true)
                     expect(result.current.isPending).toEqual(true)
@@ -274,10 +319,6 @@ describe('DomainVerificationProvider', () => {
             })
 
             it('should show notification on success', async () => {
-                verifyDomainMock.mockReturnValue(
-                    Promise.resolve({} as HttpResponse<void>),
-                )
-
                 const { result } = render()
                 result.current.verifyDomain()
 
@@ -290,7 +331,11 @@ describe('DomainVerificationProvider', () => {
             })
 
             it('should show notification on error', async () => {
-                verifyDomainMock.mockReturnValue(Promise.reject())
+                server.use(
+                    mockVerifyEmailIntegrationDomainHandler(async () =>
+                        HttpResponse.json(null as never, { status: 500 }),
+                    ).handler,
+                )
 
                 const { result } = render()
                 result.current.verifyDomain()
@@ -307,24 +352,37 @@ describe('DomainVerificationProvider', () => {
 
     describe('domain creation', () => {
         it('should create domain when it does not exist', async () => {
-            getDomainMock.mockResolvedValue(
-                Promise.reject({
-                    status: 404,
-                }),
+            const waitForUpdateDomainRequest =
+                updateDomainHandler.waitForRequest(server)
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(null as never, { status: 404 }),
+                ).handler,
             )
 
             render()
 
-            await waitFor(() => {
-                expect(updateEmailIntegrationDomainMock).toHaveBeenCalled()
+            await waitForUpdateDomainRequest(async (request) => {
+                expect(new URL(request.url).pathname).toBe(
+                    '/api/integrations/domains/gorgias.com',
+                )
+                await expect(request.json()).resolves.toEqual({
+                    dkim_key_size: 1024,
+                })
             })
         })
 
         it('should not create domain if another creation failed', async () => {
-            getDomainMock.mockReturnValue(
-                Promise.reject({
-                    status: 404,
-                }),
+            let updateDomainRequestCount = 0
+            server.use(
+                mockGetEmailIntegrationDomainHandler(async () =>
+                    HttpResponse.json(null as never, { status: 404 }),
+                ).handler,
+                mockUpdateEmailIntegrationDomainHandler(async () => {
+                    updateDomainRequestCount += 1
+
+                    return HttpResponse.json(null as never, { status: 400 })
+                }).handler,
             )
 
             const { result, rerender } = render()
@@ -333,16 +391,10 @@ describe('DomainVerificationProvider', () => {
                 expect(result.current.isFetching).toEqual(false)
             })
 
-            updateEmailIntegrationDomainMock.mockRejectedValue({
-                status: 400,
-            })
-
             rerender()
 
             await waitFor(() => {
-                expect(updateEmailIntegrationDomainMock).toHaveBeenCalledTimes(
-                    1,
-                )
+                expect(updateDomainRequestCount).toBe(1)
             })
         })
     })

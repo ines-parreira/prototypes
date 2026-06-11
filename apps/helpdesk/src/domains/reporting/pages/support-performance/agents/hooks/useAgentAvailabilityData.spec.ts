@@ -1,6 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
+import {
+    mockListCustomUserAvailabilityStatusesHandler,
+    mockListCustomUserAvailabilityStatusesResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     useAvailabilityPerAgentPerStatus,
@@ -18,10 +24,6 @@ import {
 } from 'domains/reporting/pages/support-performance/agents/tests/fixtures'
 
 jest.mock('domains/reporting/hooks/availability/useAvailabilityMetrics')
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListCustomUserAvailabilityStatuses: jest.fn(),
-}))
 
 const useOnlineTimePerAgentAvailabilityMock = assumeMock(
     useOnlineTimePerAgentAvailability,
@@ -29,11 +31,21 @@ const useOnlineTimePerAgentAvailabilityMock = assumeMock(
 const useAvailabilityPerAgentPerStatusMock = assumeMock(
     useAvailabilityPerAgentPerStatus,
 )
-const useListCustomUserAvailabilityStatusesMock = assumeMock(
-    useListCustomUserAvailabilityStatuses,
+const server = setupServer(
+    mockListCustomUserAvailabilityStatusesHandler(async () =>
+        HttpResponse.json(
+            mockListCustomUserAvailabilityStatusesResponse(
+                mockCustomStatuses.data,
+            ),
+        ),
+    ).handler,
 )
 
 describe('useAgentAvailabilityData', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         useOnlineTimePerAgentAvailabilityMock.mockReturnValue({
             ...defaultHookReturn,
@@ -44,23 +56,25 @@ describe('useAgentAvailabilityData', () => {
             ...defaultHookReturn,
             data: mockPerStatusData,
         } as any)
-
-        useListCustomUserAvailabilityStatusesMock.mockReturnValue({
-            ...defaultHookReturn,
-            data: mockCustomStatuses,
-        } as any)
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
     })
 
-    it('should return transformed agent data', () => {
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should return transformed agent data', async () => {
         const { result } = renderHook(() =>
             useAgentAvailabilityData(mockAgents, mockStatsFiltersRaw, 'UTC'),
         )
 
-        expect(result.current.agents).toHaveLength(3)
+        await waitFor(() => {
+            expect(result.current.agents).toHaveLength(3)
+        })
         expect(result.current.agents[0]).toMatchObject({
             id: 1,
             name: 'Alice Agent',
@@ -99,21 +113,28 @@ describe('useAgentAvailabilityData', () => {
         expect(result.current.isError).toBe(true)
     })
 
-    it('should return custom statuses', () => {
-        useListCustomUserAvailabilityStatusesMock.mockReturnValue({
-            ...defaultHookReturn,
-            data: mockCustomStatusWithData,
-        } as any)
+    it('should return custom statuses', async () => {
+        server.use(
+            mockListCustomUserAvailabilityStatusesHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomUserAvailabilityStatusesResponse(
+                        mockCustomStatusWithData.data,
+                    ),
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useAgentAvailabilityData(mockAgents, mockStatsFiltersRaw, 'UTC'),
         )
 
-        expect(result.current.customStatuses).toHaveLength(1)
+        await waitFor(() => {
+            expect(result.current.customStatuses).toHaveLength(1)
+        })
         expect(result.current.customStatuses[0].name).toBe('Lunch Break')
     })
 
-    it('should handle empty data gracefully', () => {
+    it('should handle empty data gracefully', async () => {
         useOnlineTimePerAgentAvailabilityMock.mockReturnValue({
             ...defaultHookReturn,
             data: { allValues: [] },
@@ -128,6 +149,8 @@ describe('useAgentAvailabilityData', () => {
             useAgentAvailabilityData(mockAgents, mockStatsFiltersRaw, 'UTC'),
         )
 
-        expect(result.current.agents).toHaveLength(3)
+        await waitFor(() => {
+            expect(result.current.agents).toHaveLength(3)
+        })
     })
 })

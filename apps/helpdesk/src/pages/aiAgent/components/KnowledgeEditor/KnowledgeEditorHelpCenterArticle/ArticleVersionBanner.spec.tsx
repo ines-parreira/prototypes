@@ -2,6 +2,9 @@ import { render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { setupServer } from 'msw/node'
+
+import { mockGetUserHandler } from '@gorgias/helpdesk-mocks'
 
 import { ArticleVersionBanner } from './ArticleVersionBanner'
 import { useArticleContext } from './context'
@@ -23,10 +26,6 @@ jest.mock('hooks/useAppSelector', () => ({
 jest.mock('state/currentUser/selectors', () => ({
     getTimezone: jest.fn(() => 'UTC'),
     getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
-}))
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetUser: () => ({ data: undefined }),
 }))
 
 jest.mock('./hooks/useVersionBanner', () => ({
@@ -55,6 +54,8 @@ const mockUseVersionBanner = useVersionBanner as jest.Mock
 const mockUseVersionHistory = useVersionHistory as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
+const server = setupServer(mockGetUserHandler().handler)
+
 const renderComponent = () => {
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -73,6 +74,18 @@ const renderComponent = () => {
 
 describe('ArticleVersionBanner', () => {
     let mockSwitchVersion: jest.Mock
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
 
     const createMockVersionBanner = (
         overrides: Partial<{

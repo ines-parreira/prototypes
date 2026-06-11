@@ -2,10 +2,16 @@ import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListStores } from '@gorgias/helpdesk-queries'
+import {
+    mockListAnalyticsManagedDashboardsHandler,
+    mockListStoresResponse,
+    mockUpdateAnalyticsManagedDashboardHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AnalyticsOverviewConfigurableBarGraph } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableBarGraph/AnalyticsOverviewConfigurableBarGraph'
@@ -14,18 +20,6 @@ import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils
 import * as useMoneySavedHooks from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 jest.mock('@repo/feature-flags')
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListStores: jest.fn(),
-    useUpdateAnalyticsManagedDashboard: jest.fn(() => ({
-        mutate: jest.fn(),
-        isLoading: false,
-    })),
-    useListAnalyticsManagedDashboards: jest.fn(() => ({
-        data: undefined,
-        isLoading: false,
-    })),
-}))
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
@@ -35,10 +29,17 @@ jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     getBarChartGraphConfig: jest.fn(),
 }))
 const getBarChartGraphConfigMock = assumeMock(getBarChartGraphConfig)
-const useListStoresMock = assumeMock(useListStores)
 const MOCK_COST_SAVED_PER_INTERACTION = 3.1
 
 const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
+
+const server = setupServer(
+    http.get('/api/reporting/stores', async () =>
+        HttpResponse.json(mockListStoresResponse({ data: [] })),
+    ),
+    mockListAnalyticsManagedDashboardsHandler().handler,
+    mockUpdateAnalyticsManagedDashboardHandler().handler,
+)
 
 describe('AnalyticsOverviewConfigurableBarGraph', () => {
     const mockChartData = [
@@ -75,6 +76,7 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
     }
 
     beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
         global.ResizeObserver = class ResizeObserver {
             observe() {}
             unobserve() {}
@@ -101,7 +103,6 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        useListStoresMock.mockReturnValue({ data: [] } as any)
         getBarChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
         jest.spyOn(
             useMoneySavedHooks,
@@ -115,7 +116,12 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render the metric title', () => {
@@ -258,7 +264,7 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
         expect(aiAgentButton).toBeInTheDocument()
     })
 
-    it('should pass stores from useListStores to getBarChartGraphConfig', () => {
+    it('should pass stores from useListStores to getBarChartGraphConfig', async () => {
         const mockStores = [
             {
                 store_integration_id: 123,
@@ -266,19 +272,25 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
                 created_datetime: '2025-01-01T00:00:00Z',
             },
         ]
-        useListStoresMock.mockReturnValue({ data: mockStores } as any)
+        server.use(
+            http.get('/api/reporting/stores', async () =>
+                HttpResponse.json(mockListStoresResponse({ data: mockStores })),
+            ),
+        )
 
         render(<AnalyticsOverviewConfigurableBarGraph />)
 
-        expect(getBarChartGraphConfigMock).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.anything(),
-            expect.anything(),
-            {
-                stores: mockStores,
-                costSavedPerInteraction: MOCK_COST_SAVED_PER_INTERACTION,
-            },
-        )
+        await waitFor(() => {
+            expect(getBarChartGraphConfigMock).toHaveBeenCalledWith(
+                expect.anything(),
+                expect.anything(),
+                expect.anything(),
+                {
+                    stores: mockStores,
+                    costSavedPerInteraction: MOCK_COST_SAVED_PER_INTERACTION,
+                },
+            )
+        })
     })
 
     it('should render loading skeleton when data is loading', () => {

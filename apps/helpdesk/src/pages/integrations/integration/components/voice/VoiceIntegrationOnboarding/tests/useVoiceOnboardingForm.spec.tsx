@@ -3,13 +3,15 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Router } from 'react-router-dom'
 
-import { createIntegration } from '@gorgias/helpdesk-client'
-import type {
-    CreateIntegrationBody,
-    PhoneIntegration,
-} from '@gorgias/helpdesk-queries'
+import {
+    mockCreateIntegrationHandler,
+    mockPhoneIntegration,
+} from '@gorgias/helpdesk-mocks'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -23,8 +25,12 @@ import {
     validateOnboardingForm,
 } from '../useVoiceOnboardingForm'
 
-jest.mock('@gorgias/helpdesk-client')
-const createIntegrationMock = assumeMock(createIntegration)
+const createIntegrationHandler = mockCreateIntegrationHandler(async () =>
+    HttpResponse.json(
+        mockPhoneIntegration({ id: 123, name: 'Test Integration' }),
+    ),
+)
+const server = setupServer(createIntegrationHandler.handler)
 
 const queryClient = mockQueryClient()
 
@@ -101,9 +107,22 @@ describe('validateOnboardingForm', () => {
 describe('useOnboardingForm', () => {
     const history = createMemoryHistory()
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
         jest.clearAllMocks()
+        queryClient.clear()
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     const renderUseOnboardingForm = () =>
@@ -118,9 +137,8 @@ describe('useOnboardingForm', () => {
         })
 
     it('should call createIntegration with correct data', async () => {
-        createIntegrationMock.mockResolvedValue({
-            data: { id: 123, name: 'Test Integration' },
-        } as any)
+        const waitForCreateIntegrationRequest =
+            createIntegrationHandler.waitForRequest(server)
 
         const { result } = renderUseOnboardingForm()
         const data: PhoneIntegration = {
@@ -135,29 +153,32 @@ describe('useOnboardingForm', () => {
             result.current.onSubmit(data)
         })
 
+        await waitForCreateIntegrationRequest(async (request) => {
+            expect(new URL(request.url).pathname).toBe('/api/integrations')
+            await expect(request.json()).resolves.toEqual(data)
+        })
+
         expect(screen.queryByRole('status')).not.toBeInTheDocument()
         expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
         expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
         expect(history.location.search).toBe(
             `?${SUCCESSFUL_ONBOARDING_PARAM}=123`,
         )
-        expect(createIntegrationMock).toHaveBeenCalledWith(
-            data as CreateIntegrationBody,
-            undefined,
-        )
     })
 
     it('should show backend error message on API error', async () => {
-        createIntegrationMock.mockRejectedValue({
-            isAxiosError: true,
-            response: {
-                data: {
-                    error: {
-                        msg: 'Your subscription does not include the Voice product. Please contact support.',
-                    },
-                },
-            },
-        })
+        server.use(
+            mockCreateIntegrationHandler(async () =>
+                HttpResponse.json(
+                    {
+                        error: {
+                            msg: 'Your subscription does not include the Voice product. Please contact support.',
+                        },
+                    } as never,
+                    { status: 400 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderUseOnboardingForm()
         const data = {
@@ -179,7 +200,11 @@ describe('useOnboardingForm', () => {
     })
 
     it('should show generic error on non-API error', async () => {
-        createIntegrationMock.mockRejectedValue({})
+        server.use(
+            mockCreateIntegrationHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
 
         const { result } = renderUseOnboardingForm()
         const data = {

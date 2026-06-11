@@ -3,6 +3,12 @@ import type { ReactElement } from 'react'
 import { render as renderPrimitive } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetCurrentUserHandler,
+    mockGetUserHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { toImmutable } from 'common/utils'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
@@ -131,15 +137,13 @@ jest.mock('models/helpCenter/queries', () => ({
     })),
 }))
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetUser: () => ({ data: undefined }),
-    useGetCurrentUser: () => ({ data: undefined }),
-}))
-
 const guidanceArticle = getGuidanceArticleFixture(1)
 
 const queryClient = mockQueryClient()
+const server = setupServer(
+    mockGetCurrentUserHandler().handler,
+    mockGetUserHandler().handler,
+)
 const defaultState = {
     currentUser: fromJS({
         timezone: 'America/New_York',
@@ -164,6 +168,10 @@ const defaultProps = {
 }
 
 describe('KnowledgeEditorSkill', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
@@ -181,6 +189,14 @@ describe('KnowledgeEditorSkill', () => {
             isError: false,
             error: null,
         })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('renders loading shell while help center is loading', () => {

@@ -6,8 +6,14 @@ import { loadStripe } from '@stripe/stripe-js'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { createBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
+import {
+    mockCreateBillingPaymentMethodSetupHandler,
+    mockGetBillingStateHandler,
+    mockGetBillingStateResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { account } from 'fixtures/account'
 import { products } from 'fixtures/plans'
@@ -35,9 +41,17 @@ jest.mock('pages/common/components/Loader/Loader', () => ({
     Loader: () => <div data-testid="loader" />,
 }))
 
-jest.mock('@gorgias/helpdesk-client')
-
 const mockedServer = new MockAdapter(client)
+const createBillingPaymentMethodSetupHandler =
+    mockCreateBillingPaymentMethodSetupHandler(async () =>
+        HttpResponse.json({ client_secret: 'client-secret', id: 'id' }),
+    )
+const server = setupServer(
+    createBillingPaymentMethodSetupHandler.handler,
+    mockGetBillingStateHandler(async () =>
+        HttpResponse.json(mockGetBillingStateResponse()),
+    ).handler,
+)
 
 const mockInitialStoreState = {
     currentAccount: fromJS({ account }),
@@ -49,11 +63,26 @@ const mockInitialStoreState = {
 }
 
 describe('PaymentMethodSetupView', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        mockedServer.reset()
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should render Loader when setup intent is loading', () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
         mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
-        assumeMock(createBillingPaymentMethodSetup).mockResolvedValue(
-            new Promise(() => {}),
+        server.use(
+            mockCreateBillingPaymentMethodSetupHandler(
+                () => new Promise(() => {}),
+            ).handler,
         )
 
         render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
@@ -66,9 +95,6 @@ describe('PaymentMethodSetupView', () => {
     it('should render Loader when useBillingState is loading', () => {
         mockedServer.onGet('/billing/state').reply(() => new Promise(() => {}))
         mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
-        assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
-            data: { client_secret: 'client-secret', id: 'id' },
-        } as any)
 
         render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
             storeState: mockInitialStoreState,
@@ -89,9 +115,6 @@ describe('PaymentMethodSetupView', () => {
                 },
             },
         })
-        assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
-            data: { client_secret: 'client-secret', id: 'id' },
-        } as any)
 
         render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
             storeState: mockInitialStoreState,
@@ -118,10 +141,6 @@ describe('PaymentMethodSetupView', () => {
     it('should not render EmailInputField and StripeAddressElement if user is not missing billing information', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
         mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
-
-        assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
-            data: { client_secret: 'client-secret', id: 'id' },
-        } as any)
 
         render(<PaymentMethodSetupView dispatchBillingError={jest.fn()} />, {
             storeState: {
@@ -153,11 +172,15 @@ describe('PaymentMethodSetupView', () => {
     })
 
     it("shouldn't render Stripe elements if the setup intent's client secret isn't available", async () => {
+        mockedServer.onGet('/billing/state').reply(200, trial)
         mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
-
-        assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
-            data: { id: 'id' },
-        } as any)
+        server.use(
+            mockCreateBillingPaymentMethodSetupHandler(async () =>
+                HttpResponse.json({
+                    id: 'id',
+                } as never),
+            ).handler,
+        )
 
         const useSetupIntentSpy = jest.spyOn(
             useSetupIntentModule,

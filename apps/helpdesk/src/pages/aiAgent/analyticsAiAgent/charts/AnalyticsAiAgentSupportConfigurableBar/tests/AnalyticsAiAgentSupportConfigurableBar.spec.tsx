@@ -3,8 +3,14 @@ import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListStores } from '@gorgias/helpdesk-queries'
+import {
+    mockListAnalyticsManagedDashboardsHandler,
+    mockListStoresResponse,
+    mockUpdateAnalyticsManagedDashboardHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -13,18 +19,6 @@ import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils
 import { AnalyticsAiAgentSupportConfigurableBar } from '../AnalyticsAiAgentSupportConfigurableBar'
 
 jest.mock('@repo/feature-flags')
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListStores: jest.fn(),
-    useUpdateAnalyticsManagedDashboard: jest.fn(() => ({
-        mutate: jest.fn(),
-        isLoading: false,
-    })),
-    useListAnalyticsManagedDashboards: jest.fn(() => ({
-        data: undefined,
-        isLoading: false,
-    })),
-}))
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
@@ -40,8 +34,15 @@ jest.mock(
     }),
 )
 const getBarChartGraphConfigMock = assumeMock(getBarChartGraphConfig)
-const useListStoresMock = assumeMock(useListStores)
 const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
+
+const server = setupServer(
+    http.get('/api/reporting/stores', async () =>
+        HttpResponse.json(mockListStoresResponse({ data: [] })),
+    ),
+    mockListAnalyticsManagedDashboardsHandler().handler,
+    mockUpdateAnalyticsManagedDashboardHandler().handler,
+)
 
 describe('AnalyticsAiAgentSupportConfigurableBar', () => {
     const mockChartData = [
@@ -73,6 +74,7 @@ describe('AnalyticsAiAgentSupportConfigurableBar', () => {
     }
 
     beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
         global.ResizeObserver = class ResizeObserver {
             observe() {}
             unobserve() {}
@@ -94,7 +96,6 @@ describe('AnalyticsAiAgentSupportConfigurableBar', () => {
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
         })
-        useListStoresMock.mockReturnValue({ data: [] } as any)
         getBarChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
         useFlagWithLoadingMocked.mockReturnValue({
             value: true,
@@ -103,7 +104,12 @@ describe('AnalyticsAiAgentSupportConfigurableBar', () => {
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render the metric title', () => {

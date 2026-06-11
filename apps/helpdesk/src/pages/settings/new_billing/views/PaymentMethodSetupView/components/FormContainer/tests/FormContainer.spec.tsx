@@ -20,7 +20,16 @@ import type {
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router-dom'
+
+import {
+    mockConfirmBillingPaymentMethodSetupHandler,
+    mockGetBillingContactResponse,
+    mockGetBillingStateHandler,
+    mockGetBillingStateResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -80,7 +89,15 @@ const mockStripeElementsValue = ({
         handlePaymentElementOnChangeEvent?.(paymentMethod as any)
     })
 }
-jest.mock('@gorgias/helpdesk-client')
+
+const confirmBillingPaymentMethodSetup =
+    mockConfirmBillingPaymentMethodSetupHandler()
+const server = setupServer(
+    confirmBillingPaymentMethodSetup.handler,
+    mockGetBillingStateHandler(async () =>
+        HttpResponse.json(mockGetBillingStateResponse()),
+    ).handler,
+)
 const mockedServer = new MockAdapter(client)
 const initialReduxState: Partial<RootState> = {
     billing: fromJS({
@@ -94,9 +111,26 @@ const LocationPath = () => {
     return <span data-testid="location-path">{location.pathname}</span>
 }
 describe('FormContainer', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         logEventMock.mockClear()
+        mockedServer
+            .onGet('/api/billing/contact/')
+            .reply(200, mockGetBillingContactResponse())
     })
+
+    afterEach(() => {
+        server.resetHandlers()
+        mockedServer.reset()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should redirect to the "Usage & Plans" tab when is starting subscription', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
         const shipping = {

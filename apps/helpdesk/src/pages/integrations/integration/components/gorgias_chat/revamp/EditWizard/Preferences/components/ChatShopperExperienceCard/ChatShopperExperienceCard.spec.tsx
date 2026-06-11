@@ -1,27 +1,56 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListIntegrations } from '@gorgias/helpdesk-queries'
+import {
+    mockEmailIntegration,
+    mockGmailIntegration,
+    mockListIntegrationsHandler,
+    mockListIntegrationsResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { ChatShopperExperienceCard } from './ChatShopperExperienceCard'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useListIntegrations: jest.fn(),
-}))
+const supportEmailIntegration = mockEmailIntegration({
+    id: 1,
+    name: 'Support Email',
+    meta: undefined,
+    type: 'email',
+})
+const salesGmailIntegration = mockGmailIntegration({
+    id: 2,
+    name: 'Sales Gmail',
+    meta: undefined,
+    type: 'gmail',
+})
 
-const mockUseListIntegrations = useListIntegrations as jest.MockedFunction<
-    typeof useListIntegrations
->
+const listIntegrationsHandler = mockListIntegrationsHandler(
+    async ({ request }) => {
+        const type = new URL(request.url).searchParams.get('type')
 
-const buildMockResponse = (
-    integrations: Array<{ id: number; name: string; type: string }>,
-) =>
-    ({
-        data: { data: { data: integrations } },
-    }) as unknown as ReturnType<typeof useListIntegrations>
+        if (type === 'email') {
+            return HttpResponse.json(
+                mockListIntegrationsResponse({
+                    data: [supportEmailIntegration],
+                }),
+            )
+        }
 
-const emptyResponse = buildMockResponse([])
+        if (type === 'gmail') {
+            return HttpResponse.json(
+                mockListIntegrationsResponse({
+                    data: [salesGmailIntegration],
+                }),
+            )
+        }
+
+        return HttpResponse.json(mockListIntegrationsResponse({ data: [] }))
+    },
+)
+
+const server = setupServer(listIntegrationsHandler.handler)
 
 describe('ChatShopperExperienceCard', () => {
     const defaultProps = {
@@ -39,21 +68,20 @@ describe('ChatShopperExperienceCard', () => {
         )
     }
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseListIntegrations.mockImplementation((params) => {
-            if (params?.type === 'email') {
-                return buildMockResponse([
-                    { id: 1, name: 'Support Email', type: 'email' },
-                ])
-            }
-            if (params?.type === 'gmail') {
-                return buildMockResponse([
-                    { id: 2, name: 'Sales Gmail', type: 'gmail' },
-                ])
-            }
-            return emptyResponse
-        })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render the card heading', () => {
@@ -211,12 +239,14 @@ describe('ChatShopperExperienceCard', () => {
     })
 
     describe('Connect email select', () => {
-        it('should show the selected email when linkedEmailIntegration matches an option', () => {
+        it('should show the selected email when linkedEmailIntegration matches an option', async () => {
             renderComponent({ linkedEmailIntegration: 1 })
 
-            expect(
-                screen.getByRole('textbox', { name: /Connect email/ }),
-            ).toHaveValue('Support Email')
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('textbox', { name: /Connect email/ }),
+                ).toHaveValue('Support Email')
+            })
         })
 
         it('should show the placeholder when linkedEmailIntegration is null', () => {
@@ -244,7 +274,13 @@ describe('ChatShopperExperienceCard', () => {
 
         it('should render empty list when no integrations are available', async () => {
             const user = userEvent.setup()
-            mockUseListIntegrations.mockReturnValue(emptyResponse)
+            server.use(
+                mockListIntegrationsHandler(async () =>
+                    HttpResponse.json(
+                        mockListIntegrationsResponse({ data: [] }),
+                    ),
+                ).handler,
+            )
             renderComponent()
 
             await user.click(
@@ -258,8 +294,10 @@ describe('ChatShopperExperienceCard', () => {
 
         it('should handle undefined data from useListIntegrations gracefully', async () => {
             const user = userEvent.setup()
-            mockUseListIntegrations.mockReturnValue(
-                {} as unknown as ReturnType<typeof useListIntegrations>,
+            server.use(
+                mockListIntegrationsHandler(async () =>
+                    HttpResponse.json(undefined),
+                ).handler,
             )
             renderComponent()
 
@@ -277,26 +315,31 @@ describe('ChatShopperExperienceCard', () => {
 
         it('should format option as "Name <address>" when integration has an address', async () => {
             const user = userEvent.setup()
-            mockUseListIntegrations.mockImplementation((params) => {
-                if (params?.type === 'email') {
-                    return {
-                        data: {
-                            data: {
-                                data: [
-                                    {
-                                        id: 1,
-                                        name: 'Support Email',
-                                        meta: {
-                                            address: 'support@example.com',
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                    } as unknown as ReturnType<typeof useListIntegrations>
-                }
-                return emptyResponse
-            })
+            server.use(
+                mockListIntegrationsHandler(async ({ request }) => {
+                    const type = new URL(request.url).searchParams.get('type')
+
+                    return HttpResponse.json(
+                        mockListIntegrationsResponse({
+                            data:
+                                type === 'email'
+                                    ? [
+                                          mockEmailIntegration({
+                                              id: 1,
+                                              name: 'Support Email',
+                                              meta: {
+                                                  ...mockEmailIntegration()
+                                                      .meta,
+                                                  address:
+                                                      'support@example.com',
+                                              },
+                                          }),
+                                      ]
+                                    : [],
+                        }),
+                    )
+                }).handler,
+            )
             renderComponent()
 
             await user.click(

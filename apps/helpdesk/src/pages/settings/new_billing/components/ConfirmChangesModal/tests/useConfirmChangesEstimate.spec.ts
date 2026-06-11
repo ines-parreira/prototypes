@@ -1,5 +1,13 @@
 import type { PlansByProduct, SelectedPlans } from '@repo/billing'
 import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetBillingEstimatesSubscriptionHandler,
+    mockGetBillingEstimatesSubscriptionResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     basicMonthlyAutomationPlan,
@@ -22,11 +30,14 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: (...args: unknown[]) => mockUseFlag(...args),
 }))
 
-const mockUseGetBillingEstimatesSubscription = jest.fn()
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetBillingEstimatesSubscription: (...args: unknown[]) =>
-        mockUseGetBillingEstimatesSubscription(...args),
-}))
+const estimateRequests: URL[] = []
+const server = setupServer(
+    mockGetBillingEstimatesSubscriptionHandler(async ({ request }) => {
+        estimateRequests.push(new URL(request.url))
+
+        return HttpResponse.json(mockGetBillingEstimatesSubscriptionResponse())
+    }).handler,
+)
 
 const baseSelectedPlans: SelectedPlans = {
     [ProductType.Helpdesk]: {
@@ -53,14 +64,22 @@ const basePlansByProduct: ConfirmChangesModalProps['plansByProduct'] = {
 }
 
 describe('useConfirmChangesEstimate', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
+        estimateRequests.length = 0
         mockUseFlag.mockReturnValue(true)
-        mockUseGetBillingEstimatesSubscription.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('disables query when modal is closed', () => {
@@ -73,12 +92,7 @@ describe('useConfirmChangesEstimate', () => {
             ),
         )
 
-        expect(mockUseGetBillingEstimatesSubscription).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: false }),
-            }),
-        )
+        expect(estimateRequests).toHaveLength(0)
     })
 
     it('disables query when feature flag is off', () => {
@@ -93,15 +107,10 @@ describe('useConfirmChangesEstimate', () => {
             ),
         )
 
-        expect(mockUseGetBillingEstimatesSubscription).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: false }),
-            }),
-        )
+        expect(estimateRequests).toHaveLength(0)
     })
 
-    it('sends current plan IDs for products the user has not changed', () => {
+    it('sends current plan IDs for products the user has not changed', async () => {
         const selectedPlans: SelectedPlans = {
             ...baseSelectedPlans,
             [ProductType.Automation]: {
@@ -121,17 +130,19 @@ describe('useConfirmChangesEstimate', () => {
             useConfirmChangesEstimate(true, selectedPlans, plansByProduct, 456),
         )
 
-        const params = mockUseGetBillingEstimatesSubscription.mock
-            .calls[0][0] as Record<string, unknown>
-        expect(params.new_helpdesk_plan_id).toBe(
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+        const params = estimateRequests[0].searchParams
+        expect(params.get('new_helpdesk_plan_id')).toBe(
             basicMonthlyHelpdeskPlan.plan_id,
         )
-        expect(params.new_automate_plan_id).toBe(
+        expect(params.get('new_automate_plan_id')).toBe(
             basicMonthlyAutomationPlan.plan_id,
         )
     })
 
-    it('omits plan ID when a product is deselected (removal)', () => {
+    it('omits plan ID when a product is deselected (removal)', async () => {
         const selectedPlans: SelectedPlans = {
             ...baseSelectedPlans,
             [ProductType.Automation]: {
@@ -151,12 +162,15 @@ describe('useConfirmChangesEstimate', () => {
             useConfirmChangesEstimate(true, selectedPlans, plansByProduct, 456),
         )
 
-        const params = mockUseGetBillingEstimatesSubscription.mock
-            .calls[0][0] as Record<string, unknown>
-        expect(params.new_automate_plan_id).toBeUndefined()
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+        expect(
+            estimateRequests[0].searchParams.has('new_automate_plan_id'),
+        ).toBe(false)
     })
 
-    it('sends selected plan ID when user has changed a product', () => {
+    it('sends selected plan ID when user has changed a product', async () => {
         const plansWithUpgrade: SelectedPlans = {
             ...baseSelectedPlans,
             [ProductType.Helpdesk]: {
@@ -174,12 +188,15 @@ describe('useConfirmChangesEstimate', () => {
             ),
         )
 
-        const params = mockUseGetBillingEstimatesSubscription.mock
-            .calls[0][0] as Record<string, unknown>
-        expect(params.new_helpdesk_plan_id).toBe(proMonthlyHelpdeskPlan.plan_id)
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+        expect(
+            estimateRequests[0].searchParams.get('new_helpdesk_plan_id'),
+        ).toBe(proMonthlyHelpdeskPlan.plan_id)
     })
 
-    it('passes subscription_renewal_ramp_resource_version when provided', () => {
+    it('passes subscription_renewal_ramp_resource_version when provided', async () => {
         renderHook(() =>
             useConfirmChangesEstimate(
                 true,
@@ -190,13 +207,17 @@ describe('useConfirmChangesEstimate', () => {
             ),
         )
 
-        const params = mockUseGetBillingEstimatesSubscription.mock
-            .calls[0][0] as Record<string, unknown>
-        expect(params.subscription_resource_version).toBe(100)
-        expect(params.subscription_renewal_ramp_resource_version).toBe(200)
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+        const params = estimateRequests[0].searchParams
+        expect(params.get('subscription_resource_version')).toBe('100')
+        expect(params.get('subscription_renewal_ramp_resource_version')).toBe(
+            '200',
+        )
     })
 
-    it('passes reactivate=true when reactivate is true', () => {
+    it('passes reactivate=true when reactivate is true', async () => {
         renderHook(() =>
             useConfirmChangesEstimate(
                 true,
@@ -208,12 +229,13 @@ describe('useConfirmChangesEstimate', () => {
             ),
         )
 
-        const params = mockUseGetBillingEstimatesSubscription.mock
-            .calls[0][0] as Record<string, unknown>
-        expect(params.reactivate).toBe(true)
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+        expect(estimateRequests[0].searchParams.get('reactivate')).toBe('true')
     })
 
-    it('omits reactivate from params when not provided', () => {
+    it('omits reactivate from params when not provided', async () => {
         renderHook(() =>
             useConfirmChangesEstimate(
                 true,
@@ -223,9 +245,10 @@ describe('useConfirmChangesEstimate', () => {
             ),
         )
 
-        const params = mockUseGetBillingEstimatesSubscription.mock
-            .calls[0][0] as Record<string, unknown>
-        expect(params.reactivate).toBeUndefined()
+        await waitFor(() => {
+            expect(estimateRequests).toHaveLength(1)
+        })
+        expect(estimateRequests[0].searchParams.has('reactivate')).toBe(false)
     })
 
     it('disables query when helpdesk has no current plan and no selection', () => {
@@ -244,11 +267,6 @@ describe('useConfirmChangesEstimate', () => {
             useConfirmChangesEstimate(true, noHelpdeskPlan, noCurrent, 123),
         )
 
-        expect(mockUseGetBillingEstimatesSubscription).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: false }),
-            }),
-        )
+        expect(estimateRequests).toHaveLength(0)
     })
 })

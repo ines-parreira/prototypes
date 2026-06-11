@@ -13,8 +13,6 @@ import { VoiceIntegrationIVRPreferences } from 'pages/integrations/integration/c
 
 import { getDefaultValues, useFormSubmit } from '../useVoiceSettingsForm'
 
-jest.mock('@gorgias/helpdesk-client')
-
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()
 assumeMock(useAppDispatch).mockReturnValue(dispatchMock)

@@ -7,9 +7,11 @@ import {
     SearchAndPreviewCustomersPanel,
 } from '@repo/tickets'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import type { TicketCustomer } from '@gorgias/helpdesk-queries'
-import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
 import { TimelineSidePanel } from 'pages/tickets/detail/TimelineSidePanel'
@@ -65,11 +67,6 @@ jest.mock('@repo/tickets', () => ({
 
 jest.mock('@repo/tickets/infobar-sections', () => ({
     ...jest.requireActual('@repo/tickets/infobar-sections'),
-}))
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetCurrentUser: jest.fn(),
 }))
 
 jest.mock('@repo/customer/hooks', () => ({
@@ -174,7 +171,6 @@ jest.mock(
 const mockUseTicketInfobarNavigation = jest.mocked(useTicketInfobarNavigation)
 const mockUseCustomerProfileActions = jest.mocked(useCustomerProfileActions)
 const mockMakeHasIntegrationOfTypes = jest.mocked(makeHasIntegrationOfTypes)
-const mockUseGetCurrentUser = jest.mocked(useGetCurrentUser)
 const mockUseGetCustomer = jest.mocked(useGetCustomer)
 const mockCustomerInfo = jest.mocked(CustomerInfo)
 const mockTimelineSidePanel = jest.mocked(TimelineSidePanel)
@@ -190,11 +186,25 @@ const customer = {
     email: 'ada@example.com',
     name: 'Ada Lovelace',
 } as TicketCustomer
+const currentUser = {
+    name: 'Ada Lovelace',
+    firstname: 'Ada',
+    lastname: 'Lovelace',
+    email: 'ada@example.com',
+}
+const server = setupServer(
+    mockGetCurrentUserHandler(async () => HttpResponse.json(currentUser as any))
+        .handler,
+)
 
 describe('NewTicketPageInfobar', () => {
     const handleEditCustomer = jest.fn()
     const handleSyncToShopify = jest.fn()
     const onChangeTab = jest.fn()
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -203,14 +213,6 @@ describe('NewTicketPageInfobar', () => {
             activeTab: TicketInfobarTab.Customer,
             onChangeTab,
         } as any)
-        mockUseGetCurrentUser.mockReturnValue({
-            data: {
-                name: 'Ada Lovelace',
-                firstname: 'Ada',
-                lastname: 'Lovelace',
-                email: 'ada@example.com',
-            },
-        } as any)
         mockUseGetCustomer.mockReturnValue({ data: undefined } as any)
         mockUseCustomerProfileActions.mockReturnValue({
             handleEditCustomer,
@@ -218,6 +220,14 @@ describe('NewTicketPageInfobar', () => {
             customerProfileActionModals: <div>CustomerProfileActionModals</div>,
         })
         mockMakeHasIntegrationOfTypes.mockReturnValue(() => true)
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('passes customer action callbacks and Shopify integration state to the customer header', () => {
@@ -241,7 +251,7 @@ describe('NewTicketPageInfobar', () => {
         )
     })
 
-    it('renders both customer and shopify sections when a customer is set and shopify is integrated', () => {
+    it('renders both customer and shopify sections when a customer is set and shopify is integrated', async () => {
         const shopifyCustomer = {
             ...customer,
             integrations: {
@@ -267,21 +277,18 @@ describe('NewTicketPageInfobar', () => {
             screen.getByText('NewTicketInfobarTicketCustomerHeader'),
         ).toBeInTheDocument()
         expect(screen.getByText('CustomerInfo')).toBeInTheDocument()
-        expect(mockCustomerInfo).toHaveBeenCalledWith(
-            expect.objectContaining({
-                associatedShopifyCustomerIds: new Set([42]),
-                externalIdMap: new Map([[42, '456']]),
-                customerId: customer.id,
-                onSyncProfile: expect.any(Function),
-                currentUser: {
-                    name: 'Ada Lovelace',
-                    firstname: 'Ada',
-                    lastname: 'Lovelace',
-                    email: 'ada@example.com',
-                },
-            }),
-            {},
-        )
+        await waitFor(() => {
+            expect(mockCustomerInfo).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    associatedShopifyCustomerIds: new Set([42]),
+                    externalIdMap: new Map([[42, '456']]),
+                    customerId: customer.id,
+                    onSyncProfile: expect.any(Function),
+                    currentUser,
+                }),
+                {},
+            )
+        })
         mockCustomerInfo.mock.calls[0][0].onSyncProfile?.()
         expect(handleSyncToShopify).toHaveBeenCalledWith(shopifyCustomer)
     })

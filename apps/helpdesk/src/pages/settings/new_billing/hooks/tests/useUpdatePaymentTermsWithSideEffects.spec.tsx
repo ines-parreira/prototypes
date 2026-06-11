@@ -1,12 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import { toast } from '@gorgias/axiom'
-import { useUpdatePaymentTerms } from '@gorgias/helpdesk-queries'
-
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { mockUpdatePaymentTermsHandler } from '@gorgias/helpdesk-mocks'
 
 import { useUpdatePaymentTermsWithSideEffects } from '../useUpdatePaymentTermsWithSideEffects'
 
@@ -16,12 +16,17 @@ jest.mock('@tanstack/react-query', () => ({
 }))
 const useQueryClientMock = assumeMock(useQueryClient)
 
-jest.mock('@gorgias/helpdesk-queries')
-const useUpdatePaymentTermsMock = assumeMock(useUpdatePaymentTerms)
+const updatePaymentTermsHandler = mockUpdatePaymentTermsHandler()
+const server = setupServer(updatePaymentTermsHandler.handler)
 
 describe('useUpdatePaymentTermsWithSideEffects', () => {
     const invalidateQueriesMock = jest.fn()
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        jest.clearAllMocks()
         useQueryClientMock.mockImplementation(
             () =>
                 ({
@@ -32,22 +37,24 @@ describe('useUpdatePaymentTermsWithSideEffects', () => {
 
     afterEach(() => {
         toast.dismiss()
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should show success toast on success', async () => {
-        renderHook(() => useUpdatePaymentTermsWithSideEffects())
+        const { result } = renderHook(() =>
+            useUpdatePaymentTermsWithSideEffects(),
+        )
 
-        act(() => {
-            useUpdatePaymentTermsMock.mock.calls[0][0]?.mutation?.onSuccess!(
-                axiosSuccessResponse(undefined) as any,
-                { data: { payment_terms: 45 } },
-                undefined,
-            )
-        })
-
-        expect(useQueryClientMock().invalidateQueries).toHaveBeenCalledTimes(1)
+        result.current.mutate({ data: { payment_terms: 45 } })
 
         await waitFor(() => {
+            expect(
+                useQueryClientMock().invalidateQueries,
+            ).toHaveBeenCalledTimes(1)
             expect(
                 screen.getByRole('status', {
                     name: 'The payment terms have been successfully updated.',
@@ -57,20 +64,22 @@ describe('useUpdatePaymentTermsWithSideEffects', () => {
     })
 
     it('should show error toast on failure', async () => {
-        renderHook(() => useUpdatePaymentTermsWithSideEffects())
+        server.use(
+            mockUpdatePaymentTermsHandler(async () =>
+                HttpResponse.json(null as never, { status: 500 }),
+            ).handler,
+        )
 
-        const myError = {}
-        act(() => {
-            useUpdatePaymentTermsMock.mock.calls[0][0]?.mutation?.onError!(
-                myError,
-                { data: { payment_terms: 1 } },
-                undefined,
-            )
-        })
+        const { result } = renderHook(() =>
+            useUpdatePaymentTermsWithSideEffects(),
+        )
 
-        expect(useQueryClientMock().invalidateQueries).not.toHaveBeenCalled()
+        result.current.mutate({ data: { payment_terms: 1 } })
 
         await waitFor(() => {
+            expect(
+                useQueryClientMock().invalidateQueries,
+            ).not.toHaveBeenCalled()
             expect(
                 screen.getByRole('status', {
                     name: 'Could not update payment terms: Oops something went wrong',

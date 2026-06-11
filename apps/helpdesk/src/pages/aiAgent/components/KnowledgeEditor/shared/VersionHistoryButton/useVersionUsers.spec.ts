@@ -2,24 +2,14 @@ import { renderHook } from '@repo/testing'
 import { useQueries } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import type { VersionItem } from './types'
 import { useVersionUsers } from './useVersionUsers'
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),
     useQueries: jest.fn(),
-}))
-
-jest.mock('@gorgias/helpdesk-client', () => ({
-    getUser: jest.fn(),
-}))
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    queryKeys: {
-        users: {
-            getUser: (id: number) => ['users', 'getUser', id],
-        },
-    },
 }))
 
 const mockUseQueries = useQueries as jest.Mock
@@ -61,8 +51,12 @@ describe('useVersionUsers', () => {
 
         const queriesArg = mockUseQueries.mock.calls[0][0]
         expect(queriesArg.queries).toHaveLength(2)
-        expect(queriesArg.queries[0].queryKey).toEqual(['users', 'getUser', 10])
-        expect(queriesArg.queries[1].queryKey).toEqual(['users', 'getUser', 20])
+        expect(queriesArg.queries[0].queryKey).toEqual(
+            queryKeys.users.getUser(10),
+        )
+        expect(queriesArg.queries[1].queryKey).toEqual(
+            queryKeys.users.getUser(20),
+        )
 
         expect(result.current.userNames).toEqual(
             new Map([

@@ -2,9 +2,15 @@ import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListStores } from '@gorgias/helpdesk-queries'
+import {
+    mockListAnalyticsManagedDashboardsHandler,
+    mockListStoresResponse,
+    mockUpdateAnalyticsManagedDashboardHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import * as aiAgentStatsFiltersHooks from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
@@ -13,18 +19,6 @@ import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.util
 import { AnalyticsOverviewConfigurableLineGraph } from '../AnalyticsOverviewConfigurableLineGraph'
 
 jest.mock('@repo/feature-flags')
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListStores: jest.fn(),
-    useUpdateAnalyticsManagedDashboard: jest.fn(() => ({
-        mutate: jest.fn(),
-        isLoading: false,
-    })),
-    useListAnalyticsManagedDashboards: jest.fn(() => ({
-        data: undefined,
-        isLoading: false,
-    })),
-}))
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
@@ -34,9 +28,16 @@ jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     getLineChartGraphConfig: jest.fn(),
 }))
 const getLineChartGraphConfigMock = assumeMock(getLineChartGraphConfig)
-const useListStoresMock = assumeMock(useListStores)
 
 const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
+
+const server = setupServer(
+    http.get('/api/reporting/stores', async () =>
+        HttpResponse.json(mockListStoresResponse({ data: [] })),
+    ),
+    mockListAnalyticsManagedDashboardsHandler().handler,
+    mockUpdateAnalyticsManagedDashboardHandler().handler,
+)
 
 describe('AnalyticsOverviewConfigurableLineGraph', () => {
     const mockTimeSeriesData = [
@@ -64,6 +65,7 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
     }
 
     beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
         global.ResizeObserver = class ResizeObserver {
             observe() {}
             unobserve() {}
@@ -90,7 +92,6 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        useListStoresMock.mockReturnValue({ data: [] } as any)
         getLineChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
         useFlagWithLoadingMocked.mockReturnValue({
             value: true,
@@ -99,7 +100,12 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render the metric title', () => {
@@ -127,7 +133,7 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
         expect(responsiveContainer).toBeInTheDocument()
     })
 
-    it('should pass stores from useListStores to getLineChartGraphConfig', () => {
+    it('should pass stores from useListStores to getLineChartGraphConfig', async () => {
         const mockStores = [
             {
                 store_integration_id: 123,
@@ -135,16 +141,22 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
                 created_datetime: '2025-01-01T00:00:00Z',
             },
         ]
-        useListStoresMock.mockReturnValue({ data: mockStores } as any)
+        server.use(
+            http.get('/api/reporting/stores', async () =>
+                HttpResponse.json(mockListStoresResponse({ data: mockStores })),
+            ),
+        )
 
         render(<AnalyticsOverviewConfigurableLineGraph />)
 
-        expect(getLineChartGraphConfigMock).toHaveBeenCalledWith(
-            expect.anything(),
-            expect.anything(),
-            expect.anything(),
-            expect.anything(),
-            { stores: mockStores },
-        )
+        await waitFor(() => {
+            expect(getLineChartGraphConfigMock).toHaveBeenCalledWith(
+                expect.anything(),
+                expect.anything(),
+                expect.anything(),
+                expect.anything(),
+                { stores: mockStores },
+            )
+        })
     })
 })

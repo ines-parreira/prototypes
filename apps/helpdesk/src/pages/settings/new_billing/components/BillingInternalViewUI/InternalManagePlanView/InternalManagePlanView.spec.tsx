@@ -2,6 +2,10 @@ import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import { mockGetBillingInternalEstimatesSubscriptionHandler } from '@gorgias/helpdesk-mocks'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -16,12 +20,6 @@ import type { InternalProductCatalogPlans } from 'models/billing/types'
 import { ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalManagePlanView } from './InternalManagePlanView'
-
-const mockUseGetBillingInternalEstimatesSubscription = jest.fn()
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetBillingInternalEstimatesSubscription: (...args: unknown[]) =>
-        mockUseGetBillingInternalEstimatesSubscription(...args),
-}))
 
 jest.mock('models/billing/queries')
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
@@ -47,6 +45,15 @@ const mockUseUpdateInternalSubscription = assumeMock(
     useUpdateInternalSubscription,
 )
 
+const server = setupServer(
+    mockGetBillingInternalEstimatesSubscriptionHandler(async () =>
+        HttpResponse.json({
+            balance_due: 0,
+            immediate_changes_summary: null,
+        }),
+    ).handler,
+)
+
 const catalogPlans: InternalProductCatalogPlans = {
     [ProductType.Helpdesk]: {
         [basicMonthlyHelpdeskPlan.plan_id]: basicMonthlyHelpdeskPlan,
@@ -59,12 +66,6 @@ function mockMutationHook() {
         mutateAsync: jest.fn().mockResolvedValue({ products: {} }),
         isLoading: false,
     } as any)
-    mockUseGetBillingInternalEstimatesSubscription.mockReturnValue({
-        data: { balance_due: 0, immediate_changes_summary: null },
-        isLoading: false,
-        isError: false,
-        refetch: jest.fn(),
-    })
 }
 
 function mockLoadingState() {
@@ -114,6 +115,18 @@ function renderComponent() {
 }
 
 describe('InternalManagePlanView', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('shows loader when data is fetching', () => {
         mockLoadingState()
         renderComponent()

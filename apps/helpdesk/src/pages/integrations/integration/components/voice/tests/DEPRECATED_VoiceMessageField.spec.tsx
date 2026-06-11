@@ -1,12 +1,12 @@
-import { assumeMock, render } from '@repo/testing'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import configureMockStore from 'redux-mock-store'
 
-import type { UploadedCustomRecording } from '@gorgias/helpdesk-queries'
-import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
+import { mockUploadCustomVoiceRecordingHandler } from '@gorgias/helpdesk-mocks'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
@@ -14,19 +14,33 @@ import type { RootState, StoreDispatch } from 'state/types'
 
 import { DEPRECATED_VoiceMessageField } from '../DEPRECATED_VoiceMessageField'
 
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 
-const useUploadCustomVoiceRecordingMock = assumeMock(
-    useUploadCustomVoiceRecording,
-)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const mutateUploadMock = jest.fn()
-const uploadResponse = () =>
-    ({
-        isLoading: false,
-        mutate: mutateUploadMock,
-    }) as unknown as ReturnType<typeof useUploadCustomVoiceRecording>
+const uploadVoiceRecordingResponse = {
+    url: 'https://example.com/voice-recording.mp3',
+    name: 'example.mp3',
+    content_type: 'audio/mpeg',
+    size: 23,
+}
+const server = setupServer(
+    mockUploadCustomVoiceRecordingHandler(async () =>
+        HttpResponse.json(uploadVoiceRecordingResponse),
+    ).handler,
+)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('<VoiceMessageField />', () => {
     const onChange: jest.MockedFunction<(value: VoiceMessage) => void> =
         jest.fn()
@@ -45,7 +59,6 @@ describe('<VoiceMessageField />', () => {
         value: VoiceMessage = defaultMessage,
         props = {},
     ) => {
-        useUploadCustomVoiceRecordingMock.mockReturnValue(uploadResponse())
         return render(
             <DEPRECATED_VoiceMessageField
                 value={value}
@@ -169,7 +182,6 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         window.GORGIAS_STATE.currentAccount = {
             domain: 'acme',
         } as Account
-        useUploadCustomVoiceRecordingMock.mockReturnValue(uploadResponse())
     })
     it('should render', () => {
         const { getByLabelText } = renderComponent()
@@ -283,32 +295,11 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             const { container } = renderWithUpload(message)
             const input = container.querySelector('input[type="file"]')
             expect(input).toBeInTheDocument()
-            act(() => {
-                if (input) {
-                    fireEvent.change(input, { target: { files: [file] } })
-                }
-                ;(
-                    useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                        typeof useUploadCustomVoiceRecording
-                    >
-                ).mock.calls[0][0]?.mutation?.onSuccess!(
-                    axiosSuccessResponse<UploadedCustomRecording>({
-                        url: 'https://example.com/voice-recording.mp3',
-                        name: 'example.mp3',
-                        content_type: 'audio/mpeg',
-                        size: 23,
-                    }),
-                    '' as any,
-                    '' as any,
-                )
-            })
+            if (input) {
+                fireEvent.change(input, { target: { files: [file] } })
+            }
+
             await waitFor(() => {
-                expect(mutateUploadMock).toHaveBeenCalledWith({
-                    data: { file },
-                    params: {
-                        type: CustomRecordingType.VoicemailNotification,
-                    },
-                })
                 expect(onChange).toHaveBeenCalledWith({
                     voice_message_type: VoiceMessageType.VoiceRecording,
                     voice_recording_file_path:
@@ -323,20 +314,12 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             const message: VoiceMessage = {
                 voice_message_type: VoiceMessageType.VoiceRecording,
             }
+            server.use(
+                mockUploadCustomVoiceRecordingHandler(async () =>
+                    HttpResponse.json(null as never, { status: 500 }),
+                ).handler,
+            )
             const { container } = renderWithUpload(message)
-            act(() => {
-                ;(
-                    useUploadCustomVoiceRecordingMock as jest.MockedFunction<
-                        typeof useUploadCustomVoiceRecording
-                    >
-                ).mock.calls[0][0]?.mutation?.onError!(
-                    {
-                        response: { data: { error: 'error' } },
-                    },
-                    '' as any,
-                    '' as any,
-                )
-            })
             const input = container.querySelector('input[type="file"]')
             expect(input).toBeInTheDocument()
             if (input) {
@@ -350,23 +333,30 @@ describe('<VoiceMessageField horizontal="true" />', () => {
                 expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
-        it('disabled the upload button when the file is uploading', () => {
-            const mutateUploadMock = jest.fn()
-            const uploadResponse = () =>
-                ({
-                    isLoading: true,
-                    mutate: mutateUploadMock,
-                }) as unknown as ReturnType<
-                    typeof useUploadCustomVoiceRecording
-                >
-            useUploadCustomVoiceRecordingMock.mockReturnValue(uploadResponse())
+        it('disabled the upload button when the file is uploading', async () => {
+            const file = new File(['audio data'], 'example.mp3', {
+                type: 'audio/mpeg',
+            })
+            server.use(
+                mockUploadCustomVoiceRecordingHandler(
+                    () => new Promise(() => undefined),
+                ).handler,
+            )
             const message: VoiceMessage = {
                 voice_message_type: VoiceMessageType.VoiceRecording,
             }
-            const { getByText } = renderWithUpload(message)
-            expect(
-                getByText('Upload File').closest('button'),
-            ).toBeAriaDisabled()
+            const { container, getByText } = renderWithUpload(message)
+            const input = container.querySelector('input[type="file"]')
+            expect(input).toBeInTheDocument()
+            if (input) {
+                fireEvent.change(input, { target: { files: [file] } })
+            }
+
+            await waitFor(() => {
+                expect(
+                    getByText('Upload File').closest('button'),
+                ).toBeAriaDisabled()
+            })
         })
     })
 })

@@ -1,8 +1,13 @@
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
+import {
+    mockListSlaPoliciesHandler,
+    mockListSlaPoliciesResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { UserRole } from 'config/types/user'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -17,15 +22,19 @@ import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { useAppSelector } from 'hooks/useAppSelector'
 
 jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(() => ({ hasAccess: true, isLoading: false })),
 }))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
-const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+
+const server = setupServer(
+    mockListSlaPoliciesHandler(async () =>
+        HttpResponse.json(mockListSlaPoliciesResponse({ data: [] })),
+    ).handler,
+)
 
 const MockFiltersPanel = jest.fn((__props: any) => <>FiltersPanelMock</>)
 const MockSavedFiltersPanel = jest.fn((__props: any) => (
@@ -50,6 +59,10 @@ jest.mock(
 )
 
 describe('FiltersPanelWrapper with mocked children', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
         useAppSelectorMock.mockReturnValueOnce(
@@ -63,11 +76,14 @@ describe('FiltersPanelWrapper with mocked children', () => {
         useCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse([]) as any,
         )
-        useListSlaPoliciesMock.mockReturnValue({
-            data: { data: { data: [] } },
-            isError: false,
-            isLoading: false,
-        } as any)
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should show the buttons', () => {

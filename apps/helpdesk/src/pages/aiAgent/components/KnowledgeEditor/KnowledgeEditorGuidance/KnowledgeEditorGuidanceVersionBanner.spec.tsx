@@ -4,6 +4,9 @@ import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { setupServer } from 'msw/node'
+
+import { mockGetUserHandler } from '@gorgias/helpdesk-mocks'
 
 import {
     getDateAndTimeFormatter,
@@ -46,10 +49,6 @@ jest.mock('./context', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     useAppSelector: (fn: () => unknown) => fn(),
-}))
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetUser: () => ({ data: undefined }),
 }))
 
 jest.mock('state/currentUser/selectors', () => ({
@@ -117,10 +116,15 @@ const renderComponent = () => {
     )
 }
 
+const server = setupServer(mockGetUserHandler().handler)
 const mockGetTimezone = jest.mocked(getTimezone)
 const mockGetDateAndTimeFormatter = jest.mocked(getDateAndTimeFormatter)
 
 describe('KnowledgeEditorGuidanceVersionBanner', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
         appQueryClient.clear()
@@ -150,6 +154,14 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     DateTimeFormatType.COMPACT_DATE_WITH_TIME_EN_US_24_HOUR
                 ],
         )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     describe('when viewing draft with published version', () => {

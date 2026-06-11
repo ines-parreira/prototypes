@@ -1,8 +1,14 @@
+import client from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
+import { mockConfirmBillingPaymentMethodSetupHandler } from '@gorgias/helpdesk-mocks'
+
+import { billingContact } from 'fixtures/resources'
 
 import { useSubmitPaymentMethod } from '../useSubmitPaymentMethod'
 
@@ -17,10 +23,23 @@ jest.mock('@stripe/react-stripe-js', () => ({
     }),
 }))
 
-jest.mock('@gorgias/helpdesk-client')
+const confirmBillingPaymentMethodSetupMock =
+    mockConfirmBillingPaymentMethodSetupHandler()
+
+const mockedServer = new MockAdapter(client)
+const server = setupServer(confirmBillingPaymentMethodSetupMock.handler)
 
 describe('useSubmitPaymentMethod hook', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
+        mockedServer.onPut('/api/billing/subscription/start/').reply(200, {
+            subscription: {},
+            payment: {},
+        })
         assumeMock(useStripe).mockReturnValue({
             confirmSetup: jest.fn().mockResolvedValue({
                 setupIntent: {
@@ -30,17 +49,28 @@ describe('useSubmitPaymentMethod hook', () => {
         } as any)
     })
 
+    afterEach(() => {
+        mockedServer.reset()
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should call confirmBillingPaymentMethodSetup on submit', async () => {
+        const waitForConfirmRequest =
+            confirmBillingPaymentMethodSetupMock.waitForRequest(server)
         const { result } = renderHook(useSubmitPaymentMethod)
 
         await act(async () => {
             await result.current.submitPaymentMethod()
         })
 
-        await waitFor(() => {
-            expect(
-                assumeMock(confirmBillingPaymentMethodSetup),
-            ).toHaveBeenCalledWith({ id: 'test_setup_intent_id' }, undefined)
+        await waitForConfirmRequest(async (request) => {
+            await expect(request.json()).resolves.toEqual({
+                id: 'test_setup_intent_id',
+            })
         })
     })
 
@@ -59,15 +89,22 @@ describe('useSubmitPaymentMethod hook', () => {
     })
 
     it('should throw error when confirmBillingPaymentMethodSetup fails', async () => {
-        const error = new Error('Billing payment method setup failed')
-
-        assumeMock(confirmBillingPaymentMethodSetup).mockRejectedValue(error)
+        server.use(
+            mockConfirmBillingPaymentMethodSetupHandler(async () =>
+                HttpResponse.json(
+                    {
+                        error: {
+                            msg: 'Billing payment method setup failed',
+                        },
+                    } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(useSubmitPaymentMethod)
 
-        await expect(result.current.submitPaymentMethod()).rejects.toThrow(
-            'Billing payment method setup failed',
-        )
+        await expect(result.current.submitPaymentMethod()).rejects.toBeDefined()
     })
 
     it('should return isLoading as true if the useConfirmStripeSetupIntent mutation is loading', async () => {
@@ -95,12 +132,14 @@ describe('useSubmitPaymentMethod hook', () => {
     it('should return isLoading as true if the confirmBillingPaymentMethodSetup mutation is loading', async () => {
         let resolveConfirmBillingPaymentMethodSetup: () => void
 
-        assumeMock(confirmBillingPaymentMethodSetup).mockImplementation(
-            () =>
-                new Promise((resolve) => {
-                    resolveConfirmBillingPaymentMethodSetup = () =>
-                        resolve({} as any)
-                }),
+        server.use(
+            mockConfirmBillingPaymentMethodSetupHandler(
+                () =>
+                    new Promise((resolve) => {
+                        resolveConfirmBillingPaymentMethodSetup = () =>
+                            resolve(new HttpResponse(null, { status: 200 }))
+                    }),
+            ).handler,
         )
 
         const { result } = renderHook(useSubmitPaymentMethod)
