@@ -81,6 +81,8 @@ export const PerformanceChannelsReport = () => {
                         tabId={PerformanceChannelsQueryParams.Voice}
                         tabName={PERFORMANCE_CHANNELS_VOICE_TAB_NAME}
                         DashboardComponent={DashboardComponent}
+                        enableCustomDashboards
+                        enableTablesPersistence
                     />
                 ) : (
                     <VoicePaywall showPageHeader={false} />

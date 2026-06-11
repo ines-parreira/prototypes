@@ -15,6 +15,10 @@ import {
     PerformanceChannelsEmailChart,
 } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
 import {
+    ChannelsVoiceReportConfig,
+    PerformanceChannelsVoiceChart,
+} from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
+import {
     PerformanceOverviewChart,
     PerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
@@ -92,6 +96,16 @@ describe('getComponentConfig', () => {
         expect(category).toBe('Performance')
     })
 
+    it('finds a voice channels chart from PERFORMANCE_REPORTS_CONFIG', () => {
+        const { reportConfig, chartConfig, category } = getComponentConfig(
+            PerformanceChannelsVoiceChart.TotalCallsCard,
+        )
+
+        expect(reportConfig).toBe(ChannelsVoiceReportConfig)
+        expect(chartConfig).toBeDefined()
+        expect(category).toBe('Performance')
+    })
+
     it('finds a legacy chart when withLegacyReports is true', () => {
         const { reportConfig } = getComponentConfig(
             AutomateAiAgentsChart.AiAgentTable,
@@ -157,6 +171,14 @@ describe('getReportConfig', () => {
         )
 
         expect(config).toBe(ChannelsEmailReportConfig)
+    })
+
+    it('finds the voice channels report from PERFORMANCE_REPORTS_CONFIG by ID', () => {
+        const config = getReportConfig(
+            ReportsIDs.PerformanceChannelsVoiceReportConfig,
+        )
+
+        expect(config).toBe(ChannelsVoiceReportConfig)
     })
 
     it('finds a legacy report when withLegacyReports is true', () => {
@@ -263,6 +285,17 @@ describe('getMetricOriginPath', () => {
         expect(path).toEqual({
             prefix: 'Performance',
             suffix: ChannelsEmailReportConfig.reportName,
+        })
+    })
+
+    it('returns the Performance category for voice channels charts', () => {
+        const path = getMetricOriginPath(
+            PerformanceChannelsVoiceChart.TotalCallsCard,
+        )
+
+        expect(path).toEqual({
+            prefix: 'Performance',
+            suffix: ChannelsVoiceReportConfig.reportName,
         })
     })
 

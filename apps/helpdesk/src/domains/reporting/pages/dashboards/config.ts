@@ -29,6 +29,10 @@ import {
     PerformanceChannelsEmailChart,
 } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
 import {
+    ChannelsVoiceReportConfig,
+    PerformanceChannelsVoiceChart,
+} from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
+import {
     PerformanceOverviewChart,
     PerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
@@ -244,6 +248,10 @@ export const PERFORMANCE_REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: PerformanceChannelsEmailChart,
                 config: ChannelsEmailReportConfig,
+            },
+            {
+                type: PerformanceChannelsVoiceChart,
+                config: ChannelsVoiceReportConfig,
             },
         ],
     },

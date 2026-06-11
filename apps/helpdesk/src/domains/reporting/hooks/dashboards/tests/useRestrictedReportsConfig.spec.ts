@@ -4,6 +4,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import { ChannelsEmailReportConfig } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
+import { ChannelsVoiceReportConfig } from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
 import { PerformanceOverviewReportConfig } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
@@ -227,6 +228,13 @@ describe('useRestrictedReportsConfig', () => {
             expect.objectContaining({
                 config: expect.objectContaining({
                     id: ChannelsEmailReportConfig.id,
+                }),
+            }),
+        )
+        expect(performanceSection?.children).toContainEqual(
+            expect.objectContaining({
+                config: expect.objectContaining({
+                    id: ChannelsVoiceReportConfig.id,
                 }),
             }),
         )

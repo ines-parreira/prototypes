@@ -34,7 +34,7 @@ export enum PerformanceChannelsVoiceChart {
 export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceChart> =
     {
         id: ReportsIDs.PerformanceChannelsVoiceReportConfig,
-        reportName: 'Channels',
+        reportName: 'Channels > Voice',
         reportPath: STATS_ROUTES.PERFORMANCE_CHANNELS,
         charts: {
             [PerformanceChannelsVoiceChart.TotalCallsCard]: {

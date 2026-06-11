@@ -33,6 +33,7 @@ import type { CampaignReportContext } from 'domains/reporting/pages/convert/comp
 import type { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { HelpCenterChart } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import type { PerformanceChannelsEmailChart } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
+import type { PerformanceChannelsVoiceChart } from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
 import type { PerformanceOverviewChart } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
 import type { SatisfactionChart } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import type { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
@@ -254,6 +255,7 @@ export type AvailableChartIds =
     | typeof OverviewChart
     | typeof PerformanceOverviewChart
     | typeof PerformanceChannelsEmailChart
+    | typeof PerformanceChannelsVoiceChart
     | typeof SatisfactionChart
     | typeof ServiceLevelAgreementsChart
     | typeof VoiceServiceLevelAgreementsChart
