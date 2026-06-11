@@ -14,6 +14,7 @@ import {
 import { ForwardIcon } from 'pages/integrations/common/components/ForwardIcon'
 import { ChatRedesignSwitchConfirmModal } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatRedesignSwitchConfirmModal/ChatRedesignSwitchConfirmModal'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
+import { useLogMigrationEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent'
 import { useSetChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
@@ -48,6 +49,7 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
         )
     const { isOptedIn } = useChatRedesignOptIn(chatIntegrationId)
     const { setOptIn, isSubmitting } = useSetChatRedesignOptIn(chat)
+    const { logOptInConfirmed } = useLogMigrationEvent(chatIntegrationId)
 
     const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
@@ -64,6 +66,7 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
             // Opt in first so the Appearance tab renders the opted-in state
             // immediately on arrival.
             await setOptIn(true)
+            logOptInConfirmed()
             setIsConfirmOpen(false)
             toast.success("You're on the updated chat")
             history.push(appearanceLink)
@@ -71,7 +74,7 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
             // Keep the modal open so the user can retry.
             toast.error("Couldn't switch to the new chat. Please try again.")
         }
-    }, [setOptIn, history, appearanceLink])
+    }, [setOptIn, logOptInConfirmed, history, appearanceLink])
 
     const renderAction = useCallback(() => {
         const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([

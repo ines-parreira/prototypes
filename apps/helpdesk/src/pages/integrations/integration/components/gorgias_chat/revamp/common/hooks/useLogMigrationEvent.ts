@@ -12,21 +12,26 @@ export type MigrationPreviewMode = 'old-chat' | 'new-chat'
 export type MigrationBusinessHoursMode = 'within' | 'outside'
 
 /**
- * Logs the Chat 2.0 migration Segment events. Every event carries the common
- * `account_id`, `account_domain`, `shop_type`, `shop_name` and
- * `chat_integration_id` properties, derived from the current account and the
- * chat integration in the route.
+ * `account_id` `account_domain`, `shop_type`, `shop_name` and `chat_integration_id` properties, derived
+ * from the current account and the chat integration.
+ *
+ * The chat integration id defaults to the route's `integrationId` param, but
+ * callers without that route (e.g. the integration list) can pass an explicit
+ * `chatIntegrationId`.
  */
-export const useLogMigrationEvent = () => {
+export const useLogMigrationEvent = (chatIntegrationId?: number) => {
     const { integrationId } = useParams<{ integrationId: string }>()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const integrations = useAppSelector(getIntegrations)
 
+    const resolvedIntegrationId =
+        chatIntegrationId ?? (Number(integrationId) || undefined)
+
     const log = useCallback(
         (event: SegmentEvent, data?: Record<string, unknown>) => {
             const integration = integrations.find(
-                (item) => item.id === Number(integrationId),
+                (item) => item.id === resolvedIntegrationId,
             )
             const meta = integration?.meta as
                 | { shop_type?: string; shop_name?: string }
@@ -39,11 +44,11 @@ export const useLogMigrationEvent = () => {
                 account_domain: currentAccount.get('domain'),
                 shop_type: shopType,
                 shop_name: shopName,
-                chat_integration_id: Number(integrationId) || undefined,
+                chat_integration_id: resolvedIntegrationId,
                 ...data,
             })
         },
-        [currentAccount, integrations, integrationId],
+        [currentAccount, integrations, resolvedIntegrationId],
     )
 
     return useMemo(

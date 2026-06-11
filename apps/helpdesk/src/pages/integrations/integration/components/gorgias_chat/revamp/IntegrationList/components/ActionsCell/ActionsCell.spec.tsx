@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { GorgiasChatCreationWizardStatus } from 'models/integration/types'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
+import { useLogMigrationEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent'
 import { useSetChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
@@ -17,6 +18,7 @@ import { ActionsCell } from './ActionsCell'
 
 const mockPush = jest.fn()
 const mockSetOptIn = jest.fn(() => Promise.resolve())
+const mockLogOptInConfirmed = jest.fn()
 
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector', () => ({
@@ -47,6 +49,9 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn',
 )
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent',
+)
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseStoreIntegration = useStoreIntegration as jest.MockedFunction<
@@ -63,6 +68,9 @@ const mockUseSetChatRedesignOptIn =
     useSetChatRedesignOptIn as jest.MockedFunction<
         typeof useSetChatRedesignOptIn
     >
+const mockUseLogMigrationEvent = useLogMigrationEvent as jest.MockedFunction<
+    typeof useLogMigrationEvent
+>
 
 const renderActionsCell = (
     chat: Map<any, any>,
@@ -93,6 +101,9 @@ describe('ActionsCell', () => {
             setOptIn: mockSetOptIn,
             isSubmitting: false,
         })
+        mockUseLogMigrationEvent.mockReturnValue({
+            logOptInConfirmed: mockLogOptInConfirmed,
+        } as unknown as ReturnType<typeof useLogMigrationEvent>)
     })
 
     afterEach(() => {
@@ -297,6 +308,7 @@ describe('ActionsCell', () => {
             )
 
             expect(mockSetOptIn).toHaveBeenCalledWith(true)
+            expect(mockLogOptInConfirmed).toHaveBeenCalledTimes(1)
 
             await waitFor(() =>
                 expect(mockPush).toHaveBeenCalledWith(
@@ -323,6 +335,7 @@ describe('ActionsCell', () => {
                     "Couldn't switch to the new chat. Please try again.",
                 ),
             ).toBeInTheDocument()
+            expect(mockLogOptInConfirmed).not.toHaveBeenCalled()
             expect(mockPush).not.toHaveBeenCalled()
             expect(screen.getByText('Switch to new chat')).toBeInTheDocument()
         })

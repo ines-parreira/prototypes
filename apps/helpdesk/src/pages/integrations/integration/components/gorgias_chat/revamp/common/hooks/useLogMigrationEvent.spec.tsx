@@ -20,6 +20,12 @@ const defaultState = {
                     shop_name: 'test-shop',
                 },
             },
+            {
+                id: 2,
+                meta: {
+                    shop_type: IntegrationType.BigCommerce,
+                },
+            },
         ],
     }),
 }
@@ -97,6 +103,25 @@ describe('useLogMigrationEvent()', () => {
         expect(logEventSpy).toHaveBeenCalledWith(
             SegmentTracker.SegmentEvent.ChatMigrationOptInConfirmed,
             commonProps,
+        )
+    })
+
+    it('uses an explicit chatIntegrationId over the route param', () => {
+        const { result } = renderHook(() => useLogMigrationEvent(2), {
+            storeState: defaultState,
+        })
+
+        result.current.logOptInConfirmed()
+
+        expect(logEventSpy).toHaveBeenCalledWith(
+            SegmentTracker.SegmentEvent.ChatMigrationOptInConfirmed,
+            {
+                account_id: 123,
+                account_domain: 'test-domain',
+                shop_type: 'bigcommerce',
+                shop_name: undefined,
+                chat_integration_id: 2,
+            },
         )
     })
 
