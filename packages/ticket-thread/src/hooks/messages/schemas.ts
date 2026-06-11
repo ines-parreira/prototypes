@@ -225,11 +225,13 @@ export const socialMediaDeletedCommentSchema = z.object({
 export type SocialMediaDeletedCommentSchema = z.infer<
     typeof socialMediaDeletedCommentSchema
 >
+const instagramStoryFlagSchema = z.union([z.literal(true), z.literal('true')])
+
 export const socialMediaInstagramStoryMentionSchema = z.object({
     source: z.object({
         type: z.enum(SOCIAL_MEDIA_INSTAGRAM_DIRECT_MESSAGE_SOURCES),
     }),
-    meta: z.object({ is_story_mention: z.literal(true) }),
+    meta: z.object({ is_story_mention: instagramStoryFlagSchema }),
 })
 export type SocialMediaInstagramStoryMentionSchema = z.infer<
     typeof socialMediaInstagramStoryMentionSchema
@@ -238,7 +240,7 @@ export const socialMediaInstagramStoryReplySchema = z.object({
     source: z.object({
         type: z.enum(SOCIAL_MEDIA_INSTAGRAM_DIRECT_MESSAGE_SOURCES),
     }),
-    meta: z.object({ is_story_reply: z.literal(true) }),
+    meta: z.object({ is_story_reply: instagramStoryFlagSchema }),
 })
 export type SocialMediaInstagramStoryReplySchema = z.infer<
     typeof socialMediaInstagramStoryReplySchema

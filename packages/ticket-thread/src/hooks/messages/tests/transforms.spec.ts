@@ -74,6 +74,40 @@ describe('groupConsecutiveMessages', () => {
         })
     })
 
+    it('keeps string-flag Instagram story mentions tagged when grouped', () => {
+        const first = toTaggedMessage(
+            createMessage({
+                id: 1,
+                channel: 'instagram-direct-message',
+                via: 'instagram',
+                source: { type: 'instagram-direct-message' },
+                meta: { is_story_mention: 'true' },
+            }),
+        )
+        const second = toTaggedMessage(
+            createMessage({
+                id: 2,
+                channel: 'instagram-direct-message',
+                via: 'instagram',
+                source: { type: 'instagram-direct-message' },
+                meta: { is_story_mention: 'true' },
+                created_datetime: '2024-03-21T11:01:00Z',
+            }),
+        )
+
+        const merged = groupConsecutiveMessages([first, second])
+
+        expect(merged).toHaveLength(1)
+        const [grouped] = merged
+        if (grouped._tag !== TicketThreadItemTag.Messages.GroupedMessages) {
+            throw new Error('Expected grouped Instagram story mentions')
+        }
+        expect(grouped.data.map((item) => item._tag)).toEqual([
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
+        ])
+    })
+
     it('does not merge signal messages', () => {
         const first = toTaggedMessage(createMessage({ id: 1 }))
         const second = toTaggedMessage(
@@ -342,11 +376,37 @@ describe('toTaggedMessage', () => {
         )
     })
 
+    it('tags instagram story mention messages with string true flags', () => {
+        const item = toTaggedMessage(
+            createMessage({
+                source: { type: 'instagram-direct-message' },
+                meta: { is_story_mention: 'true' },
+            }),
+        )
+
+        expect(item._tag).toBe(
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
+        )
+    })
+
     it('tags instagram story reply messages', () => {
         const item = toTaggedMessage(
             createMessage({
                 source: { type: 'instagram-direct-message' },
                 meta: { is_story_reply: true },
+            }),
+        )
+
+        expect(item._tag).toBe(
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
+        )
+    })
+
+    it('tags instagram story reply messages with string true flags', () => {
+        const item = toTaggedMessage(
+            createMessage({
+                source: { type: 'instagram-direct-message' },
+                meta: { is_story_reply: 'true' },
             }),
         )
 
