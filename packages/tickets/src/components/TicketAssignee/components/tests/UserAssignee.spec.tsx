@@ -222,6 +222,29 @@ describe('UserAssignee', () => {
         })
     })
 
+    it('should render options when the current assignee meta is not an object', async () => {
+        const assigneeWithStringMeta = mockTicketUser({
+            id: 456,
+            name: 'String Meta User',
+            email: 'string-meta@example.com',
+            meta: 'technician',
+        })
+
+        const { user } = render(
+            <UserAssignee
+                ticketId={ticketId}
+                currentAssignee={assigneeWithStringMeta}
+            />,
+        )
+
+        const select = await waitUntilLoaded()
+        await user.click(select)
+
+        expect(
+            await screen.findByRole('option', { name: /String Meta User/ }),
+        ).toBeInTheDocument()
+    })
+
     it('should update user assignment when selecting current user (Assign yourself)', async () => {
         const waitForUpdateTicketRequest =
             mockUpdateTicket.waitForRequest(server)

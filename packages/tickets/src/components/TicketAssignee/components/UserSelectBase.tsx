@@ -130,7 +130,9 @@ export function UserSelectBase({
                                 ? usersMap.get(option.id)
                                 : null
                         const profilePictureUrl =
-                            user?.meta && 'profile_picture_url' in user.meta
+                            user?.meta &&
+                            typeof user.meta === 'object' &&
+                            'profile_picture_url' in user.meta
                                 ? user.meta.profile_picture_url
                                 : undefined
 

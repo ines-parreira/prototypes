@@ -91,7 +91,7 @@ describe('<DrillDownModalTrigger />', () => {
                 { storeState: {} },
             )
 
-            userEvent.hover(screen.getByText(trigger))
+            await userEvent.hover(screen.getByText(trigger))
 
             await waitFor(() => {
                 expect(
