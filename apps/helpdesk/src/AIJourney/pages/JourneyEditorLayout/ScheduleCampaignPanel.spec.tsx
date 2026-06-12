@@ -185,7 +185,7 @@ describe('<ScheduleCampaignPanel />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should call handleUpdate with Active state when sending immediately', async () => {
+    it('should call handleUpdate with Scheduled state when sending immediately', async () => {
         const mockHandleUpdate = jest.fn().mockResolvedValue({})
         const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
             .useJourneyUpdateHandler as jest.Mock
@@ -203,7 +203,7 @@ describe('<ScheduleCampaignPanel />', () => {
 
         await waitFor(() => {
             expect(mockHandleUpdate).toHaveBeenCalledWith({
-                campaignState: UpdatableJourneyCampaignState.Active,
+                campaignState: UpdatableJourneyCampaignState.Scheduled,
                 scheduledDatetime: null,
             })
         })

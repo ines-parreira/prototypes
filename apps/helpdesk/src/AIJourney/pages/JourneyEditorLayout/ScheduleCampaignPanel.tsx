@@ -45,7 +45,7 @@ export const ScheduleCampaignPanel = ({ isOpen, onClose }: Props) => {
             })
         } else {
             await handleUpdate({
-                campaignState: UpdatableJourneyCampaignState.Active,
+                campaignState: UpdatableJourneyCampaignState.Scheduled,
                 scheduledDatetime: null,
             })
         }
