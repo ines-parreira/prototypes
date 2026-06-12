@@ -1,8 +1,10 @@
 import { act, assumeMock, renderHook } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useCreateAiShoppingAssistantTrialRequest } from '@gorgias/helpdesk-queries'
+import { mockCreateAiShoppingAssistantTrialRequestHandler } from '@gorgias/helpdesk-mocks'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import {
@@ -19,10 +21,6 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { useNotifyAdmins } from '../hooks/useNotifyAdmins'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useCreateAiShoppingAssistantTrialRequest: jest.fn(),
-}))
 
 jest.mock('automate/notifications/utils', () => ({
     isLessThan24HoursAgo: jest.fn(),
@@ -49,17 +47,12 @@ const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
 )
 
-const mockUseCreateAiShoppingAssistantTrialRequest = assumeMock(
-    useCreateAiShoppingAssistantTrialRequest,
-)
-
 const mockAccountAdmins = [
     { id: 1, name: 'Admin 1', email: 'admin1@example.com' },
     { id: 2, name: 'Admin 2', email: 'admin2@example.com' },
 ]
 const mockHandleOnTriggerTrialRequestNotification = jest.fn()
 const mockHandleOnTriggerAiAgentTrialRequestNotification = jest.fn()
-const mockCreateAiShoppingAssistantTrialRequest = jest.fn()
 const mockOnSuccess = jest.fn()
 
 const mockIsLessThan24HoursAgo = assumeMock(isLessThan24HoursAgo)
@@ -76,15 +69,20 @@ const defaultUseAiAgentOnboardingNotification = {
         mockHandleOnTriggerAiAgentTrialRequestNotification,
 }
 
+const mockCreateTrialRequest =
+    mockCreateAiShoppingAssistantTrialRequestHandler()
+const server = setupServer(mockCreateTrialRequest.handler)
+
 describe('useNotifyAdmins', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
-        mockUseCreateAiShoppingAssistantTrialRequest.mockReturnValue({
-            mutate: mockCreateAiShoppingAssistantTrialRequest,
-        } as any)
         mockIsLessThan24HoursAgo.mockReturnValue(false)
 
         // Mock isTrialNotificationOfType to return true for matching trial types
@@ -94,6 +92,14 @@ describe('useNotifyAdmins', () => {
                 (!request.trialType &&
                     trialType === TrialType.ShoppingAssistant),
         )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     describe('Shopping Assistant trial type', () => {
@@ -154,6 +160,8 @@ describe('useNotifyAdmins', () => {
         })
 
         it('notifies admins when handleNotifyAdmins is called', async () => {
+            const waitForCreateTrialRequest =
+                mockCreateTrialRequest.waitForRequest(server)
             const { result } = renderHook(() =>
                 useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
             )
@@ -165,15 +173,12 @@ describe('useNotifyAdmins', () => {
             expect(
                 mockHandleOnTriggerTrialRequestNotification,
             ).toHaveBeenCalledTimes(1)
-            expect(
-                mockCreateAiShoppingAssistantTrialRequest,
-            ).toHaveBeenCalledWith({
-                data: {
+            await waitForCreateTrialRequest(async (request) => {
+                expect(await request.json()).toEqual({
                     account_id: account.id,
                     current_user_id: user.id,
                     shop_name: SHOP_NAME,
-                    additional_note: undefined,
-                },
+                })
             })
             expect(
                 await screen.findByRole('status', {
@@ -183,6 +188,8 @@ describe('useNotifyAdmins', () => {
         })
 
         it('notifies admins with additional note when handleNotifyAdmins is called', async () => {
+            const waitForCreateTrialRequest =
+                mockCreateTrialRequest.waitForRequest(server)
             const { result } = renderHook(() =>
                 useNotifyAdmins(SHOP_NAME, TrialType.ShoppingAssistant),
             )
@@ -194,15 +201,13 @@ describe('useNotifyAdmins', () => {
             expect(
                 mockHandleOnTriggerTrialRequestNotification,
             ).toHaveBeenCalledTimes(1)
-            expect(
-                mockCreateAiShoppingAssistantTrialRequest,
-            ).toHaveBeenCalledWith({
-                data: {
+            await waitForCreateTrialRequest(async (request) => {
+                expect(await request.json()).toEqual({
                     account_id: account.id,
                     current_user_id: user.id,
                     shop_name: SHOP_NAME,
                     additional_note: ADDITIONAL_NOTE,
-                },
+                })
             })
             expect(
                 await screen.findByRole('status', {
@@ -211,7 +216,9 @@ describe('useNotifyAdmins', () => {
             ).toBeInTheDocument()
         })
 
-        it('should call onSuccess callback when provided', () => {
+        it('should call onSuccess callback when provided', async () => {
+            const waitForCreateTrialRequest =
+                mockCreateTrialRequest.waitForRequest(server)
             const { result } = renderHook(() =>
                 useNotifyAdmins(
                     SHOP_NAME,
@@ -225,6 +232,7 @@ describe('useNotifyAdmins', () => {
             })
 
             expect(mockOnSuccess).toHaveBeenCalledTimes(1)
+            await waitForCreateTrialRequest()
         })
     })
 
@@ -286,6 +294,14 @@ describe('useNotifyAdmins', () => {
         })
 
         it('notifies admins when handleNotifyAdmins is called for AI Agent', async () => {
+            let requestCount = 0
+            server.use(
+                mockCreateAiShoppingAssistantTrialRequestHandler(async () => {
+                    requestCount += 1
+
+                    return HttpResponse.json({} as never)
+                }).handler,
+            )
             const { result } = renderHook(() =>
                 useNotifyAdmins(SHOP_NAME, TrialType.AiAgent),
             )
@@ -297,9 +313,8 @@ describe('useNotifyAdmins', () => {
             expect(
                 mockHandleOnTriggerTrialRequestNotification,
             ).toHaveBeenCalledWith(AiAgentNotificationType.AiAgentTrialRequest)
-            expect(
-                mockCreateAiShoppingAssistantTrialRequest,
-            ).not.toHaveBeenCalled()
+            await Promise.resolve()
+            expect(requestCount).toBe(0)
             expect(
                 await screen.findByRole('status', {
                     name: 'Your request to access the AI Agent trial has been sent to all Gorgias admins.',

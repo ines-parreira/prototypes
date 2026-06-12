@@ -1,8 +1,9 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import type { QueryClient } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useDeleteMacro as useDeleteMacroPrimitive } from '@gorgias/helpdesk-queries'
+import { mockDeleteMacroHandler } from '@gorgias/helpdesk-mocks'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -10,131 +11,72 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useDeleteMacro } from '../useDeleteMacro'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    __esModule: true,
-    useDeleteMacro: jest.fn(),
-    queryKeys: {
-        macros: {
-            listMacros: () => ({ pop: () => null }),
-        },
-    },
-}))
-
-const useDeleteMacroPrimitiveMock = assumeMock(useDeleteMacroPrimitive)
-const mockMutateDeleteMacro = jest.fn()
-
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = assumeMock(useAppDispatch)
-
-jest.mock('@tanstack/react-query', () => ({
-    ...jest.requireActual('@tanstack/react-query'),
-    useQueryClient: jest.fn(),
-}))
-const useQueryClientMock = assumeMock(useQueryClient)
+const useAppDispatchMock = jest.mocked(useAppDispatch)
 
 jest.mock('state/notifications/actions')
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function renderUseDeleteMacro() {
+    return renderHook(() => useDeleteMacro())
+}
+
 describe('useDeleteMacro', () => {
-    const invalidateQueriesMock = jest.fn()
-    const dispatchMock = jest.fn()
-
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
-        useDeleteMacroPrimitiveMock.mockReturnValue({
-            mutateAsync: mockMutateDeleteMacro,
-        } as unknown as ReturnType<typeof useDeleteMacroPrimitive>)
-        useQueryClientMock.mockImplementation(
-            () =>
-                ({
-                    invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient,
-        )
+        useAppDispatchMock.mockReturnValue(jest.fn())
     })
 
-    it('should handle settled request', () => {
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useDeleteMacro())
+    it('should delete a macro and notify on success', async () => {
+        const deleteMacroMock = mockDeleteMacroHandler()
+        const waitForDeleteMacroRequest = deleteMacroMock.waitForRequest(server)
+        server.use(deleteMacroMock.handler)
+        const { result } = renderUseDeleteMacro()
 
-        void result.current.mutateAsync(
-            {
-                id: 111,
-            },
-            {
-                onSettled,
-            },
-        )
-        ;(
-            useDeleteMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSettled: () => void
-            }
-        )?.onSettled()
+        await result.current.mutateAsync({ id: 111 })
 
-        expect(invalidateQueriesMock).toHaveBeenCalled()
-    })
-
-    it('should handle failed request', () => {
-        const msg = 'nope'
-        const onError = jest.fn()
-        const { result } = renderHook(() => useDeleteMacro())
-
-        void result.current.mutateAsync(
-            {
-                id: 111,
-            },
-            {
-                onError,
-            },
-        )
-        ;(
-            useDeleteMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onError: (args: unknown) => void
-            }
-        )?.onError({
-            response: {
-                data: {
-                    error: {
-                        msg,
-                    },
-                },
-            },
+        await waitForDeleteMacroRequest((request) => {
+            expect(new URL(request.url).pathname).toContain('/macros/111')
         })
-
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            title: msg,
-            allowHTML: true,
-            message: null,
-            status: NotificationStatus.Error,
-        })
-    })
-
-    it('should handle successful request', () => {
-        const id = 111
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useDeleteMacro())
-        void result.current.mutateAsync(
-            {
-                id: 111,
-            },
-            {
-                onSettled,
-            },
-        )
-        ;(
-            useDeleteMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSuccess: (resp: unknown) => void
-            }
-        )?.onSuccess({
-            data: {
-                id,
-            },
-        })
-
         expect(notify).toHaveBeenNthCalledWith(1, {
             message: 'Successfully deleted macro',
             status: NotificationStatus.Success,
+        })
+    })
+
+    it('should handle failed request', async () => {
+        const msg = 'nope'
+        server.use(
+            mockDeleteMacroHandler(async () =>
+                HttpResponse.json({ error: { msg } } as never, { status: 400 }),
+            ).handler,
+        )
+        const { result } = renderUseDeleteMacro()
+
+        await expect(
+            result.current.mutateAsync({ id: 111 }),
+        ).rejects.toBeDefined()
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                title: msg,
+                allowHTML: true,
+                message: null,
+                status: NotificationStatus.Error,
+            })
         })
     })
 })

@@ -1,7 +1,12 @@
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { listStores } from '@gorgias/helpdesk-client'
+import {
+    mockListStoresHandler,
+    mockListStoresResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     fetchStatsMetricPerDimension,
@@ -49,7 +54,6 @@ import type {
     LineChartMetricConfig,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-jest.mock('@gorgias/helpdesk-client')
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     ...jest.requireActual('domains/reporting/hooks/useStatsMetricPerDimension'),
     useStatsMetricPerDimension: jest.fn(),
@@ -71,7 +75,6 @@ const fetchStatsTimeSeriesPerDimensionMock = assumeMock(
     fetchStatsTimeSeriesPerDimension,
 )
 const formatPreviousPeriodMock = assumeMock(formatPreviousPeriod)
-const listStoresMock = assumeMock(listStores)
 
 const defaultDimensionResult = {
     data: null,
@@ -89,6 +92,37 @@ const defaultFilters: StatsFilters = {
 }
 
 const defaultTimezone = 'UTC'
+
+const server = setupServer()
+
+const useListStoresResponse = (
+    stores: NonNullable<
+        Parameters<typeof mockListStoresResponse>[0]
+    >['data'] = [],
+) => {
+    const mockListStores = mockListStoresHandler(async () =>
+        HttpResponse.json(mockListStoresResponse({ data: stores })),
+    )
+    server.use(mockListStores.handler)
+
+    return mockListStores.waitForRequest(server)
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    useListStoresResponse()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useAutomationMetricPerAutomationFeatureType', () => {
     beforeEach(() => {
@@ -3223,7 +3257,6 @@ describe('fetchConfigurableBarChartDownloadData', () => {
                 allValues: [{ dimension: 'chat', value: 42, decile: null }],
             },
         })
-        listStoresMock.mockResolvedValue({ data: { data: [] } } as any)
     })
 
     it('selects the metric matching savedMeasure', async () => {
@@ -3453,17 +3486,13 @@ describe('fetchConfigurableBarChartDownloadData', () => {
                 allValues: [{ dimension: '123', value: 15, decile: null }],
             },
         })
-        listStoresMock.mockResolvedValue({
-            data: {
-                data: [
-                    {
-                        store_integration_id: 123,
-                        name: 'my-store',
-                        created_datetime: '2025-01-01T00:00:00Z',
-                    },
-                ],
+        const waitForListStoresRequest = useListStoresResponse([
+            {
+                store_integration_id: 123,
+                name: 'my-store',
+                created_datetime: '2025-01-01T00:00:00Z',
             },
-        } as any)
+        ])
 
         const fetch = fetchConfigurableBarChartDownloadData([
             {
@@ -3484,7 +3513,7 @@ describe('fetchConfigurableBarChartDownloadData', () => {
             ReportingGranularity.Day,
         )
 
-        expect(listStoresMock).toHaveBeenCalled()
+        await waitForListStoresRequest()
         expect(result).toHaveProperty('files')
         const csvContent = Object.values(result.files)[0]
         expect(csvContent).toContain('my-store')
@@ -3648,7 +3677,6 @@ describe('fetchConfigurableLineChartDownloadData', () => {
             chat: [[{ dateTime: '2025-01-01T00:00:00', value: 5 }]],
             email: [[{ dateTime: '2025-01-01T00:00:00', value: 15 }]],
         })
-        listStoresMock.mockResolvedValue({ data: { data: [] } } as any)
     })
 
     it('calls fetchStatsTimeSeries when dimension is "overall"', async () => {
@@ -3860,17 +3888,13 @@ describe('fetchConfigurableLineChartDownloadData', () => {
         fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
             '123': [[{ dateTime: '2025-01-01T00:00:00', value: 5 }]],
         })
-        listStoresMock.mockResolvedValue({
-            data: {
-                data: [
-                    {
-                        store_integration_id: 123,
-                        name: 'my-store',
-                        created_datetime: '2025-01-01T00:00:00Z',
-                    },
-                ],
+        const waitForListStoresRequest = useListStoresResponse([
+            {
+                store_integration_id: 123,
+                name: 'my-store',
+                created_datetime: '2025-01-01T00:00:00Z',
             },
-        } as any)
+        ])
 
         const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
 
@@ -3882,7 +3906,7 @@ describe('fetchConfigurableLineChartDownloadData', () => {
             ReportingGranularity.Day,
         )
 
-        expect(listStoresMock).toHaveBeenCalled()
+        await waitForListStoresRequest()
         expect(result).toHaveProperty('files')
         const csvContent = Object.values(result.files)[0]
         expect(csvContent).toContain('my-store')
@@ -3951,22 +3975,31 @@ describe('fetchExtraConfig', () => {
                 created_datetime: '2025-01-01T00:00:00Z',
             },
         ]
-        listStoresMock.mockResolvedValue({ data: { data: mockStores } } as any)
+        const waitForListStoresRequest = useListStoresResponse(mockStores)
 
         const result = await fetchExtraConfig('storeIntegrationId')
 
-        expect(listStoresMock).toHaveBeenCalled()
+        await waitForListStoresRequest()
         expect(result).toEqual({
             stores: mockStores,
         })
     })
 
     it('returns empty stores without calling listStores for other dimensions', async () => {
+        let requestCount = 0
+        server.use(
+            mockListStoresHandler(async () => {
+                requestCount += 1
+
+                return HttpResponse.json(mockListStoresResponse({ data: [] }))
+            }).handler,
+        )
+
         const result = await fetchExtraConfig('channel', {
             costSavedPerInteraction: 3.1,
         })
 
-        expect(listStoresMock).not.toHaveBeenCalled()
+        expect(requestCount).toBe(0)
         expect(result).toEqual({ stores: [], costSavedPerInteraction: 3.1 })
     })
 })

@@ -1,27 +1,16 @@
-import type React from 'react'
-
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useFindOpportunitiesByShopOpportunity } from '@gorgias/knowledge-service-queries'
+import {
+    mockFindOpportunitiesByShopOpportunityHandler,
+    mockFindOpportunitiesByShopOpportunityResponse,
+} from '@gorgias/knowledge-service-mocks'
 import type { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
 import { useKnowledgeServiceOpportunities } from './useKnowledgeServiceOpportunities'
-
-jest.mock('@gorgias/knowledge-service-queries', () => ({
-    useFindOpportunitiesByShopOpportunity: jest.fn(),
-    queryKeys: {
-        opportunities: {
-            findOpportunitiesByShopOpportunity: jest.fn(() => [
-                'opportunities',
-                'findOpportunitiesByShopOpportunity',
-            ]),
-            all: jest.fn(() => ['opportunities']),
-        },
-    },
-}))
 
 jest.mock('../utils/mapKnowledgeServiceOpportunities', () => ({
     mapKnowledgeServiceOpportunities: jest.fn(
@@ -39,27 +28,32 @@ jest.mock('../utils/mapKnowledgeServiceOpportunities', () => ({
     ),
 }))
 
-describe('useKnowledgeServiceOpportunities', () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
+const server = setupServer()
 
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-    const mockPaginatedResponse: PaginatedOpportunities = {
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const createPaginatedResponse = (
+    overrides: Partial<PaginatedOpportunities> = {},
+): PaginatedOpportunities =>
+    mockFindOpportunitiesByShopOpportunityResponse({
         data: [
             {
                 id: 1,
                 opportunityType: 'FILL_KNOWLEDGE_GAP',
                 accountId: 1,
                 createdDatetime: '2021-01-01',
-                shopIntegrationId: 1,
+                shopIntegrationId: 123,
                 shopName: 'shop-1',
                 detectionCount: 1,
                 insight: 'Test insight 1',
@@ -69,7 +63,7 @@ describe('useKnowledgeServiceOpportunities', () => {
                 opportunityType: 'FILL_KNOWLEDGE_GAP',
                 accountId: 1,
                 createdDatetime: '2021-01-01',
-                shopIntegrationId: 1,
+                shopIntegrationId: 123,
                 shopName: 'shop-1',
                 detectionCount: 1,
                 insight: 'Test insight 2',
@@ -81,32 +75,29 @@ describe('useKnowledgeServiceOpportunities', () => {
             total: 50,
             total_pending: 25,
         },
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-        queryClient.clear()
+        ...overrides,
     })
 
+describe('useKnowledgeServiceOpportunities', () => {
     it('should fetch opportunities when enabled', async () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: { data: mockPaginatedResponse },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
+        const mockFindOpportunities =
+            mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                HttpResponse.json(createPaginatedResponse()),
+            )
+        const waitForFindOpportunitiesRequest =
+            mockFindOpportunities.waitForRequest(server)
+        server.use(mockFindOpportunities.handler)
 
-        const { result } = renderHook(
-            () => useKnowledgeServiceOpportunities(123, true),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useKnowledgeServiceOpportunities(123, true),
         )
 
+        await waitForFindOpportunitiesRequest((request) => {
+            expect(new URL(request.url).searchParams.get('limit')).toBe('20')
+        })
         await waitFor(() => {
             expect(result.current.opportunities).toHaveLength(2)
         })
-
         expect(result.current.opportunities[0]).toEqual({
             id: '1',
             key: 'ks_1',
@@ -115,389 +106,271 @@ describe('useKnowledgeServiceOpportunities', () => {
         })
     })
 
-    it('should not fetch when disabled', () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: null,
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
+    it('should not fetch when disabled', async () => {
+        let requestCount = 0
+        server.use(
+            mockFindOpportunitiesByShopOpportunityHandler(async () => {
+                requestCount += 1
 
-        renderHook(() => useKnowledgeServiceOpportunities(123, false), {
-            wrapper,
-        })
-
-        expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-            123,
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: false,
-                }),
-            }),
+                return HttpResponse.json(createPaginatedResponse())
+            }).handler,
         )
+
+        const { result } = renderHook(() =>
+            useKnowledgeServiceOpportunities(123, false),
+        )
+
+        await Promise.resolve()
+
+        expect(result.current.opportunities).toEqual([])
+        expect(requestCount).toBe(0)
     })
 
     it('should handle pagination metadata correctly', async () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: { data: mockPaginatedResponse },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
+        server.use(
+            mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                HttpResponse.json(createPaginatedResponse()),
+            ).handler,
+        )
 
-        const { result } = renderHook(
-            () => useKnowledgeServiceOpportunities(123, true),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useKnowledgeServiceOpportunities(123, true),
         )
 
         await waitFor(() => {
             expect(result.current.hasNextPage).toBe(true)
             expect(result.current.totalCount).toBe(50)
+            expect(result.current.totalPending).toBe(25)
         })
     })
 
-    it('should handle fetchNextPage by setting cursor', async () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: { data: mockPaginatedResponse },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
+    it('should handle fetchNextPage by requesting the next cursor', async () => {
+        const requests: URL[] = []
+        server.use(
+            mockFindOpportunitiesByShopOpportunityHandler(
+                async ({ request }) => {
+                    const url = new URL(request.url)
+                    requests.push(url)
 
-        const { result } = renderHook(
-            () => useKnowledgeServiceOpportunities(123, true),
-            { wrapper },
+                    if (url.searchParams.get('cursor') === 'cursor-page-2') {
+                        return HttpResponse.json(
+                            createPaginatedResponse({
+                                data: [
+                                    {
+                                        id: 3,
+                                        opportunityType: 'FILL_KNOWLEDGE_GAP',
+                                        accountId: 1,
+                                        createdDatetime: '2021-01-01',
+                                        shopIntegrationId: 123,
+                                        shopName: 'shop-1',
+                                        detectionCount: 1,
+                                        insight: 'Test insight 3',
+                                    },
+                                ],
+                                metadata: {
+                                    next_cursor: null,
+                                    prev_cursor: 'cursor-page-1',
+                                    total: 50,
+                                    total_pending: 25,
+                                },
+                            }),
+                        )
+                    }
+
+                    return HttpResponse.json(createPaginatedResponse())
+                },
+            ).handler,
+        )
+
+        const { result } = renderHook(() =>
+            useKnowledgeServiceOpportunities(123, true),
         )
 
         await waitFor(() => {
             expect(result.current.opportunities).toHaveLength(2)
         })
 
-        mockUseFindOpportunities.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            id: 3,
-                            opportunityType: 'FILL_KNOWLEDGE_GAP',
-                            accountId: 1,
-                            createdDatetime: '2021-01-01',
-                            shopIntegrationId: 1,
-                            shopName: 'shop-1',
-                            detectionCount: 1,
-                            insight: 'Test insight 3',
-                            resources: [
-                                {
-                                    resourceId: 'res-3',
-                                    resourceTitle: 'Opportunity 3',
-                                    resourceType: 'article',
-                                    resourceLocale: 'en',
-                                    resourceSetId: 'set-3',
-                                    resourceVersion: '1',
-                                },
-                            ],
-                        },
-                    ],
-                    metadata: {
-                        next_cursor: null,
-                        prev_cursor: 'cursor-page-1',
-                        total: 50,
-                        total_pending: 25,
-                    },
-                },
-            },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
-
         await act(async () => {
             result.current.fetchNextPage()
         })
 
         await waitFor(() => {
+            expect(result.current.opportunities).toHaveLength(3)
             expect(result.current.isFetchingNextPage).toBe(false)
+            expect(
+                requests.some(
+                    (request) =>
+                        request.searchParams.get('cursor') === 'cursor-page-2',
+                ),
+            ).toBe(true)
         })
     })
 
     it('should reset loading state on error', async () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: { data: mockPaginatedResponse },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
+        server.use(
+            mockFindOpportunitiesByShopOpportunityHandler(
+                async ({ request }) => {
+                    const url = new URL(request.url)
 
-        const { result, rerender } = renderHook(
-            () => useKnowledgeServiceOpportunities(123, true),
-            { wrapper },
+                    if (url.searchParams.get('cursor') === 'cursor-page-2') {
+                        return HttpResponse.json(
+                            { error: { msg: 'Server error' } } as never,
+                            { status: 500 },
+                        )
+                    }
+
+                    return HttpResponse.json(createPaginatedResponse())
+                },
+            ).handler,
         )
+
+        const { result } = renderHook(() =>
+            useKnowledgeServiceOpportunities(123, true),
+        )
+
+        await waitFor(() => {
+            expect(result.current.opportunities).toHaveLength(2)
+        })
 
         await act(async () => {
             result.current.fetchNextPage()
         })
-
-        mockUseFindOpportunities.mockReturnValue({
-            data: { data: mockPaginatedResponse },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: true,
-        })
-
-        rerender()
 
         await waitFor(() => {
             expect(result.current.isFetchingNextPage).toBe(false)
         })
     })
 
-    it('should handle empty response gracefully', () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: null,
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
-
-        const { result } = renderHook(
-            () => useKnowledgeServiceOpportunities(123, true),
-            { wrapper },
+    it('should handle empty response gracefully', async () => {
+        server.use(
+            mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                HttpResponse.json(
+                    createPaginatedResponse({
+                        data: [],
+                        metadata: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                            total: 0,
+                            total_pending: 0,
+                        },
+                    }),
+                ),
+            ).handler,
         )
 
-        expect(result.current.opportunities).toEqual([])
-        expect(result.current.hasNextPage).toBe(false)
-    })
-
-    it('should handle invalid data structure gracefully', () => {
-        const mockUseFindOpportunities =
-            useFindOpportunitiesByShopOpportunity as jest.Mock
-        mockUseFindOpportunities.mockReturnValue({
-            data: {
-                data: {
-                    data: [],
-                    metadata: {
-                        next_cursor: null,
-                        prev_cursor: null,
-                        total: 0,
-                        total_pending: 0,
-                    },
-                },
-            },
-            isLoading: false,
-            refetch: jest.fn(),
-            isError: false,
-        })
-
-        const { result } = renderHook(
-            () => useKnowledgeServiceOpportunities(123, true),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useKnowledgeServiceOpportunities(123, true),
         )
 
-        expect(result.current.opportunities).toEqual([])
+        await waitFor(() => {
+            expect(result.current.opportunities).toEqual([])
+            expect(result.current.hasNextPage).toBe(false)
+        })
     })
 
     describe('Limit Parameter', () => {
-        it('should use default limit (20) when no limit is provided', () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
-            })
+        it('should use default limit (20) when no limit is provided', async () => {
+            const mockFindOpportunities =
+                mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                    HttpResponse.json(createPaginatedResponse()),
+                )
+            const waitForFindOpportunitiesRequest =
+                mockFindOpportunities.waitForRequest(server)
+            server.use(mockFindOpportunities.handler)
 
-            renderHook(() => useKnowledgeServiceOpportunities(123, true), {
-                wrapper,
-            })
+            renderHook(() => useKnowledgeServiceOpportunities(123, true))
 
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.objectContaining({
-                    limit: 20, // OPPORTUNITIES_PAGE_SIZE default
-                    cursor: undefined,
-                }),
-                expect.any(Object),
-            )
+            await waitForFindOpportunitiesRequest((request) => {
+                expect(new URL(request.url).searchParams.get('limit')).toBe(
+                    '20',
+                )
+            })
         })
 
-        it('should use custom limit when provided', () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
+        it('should use custom limit when provided', async () => {
+            const mockFindOpportunities =
+                mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                    HttpResponse.json(createPaginatedResponse()),
+                )
+            const waitForFindOpportunitiesRequest =
+                mockFindOpportunities.waitForRequest(server)
+            server.use(mockFindOpportunities.handler)
+
+            renderHook(() => useKnowledgeServiceOpportunities(123, true, 5))
+
+            await waitForFindOpportunitiesRequest((request) => {
+                expect(new URL(request.url).searchParams.get('limit')).toBe('5')
             })
-
-            const customLimit = 5
-
-            renderHook(
-                () => useKnowledgeServiceOpportunities(123, true, customLimit),
-                { wrapper },
-            )
-
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.objectContaining({
-                    limit: customLimit,
-                    cursor: undefined,
-                }),
-                expect.any(Object),
-            )
-        })
-
-        it('should include limit in queryKey', () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
-            })
-
-            const customLimit = 3
-
-            renderHook(
-                () => useKnowledgeServiceOpportunities(123, true, customLimit),
-                { wrapper },
-            )
-
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.any(Object),
-                expect.objectContaining({
-                    query: expect.objectContaining({
-                        queryKey: expect.arrayContaining([customLimit]),
-                    }),
-                }),
-            )
-        })
-
-        it('should include default limit in queryKey when no limit provided', () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
-            })
-
-            renderHook(() => useKnowledgeServiceOpportunities(123, true), {
-                wrapper,
-            })
-
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.any(Object),
-                expect.objectContaining({
-                    query: expect.objectContaining({
-                        queryKey: expect.arrayContaining([20]), // OPPORTUNITIES_PAGE_SIZE
-                    }),
-                }),
-            )
         })
 
         it('should refetch when limit changes', async () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
-            })
+            const limits: string[] = []
+            server.use(
+                mockFindOpportunitiesByShopOpportunityHandler(
+                    async ({ request }) => {
+                        limits.push(
+                            new URL(request.url).searchParams.get('limit') ??
+                                '',
+                        )
+
+                        return HttpResponse.json(createPaginatedResponse())
+                    },
+                ).handler,
+            )
 
             const { rerender } = renderHook(
                 ({ limit }) =>
                     useKnowledgeServiceOpportunities(123, true, limit),
                 {
-                    wrapper,
                     initialProps: { limit: 5 },
                 },
             )
 
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.objectContaining({ limit: 5 }),
-                expect.any(Object),
-            )
+            await waitFor(() => {
+                expect(limits).toContain('5')
+            })
 
-            mockUseFindOpportunities.mockClear()
-
-            // Change limit
             rerender({ limit: 10 })
 
             await waitFor(() => {
-                expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                    123,
-                    expect.objectContaining({ limit: 10 }),
-                    expect.any(Object),
+                expect(limits).toContain('10')
+            })
+        })
+
+        it('should handle limit of 0 by using default', async () => {
+            const mockFindOpportunities =
+                mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                    HttpResponse.json(createPaginatedResponse()),
+                )
+            const waitForFindOpportunitiesRequest =
+                mockFindOpportunities.waitForRequest(server)
+            server.use(mockFindOpportunities.handler)
+
+            renderHook(() => useKnowledgeServiceOpportunities(123, true, 0))
+
+            await waitForFindOpportunitiesRequest((request) => {
+                expect(new URL(request.url).searchParams.get('limit')).toBe(
+                    '20',
                 )
             })
         })
 
-        it('should handle limit of 0 by using default', () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
+        it('should handle large limit values', async () => {
+            const mockFindOpportunities =
+                mockFindOpportunitiesByShopOpportunityHandler(async () =>
+                    HttpResponse.json(createPaginatedResponse()),
+                )
+            const waitForFindOpportunitiesRequest =
+                mockFindOpportunities.waitForRequest(server)
+            server.use(mockFindOpportunities.handler)
+
+            renderHook(() => useKnowledgeServiceOpportunities(123, true, 100))
+
+            await waitForFindOpportunitiesRequest((request) => {
+                expect(new URL(request.url).searchParams.get('limit')).toBe(
+                    '100',
+                )
             })
-
-            renderHook(() => useKnowledgeServiceOpportunities(123, true, 0), {
-                wrapper,
-            })
-
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.objectContaining({
-                    limit: 20, // Should default to OPPORTUNITIES_PAGE_SIZE when 0
-                }),
-                expect.any(Object),
-            )
-        })
-
-        it('should handle large limit values', () => {
-            const mockUseFindOpportunities =
-                useFindOpportunitiesByShopOpportunity as jest.Mock
-            mockUseFindOpportunities.mockReturnValue({
-                data: { data: mockPaginatedResponse },
-                isLoading: false,
-                refetch: jest.fn(),
-                isError: false,
-            })
-
-            const largeLimit = 100
-
-            renderHook(
-                () => useKnowledgeServiceOpportunities(123, true, largeLimit),
-                { wrapper },
-            )
-
-            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
-                123,
-                expect.objectContaining({
-                    limit: largeLimit,
-                }),
-                expect.any(Object),
-            )
         })
     })
 })

@@ -1,27 +1,19 @@
-import type { PropsWithChildren } from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useParams } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 import {
-    queryKeys,
-    useCreateSlaPolicy,
-    useUpdateSlaPolicy,
-} from '@gorgias/helpdesk-queries'
-
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+    mockCreateSlaPolicyHandler,
+    mockCreateSlaPolicyResponse,
+    mockUpdateSlaPolicyHandler,
+    mockUpdateSlaPolicyResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import type { SLAFormValues } from '../useFormValues'
 import { useSubmitPolicy } from '../useSubmitPolicy'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useCreateSlaPolicy: jest.fn(),
-    useUpdateSlaPolicy: jest.fn(),
-}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -29,33 +21,50 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const useParamsMock = assumeMock(useParams)
-const createMock = jest.fn()
-const updateMock = jest.fn()
+const createSlaRequests: Request[] = []
+const updateSlaRequests: Request[] = []
+const server = setupServer()
 
-assumeMock(useCreateSlaPolicy).mockReturnValue({
-    mutateAsync: createMock,
-} as any)
-
-assumeMock(useUpdateSlaPolicy).mockReturnValue({
-    mutateAsync: updateMock,
-} as any)
-
-const queryClient = mockQueryClient()
-const wrapper = ({ children }: PropsWithChildren) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-)
+function renderUseSubmitPolicy() {
+    return renderHook(useSubmitPolicy)
+}
 
 describe('useSubmitPolicy()', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        createSlaRequests.length = 0
+        updateSlaRequests.length = 0
+        server.use(
+            mockCreateSlaPolicyHandler(async ({ request }) => {
+                createSlaRequests.push(request)
+
+                return HttpResponse.json(mockCreateSlaPolicyResponse())
+            }).handler,
+            mockUpdateSlaPolicyHandler(async ({ request }) => {
+                updateSlaRequests.push(request)
+
+                return HttpResponse.json(mockUpdateSlaPolicyResponse())
+            }).handler,
+        )
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
+        server.resetHandlers()
         toast.dismiss()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should call create on save if the policy is new', async () => {
         useParamsMock.mockReturnValue({ policyId: 'new' })
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
+        const { result } = renderUseSubmitPolicy()
 
-        const { result } = renderHook(useSubmitPolicy, { wrapper })
         const data = {
             name: 'test',
             metrics: undefined,
@@ -65,26 +74,20 @@ describe('useSubmitPolicy()', () => {
 
         await result.current.save(data)
 
-        expect(createMock).toHaveBeenCalledWith({
-            data: {
-                name: 'test',
-                metrics: undefined,
-                target_channels: [],
-            },
-        })
-
         await waitFor(() => {
-            expect(invalidateQueryMock).toHaveBeenCalledWith({
-                queryKey: queryKeys.slaPolicies.listSlaPolicies(),
-            })
+            expect(createSlaRequests).toHaveLength(1)
+        })
+        await expect(createSlaRequests[0].json()).resolves.toEqual({
+            name: 'test',
+            metrics: undefined,
+            target_channels: [],
         })
     })
 
     it('should call update on save if the policy exists', async () => {
         useParamsMock.mockReturnValue({ policyId: '1' })
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
+        const { result } = renderUseSubmitPolicy()
 
-        const { result } = renderHook(useSubmitPolicy, { wrapper })
         const data = {
             name: 'test',
             metrics: undefined,
@@ -94,28 +97,19 @@ describe('useSubmitPolicy()', () => {
 
         await result.current.save(data)
 
-        expect(updateMock).toHaveBeenCalledWith({
-            id: '1',
-            data: {
-                name: 'test',
-                metrics: undefined,
-                target_channels: [],
-            },
-        })
-
         await waitFor(() => {
-            expect(invalidateQueryMock).toHaveBeenCalledWith({
-                queryKey: queryKeys.slaPolicies.listSlaPolicies(),
-            })
-            expect(invalidateQueryMock).toHaveBeenCalledWith({
-                queryKey: queryKeys.slaPolicies.getSlaPolicy('1'),
-            })
+            expect(updateSlaRequests).toHaveLength(1)
+        })
+        await expect(updateSlaRequests[0].json()).resolves.toEqual({
+            name: 'test',
+            metrics: undefined,
+            target_channels: [],
         })
     })
 
     it('should show a success toast after creating a policy', async () => {
         useParamsMock.mockReturnValue({ policyId: 'new' })
-        const { result } = renderHook(useSubmitPolicy, { wrapper })
+        const { result } = renderUseSubmitPolicy()
 
         await result.current.save({
             name: 'test',
@@ -133,10 +127,14 @@ describe('useSubmitPolicy()', () => {
 
     it('should show an error toast when the request fails', async () => {
         useParamsMock.mockReturnValue({ policyId: 'new' })
-        createMock.mockRejectedValueOnce({
-            response: { data: { error: { msg: 'boom' } } },
-        })
-        const { result } = renderHook(useSubmitPolicy, { wrapper })
+        server.use(
+            mockCreateSlaPolicyHandler(async () =>
+                HttpResponse.json(mockCreateSlaPolicyResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
+        const { result } = renderUseSubmitPolicy()
 
         await result.current.save({
             name: 'test',

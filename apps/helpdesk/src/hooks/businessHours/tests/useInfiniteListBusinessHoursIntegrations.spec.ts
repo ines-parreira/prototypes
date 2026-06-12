@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { setupServer } from 'msw/node'
 
-import { listBusinessHoursIntegrations } from '@gorgias/helpdesk-client'
+import { mockListBusinessHoursIntegrationsHandler } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListBusinessHoursIntegrations } from '../useInfiniteListBusinessHoursIntegrations'
@@ -13,13 +14,28 @@ jest.mock('@tanstack/react-query', () => ({
 }))
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)
 
-jest.mock('@gorgias/helpdesk-client')
-const listBusinessHoursIntegrationsMock = assumeMock(
-    listBusinessHoursIntegrations,
-)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useInfiniteListBusinessHoursIntegrations', () => {
     it('should call useInfiniteQuery with correct parameters', async () => {
+        const listBusinessHoursIntegrationsMock =
+            mockListBusinessHoursIntegrationsHandler()
+        const waitForListBusinessHoursIntegrationsRequest =
+            listBusinessHoursIntegrationsMock.waitForRequest(server)
+        server.use(listBusinessHoursIntegrationsMock.handler)
         const returnValue = {
             data: { pages: [], pageParams: [] },
         } as unknown as InfiniteQueryObserverSuccessResult<unknown, unknown>
@@ -44,11 +60,12 @@ describe('useInfiniteListBusinessHoursIntegrations', () => {
         const useInfiniteQueryParams = useInfiniteQueryMock.mock
             .calls[0][0] as any
         await useInfiniteQueryParams.queryFn({ pageParam: '==cursor==' })
-        expect(listBusinessHoursIntegrationsMock).toHaveBeenCalledWith(
-            1,
-            { cursor: '==cursor==' },
-            { signal: undefined },
-        )
+        await waitForListBusinessHoursIntegrationsRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.pathname).toContain('/business-hours/1/integrations')
+            expect(url.searchParams.get('cursor')).toBe('==cursor==')
+        })
         expect(
             useInfiniteQueryParams.getNextPageParam({
                 data: { meta: { next_cursor: '==cursor==' } },

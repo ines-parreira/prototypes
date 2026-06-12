@@ -1,20 +1,19 @@
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import {
+    mockGetVoiceQueueHandler,
+    mockGetVoiceQueueResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
-import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import { CreateNewQueueModal } from '../CreateNewQueueModal'
 import { VoiceQueueSelectField } from '../VoiceQueueSelectField'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListVoiceQueues: jest.fn(),
-    useGetVoiceQueue: jest.fn(),
-}))
 
 jest.mock(
     '@gorgias/axiom',
@@ -28,13 +27,14 @@ jest.mock(
 jest.mock('domains/reporting/hooks/common/useVoiceQueueSearch')
 const useVoiceQueueSearchMock = assumeMock(useVoiceQueueSearch)
 
-const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
 jest.mock('../CreateNewQueueModal')
 const CreateNewQueueModalMock = assumeMock(CreateNewQueueModal)
 
 const handleChange = jest.fn()
 const renderComponent = (value?: number) =>
     render(<VoiceQueueSelectField value={value} onChange={handleChange} />)
+
+const server = setupServer()
 
 describe('<VoiceQueueSelectField />', () => {
     const mockQueues = [
@@ -44,21 +44,33 @@ describe('<VoiceQueueSelectField />', () => {
         { id: 4, name: null },
     ] as VoiceQueue[]
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        server.use(
+            mockGetVoiceQueueHandler(async () =>
+                HttpResponse.json(mockGetVoiceQueueResponse(mockQueues[0])),
+            ).handler,
+        )
         useVoiceQueueSearchMock.mockReturnValue({
             voiceQueues: mockQueues,
             isFetching: false,
             error: null,
             refetch: jest.fn(),
         } as any)
-        useGetVoiceQueueMock.mockReturnValue({
-            data: null,
-            isFetching: false,
-            error: null,
-        } as any)
         CreateNewQueueModalMock.mockImplementation(() => (
             <div>CreateNewQueueModal</div>
         ))
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should display the selected queue name', () => {
@@ -114,22 +126,16 @@ describe('<VoiceQueueSelectField />', () => {
         )
     })
 
-    it('should fetch the queue data when the queue data is not found in the list of queues', () => {
+    it('should fetch the queue data when the queue data is not found in the list of queues', async () => {
         useVoiceQueueSearchMock.mockReturnValue({
             voiceQueues: [mockQueues[1]],
             isFetching: false,
             error: null,
         } as any)
 
-        useGetVoiceQueueMock.mockReturnValue({
-            data: { data: mockQueues[0] },
-            isFetching: false,
-            error: null,
-        } as any)
-
         renderComponent(mockQueues[0].id)
 
-        expect(screen.getByText(mockQueues[0].name)).toBeInTheDocument()
+        expect(await screen.findByText('Queue 1')).toBeInTheDocument()
     })
 
     it('should open the dropdown when clicked', () => {

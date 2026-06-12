@@ -1,16 +1,16 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Router } from 'react-router-dom'
 
-import type { HttpResponse, PhoneIntegration } from '@gorgias/helpdesk-client'
 import {
-    deleteIntegration,
-    IntegrationType,
-    updateAllPhoneSettings,
-    VoiceMessageType,
-} from '@gorgias/helpdesk-client'
+    mockDeleteIntegrationHandler,
+    mockUpdateAllPhoneSettingsHandler,
+} from '@gorgias/helpdesk-mocks'
+import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
+import { IntegrationType, VoiceMessageType } from '@gorgias/helpdesk-types'
 
 import { integrationsState } from 'fixtures/integrations'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -21,8 +21,10 @@ import {
     VOICEMAIL_DEFAULT_VOICE_MESSAGE,
 } from 'models/integration/constants'
 import { fetchIntegrations } from 'state/integrations/actions'
-import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import {
+    DELETE_INTEGRATION_SUCCESS,
+    UPDATE_INTEGRATION_ERROR,
+} from 'state/integrations/constants'
 
 import { DEFAULT_TRANSCRIBE_PREFERENCES } from '../constants'
 import {
@@ -35,15 +37,8 @@ import {
     DEFAULT_TTS_LANGUAGE,
 } from '../VoiceMessageTTS/constants'
 
-const queryClient = mockQueryClient()
-
-jest.mock('@gorgias/helpdesk-client', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-client'),
-    updateAllPhoneSettings: jest.fn(),
-    deleteIntegration: jest.fn(),
-}))
-const updateAllPhoneSettingsMock = assumeMock(updateAllPhoneSettings)
-const deleteIntegrationMock = assumeMock(deleteIntegration)
+const updateAllPhoneSettingsRequests: Request[] = []
+const server = setupServer()
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()
@@ -57,22 +52,39 @@ const phoneIntegration = integrationsState.integrations.find(
 ) as unknown as PhoneIntegration
 
 describe('hooks', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        updateAllPhoneSettingsRequests.length = 0
+        server.use(
+            mockUpdateAllPhoneSettingsHandler(async ({ request }) => {
+                updateAllPhoneSettingsRequests.push(request)
+
+                return new HttpResponse(null, { status: 204 })
+            }).handler,
+            mockDeleteIntegrationHandler(
+                async () => new HttpResponse(null, { status: 204 }),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     describe('useFormSubmit', () => {
         const render = () =>
             renderHook(({ integration }) => useFormSubmit(integration), {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                ),
                 initialProps: { integration: phoneIntegration },
             })
 
         it('should call update with full payload', async () => {
-            updateAllPhoneSettingsMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<void>),
-            )
-
             const { result } = render()
             const submittableData = {
                 name: 'new name',
@@ -91,12 +103,11 @@ describe('hooks', () => {
             result.current.onSubmit(submittableData)
 
             await waitFor(() => {
-                expect(updateAllPhoneSettingsMock).toHaveBeenCalledWith(
-                    phoneIntegration.id,
-                    submittableData,
-                    undefined,
-                )
+                expect(updateAllPhoneSettingsRequests).toHaveLength(1)
             })
+            await expect(
+                updateAllPhoneSettingsRequests[0].json(),
+            ).resolves.toEqual(submittableData)
 
             const toastEl = await screen.findByRole('status', {
                 name: 'Integration settings successfully updated.',
@@ -106,10 +117,6 @@ describe('hooks', () => {
         })
 
         it('should call exclude recording notification changes if disabled', async () => {
-            updateAllPhoneSettingsMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<void>),
-            )
-
             const { result } = render()
             const submittableData = {
                 name: 'new name',
@@ -130,17 +137,16 @@ describe('hooks', () => {
             result.current.onSubmit(submittableData)
 
             await waitFor(() => {
-                expect(updateAllPhoneSettingsMock).toHaveBeenCalledWith(
-                    phoneIntegration.id,
-                    {
-                        ...submittableData,
-                        meta: {
-                            ...submittableData.meta,
-                            recording_notification: undefined,
-                        },
-                    },
-                    undefined,
-                )
+                expect(updateAllPhoneSettingsRequests).toHaveLength(1)
+            })
+            await expect(
+                updateAllPhoneSettingsRequests[0].json(),
+            ).resolves.toEqual({
+                ...submittableData,
+                meta: {
+                    ...submittableData.meta,
+                    recording_notification: undefined,
+                },
             })
 
             const toastEl = await screen.findByRole('status', {
@@ -151,7 +157,11 @@ describe('hooks', () => {
         })
 
         it('should dispatch error notification on error', async () => {
-            updateAllPhoneSettingsMock.mockRejectedValue('An error occurred')
+            server.use(
+                mockUpdateAllPhoneSettingsHandler(
+                    async () => new HttpResponse(null, { status: 500 }),
+                ).handler,
+            )
 
             const { result } = render()
 
@@ -182,9 +192,7 @@ describe('hooks', () => {
                 {
                     wrapper: ({ children }) => (
                         <Router history={createMemoryHistory({})}>
-                            <QueryClientProvider client={queryClient}>
-                                {children}
-                            </QueryClientProvider>
+                            {children}
                         </Router>
                     ),
                     initialProps: { integration: phoneIntegration },
@@ -192,15 +200,15 @@ describe('hooks', () => {
             )
 
         it('should call delete with correct id', async () => {
-            deleteIntegrationMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<void>),
-            )
-
             const { result } = render()
             result.current.performDelete({ id: phoneIntegration.id })
 
             await waitFor(() => {
-                expect(deleteIntegrationMock).toHaveBeenCalled()
+                expect(dispatchMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        type: DELETE_INTEGRATION_SUCCESS,
+                    }),
+                )
             })
 
             const toastEl = await screen.findByRole('status', {
@@ -210,7 +218,11 @@ describe('hooks', () => {
         })
 
         it('should dispatch error notification on error', async () => {
-            deleteIntegrationMock.mockRejectedValue('An error occurred')
+            server.use(
+                mockDeleteIntegrationHandler(
+                    async () => new HttpResponse(null, { status: 500 }),
+                ).handler,
+            )
 
             const { result } = render()
 

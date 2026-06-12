@@ -1,12 +1,13 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
+import { mockSearchVoiceCallsHandler } from '@gorgias/helpdesk-mocks'
 import type { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
 
 import { voiceCall } from 'fixtures/voiceCalls'
-import { CancelToken } from 'tests/axiosRuntime'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 import {
     listVoiceCallEvents,
@@ -17,9 +18,19 @@ import {
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-client')
-const searchCallsMock = assumeMock(apiSearchVoiceCalls)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('list voice calls resources', () => {
     const defaultSearchData: SearchVoiceCalls200 = {
@@ -101,13 +112,13 @@ describe('list voice calls resources', () => {
     })
 
     describe('searchVoiceCalls', () => {
-        beforeEach(() => {
-            searchCallsMock.mockResolvedValue({
-                data: defaultSearchData,
-            } as any)
-        })
-
         it('should resolve with the call list and meta on success', async () => {
+            server.use(
+                mockSearchVoiceCallsHandler(async () =>
+                    HttpResponse.json(defaultSearchData),
+                ).handler,
+            )
+
             const res = await searchVoiceCalls({
                 search: '',
             })
@@ -116,16 +127,27 @@ describe('list voice calls resources', () => {
         })
 
         it('should pass the search phrase and filters in the payload', async () => {
+            const searchVoiceCallsMock = mockSearchVoiceCallsHandler()
+            const waitForSearchVoiceCallsRequest =
+                searchVoiceCallsMock.waitForRequest(server)
+            server.use(searchVoiceCallsMock.handler)
             const options = {
                 search: 'foo',
             }
 
             await searchVoiceCalls(options)
 
-            expect(searchCallsMock).toHaveBeenCalledWith(options, {}, {})
+            await waitForSearchVoiceCallsRequest(async (request) => {
+                expect(await request.json()).toEqual(options)
+                expect(new URL(request.url).search).toBe('')
+            })
         })
 
         it('should pass cursor and limit in the params', async () => {
+            const searchVoiceCallsMock = mockSearchVoiceCallsHandler()
+            const waitForSearchVoiceCallsRequest =
+                searchVoiceCallsMock.waitForRequest(server)
+            server.use(searchVoiceCallsMock.handler)
             const options = {
                 search: 'foo',
             }
@@ -138,32 +160,32 @@ describe('list voice calls resources', () => {
                 limit,
             })
 
-            expect(searchCallsMock).toHaveBeenCalledWith(
-                options,
-                { cursor, limit },
-                {},
-            )
+            await waitForSearchVoiceCallsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual(options)
+                expect(searchParams.get('cursor')).toBe(cursor)
+                expect(searchParams.get('limit')).toBe(String(limit))
+            })
         })
 
         it('should pass cancel token', async () => {
             const source = CancelToken.source()
             source.cancel()
 
-            await searchVoiceCalls({
-                search: '',
-                cancelToken: source.token,
-            })
-
-            expect(searchCallsMock).toHaveBeenCalledWith(
-                {
+            await expect(
+                searchVoiceCalls({
                     search: '',
-                },
-                {},
-                { cancelToken: source.token },
-            )
+                    cancelToken: source.token,
+                }),
+            ).rejects.toBeInstanceOf(Cancel)
         })
 
         it('should add with_highlights prop', async () => {
+            const searchVoiceCallsMock = mockSearchVoiceCallsHandler()
+            const waitForSearchVoiceCallsRequest =
+                searchVoiceCallsMock.waitForRequest(server)
+            server.use(searchVoiceCallsMock.handler)
             const options = {
                 search: 'foo',
             }
@@ -173,27 +195,33 @@ describe('list voice calls resources', () => {
 
             await searchVoiceCalls({ ...options, ...params })
 
-            expect(searchCallsMock).toHaveBeenCalledWith(
-                { ...options },
-                { with_highlights: params.withHighlights },
-                {},
-            )
+            await waitForSearchVoiceCallsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual(options)
+                expect(searchParams.get('with_highlights')).toBe('true')
+            })
         })
     })
 
     describe('searchVoiceCallsWithHighlights', () => {
         it('should call searchTickets withHighlights and merge Tickets with their highlights', async () => {
+            const searchVoiceCallsMock = mockSearchVoiceCallsHandler(async () =>
+                HttpResponse.json(defaultSearchData),
+            )
+            const waitForSearchVoiceCallsRequest =
+                searchVoiceCallsMock.waitForRequest(server)
+            server.use(searchVoiceCallsMock.handler)
             const options = { search: 'foo' }
 
             const response = await searchVoiceCallsWithHighlights(options)
 
-            expect(searchCallsMock).toHaveBeenCalledWith(
-                {
-                    ...options,
-                },
-                { with_highlights: true },
-                {},
-            )
+            await waitForSearchVoiceCallsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual(options)
+                expect(searchParams.get('with_highlights')).toBe('true')
+            })
 
             expect(response.data.data).toEqual([
                 {

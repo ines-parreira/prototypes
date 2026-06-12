@@ -1,8 +1,12 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import type { QueryClient } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useCreateMacro as useCreateMacroPrimitive } from '@gorgias/helpdesk-queries'
+import {
+    mockCreateMacroHandler,
+    mockCreateMacroResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -10,134 +14,84 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useCreateMacro } from '../useCreateMacro'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    __esModule: true,
-    useCreateMacro: jest.fn(),
-    queryKeys: {
-        macros: {
-            listMacros: () => ({ pop: () => null }),
-        },
-    },
-}))
-
-const useCreateMacroPrimitiveMock = assumeMock(useCreateMacroPrimitive)
-const mockMutateCreateMacro = jest.fn()
-
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = assumeMock(useAppDispatch)
-
-jest.mock('@tanstack/react-query', () => ({
-    ...jest.requireActual('@tanstack/react-query'),
-    useQueryClient: jest.fn(),
-}))
-const useQueryClientMock = assumeMock(useQueryClient)
+const useAppDispatchMock = jest.mocked(useAppDispatch)
 
 jest.mock('state/notifications/actions')
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function renderUseCreateMacro() {
+    return renderHook(() => useCreateMacro())
+}
+
 describe('useCreateMacro', () => {
-    const invalidateQueriesMock = jest.fn()
-    const dispatchMock = jest.fn()
-
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
-        useCreateMacroPrimitiveMock.mockReturnValue({
-            mutateAsync: mockMutateCreateMacro,
-        } as unknown as ReturnType<typeof useCreateMacroPrimitive>)
-        useQueryClientMock.mockImplementation(
-            () =>
-                ({
-                    invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient,
-        )
+        useAppDispatchMock.mockReturnValue(jest.fn())
     })
 
-    it('should handle settled request', () => {
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useCreateMacro())
-
-        void result.current.mutateAsync(
-            {
-                data: {
-                    name: 'New Macro',
-                },
-            },
-            {
-                onSettled,
-            },
+    it('should create a macro and notify on success', async () => {
+        const createMacroMock = mockCreateMacroHandler(async () =>
+            HttpResponse.json(mockCreateMacroResponse({ id: 111 })),
         )
-        ;(
-            useCreateMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSettled: () => void
-            }
-        )?.onSettled()
+        const waitForCreateMacroRequest = createMacroMock.waitForRequest(server)
+        server.use(createMacroMock.handler)
+        const { result } = renderUseCreateMacro()
 
-        expect(invalidateQueriesMock).toHaveBeenCalled()
-    })
-
-    it('should handle failed request', () => {
-        const errorMessage = 'nope'
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useCreateMacro())
-        void result.current.mutateAsync(
-            {
-                data: {
-                    name: 'New Macro',
-                },
-            },
-            {
-                onSettled,
-            },
-        )
-        ;(
-            useCreateMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onError: (args: unknown) => void
-            }
-        )?.onError({
-            response: {
-                data: {
-                    error: { msg: errorMessage },
-                },
-            },
-        })
-
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            title: errorMessage,
-            status: NotificationStatus.Error,
-            allowHTML: true,
-            message: null,
-        })
-    })
-
-    it('should handle successful request', () => {
-        const id = 111
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useCreateMacro())
-        void result.current.mutateAsync(
-            {
-                data: {
-                    name: 'New Macro',
-                },
-            },
-            {
-                onSettled,
-            },
-        )
-        ;(
-            useCreateMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSuccess: (resp: unknown) => void
-            }
-        )?.onSuccess({
+        await result.current.mutateAsync({
             data: {
-                id,
+                name: 'New Macro',
             },
         })
 
+        await waitForCreateMacroRequest(async (request) => {
+            expect(await request.json()).toEqual({ name: 'New Macro' })
+        })
         expect(notify).toHaveBeenNthCalledWith(1, {
             message: 'Successfully created macro',
             status: NotificationStatus.Success,
+        })
+    })
+
+    it('should handle failed request', async () => {
+        const errorMessage = 'nope'
+        server.use(
+            mockCreateMacroHandler(async () =>
+                HttpResponse.json({ error: { msg: errorMessage } } as never, {
+                    status: 400,
+                }),
+            ).handler,
+        )
+        const { result } = renderUseCreateMacro()
+
+        await expect(
+            result.current.mutateAsync({
+                data: {
+                    name: 'New Macro',
+                },
+            }),
+        ).rejects.toBeDefined()
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                title: errorMessage,
+                status: NotificationStatus.Error,
+                allowHTML: true,
+                message: null,
+            })
         })
     })
 })

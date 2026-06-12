@@ -1,8 +1,9 @@
 import client from '@repo/api-resources'
-import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
+import { mockSearchCustomersHandler } from '@gorgias/helpdesk-mocks'
 
 import { customer } from 'fixtures/customer'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
@@ -16,9 +17,19 @@ import type { CustomerWithHighlightsResponse } from 'models/search/types'
 import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 const mockedServer = new MockAdapter(client)
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-client')
-const apiSearchCustomersMock = assumeMock(apiSearchCustomers)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('Customer resources', () => {
     describe('searchCustomers', () => {
@@ -34,9 +45,6 @@ describe('Customer resources', () => {
         }
 
         beforeEach(() => {
-            apiSearchCustomersMock.mockResolvedValue({
-                data: defaultData,
-            } as any)
             mockedServer.reset()
             mockedServer
                 .onGet(`/api/customers/${customer.id}`)
@@ -44,6 +52,12 @@ describe('Customer resources', () => {
         })
 
         it('should resolve with the customer list and meta on success', async () => {
+            server.use(
+                mockSearchCustomersHandler(async () =>
+                    HttpResponse.json(defaultData as any),
+                ).handler,
+            )
+
             const res = await searchCustomers({
                 search: '',
             })
@@ -52,16 +66,27 @@ describe('Customer resources', () => {
         })
 
         it('should pass the search phrase in the payload', async () => {
+            const searchCustomersMock = mockSearchCustomersHandler()
+            const waitForSearchCustomersRequest =
+                searchCustomersMock.waitForRequest(server)
+            server.use(searchCustomersMock.handler)
             const options = {
                 search: 'foo',
             }
 
             await searchCustomers(options)
 
-            expect(apiSearchCustomersMock).toHaveBeenCalledWith(options, {}, {})
+            await waitForSearchCustomersRequest(async (request) => {
+                expect(await request.json()).toEqual(options)
+                expect(new URL(request.url).search).toBe('')
+            })
         })
 
         it('should pass cursor and limit in the params', async () => {
+            const searchCustomersMock = mockSearchCustomersHandler()
+            const waitForSearchCustomersRequest =
+                searchCustomersMock.waitForRequest(server)
+            server.use(searchCustomersMock.handler)
             const cursor = 'some_cursor'
             const limit = 10
 
@@ -71,30 +96,32 @@ describe('Customer resources', () => {
                 limit,
             })
 
-            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                { search: 'foo' },
-                { cursor, limit },
-                {},
-            )
+            await waitForSearchCustomersRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual({ search: 'foo' })
+                expect(searchParams.get('cursor')).toBe(cursor)
+                expect(searchParams.get('limit')).toBe(String(limit))
+            })
         })
 
         it('should cancel the request on cancel token cancel', async () => {
             const source = CancelToken.source()
             source.cancel()
 
-            await searchCustomers({
-                search: '',
-                cancelToken: source.token,
-            })
-
-            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                { search: '' },
-                {},
-                { cancelToken: source.token },
-            )
+            await expect(
+                searchCustomers({
+                    search: '',
+                    cancelToken: source.token,
+                }),
+            ).rejects.toBeInstanceOf(Cancel)
         })
 
         it('should add with_highlights prop', async () => {
+            const searchCustomersMock = mockSearchCustomersHandler()
+            const waitForSearchCustomersRequest =
+                searchCustomersMock.waitForRequest(server)
+            server.use(searchCustomersMock.handler)
             const options = {
                 search: 'foo',
                 withHighlights: true,
@@ -102,13 +129,12 @@ describe('Customer resources', () => {
 
             await searchCustomers(options)
 
-            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                { search: 'foo' },
-                {
-                    with_highlights: options.withHighlights,
-                },
-                {},
-            )
+            await waitForSearchCustomersRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual({ search: 'foo' })
+                expect(searchParams.get('with_highlights')).toBe('true')
+            })
         })
     })
 
@@ -128,20 +154,22 @@ describe('Customer resources', () => {
         }
 
         it('should call searchCustomers withHighlights and merge Customers with their highlights', async () => {
+            const searchCustomersMock = mockSearchCustomersHandler(async () =>
+                HttpResponse.json(defaultData as any),
+            )
+            const waitForSearchCustomersRequest =
+                searchCustomersMock.waitForRequest(server)
+            server.use(searchCustomersMock.handler)
             const options = { search: 'foo' }
-            apiSearchCustomersMock.mockResolvedValue({
-                data: defaultData,
-            } as any)
 
             const response = await searchCustomersWithHighlights(options)
 
-            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                {
-                    ...options,
-                },
-                { with_highlights: true },
-                {},
-            )
+            await waitForSearchCustomersRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual(options)
+                expect(searchParams.get('with_highlights')).toBe('true')
+            })
 
             expect(response.data.data).toEqual([
                 {

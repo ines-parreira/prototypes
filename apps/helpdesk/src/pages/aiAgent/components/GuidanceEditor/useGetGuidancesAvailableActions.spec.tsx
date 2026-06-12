@@ -1,8 +1,14 @@
 import { renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListStores } from '@gorgias/helpdesk-queries'
+import {
+    mockListStoresHandler,
+    mockListStoresResponse,
+    mockStoreIntegration,
+} from '@gorgias/helpdesk-mocks'
 
 import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import {
@@ -14,7 +20,6 @@ import type {
     StoreForServiceConnectionApiDTO,
 } from 'models/integration/types/serviceConnection'
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { useGetGuidancesAvailableActions } from './useGetGuidancesAvailableActions'
 
@@ -31,10 +36,6 @@ jest.mock('hooks/integrations/useActionCentralizedLibraryEnabled', () => ({
     useActionCentralizedLibraryEnabled: jest.fn(),
 }))
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useListStores: jest.fn(),
-}))
-
 jest.mock('models/integration/queries', () => ({
     useListServiceConnectionsByAppIds: jest.fn(),
     useListServiceConnectionStoresByConnectionIds: jest.fn(),
@@ -44,7 +45,6 @@ const mockGetGorgiasWfApiClient = getGorgiasWfApiClient as jest.Mock
 const mockUseActionCentralizedLibraryEnabled = jest.mocked(
     useActionCentralizedLibraryEnabled,
 )
-const mockUseListStores = jest.mocked(useListStores)
 const mockUseListServiceConnectionsByAppIds = jest.mocked(
     useListServiceConnectionsByAppIds,
 )
@@ -95,8 +95,19 @@ const mockAllActions = [
     },
 ]
 
+const server = setupServer()
+
 describe('useGetGuidancesAvailableActions', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        server.use(
+            mockListStoresHandler(async () =>
+                HttpResponse.json(mockListStoresResponse({ data: [] })),
+            ).handler,
+        )
         const mockApiClient = {
             StoreWfConfigurationController_list: jest
                 .fn()
@@ -109,18 +120,22 @@ describe('useGetGuidancesAvailableActions', () => {
             milestone: 'OFF',
             isLoading: false,
         })
-        mockUseListStores.mockReturnValue({
-            data: undefined,
-        } as unknown as ReturnType<typeof useListStores>)
         mockUseListServiceConnectionsByAppIds.mockReturnValue([])
         mockUseListServiceConnectionStoresByConnectionIds.mockReturnValue([])
     })
 
+    afterEach(() => {
+        server.resetHandlers()
+        jest.clearAllMocks()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should pass through enabled, requiresAuth, and hasMissingValues from the API', async () => {
-        const { QueryClientProvider } = mockQueryClientProvider()
-        const { result } = renderHook(
-            () => useGetGuidancesAvailableActions('store1', 'shopify'),
-            { wrapper: QueryClientProvider },
+        const { result } = renderHook(() =>
+            useGetGuidancesAvailableActions('store1', 'shopify'),
         )
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -166,10 +181,8 @@ describe('useGetGuidancesAvailableActions', () => {
         }
         mockGetGorgiasWfApiClient.mockResolvedValue(mockApiClient)
 
-        const { QueryClientProvider } = mockQueryClientProvider()
-        const { result } = renderHook(
-            () => useGetGuidancesAvailableActions('store1', 'shopify'),
-            { wrapper: QueryClientProvider },
+        const { result } = renderHook(() =>
+            useGetGuidancesAvailableActions('store1', 'shopify'),
         )
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -204,10 +217,8 @@ describe('useGetGuidancesAvailableActions', () => {
         }
         mockGetGorgiasWfApiClient.mockResolvedValue(mockApiClient)
 
-        const { QueryClientProvider } = mockQueryClientProvider()
-        const { result } = renderHook(
-            () => useGetGuidancesAvailableActions('store1', 'shopify'),
-            { wrapper: QueryClientProvider },
+        const { result } = renderHook(() =>
+            useGetGuidancesAvailableActions('store1', 'shopify'),
         )
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -223,19 +234,13 @@ describe('useGetGuidancesAvailableActions', () => {
     })
 
     it('should not fetch when shopType is not shopify', () => {
-        const { QueryClientProvider } = mockQueryClientProvider()
-        renderHook(() => useGetGuidancesAvailableActions('store1', 'magento'), {
-            wrapper: QueryClientProvider,
-        })
+        renderHook(() => useGetGuidancesAvailableActions('store1', 'magento'))
 
         expect(mockGetGorgiasWfApiClient).not.toHaveBeenCalled()
     })
 
     it('should not fetch when shopName is empty', () => {
-        const { QueryClientProvider } = mockQueryClientProvider()
-        renderHook(() => useGetGuidancesAvailableActions('', 'shopify'), {
-            wrapper: QueryClientProvider,
-        })
+        renderHook(() => useGetGuidancesAvailableActions('', 'shopify'))
 
         expect(mockGetGorgiasWfApiClient).not.toHaveBeenCalled()
     })
@@ -258,18 +263,20 @@ describe('useGetGuidancesAvailableActions', () => {
                 milestone: 'MILESTONE-1',
                 isLoading: false,
             })
-            mockUseListStores.mockReturnValue({
-                data: {
-                    data: {
-                        data: [
-                            {
-                                name: 'store1',
-                                store_integration_id: 42,
-                            },
-                        ],
-                    },
-                },
-            } as unknown as ReturnType<typeof useListStores>)
+            server.use(
+                mockListStoresHandler(async () =>
+                    HttpResponse.json(
+                        mockListStoresResponse({
+                            data: [
+                                mockStoreIntegration({
+                                    name: 'store1',
+                                    store_integration_id: 42,
+                                }),
+                            ],
+                        }),
+                    ),
+                ).handler,
+            )
 
             const mockApiClient = {
                 StoreWfConfigurationController_list: jest
@@ -287,10 +294,8 @@ describe('useGetGuidancesAvailableActions', () => {
                 storesQuery([{ store_id: 42 }]),
             ])
 
-            const { QueryClientProvider } = mockQueryClientProvider()
-            const { result } = renderHook(
-                () => useGetGuidancesAvailableActions('store1', 'shopify'),
-                { wrapper: QueryClientProvider },
+            const { result } = renderHook(() =>
+                useGetGuidancesAvailableActions('store1', 'shopify'),
             )
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -313,10 +318,8 @@ describe('useGetGuidancesAvailableActions', () => {
                 storesQuery([{ store_id: 99 }]),
             ])
 
-            const { QueryClientProvider } = mockQueryClientProvider()
-            const { result } = renderHook(
-                () => useGetGuidancesAvailableActions('store1', 'shopify'),
-                { wrapper: QueryClientProvider },
+            const { result } = renderHook(() =>
+                useGetGuidancesAvailableActions('store1', 'shopify'),
             )
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -336,10 +339,8 @@ describe('useGetGuidancesAvailableActions', () => {
                 connectionsQuery([]),
             ])
 
-            const { QueryClientProvider } = mockQueryClientProvider()
-            const { result } = renderHook(
-                () => useGetGuidancesAvailableActions('store1', 'shopify'),
-                { wrapper: QueryClientProvider },
+            const { result } = renderHook(() =>
+                useGetGuidancesAvailableActions('store1', 'shopify'),
             )
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))

@@ -6,8 +6,13 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useGetBillingEstimatesSubscription } from '@gorgias/helpdesk-queries'
+import {
+    mockGetBillingEstimatesSubscriptionHandler,
+    mockGetBillingEstimatesSubscriptionResponse,
+} from '@gorgias/helpdesk-mocks'
 import type {
     CustomerSummary,
     SubscriptionSummary,
@@ -36,12 +41,42 @@ jest.mock('@repo/billing', () => ({
 }))
 const mockUseBillingState = assumeMock(useBillingState)
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetBillingEstimatesSubscription: jest.fn(),
-}))
-const mockUseGetBillingEstimatesSubscription = assumeMock(
-    useGetBillingEstimatesSubscription,
+const corsHeaders = {
+    'Access-Control-Allow-Headers': '*',
+    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+    'Access-Control-Allow-Origin': '*',
+}
+
+const server = setupServer(
+    http.post('/gorgias-apps/auth', () =>
+        HttpResponse.json({
+            token: 'test-token',
+        }),
+    ),
+    http.get('/billing/state', () => HttpResponse.json(billingState)),
+    http.options(
+        'http://localhost:9402/api/config/accounts/:accountDomain/stores/configurations',
+        () => new HttpResponse(null, { status: 204, headers: corsHeaders }),
+    ),
+    http.get(
+        'http://localhost:9402/api/config/accounts/:accountDomain/stores/configurations',
+        () =>
+            HttpResponse.json(
+                { storeConfigurations: [] },
+                { headers: corsHeaders },
+            ),
+    ),
+    http.options(
+        'http://localhost:9402/api/config/accounts/:accountDomain/stores/trials',
+        () => new HttpResponse(null, { status: 204, headers: corsHeaders }),
+    ),
+    http.get(
+        'http://localhost:9402/api/config/accounts/:accountDomain/stores/trials',
+        () => HttpResponse.json([], { headers: corsHeaders }),
+    ),
+    mockGetBillingEstimatesSubscriptionHandler(async () =>
+        HttpResponse.json(mockGetBillingEstimatesSubscriptionResponse()),
+    ).handler,
 )
 
 const mockHistoryPush = jest.fn()
@@ -114,16 +149,12 @@ const minProps: ComponentProps<typeof AutomateSubscriptionModal> = {
     footer: TestFooter,
 }
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
 beforeEach(() => {
     mockUseBillingState.mockReturnValue(makeBillingState())
-    mockUseGetBillingEstimatesSubscription.mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        isFetching: false,
-        isError: false,
-        error: null,
-        refetch: jest.fn(),
-    } as never)
     mockUpdateSubscriptionsForPlans.mockClear()
     mockUpdateSubscriptionsForPlans.mockImplementation(
         () => async (): Promise<SubscriptionUpdateResponse> => ({
@@ -131,6 +162,14 @@ beforeEach(() => {
         }),
     )
     mockHistoryPush.mockClear()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('<AutomateSubscriptionModal /> with the real ConfirmChangesModal', () => {

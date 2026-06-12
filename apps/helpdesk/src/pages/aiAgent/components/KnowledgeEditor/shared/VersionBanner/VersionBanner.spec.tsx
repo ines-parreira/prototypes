@@ -1,6 +1,13 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetUserHandler,
+    mockGetUserResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { VersionBanner } from './VersionBanner'
 
@@ -16,11 +23,6 @@ jest.mock('hooks/useAppSelector', () => ({
 jest.mock('state/currentUser/selectors', () => ({
     getTimezone: jest.fn(() => 'UTC'),
     getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
-}))
-
-const mockUseGetUser = jest.fn().mockReturnValue({ data: undefined })
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetUser: (...args: unknown[]) => mockUseGetUser(...args),
 }))
 
 type HistoricalVersion = {
@@ -60,10 +62,23 @@ function renderComponent(overrides?: Partial<typeof defaultProps>) {
     return render(<VersionBanner {...defaultProps} {...overrides} />)
 }
 
+const server = setupServer(mockGetUserHandler().handler)
+
 describe('VersionBanner', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseGetUser.mockReturnValue({ data: undefined })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     describe('when banner should not be shown', () => {
@@ -255,10 +270,14 @@ describe('VersionBanner', () => {
             ).toBeInTheDocument()
         })
 
-        it('shows author name without commit message when only author is available', () => {
-            mockUseGetUser.mockReturnValue({
-                data: { data: { name: 'John Doe' } },
-            })
+        it('shows author name without commit message when only author is available', async () => {
+            server.use(
+                mockGetUserHandler(async () =>
+                    HttpResponse.json(
+                        mockGetUserResponse({ name: 'John Doe' }),
+                    ),
+                ).handler,
+            )
 
             renderComponent({
                 isViewingDraft: false,
@@ -270,14 +289,18 @@ describe('VersionBanner', () => {
             })
 
             expect(
-                screen.getByText('Last published by John Doe'),
+                await screen.findByText('Last published by John Doe'),
             ).toBeInTheDocument()
         })
 
-        it('shows commit message with author name when both are available', () => {
-            mockUseGetUser.mockReturnValue({
-                data: { data: { name: 'Jane Smith' } },
-            })
+        it('shows commit message with author name when both are available', async () => {
+            server.use(
+                mockGetUserHandler(async () =>
+                    HttpResponse.json(
+                        mockGetUserResponse({ name: 'Jane Smith' }),
+                    ),
+                ).handler,
+            )
 
             renderComponent({
                 isViewingDraft: false,
@@ -290,7 +313,7 @@ describe('VersionBanner', () => {
             })
 
             expect(
-                screen.getByText(
+                await screen.findByText(
                     'Changes by Jane Smith: Fixed typo in greeting',
                 ),
             ).toBeInTheDocument()

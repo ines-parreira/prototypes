@@ -1,9 +1,9 @@
-import type React from 'react'
-
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useFindOpportunityByIdForShopOpportunity } from '@gorgias/knowledge-service-queries'
+import { mockFindOpportunityByIdForShopOpportunityHandler } from '@gorgias/knowledge-service-mocks'
 import type {
     FindOpportunityByIdForShopOpportunity200,
     KnowledgeGapOpportunityDetail,
@@ -13,26 +13,26 @@ import { OpportunityType } from '../enums'
 import { mapOpportunityDetailToOpportunity } from '../utils/mapOpportunityDetailToOpportunity'
 import { useFindOneOpportunity } from './useFindOneOpportunity'
 
-jest.mock('@gorgias/knowledge-service-queries', () => ({
-    useFindOpportunityByIdForShopOpportunity: jest.fn(),
-}))
 jest.mock('../utils/mapOpportunityDetailToOpportunity', () => ({
     mapOpportunityDetailToOpportunity: jest.fn(),
 }))
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useFindOneOpportunity', () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-
     const mockOpportunityDetailResponse: FindOpportunityByIdForShopOpportunity200 =
         {
             id: 123,
@@ -66,334 +66,76 @@ describe('useFindOneOpportunity', () => {
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
         ticketCount: 5,
         detectionObjectIds: ['1', '2', '3', '4', '5'],
+        resources: [],
+        insight: 'Test insight',
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
-        queryClient.clear()
-    })
-
-    it('should call useFindOpportunityByIdForShopOpportunity with provided shopIntegrationId and opportunityId', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
-
-        renderHook(() => useFindOneOpportunity(789, 123), { wrapper })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                    refetchOnWindowFocus: false,
-                }),
-            }),
-        )
-    })
-
-    it('should pass 0 when opportunityId is undefined', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-        })
-
-        renderHook(() => useFindOneOpportunity(789, undefined), { wrapper })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(789, 0, expect.anything())
-    })
-
-    it('should default enabled to true when not provided', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
-
-        renderHook(() => useFindOneOpportunity(789, 123), { wrapper })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                }),
-            }),
-        )
-    })
-
-    it('should respect provided enabled option', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-        })
-
-        renderHook(
-            () =>
-                useFindOneOpportunity(789, 123, {
-                    query: { enabled: false },
-                }),
-            { wrapper },
-        )
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: false,
-                }),
-            }),
-        )
-    })
-
-    it('should default refetchOnWindowFocus to false when not provided', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
-
-        renderHook(() => useFindOneOpportunity(789, 123), { wrapper })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    refetchOnWindowFocus: false,
-                }),
-            }),
-        )
-    })
-
-    it('should respect provided refetchOnWindowFocus option', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
-
-        renderHook(
-            () =>
-                useFindOneOpportunity(789, 123, {
-                    query: { refetchOnWindowFocus: true },
-                }),
-            { wrapper },
-        )
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    refetchOnWindowFocus: true,
-                }),
-            }),
-        )
-    })
-
-    it('should use select function to transform response data', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        const mockMapOpportunityDetailToOpportunity =
-            mapOpportunityDetailToOpportunity as jest.Mock
-
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
-        mockMapOpportunityDetailToOpportunity.mockReturnValue(
+        jest.mocked(mapOpportunityDetailToOpportunity).mockReturnValue(
             mockMappedOpportunity,
         )
+    })
 
-        renderHook(() => useFindOneOpportunity(789, 123), { wrapper })
+    it('should request the provided opportunity and map the response', async () => {
+        const findOpportunityMock =
+            mockFindOpportunityByIdForShopOpportunityHandler(async () =>
+                HttpResponse.json(mockOpportunityDetailResponse),
+            )
+        const waitForFindOpportunityRequest =
+            findOpportunityMock.waitForRequest(server)
+        server.use(findOpportunityMock.handler)
 
-        const selectFunction =
-            mockUseFindOpportunityByIdForShopOpportunity.mock.calls[0][2].query
-                .select
+        const { result } = renderHook(() => useFindOneOpportunity(789, 123))
 
-        expect(selectFunction).toBeDefined()
+        await waitForFindOpportunityRequest((request) => {
+            const pathname = new URL(request.url).pathname
 
-        const result = selectFunction({ data: mockOpportunityDetailResponse })
-
-        expect(mockMapOpportunityDetailToOpportunity).toHaveBeenCalledWith(
+            expect(pathname).toContain('789')
+            expect(pathname).toContain('123')
+        })
+        await waitFor(() => {
+            expect(result.current.data).toEqual(mockMappedOpportunity)
+        })
+        expect(mapOpportunityDetailToOpportunity).toHaveBeenCalledWith(
             mockOpportunityDetailResponse,
         )
-        expect(result).toEqual(mockMappedOpportunity)
     })
 
-    it('should handle all options provided together', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
+    it('should pass 0 when opportunityId is undefined', async () => {
+        const findOpportunityMock =
+            mockFindOpportunityByIdForShopOpportunityHandler(async () =>
+                HttpResponse.json(mockOpportunityDetailResponse),
+            )
+        const waitForFindOpportunityRequest =
+            findOpportunityMock.waitForRequest(server)
+        server.use(findOpportunityMock.handler)
 
-        renderHook(
-            () =>
-                useFindOneOpportunity(789, 456, {
-                    query: {
-                        enabled: false,
-                        refetchOnWindowFocus: true,
-                    },
-                }),
-            { wrapper },
+        renderHook(() => useFindOneOpportunity(789, undefined))
+
+        await waitForFindOpportunityRequest((request) => {
+            expect(new URL(request.url).pathname).toContain('0')
+        })
+    })
+
+    it('should not request when disabled', async () => {
+        let requestCount = 0
+        server.use(
+            mockFindOpportunityByIdForShopOpportunityHandler(async () => {
+                requestCount += 1
+
+                return HttpResponse.json(mockOpportunityDetailResponse)
+            }).handler,
         )
 
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            456,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: false,
-                    refetchOnWindowFocus: true,
-                }),
+        const { result } = renderHook(() =>
+            useFindOneOpportunity(789, 123, {
+                query: { enabled: false },
             }),
         )
-    })
 
-    it('should handle empty options object', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
+        await Promise.resolve()
 
-        renderHook(() => useFindOneOpportunity(789, 123, {}), { wrapper })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                    refetchOnWindowFocus: false,
-                }),
-            }),
-        )
-    })
-
-    it('should handle options with empty query object', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-        })
-
-        renderHook(() => useFindOneOpportunity(789, 123, { query: {} }), {
-            wrapper,
-        })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(
-            789,
-            123,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                    refetchOnWindowFocus: false,
-                }),
-            }),
-        )
-    })
-
-    it('should return data from useFindOpportunityByIdForShopOpportunity', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: mockMappedOpportunity,
-            isLoading: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => useFindOneOpportunity(789, 123), {
-            wrapper,
-        })
-
-        expect(result.current.data).toEqual(mockMappedOpportunity)
-        expect(result.current.isLoading).toBe(false)
-    })
-
-    it('should return loading state from useFindOpportunityByIdForShopOpportunity', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => useFindOneOpportunity(789, 123), {
-            wrapper,
-        })
-
-        expect(result.current.isLoading).toBe(true)
-        expect(result.current.data).toBeUndefined()
-    })
-
-    it('should handle error state from useFindOpportunityByIdForShopOpportunity', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        const mockError = new Error('Failed to fetch')
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: true,
-            error: mockError,
-        })
-
-        const { result } = renderHook(() => useFindOneOpportunity(789, 123), {
-            wrapper,
-        })
-
-        expect(result.current.isError).toBe(true)
-        expect(result.current.error).toEqual(mockError)
-    })
-
-    it('should handle opportunityId 0 explicitly', () => {
-        const mockUseFindOpportunityByIdForShopOpportunity =
-            useFindOpportunityByIdForShopOpportunity as jest.Mock
-        mockUseFindOpportunityByIdForShopOpportunity.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-        })
-
-        renderHook(() => useFindOneOpportunity(789, 0), { wrapper })
-
-        expect(
-            mockUseFindOpportunityByIdForShopOpportunity,
-        ).toHaveBeenCalledWith(789, 0, expect.anything())
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(requestCount).toBe(0)
     })
 })

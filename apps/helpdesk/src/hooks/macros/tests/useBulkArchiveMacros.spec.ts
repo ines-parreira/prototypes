@@ -1,8 +1,12 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import type { QueryClient } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useBulkArchiveMacros as useBulkArchiveMacrosPrimitive } from '@gorgias/helpdesk-queries'
+import {
+    mockBulkArchiveMacrosHandler,
+    mockBulkArchiveMacrosResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { macros } from 'fixtures/macro'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -11,131 +15,164 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useBulkArchiveMacros } from '../useBulkArchiveMacros'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    __esModule: true,
-    useBulkArchiveMacros: jest.fn(),
-    queryKeys: {
-        macros: {
-            listMacros: () => ({ pop: () => null }),
-        },
-    },
-}))
-
-const useBulkArchiveMacrosMock = assumeMock(useBulkArchiveMacrosPrimitive)
-const mockMutateBulkArchive = jest.fn()
-
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = assumeMock(useAppDispatch)
-
-jest.mock('@tanstack/react-query', () => ({
-    ...jest.requireActual('@tanstack/react-query'),
-    useQueryClient: jest.fn(),
-}))
-const useQueryClientMock = assumeMock(useQueryClient)
+const useAppDispatchMock = jest.mocked(useAppDispatch)
 
 jest.mock('state/notifications/actions')
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function renderUseBulkArchiveMacros(macrosFixtures = macros) {
+    return renderHook(() => useBulkArchiveMacros(macrosFixtures))
+}
+
 describe('useBulkArchiveMacros', () => {
-    const invalidateQueriesMock = jest.fn()
     const dispatchMock = jest.fn()
 
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatchMock)
-        useBulkArchiveMacrosMock.mockReturnValue({
-            mutate: mockMutateBulkArchive,
-        } as unknown as ReturnType<typeof useBulkArchiveMacros>)
-        useQueryClientMock.mockImplementation(
-            () =>
-                ({
-                    invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient,
-        )
     })
 
-    const macrosFixtures = [macros[0], macros[1]]
-
-    it('should handle successful and failed requests with useBulkArchiveMacros', () => {
-        const onSettled = jest.fn()
-        const { result } = renderHook(() =>
-            useBulkArchiveMacros(macrosFixtures),
-        )
-        void result.current.mutate(
-            { data: { ids: [1] } },
-            {
-                onSettled,
-            },
-        )
+    it('should handle successful and failed archive results', async () => {
+        const archivedMacro = { ...macros[0], id: 1 }
+        const macroUsedInRule = { ...macros[1], id: 2 }
         const error = {
             msg: 'In use in a rule',
             data: {
                 rules: ['rule1'],
             },
         }
-        ;(
-            useBulkArchiveMacrosMock.mock.calls[0][0]?.mutation as unknown as {
-                onSettled: (resp: {
-                    data: { data: { data: unknown[] } }
-                }) => void
-            }
-        )?.onSettled({
-            data: {
-                data: {
+        const bulkArchiveMacrosMock = mockBulkArchiveMacrosHandler(async () =>
+            HttpResponse.json(
+                mockBulkArchiveMacrosResponse({
                     data: [
                         {
-                            id: 1,
+                            id: archivedMacro.id,
                             status: 'archived',
                         },
                         {
-                            id: 2,
+                            id: macroUsedInRule.id,
                             error,
                             status: 'macro_used',
                         },
                     ],
-                },
-            },
+                }),
+            ),
+        )
+        const waitForBulkArchiveMacrosRequest =
+            bulkArchiveMacrosMock.waitForRequest(server)
+        server.use(bulkArchiveMacrosMock.handler)
+        const { result } = renderUseBulkArchiveMacros([
+            archivedMacro,
+            macroUsedInRule,
+        ])
+
+        result.current.mutate({
+            data: { ids: [archivedMacro.id, macroUsedInRule.id] },
         })
 
-        expect(dispatchMock).toHaveBeenCalled()
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: `Successfully archived macro: ${macrosFixtures[0].name}`,
-            status: NotificationStatus.Success,
+        await waitForBulkArchiveMacrosRequest(async (request) => {
+            expect(await request.json()).toEqual({
+                ids: [archivedMacro.id, macroUsedInRule.id],
+            })
+        })
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                message: `Successfully archived macro: ${archivedMacro.name}`,
+                status: NotificationStatus.Success,
+            })
         })
         expect(notify).toHaveBeenNthCalledWith(2, {
             allowHTML: true,
-            title: `${macrosFixtures[1].name}: ${error.msg}`,
+            title: `${macroUsedInRule.name}: ${error.msg}`,
             message: expect.stringMatching(error.data.rules[0]),
             status: NotificationStatus.Error,
         })
-        expect(invalidateQueriesMock).toHaveBeenCalled()
+        expect(dispatchMock).toHaveBeenCalled()
     })
 
-    it('should handle failed request with useBulkArchiveMacros', () => {
-        const onError = jest.fn()
-        const { result } = renderHook(() => useBulkArchiveMacros())
-        void result.current.mutate(
-            { data: { ids: [1, 2] } },
-            {
-                onError,
-            },
+    it('should handle nested archive results from the runtime response envelope', async () => {
+        const archivedMacro = { ...macros[0], id: 1 }
+        server.use(
+            mockBulkArchiveMacrosHandler(async () =>
+                HttpResponse.json({
+                    data: mockBulkArchiveMacrosResponse({
+                        data: [
+                            {
+                                id: archivedMacro.id,
+                                status: 'archived',
+                            },
+                        ],
+                    }),
+                } as never),
+            ).handler,
         )
-        ;(
-            useBulkArchiveMacrosMock.mock.calls[0][0]?.mutation as unknown as {
-                onError: (args: unknown) => void
-            }
-        )?.onError({
-            response: {
-                data: {
-                    error: {},
-                },
-            },
+        const { result } = renderUseBulkArchiveMacros([archivedMacro])
+
+        result.current.mutate({
+            data: { ids: [archivedMacro.id] },
         })
 
-        expect(dispatchMock).toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            title: 'Failed to archive macro(s). Please try again in a few seconds.',
-            message: undefined,
-            allowHTML: true,
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith({
+                message: `Successfully archived macro: ${archivedMacro.name}`,
+                status: NotificationStatus.Success,
+            })
         })
+        expect(dispatchMock).toHaveBeenCalled()
+    })
+
+    it('should handle archive responses without result data', async () => {
+        server.use(
+            mockBulkArchiveMacrosHandler(async () =>
+                HttpResponse.json({} as never),
+            ).handler,
+        )
+        const { result } = renderUseBulkArchiveMacros()
+
+        result.current.mutate({ data: { ids: [1, 2] } })
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+        expect(notify).not.toHaveBeenCalled()
+    })
+
+    it('should handle failed archive request', async () => {
+        const errorMessage =
+            'Failed to archive macro(s). Please try again in a few seconds.'
+        server.use(
+            mockBulkArchiveMacrosHandler(async () =>
+                HttpResponse.json({ error: { msg: errorMessage } } as never, {
+                    status: 500,
+                }),
+            ).handler,
+        )
+        const { result } = renderUseBulkArchiveMacros()
+
+        result.current.mutate({ data: { ids: [1, 2] } })
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith({
+                title: errorMessage,
+                message: undefined,
+                allowHTML: true,
+                status: NotificationStatus.Error,
+            })
+        })
+        expect(dispatchMock).toHaveBeenCalled()
     })
 })

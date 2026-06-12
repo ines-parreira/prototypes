@@ -5,9 +5,18 @@ import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Route, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {
+    mockLinkTrackstarHandler,
+    mockLinkTrackstarResponse,
+    mockServiceConnectionTrackstarHandler,
+    mockServiceConnectionTrackstarResponse,
+} from '@gorgias/workflows-mocks'
 
 import { applications as mockApplications } from 'fixtures/applications'
 import { dummyAppData } from 'fixtures/apps'
@@ -51,8 +60,9 @@ jest.mock('models/integration/resources', () => {
     }
 })
 
-const mockCreateTrackstarServiceConnection = jest.fn()
-const mockCreateTrackstarLink = jest.fn()
+const serviceConnectionTrackstarRequests: Request[] = []
+const linkTrackstarRequests: Request[] = []
+const workflowsServer = setupServer()
 type WorkflowConfigurationTemplate = {
     id: string
     internal_id: string
@@ -66,20 +76,6 @@ const mockUseGetWorkflowConfigurationTemplates = jest.fn<
     data: [],
     isInitialLoading: false,
 }))
-jest.mock('@gorgias/workflows-queries', () => {
-    const actual = jest.requireActual('@gorgias/workflows-queries')
-    return {
-        ...actual,
-        useServiceConnectionTrackstar: () => ({
-            mutateAsync: mockCreateTrackstarServiceConnection,
-            isLoading: false,
-        }),
-        useLinkTrackstar: () => ({
-            mutateAsync: mockCreateTrackstarLink,
-            isLoading: false,
-        }),
-    }
-})
 jest.mock('models/workflows/queries', () => {
     const actual = jest.requireActual('models/workflows/queries')
     return {
@@ -113,14 +109,48 @@ describe(`App`, () => {
     beforeEach(() => {
         mockServer.reset()
         mockTrackstarOpen.mockClear()
-        mockCreateTrackstarServiceConnection.mockReset()
-        mockCreateTrackstarLink.mockReset()
+        serviceConnectionTrackstarRequests.length = 0
+        linkTrackstarRequests.length = 0
+        workflowsServer.use(
+            mockServiceConnectionTrackstarHandler(async ({ request }) => {
+                serviceConnectionTrackstarRequests.push(request)
+
+                return HttpResponse.json(
+                    mockServiceConnectionTrackstarResponse({
+                        id: '01970000-0000-7000-8000-000000000111',
+                    }),
+                )
+            }).handler,
+            mockLinkTrackstarHandler(async ({ request }) => {
+                linkTrackstarRequests.push(request)
+
+                return HttpResponse.json(
+                    mockLinkTrackstarResponse({
+                        link_token: 'fresh-token',
+                    }),
+                )
+            }).handler,
+            http.post(/.*\/trackstar\/link\/?$/, async ({ request }) => {
+                linkTrackstarRequests.push(request)
+
+                return HttpResponse.json(
+                    mockLinkTrackstarResponse({
+                        link_token: 'fresh-token',
+                    }),
+                )
+            }),
+        )
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
             isInitialLoading: false,
         })
         trackstarLinkCallbacks = {}
     })
+
+    afterEach(() => {
+        workflowsServer.resetHandlers()
+    })
+
     it('should render', async () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
         const { container } = render(<App />, {
@@ -1022,6 +1052,14 @@ describe(`App`, () => {
             featureFlagsClientMock.allFlags.mockReturnValue({})
         })
 
+        beforeAll(() => {
+            workflowsServer.listen({ onUnhandledRequest: 'bypass' })
+        })
+
+        afterAll(() => {
+            workflowsServer.close()
+        })
+
         it('creates a Trackstar service connection when the auth code is received', async () => {
             const connectionId = '01970000-0000-7000-8000-000000000111'
             mockServer.onGet(`/api/apps/${appId}`).reply(200, {
@@ -1034,9 +1072,17 @@ describe(`App`, () => {
                 .reply(200, { data: [], meta: {} })
             mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
 
-            mockCreateTrackstarServiceConnection.mockResolvedValue({
-                data: { id: connectionId },
-            })
+            workflowsServer.use(
+                mockServiceConnectionTrackstarHandler(async ({ request }) => {
+                    serviceConnectionTrackstarRequests.push(request)
+
+                    return HttpResponse.json(
+                        mockServiceConnectionTrackstarResponse({
+                            id: connectionId,
+                        }),
+                    )
+                }).handler,
+            )
 
             featureFlagsClientMock.allFlags.mockReturnValue({
                 'action-centralized-library': 'MILESTONE-1',
@@ -1056,17 +1102,14 @@ describe(`App`, () => {
             ).toBeInTheDocument()
 
             await trackstarLinkCallbacks.onSuccess?.('trackstar-auth-xyz')
-            // The connection request fires from onClose so the Trackstar widget
-            // closes before the store-mapping modal opens.
             trackstarLinkCallbacks.onClose?.()
 
             await waitFor(() => {
-                expect(
-                    mockCreateTrackstarServiceConnection,
-                ).toHaveBeenCalledWith({
-                    data: { auth_code: 'trackstar-auth-xyz' },
-                })
+                expect(serviceConnectionTrackstarRequests).toHaveLength(1)
             })
+            await expect(
+                serviceConnectionTrackstarRequests[0].json(),
+            ).resolves.toEqual({ auth_code: 'trackstar-auth-xyz' })
         })
 
         it('does not create a Trackstar service connection when the widget closes without a successful authentication', async () => {
@@ -1094,7 +1137,7 @@ describe(`App`, () => {
 
             trackstarLinkCallbacks.onClose?.()
 
-            expect(mockCreateTrackstarServiceConnection).not.toHaveBeenCalled()
+            expect(serviceConnectionTrackstarRequests).toHaveLength(0)
         })
 
         it('shows an error toast when the Trackstar service-connection request fails', async () => {
@@ -1108,8 +1151,15 @@ describe(`App`, () => {
                 .reply(200, { data: [], meta: {} })
             mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
 
-            mockCreateTrackstarServiceConnection.mockRejectedValue(
-                new Error('boom'),
+            workflowsServer.use(
+                mockServiceConnectionTrackstarHandler(async ({ request }) => {
+                    serviceConnectionTrackstarRequests.push(request)
+
+                    return HttpResponse.json(
+                        mockServiceConnectionTrackstarResponse(),
+                        { status: 500 },
+                    )
+                }).handler,
             )
 
             featureFlagsClientMock.allFlags.mockReturnValue({
@@ -1124,8 +1174,6 @@ describe(`App`, () => {
 
             await screen.findAllByText(new RegExp(dummyAppData.name))
             await trackstarLinkCallbacks.onSuccess?.('trackstar-auth-xyz')
-            // The connection request fires from onClose so the Trackstar widget
-            // closes before any toast / store-mapping modal renders.
             trackstarLinkCallbacks.onClose?.()
 
             const toast = await screen.findByRole('status', {
@@ -1759,11 +1807,16 @@ describe(`App`, () => {
             featureFlagsClientMock.allFlags.mockReturnValue({})
         })
 
+        beforeAll(() => {
+            workflowsServer.listen({ onUnhandledRequest: 'bypass' })
+        })
+
+        afterAll(() => {
+            workflowsServer.close()
+        })
+
         it('opens the trackstar link picker and fetches a fresh link token from the PageHeader CTA', async () => {
             const user = userEvent.setup()
-            mockCreateTrackstarLink.mockResolvedValue({
-                data: { link_token: 'fresh-token' },
-            })
 
             mockServer.onGet(`/api/apps/${appId}`).reply(200, {
                 ...dummyAppData,
@@ -1816,8 +1869,8 @@ describe(`App`, () => {
             expect(mockTrackstarOpen).toHaveBeenCalledTimes(1)
 
             const token = await trackstarLinkCallbacks.getLinkToken?.()
-            expect(mockCreateTrackstarLink).toHaveBeenCalledWith({
-                connectionId: '',
+            await waitFor(() => {
+                expect(linkTrackstarRequests).toHaveLength(1)
             })
             expect(token).toBe('fresh-token')
         })
@@ -1825,12 +1878,17 @@ describe(`App`, () => {
         it('creates a Trackstar service connection from the PageHeader CTA when onClose fires after a successful authentication', async () => {
             const user = userEvent.setup()
             const connectionId = '01970000-0000-7000-8000-000000000666'
-            mockCreateTrackstarLink.mockResolvedValue({
-                data: { link_token: 'fresh-token' },
-            })
-            mockCreateTrackstarServiceConnection.mockResolvedValue({
-                data: { id: connectionId },
-            })
+            workflowsServer.use(
+                mockServiceConnectionTrackstarHandler(async ({ request }) => {
+                    serviceConnectionTrackstarRequests.push(request)
+
+                    return HttpResponse.json(
+                        mockServiceConnectionTrackstarResponse({
+                            id: connectionId,
+                        }),
+                    )
+                }).handler,
+            )
 
             mockServer.onGet(`/api/apps/${appId}`).reply(200, {
                 ...dummyAppData,
@@ -1882,24 +1940,20 @@ describe(`App`, () => {
             )
 
             await trackstarLinkCallbacks.onSuccess?.('pageheader-auth-xyz')
-            expect(mockCreateTrackstarServiceConnection).not.toHaveBeenCalled()
+            expect(serviceConnectionTrackstarRequests).toHaveLength(0)
 
             trackstarLinkCallbacks.onClose?.()
 
             await waitFor(() => {
-                expect(
-                    mockCreateTrackstarServiceConnection,
-                ).toHaveBeenCalledWith({
-                    data: { auth_code: 'pageheader-auth-xyz' },
-                })
+                expect(serviceConnectionTrackstarRequests).toHaveLength(1)
             })
+            await expect(
+                serviceConnectionTrackstarRequests[0].json(),
+            ).resolves.toEqual({ auth_code: 'pageheader-auth-xyz' })
         })
 
         it('does not create a Trackstar service connection from the PageHeader CTA when the widget closes without a successful authentication', async () => {
             const user = userEvent.setup()
-            mockCreateTrackstarLink.mockResolvedValue({
-                data: { link_token: 'fresh-token' },
-            })
 
             mockServer.onGet(`/api/apps/${appId}`).reply(200, {
                 ...dummyAppData,
@@ -1952,7 +2006,7 @@ describe(`App`, () => {
 
             trackstarLinkCallbacks.onClose?.()
 
-            expect(mockCreateTrackstarServiceConnection).not.toHaveBeenCalled()
+            expect(serviceConnectionTrackstarRequests).toHaveLength(0)
         })
     })
 })

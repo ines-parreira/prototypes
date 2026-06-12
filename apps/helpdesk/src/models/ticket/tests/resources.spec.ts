@@ -1,6 +1,7 @@
-import { assumeMock } from '@repo/testing'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
+import { mockSearchTicketsHandler } from '@gorgias/helpdesk-mocks'
 
 import { ticket } from 'fixtures/ticket'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
@@ -9,10 +10,21 @@ import {
     searchTicketsWithHighlights,
 } from 'models/ticket/resources'
 import type { Ticket } from 'models/ticket/types'
-import { CancelToken } from 'tests/axiosRuntime'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
-jest.mock('@gorgias/helpdesk-client')
-const searchTicketsMock = assumeMock(apiSearchTickets)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('ticket resources', () => {
     const defaultData: ApiListResponseCursorPagination<Ticket[]> = {
@@ -27,11 +39,13 @@ describe('ticket resources', () => {
     }
 
     describe('searchTickets', () => {
-        beforeEach(() => {
-            searchTicketsMock.mockResolvedValue({ data: defaultData } as any)
-        })
-
         it('should resolve with the ticket list and meta on success', async () => {
+            server.use(
+                mockSearchTicketsHandler(async () =>
+                    HttpResponse.json(defaultData as any),
+                ).handler,
+            )
+
             const res = await searchTickets({
                 search: '',
             })
@@ -40,6 +54,10 @@ describe('ticket resources', () => {
         })
 
         it('should pass the search phrase and filters in the payload', async () => {
+            const searchTicketsMock = mockSearchTicketsHandler()
+            const waitForSearchTicketsRequest =
+                searchTicketsMock.waitForRequest(server)
+            server.use(searchTicketsMock.handler)
             const options = {
                 search: 'foo',
                 filters: 'bar',
@@ -47,10 +65,17 @@ describe('ticket resources', () => {
 
             await searchTickets(options)
 
-            expect(searchTicketsMock).toHaveBeenCalledWith(options, {}, {})
+            await waitForSearchTicketsRequest(async (request) => {
+                expect(await request.json()).toEqual(options)
+                expect(new URL(request.url).search).toBe('')
+            })
         })
 
         it('should pass cursor and limit in the params', async () => {
+            const searchTicketsMock = mockSearchTicketsHandler()
+            const waitForSearchTicketsRequest =
+                searchTicketsMock.waitForRequest(server)
+            server.use(searchTicketsMock.handler)
             const options = {
                 search: 'foo',
                 filters: '',
@@ -64,33 +89,32 @@ describe('ticket resources', () => {
                 limit,
             })
 
-            expect(searchTicketsMock).toHaveBeenCalledWith(
-                options,
-                { cursor, limit },
-                {},
-            )
+            await waitForSearchTicketsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual(options)
+                expect(searchParams.get('cursor')).toBe(cursor)
+                expect(searchParams.get('limit')).toBe(String(limit))
+            })
         })
 
         it('should pass cancel token', async () => {
             const source = CancelToken.source()
             source.cancel()
 
-            await searchTickets({
-                search: '',
-                cancelToken: source.token,
-            })
-
-            expect(searchTicketsMock).toHaveBeenCalledWith(
-                {
+            await expect(
+                searchTickets({
                     search: '',
-                    filters: '',
-                },
-                {},
-                { cancelToken: source.token },
-            )
+                    cancelToken: source.token,
+                }),
+            ).rejects.toBeInstanceOf(Cancel)
         })
 
         it('should add with_highlights prop', async () => {
+            const searchTicketsMock = mockSearchTicketsHandler()
+            const waitForSearchTicketsRequest =
+                searchTicketsMock.waitForRequest(server)
+            server.use(searchTicketsMock.handler)
             const options = {
                 search: 'foo',
             }
@@ -100,14 +124,22 @@ describe('ticket resources', () => {
 
             await searchTickets({ ...options, ...params })
 
-            expect(searchTicketsMock).toHaveBeenCalledWith(
-                { ...options, filters: '' },
-                { with_highlights: params.withHighlights },
-                {},
-            )
+            await waitForSearchTicketsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual({
+                    ...options,
+                    filters: '',
+                })
+                expect(searchParams.get('with_highlights')).toBe('true')
+            })
         })
 
         it('should add track_total_hits prop', async () => {
+            const searchTicketsMock = mockSearchTicketsHandler()
+            const waitForSearchTicketsRequest =
+                searchTicketsMock.waitForRequest(server)
+            server.use(searchTicketsMock.handler)
             const options = {
                 search: 'foo',
             }
@@ -117,19 +149,23 @@ describe('ticket resources', () => {
 
             await searchTickets({ ...options, ...params })
 
-            expect(searchTicketsMock).toHaveBeenCalledWith(
-                { ...options, filters: '' },
-                { track_total_hits: params.trackTotalHits },
-                {},
-            )
+            await waitForSearchTicketsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual({
+                    ...options,
+                    filters: '',
+                })
+                expect(searchParams.get('track_total_hits')).toBe('true')
+            })
         })
     })
 
     describe('searchTicketsWithHighlights', () => {
         it('should call searchTickets withHighlights and merge Tickets with their highlights', async () => {
             const highlights = {}
-            searchTicketsMock.mockResolvedValue({
-                data: {
+            const searchTicketsMock = mockSearchTicketsHandler(async () =>
+                HttpResponse.json({
                     ...defaultData,
                     data: [
                         {
@@ -137,19 +173,21 @@ describe('ticket resources', () => {
                             highlights,
                         },
                     ],
-                },
-            } as any)
+                } as any),
+            )
+            const waitForSearchTicketsRequest =
+                searchTicketsMock.waitForRequest(server)
+            server.use(searchTicketsMock.handler)
             const options = { search: 'foo', filters: '' }
 
             const response = await searchTicketsWithHighlights(options)
 
-            expect(searchTicketsMock).toHaveBeenCalledWith(
-                {
-                    ...options,
-                },
-                { with_highlights: true },
-                {},
-            )
+            await waitForSearchTicketsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual(options)
+                expect(searchParams.get('with_highlights')).toBe('true')
+            })
 
             expect(response.data.data).toEqual([
                 {

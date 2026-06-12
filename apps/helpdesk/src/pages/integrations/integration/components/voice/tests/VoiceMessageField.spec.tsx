@@ -1,12 +1,15 @@
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type { UploadedCustomRecording } from '@gorgias/helpdesk-queries'
-import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
+import {
+    mockUploadCustomVoiceRecordingHandler,
+    mockUploadCustomVoiceRecordingResponse,
+} from '@gorgias/helpdesk-mocks'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
 import type { Account } from 'state/currentAccount/types'
@@ -17,7 +20,6 @@ jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => ({
     VoiceMessageTTSPreviewFields: () => <div>VoiceMessageTTSPreviewFields</div>,
 }))
 
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: () => jest.fn() }))
 jest.mock('../utils', () => ({
     getAudioFileDuration: jest
@@ -28,13 +30,12 @@ jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => ({
     VoiceMessageTTSPreviewFields: () => <div>VoiceMessageTTSPreviewFields</div>,
 }))
 
-const mutateUploadMock = jest.fn()
-
-const uploadResponse = (isLoading = false) =>
-    ({
-        isLoading,
-        mutate: mutateUploadMock,
-    }) as unknown as ReturnType<typeof useUploadCustomVoiceRecording>
+const uploadCustomVoiceRecordingRequests: Request[] = []
+const mockApiErrorResponse = (error: { msg: string }) => ({ error }) as never
+type UploadCustomVoiceRecordingResponse = ReturnType<
+    typeof mockUploadCustomVoiceRecordingResponse
+>
+const server = setupServer()
 
 describe('VoiceMessageField', () => {
     const onChange = jest.fn()
@@ -44,15 +45,39 @@ describe('VoiceMessageField', () => {
         text_to_speech_content: 'Thank you for calling',
     }
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
+        uploadCustomVoiceRecordingRequests.length = 0
+        server.use(
+            mockUploadCustomVoiceRecordingHandler(async ({ request }) => {
+                uploadCustomVoiceRecordingRequests.push(request)
+
+                return HttpResponse.json(
+                    mockUploadCustomVoiceRecordingResponse({
+                        url: 'https://example.com/voice-recording.mp3',
+                        name: 'example.mp3',
+                        content_type: 'audio/mpeg',
+                        size: 23,
+                    }),
+                )
+            }).handler,
+        )
         window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
         window.GORGIAS_STATE.currentAccount = {
             domain: 'acme',
         } as Account
-        ;(useUploadCustomVoiceRecording as jest.Mock).mockReturnValue(
-            uploadResponse(),
-        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     const renderComponent = (
@@ -230,12 +255,7 @@ describe('VoiceMessageField', () => {
             })
 
             await waitFor(() => {
-                expect(mutateUploadMock).toHaveBeenCalledWith({
-                    data: { file },
-                    params: {
-                        type: CustomRecordingType.GreetingMessage,
-                    },
-                })
+                expect(uploadCustomVoiceRecordingRequests).toHaveLength(1)
             })
         })
 
@@ -268,30 +288,26 @@ describe('VoiceMessageField', () => {
 
             await act(async () => {
                 await user.upload(input, file)
-
-                // Simulate successful upload
-                const mockCall = (useUploadCustomVoiceRecording as jest.Mock)
-                    .mock.calls[0]
-                mockCall[0].mutation.onSuccess(
-                    axiosSuccessResponse<UploadedCustomRecording>({
-                        url: 'https://example.com/voice-recording.mp3',
-                        name: 'example.mp3',
-                        content_type: 'audio/mpeg',
-                        size: 23,
-                    }),
-                    null as any,
-                    null as any,
-                )
             })
 
-            expect(onChange).toHaveBeenCalledWith({
-                voice_message_type: VoiceMessageType.VoiceRecording,
-                voice_recording_file_path:
-                    'https://example.com/voice-recording.mp3',
+            await waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith({
+                    voice_message_type: VoiceMessageType.VoiceRecording,
+                    voice_recording_file_path:
+                        'https://example.com/voice-recording.mp3',
+                })
             })
         })
 
         it('should handle upload error', async () => {
+            server.use(
+                mockUploadCustomVoiceRecordingHandler(async () =>
+                    HttpResponse.json(
+                        mockApiErrorResponse({ msg: 'File too large' }),
+                        { status: 400 },
+                    ),
+                ).handler,
+            )
             const user = userEvent.setup()
             const file = new File(['audio data'], 'example.mp3', {
                 type: 'audio/mpeg',
@@ -304,21 +320,6 @@ describe('VoiceMessageField', () => {
 
             await act(async () => {
                 await user.upload(input, file)
-
-                // Simulate upload error
-                const mockCall = (useUploadCustomVoiceRecording as jest.Mock)
-                    .mock.calls[0]
-                mockCall[0].mutation.onError(
-                    {
-                        response: {
-                            data: {
-                                error: { msg: 'File too large' },
-                            },
-                        },
-                    },
-                    null as any,
-                    null as any,
-                )
             })
 
             const toast = await screen.findByRole('status', {
@@ -327,17 +328,44 @@ describe('VoiceMessageField', () => {
             expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
 
-        it('should disable upload button when loading', () => {
-            ;(useUploadCustomVoiceRecording as jest.Mock).mockReturnValue(
-                uploadResponse(true),
-            )
+        it('should disable upload button when loading', async () => {
+            let resolveUpload: (
+                response: HttpResponse<UploadCustomVoiceRecordingResponse>,
+            ) => void = () => {}
+            server.use(
+                mockUploadCustomVoiceRecordingHandler(async ({ request }) => {
+                    uploadCustomVoiceRecordingRequests.push(request)
 
-            renderComponent(customRecordingMessage)
+                    return await new Promise<
+                        HttpResponse<UploadCustomVoiceRecordingResponse>
+                    >((resolve) => {
+                        resolveUpload = resolve
+                    })
+                }).handler,
+            )
+            const user = userEvent.setup()
+            const file = new File(['audio data'], 'example.mp3', {
+                type: 'audio/mpeg',
+            })
+
+            const { container } = renderComponent(customRecordingMessage)
+            const input = container.querySelector(
+                'input[type="file"]',
+            ) as HTMLInputElement
+
+            await act(async () => {
+                await user.upload(input, file)
+            })
 
             const uploadButton = screen
                 .getByText('Upload File')
                 .closest('button')
-            expect(uploadButton).toBeAriaDisabled()
+            await waitFor(() => {
+                expect(uploadButton).toBeAriaDisabled()
+            })
+            resolveUpload(
+                HttpResponse.json(mockUploadCustomVoiceRecordingResponse()),
+            )
         })
 
         it('should validate file size', async () => {
@@ -365,7 +393,7 @@ describe('VoiceMessageField', () => {
                     name: 'File too large. Upload a recording smaller than 2MB.',
                 })
                 expect(toast).toHaveAttribute('data-intent', 'destructive')
-                expect(mutateUploadMock).not.toHaveBeenCalled()
+                expect(uploadCustomVoiceRecordingRequests).toHaveLength(0)
             })
         })
     })

@@ -15,6 +15,19 @@ import { errorToChildren } from 'utils'
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()
 
+function getArchiveMacroResults(
+    responseData: unknown,
+): ArchiveMacroAsUserResult[] {
+    if (Array.isArray(responseData)) {
+        return responseData
+    }
+
+    return (
+        (responseData as { data?: ArchiveMacroAsUserResult[] } | undefined)
+            ?.data ?? []
+    )
+}
+
 export function useBulkUnarchiveMacros() {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
@@ -25,11 +38,9 @@ export function useBulkUnarchiveMacros() {
                 void queryClient.invalidateQueries({
                     queryKey,
                 })
-                const macroCount = (
-                    resp?.data.data as unknown as {
-                        data?: ArchiveMacroAsUserResult[]
-                    }
-                )?.data?.length
+                const macroCount = getArchiveMacroResults(
+                    resp?.data.data,
+                ).length
                 void dispatch(
                     notify({
                         message: `Successfully unarchived macro${

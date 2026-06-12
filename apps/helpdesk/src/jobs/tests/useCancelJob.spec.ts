@@ -1,9 +1,11 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { POSITIONS } from 'reapop'
 
-import { useCancelJob as useCancelJobQuery } from '@gorgias/helpdesk-queries'
+import { mockCancelJobHandler } from '@gorgias/helpdesk-mocks'
 
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { notify } from 'state/notifications/actions'
 import {
     NotificationStatus,
@@ -14,9 +16,6 @@ import { useCancelJob } from '../useCancelJob'
 
 jest.mock('reapop')
 
-jest.mock('@gorgias/helpdesk-queries')
-const useCancelJobMock = assumeMock(useCancelJobQuery)
-
 jest.mock('state/notifications/actions')
 
 const mockedDispatch = jest.fn()
@@ -24,76 +23,84 @@ jest.mock('hooks/useAppDispatch', () => ({
     useAppDispatch: () => mockedDispatch,
 }))
 
-const mutateCancelJobMock = jest.fn()
-const cancelJobResponse = () =>
-    ({
-        mutate: mutateCancelJobMock,
-    }) as unknown as ReturnType<typeof useCancelJobQuery>
+const server = setupServer()
 
-describe('useBulkAction', () => {
-    useCancelJobMock.mockReturnValue(cancelJobResponse())
-    const notificationPayload = {
-        id: 'id',
-        buttons: [],
-        allowHTML: false,
-        closeButton: false,
-        closeOnNext: true,
-        dismissAfter: 10000,
-        dismissible: true,
-        message: 'Job launched',
-        position: POSITIONS.topCenter,
-        status: NotificationStatus.Loading,
-        style: NotificationStyle.Alert as const,
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-    it('should successfully cancel job', () => {
-        const { result } = renderHook(() =>
-            useCancelJob({
-                getNotificationPayload: () => notificationPayload,
-            }),
-        )
-        void result.current.cancelJob({ id: 1 })
-        useCancelJobMock.mock.calls[0][0]?.mutation?.onSuccess?.(
-            axiosSuccessResponse(undefined),
-            {
-                id: 1,
-            },
-            undefined,
-        )
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
 
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: 'The job has been canceled.',
-                status: NotificationStatus.Success,
-            }),
-        )
+afterAll(() => {
+    server.close()
+})
+
+const notificationPayload = {
+    id: 'id',
+    buttons: [],
+    allowHTML: false,
+    closeButton: false,
+    closeOnNext: true,
+    dismissAfter: 10000,
+    dismissible: true,
+    message: 'Job launched',
+    position: POSITIONS.topCenter,
+    status: NotificationStatus.Loading,
+    style: NotificationStyle.Alert as const,
+}
+
+function renderUseCancelJob() {
+    return renderHook(() =>
+        useCancelJob({
+            getNotificationPayload: () => notificationPayload,
+        }),
+    )
+}
+
+describe('useCancelJob', () => {
+    it('should successfully cancel job', async () => {
+        const cancelJobMock = mockCancelJobHandler()
+        const waitForCancelJobRequest = cancelJobMock.waitForRequest(server)
+        server.use(cancelJobMock.handler)
+        const { result } = renderUseCancelJob()
+
+        result.current.cancelJob({ id: 1 })
+
+        await waitForCancelJobRequest((request) => {
+            expect(new URL(request.url).pathname).toContain('/jobs/1')
+        })
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: 'The job has been canceled.',
+                    status: NotificationStatus.Success,
+                }),
+            )
+        })
     })
 
-    it('should handle failure on job cancellation', () => {
-        const { result } = renderHook(() =>
-            useCancelJob({
-                getNotificationPayload: () => notificationPayload,
-            }),
-        )
-        void result.current.cancelJob({ id: 1 })
-        useCancelJobMock.mock.calls[0][0]?.mutation?.onError?.(
-            {
-                response: {
+    it('should handle failure on job cancellation', async () => {
+        server.use(
+            mockCancelJobHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Unauthorized' } } as never, {
                     status: 403,
-                    data: { error: { msg: 'Unauthorized' } },
-                },
-            },
-            {
-                id: 1,
-            },
-            undefined,
+                }),
+            ).handler,
         )
+        const { result } = renderUseCancelJob()
 
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: 'Unauthorized',
-                status: NotificationStatus.Error,
-            }),
-        )
+        result.current.cancelJob({ id: 1 })
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: 'Unauthorized',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
     })
 })

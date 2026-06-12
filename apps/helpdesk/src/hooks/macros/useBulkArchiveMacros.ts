@@ -15,6 +15,19 @@ import { errorToChildren } from 'utils'
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()
 
+function getArchiveMacroResults(
+    responseData: unknown,
+): ArchiveMacroAsUserResult[] {
+    if (Array.isArray(responseData)) {
+        return responseData
+    }
+
+    return (
+        (responseData as { data?: ArchiveMacroAsUserResult[] } | undefined)
+            ?.data ?? []
+    )
+}
+
 export function useBulkArchiveMacros(macros?: Macro[]) {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
@@ -24,11 +37,7 @@ export function useBulkArchiveMacros(macros?: Macro[]) {
             onSettled: (resp) => {
                 const errors: ArchiveMacroAsUserResult[] = []
                 const successes: string[] = []
-                ;(
-                    resp?.data.data as unknown as {
-                        data?: ArchiveMacroAsUserResult[]
-                    }
-                )?.data?.forEach((data) => {
+                getArchiveMacroResults(resp?.data.data).forEach((data) => {
                     if (data.error) {
                         errors.push(data)
                     } else {

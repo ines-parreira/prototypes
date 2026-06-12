@@ -1,13 +1,15 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { createVoiceQueues } from '@gorgias/helpdesk-client'
+import {
+    mockCreateVoiceQueuesHandler,
+    mockCreateVoiceQueuesResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import { CreateNewQueueModal } from '../CreateNewQueueModal'
-
-jest.mock('@gorgias/helpdesk-client')
-const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
 jest.mock('../CreateEditQueueModalFormContent', () => ({
     CreateEditQueueModalFormContent: () => (
@@ -37,6 +39,8 @@ jest.mock('../VoiceQueueSettingsForm', () => ({
     ),
 }))
 
+const server = setupServer()
+
 describe('CreateNewQueueModal', () => {
     const mockOnClose = jest.fn()
     const mockOnCreateSuccess = jest.fn()
@@ -50,6 +54,31 @@ describe('CreateNewQueueModal', () => {
                 {...props}
             />,
         )
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        server.use(
+            mockCreateVoiceQueuesHandler(async () =>
+                HttpResponse.json(
+                    mockCreateVoiceQueuesResponse({
+                        id: 123,
+                        name: 'Test Queue',
+                    }),
+                ),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
 
     it('renders the modal with all necessary components', () => {
         renderComponent()
@@ -66,10 +95,6 @@ describe('CreateNewQueueModal', () => {
     })
 
     it('handles form submission success correctly', async () => {
-        createVoiceQueuesMock.mockResolvedValue({
-            data: { name: 'Test Queue', id: 123 },
-        } as any)
-
         const { user } = renderComponent()
 
         await user.click(screen.getByText('Create queue'))
@@ -85,7 +110,13 @@ describe('CreateNewQueueModal', () => {
     })
 
     it('handles form submission error correctly', async () => {
-        createVoiceQueuesMock.mockRejectedValue(new Error('Test error'))
+        server.use(
+            mockCreateVoiceQueuesHandler(async () =>
+                HttpResponse.json(mockCreateVoiceQueuesResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { user } = renderComponent()
 

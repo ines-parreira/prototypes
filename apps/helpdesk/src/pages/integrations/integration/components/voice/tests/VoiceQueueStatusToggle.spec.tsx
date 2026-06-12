@@ -1,16 +1,19 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { updateVoiceQueue } from '@gorgias/helpdesk-client'
+import {
+    mockUpdateVoiceQueueHandler,
+    mockUpdateVoiceQueueResponse,
+} from '@gorgias/helpdesk-mocks'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-queries'
 
 import { VoiceQueueStatusToggle } from '../VoiceQueueStatusToggle'
 
-jest.mock('@gorgias/helpdesk-client')
-
-const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
-
 const mockQueueId = 123
+const updateVoiceQueueRequests: Request[] = []
+const server = setupServer()
 
 const renderComponent = (isEnabled: boolean) => {
     return render(
@@ -19,6 +22,22 @@ const renderComponent = (isEnabled: boolean) => {
 }
 
 describe('VoiceQueueStatusToggle', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        updateVoiceQueueRequests.length = 0
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
     it('should render toggle with correct initial state when enabled', () => {
         renderComponent(true)
 
@@ -34,11 +53,17 @@ describe('VoiceQueueStatusToggle', () => {
     })
 
     it('should enable queue when toggle is clicked and status is disabled', async () => {
-        updateVoiceQueueMock.mockResolvedValue({
-            data: {
-                status: VoiceQueueStatus.Enabled,
-            },
-        } as any)
+        server.use(
+            mockUpdateVoiceQueueHandler(async ({ request }) => {
+                updateVoiceQueueRequests.push(request)
+
+                return HttpResponse.json(
+                    mockUpdateVoiceQueueResponse({
+                        status: VoiceQueueStatus.Enabled,
+                    }),
+                )
+            }).handler,
+        )
         renderComponent(false)
 
         act(() => {
@@ -46,13 +71,10 @@ describe('VoiceQueueStatusToggle', () => {
         })
 
         await waitFor(() => {
-            expect(updateVoiceQueueMock).toHaveBeenCalledWith(
-                mockQueueId,
-                {
-                    status: VoiceQueueStatus.Enabled,
-                },
-                undefined,
-            )
+            expect(updateVoiceQueueRequests).toHaveLength(1)
+        })
+        await expect(updateVoiceQueueRequests[0].json()).resolves.toEqual({
+            status: VoiceQueueStatus.Enabled,
         })
 
         const toastEl = await screen.findByRole('status', {
@@ -65,11 +87,17 @@ describe('VoiceQueueStatusToggle', () => {
     })
 
     it('should disable queue when toggle is clicked and status is enabled', async () => {
-        updateVoiceQueueMock.mockResolvedValue({
-            data: {
-                status: VoiceQueueStatus.Disabled,
-            },
-        } as any)
+        server.use(
+            mockUpdateVoiceQueueHandler(async ({ request }) => {
+                updateVoiceQueueRequests.push(request)
+
+                return HttpResponse.json(
+                    mockUpdateVoiceQueueResponse({
+                        status: VoiceQueueStatus.Disabled,
+                    }),
+                )
+            }).handler,
+        )
         renderComponent(true)
 
         act(() => {
@@ -85,13 +113,10 @@ describe('VoiceQueueStatusToggle', () => {
         })
 
         await waitFor(() => {
-            expect(updateVoiceQueueMock).toHaveBeenCalledWith(
-                mockQueueId,
-                {
-                    status: VoiceQueueStatus.Disabled,
-                },
-                undefined,
-            )
+            expect(updateVoiceQueueRequests).toHaveLength(1)
+        })
+        await expect(updateVoiceQueueRequests[0].json()).resolves.toEqual({
+            status: VoiceQueueStatus.Disabled,
         })
 
         const toastEl = await screen.findByRole('status', {
@@ -104,7 +129,13 @@ describe('VoiceQueueStatusToggle', () => {
     })
 
     it('should display notification when request fails', async () => {
-        updateVoiceQueueMock.mockRejectedValue(new Error('Test error'))
+        server.use(
+            mockUpdateVoiceQueueHandler(async () =>
+                HttpResponse.json(mockUpdateVoiceQueueResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
         renderComponent(false)
 
         act(() => {

@@ -1,8 +1,12 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import type { QueryClient } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useUpdateMacro as useUpdateMacroPrimitive } from '@gorgias/helpdesk-queries'
+import {
+    mockUpdateMacroHandler,
+    mockUpdateMacroResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -10,137 +14,85 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useUpdateMacro } from '../useUpdateMacro'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    __esModule: true,
-    useUpdateMacro: jest.fn(),
-    queryKeys: {
-        macros: {
-            listMacros: () => ({ pop: () => null }),
-        },
-    },
-}))
-
-const useUpdateMacroPrimitiveMock = assumeMock(useUpdateMacroPrimitive)
-const mockMutateUpdateMacro = jest.fn()
-
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = assumeMock(useAppDispatch)
-
-jest.mock('@tanstack/react-query', () => ({
-    ...jest.requireActual('@tanstack/react-query'),
-    useQueryClient: jest.fn(),
-}))
-const useQueryClientMock = assumeMock(useQueryClient)
+const useAppDispatchMock = jest.mocked(useAppDispatch)
 
 jest.mock('state/notifications/actions')
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function renderUseUpdateMacro(errorMessage?: string) {
+    return renderHook(() => useUpdateMacro(errorMessage))
+}
+
 describe('useUpdateMacro', () => {
-    const invalidateQueriesMock = jest.fn()
-    const dispatchMock = jest.fn()
-
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
-        useUpdateMacroPrimitiveMock.mockReturnValue({
-            mutateAsync: mockMutateUpdateMacro,
-        } as unknown as ReturnType<typeof useUpdateMacroPrimitive>)
-        useQueryClientMock.mockImplementation(
-            () =>
-                ({
-                    invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient,
-        )
+        useAppDispatchMock.mockReturnValue(jest.fn())
     })
 
-    it('should handle settled request', () => {
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useUpdateMacro())
-
-        void result.current.mutateAsync(
-            {
-                id: 1,
-                data: {
-                    name: 'New Name',
-                },
-            },
-            {
-                onSettled,
-            },
+    it('should update a macro and notify on success', async () => {
+        const updateMacroMock = mockUpdateMacroHandler(async () =>
+            HttpResponse.json(mockUpdateMacroResponse({ id: 111 })),
         )
-        ;(
-            useUpdateMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSettled: () => void
-            }
-        )?.onSettled()
+        const waitForUpdateMacroRequest = updateMacroMock.waitForRequest(server)
+        server.use(updateMacroMock.handler)
+        const { result } = renderUseUpdateMacro()
 
-        expect(invalidateQueriesMock).toHaveBeenCalled()
-    })
-
-    it('should handle failed request', () => {
-        const errorMessage = 'nope'
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useUpdateMacro(errorMessage))
-        void result.current.mutateAsync(
-            {
-                id: 1,
-                data: {
-                    name: 'New Name',
-                },
-            },
-            {
-                onSettled,
-            },
-        )
-        ;(
-            useUpdateMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onError: (args: unknown) => void
-            }
-        )?.onError({
-            response: {
-                data: {
-                    error: {},
-                },
-            },
-        })
-
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            title: errorMessage,
-            status: NotificationStatus.Error,
-            allowHTML: true,
-            message: null,
-        })
-    })
-
-    it('should handle successful request', () => {
-        const id = 111
-        const onSettled = jest.fn()
-        const { result } = renderHook(() => useUpdateMacro())
-        void result.current.mutateAsync(
-            {
-                id: 1,
-                data: {
-                    name: 'New Name',
-                },
-            },
-            {
-                onSettled,
-            },
-        )
-        ;(
-            useUpdateMacroPrimitiveMock.mock.calls[0][0]
-                ?.mutation as unknown as {
-                onSuccess: (resp: unknown) => void
-            }
-        )?.onSuccess({
+        await result.current.mutateAsync({
+            id: 1,
             data: {
-                id,
+                name: 'New Name',
             },
         })
 
+        await waitForUpdateMacroRequest(async (request) => {
+            expect(new URL(request.url).pathname).toContain('/macros/1')
+            expect(await request.json()).toEqual({ name: 'New Name' })
+        })
         expect(notify).toHaveBeenNthCalledWith(1, {
             message: 'Successfully updated macro',
             status: NotificationStatus.Success,
+        })
+    })
+
+    it('should handle failed request', async () => {
+        const errorMessage = 'nope'
+        server.use(
+            mockUpdateMacroHandler(async () =>
+                HttpResponse.json({ error: {} } as never, { status: 400 }),
+            ).handler,
+        )
+        const { result } = renderUseUpdateMacro(errorMessage)
+
+        await expect(
+            result.current.mutateAsync({
+                id: 1,
+                data: {
+                    name: 'New Name',
+                },
+            }),
+        ).rejects.toBeDefined()
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                title: errorMessage,
+                status: NotificationStatus.Error,
+                allowHTML: true,
+                message: null,
+            })
         })
     })
 })

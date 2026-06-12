@@ -1,60 +1,82 @@
 import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type {
-    HttpResponse,
-    ListSlaPolicies200,
-} from '@gorgias/helpdesk-queries'
-import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
+import {
+    mockListSlaPoliciesHandler,
+    mockListSlaPoliciesResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
-import { makeUISLAPolicy } from '../makeUISLAPolicy'
 import { useGetSLAPolicies } from '../useGetSLAPolicies'
 
-jest.mock('@gorgias/helpdesk-queries')
-const mockUseListSlaPolicies = useListSlaPolicies as jest.Mock
-jest.mock('../makeUISLAPolicy')
-const mockMakeUISLAPolicy = makeUISLAPolicy as jest.Mock
+const server = setupServer()
 
-const generateMockUseListSlaPolicies = () => {
-    return (...fnParams: Parameters<typeof useListSlaPolicies>) => {
-        const [, options] = fnParams
-        const select = options?.query?.select
-        return {
-            data: select?.({
-                data: {
-                    data: [{}],
-                },
-            } as HttpResponse<ListSlaPolicies200>),
-        }
-    }
+function renderUseGetSLAPolicies() {
+    return renderHook(() => useGetSLAPolicies())
 }
 
 describe('useGetSLAPolicies', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
-        mockUseListSlaPolicies.mockImplementation(
-            generateMockUseListSlaPolicies(),
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json(
+                    mockListSlaPoliciesResponse({
+                        data: [slaPolicy1],
+                    }),
+                ),
+            ).handler,
         )
     })
-    it('should transform api query data', () => {
-        mockMakeUISLAPolicy.mockImplementation(() => UISLAPolicy1)
 
-        const { result } = renderHook(() => useGetSLAPolicies())
-
-        expect(result.current.data).toEqual([UISLAPolicy1])
+    afterEach(() => {
+        server.resetHandlers()
     })
 
-    it('should use created_datetime if updated_datetime is not available', () => {
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should transform api query data', async () => {
+        const { result } = renderUseGetSLAPolicies()
+
+        await waitFor(() => {
+            expect(result.current.data).toEqual([UISLAPolicy1])
+        })
+    })
+
+    it('should use created_datetime if updated_datetime is not available', async () => {
+        const policyWithoutUpdatedDatetime = {
+            ...slaPolicy1,
+            updated_datetime: null,
+        }
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json(
+                    mockListSlaPoliciesResponse({
+                        data: [policyWithoutUpdatedDatetime],
+                    }),
+                ),
+            ).handler,
+        )
+
         const UISLAPolicy1WithoutUpdatedDatetime = {
             ...UISLAPolicy1,
             updatedDatetime: slaPolicy1.created_datetime,
         }
-        mockMakeUISLAPolicy.mockImplementation(() => UISLAPolicy1)
 
-        const { result } = renderHook(() => useGetSLAPolicies())
+        const { result } = renderUseGetSLAPolicies()
 
-        expect(result.current.data).toEqual([
-            UISLAPolicy1WithoutUpdatedDatetime,
-        ])
+        await waitFor(() => {
+            expect(result.current.data).toEqual([
+                UISLAPolicy1WithoutUpdatedDatetime,
+            ])
+        })
     })
 })

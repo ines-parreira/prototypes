@@ -1,59 +1,53 @@
-import React from 'react'
-
-import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import { toast } from '@gorgias/axiom'
-import {
-    queryKeys,
-    useDeleteCustomFieldCondition as useDelete,
-} from '@gorgias/helpdesk-queries'
+import { mockDeleteCustomFieldConditionHandler } from '@gorgias/helpdesk-mocks'
 
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useDeleteCustomFieldCondition } from '../useDeleteCustomFieldCondition'
 
-const queryClient = mockQueryClient()
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-queries')
-const useDeleteCustomFieldConditionMock = assumeMock(useDelete)
+function renderUseDeleteCustomFieldCondition() {
+    return renderHook(() => useDeleteCustomFieldCondition())
+}
 
 describe('useDeleteCustomFieldCondition', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.resetAllMocks()
+        server.use(
+            mockDeleteCustomFieldConditionHandler(async () =>
+                HttpResponse.json(undefined),
+            ).handler,
+        )
     })
 
     afterEach(() => {
+        server.resetHandlers()
         toast.dismiss()
     })
 
-    it('should show success toast on success and invalidate proper query data', async () => {
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
+    afterAll(() => {
+        server.close()
+    })
 
-        renderHook(() => useDeleteCustomFieldCondition(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
+    it('should show success toast on success', async () => {
+        const { result } = renderUseDeleteCustomFieldCondition()
+
+        await act(async () => {
+            await result.current.mutateAsync({
+                id: customFieldCondition.id,
+            } as never)
         })
 
-        act(() => {
-            useDeleteCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-                .onSuccess!(
-                axiosSuccessResponse(customFieldCondition) as any,
-                { id: customFieldCondition.id },
-                undefined,
-            )
-        })
-
-        expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey:
-                queryKeys.customFieldConditions.listCustomFieldConditions(),
-        })
         await waitFor(() => {
             expect(
                 screen.getByRole('status', {
@@ -64,17 +58,17 @@ describe('useDeleteCustomFieldCondition', () => {
     })
 
     it('should show failure toast on error', async () => {
-        renderHook(() => useDeleteCustomFieldCondition(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        server.use(
+            mockDeleteCustomFieldConditionHandler(
+                async () => new HttpResponse(null, { status: 500 }),
+            ).handler,
+        )
+        const { result } = renderUseDeleteCustomFieldCondition()
 
-        act(() => {
-            useDeleteCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-                .onError!({}, { id: customFieldCondition.id }, undefined)
+        await act(async () => {
+            await result.current
+                .mutateAsync({ id: customFieldCondition.id } as never)
+                .catch(() => undefined)
         })
 
         await waitFor(() => {

@@ -1,21 +1,20 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router-dom'
 
-import { getVoiceQueue, updateVoiceQueue } from '@gorgias/helpdesk-client'
+import {
+    mockGetVoiceQueueHandler,
+    mockGetVoiceQueueResponse,
+    mockUpdateVoiceQueueHandler,
+    mockUpdateVoiceQueueResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import { VoiceQueueEditPage } from '../VoiceQueueEditPage'
-
-jest.mock('@gorgias/helpdesk-client', () => ({
-    getVoiceQueue: jest.fn(),
-    updateVoiceQueue: jest.fn(),
-}))
-
-const getVoiceQueueMock = assumeMock(getVoiceQueue)
-const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
 jest.mock('../VoiceQueueEditOrCreateForm', () => ({
     VoiceQueueEditOrCreateForm: () => (
@@ -44,6 +43,7 @@ jest.mock('../VoiceQueueSettingsForm', () => ({
 }))
 
 const mockQueue = voiceQueue
+const server = setupServer()
 
 const CurrentPath = () => {
     const location = useLocation()
@@ -66,9 +66,27 @@ describe('VoiceQueueEditPage', () => {
             },
         )
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
-        getVoiceQueueMock.mockResolvedValue({ data: mockQueue } as any)
-        updateVoiceQueueMock.mockResolvedValue({ data: mockQueue } as any)
+        server.use(
+            mockGetVoiceQueueHandler(async () =>
+                HttpResponse.json(mockGetVoiceQueueResponse(mockQueue)),
+            ).handler,
+            mockUpdateVoiceQueueHandler(async () =>
+                HttpResponse.json(mockUpdateVoiceQueueResponse(mockQueue)),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('renders the edit queue form with all necessary components', async () => {
@@ -103,7 +121,13 @@ describe('VoiceQueueEditPage', () => {
     })
 
     it('handles form submission error correctly', async () => {
-        updateVoiceQueueMock.mockRejectedValue(new Error('Test error'))
+        server.use(
+            mockUpdateVoiceQueueHandler(async () =>
+                HttpResponse.json(mockUpdateVoiceQueueResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         renderComponent()
 
@@ -122,7 +146,13 @@ describe('VoiceQueueEditPage', () => {
     })
 
     it('redirects to the queue list when GET queue fails', async () => {
-        getVoiceQueueMock.mockRejectedValue(new Error('Test error'))
+        server.use(
+            mockGetVoiceQueueHandler(async () =>
+                HttpResponse.json(mockGetVoiceQueueResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         renderComponent()
 

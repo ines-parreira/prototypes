@@ -1,28 +1,37 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListJobs } from '@gorgias/helpdesk-queries'
+import {
+    mockListJobsHandler,
+    mockListJobsResponse,
+} from '@gorgias/helpdesk-mocks'
 import { JobStatus } from '@gorgias/helpdesk-types'
 
 import { useRunningJobs } from '../useRunningJobs'
 
-jest.mock('@gorgias/helpdesk-queries')
-const useListJobsMock = assumeMock(useListJobs)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const jobWithStatus = (status: JobStatus) => ({
     status,
 })
 
-const jobsResponse = (jobs: { status?: JobStatus }[]): any => ({
-    data: {
-        data: {
-            data: jobs,
-            meta: {
-                prev_cursor: '',
-                next_cursor: '',
-            },
-        },
-    },
-    refetch: jest.fn(),
-})
+function renderUseRunningJobs() {
+    return renderHook(() => useRunningJobs())
+}
 
 describe('useRunningJobs', () => {
     const runningJobs = [
@@ -35,33 +44,51 @@ describe('useRunningJobs', () => {
         jobWithStatus(JobStatus.CancelRequested),
     ]
 
-    it('should fetch the list of jobs and return true if some are in "running" state', () => {
+    it('should fetch the list of jobs and return true if some are in "running" state', async () => {
         const jobs = [...runningJobs, ...notRunningJobs]
-        useListJobsMock.mockReturnValue(jobsResponse(jobs))
+        server.use(
+            mockListJobsHandler(async () =>
+                HttpResponse.json(mockListJobsResponse({ data: jobs })),
+            ).handler,
+        )
 
-        const { result } = renderHook(() => useRunningJobs())
+        const { result } = renderUseRunningJobs()
 
-        expect(result.current.running).toEqual(true)
+        await waitFor(() => {
+            expect(result.current.running).toEqual(true)
+        })
         expect(result.current.jobs).toEqual(jobs)
         expect(result.current.refetch).toEqual(expect.any(Function))
     })
-    it('should fetch the list of jobs and return false if none are in "running" state', () => {
-        useListJobsMock.mockReturnValue(jobsResponse(notRunningJobs))
 
-        const { result } = renderHook(() => useRunningJobs())
+    it('should fetch the list of jobs and return false if none are in "running" state', async () => {
+        server.use(
+            mockListJobsHandler(async () =>
+                HttpResponse.json(
+                    mockListJobsResponse({ data: notRunningJobs }),
+                ),
+            ).handler,
+        )
 
-        expect(result.current.running).toEqual(false)
+        const { result } = renderUseRunningJobs()
+
+        await waitFor(() => {
+            expect(result.current.running).toEqual(false)
+        })
         expect(result.current.jobs).toEqual(notRunningJobs)
         expect(result.current.refetch).toEqual(expect.any(Function))
     })
 
     it('should fetch the list of jobs and return null while the jobs are not available', () => {
-        useListJobsMock.mockReturnValue({
-            data: undefined,
-            refetch: jest.fn(),
-        } as any)
+        server.use(
+            mockListJobsHandler(async () => {
+                await new Promise(() => undefined)
 
-        const { result } = renderHook(() => useRunningJobs())
+                return HttpResponse.json(mockListJobsResponse({ data: [] }))
+            }).handler,
+        )
+
+        const { result } = renderUseRunningJobs()
 
         expect(result.current.running).toEqual(null)
         expect(result.current.jobs).toEqual(undefined)

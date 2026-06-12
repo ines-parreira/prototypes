@@ -1,6 +1,4 @@
-import { appQueryClient } from '@repo/api-resources'
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -239,12 +237,6 @@ jest.mock(
         ),
     }),
 )
-jest.mock('@gorgias/knowledge-service-queries', () => ({
-    useStartIngestion: jest.fn(() => ({
-        mutateAsync: jest.fn(),
-        isPending: false,
-    })),
-}))
 jest.mock('pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters', () => ({
     DocumentFilters: ({ selectedFilter, onFilterChange }: any) => (
         <div>
@@ -596,9 +588,7 @@ describe('KnowledgeHubContainer', () => {
         return render(
             <MemoryRouter>
                 <Provider store={mocksStore}>
-                    <QueryClientProvider client={appQueryClient}>
-                        <KnowledgeHubContainer />
-                    </QueryClientProvider>
+                    <KnowledgeHubContainer />
                 </Provider>
             </MemoryRouter>,
         )
@@ -996,9 +986,7 @@ describe('KnowledgeHubContainer', () => {
                     ]}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1027,9 +1015,7 @@ describe('KnowledgeHubContainer', () => {
                     ]}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1617,9 +1603,7 @@ describe('KnowledgeHubContainer', () => {
                     ]}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1645,9 +1629,7 @@ describe('KnowledgeHubContainer', () => {
                     ]}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1736,9 +1718,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1761,9 +1741,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1784,9 +1762,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1810,9 +1786,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1836,9 +1810,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1862,9 +1834,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1884,9 +1854,7 @@ describe('KnowledgeHubContainer', () => {
             render(
                 <MemoryRouter initialEntries={['/knowledge']} initialIndex={0}>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1909,9 +1877,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -1934,9 +1900,7 @@ describe('KnowledgeHubContainer', () => {
                     initialIndex={0}
                 >
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2007,9 +1971,7 @@ describe('KnowledgeHubContainer', () => {
             render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2081,9 +2043,7 @@ describe('KnowledgeHubContainer', () => {
             render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2153,9 +2113,7 @@ describe('KnowledgeHubContainer', () => {
             render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2221,9 +2179,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2244,9 +2200,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2290,9 +2244,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2311,9 +2263,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2356,9 +2306,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2380,9 +2328,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2425,9 +2371,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2449,9 +2393,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2494,9 +2436,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2518,9 +2458,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2569,9 +2507,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2580,9 +2516,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2631,9 +2565,7 @@ describe('KnowledgeHubContainer', () => {
             const { rerender } = render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2654,9 +2586,7 @@ describe('KnowledgeHubContainer', () => {
             rerender(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2731,9 +2661,7 @@ describe('KnowledgeHubContainer', () => {
             render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )
@@ -2805,9 +2733,7 @@ describe('KnowledgeHubContainer', () => {
             render(
                 <MemoryRouter>
                     <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
+                        <KnowledgeHubContainer />
                     </Provider>
                 </MemoryRouter>,
             )

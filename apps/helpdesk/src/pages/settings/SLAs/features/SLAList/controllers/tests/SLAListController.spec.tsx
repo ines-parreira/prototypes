@@ -1,13 +1,13 @@
-import React from 'react'
-
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import { toast } from '@gorgias/axiom'
-import { useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
-
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import {
+    mockUpdateSlaPolicyHandler,
+    mockUpdateSlaPolicyResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { SLAListController } from '../SLAListController'
 import { useGetSLAPolicies } from '../useGetSLAPolicies'
@@ -48,16 +48,27 @@ jest.mock('../../views/SLAListView', () => ({
 
 jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
 
-jest.mock('@gorgias/helpdesk-queries')
-const mockUseUpdateSlaPolicy = useUpdateSlaPolicy as jest.Mock
-
-const queryClient = mockQueryClient()
+const server = setupServer()
 
 describe('<SLAListController />', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
-        mockUseUpdateSlaPolicy.mockImplementation(() => ({
-            mutateAsync: jest.fn(),
-        }))
+        server.use(
+            mockUpdateSlaPolicyHandler(async () =>
+                HttpResponse.json(mockUpdateSlaPolicyResponse()),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render Loader component when isLoading is true', () => {
@@ -66,11 +77,7 @@ describe('<SLAListController />', () => {
             isLoading: true,
         }))
 
-        const { getByText } = render(
-            <QueryClientProvider client={queryClient}>
-                <SLAListController />
-            </QueryClientProvider>,
-        )
+        const { getByText } = render(<SLAListController />)
 
         expect(getByText('Loader')).toBeInTheDocument()
     })
@@ -81,11 +88,7 @@ describe('<SLAListController />', () => {
             isLoading: false,
         }))
 
-        const { getByText } = render(
-            <QueryClientProvider client={queryClient}>
-                <SLAListController />
-            </QueryClientProvider>,
-        )
+        const { getByText } = render(<SLAListController />)
 
         expect(getByText('LandingPage')).toBeInTheDocument()
     })
@@ -96,11 +99,7 @@ describe('<SLAListController />', () => {
             isLoading: false,
         }))
 
-        const { getByText } = render(
-            <QueryClientProvider client={queryClient}>
-                <SLAListController />
-            </QueryClientProvider>,
-        )
+        const { getByText } = render(<SLAListController />)
 
         expect(getByText('toggle-policy')).toBeInTheDocument()
     })
@@ -116,14 +115,8 @@ describe('<SLAListController />', () => {
                 isLoading: false,
                 refetch: jest.fn(),
             }))
-            const mutateAsync = jest.fn().mockResolvedValue(undefined)
-            mockUseUpdateSlaPolicy.mockImplementation(() => ({ mutateAsync }))
 
-            const { getByText } = render(
-                <QueryClientProvider client={queryClient}>
-                    <SLAListController />
-                </QueryClientProvider>,
-            )
+            const { getByText } = render(<SLAListController />)
             getByText('toggle-policy').click()
 
             await waitFor(() => {
@@ -139,14 +132,15 @@ describe('<SLAListController />', () => {
                 isLoading: false,
                 refetch: jest.fn(),
             }))
-            const mutateAsync = jest.fn().mockRejectedValue(new Error('boom'))
-            mockUseUpdateSlaPolicy.mockImplementation(() => ({ mutateAsync }))
-
-            const { getByText } = render(
-                <QueryClientProvider client={queryClient}>
-                    <SLAListController />
-                </QueryClientProvider>,
+            server.use(
+                mockUpdateSlaPolicyHandler(async () =>
+                    HttpResponse.json(mockUpdateSlaPolicyResponse(), {
+                        status: 500,
+                    }),
+                ).handler,
             )
+
+            const { getByText } = render(<SLAListController />)
             getByText('toggle-policy').click()
 
             await waitFor(() => {
@@ -164,14 +158,15 @@ describe('<SLAListController />', () => {
                 isLoading: false,
                 refetch: jest.fn(),
             }))
-            const mutateAsync = jest.fn().mockRejectedValue(new Error('boom'))
-            mockUseUpdateSlaPolicy.mockImplementation(() => ({ mutateAsync }))
-
-            const { getByText } = render(
-                <QueryClientProvider client={queryClient}>
-                    <SLAListController />
-                </QueryClientProvider>,
+            server.use(
+                mockUpdateSlaPolicyHandler(async () =>
+                    HttpResponse.json(mockUpdateSlaPolicyResponse(), {
+                        status: 500,
+                    }),
+                ).handler,
             )
+
+            const { getByText } = render(<SLAListController />)
             getByText('change-priority').click()
 
             await waitFor(() => {

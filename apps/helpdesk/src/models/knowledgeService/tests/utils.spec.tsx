@@ -7,8 +7,6 @@ jest.mock('@repo/utils', () => ({
     isStaging: jest.fn(),
 }))
 
-jest.mock('@gorgias/knowledge-service-client')
-
 jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     GorgiasAppAuthService: jest.fn(),
     authInterceptor: jest.fn(),

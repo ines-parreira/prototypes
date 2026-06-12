@@ -1,15 +1,17 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router-dom'
 
-import { createVoiceQueues } from '@gorgias/helpdesk-client'
+import {
+    mockCreateVoiceQueuesHandler,
+    mockCreateVoiceQueuesResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import { VoiceQueueCreatePage } from '../VoiceQueueCreatePage'
-
-jest.mock('@gorgias/helpdesk-client')
-const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
 jest.mock('../VoiceQueueEditOrCreateForm', () => ({
     VoiceQueueEditOrCreateForm: () => (
@@ -43,6 +45,8 @@ const CurrentPath = () => {
     return <output aria-label="Current path">{location.pathname}</output>
 }
 
+const server = setupServer()
+
 describe('VoiceQueueCreatePage', () => {
     const renderComponent = () =>
         render(
@@ -51,6 +55,30 @@ describe('VoiceQueueCreatePage', () => {
                 <CurrentPath />
             </>,
         )
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        server.use(
+            mockCreateVoiceQueuesHandler(async () =>
+                HttpResponse.json(
+                    mockCreateVoiceQueuesResponse({
+                        name: 'Test Queue',
+                    }),
+                ),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
 
     it('renders the create queue form with all necessary components', () => {
         renderComponent()
@@ -62,10 +90,6 @@ describe('VoiceQueueCreatePage', () => {
     })
 
     it('handles form submission success correctly', async () => {
-        createVoiceQueuesMock.mockResolvedValue({
-            data: { name: 'Test Queue' },
-        } as any)
-
         renderComponent()
 
         act(() => {
@@ -83,7 +107,13 @@ describe('VoiceQueueCreatePage', () => {
     })
 
     it('handles form submission error correctly', async () => {
-        createVoiceQueuesMock.mockRejectedValue(new Error('Error'))
+        server.use(
+            mockCreateVoiceQueuesHandler(async () =>
+                HttpResponse.json(mockCreateVoiceQueuesResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         renderComponent()
 

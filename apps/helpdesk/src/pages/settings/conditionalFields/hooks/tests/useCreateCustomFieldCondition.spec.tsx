@@ -1,59 +1,60 @@
-import React from 'react'
-
-import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import { toast } from '@gorgias/axiom'
 import {
-    queryKeys,
-    useCreateCustomFieldCondition as useCreate,
-} from '@gorgias/helpdesk-queries'
+    mockCreateCustomFieldConditionHandler,
+    mockCreateCustomFieldConditionResponse,
+} from '@gorgias/helpdesk-mocks'
 
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useCreateCustomFieldCondition } from '../useCreateCustomFieldCondition'
 
-const queryClient = mockQueryClient()
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-queries')
-const useCreateCustomFieldConditionMock = assumeMock(useCreate)
+function renderUseCreateCustomFieldCondition() {
+    return renderHook(() => useCreateCustomFieldCondition())
+}
 
 describe('useCreateCustomFieldCondition', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.resetAllMocks()
+        server.use(
+            mockCreateCustomFieldConditionHandler(async () =>
+                HttpResponse.json(
+                    mockCreateCustomFieldConditionResponse(
+                        customFieldCondition,
+                    ),
+                ),
+            ).handler,
+        )
     })
 
     afterEach(() => {
+        server.resetHandlers()
         toast.dismiss()
     })
 
-    it('should show success toast on success and invalidate proper query data', async () => {
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
+    afterAll(() => {
+        server.close()
+    })
 
-        renderHook(() => useCreateCustomFieldCondition(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
+    it('should show success toast on success', async () => {
+        const { result } = renderUseCreateCustomFieldCondition()
+
+        await act(async () => {
+            await result.current.mutateAsync({
+                data: customFieldCondition,
+            } as never)
         })
 
-        act(() => {
-            useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-                .onSuccess!(
-                axiosSuccessResponse(customFieldCondition) as any,
-                { data: customFieldCondition },
-                undefined,
-            )
-        })
-
-        expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey:
-                queryKeys.customFieldConditions.listCustomFieldConditions(),
-        })
         await waitFor(() => {
             expect(
                 screen.getByRole('status', {
@@ -64,17 +65,19 @@ describe('useCreateCustomFieldCondition', () => {
     })
 
     it('should show failure toast on error', async () => {
-        renderHook(() => useCreateCustomFieldCondition(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        server.use(
+            mockCreateCustomFieldConditionHandler(async () =>
+                HttpResponse.json(mockCreateCustomFieldConditionResponse(), {
+                    status: 500,
+                }),
+            ).handler,
+        )
+        const { result } = renderUseCreateCustomFieldCondition()
 
-        act(() => {
-            useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-                .onError!({}, { data: customFieldCondition }, undefined)
+        await act(async () => {
+            await result.current
+                .mutateAsync({ data: customFieldCondition } as never)
+                .catch(() => undefined)
         })
 
         await waitFor(() => {

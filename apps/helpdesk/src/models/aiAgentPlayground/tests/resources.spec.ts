@@ -1,30 +1,34 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { searchTickets as helpdeskSearchTickets } from '@gorgias/helpdesk-client'
+import {
+    mockSearchTicketsHandler,
+    mockSearchTicketsResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { SearchType } from 'models/search/types'
 
 import { getAiAgentCustomer, searchCustomer, searchTickets } from '../resources'
 
-jest.mock('@gorgias/helpdesk-client', () => ({
-    searchTickets: jest.fn(),
-}))
-const mockHelpdeskSearchTickets = jest.mocked(helpdeskSearchTickets)
-
 describe('aiAgentPlayground resources', () => {
     let mockClient: MockAdapter
+    const server = setupServer()
 
     beforeAll(() => {
         mockClient = new MockAdapter(client)
+        server.listen({ onUnhandledRequest: 'error' })
     })
 
     afterAll(() => {
         mockClient.reset()
+        server.close()
     })
 
     afterEach(() => {
         mockClient.resetHistory()
+        server.resetHandlers()
         jest.clearAllMocks()
     })
 
@@ -74,16 +78,33 @@ describe('aiAgentPlayground resources', () => {
 
     describe('searchTickets', () => {
         it('should call helpdeskSearchTickets with email channel filter', async () => {
+            const searchTicketsMock = mockSearchTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockSearchTicketsResponse({
+                        data: [],
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                        },
+                    }),
+                ),
+            )
+            const waitForSearchTicketsRequest =
+                searchTicketsMock.waitForRequest(server)
+            server.use(searchTicketsMock.handler)
             const query = 'test search query'
+
             await searchTickets(query)
 
-            expect(mockHelpdeskSearchTickets).toHaveBeenCalledWith(
-                {
+            await waitForSearchTicketsRequest(async (request) => {
+                const searchParams = new URL(request.url).searchParams
+
+                expect(await request.json()).toEqual({
                     search: query,
                     filters: '',
-                },
-                { limit: 10 },
-            )
+                })
+                expect(searchParams.get('limit')).toBe('10')
+            })
         })
     })
 })

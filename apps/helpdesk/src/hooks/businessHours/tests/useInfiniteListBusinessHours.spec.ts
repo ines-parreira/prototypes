@@ -1,8 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { setupServer } from 'msw/node'
 
-import { listBusinessHours } from '@gorgias/helpdesk-client'
+import { mockListBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListBusinessHours } from '../useInfiniteListBusinessHours'
@@ -13,11 +14,27 @@ jest.mock('@tanstack/react-query', () => ({
 }))
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)
 
-jest.mock('@gorgias/helpdesk-client')
-const listBusinessHoursMock = assumeMock(listBusinessHours)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useInfiniteListBusinessHours', () => {
     it('should call useInfiniteQuery with correct parameters', async () => {
+        const listBusinessHoursMock = mockListBusinessHoursHandler()
+        const waitForListBusinessHoursRequest =
+            listBusinessHoursMock.waitForRequest(server)
+        server.use(listBusinessHoursMock.handler)
         const returnValue = {
             data: { pages: [], pageParams: [] },
         } as unknown as InfiniteQueryObserverSuccessResult<unknown, unknown>
@@ -44,10 +61,12 @@ describe('useInfiniteListBusinessHours', () => {
         const useInfiniteQueryParams = useInfiniteQueryMock.mock
             .calls[0][0] as any
         await useInfiniteQueryParams.queryFn({ pageParam: '==cursor==' })
-        expect(listBusinessHoursMock).toHaveBeenCalledWith(
-            { name: 'test', cursor: '==cursor==' },
-            { signal: undefined },
-        )
+        await waitForListBusinessHoursRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.get('name')).toBe('test')
+            expect(searchParams.get('cursor')).toBe('==cursor==')
+        })
         expect(
             useInfiniteQueryParams.getNextPageParam({
                 data: { meta: { next_cursor: '==cursor==' } },

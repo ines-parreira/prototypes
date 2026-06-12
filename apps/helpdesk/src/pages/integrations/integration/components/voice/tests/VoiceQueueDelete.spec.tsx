@@ -1,30 +1,24 @@
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { act } from 'react-dom/test-utils'
 import { useLocation } from 'react-router-dom'
 
-import { deleteVoiceQueue } from '@gorgias/helpdesk-client'
+import { mockDeleteVoiceQueueHandler } from '@gorgias/helpdesk-mocks'
 
 import { voiceQueue } from 'fixtures/voiceQueue'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
 import { VoiceQueueDelete } from '../VoiceQueueDelete'
 
-jest.mock('@gorgias/helpdesk-client', () => ({
-    deleteVoiceQueue: jest.fn(() => ({
-        mutate: jest.fn(),
-        isLoading: false,
-        isError: false,
-        error: null,
-    })),
-}))
-const deleteVoiceQueueMock = assumeMock(deleteVoiceQueue)
-
 const CurrentPath = () => {
     const location = useLocation()
 
     return <output aria-label="Current path">{location.pathname}</output>
 }
+
+const server = setupServer()
 
 describe('VoiceQueueDelete', () => {
     const renderComponent = () => {
@@ -35,6 +29,26 @@ describe('VoiceQueueDelete', () => {
             </>,
         )
     }
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        server.use(
+            mockDeleteVoiceQueueHandler(
+                async () => new HttpResponse(null, { status: 204 }),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
 
     it('should render the component', () => {
         renderComponent()
@@ -53,9 +67,11 @@ describe('VoiceQueueDelete', () => {
     })
 
     it('should show the linked integrations error modal when the delete button is clicked and there are linked integrations', async () => {
-        deleteVoiceQueueMock.mockRejectedValue({
-            status: 400,
-        })
+        server.use(
+            mockDeleteVoiceQueueHandler(
+                async () => new HttpResponse(null, { status: 400 }),
+            ).handler,
+        )
         renderComponent()
 
         act(() => {
@@ -84,9 +100,11 @@ describe('VoiceQueueDelete', () => {
     })
 
     it('delete api call general error', async () => {
-        deleteVoiceQueueMock.mockRejectedValue({
-            status: 500,
-        })
+        server.use(
+            mockDeleteVoiceQueueHandler(
+                async () => new HttpResponse(null, { status: 500 }),
+            ).handler,
+        )
         renderComponent()
 
         act(() => {
@@ -114,9 +132,6 @@ describe('VoiceQueueDelete', () => {
     })
 
     it('delete api call success', async () => {
-        deleteVoiceQueueMock.mockResolvedValue({
-            status: 200,
-        } as any)
         renderComponent()
 
         act(() => {

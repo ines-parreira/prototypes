@@ -2,8 +2,15 @@ import type React from 'react'
 import type { ComponentType } from 'react'
 
 import { assumeMock, render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import * as apiQueries from '@gorgias/helpdesk-queries'
+import {
+    mockListLiveCallQueueVoiceCallsHandler,
+    mockListLiveCallQueueVoiceCallsResponse,
+    mockLiveCallQueueVoiceCall,
+} from '@gorgias/helpdesk-mocks'
 import { useChannel } from '@gorgias/realtime'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
@@ -19,7 +26,6 @@ import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('@gorgias/realtime')
 jest.mock('domains/reporting/pages/voice/hooks/useLiveVoiceUpdates')
 jest.mock(
@@ -52,9 +58,6 @@ jest.mock('pages/common/utils/withProductEnabledPaywall', () => ({
 const getTimezoneMock = assumeMock(getTimezone)
 const getBusinessHoursSettingsMock = assumeMock(getBusinessHoursSettings)
 
-const useListLiveCallQueueVoiceCallsMock = assumeMock(
-    apiQueries.useListLiveCallQueueVoiceCalls,
-)
 const useLiveVoiceUpdatesMock = assumeMock(useLiveVoiceUpdates)
 const useChannelMock = assumeMock(useChannel)
 const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
@@ -71,15 +74,23 @@ const cleanStatsFiltersDefaultValue = {
 } as StatsFiltersWithLogicalOperator
 
 const handleEventMock = jest.fn()
+const server = setupServer()
 
 describe('LiveVoice', () => {
     const renderComponent = () => render(<LiveVoice />)
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
-        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: [],
-            isLoading: false,
-        } as any)
+        server.use(
+            mockListLiveCallQueueVoiceCallsHandler(async () =>
+                HttpResponse.json(
+                    mockListLiveCallQueueVoiceCallsResponse({ data: [] }),
+                ),
+            ).handler,
+        )
         getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
             {
                 cleanStatsFilters: cleanStatsFiltersDefaultValue,
@@ -97,6 +108,14 @@ describe('LiveVoice', () => {
             },
             handleEvent: handleEventMock,
         })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render all sections', () => {
@@ -157,12 +176,9 @@ describe('LiveVoice', () => {
         ).toBeInTheDocument()
     })
 
-    it('should pass correct props to children components', () => {
-        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-        } as any)
+    it('should pass loading props to children components', () => {
         renderComponent()
+
         expect(LiveVoiceMetricsMock).toHaveBeenCalledWith(
             {
                 isLoadingVoiceCalls: true,
@@ -195,31 +211,58 @@ describe('LiveVoice', () => {
         )
     })
 
-    it('should pass correct filters to useListLiveCallQueueVoiceCalls', () => {
+    it('should pass correct filters to useListLiveCallQueueVoiceCalls', async () => {
+        const mockListLiveCallQueueVoiceCalls =
+            mockListLiveCallQueueVoiceCallsHandler(async () =>
+                HttpResponse.json(
+                    mockListLiveCallQueueVoiceCallsResponse({ data: [] }),
+                ),
+            )
+        const waitForListLiveCallQueueVoiceCallsRequest =
+            mockListLiveCallQueueVoiceCalls.waitForRequest(server)
+        server.use(mockListLiveCallQueueVoiceCalls.handler)
+
         renderComponent()
-        expect(useListLiveCallQueueVoiceCallsMock).toHaveBeenCalledWith(
-            {
-                agent_ids: [1, 2],
-                integration_ids: [3, 4],
-                voice_queue_ids: [5, 6],
-            },
-            expect.any(Object),
-        )
+
+        await waitForListLiveCallQueueVoiceCallsRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.search).toContain('agent_ids')
+            expect(url.search).toContain('1')
+            expect(url.search).toContain('2')
+            expect(url.search).toContain('integration_ids')
+            expect(url.search).toContain('3')
+            expect(url.search).toContain('4')
+            expect(url.search).toContain('voice_queue_ids')
+            expect(url.search).toContain('5')
+            expect(url.search).toContain('6')
+        })
     })
 
-    it('should select correct data from useListLiveCallQueueVoiceCalls', () => {
-        useListLiveCallQueueVoiceCallsMock.mockReturnValue({
-            data: [{ id: 1, external_id: 'call1' }],
-            isLoading: false,
-        } as any)
-        renderComponent()
-        const result =
-            useListLiveCallQueueVoiceCallsMock.mock.calls?.[0]?.[1]?.query?.select?.(
-                {
-                    data: { data: [{ id: 1, external_id: 'call1' }] },
-                } as any,
-            )
+    it('should select correct data from useListLiveCallQueueVoiceCalls', async () => {
+        const voiceCalls = [
+            mockLiveCallQueueVoiceCall({ id: 1, external_id: 'call1' }),
+        ]
+        server.use(
+            mockListLiveCallQueueVoiceCallsHandler(async () =>
+                HttpResponse.json(
+                    mockListLiveCallQueueVoiceCallsResponse({
+                        data: voiceCalls,
+                    }),
+                ),
+            ).handler,
+        )
 
-        expect(result).toEqual([{ id: 1, external_id: 'call1' }])
+        renderComponent()
+
+        await waitFor(() => {
+            expect(LiveVoiceCallTableMock).toHaveBeenCalledWith(
+                {
+                    isLoading: false,
+                    voiceCalls,
+                },
+                {},
+            )
+        })
     })
 })

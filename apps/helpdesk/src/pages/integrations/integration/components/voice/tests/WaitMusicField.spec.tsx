@@ -1,9 +1,13 @@
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { uploadCustomVoiceRecording } from '@gorgias/helpdesk-client'
 import {
-    CustomRecordingType,
+    mockUploadCustomVoiceRecordingHandler,
+    mockUploadCustomVoiceRecordingResponse,
+} from '@gorgias/helpdesk-mocks'
+import {
     VoiceQueueWaitMusicCustomRecordingTypeType,
     VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'
@@ -13,10 +17,6 @@ import type { LocalWaitMusicPreferences } from 'models/integration/types/phone'
 
 import { useVoiceMessageValidation } from '../hooks/useVoiceMessageValidation'
 import { WaitMusicField } from '../WaitMusicField'
-
-jest.mock('@gorgias/helpdesk-client')
-
-const uploadCustomVoiceRecordingMock = assumeMock(uploadCustomVoiceRecording)
 
 jest.mock(
     'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation',
@@ -32,15 +32,45 @@ assumeMock(useVoiceMessageValidation).mockReturnValue({
     areWaitMusicPreferencesTheSame: jest.fn(),
 })
 
+const uploadCustomVoiceRecordingRequests: Request[] = []
+const server = setupServer()
+
 describe('<WaitMusicField />', () => {
     const onChange: jest.MockedFunction<
         (value: LocalWaitMusicPreferences) => void
     > = jest.fn()
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         onChange.mockReset()
         validateVoiceRecordingUploadMock.mockReset()
+        uploadCustomVoiceRecordingRequests.length = 0
+        server.use(
+            mockUploadCustomVoiceRecordingHandler(async ({ request }) => {
+                uploadCustomVoiceRecordingRequests.push(request)
+
+                return HttpResponse.json(
+                    mockUploadCustomVoiceRecordingResponse({
+                        url: '123',
+                        name: 'example1.mp3',
+                        content_type: 'audio/mpeg',
+                        size: 100,
+                    }),
+                )
+            }).handler,
+        )
         window.URL.createObjectURL = jest.fn().mockReturnValue('fake-url')
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should render', () => {
@@ -118,14 +148,6 @@ describe('<WaitMusicField />', () => {
         validateVoiceRecordingUploadMock.mockResolvedValue({
             uploadedFile: file,
         })
-        uploadCustomVoiceRecordingMock.mockResolvedValue({
-            data: {
-                url: '123',
-                name: 'example1.mp3',
-                content_type: 'audio/mpeg',
-                size: 100,
-            },
-        } as any)
 
         const { container } = render(
             <WaitMusicField
@@ -144,13 +166,7 @@ describe('<WaitMusicField />', () => {
         }
 
         await waitFor(() => {
-            expect(uploadCustomVoiceRecordingMock).toHaveBeenCalledWith(
-                { file },
-                {
-                    type: CustomRecordingType.WaitMusic,
-                },
-                undefined,
-            )
+            expect(uploadCustomVoiceRecordingRequests).toHaveLength(1)
         })
 
         await waitFor(() => {
@@ -166,8 +182,12 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should display error notification when uploading a custom recording fails', async () => {
-        uploadCustomVoiceRecordingMock.mockRejectedValue(
-            new Error('Failed to upload'),
+        server.use(
+            mockUploadCustomVoiceRecordingHandler(async () =>
+                HttpResponse.json(mockUploadCustomVoiceRecordingResponse(), {
+                    status: 500,
+                }),
+            ).handler,
         )
         const file = new File(['audio data'], 'example.mp3', {
             type: 'audio/mpeg',

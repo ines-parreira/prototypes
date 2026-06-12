@@ -1,12 +1,15 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { act } from 'react-dom/test-utils'
 import { useInterval } from '@gorgias/toolkit-react'
 
 import {
-    endWrapUpTime,
-    getAgentWrapUpCallStatus,
-} from '@gorgias/helpdesk-client'
+    mockEndWrapUpTimeHandler,
+    mockGetAgentWrapUpCallStatusHandler,
+    mockGetAgentWrapUpCallStatusResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import type { VoiceCall } from 'models/voiceCall/types'
@@ -15,7 +18,6 @@ import { SocketEventType } from 'services/socketManager/types'
 
 import { useWrapUpTime } from '../useWrapUpTime'
 
-jest.mock('@gorgias/helpdesk-client')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('services/socketManager', () => ({
     socketManager: {
@@ -46,10 +48,20 @@ jest.mock('moment-timezone', () => {
     return fn
 })
 
-const endWrapUpTimeMock = assumeMock(endWrapUpTime)
-const getAgentWrapUpCallStatusMock = assumeMock(getAgentWrapUpCallStatus)
 const useIntervalMock = assumeMock(useInterval)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
+
+const defaultAgentWrapUpStatus = mockGetAgentWrapUpCallStatusResponse({
+    agent_id: null,
+    call_id: null,
+    call_sid: null,
+    created_datetime: null,
+    expiration_datetime: null,
+    integration_id: null,
+    is_wrapping_up: false,
+    status: null,
+})
+const server = setupServer()
 
 describe('useWrapUpTime', () => {
     const mockVoiceCall: Partial<VoiceCall> = {
@@ -57,18 +69,31 @@ describe('useWrapUpTime', () => {
         external_id: 'test-call-sid',
     }
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
-
+        server.use(
+            mockGetAgentWrapUpCallStatusHandler(async () =>
+                HttpResponse.json(defaultAgentWrapUpStatus),
+            ).handler,
+            mockEndWrapUpTimeHandler().handler,
+        )
         useVoiceDeviceMock.mockReturnValue({
             call: null,
             device: null,
             actions: {},
         } as any)
+    })
 
-        endWrapUpTimeMock.mockResolvedValue({
-            data: {},
-        } as any)
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should register socket event on mount', () => {
@@ -203,10 +228,6 @@ describe('useWrapUpTime', () => {
     })
 
     it('should clear wrap-up time on successful endWrapUpTimeMutation', async () => {
-        endWrapUpTimeMock.mockResolvedValue({
-            data: {},
-        } as any)
-
         const { result } = renderHook(() => useWrapUpTime())
 
         const registeredEvent =
@@ -242,7 +263,13 @@ describe('useWrapUpTime', () => {
     })
 
     it('should show an error notification on endWrapUpTimeMutation error', async () => {
-        endWrapUpTimeMock.mockRejectedValue('error')
+        server.use(
+            mockEndWrapUpTimeHandler(async () =>
+                HttpResponse.json({ error: 'error' } as never, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useWrapUpTime())
 
@@ -261,15 +288,22 @@ describe('useWrapUpTime', () => {
     })
 
     it('should initialize the wrap up state on mount', async () => {
-        getAgentWrapUpCallStatusMock.mockResolvedValue({
-            data: {
-                status: 'wrapping-up',
-                expiration_datetime: '2023-01-01T12:05:00Z',
-                call_id: '123',
-                integration_id: 1,
-                call_sid: 'test-call-sid',
-            },
-        } as any)
+        server.use(
+            mockGetAgentWrapUpCallStatusHandler(async () =>
+                HttpResponse.json(
+                    mockGetAgentWrapUpCallStatusResponse({
+                        agent_id: 1,
+                        call_id: 123,
+                        call_sid: 'test-call-sid',
+                        created_datetime: '2023-01-01T12:00:00Z',
+                        expiration_datetime: '2023-01-01T12:05:00Z',
+                        integration_id: 1,
+                        is_wrapping_up: true,
+                        status: 'wrapping-up',
+                    }),
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useWrapUpTime())
 

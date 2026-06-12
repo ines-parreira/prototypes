@@ -1,57 +1,38 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { listIntegrations } from '@gorgias/helpdesk-client'
-import type {
-    HttpResponse,
-    Integration,
-    ListIntegrations200,
-} from '@gorgias/helpdesk-client'
+import {
+    mockListIntegrationsHandler,
+    mockListIntegrationsResponse,
+} from '@gorgias/helpdesk-mocks'
+import type { Integration } from '@gorgias/helpdesk-types'
 
 import { useAllIntegrations } from '../useAllIntegrations'
 
-jest.mock('@gorgias/helpdesk-client', () => ({
-    listIntegrations: jest.fn(),
-}))
+const server = setupServer()
 
-const mockListIntegrations = listIntegrations as jest.MockedFunction<
-    typeof listIntegrations
->
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-const createWrapper = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                retry: false,
-            },
-        },
-    })
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
+afterEach(() => {
+    server.resetHandlers()
+})
 
-const createMockResponse = (
-    data: Integration[],
-    nextCursor: string | null,
-): HttpResponse<ListIntegrations200> => ({
-    data: {
+afterAll(() => {
+    server.close()
+})
+
+const createMockResponse = (data: Integration[], nextCursor: string | null) =>
+    mockListIntegrationsResponse({
         data,
         meta: {
             next_cursor: nextCursor,
             prev_cursor: null,
         },
-        object: 'list',
-        uri: '/api/integrations',
-    },
-    status: 200,
-    statusText: 'OK',
-    headers: {},
-    config: {} as any,
-})
+    })
 
 const mockIntegration1: Integration = {
     id: 1,
@@ -84,14 +65,16 @@ const mockIntegration2: Integration = {
 }
 
 describe('useAllIntegrations', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should return loading state initially', () => {
-        const { result } = renderHook(() => useAllIntegrations(), {
-            wrapper: createWrapper(),
-        })
+        server.use(
+            mockListIntegrationsHandler(async () => {
+                await new Promise(() => undefined)
+
+                return HttpResponse.json(createMockResponse([], null))
+            }).handler,
+        )
+
+        const { result } = renderHook(() => useAllIntegrations())
 
         expect(result.current.isLoading).toBe(true)
         expect(result.current.integrations).toStrictEqual([])
@@ -103,49 +86,58 @@ describe('useAllIntegrations', () => {
             null,
         )
 
-        mockListIntegrations.mockResolvedValueOnce(mockData)
+        const listIntegrationsMock = mockListIntegrationsHandler(async () =>
+            HttpResponse.json(mockData),
+        )
+        const waitForListIntegrationsRequest =
+            listIntegrationsMock.waitForRequest(server)
+        server.use(listIntegrationsMock.handler)
 
-        const { result } = renderHook(() => useAllIntegrations(), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(() => useAllIntegrations())
 
         await waitFor(() => {
-            expect(result.current.integrations).toEqual(mockData.data.data)
+            expect(result.current.integrations).toEqual(mockData.data)
         })
-        expect(mockListIntegrations).toHaveBeenCalledWith({
-            cursor: undefined,
-            limit: 100,
+        await waitForListIntegrationsRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.get('cursor')).toBe(null)
+            expect(searchParams.get('limit')).toBe('100')
         })
     })
 
     it('should handle pagination correctly', async () => {
         const firstPage = createMockResponse([mockIntegration1], 'next_page')
         const secondPage = createMockResponse([mockIntegration2], null)
+        const requests: URL[] = []
 
-        mockListIntegrations
-            .mockResolvedValueOnce(firstPage)
-            .mockResolvedValueOnce(secondPage)
+        server.use(
+            mockListIntegrationsHandler(async ({ request }) => {
+                const url = new URL(request.url)
+                requests.push(url)
 
-        const { result } = renderHook(() => useAllIntegrations(), {
-            wrapper: createWrapper(),
-        })
+                return HttpResponse.json(
+                    url.searchParams.get('cursor') === 'next_page'
+                        ? secondPage
+                        : firstPage,
+                )
+            }).handler,
+        )
+
+        const { result } = renderHook(() => useAllIntegrations())
 
         await waitFor(() => {
             expect(result.current.isLoading).toBe(false)
         })
 
         expect(result.current.integrations).toEqual([
-            ...firstPage.data.data,
-            ...secondPage.data.data,
+            ...firstPage.data,
+            ...secondPage.data,
         ])
-        expect(mockListIntegrations).toHaveBeenCalledTimes(2)
-        expect(mockListIntegrations).toHaveBeenCalledWith({
-            cursor: undefined,
-            limit: 100,
-        })
-        expect(mockListIntegrations).toHaveBeenCalledWith({
-            cursor: 'next_page',
-            limit: 100,
-        })
+        expect(requests).toHaveLength(2)
+        expect(requests[0].searchParams.get('cursor')).toBe(null)
+        expect(requests[0].searchParams.get('limit')).toBe('100')
+        expect(requests[1].searchParams.get('cursor')).toBe('next_page')
+        expect(requests[1].searchParams.get('limit')).toBe('100')
     })
 })

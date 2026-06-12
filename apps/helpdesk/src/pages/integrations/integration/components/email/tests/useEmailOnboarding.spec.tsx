@@ -1,22 +1,25 @@
 import { useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
-import type { EmailIntegration } from '@gorgias/helpdesk-client'
 import {
-    createIntegration,
-    deleteIntegration,
-    sendVerificationEmail,
-    updateIntegration,
-} from '@gorgias/helpdesk-client'
-import type { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
+    mockCreateIntegrationHandler,
+    mockCreateIntegrationResponse,
+    mockDeleteIntegrationHandler,
+    mockEmailIntegrationMeta,
+    mockSendVerificationEmailHandler,
+    mockUpdateIntegrationHandler,
+    mockUpdateIntegrationResponse,
+} from '@gorgias/helpdesk-mocks'
+import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { socketManager } from 'services/socketManager'
@@ -24,7 +27,6 @@ import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type {
     UseEmailOnboardingHookOptions,
@@ -38,8 +40,16 @@ import {
 } from '../hooks/useEmailOnboarding'
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const queryClient = mockQueryClient()
 const store = mockStore({})
+const createIntegrationRequests: Request[] = []
+const updateIntegrationRequests: Request[] = []
+const deleteIntegrationRequests: Request[] = []
+const sendVerificationEmailRequests: Request[] = []
+const mockApiErrorResponse = (error: {
+    msg: string
+    data?: Record<string, string>
+}) => ({ error }) as never
+const server = setupServer()
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -47,7 +57,6 @@ jest.mock('@repo/routing', () => ({
         push: jest.fn(),
     },
 }))
-jest.mock('@gorgias/helpdesk-client')
 jest.mock('state/integrations/actions')
 jest.mock('services/socketManager')
 jest.mock('hooks/useAppDispatch')
@@ -65,10 +74,6 @@ jest.mock('react-router-dom', () => ({
 
 const mockHistoryPush = jest.fn()
 const mockDispatch = jest.fn()
-const createIntegrationMock = assumeMock(createIntegration)
-const updateIntegrationMock = assumeMock(updateIntegration)
-const deleteIntegrationMock = assumeMock(deleteIntegration)
-const sendVerificationEmailMock = assumeMock(sendVerificationEmail)
 const onSuccessMock = assumeMock(onCreateSuccess)
 assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
 const useLocalStorageMock = useLocalStorage as jest.Mock
@@ -83,11 +88,7 @@ const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
     return renderHook(() => useEmailOnboarding(options), {
         wrapper: ({ children }) => (
             <MemoryRouter initialEntries={[path ?? '/']}>
-                <Provider store={store}>
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                </Provider>
+                <Provider store={store}>{children}</Provider>
             </MemoryRouter>
         ),
     })
@@ -102,11 +103,67 @@ const mockIsRequested = (isRequested: boolean) => {
 }
 
 describe('useEmailOnboarding()', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        createIntegrationRequests.length = 0
+        updateIntegrationRequests.length = 0
+        deleteIntegrationRequests.length = 0
+        sendVerificationEmailRequests.length = 0
+        server.use(
+            mockCreateIntegrationHandler(async ({ request }) => {
+                createIntegrationRequests.push(request)
+
+                return HttpResponse.json(
+                    mockCreateIntegrationResponse({
+                        id: 1,
+                        type: 'email',
+                        name: 'Support Email',
+                        meta: mockEmailIntegrationMeta({
+                            address: 'acme@gorigas.test',
+                        }),
+                    }),
+                )
+            }).handler,
+            mockUpdateIntegrationHandler(async ({ request }) => {
+                updateIntegrationRequests.push(request)
+
+                return HttpResponse.json(
+                    mockUpdateIntegrationResponse({
+                        id: 1,
+                        type: 'email',
+                        name: 'Support Email Update',
+                        meta: mockEmailIntegrationMeta({
+                            address: 'acme@gorigas.test',
+                        }),
+                    }),
+                )
+            }).handler,
+            mockDeleteIntegrationHandler(async ({ request }) => {
+                deleteIntegrationRequests.push(request)
+
+                return new HttpResponse(null, { status: 204 })
+            }).handler,
+            mockSendVerificationEmailHandler(async ({ request }) => {
+                sendVerificationEmailRequests.push(request)
+
+                return new HttpResponse(null, { status: 204 })
+            }).handler,
+        )
         mockFeatureFlags({
             [FeatureFlagKey.NewDomainVerification]: true,
         })
         useLocalStorageMock.mockImplementation(useLocalStorageStateMock)
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
     it('should have an initial state', () => {
         const { result } = render()
@@ -294,21 +351,18 @@ describe('useEmailOnboarding()', () => {
                     ...payload,
                 }
 
-                createIntegrationMock.mockResolvedValue({
-                    data: integration,
-                } as HttpResponse<Integration>)
-
                 result.current.connectIntegration(payload)
 
                 await waitFor(() => {
-                    expect(createIntegrationMock).toHaveBeenCalledWith(
-                        { ...payload, type: 'email' },
-                        undefined,
-                    )
-
+                    expect(createIntegrationRequests).toHaveLength(1)
                     expect(onSuccessMock).toHaveBeenCalledWith(
                         mockDispatch,
-                        integration,
+                        expect.objectContaining({
+                            id: integration.id,
+                            name: integration.name,
+                            type: integration.type,
+                            meta: expect.objectContaining(integration.meta),
+                        }),
                         true,
                         true,
                     )
@@ -317,6 +371,9 @@ describe('useEmailOnboarding()', () => {
                         '/app/settings/channels/email/1/onboarding/forwarding-setup',
                     )
                 })
+                await expect(
+                    createIntegrationRequests[0].json(),
+                ).resolves.toEqual({ ...payload, type: 'email' })
             })
 
             it('updates the integration if it exists', async () => {
@@ -332,26 +389,24 @@ describe('useEmailOnboarding()', () => {
                     integration: integration as EmailIntegration,
                 })
 
-                updateIntegrationMock.mockResolvedValue({
-                    data: integration,
-                } as HttpResponse<Integration>)
-
                 result.current.connectIntegration(integration)
 
                 await waitFor(() => {
-                    expect(updateIntegrationMock).toHaveBeenCalledWith(
-                        1,
-                        integration,
-                        undefined,
-                    )
-
+                    expect(updateIntegrationRequests).toHaveLength(1)
                     expect(onSuccessMock).toHaveBeenCalledWith(
                         mockDispatch,
-                        integration,
+                        expect.objectContaining({
+                            id: integration.id,
+                            name: integration.name,
+                            meta: expect.objectContaining(integration.meta),
+                        }),
                         true,
                         true,
                     )
                 })
+                await expect(
+                    updateIntegrationRequests[0].json(),
+                ).resolves.toEqual(integration)
             })
 
             it('should set errors if the API call fails', async () => {
@@ -364,28 +419,26 @@ describe('useEmailOnboarding()', () => {
                     },
                 }
 
-                createIntegrationMock.mockRejectedValue({
-                    isAxiosError: true,
-                    response: {
-                        data: {
-                            error: {
+                server.use(
+                    mockCreateIntegrationHandler(async ({ request }) => {
+                        createIntegrationRequests.push(request)
+
+                        return HttpResponse.json(
+                            mockApiErrorResponse({
                                 msg: "Can't create integration",
                                 data: {
                                     address: 'Is already used.',
                                 },
-                            },
-                        },
-                    },
-                })
+                            }),
+                            { status: 400 },
+                        )
+                    }).handler,
+                )
 
                 result.current.connectIntegration(payload)
 
                 await waitFor(() => {
-                    expect(createIntegrationMock).toHaveBeenCalledWith(
-                        { ...payload, type: 'email' },
-                        undefined,
-                    )
-
+                    expect(createIntegrationRequests).toHaveLength(1)
                     expect(result.current.errors).toEqual({
                         address: 'Is already used.',
                     })
@@ -406,20 +459,12 @@ describe('useEmailOnboarding()', () => {
             it('sends a verification email', async () => {
                 const { result } = render({ integration })
 
-                sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<void>)
-
                 expect(result.current.isRequested).toBe(false)
 
                 result.current.sendVerification()
 
                 await waitFor(() => {
-                    expect(sendVerificationEmailMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
-
+                    expect(sendVerificationEmailRequests).toHaveLength(1)
                     expect(result.current.isRequested).toBe(true)
 
                     expect(mockHistoryPush).toHaveBeenCalledWith(
@@ -431,26 +476,25 @@ describe('useEmailOnboarding()', () => {
             it('should display a banner if the sending fails', async () => {
                 const { result } = render({ integration })
 
-                sendVerificationEmailMock.mockRejectedValue({
-                    isAxiosError: true,
-                    response: {
-                        data: {
-                            error: {
+                server.use(
+                    mockSendVerificationEmailHandler(async ({ request }) => {
+                        sendVerificationEmailRequests.push(request)
+
+                        return HttpResponse.json(
+                            mockApiErrorResponse({
                                 msg: 'Please wait a bit',
-                            },
-                        },
-                    },
-                })
+                            }),
+                            { status: 400 },
+                        )
+                    }).handler,
+                )
 
                 expect(result.current.isRequested).toBe(false)
 
                 result.current.sendVerification()
 
                 await waitFor(() => {
-                    expect(sendVerificationEmailMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
+                    expect(sendVerificationEmailRequests).toHaveLength(1)
                     expect(result.current.isRequested).toBe(false)
                     const toast = screen.getByRole('status', {
                         name: 'Please wait a bit',
@@ -462,26 +506,25 @@ describe('useEmailOnboarding()', () => {
             it('should trigger an integration refetch if the integration has already been verified', async () => {
                 const { result } = render({ integration })
 
-                sendVerificationEmailMock.mockRejectedValue({
-                    isAxiosError: true,
-                    response: {
-                        data: {
-                            error: {
+                server.use(
+                    mockSendVerificationEmailHandler(async ({ request }) => {
+                        sendVerificationEmailRequests.push(request)
+
+                        return HttpResponse.json(
+                            mockApiErrorResponse({
                                 msg: 'This integration is already verified.',
-                            },
-                        },
-                    },
-                })
+                            }),
+                            { status: 400 },
+                        )
+                    }).handler,
+                )
 
                 expect(result.current.isRequested).toBe(false)
 
                 result.current.sendVerification()
 
                 await waitFor(() => {
-                    expect(sendVerificationEmailMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
+                    expect(sendVerificationEmailRequests).toHaveLength(1)
                     expect(result.current.isRequested).toBe(false)
                     expect(fetchIntegration).toHaveBeenCalledWith(
                         String(integration.id),
@@ -493,20 +536,20 @@ describe('useEmailOnboarding()', () => {
             it('should display a generic error message if the sending fails without details', async () => {
                 const { result } = render({ integration })
 
-                sendVerificationEmailMock.mockRejectedValue({
-                    isAxiosError: true,
-                    response: undefined,
-                })
+                server.use(
+                    mockSendVerificationEmailHandler(async ({ request }) => {
+                        sendVerificationEmailRequests.push(request)
+
+                        return HttpResponse.error() as never
+                    }).handler,
+                )
 
                 expect(result.current.isRequested).toBe(false)
 
                 result.current.sendVerification()
 
                 await waitFor(() => {
-                    expect(sendVerificationEmailMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
+                    expect(sendVerificationEmailRequests).toHaveLength(1)
                     expect(result.current.isRequested).toBe(false)
                     const toast = screen.getByRole('status', {
                         name: 'Failed to send verification message',
@@ -518,15 +561,11 @@ describe('useEmailOnboarding()', () => {
             it('is a no-op if no integration is connected', () => {
                 const { result } = render()
                 result.current.sendVerification()
-                expect(sendVerificationEmailMock).not.toHaveBeenCalled()
+                expect(sendVerificationEmailRequests).toHaveLength(0)
             })
 
             it('should change requested and pending flags after sending a verification request', async () => {
                 const { result } = render({ integration })
-
-                sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<void>)
 
                 expect(result.current.isRequested).toEqual(false)
                 expect(result.current.isPending).toEqual(false)
@@ -548,10 +587,6 @@ describe('useEmailOnboarding()', () => {
                     id: 1,
                     type: 'email',
                 } as EmailIntegration
-
-                sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<void>)
 
                 const { result } = render({ integration })
 
@@ -583,10 +618,6 @@ describe('useEmailOnboarding()', () => {
                     id: 1,
                     type: 'email',
                 } as EmailIntegration
-
-                sendVerificationEmailMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<void>)
 
                 const { result } = render({ integration })
 
@@ -624,17 +655,10 @@ describe('useEmailOnboarding()', () => {
             it('deletes the integration', async () => {
                 const { result } = render({ integration })
 
-                deleteIntegrationMock.mockResolvedValue({
-                    data: undefined,
-                } as HttpResponse<void>)
-
                 result.current.deleteIntegration()
 
                 await waitFor(() => {
-                    expect(deleteIntegrationMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
+                    expect(deleteIntegrationRequests).toHaveLength(1)
                     expect(mockDispatch).toHaveBeenCalledWith({
                         type: DELETE_INTEGRATION_SUCCESS,
                         id: 1,
@@ -648,24 +672,23 @@ describe('useEmailOnboarding()', () => {
             it('should display a banner if the deleting fails', async () => {
                 const { result } = render({ integration })
 
-                deleteIntegrationMock.mockRejectedValue({
-                    isAxiosError: true,
-                    response: {
-                        data: {
-                            error: {
+                server.use(
+                    mockDeleteIntegrationHandler(async ({ request }) => {
+                        deleteIntegrationRequests.push(request)
+
+                        return HttpResponse.json(
+                            mockApiErrorResponse({
                                 msg: 'Deletion failed',
-                            },
-                        },
-                    },
-                })
+                            }),
+                            { status: 400 },
+                        )
+                    }).handler,
+                )
 
                 result.current.deleteIntegration()
 
                 await waitFor(() => {
-                    expect(deleteIntegrationMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
+                    expect(deleteIntegrationRequests).toHaveLength(1)
                     const toast = screen.getByRole('status', {
                         name: 'Deletion failed',
                     })
@@ -676,18 +699,18 @@ describe('useEmailOnboarding()', () => {
             it('should display a generic error message if the deleting fails without details', async () => {
                 const { result } = render({ integration })
 
-                deleteIntegrationMock.mockRejectedValue({
-                    isAxiosError: true,
-                    response: undefined,
-                })
+                server.use(
+                    mockDeleteIntegrationHandler(async ({ request }) => {
+                        deleteIntegrationRequests.push(request)
+
+                        return HttpResponse.error() as never
+                    }).handler,
+                )
 
                 result.current.deleteIntegration()
 
                 await waitFor(() => {
-                    expect(deleteIntegrationMock).toHaveBeenCalledWith(
-                        1,
-                        undefined,
-                    )
+                    expect(deleteIntegrationRequests).toHaveLength(1)
                     const toast = screen.getByRole('status', {
                         name: 'Failed to delete integration',
                     })
@@ -698,7 +721,7 @@ describe('useEmailOnboarding()', () => {
             it('is a no-op if no integration is connected', () => {
                 const { result } = render()
                 result.current.deleteIntegration()
-                expect(deleteIntegrationMock).not.toHaveBeenCalled()
+                expect(deleteIntegrationRequests).toHaveLength(0)
             })
         })
 

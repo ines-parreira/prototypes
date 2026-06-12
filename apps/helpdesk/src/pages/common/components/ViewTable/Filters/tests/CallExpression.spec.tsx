@@ -2,15 +2,20 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import type {
     CallExpression as ESCallExpression,
     LogicalExpression,
 } from 'estree'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import {
+    mockGetStoreMappingsByAccountIdHandler,
+    mockGetStoreMappingsByAccountIdResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { StoreMapping } from '@gorgias/helpdesk-queries'
-import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_PATHS } from 'custom-fields/constants'
 import type { CustomField } from 'custom-fields/types'
@@ -26,12 +31,6 @@ import { useCustomFieldsFilters } from '../hooks/useCustomFieldsFilters'
 import { QaScoreDimensions } from '../utils/qaScoreDimensions'
 
 jest.mock('state/views/actions')
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useGetStoreMappingsByAccountId: jest.fn(),
-}))
-const useGetStoreMappingsByAccountIdMock =
-    useGetStoreMappingsByAccountId as jest.Mock
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
 
@@ -61,6 +60,7 @@ jest.mock('../Right', () => ({
 }))
 
 const RightMock = assumeMock(Right)
+const server = setupServer()
 
 const callExpressionNode = {
     type: 'CallExpression',
@@ -149,7 +149,18 @@ const minProps: ComponentProps<typeof CallExpression> = {
 }
 
 describe('<CallExpression />', () => {
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        server.use(
+            mockGetStoreMappingsByAccountIdHandler(async () =>
+                HttpResponse.json(
+                    mockGetStoreMappingsByAccountIdResponse({ data: [] }),
+                ),
+            ).handler,
+        )
         RightMock.mockClear()
         LeftMock.mockImplementation(() => <div>Left</div>)
         useCustomFieldsFiltersMock.mockReturnValue({
@@ -171,11 +182,14 @@ describe('<CallExpression />', () => {
         mockUseAppSelector.mockReturnValue({
             currentAccountId: 1,
         })
-        useGetStoreMappingsByAccountIdMock.mockReturnValue({
-            data: {
-                data: [],
-            },
-        })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should update active view on remove field', () => {
@@ -239,38 +253,39 @@ describe('<CallExpression />', () => {
             },
         ]
 
-        it('should pass store mappings to Right component', () => {
-            useGetStoreMappingsByAccountIdMock.mockReturnValue({
-                data: {
-                    data: { data: mockStoreMappings },
-                },
-            })
+        it('should pass store mappings to Right component', async () => {
+            server.use(
+                mockGetStoreMappingsByAccountIdHandler(async () =>
+                    HttpResponse.json(
+                        mockGetStoreMappingsByAccountIdResponse({
+                            data: mockStoreMappings,
+                        }),
+                    ),
+                ).handler,
+            )
             render(<CallExpression {...minProps} />)
 
-            expect(RightMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    storeMappings: mockStoreMappings,
-                }),
-                expect.anything(),
-            )
+            await waitFor(() => {
+                expect(RightMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        storeMappings: mockStoreMappings,
+                    }),
+                    expect.anything(),
+                )
+            })
         })
 
-        it('should handle undefined store mappings data', () => {
-            const {
-                useGetStoreMappingsByAccountId,
-            } = require('@gorgias/helpdesk-queries')
-            useGetStoreMappingsByAccountId.mockReturnValue({
-                data: undefined,
-            })
-
+        it('should handle empty store mappings data', async () => {
             render(<CallExpression {...minProps} />)
 
-            expect(RightMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    storeMappings: [],
-                }),
-                expect.anything(),
-            )
+            await waitFor(() => {
+                expect(RightMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        storeMappings: [],
+                    }),
+                    expect.anything(),
+                )
+            })
         })
     })
 
