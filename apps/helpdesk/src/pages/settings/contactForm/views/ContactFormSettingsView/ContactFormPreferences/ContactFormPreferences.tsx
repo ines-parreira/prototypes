@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import { isAxiosError } from 'axios'
 import classNames from 'classnames'
-import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
+import { get } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
@@ -138,7 +138,7 @@ const ContactFormPreferences = (): JSX.Element => {
         const errorMessage =
             (isAxiosError(error) &&
                 get(error, 'response.status') === 400 &&
-                get(error, 'response.data.message')) ||
+                String(get(error, 'response.data.message') || '')) ||
             'Failed to delete the Contact Form'
 
         setIsDeletionModalShown(false)

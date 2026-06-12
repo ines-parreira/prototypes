@@ -2,10 +2,7 @@ import { appQueryClient } from '@repo/api-resources'
 import { tryLocalStorage } from '@repo/browser-storage'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isArray from 'lodash/isArray'
-import _isEqual from 'lodash/isEqual'
-import _pick from 'lodash/pick'
-
+import { isArray, isEqual } from '@gorgias/toolkit'
 import { humanize } from 'business/format'
 import type { TicketVia } from 'business/types/ticket'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
@@ -234,7 +231,7 @@ export function cleanReceivers(
 ): Receiver[] {
     const receivers = receiversList.toJS() ?? []
 
-    if (!_isArray(receivers)) {
+    if (!isArray(receivers)) {
         return []
     }
 
@@ -403,7 +400,7 @@ export function buildPartialUpdateFromAction(
     if (!state) {
         return {}
     }
-    const formattedActionNames = !_isArray(actionNames)
+    const formattedActionNames = !isArray(actionNames)
         ? [actionNames]
         : actionNames
 
@@ -828,6 +825,27 @@ export function getNewMessageSender(
     return preferredChannel
 }
 
+const getValueAtPath = (value: unknown, path: string): unknown =>
+    path.split('.').reduce<unknown>((currentValue, key) => {
+        if (
+            currentValue &&
+            typeof currentValue === 'object' &&
+            key in currentValue
+        ) {
+            return (currentValue as Record<string, unknown>)[key]
+        }
+
+        return undefined
+    }, value)
+
+const pickMessageComparisonProps = (
+    message: TicketMessage,
+    props: string[],
+): Record<string, unknown> =>
+    Object.fromEntries(
+        props.map((prop) => [prop, getValueAtPath(message, prop)]),
+    )
+
 /**
  * Return pending message index
  * match a newly posted message to a pending message and return its index
@@ -854,7 +872,12 @@ export function getPendingMessageIndex(
     ]
 
     pendingMessages.some((pending, i) => {
-        if (_isEqual(_pick(pending, props), _pick(message, props))) {
+        if (
+            isEqual(
+                pickMessageComparisonProps(pending, props),
+                pickMessageComparisonProps(message, props),
+            )
+        ) {
             index = i
             return true
         }

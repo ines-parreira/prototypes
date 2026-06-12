@@ -3,8 +3,7 @@ import React from 'react'
 import { flushPromises, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
@@ -394,7 +393,7 @@ describe('<SelfServiceStatsPage />', () => {
     } as RootState
 
     beforeEach(() => {
-        useStatResourceMock.mockReturnValue([null, true, _noop])
+        useStatResourceMock.mockReturnValue([null, true, noop])
         mockedUseWorkflowConfigurations.mockReturnValue({
             isLoading: false,
             data: [],
@@ -407,7 +406,7 @@ describe('<SelfServiceStatsPage />', () => {
             hasAccess: false,
             isLoading: false,
         })
-        useStatResourceMock.mockReturnValue([null, true, _noop])
+        useStatResourceMock.mockReturnValue([null, true, noop])
         mockedUseWorkflowConfigurations.mockReturnValue({
             isLoading: false,
             data: [],
@@ -429,15 +428,15 @@ describe('<SelfServiceStatsPage />', () => {
                 return [
                     selfServiceArticleRecommendationPerformance,
                     false,
-                    _noop,
+                    noop,
                 ]
             } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
+                return [selfServiceTopReportedIssues, false, noop]
             }
             return [
                 selfServiceProductsWithMostIssuesAndReturnRequests,
                 false,
-                _noop,
+                noop,
             ]
         })
 
@@ -458,15 +457,15 @@ describe('<SelfServiceStatsPage />', () => {
                 return [
                     selfServiceArticleRecommendationPerformanceNoData,
                     false,
-                    _noop,
+                    noop,
                 ]
             } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssuesNoData, false, _noop]
+                return [selfServiceTopReportedIssuesNoData, false, noop]
             }
             return [
                 selfServiceProductsWithMostIssuesAndReturnRequestsNoData,
                 false,
-                _noop,
+                noop,
             ]
         })
 
@@ -551,17 +550,17 @@ describe('<SelfServiceStatsPage />', () => {
                 return [
                     selfServiceArticleRecommendationPerformance,
                     false,
-                    _noop,
+                    noop,
                 ]
             } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
+                return [selfServiceTopReportedIssues, false, noop]
             } else if (resourceName === SELF_SERVICE_WORKFLOWS_PERFORMANCE) {
-                return [selfServiceFlowsPerformance, false, _noop]
+                return [selfServiceFlowsPerformance, false, noop]
             }
             return [
                 selfServiceProductsWithMostIssuesAndReturnRequests,
                 false,
-                _noop,
+                noop,
             ]
         })
         mockedUseWorkflowConfigurations.mockReturnValue({
@@ -591,7 +590,7 @@ describe('<SelfServiceStatsPage />', () => {
         beforeEach(() => {
             jest.clearAllMocks()
 
-            useStatResourceMock.mockReturnValue([null, false, _noop])
+            useStatResourceMock.mockReturnValue([null, false, noop])
             mockedUseWorkflowConfigurations.mockReturnValue({
                 isLoading: false,
                 data: [],
@@ -637,15 +636,15 @@ describe('<SelfServiceStatsPage />', () => {
                     return [
                         selfServiceArticleRecommendationPerformance,
                         false,
-                        _noop,
+                        noop,
                     ]
                 } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                    return [selfServiceTopReportedIssues, false, _noop]
+                    return [selfServiceTopReportedIssues, false, noop]
                 }
                 return [
                     selfServiceProductsWithMostIssuesAndReturnRequests,
                     false,
-                    _noop,
+                    noop,
                 ]
             })
 
@@ -736,15 +735,15 @@ describe('<SelfServiceStatsPage />', () => {
                     return [
                         selfServiceArticleRecommendationPerformance,
                         false,
-                        _noop,
+                        noop,
                     ]
                 } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                    return [selfServiceTopReportedIssues, false, _noop]
+                    return [selfServiceTopReportedIssues, false, noop]
                 }
                 return [
                     selfServiceProductsWithMostIssuesAndReturnRequests,
                     false,
-                    _noop,
+                    noop,
                 ]
             })
 
@@ -778,15 +777,15 @@ describe('<SelfServiceStatsPage />', () => {
                     return [
                         selfServiceArticleRecommendationPerformanceNoData,
                         false,
-                        _noop,
+                        noop,
                     ]
                 } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                    return [selfServiceTopReportedIssues, false, _noop]
+                    return [selfServiceTopReportedIssues, false, noop]
                 }
                 return [
                     selfServiceProductsWithMostIssuesAndReturnRequests,
                     false,
-                    _noop,
+                    noop,
                 ]
             })
 
@@ -823,15 +822,15 @@ describe('<SelfServiceStatsPage />', () => {
                     return [
                         selfServiceArticleRecommendationPerformanceNoData,
                         false,
-                        _noop,
+                        noop,
                     ]
                 } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                    return [selfServiceTopReportedIssues, false, _noop]
+                    return [selfServiceTopReportedIssues, false, noop]
                 }
                 return [
                     selfServiceProductsWithMostIssuesAndReturnRequests,
                     false,
-                    _noop,
+                    noop,
                 ]
             })
 

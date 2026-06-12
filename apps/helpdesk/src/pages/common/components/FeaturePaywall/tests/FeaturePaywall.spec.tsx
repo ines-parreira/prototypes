@@ -3,8 +3,7 @@ import type { ComponentProps } from 'react'
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import type { PaywallConfig } from 'config/paywalls'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -116,7 +115,7 @@ describe('<FeaturePaywall />', () => {
     })
 
     it('should ask to upgrade legacy plan into new plan', () => {
-        const availablePlansWithLegacyPlans = _cloneDeep(products)
+        const availablePlansWithLegacyPlans = cloneDeep(products)
         const helpdeskProduct =
             availablePlansWithLegacyPlans[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(legacyBasicHelpdeskPlan)
@@ -152,7 +151,7 @@ describe('<FeaturePaywall />', () => {
     })
 
     it('should ask to upgrade custom plan when missing feature', () => {
-        const availablePlanWithCustomPlan = _cloneDeep(products)
+        const availablePlanWithCustomPlan = cloneDeep(products)
         const helpdeskProduct =
             availablePlanWithCustomPlan[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(customHelpdeskPlan)

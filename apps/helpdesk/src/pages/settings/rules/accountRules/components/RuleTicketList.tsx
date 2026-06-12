@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
-import _truncate from 'lodash/truncate'
-import _uniqueId from 'lodash/uniqueId'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
+import { truncate, uniqueId } from '@gorgias/toolkit'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
@@ -105,7 +104,7 @@ export const RuleTicketList = ({ ruleId, numTickets = 10 }: Props) => {
                 <tbody>
                     {!!tickets.length &&
                         tickets.map((ticket) => (
-                            <tr key={_uniqueId(`${ticket.id}-`)}>
+                            <tr key={uniqueId(`${ticket.id}-`)}>
                                 <LinkedCell
                                     ticketId={ticket.id}
                                     className={css.avatar}
@@ -130,7 +129,7 @@ export const RuleTicketList = ({ ruleId, numTickets = 10 }: Props) => {
                                         {ticket.subject}
                                     </div>
                                     <div className={css.ticketDescription}>
-                                        {_truncate(ticket.excerpt, {
+                                        {truncate(ticket.excerpt ?? '', {
                                             length: 100,
                                         })}
                                     </div>

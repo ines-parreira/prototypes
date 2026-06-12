@@ -1,7 +1,6 @@
 import type { RawDraftContentBlock } from 'draft-js'
 import { ContentState, convertToRaw, EditorState, Modifier } from 'draft-js'
-import _pickBy from 'lodash/pickBy'
-
+import { pickBy } from '@gorgias/toolkit'
 import { getEntitySelectionState } from '../../../../../utils/editor'
 import { cachedSelection, predictionKey } from './state'
 
@@ -171,7 +170,7 @@ export const convertToRawWithoutPredictions = (
 
     return {
         blocks: rawContent.blocks.slice(),
-        entityMap: _pickBy(rawContent.entityMap, (val, key) => {
+        entityMap: pickBy(rawContent.entityMap, (val, key) => {
             // Remove prediction entities
             if (val.type === PREDICTION_TYPE) {
                 return false

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
 import classNames from 'classnames'
-import _omit from 'lodash/omit'
 import ReactPaginate from 'react-paginate'
+import { omit } from '@gorgias/toolkit'
 
 import css from './Pagination.less'
 
@@ -77,7 +77,7 @@ export class Pagination extends Component<Props> {
                 disabledClassName={css.disabled}
                 disableInitialCallback={true}
                 forcePage={forcePage}
-                {..._omit(properties, 'currentPage')}
+                {...omit(properties, 'currentPage')}
                 pageCount={pageCount}
             />
         )

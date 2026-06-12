@@ -12,7 +12,10 @@ import type {
 import { SearchBar } from './SearchBar'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('lodash/debounce', () => jest.fn((fn) => fn))
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: jest.fn((fn) => fn),
+}))
 
 const initSearchClient = jest.spyOn(
     // eslint-disable-next-line @typescript-eslint/no-var-requires

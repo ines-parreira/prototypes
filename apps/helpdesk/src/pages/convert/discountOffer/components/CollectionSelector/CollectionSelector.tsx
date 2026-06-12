@@ -1,8 +1,6 @@
 import type React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
-
-import _debounce from 'lodash/debounce'
-
+import { debounce, Duration } from '@gorgias/toolkit'
 import { useCollectionsFromShopifyIntegration } from 'models/integration/queries'
 import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
@@ -45,9 +43,9 @@ const CollectionSelector: React.FC<Props> = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceOnSearchChange = useCallback(
-        _debounce((value: string) => {
+        debounce((value: string) => {
             setSearch(value)
-        }, 250),
+        }, Duration.millis(250)),
         [setSearch],
     )
     const productCollections = useMemo<Option[]>(() => {

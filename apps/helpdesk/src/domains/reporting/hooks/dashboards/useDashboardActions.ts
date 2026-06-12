@@ -1,8 +1,6 @@
 import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import _sortBy from 'lodash/sortBy'
-
 import { toast } from '@gorgias/axiom'
 import type {
     AnalyticsCustomReport,
@@ -15,6 +13,7 @@ import {
     useListAnalyticsCustomReports,
     useUpdateAnalyticsCustomReport,
 } from '@gorgias/helpdesk-queries'
+import { sortBy } from '@gorgias/toolkit'
 
 import {
     LIMIT_REACHED_MESSAGE,
@@ -231,7 +230,7 @@ export const useDashboardActions = () => {
             return acc
         }, [] as DashboardSchema[])
 
-        return _sortBy(dashboards, (dashboard) => dashboard.name.toLowerCase())
+        return sortBy(dashboards, (dashboard) => dashboard.name.toLowerCase())
     }, [listDashboardsQuery])
 
     const removeChartFromDashboardHandler = useCallback(

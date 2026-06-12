@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import { noop } from '@gorgias/toolkit'
 
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -13,7 +13,7 @@ const store = mockStore({} as RootState)
 
 const renderMacroReplyActionControls = ({
     fields = {},
-    onChange = _noop,
+    onChange = noop,
 }: Partial<React.ComponentProps<typeof MacroReplyActionControls>> = {}) =>
     render(
         <Provider store={store}>

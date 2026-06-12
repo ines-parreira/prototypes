@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect } from 'react'
-
-import _noop from 'lodash/noop'
+import { noop } from '@gorgias/toolkit'
 import { usePrevious } from '@gorgias/toolkit-react'
 
 import type { StoreIntegration } from 'models/integration/types'
@@ -13,7 +12,7 @@ export type CancelOrderFlowViewContextType = {
 const CancelOrderFlowViewContext =
     createContext<CancelOrderFlowViewContextType>({
         storeIntegration: undefined,
-        setError: _noop,
+        setError: noop,
     })
 
 export const useCancelOrderFlowViewContext = () =>

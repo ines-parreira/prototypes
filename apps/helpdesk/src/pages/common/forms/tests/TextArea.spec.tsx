@@ -4,10 +4,13 @@ import { render } from '@repo/testing'
 
 import { DefaultExportTextArea as TextArea } from '../TextArea'
 
-jest.mock('lodash/uniqueId', () => () => '42')
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    uniqueId: () => '42',
+}))
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
-    useId: jest.fn(() => require('lodash/uniqueId')()),
+    useId: jest.fn(() => require('@gorgias/toolkit').uniqueId()),
 }))
 
 describe('TextArea', () => {

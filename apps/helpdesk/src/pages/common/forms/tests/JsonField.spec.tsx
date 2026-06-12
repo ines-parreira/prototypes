@@ -3,14 +3,13 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { JsonField } from '../JsonField'
 
 describe('JsonField', () => {
     const minProps: ComponentProps<typeof JsonField> = {
         value: 'value',
-        onChange: _noop,
+        onChange: noop,
     }
 
     it('should render input', () => {

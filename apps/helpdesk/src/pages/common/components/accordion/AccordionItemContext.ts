@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react'
-
-import _noop from 'lodash/noop'
+import { noop } from '@gorgias/toolkit'
 
 export type AccordionItemContextType = {
     isExpanded: boolean
@@ -11,7 +10,7 @@ export type AccordionItemContextType = {
 const AccordionItemContext = createContext<AccordionItemContextType>({
     isExpanded: false,
     isDisabled: false,
-    toggleItem: _noop,
+    toggleItem: noop,
 })
 
 export const useAccordionItemContext = () => useContext(AccordionItemContext)

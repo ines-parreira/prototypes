@@ -11,10 +11,10 @@ import {
 import { Form } from '@repo/forms'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
-import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
 import { useStore } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
+import { mapValues } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -153,7 +153,10 @@ const useDefaultValues = (
 
         const withTaxIds: FormFields = {
             ...withBillingInfo,
-            ...mapValues(billingInformation.tax_ids, (taxId) => taxId?.value),
+            ...mapValues(
+                billingInformation.tax_ids ?? {},
+                (taxId) => taxId?.value,
+            ),
         }
 
         return withTaxIds

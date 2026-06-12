@@ -5,7 +5,10 @@ import { fireEvent, waitFor } from '@testing-library/react'
 
 import { IconTooltip } from '../IconTooltip'
 
-jest.mock('lodash/uniqueId', () => () => '42')
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    uniqueId: () => '42',
+}))
 
 describe('<IconTooltip />', () => {
     it('should render an Icon', () => {

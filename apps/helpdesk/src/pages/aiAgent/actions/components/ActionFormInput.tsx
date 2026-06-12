@@ -2,12 +2,11 @@ import React, { useMemo, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
-import _omit from 'lodash/omit'
-
 import {
     LegacyIconButton as IconButton,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import { omit } from '@gorgias/toolkit'
 
 import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
@@ -105,13 +104,13 @@ const ActionFormInput = ({
                             onChange({
                                 ...('kind' in input
                                     ? input
-                                    : _omit(input, ['data_type'])),
+                                    : omit(input, ['data_type'])),
                                 kind: nextValue,
                             })
                         } else {
                             onChange({
                                 ...('kind' in input
-                                    ? _omit(input, ['kind'])
+                                    ? omit(input, ['kind'])
                                     : input),
                                 data_type: nextValue as
                                     | 'string'

@@ -1,5 +1,4 @@
-import _truncate from 'lodash/truncate'
-
+import { truncate } from '@gorgias/toolkit'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
 import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
@@ -24,7 +23,7 @@ export function CommentBodyCell({
             innerClassName={innerClassName}
             justifyContent={justifyContent}
         >
-            {_truncate(comment || NOT_AVAILABLE_PLACEHOLDER, {
+            {truncate(comment || NOT_AVAILABLE_PLACEHOLDER, {
                 length: MAX_COMMENT_LENGTH,
                 omission: '...',
             })}

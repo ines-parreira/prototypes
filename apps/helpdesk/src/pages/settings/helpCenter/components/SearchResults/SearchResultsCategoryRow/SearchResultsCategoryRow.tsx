@@ -4,8 +4,7 @@ import { useCallback, useMemo } from 'react'
 
 import { sanitizeHtmlDefault } from '@repo/utils'
 import classNames from 'classnames'
-import _keyBy from 'lodash/keyBy'
-
+import { keyBy } from '@gorgias/toolkit'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useModalManager } from 'hooks/useModalManager'
 import type {
@@ -94,7 +93,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
     const categoryModal = useModalManager(MODALS.CATEGORY, {
         autoDestroy: false,
     })
-    const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
+    const localesByCode = useMemo(() => keyBy(locales, 'code'), [locales])
     const categoryRowActions = useCategoryRowActions(category.id, level)
 
     const languageList = useMemo(() => {

@@ -1,14 +1,10 @@
-import _functions from 'lodash/functions'
-import _isEqual from 'lodash/isEqual'
-import _max from 'lodash/max'
-import _omit from 'lodash/omit'
-import _words from 'lodash/words'
 import type { Notification as ReapopNotification } from 'reapop'
 import {
     notify as addNotification,
     dismissNotification,
     POSITIONS,
 } from 'reapop'
+import { isEqual, max, omit, words } from '@gorgias/toolkit'
 
 import { AlertBannerTypes } from 'AlertBanners/types'
 
@@ -32,14 +28,19 @@ export const INITIAL_MESSAGE = {
 
 // clean-up notification for comparison
 const cleanNotification = (n: Notification) =>
-    _omit(n, _functions(n).concat(['id']))
+    omit(
+        n,
+        Object.keys(n)
+            .filter((key) => typeof n[key as keyof Notification] === 'function')
+            .concat(['id']),
+    )
 
 // detect duplicate notifications
 const isDuplicate = (
     notification: Notification,
     oldNotification: Notification,
 ): boolean => {
-    return _isEqual(
+    return isEqual(
         cleanNotification(notification),
         cleanNotification(oldNotification),
     )
@@ -87,9 +88,8 @@ export const notify =
                 const readText = `${message.title || ''} ${
                     message.message || ''
                 }`
-                let readingTime =
-                    (_words(readText).length * 60) / wordsPerMinute
-                readingTime = _max([3, Math.ceil(readingTime)]) as number
+                let readingTime = (words(readText).length * 60) / wordsPerMinute
+                readingTime = max([3, Math.ceil(readingTime)]) as number
                 dismissAfter = readingTime * 1000
             }
 

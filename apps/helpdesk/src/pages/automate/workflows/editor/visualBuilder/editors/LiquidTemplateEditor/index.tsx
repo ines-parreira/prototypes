@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react'
-
-import _uniq from 'lodash/uniq'
-
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import { uniq } from '@gorgias/toolkit'
 
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
@@ -37,7 +35,7 @@ export function LiquidTemplateEditor({
     )
 
     const variables = useMemo(() => {
-        const variables = _uniq(
+        const variables = uniq(
             extractVariablesFromNode({
                 type: 'liquid_template',
                 data: nodeInEdition.data,

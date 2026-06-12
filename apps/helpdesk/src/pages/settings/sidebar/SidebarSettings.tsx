@@ -3,9 +3,8 @@ import React, { useMemo, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { produce } from 'immer'
-import _isEqual from 'lodash/isEqual'
-
 import { Button } from '@gorgias/axiom'
+import { isEqual } from '@gorgias/toolkit'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -61,7 +60,7 @@ const SidebarSettings = () => {
     const [isSaving, setSaving] = useState<boolean>(false)
 
     const isSaveEnabled = useMemo(() => {
-        return !_isEqual(selectedViews, settingsSystemViews)
+        return !isEqual(selectedViews, settingsSystemViews)
     }, [selectedViews, settingsSystemViews])
 
     const handleViewChecked = (index: number) => {

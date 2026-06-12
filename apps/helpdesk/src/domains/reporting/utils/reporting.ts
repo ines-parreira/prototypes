@@ -1,7 +1,6 @@
-import _difference from 'lodash/difference'
-import _orderBy from 'lodash/orderBy'
 import type { Moment } from 'moment'
 import moment from 'moment'
+import { difference, orderBy } from '@gorgias/toolkit'
 
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import type {
@@ -539,13 +538,13 @@ export const sortAllData = <
 ) => {
     const nonNullValues = allData.filter((item) => item[sortingField] !== null)
 
-    const sortedArray = _orderBy(
+    const sortedArray = orderBy(
         nonNullValues,
         (v) => Number(v[sortingField]),
         sorting,
     )
 
-    return sortedArray.concat(_difference(allData, nonNullValues))
+    return sortedArray.concat(difference(allData, nonNullValues))
 }
 
 export const mapMetrics = <TCube extends Cubes = Cubes>(

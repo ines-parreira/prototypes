@@ -3,10 +3,9 @@ import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
-import { uniqBy } from 'lodash'
-import _debounce from 'lodash/debounce'
 import { connect } from 'react-redux'
 import { Col, Container, Row } from 'reactstrap'
+import { debounce, Duration, uniqBy } from '@gorgias/toolkit'
 
 import { fetchShopTags } from 'models/integration/resources/shopify'
 import { ShopifyTags } from 'models/integration/types'
@@ -75,15 +74,15 @@ export class OrderFooterComponent extends Component<Props, State> {
         element.style.height = `${element.scrollHeight + padding}px`
     }
 
-    _updatePayload = _debounce(() => {
+    _updatePayload = debounce(() => {
         const { onPayloadChange, payload } = this.props
         const { integrationId } = this.context
         const { note } = this.state
         const newPayload = payload.set('note', note)
         onPayloadChange(integrationId!, newPayload, false)
-    }, 250)
+    }, Duration.millis(250))
 
-    _trackNoteChanged = _debounce(() => {
+    _trackNoteChanged = debounce(() => {
         const { actionName } = this.props
 
         logEvent(
@@ -91,7 +90,7 @@ export class OrderFooterComponent extends Component<Props, State> {
                 ? SegmentEvent.ShopifyCreateOrderNotesChanged
                 : SegmentEvent.ShopifyDuplicateOrderNotesChanged,
         )
-    }, 1000)
+    }, Duration.seconds(1))
 
     _onTagsChange = (tags: Option[]) => {
         const { onPayloadChange, payload } = this.props

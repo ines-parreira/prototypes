@@ -1,9 +1,7 @@
 import type { Dispatch } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
-
-import _isEqual from 'lodash/isEqual'
-
 import { Box, Button, Skeleton } from '@gorgias/axiom'
+import { isEqual } from '@gorgias/toolkit'
 
 import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import { useGetAppFromTemplateApp } from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
@@ -80,7 +78,7 @@ export const ActionStepList = ({
             return
         }
 
-        if (!_isEqual(dirtyNodes, orderedNodes)) {
+        if (!isEqual(dirtyNodes, orderedNodes)) {
             dispatch({
                 type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
                 nodeIds: dirtyNodes.map((node) => node.id),

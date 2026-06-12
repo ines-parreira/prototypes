@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import { useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import _kebabCase from 'lodash/kebabCase'
 import { useDrag } from 'react-dnd'
 import {
     Dropdown,
@@ -10,6 +9,7 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
+import { kebabCase } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -109,7 +109,7 @@ export function TicketNavbarBlock({
                     <Navigation.SectionTrigger>
                         <div
                             className={css.title}
-                            data-candu-id={`navbar-block-${_kebabCase(title)}`}
+                            data-candu-id={`navbar-block-${kebabCase(title)}`}
                         >
                             {icon && (
                                 <i className={classnames('material-icons')}>

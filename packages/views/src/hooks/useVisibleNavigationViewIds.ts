@@ -1,7 +1,6 @@
 import type { RefObject } from 'react'
 import { useEffect, useState } from 'react'
-
-import isEqual from 'lodash/isEqual'
+import { isEqual } from '@gorgias/toolkit'
 
 const VIEW_LINK_SELECTOR = '[id^="view-"]'
 const VIEW_LINK_ID_PATTERN = /^view-(\d+)$/

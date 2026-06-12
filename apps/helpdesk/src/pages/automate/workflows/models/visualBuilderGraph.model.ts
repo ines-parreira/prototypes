@@ -1,13 +1,14 @@
 import type { Edge, Node } from '@xyflow/react'
-import _cloneDeep from 'lodash/cloneDeep'
-import _groupBy from 'lodash/groupBy'
-import _isEqual from 'lodash/isEqual'
-import _keyBy from 'lodash/keyBy'
-import _merge from 'lodash/merge'
-import _omit from 'lodash/omit'
-import _omitBy from 'lodash/omitBy'
-import _setWith from 'lodash/setWith'
 import { ulid } from 'ulidx'
+import {
+    cloneDeep,
+    groupBy,
+    isEqual,
+    keyBy,
+    merge,
+    omit,
+    omitBy,
+} from '@gorgias/toolkit'
 
 import { validateHttpHeaderName, validateWebhookURL } from 'utils'
 
@@ -120,13 +121,13 @@ export function areGraphsEqual(
     ignoreTouched = true,
 ): boolean {
     const essentialGraph = (g: VisualBuilderGraph) =>
-        _omit(
+        omit(
             {
                 ...g,
                 nodes: g.nodes
                     .map((node) => {
-                        let data = _omitBy(
-                            _omit(
+                        let data = omitBy(
+                            omit(
                                 node.data,
                                 ignoreTouched
                                     ? ['isGreyedOut', 'errors', 'touched']
@@ -136,7 +137,7 @@ export function areGraphsEqual(
                         )
 
                         if (node.type === 'http_request') {
-                            data = _omit(
+                            data = omit(
                                 data,
                                 ignoreTouched
                                     ? ['testRequestResult', 'errors', 'touched']
@@ -173,7 +174,7 @@ export function areGraphsEqual(
                         ),
                     ),
                 apps: g.apps?.map((app) =>
-                    _omit(
+                    omit(
                         app,
                         ignoreTouched ? ['errors', 'touched'] : ['errors'],
                     ),
@@ -195,7 +196,7 @@ export function areGraphsEqual(
                   ],
         )
 
-    return _isEqual(essentialGraph(g1), essentialGraph(g2))
+    return isEqual(essentialGraph(g1), essentialGraph(g2))
 }
 
 export function walkVisualBuilderGraph(
@@ -220,9 +221,9 @@ export function walkVisualBuilderGraph(
     const { nodes, edges } = g
     // Build indexes on first iteration
     const { nodeById, edgesBySource, edgesByTarget } = indexes ?? {
-        nodeById: _keyBy(nodes, 'id'),
-        edgesBySource: _groupBy(edges, 'source'),
-        edgesByTarget: _groupBy(edges, 'target'),
+        nodeById: keyBy(nodes, 'id'),
+        edgesBySource: groupBy(edges, 'source'),
+        edgesByTarget: groupBy(edges, 'target'),
     }
 
     const node = nodeById[currentNodeId]
@@ -546,10 +547,10 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         steps: [],
         transitions: [],
         apps: g.apps?.map(
-            (app) => _omit(app, ['errors', 'touched']) as ActionTemplateApp,
+            (app) => omit(app, ['errors', 'touched']) as ActionTemplateApp,
         ),
-        inputs: _cloneDeep(g.inputs),
-        values: _cloneDeep(g.values),
+        inputs: cloneDeep(g.inputs),
+        values: cloneDeep(g.values),
         category: g.category,
     }
 
@@ -951,7 +952,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 stepIdByNodeId[node.id] = step.id
 
                 const trigger = c.triggers?.[0]
-                const variablesByOutputPath = _keyBy(
+                const variablesByOutputPath = keyBy(
                     step.settings.variables,
                     (variable) =>
                         `steps_state.${step.id}.content.${variable.id}`,
@@ -1801,7 +1802,17 @@ function mergeErrors<T extends VisualBuilderNode['data']['errors']>(
     path: string,
     error: string,
 ): NonNullable<T> {
-    return _merge(_setWith({}, path, error, Object), errors)
+    return merge(buildErrorMap(path, error), errors ?? {}) as NonNullable<T>
+}
+
+function buildErrorMap(path: string, error: string): Record<string, unknown> {
+    return path
+        .split('.')
+        .reverse()
+        .reduce<Record<string, unknown> | string>(
+            (acc, key) => ({ [key]: acc }),
+            error,
+        ) as Record<string, unknown>
 }
 
 export function getLLMPromptTriggerNodeTouched(

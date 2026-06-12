@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import { DropdownItem } from 'reactstrap'
+import { noop } from '@gorgias/toolkit'
 
 import css from './CollapsedAction.less'
 
@@ -25,7 +25,7 @@ const CollapsedAction: React.FC<Props> = ({
     nested,
     disabled,
     toggle,
-    onClick = _noop,
+    onClick = noop,
 }) => (
     <DropdownItem
         id={id}

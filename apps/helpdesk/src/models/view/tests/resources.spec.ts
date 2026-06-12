@@ -1,7 +1,6 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import _omit from 'lodash/omit'
-
+import { omit } from '@gorgias/toolkit'
 import { view } from 'fixtures/views'
 
 import {
@@ -14,7 +13,7 @@ import type { ViewDraft } from '../types'
 
 const mockedServer = new MockAdapter(client)
 const draftView: ViewDraft = {
-    ..._omit(view, 'id'),
+    ...omit(view, 'id'),
     category: null,
 } as any
 

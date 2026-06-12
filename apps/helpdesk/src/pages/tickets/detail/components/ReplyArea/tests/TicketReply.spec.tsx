@@ -20,7 +20,10 @@ import { TicketReply } from '../TicketReply'
 
 jest.unmock('business/ticket')
 
-jest.mock('lodash/uniqueId', () => (id: number) => `${id}42`)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    uniqueId: (id: number) => `${id}42`,
+}))
 
 jest.mock('draft-js-plugins-editor', () => ({
     __esModule: true,

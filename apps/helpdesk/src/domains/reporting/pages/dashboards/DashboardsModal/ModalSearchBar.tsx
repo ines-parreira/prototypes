@@ -1,5 +1,4 @@
-import _get from 'lodash/get'
-
+import { get } from '@gorgias/toolkit'
 import type {
     ChartConfig,
     ReportChildrenConfig,
@@ -72,7 +71,9 @@ export const ModalSearchBar = ({
             const updatedConfig = getSearchConfig(config, value)
             setConfig(updatedConfig)
             setSelectedReport(
-                _get(updatedConfig, '0.children.0.config') || null,
+                (get(updatedConfig, '0.children.0.config') as
+                    | ReportConfig<string>
+                    | undefined) || null,
             )
         } else {
             setSelectedReport(null)

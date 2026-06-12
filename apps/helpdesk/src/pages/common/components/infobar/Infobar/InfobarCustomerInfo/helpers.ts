@@ -1,17 +1,17 @@
 import { useMemo } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { appQueryClient } from '@repo/api-resources'
 import { useGetCustomer } from '@repo/customer/hooks'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { memoize, throttle } from 'lodash'
+import { Duration } from '@gorgias/toolkit'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+import type { ThrottledCacheInvalidation } from 'utils/cacheInvalidationThrottle'
+import { createCacheInvalidationThrottle } from 'utils/cacheInvalidationThrottle'
 
 export function useShouldShowProfileSync(
     isEditing: boolean,
@@ -120,14 +120,32 @@ export function throttledUpdateCustomerCache(id: number) {
     getThrottledUpdateForCustomer(id)()
 }
 
-export const getThrottledUpdateForCustomer = memoize((id: number) =>
-    throttle(
-        () => {
+type GetThrottledUpdateForCustomer = ((
+    id: number,
+) => ThrottledCacheInvalidation) & {
+    cache: { clear: () => void }
+}
+
+const throttledCustomerUpdates = new globalThis.Map<
+    number,
+    ThrottledCacheInvalidation
+>()
+
+export const getThrottledUpdateForCustomer = ((id: number) => {
+    let throttledUpdate = throttledCustomerUpdates.get(id)
+
+    if (!throttledUpdate) {
+        throttledUpdate = createCacheInvalidationThrottle(() => {
             void appQueryClient.invalidateQueries({
                 queryKey: queryKeys.customers.getCustomer(id),
             })
-        },
-        Duration.seconds(15),
-        { leading: true, trailing: true },
-    ),
-)
+        }, Duration.seconds(15))
+        throttledCustomerUpdates.set(id, throttledUpdate)
+    }
+
+    return throttledUpdate
+}) as GetThrottledUpdateForCustomer
+
+getThrottledUpdateForCustomer.cache = {
+    clear: () => throttledCustomerUpdates.clear(),
+}

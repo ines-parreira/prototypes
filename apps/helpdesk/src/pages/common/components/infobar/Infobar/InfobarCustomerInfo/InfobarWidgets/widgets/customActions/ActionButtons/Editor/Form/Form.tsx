@@ -2,11 +2,10 @@ import type { FormEvent } from 'react'
 import { memo, useCallback, useState } from 'react'
 
 import { produce } from 'immer'
-import { set as _set } from 'lodash'
-
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
+import { setActionPathValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/path'
 import { httpMethodsWithBody } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import type {
     Button as ButtonType,
@@ -57,7 +56,7 @@ function Form({ button = initialState, onSubmit, index, onClose }: Props) {
     const handleActionChange = useCallback((path: string, value: unknown) => {
         setFormState((previousFormState) => {
             const updatedAction = produce(previousFormState.action, (draft) => {
-                _set(draft, path, value)
+                setActionPathValue(draft, path, value)
             })
             return {
                 ...previousFormState,

@@ -1,5 +1,3 @@
-import { omit } from 'lodash'
-
 import type {
     BusinessHoursConfig,
     BusinessHoursCreate,
@@ -7,6 +5,7 @@ import type {
     BusinessHoursUpdate,
     Timezone,
 } from '@gorgias/helpdesk-types'
+import { omit } from '@gorgias/toolkit'
 
 import {
     DEFAULT_BUSINESS_HOURS_SCHEDULE,

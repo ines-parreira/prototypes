@@ -1,6 +1,5 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _find from 'lodash/find'
 import moment from 'moment-timezone'
 
 import type { IconName } from '@gorgias/axiom'
@@ -34,7 +33,7 @@ export const getIntegrationDisplayName = (type: IntegrationType): string => {
 export const getIntegrationConfig = (
     type: IntegrationType,
 ): IntegrationConfig | undefined => {
-    return _find(INTEGRATION_TYPE_CONFIG, { type })
+    return INTEGRATION_TYPE_CONFIG.find((item) => item.type === type)
 }
 
 export const getIconFromType = (type: IntegrationType): string => {

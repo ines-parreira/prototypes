@@ -1,4 +1,3 @@
-import { flatMap } from 'lodash'
 import moment from 'moment'
 
 import { calculateMetricPerHour } from 'domains/reporting/hooks/metricCalculations'
@@ -93,13 +92,11 @@ export const filterTicketsByTagId = (
     }, [])
 
 export const getTagValuesByOperator = (statsFilters: StatsFilters) =>
-    flatMap(
-        statsFilters.tags?.map((tag) =>
-            tag.operator === LogicalOperatorEnum.ALL_OF ||
-            tag.operator === LogicalOperatorEnum.ONE_OF
-                ? tag.values
-                : [],
-        ),
+    (statsFilters.tags ?? []).flatMap((tag) =>
+        tag.operator === LogicalOperatorEnum.ALL_OF ||
+        tag.operator === LogicalOperatorEnum.ONE_OF
+            ? tag.values
+            : [],
     )
 type QueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,

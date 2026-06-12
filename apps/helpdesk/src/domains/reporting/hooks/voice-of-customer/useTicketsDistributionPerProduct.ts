@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
-
-import _sortBy from 'lodash/sortBy'
-
+import { sortBy } from '@gorgias/toolkit'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTicketsPerProductTrend } from 'domains/reporting/hooks/voice-of-customer/useTicketsPerProductTrend'
 import {
@@ -36,7 +34,7 @@ function getTicketCount(value?: ItemType) {
         : 0
 }
 
-const sortBy = <T extends ItemType>(
+const sortProductsBy = <T extends ItemType>(
     currentTopData: T[],
     previousTopData: T[],
     sorting: ColumnSorting<ProductsPerTicketColumn>,
@@ -46,18 +44,18 @@ const sortBy = <T extends ItemType>(
 
     switch (sorting.field) {
         case ProductsPerTicketColumn.Product:
-            sortedData = _sortBy(currentTopData, PRODUCT_NAME_FIELD)
+            sortedData = sortBy(currentTopData, PRODUCT_NAME_FIELD)
             break
 
         case ProductsPerTicketColumn.TicketVolume:
-            sortedData = _sortBy(currentTopData, (record) => {
+            sortedData = sortBy(currentTopData, (record) => {
                 const value = record[TICKET_COUNT_FIELD]
                 return value ? Number(value) : value
             })
             break
 
         case ProductsPerTicketColumn.Delta: {
-            sortedData = _sortBy(currentTopData, (record) => {
+            sortedData = sortBy(currentTopData, (record) => {
                 const prevValue = previousTopData.find(
                     (item) =>
                         item[PRODUCT_ID_FIELD] === record[PRODUCT_ID_FIELD],
@@ -107,7 +105,11 @@ export const useTicketsPerProductDistribution = (topAmount = 10) => {
         getValuesUptoTopAmount(data.value, topAmount, data.value.length),
     )
 
-    const sortedTopData = sortBy(currentTopData, previousTopData, sorting)
+    const sortedTopData = sortProductsBy(
+        currentTopData,
+        previousTopData,
+        sorting,
+    )
 
     const dataToRender = useMemo(() => {
         return sortedTopData.map((item) => {

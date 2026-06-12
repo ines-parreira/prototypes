@@ -1,6 +1,4 @@
 import React, { useMemo, useRef, useState } from 'react'
-
-import _reduce from 'lodash/reduce'
 import { useIsHeadlessShopifyStore } from '../../hooks/useIsHeadlessShopifyStore'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -69,10 +67,12 @@ export const AdvancedTriggersSelect = ({
             return {}
         }
 
-        return Object.keys(triggersAvailableToSubscribers).reduce(
-            (acc, key: string) => {
-                if (!options[key]) {
-                    acc[key] = triggersAvailableToSubscribers[key]
+        return Object.entries(triggersAvailableToSubscribers).reduce(
+            (acc, [key, trigger]) => {
+                const typedKey = key as CampaignTriggerType
+
+                if (!options[typedKey]) {
+                    acc[key] = trigger
                 }
                 return acc
             },
@@ -82,9 +82,8 @@ export const AdvancedTriggersSelect = ({
 
     const optionsGrouped = useMemo(
         () =>
-            _reduce(
-                options,
-                (acc, value, key) => {
+            Object.entries(options).reduce(
+                (acc, [key, value]) => {
                     const group = value.group
                     if (group) {
                         if (!acc[group]) acc[group] = []

@@ -3,10 +3,10 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -69,7 +69,7 @@ describe('<RuleRecipeCard/>', () => {
     })
     const minProps = {
         recipe: emptyRuleRecipeFixture,
-        onInstall: _noop,
+        onInstall: noop,
         isModalOpenOnLoad: false,
         isReady: true,
         isInstalled: false,

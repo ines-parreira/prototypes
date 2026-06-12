@@ -10,8 +10,8 @@ import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _sample from 'lodash/sample'
 import { useParams } from 'react-router-dom'
+import { sample } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -101,7 +101,7 @@ export function TicketSubmitButtons({ submit }: Props) {
     const { validateTicketFields } =
         useTicketFieldsValidation(validationTicketId)
 
-    const tip = useMemo(() => _sample(TIPS), [])
+    const tip = useMemo(() => sample(TIPS), [])
 
     const handleClickHideTips = useCallback(() => {
         const newPreferences = currentUserPreferences.setIn(

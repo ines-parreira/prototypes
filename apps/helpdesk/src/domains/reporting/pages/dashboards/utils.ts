@@ -1,6 +1,5 @@
 import { reportError } from '@repo/logging'
 import { notNull } from '@repo/utils'
-import _flatten from 'lodash/flatten'
 
 import type {
     AnalyticsCustomReport,
@@ -381,7 +380,7 @@ export const getChildrenIds = (
         | undefined,
 ): string[] => {
     return children
-        ? _flatten(
+        ? (
               children?.map((secondChild) => {
                   if (secondChild.type === DashboardChildType.Row)
                       return secondChild.children.map(
@@ -390,8 +389,8 @@ export const getChildrenIds = (
                   if (secondChild.type === DashboardChildType.Chart)
                       return secondChild.config_id
                   return []
-              }),
-          )
+              }) ?? []
+          ).flat()
         : []
 }
 

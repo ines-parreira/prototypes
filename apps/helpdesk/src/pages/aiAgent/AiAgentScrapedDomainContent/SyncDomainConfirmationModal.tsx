@@ -1,8 +1,6 @@
 import React from 'react'
-
-import _noop from 'lodash/noop'
-
 import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { noop } from '@gorgias/toolkit'
 
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { AlertType } from 'pages/common/components/Alert/Alert'
@@ -29,7 +27,7 @@ const SyncDomainConfirmationModal = ({
     const title =
         pageType === HeaderType.Domain ? 'Sync store website' : 'Sync URL'
     return (
-        <Modal isOpen={isOpen} isClosable={false} onClose={_noop}>
+        <Modal isOpen={isOpen} isClosable={false} onClose={noop}>
             <ModalHeader title={title} />
             <ModalBody className={css.body}>
                 <div>

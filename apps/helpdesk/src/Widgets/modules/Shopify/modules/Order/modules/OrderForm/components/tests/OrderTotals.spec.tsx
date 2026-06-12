@@ -12,11 +12,15 @@ import {
 
 import { OrderTotals } from '../OrderTotals'
 
-jest.mock('lodash/debounce', () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
-    return _identity
-})
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (() => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const _identity: <T>(v: T) => T =
+            jest.requireActual('@gorgias/toolkit').identity
+        return _identity
+    })(),
+}))
 
 describe('<OrderTotals/>', () => {
     let payload: Map<any, any>

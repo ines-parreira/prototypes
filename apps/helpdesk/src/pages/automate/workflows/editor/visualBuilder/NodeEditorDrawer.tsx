@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import classNames from 'classnames'
-import _camelCase from 'lodash/camelCase'
+import { camelCase, Duration } from '@gorgias/toolkit'
 import { useKey, usePrevious } from '@gorgias/toolkit-react'
 
 import { TranslationsPreviewProvider } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
@@ -76,7 +74,7 @@ const NodeEditorDrawer = ({ nodeInEdition, onClose }: Props) => {
             className={classNames(
                 css.drawer,
                 memoizedNodeInEdition
-                    ? css[_camelCase(memoizedNodeInEdition.type)]
+                    ? css[camelCase(memoizedNodeInEdition.type)]
                     : undefined,
             )}
             data-testid="visual-builder-node-edition" // used in e2e tests

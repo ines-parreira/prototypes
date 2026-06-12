@@ -1,7 +1,5 @@
 import React, { useCallback, useContext } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
 import type { IntegrationDataItem } from 'models/integration/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -38,7 +36,7 @@ export function ProductSearchInput<
     className,
     autoFocus = true,
     searchOnFocus = false,
-    onVariantClicked = _noop,
+    onVariantClicked = noop,
     dataMappers,
     hasError = false,
     renderResultsAppendix,

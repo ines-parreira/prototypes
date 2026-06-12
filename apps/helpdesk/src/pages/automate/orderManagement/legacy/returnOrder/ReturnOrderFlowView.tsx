@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-
-import _isEqual from 'lodash/isEqual'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { isEqual } from '@gorgias/toolkit'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type {
@@ -56,7 +55,7 @@ const ReturnOrderFlowView = () => {
                         delete nextErrors[path]
                     }
 
-                    return _isEqual(prevErrors, nextErrors)
+                    return isEqual(prevErrors, nextErrors)
                         ? prevErrors
                         : nextErrors
                 })
@@ -95,7 +94,7 @@ const ReturnOrderFlowView = () => {
         setDirtyReturnOrderFlow(returnOrderFlow)
     }
 
-    const isReturnOrderFlowDirty = !_isEqual(
+    const isReturnOrderFlowDirty = !isEqual(
         dirtyReturnOrderFlow,
         returnOrderFlow,
     )

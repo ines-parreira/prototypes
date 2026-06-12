@@ -1,6 +1,5 @@
 import { useFormContext } from '@repo/forms'
-import { cloneDeep } from 'lodash'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'
 
 import { VoiceFlowNodeType } from '../constants'

@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react'
-
-import _debounce from 'lodash/debounce'
-
+import { debounce } from '@gorgias/toolkit'
 import { IconInput } from 'pages/common/forms/input/IconInput'
 import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 
@@ -28,7 +26,7 @@ export function SearchInput({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const deboucedSetSearch = useCallback(
-        _debounce(setSearch, SEARCH_INPUT_DEBOUNCE_TIME),
+        debounce(setSearch, SEARCH_INPUT_DEBOUNCE_TIME),
         [SEARCH_INPUT_DEBOUNCE_TIME],
     )
 

@@ -1,7 +1,5 @@
 import React, { useCallback } from 'react'
-
-import isString from 'lodash/isString'
-
+import { isString } from '@gorgias/toolkit'
 import { TicketChannel } from 'business/types/ticket'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import { filterChannels } from 'domains/reporting/pages/common/filters/helpers'

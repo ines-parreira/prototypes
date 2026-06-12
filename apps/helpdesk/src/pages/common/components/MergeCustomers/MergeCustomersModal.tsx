@@ -3,10 +3,8 @@ import { Component } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { List, Map, Set } from 'immutable'
 import { fromJS } from 'immutable'
-import _clone from 'lodash/clone'
-import _omit from 'lodash/omit'
-import _pick from 'lodash/pick'
 import { Form } from 'reactstrap'
+import { clone, omit, pick } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -66,7 +64,7 @@ type State = {
 }
 
 export class MergeCustomersModal extends Component<Props, State> {
-    state = _clone(defaultContent)
+    state = clone(defaultContent)
 
     componentDidMount = () => {
         const { sourceCustomer } = this.props
@@ -84,7 +82,7 @@ export class MergeCustomersModal extends Component<Props, State> {
             (sourceCustomer.get('channels') as List<any>).toJS(),
         )
 
-        this.setState(_pick(initData, Object.keys(defaultContent)) as State)
+        this.setState(pick(initData, Object.keys(defaultContent)) as State)
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -101,7 +99,7 @@ export class MergeCustomersModal extends Component<Props, State> {
         event.preventDefault()
 
         const data = {
-            customer: _pick(this.state, Object.keys(defaultContent)),
+            customer: pick(this.state, Object.keys(defaultContent)),
         }
 
         const { error } = (await this.props.mergeCustomers(
@@ -396,7 +394,7 @@ export class MergeCustomersModal extends Component<Props, State> {
                                         value: mergeCustomerData,
                                     },
                                 ]}
-                                value={_omit(this.state.data, ['_shopify'])}
+                                value={omit(this.state.data, ['_shopify'])}
                                 onChange={(data: Record<string, unknown>) =>
                                     this.setState({ data })
                                 }

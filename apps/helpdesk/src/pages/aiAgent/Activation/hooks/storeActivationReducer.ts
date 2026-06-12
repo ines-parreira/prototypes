@@ -1,7 +1,5 @@
 import { useReducer } from 'react'
-
-import cloneDeep from 'lodash/cloneDeep'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentScope } from 'models/aiAgent/types'
 import type { HelpCenter } from 'models/helpCenter/types'

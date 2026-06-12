@@ -1,6 +1,5 @@
-import _isEqual from 'lodash/isEqual'
-
 import { Box, ListItem, SelectField, Text, TextVariant } from '@gorgias/axiom'
+import { isEqual } from '@gorgias/toolkit'
 
 import { CancellationsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
 import type { SelfServiceConfigurationFilter } from 'models/selfServiceConfiguration/types'
@@ -20,7 +19,7 @@ type Props = {
 
 export const CancelOrderEligibility = ({ eligibility, onChange }: Props) => {
     const selectedOption = CancellationsDropdownOptionsList.find((option) =>
-        _isEqual(option.statuses, eligibility?.value),
+        isEqual(option.statuses, eligibility?.value),
     )
 
     const handleChange = (option: SelectOption | null) => {

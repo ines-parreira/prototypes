@@ -2,8 +2,7 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { utmConfiguration } from 'fixtures/utmConfiguration'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
@@ -17,8 +16,8 @@ const useCampaignFormContextMock: jest.MockedFunction<
 
 describe('<AddUtm />', () => {
     const defaultProps = {
-        onKeyDown: _noop,
-        onApply: _noop,
+        onKeyDown: noop,
+        onApply: noop,
     }
 
     const defaultContext = utmConfiguration

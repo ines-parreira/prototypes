@@ -1,8 +1,5 @@
 import { reportError } from '@repo/logging'
-import { chain, differenceBy, map, orderBy } from 'lodash'
-import _isEqual from 'lodash/isEqual'
-import _pickBy from 'lodash/pickBy'
-
+import { isEqual, orderBy, pickBy } from '@gorgias/toolkit'
 import type {
     AIArticle,
     ArticleTemplate,
@@ -251,8 +248,8 @@ export const getUpdatedFields = (
     newHelpCenter: Partial<HelpCenter>,
     helpCenter: HelpCenter,
 ): Partial<HelpCenter> => {
-    return _pickBy(newHelpCenter, (value: any, key: keyof HelpCenter) => {
-        return !_isEqual(value, helpCenter[key])
+    return pickBy(newHelpCenter, (value: any, key: string) => {
+        return !isEqual(value, helpCenter[key as keyof HelpCenter])
     })
 }
 
@@ -351,9 +348,8 @@ export const mapAIHelpCenterArticleData = (
             article.translation?.locale === locale,
     )
 
-    const helpCenterAiArticles: HelpCenterArticleItem[] = map(
-        helpCenterArticles,
-        (article) => ({
+    const helpCenterAiArticles: HelpCenterArticleItem[] =
+        helpCenterArticles.map((article) => ({
             ...article.translation,
             id: article.id,
             content: replaceNewLinesWithBr(article.translation?.content),
@@ -361,25 +357,27 @@ export const mapAIHelpCenterArticleData = (
             key: article.template_key!,
             availableLocales: article.available_locales,
             type: ArticleTemplateType.AI,
-        }),
+        }))
+
+    const aiArticleKeys = new Set(
+        helpCenterAiArticles.map((article) => article.key),
     )
 
-    const aiArticlesFilter = differenceBy(
-        aiArticles,
-        helpCenterAiArticles,
-        'key',
+    const aiArticlesFilter = aiArticles.filter(
+        (article) => !aiArticleKeys.has(article.key),
     )
 
-    const aiArticlesMapped: HelpCenterArticleItem[] = map(
-        orderBy(aiArticlesFilter, ['related_tickets_count'], ['desc']),
-        (aiArticle) => ({
-            ...aiArticle,
-            content: replaceNewLinesWithBr(aiArticle.html_content),
-            isSelected: !!!helpCenterAiArticles.length,
-            type: ArticleTemplateType.AI,
-            category: aiArticle.category,
-        }),
-    )
+    const aiArticlesMapped: HelpCenterArticleItem[] = orderBy(
+        aiArticlesFilter,
+        ['related_tickets_count'],
+        ['desc'],
+    ).map((aiArticle) => ({
+        ...aiArticle,
+        content: replaceNewLinesWithBr(aiArticle.html_content),
+        isSelected: !!!helpCenterAiArticles.length,
+        type: ArticleTemplateType.AI,
+        category: aiArticle.category,
+    }))
 
     return [...helpCenterAiArticles, ...aiArticlesMapped]
 }
@@ -388,19 +386,14 @@ export const findArticleByKey = (
     data: Record<string, HelpCenterArticleItem[]>,
     key: string,
 ): HelpCenterArticleItem | undefined => {
-    return chain(data)
-        .values()
-        .flatten()
+    return Object.values(data)
+        .flat()
         .find((item) => item.key === key)
-        .value() as HelpCenterArticleItem | undefined
 }
 
 export const getEnabledArticlesCount = (
     articlesRecord: Record<string, HelpCenterArticleItem[]>,
 ) =>
-    chain(articlesRecord)
-        .values()
-        .flatten()
-        .countBy('isSelected')
-        .get('true')
-        .value()
+    Object.values(articlesRecord)
+        .flat()
+        .filter((article) => article.isSelected).length

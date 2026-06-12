@@ -1,7 +1,6 @@
 import { isCancel } from 'axios'
 import type { Map } from 'immutable'
-import _debounce from 'lodash/debounce'
-
+import { debounce, Duration } from '@gorgias/toolkit'
 import { GorgiasApi } from '../../../../services/gorgiasApi'
 import type { StoreDispatch } from '../../../types'
 import { onApiError } from '../../../utils'
@@ -70,7 +69,7 @@ export const onInit =
  */
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
-export const resetState = _debounce(
+export const resetState = debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250,
+    Duration.millis(250),
 )

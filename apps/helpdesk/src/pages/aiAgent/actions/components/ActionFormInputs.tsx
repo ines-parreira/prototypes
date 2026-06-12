@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
-
-import _noop from 'lodash/noop'
-
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import { noop } from '@gorgias/toolkit'
 
 import type { Input } from '../types'
 import { ActionFormInput } from './ActionFormInput'
@@ -61,8 +59,8 @@ const ActionFormInputs = ({
                 <ActionFormInput
                     key={input.id}
                     input={input}
-                    onChange={_noop}
-                    onDelete={_noop}
+                    onChange={noop}
+                    onDelete={noop}
                     isDisabled
                     disabledTooltip={
                         appName

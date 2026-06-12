@@ -1,8 +1,8 @@
-import _isNull from 'lodash/isNull'
+import { isNull } from '@gorgias/toolkit'
 
 let touchSupport: boolean | null = null
 export function isTouchDevice(): boolean {
-    if (_isNull(touchSupport)) {
+    if (isNull(touchSupport)) {
         touchSupport = 'ontouchstart' in window
     }
 

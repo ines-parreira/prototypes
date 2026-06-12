@@ -1,7 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _flatten from 'lodash/flatten'
-import _orderBy from 'lodash/orderBy'
-
+import { orderBy } from '@gorgias/toolkit'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -52,7 +50,7 @@ export const formatData = (
     order?: OrderDirection,
 ) => [
     [...LEVEL_LABELS, ...dateTimes],
-    ..._orderBy(
+    ...orderBy(
         Object.entries(data || {}).map(([key, timeSeries]) => {
             const levels = String(key).split('::')
             const allLevels = Array<string>(MAX_LEVEL_DEPTH)
@@ -63,7 +61,7 @@ export const formatData = (
                 item.map(({ value }) => String(value)),
             )
 
-            return _flatten([...allLevels, ...timeSeriesValues])
+            return [...allLevels, ...timeSeriesValues].flat()
         }),
         (v) => [v[0], v[1]],
         order,

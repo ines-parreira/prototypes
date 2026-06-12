@@ -1,9 +1,8 @@
 import React, { createRef } from 'react'
 
 import classNames from 'classnames'
-import _capitalize from 'lodash/capitalize'
-
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { capitalize } from '@gorgias/toolkit'
 
 import css from './ConnectionStatus.less'
 
@@ -55,7 +54,7 @@ export const ConnectionStatus = ({
                         style: { maxWidth: 190, textAlign: 'left' },
                     }}
                 >
-                    {_capitalize(tooltip)}
+                    {capitalize(tooltip)}
                 </Tooltip>
             )}
         </>

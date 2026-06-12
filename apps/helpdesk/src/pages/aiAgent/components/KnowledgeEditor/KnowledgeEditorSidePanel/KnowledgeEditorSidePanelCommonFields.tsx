@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import _uniqueId from 'lodash/uniqueId'
+import { Duration, uniqueId } from '@gorgias/toolkit'
 import { useCopyToClipboard, useId } from '@gorgias/toolkit-react'
 
 import {
@@ -118,7 +116,7 @@ export const KnowledgeEditorSidePanelFieldDateField = ({
 export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
     const [copyState, copyToClipboard] = useCopyToClipboard()
     const [showCheckmark, setShowCheckmark] = useState(false)
-    const textId = _uniqueId(`copy-text`)
+    const textId = uniqueId(`copy-text`)
 
     useEffect(() => {
         if (copyState.value) {

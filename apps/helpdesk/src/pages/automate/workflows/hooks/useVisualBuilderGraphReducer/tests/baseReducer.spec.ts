@@ -1,5 +1,4 @@
-import _cloneDeep from 'lodash/cloneDeep'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type {
     AutomatedMessageNodeType,
@@ -31,7 +30,7 @@ import { baseReducer } from '../baseReducer'
 describe('baseReducer', () => {
     describe('SET_CHANNEL_TRIGGER_LABEL', () => {
         test('Invalid graph without trigger node, and does not update anything', () => {
-            const g = _cloneDeep(visualBuilderGraphSimpleChoicesFixture)
+            const g = cloneDeep(visualBuilderGraphSimpleChoicesFixture)
             const channelTriggerIndex = g.nodes.findIndex(
                 (n): n is ChannelTriggerNodeType =>
                     n.type === 'channel_trigger',
@@ -264,7 +263,7 @@ describe('baseReducer', () => {
     })
 
     test('DELETE_NODE keeps non-conditional edges when edge data is missing', () => {
-        const g = _cloneDeep(visualBuilderGraphSimpleChoicesFixture)
+        const g = cloneDeep(visualBuilderGraphSimpleChoicesFixture)
         const edgeWithoutData = g.edges.find(
             (edge) => edge.id === 'multiple_choices1_automated_message2',
         )

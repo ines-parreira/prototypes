@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect } from 'react'
-
-import _noop from 'lodash/noop'
+import { noop } from '@gorgias/toolkit'
 import { usePrevious } from '@gorgias/toolkit-react'
 
 import type { StoreIntegration } from 'models/integration/types'
@@ -18,7 +17,7 @@ const ReportOrderIssueScenarioFormContext =
         isUpdatePending: false,
         errors: {},
         hasError: false,
-        setError: _noop,
+        setError: noop,
         storeIntegration: undefined,
     })
 

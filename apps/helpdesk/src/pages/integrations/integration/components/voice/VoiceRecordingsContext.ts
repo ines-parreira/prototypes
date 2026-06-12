@@ -1,6 +1,5 @@
 import { createContext } from 'react'
-
-import _noop from 'lodash/noop'
+import { noop } from '@gorgias/toolkit'
 
 export type VoiceRecordingsContextState = {
     openedRecordings: number[]
@@ -15,8 +14,8 @@ export const VoiceRecordingsContext =
     createContext<VoiceRecordingsContextState>({
         openedRecordings: [],
         closedTranscriptions: [],
-        toggleRecordingOpened: _noop,
-        toggleTranscriptionOpened: _noop,
+        toggleRecordingOpened: noop,
+        toggleTranscriptionOpened: noop,
         isRecordingOpened: () => false,
         isTranscriptionOpened: () => true,
     })

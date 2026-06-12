@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { noop } from '@gorgias/toolkit'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -94,9 +93,9 @@ export const JourneyTypeFilter = ({
             selectedOptions={getSelectedJourneys()}
             onChangeOption={onOptionChange}
             logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
-            onSelectAll={_noop}
-            onRemoveAll={_noop}
+            onChangeLogicalOperator={noop}
+            onSelectAll={noop}
+            onRemoveAll={noop}
             isMultiple={true}
             showSearch={false}
             showQuickSelect={false}

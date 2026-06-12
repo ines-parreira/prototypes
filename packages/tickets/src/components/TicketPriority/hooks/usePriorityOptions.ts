@@ -1,8 +1,6 @@
 import { useMemo } from 'react'
-
-import { capitalize } from 'lodash'
-
 import { TicketPriority } from '@gorgias/helpdesk-queries'
+import { capitalize } from '@gorgias/toolkit'
 
 export type PriorityOption = {
     id: TicketPriority

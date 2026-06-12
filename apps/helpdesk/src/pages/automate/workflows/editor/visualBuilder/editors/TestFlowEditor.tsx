@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import classNames from 'classnames'
-import _throttle from 'lodash/throttle'
 import { useParams } from 'react-router-dom'
+import { Duration, throttle } from '@gorgias/toolkit'
 import { useEffectOnce, useKey } from '@gorgias/toolkit-react'
 
 import {
@@ -275,14 +273,14 @@ export const TestFlowEditor = ({
                     <Button
                         fillStyle="ghost"
                         isDisabled={!isFlowInterpreterStarted}
-                        onClick={_throttle(
+                        onClick={throttle(
                             () =>
                                 resetChatFlow({
                                     label,
                                     language: selectedLanguage,
                                     id: editWorkflowId,
                                 }),
-                            2000,
+                            Duration.seconds(2),
                         )}
                         intent="secondary"
                         leadingIcon="refresh"

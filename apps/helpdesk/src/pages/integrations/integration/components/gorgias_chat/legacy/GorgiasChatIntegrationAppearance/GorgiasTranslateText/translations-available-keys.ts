@@ -1,5 +1,4 @@
-import { omit } from 'lodash'
-
+import { omit } from '@gorgias/toolkit'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_NAME_MAX_LENGTH,

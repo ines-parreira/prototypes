@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-
-import isEqual from 'lodash/isEqual'
-
 import { toast } from '@gorgias/axiom'
+import { isEqual } from '@gorgias/toolkit'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'

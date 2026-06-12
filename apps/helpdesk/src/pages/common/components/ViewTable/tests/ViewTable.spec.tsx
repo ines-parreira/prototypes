@@ -6,8 +6,8 @@ import { render } from '@repo/testing'
 import type { Location } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _identity from 'lodash/identity'
 import { stringify } from 'qs'
+import { identity } from '@gorgias/toolkit'
 
 import { defaultTicketView } from 'config/views'
 import { mockSearchRank } from 'fixtures/searchRank'
@@ -32,7 +32,7 @@ jest.mock('state/views/actions', () => {
 jest.mock('state/ui/views/actions')
 ;(
     activeViewIdSet as jest.MockedFunction<typeof activeViewIdSet>
-).mockImplementation((() => _identity) as any)
+).mockImplementation((() => identity) as any)
 
 jest.mock('pages/common/components/ViewTable/Header', () => ({
     DefaultExportHeader: () => <div>Header mock</div>,

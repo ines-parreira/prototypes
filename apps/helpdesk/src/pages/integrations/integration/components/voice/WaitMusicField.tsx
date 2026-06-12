@@ -1,8 +1,5 @@
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-
-import _get from 'lodash/get'
-
 import { toast } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import {
@@ -10,6 +7,7 @@ import {
     VoiceQueueWaitMusicCustomRecordingTypeType,
     VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-types'
+import { get } from '@gorgias/toolkit'
 
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
@@ -50,7 +48,7 @@ const WaitMusicField = ({ value, onChange, shouldUpload = false }: Props) => {
                 onChange(newValue)
             },
             onError: (err) => {
-                const error = _get(err, 'response.data.error', '') as
+                const error = get(err, 'response.data.error', '') as
                     | GorgiasApiResponseDataError
                     | undefined
                 toast.error(error?.msg || 'Failed to upload custom recording')

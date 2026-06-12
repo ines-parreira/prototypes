@@ -9,10 +9,8 @@ import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isEmpty from 'lodash/isEmpty'
-import _trim from 'lodash/trim'
-
 import { Skeleton } from '@gorgias/axiom'
+import { isEmpty, trim } from '@gorgias/toolkit'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
@@ -234,7 +232,7 @@ export const CampaignDetailsForm = ({
             return
         }
 
-        if (!_isEmpty(campaign)) {
+        if (!isEmpty(campaign)) {
             setCampaignData(
                 produce(campaign, (draft) => {
                     if (chatMultiLanguagesEnabled) {
@@ -577,7 +575,7 @@ export const CampaignDetailsForm = ({
 
     const isStepValid = (step: CampaignStepsKeys) => {
         if (step === CampaignStepsKeys.Basics) {
-            return !!_trim(campaignData.name)
+            return !!trim(campaignData.name)
         }
 
         if (step === CampaignStepsKeys.Audience) {

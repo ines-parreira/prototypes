@@ -6,8 +6,7 @@ import { getSizedImageUrl } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _debounce from 'lodash/debounce'
-
+import { debounce, Duration } from '@gorgias/toolkit'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {
     getDraftOrderLineItemDiscountedPrice,
@@ -42,7 +41,7 @@ type Props = {
     container?: RefObject<HTMLDivElement>
 }
 
-const debouncedRestock = _debounce(
+const debouncedRestock = debounce(
     (
         restock: boolean,
         lineItem: Map<any, any>,
@@ -54,10 +53,10 @@ const debouncedRestock = _debounce(
         onChange(newLineItem, index)
         callback?.()
     },
-    100,
+    Duration.millis(100),
 )
 
-const debouncedUpdateLineItem = _debounce(
+const debouncedUpdateLineItem = debounce(
     (
         newQuantity,
         lineItem: Map<any, any>,
@@ -84,7 +83,7 @@ const debouncedUpdateLineItem = _debounce(
         logEvent(action as SegmentEvent)
         callback?.()
     },
-    400,
+    Duration.millis(400),
 )
 
 function OrderLineItemRow({

@@ -1,6 +1,6 @@
-import { isEmpty } from 'lodash'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { EmailMigrationStatus } from 'models/integration/types'

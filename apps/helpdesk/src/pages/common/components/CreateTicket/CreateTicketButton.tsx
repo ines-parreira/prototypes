@@ -3,8 +3,8 @@ import { useRef } from 'react'
 
 import { useConditionalShortcuts } from '@repo/utils'
 import type { LocationDescriptor } from 'history'
-import _noop from 'lodash/noop'
 import { Link } from 'react-router-dom'
+import { noop } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { LegacyButtonIntent as ButtonIntent } from '@gorgias/axiom'
@@ -66,7 +66,7 @@ export function CreateTicketButton({
             <DropdownButton
                 intent={buttonProps?.intent ?? 'primary'}
                 fillStyle="fill"
-                onToggleClick={_noop}
+                onToggleClick={noop}
                 size="medium"
                 ref={dropdownTargetRef}
             >

@@ -2,8 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { createEvent, fireEvent, screen } from '@testing-library/react'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { Input } from 'pages/common/forms/MultiSelectOptionsField/Input'
 
 describe('MultiSelectField Input', () => {
@@ -11,13 +10,13 @@ describe('MultiSelectField Input', () => {
         placeholder: 'some placeholder',
         value: 'foo',
         isFocused: true,
-        onUp: _noop,
-        onDown: _noop,
-        onChange: _noop,
-        onFocus: _noop,
-        onBlur: _noop,
-        onSubmit: _noop,
-        onDelete: _noop,
+        onUp: noop,
+        onDown: noop,
+        onChange: noop,
+        onFocus: noop,
+        onBlur: noop,
+        onSubmit: noop,
+        onDelete: noop,
     }
 
     it('should blur and clean the value on Escape', () => {

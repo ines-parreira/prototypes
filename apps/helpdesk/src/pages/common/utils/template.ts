@@ -1,7 +1,12 @@
-import _ from 'lodash'
-import _trim from 'lodash/trim'
-import _unescape from 'lodash/unescape'
 import moment from 'moment'
+import {
+    escapeRegExp,
+    get,
+    isNil,
+    trim,
+    trimStart,
+    unescape,
+} from '@gorgias/toolkit'
 
 export const filterRegex = /([\w_]+)\(([^(]*)\)/
 export const templateRegex =
@@ -54,7 +59,7 @@ const filters = {
     },
 
     fallback: (value: string, args: Array<string>): string => {
-        return _trim(value) ? value : args[0]
+        return trim(value) ? value : args[0]
     },
 }
 
@@ -76,7 +81,7 @@ export const renderTemplate = (
             try {
                 let tempVariable = variable
                 if (typeof context !== 'object') return match
-                let obj = _.chain(context)
+                let currentValue: unknown = context
 
                 variable
                     .split(indexArrayRegex)
@@ -84,18 +89,18 @@ export const renderTemplate = (
                         return path !== ''
                     })
                     .forEach((path) => {
-                        const rex = new RegExp('^' + _.escapeRegExp(path))
+                        const rex = new RegExp('^' + escapeRegExp(path))
                         tempVariable = tempVariable.replace(rex, '')
 
-                        const trimmedPath = _.trimStart(path, '.')
-                        const currentObj = obj.value()
+                        const trimmedPath = trimStart(path, '.')
+                        const currentObj = currentValue
                         const pathSegments = trimmedPath.split('.')
 
                         // Find if any segment leads to an array with key-based objects
                         let keyArrayIndex = -1
                         let current = currentObj
                         for (let i = 0; i < pathSegments.length - 1; i++) {
-                            current = _.get(current, pathSegments[i])
+                            current = get(current, pathSegments[i])
                             if (
                                 Array.isArray(current) &&
                                 current.length > 0 &&
@@ -112,7 +117,10 @@ export const renderTemplate = (
                             const pathToArray = pathSegments
                                 .slice(0, keyArrayIndex + 1)
                                 .join('.')
-                            const keyArray = _.get(currentObj, pathToArray)
+                            const keyArray = get(
+                                currentObj,
+                                pathToArray,
+                            ) as Array<{ key: string }>
                             const keyName = pathSegments[keyArrayIndex + 1]
                             const item = keyArray.find(
                                 (m: { key: string }) => m.key === keyName,
@@ -120,36 +128,33 @@ export const renderTemplate = (
                             const remainingPath = pathSegments
                                 .slice(keyArrayIndex + 2)
                                 .join('.')
-                            // @ts-ignore
-                            obj = _.chain(
-                                remainingPath
-                                    ? _.get(item, remainingPath)
-                                    : item,
-                            )
+                            currentValue = remainingPath
+                                ? get(item, remainingPath)
+                                : item
                         } else {
-                            // @ts-ignore
-                            obj = obj.get(trimmedPath)
+                            currentValue = get(currentValue, trimmedPath)
                         }
 
                         const index = tempVariable.match(
                             stringStartIndexArrayRegex,
                         )
                         if (index) {
-                            const key = _trim(index[0], '[]')
+                            const key = trim(index[0], '[]')
                             if (parseInt(key) >= 0) {
-                                // @ts-ignore
-                                obj = obj.get(key) // eslint-disable-line
+                                currentValue = get(currentValue, key)
                             } else {
-                                // @ts-ignore
-                                obj = obj.nth(key) // eslint-disable-line
+                                currentValue = Array.isArray(currentValue)
+                                    ? currentValue[
+                                          currentValue.length + Number(key)
+                                      ]
+                                    : undefined
                             }
-                            tempVariable = _.trimStart(tempVariable, index[0])
+                            tempVariable = trimStart(tempVariable, index[0])
                         }
                     })
 
-                // @ts-ignore
-                let value = obj.value() as string
-                value = _.isNil(value) ? '' : value
+                let value = currentValue as string
+                value = isNil(value) ? '' : value
 
                 if (filter) {
                     const filterMatch = filterRegex.exec(filter)
@@ -157,7 +162,7 @@ export const renderTemplate = (
                         return value
                     }
                     const filterFunc = filterMatch[1] as keyof typeof filters
-                    const filterArgs = eval(`[${_unescape(filterMatch[2])}]`)
+                    const filterArgs = eval(`[${unescape(filterMatch[2])}]`)
                     if (typeof filters[filterFunc] !== 'function') {
                         return value
                     }

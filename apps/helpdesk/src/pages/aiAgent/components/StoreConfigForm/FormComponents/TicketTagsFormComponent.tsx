@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
 import { notUndefined } from '@repo/utils'
-import { filter } from 'lodash'
 import { Link } from 'react-router-dom'
 
 import { SelectFilter } from 'domains/reporting/pages/common/SelectFilter'
@@ -20,10 +19,9 @@ export type Props = Pick<FormValues, 'tags'> & {
 }
 
 export const TicketTagsFormComponent = ({ tags, updateValue }: Props) => {
-    const accountTicketTags = filter(
-        useAppSelector(getEntitiesTags),
-        notUndefined,
-    )
+    const accountTicketTags = Object.values(
+        useAppSelector(getEntitiesTags) ?? {},
+    ).filter(notUndefined)
 
     const {
         state,

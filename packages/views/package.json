@@ -28,7 +28,6 @@
         "react": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
-        "lodash": "catalog:lodash",
         "zod": "catalog:zod",
         "zustand": "catalog:zustand"
     },
@@ -48,7 +47,6 @@
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
-        "@types/lodash": "catalog:lodash",
         "@types/react": "catalog:react",
         "@types/react-router": "catalog:react-router",
         "@types/react-router-dom": "catalog:react-router",
@@ -57,7 +55,6 @@
         "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
-        "lodash": "catalog:lodash",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "typescript": "catalog:typescript",

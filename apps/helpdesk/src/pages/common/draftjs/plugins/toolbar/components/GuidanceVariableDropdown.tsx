@@ -1,9 +1,7 @@
 import type { RefObject } from 'react'
 import React, { useEffect, useMemo, useState } from 'react'
-
-import _capitalize from 'lodash/capitalize'
-
 import { LegacyButton as Button, Icon } from '@gorgias/axiom'
+import { capitalize } from '@gorgias/toolkit'
 
 import type {
     GuidanceVariable,
@@ -261,7 +259,7 @@ const GuidanceVariableDropdown = ({
                                     </span>
                                     <span className={css.itemName}>
                                         {'category' in option
-                                            ? `${_capitalize(option.category)}: ${option.name}`
+                                            ? `${capitalize(option.category)}: ${option.name}`
                                             : option.name}
                                     </span>
                                 </div>

@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react'
-
-import _noop from 'lodash/noop'
+import { noop } from '@gorgias/toolkit'
 
 export type SortableAccordionContextType = {
     type: string
@@ -13,9 +12,9 @@ export type SortableAccordionContextType = {
 const SortableAccordionContext = createContext<SortableAccordionContextType>({
     type: '',
     isDisabled: false,
-    onMove: _noop,
-    onDrop: _noop,
-    onCancel: _noop,
+    onMove: noop,
+    onDrop: noop,
+    onCancel: noop,
 })
 
 export const useSortableAccordionContext = () =>

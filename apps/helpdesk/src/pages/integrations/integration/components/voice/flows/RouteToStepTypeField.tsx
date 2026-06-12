@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFormContext } from '@repo/forms'
-import { cloneDeep } from 'lodash'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import { PreviewRadioFieldSet } from 'pages/common/forms/PreviewRadioFieldSet'
 

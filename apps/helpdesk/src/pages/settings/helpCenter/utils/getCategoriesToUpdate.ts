@@ -1,5 +1,4 @@
-import { cloneDeep as _cloneDeep } from 'lodash'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import type { Category, CategoryTranslation } from 'models/helpCenter/types'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
@@ -18,14 +17,14 @@ export const getCategoriesToUpdate = ({
     translation,
 }: Props): Category[] => {
     const categoriesToUpdate: Category[] = []
-    const categoriesById: Record<string, Category> = _cloneDeep(categories)
+    const categoriesById: Record<string, Category> = cloneDeep(categories)
 
     if (previousParentId !== currentParentId) {
         // Update the edited category
         const category = categoriesById[categoryId.toString()]
 
         if (isNonRootCategory(category)) {
-            category.translation = _cloneDeep(translation)
+            category.translation = cloneDeep(translation)
             category.translation.parent_category_id = currentParentId
 
             categoriesToUpdate.push(category)

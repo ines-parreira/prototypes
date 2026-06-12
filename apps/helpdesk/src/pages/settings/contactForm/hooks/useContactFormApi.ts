@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
-import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
+import { get } from '@gorgias/toolkit'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
@@ -83,8 +83,8 @@ export const useContactFormApi = () => {
 
             return {
                 meta: {
-                    page: get(data, 'meta.page'),
-                    nbPages: get(data, 'meta.nb_pages'),
+                    page: get(data, 'meta.page') as number,
+                    nbPages: get(data, 'meta.nb_pages') as number,
                 },
                 items: contactForms,
             }

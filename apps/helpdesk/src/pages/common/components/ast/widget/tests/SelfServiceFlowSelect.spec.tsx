@@ -3,10 +3,10 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import type {
     SelfServiceConfiguration,
@@ -51,7 +51,7 @@ const createSelfServiceConfigurationFixtures = (
 
 const minProps: ComponentProps<typeof SelfServiceFlowSelect> = {
     value: null,
-    onChange: _noop,
+    onChange: noop,
     flowType: 'order-management',
 }
 

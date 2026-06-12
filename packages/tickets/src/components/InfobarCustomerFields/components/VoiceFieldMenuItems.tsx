@@ -1,6 +1,6 @@
 import { parsePhoneNumber } from 'libphonenumber-js'
-import { isNumber } from 'lodash'
 import { useHistory, useParams } from 'react-router-dom'
+import { isNumber } from '@gorgias/toolkit'
 
 import { MenuItem, SubMenu } from '@gorgias/axiom'
 import type { PhoneIntegration, SmsIntegration } from '@gorgias/helpdesk-types'

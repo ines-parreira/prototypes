@@ -2,8 +2,7 @@ import { memo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { noop } from 'lodash'
-
+import { noop } from '@gorgias/toolkit'
 import { typeFallbackBanner } from 'AlertBanners/AlertBanner.utils'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
 import type { MergedBanner } from 'AlertBanners/Context/types'

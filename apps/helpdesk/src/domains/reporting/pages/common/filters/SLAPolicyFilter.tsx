@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { noop } from '@gorgias/toolkit'
 
 import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
@@ -114,7 +113,7 @@ export const SLAPolicyFilter = ({
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}
             logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
+            onChangeLogicalOperator={noop}
             onSelectAll={() => {
                 handleFilterValuesChange(
                     clientSideFilter.result[0].options.map(
@@ -125,7 +124,7 @@ export const SLAPolicyFilter = ({
             onRemoveAll={() => {
                 handleFilterValuesChange([])
             }}
-            onRemove={_noop}
+            onRemove={noop}
             isPersistent={true}
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}

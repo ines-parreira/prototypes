@@ -2,9 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import type { List, Map } from 'immutable'
-import _getIn from 'lodash/get'
-import _noop from 'lodash/noop'
-
+import { get as getIn, noop } from '@gorgias/toolkit'
 import { fromAST } from 'common/utils'
 
 import { emptyRule as rule } from '../../../../../fixtures/rule'
@@ -13,7 +11,7 @@ import type { CodeASTType } from '../../types'
 import { RuleEditor } from '../RuleEditor'
 
 const getCondition = (path: List<any>) =>
-    fromAST(_getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>
+    fromAST(getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>
 
 describe('<RuleEditor/>', () => {
     describe('render', () => {
@@ -27,7 +25,7 @@ describe('<RuleEditor/>', () => {
                         },
                         getCondition,
                     }}
-                    handleEventChanges={_noop}
+                    handleEventChanges={noop}
                 />,
             )
             expect(container.firstChild).toMatchSnapshot()

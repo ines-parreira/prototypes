@@ -5,8 +5,8 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isEmpty from 'lodash/isEmpty'
 import { ListGroup, ListGroupItem } from 'reactstrap'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { AttachmentEnum } from 'common/types'
 import { useModalManager } from 'hooks/useModalManager'
@@ -57,7 +57,7 @@ const AddDiscountCode = ({
             return shopifyIntegrations.get(0) as Map<any, any>
         }
 
-        if (!_isEmpty(currentShopifyIntegration)) {
+        if (!isEmpty(currentShopifyIntegration)) {
             return fromJS(currentShopifyIntegration) as Map<any, any>
         }
 

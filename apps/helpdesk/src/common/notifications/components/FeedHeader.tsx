@@ -3,8 +3,8 @@ import React, { useCallback, useRef, useState } from 'react'
 import type { NotificationFeedHeaderProps } from '@knocklabs/react'
 import { FilterStatus, useKnockFeed } from '@knocklabs/react'
 import cn from 'classnames'
-import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
+import { capitalize } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -80,7 +80,7 @@ export function FeedHeader({
                                 key={option}
                                 className={css.dropdownItem}
                                 option={{
-                                    label: _capitalize(option),
+                                    label: capitalize(option),
                                     value: option,
                                 }}
                                 onClick={handleFilterStatusChange}

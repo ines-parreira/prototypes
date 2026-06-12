@@ -1,8 +1,6 @@
 import { useRef } from 'react'
-
-import { isObject } from 'lodash'
-
 import { Skeleton } from '@gorgias/axiom'
+import { isObject } from '@gorgias/toolkit'
 
 import { WizardProgressHeader } from 'pages/common/components/wizard/WizardProgressHeader'
 import { useIsIntersectingWithBrowserViewport } from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'

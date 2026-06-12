@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { produce } from 'immer'
-import _uniq from 'lodash/uniq'
+import { uniq } from '@gorgias/toolkit'
 import { useId } from '@gorgias/toolkit-react'
 
 import {
@@ -139,7 +139,7 @@ export function HttpRequestEditor({
         [getVariableListForNode, nodeInEdition.id],
     )
     const variables = useMemo(() => {
-        const variables = _uniq(
+        const variables = uniq(
             extractVariablesFromNode({
                 type: 'http_request',
                 data: nodeInEdition.data,

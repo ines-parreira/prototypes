@@ -1,7 +1,5 @@
 import type { List } from 'immutable'
-import _omit from 'lodash/omit'
-import _pick from 'lodash/pick'
-
+import { omit, pick } from '@gorgias/toolkit'
 import type { ApiPaginationParams, OrderParams } from 'models/api/types'
 import type { RuleEvent } from 'state/rules/types'
 
@@ -247,7 +245,7 @@ export enum EventSortableProperties {
 }
 
 export const TICKET_EVENT_TYPES = Object.freeze({
-    ..._pick(EventType, [
+    ...pick(EventType, [
         'RuleExecuted',
         'RuleSuggestionSuggested',
         'TicketAssigned',
@@ -282,7 +280,7 @@ export const TICKET_EVENT_TYPES = Object.freeze({
 export type TicketEventType = ValueOf<typeof TICKET_EVENT_TYPES>
 
 export const SATISFACTION_SURVEY_EVENT_TYPES = Object.freeze({
-    ..._pick(EventType, [
+    ...pick(EventType, [
         'SatisfactionSurveyResponded',
         'SatisfactionSurveySent',
     ]),
@@ -293,7 +291,7 @@ export type SatisfactionSurveyEventType = ValueOf<
 >
 
 export const SATISFACTION_SURVEY_DETAIL_EVENT_TYPES = Object.freeze({
-    ..._omit(SATISFACTION_SURVEY_EVENT_TYPES, ['SatisfactionSurveyResponded']),
+    ...omit(SATISFACTION_SURVEY_EVENT_TYPES, ['SatisfactionSurveyResponded']),
 } as const)
 
 export type RuleExecutedEventData = {

@@ -1,9 +1,7 @@
 import { useCallback, useRef } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { buildJobMessage } from '@repo/utils'
-import _uniqueId from 'lodash/uniqueId'
 import { POSITIONS } from 'reapop'
+import { Duration, uniqueId } from '@gorgias/toolkit'
 
 import type { JobType } from '@gorgias/helpdesk-queries'
 
@@ -42,7 +40,7 @@ const useNotificationPayload = ({ level, objectType, ticketIds }: Props) => {
                 ticketIds?.length,
             )
             notification.current = {
-                id: _uniqueId('notification-'),
+                id: uniqueId('notification-'),
                 message,
             }
             return notification.current

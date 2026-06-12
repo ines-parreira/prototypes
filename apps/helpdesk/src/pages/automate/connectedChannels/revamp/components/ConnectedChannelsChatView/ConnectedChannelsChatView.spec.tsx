@@ -1,7 +1,6 @@
 import { render } from '@repo/testing'
 import type { QueryObserverResult } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
-import type { Dictionary } from 'lodash'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
@@ -206,7 +205,7 @@ describe('ConnectedChannelsChatView', () => {
             isRefetching: false,
             isStale: false,
             refetch: function (): Promise<
-                QueryObserverResult<Dictionary<string>, unknown>
+                QueryObserverResult<Record<string, string>, unknown>
             > {
                 throw new Error('Function not implemented.')
             },

@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react'
 import { Children, cloneElement, Fragment } from 'react'
-
-import _isEqual from 'lodash/isEqual'
+import { isEqual } from '@gorgias/toolkit'
 import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { usePanels, useScreenSize } from '../hooks'
@@ -30,7 +29,7 @@ export function Panels({
     const previousPanelWidths = usePrevious(panelWidths)
 
     useUpdateEffect(() => {
-        if (!_isEqual(panelWidths, previousPanelWidths)) {
+        if (!isEqual(panelWidths, previousPanelWidths)) {
             onResize?.(panelWidths)
         }
     }, [panelWidths, previousPanelWidths, onResize])

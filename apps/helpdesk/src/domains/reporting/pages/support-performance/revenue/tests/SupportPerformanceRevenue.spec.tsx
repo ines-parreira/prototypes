@@ -2,10 +2,10 @@ import type { ComponentProps } from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import {
@@ -231,7 +231,7 @@ describe('SupportPerformanceRevenue', () => {
     } as RootState
 
     beforeEach(() => {
-        useStatResourceMock.mockReturnValue([null, true, _noop])
+        useStatResourceMock.mockReturnValue([null, true, noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
@@ -255,13 +255,13 @@ describe('SupportPerformanceRevenue', () => {
         useStatResourceMock.mockImplementation(({ resourceName }) => {
             switch (resourceName) {
                 case REVENUE_OVERVIEW:
-                    return [revenueOverview, false, _noop]
+                    return [revenueOverview, false, noop]
                 case REVENUE_PER_DAY:
-                    return [revenuePerDay, false, _noop]
+                    return [revenuePerDay, false, noop]
                 case REVENUE_PER_AGENT:
-                    return [revenuePerAgent, false, _noop]
+                    return [revenuePerAgent, false, noop]
                 default:
-                    return [revenuePerTicket, false, _noop]
+                    return [revenuePerTicket, false, noop]
             }
         })
         jest.spyOn(
@@ -280,13 +280,13 @@ describe('SupportPerformanceRevenue', () => {
         useStatResourceMock.mockImplementation(({ resourceName }) => {
             switch (resourceName) {
                 case REVENUE_OVERVIEW:
-                    return [revenueOverview, false, _noop]
+                    return [revenueOverview, false, noop]
                 case REVENUE_PER_DAY:
-                    return [revenuePerDay, false, _noop]
+                    return [revenuePerDay, false, noop]
                 case REVENUE_PER_AGENT:
-                    return [revenuePerAgent, false, _noop]
+                    return [revenuePerAgent, false, noop]
                 default:
-                    return [revenuePerTicket, false, _noop]
+                    return [revenuePerTicket, false, noop]
             }
         })
         jest.spyOn(

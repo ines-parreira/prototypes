@@ -1,5 +1,3 @@
-import _findIndex from 'lodash/findLastIndex'
-
 export interface DataResponse<TData = Record<string, any>> {
     data: {
         data: TData[]
@@ -29,11 +27,13 @@ export const getDecile = (
     itemIndex: number,
     decilesIndex: { decileIndex: number; decile: number }[],
 ) => {
-    const result = _findIndex(
-        decilesIndex,
-        (item) => itemIndex >= item.decileIndex,
-    )
-    return decilesIndex[result].decile
+    for (let index = decilesIndex.length - 1; index >= 0; index--) {
+        if (itemIndex >= decilesIndex[index].decileIndex) {
+            return decilesIndex[index].decile
+        }
+    }
+
+    return decilesIndex[0].decile
 }
 
 type DecileIndex = {

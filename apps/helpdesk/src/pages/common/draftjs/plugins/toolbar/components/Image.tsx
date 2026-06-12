@@ -9,8 +9,7 @@ import type {
     EditorState,
     SelectionState,
 } from 'draft-js'
-import _omit from 'lodash/omit'
-
+import { omit } from '@gorgias/toolkit'
 import { replaceAttachmentURL } from 'utils'
 
 type Props = {
@@ -41,7 +40,7 @@ class Image extends Component<Props> {
         const { alt, block, className, theme, contentState, ...otherProps } =
             this.props
 
-        const elementProps = _omit(otherProps, [
+        const elementProps = omit(otherProps, [
             'blockProps',
             'customStyleMap',
             'customStyleFn',

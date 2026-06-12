@@ -14,7 +14,7 @@ jest.mock('@gorgias/toolkit-react', () => {
             const id = React.useRef<string | undefined>(undefined)
 
             if (id.current === undefined) {
-                id.current = require('lodash/uniqueId')()
+                id.current = require('@gorgias/toolkit').uniqueId()
             }
 
             return id.current

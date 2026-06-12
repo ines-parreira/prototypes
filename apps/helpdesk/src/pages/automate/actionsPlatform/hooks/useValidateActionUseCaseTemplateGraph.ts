@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 
 import { produce } from 'immer'
-import _set from 'lodash/set'
-
+import { set } from '@gorgias/toolkit'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { getLLMPromptTriggerNodeErrors } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -18,10 +17,10 @@ const useValidateActionUseCaseTemplateGraph = (
                 if (draft.touched?.name) {
                     if (!draft.name) {
                         draft.errors ??= {}
-                        _set(draft.errors, 'name', 'Action name is required')
+                        set(draft.errors, 'name', 'Action name is required')
                     } else if (draft.name.length > 100) {
                         draft.errors ??= {}
-                        _set(
+                        set(
                             draft.errors,
                             'name',
                             'Action name must be less than 100 characters',
@@ -31,12 +30,12 @@ const useValidateActionUseCaseTemplateGraph = (
 
                 if (draft.touched?.category && !draft.category?.trim()) {
                     draft.errors ??= {}
-                    _set(draft.errors, 'category', 'Category is required')
+                    set(draft.errors, 'category', 'Category is required')
                 }
 
                 if (draft.touched?.nodes && draft.nodes.length === 2) {
                     draft.errors ??= {}
-                    _set(
+                    set(
                         draft.errors,
                         'nodes',
                         'At least one Action step is required',

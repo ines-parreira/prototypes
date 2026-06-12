@@ -1,9 +1,9 @@
-import _trim from 'lodash/trim'
-import _upperFirst from 'lodash/upperFirst'
+import { upperFirst } from '@gorgias/toolkit'
 
 export function humanize(text: string): string {
-    return _upperFirst(
-        _trim(text, '.-_')
+    return upperFirst(
+        String(text ?? '')
+            .replace(/^[._-]+|[._-]+$/g, '')
             .replace(/([A-Z])/g, ' $1')
             .replace(/[-_.\s]+/g, ' ')
             .toLowerCase(),

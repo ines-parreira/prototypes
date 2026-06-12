@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import _omit from 'lodash/omit'
 import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
+import { omit } from '@gorgias/toolkit'
 
 import { defined } from 'utils'
 
@@ -31,7 +31,7 @@ export class DEPRECATED_BooleanField extends InputField<Props> {
     }
 
     _getField = () => {
-        const { children, error, value, ...rest } = _omit(this.props, [
+        const { children, error, value, ...rest } = omit(this.props, [
             'help',
             'inline',
             'label',

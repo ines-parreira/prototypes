@@ -1,14 +1,12 @@
 import React, { useMemo, useRef, useState } from 'react'
 
 import { JSONPath } from 'jsonpath-plus'
-import _isString from 'lodash/isString'
-import _noop from 'lodash/noop'
-
 import {
     LegacyBadge as Badge,
     LegacyButton as Button,
     LegacyLabel as Label,
 } from '@gorgias/axiom'
+import { isString, noop } from '@gorgias/toolkit'
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -167,7 +165,7 @@ const TestRequestResult = ({
                 <div className={css.field}>
                     <Label>Response</Label>
                     <TextArea
-                        onChange={_noop}
+                        onChange={noop}
                         value={prettifiedJSON ?? result.content}
                         isDisabled
                         autoRowHeight
@@ -213,7 +211,7 @@ const TestRequestResult = ({
                                 />
                                 <TextInput
                                     value={
-                                        _isString(value)
+                                        isString(value)
                                             ? value
                                             : JSON.stringify(value)
                                     }

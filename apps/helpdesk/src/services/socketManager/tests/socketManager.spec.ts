@@ -1,6 +1,6 @@
 import * as segment from '@repo/logging'
-import _noop from 'lodash/noop'
 import * as reapop from 'reapop'
+import { noop } from '@gorgias/toolkit'
 
 import * as actions from 'state/notifications/actions'
 import type { BannerNotification } from 'state/notifications/types'
@@ -149,7 +149,7 @@ describe('SocketManager', () => {
         it('should call `onReceive` of matching configuration', () => {
             const event: ReceivedEvent = {
                 name: 'customer-updated',
-                onReceive: _noop,
+                onReceive: noop,
             }
 
             socketManager.registerReceivedEvents([event])

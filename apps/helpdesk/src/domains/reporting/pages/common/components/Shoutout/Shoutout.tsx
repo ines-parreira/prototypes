@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
 import React, { Fragment, useMemo, useRef } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import classNames from 'classnames'
-import isNil from 'lodash/isNil'
+import { Duration, isNil } from '@gorgias/toolkit'
 
 import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'

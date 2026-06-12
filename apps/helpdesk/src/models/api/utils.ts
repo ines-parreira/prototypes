@@ -1,4 +1,4 @@
-import _snakeCase from 'lodash/snakeCase'
+import { snakeCase } from '@gorgias/toolkit'
 
 const deepMapKeys = (formatter: (value: string) => string) => {
     /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -33,4 +33,4 @@ export type SnakeCaseObject<T extends Record<string, unknown>> = {
 
 export const deepMapKeysToSnakeCase: <T extends Record<string, unknown>>(
     value: T,
-) => SnakeCaseObject<T> = deepMapKeys(_snakeCase)
+) => SnakeCaseObject<T> = deepMapKeys(snakeCase)

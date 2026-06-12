@@ -1,7 +1,7 @@
 import linkifyjsElement from 'linkify-element'
 import linkifyjsString from 'linkify-string'
-import _get from 'lodash/get'
 import sanitizeHtml from 'sanitize-html'
+import { get } from '@gorgias/toolkit'
 
 const linkifyOptions = {
     attributes: {
@@ -31,7 +31,7 @@ export const linkifyHtml = (body: string) => {
     const linkifiedBody = linkifyjsElement(doc.body, linkifyOptions)
     // merge head and body contents, in case we need to load resources from head.
     // also makes it backwards-compatible with the previous dom parser (div.innerHTML = html).
-    return `${_get(doc, ['head', 'innerHTML'], '')}${
+    return `${get(doc, ['head', 'innerHTML'], '')}${
         linkifiedBody.innerHTML || ''
     }`
 }

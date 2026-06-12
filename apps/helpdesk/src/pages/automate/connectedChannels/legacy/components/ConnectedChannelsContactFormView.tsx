@@ -3,8 +3,8 @@ import React, { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
-import { noop } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { noop } from '@gorgias/toolkit'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 

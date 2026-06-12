@@ -5,7 +5,6 @@ import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { EmojiData } from 'emoji-mart'
 import { Emoji } from 'emoji-mart'
-import _cloneDeep from 'lodash/cloneDeep'
 import { NavLink, useParams } from 'react-router-dom'
 import {
     Form as BootstrapForm,
@@ -18,6 +17,7 @@ import {
     PopoverBody,
     Row,
 } from 'reactstrap'
+import { cloneDeep } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -52,7 +52,7 @@ export const Form = () => {
     const { mutateAsync: deleteTeam } = useDeleteTeam()
 
     useEffect(() => {
-        setTeam(_cloneDeep(data?.data))
+        setTeam(cloneDeep(data?.data))
     }, [data])
 
     const onSubmit = (e: SyntheticEvent) => {

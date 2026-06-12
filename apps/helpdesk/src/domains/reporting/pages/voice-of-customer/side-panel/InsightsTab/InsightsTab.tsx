@@ -2,9 +2,8 @@ import { useCallback, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import _isEmpty from 'lodash/isEmpty'
-
 import { LegacyButton as Button } from '@gorgias/axiom'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTicketCountPerIntentForProduct } from 'domains/reporting/hooks/voice-of-customer/metricsPerProductAndIntent'
@@ -174,7 +173,7 @@ const InsightsTabContent = ({
     const items = ticketCountPerIntentForProduct.data?.allData || []
 
     const isLoading = ticketCountPerIntentForProduct.isFetching
-    const isEmpty = _isEmpty(items)
+    const hasNoItems = isEmpty(items)
 
     const formattedPeriod = formatDateRange(
         cleanStatsFilters.period.start_datetime,
@@ -204,7 +203,7 @@ const InsightsTabContent = ({
                 <DashboardGridCell>
                     {isLoading ? (
                         <LoadingFallback length={NUMBER_PLACEHOLDER_ITEMS} />
-                    ) : isEmpty ? (
+                    ) : hasNoItems ? (
                         <NoDataFallback />
                     ) : (
                         <ul className={classnames(css.list, css.intentList)}>

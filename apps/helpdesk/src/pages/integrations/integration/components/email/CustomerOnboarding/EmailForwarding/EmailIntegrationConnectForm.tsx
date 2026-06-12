@@ -1,9 +1,8 @@
 import React from 'react'
 
 import { Form, FormField } from '@repo/forms'
-import pick from 'lodash/pick'
-
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
+import { pick } from '@gorgias/toolkit'
 
 import { FormRow } from 'pages/common/forms/FormRow'
 import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'

@@ -5,8 +5,8 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import _range from 'lodash/range'
 import { useLocation } from 'react-router-dom'
+import { range } from '@gorgias/toolkit'
 
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as initialUiStatsFiltersState } from 'domains/reporting/state/ui/stats/filtersSlice'
@@ -249,7 +249,7 @@ describe('ActionEventsViewContainer', () => {
     it('renders list of events wihout pagination', () => {
         const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200> =
             {
-                data: _range(10).map((i) => ({
+                data: range(10).map((i) => ({
                     id: i.toString(),
                     state: {
                         trigger: 'llm-prompt',
@@ -291,7 +291,7 @@ describe('ActionEventsViewContainer', () => {
     it('renders list of events pagination numbered', () => {
         const executionsResponse: Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200> =
             {
-                data: _range(20).map((i) => ({
+                data: range(20).map((i) => ({
                     id: i.toString(),
                     state: {
                         trigger: 'llm-prompt',

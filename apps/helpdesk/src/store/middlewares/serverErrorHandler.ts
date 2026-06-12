@@ -1,7 +1,5 @@
-import _get from 'lodash/get'
-import _some from 'lodash/some'
 import type { Middleware } from 'redux'
-import { Duration } from '@gorgias/toolkit'
+import { Duration, get } from '@gorgias/toolkit'
 
 import type {
     GorgiasApiError,
@@ -31,8 +29,8 @@ const serverErrorHandler: Middleware<
     RootState,
     StoreDispatch
 > = (store) => (next) => (action: ServerErrorAction) => {
-    const status = _get(action, 'error.response.status', '')
-    const error = _get(action, 'error.response.data.error', '') as
+    const status = Number(get(action, 'error.response.status', 0))
+    const error = get(action, 'error.response.data.error', '') as
         | GorgiasApiResponseDataError
         | ''
 
@@ -94,7 +92,7 @@ const serverErrorHandler: Middleware<
     const shouldDisplayError =
         action &&
         (action.error || action.reason) &&
-        !_some(IGNORED_PREFIXES, (prefix) => action.type.startsWith(prefix))
+        !IGNORED_PREFIXES.some((prefix) => action.type.startsWith(prefix))
 
     if (shouldDisplayError) {
         let title =

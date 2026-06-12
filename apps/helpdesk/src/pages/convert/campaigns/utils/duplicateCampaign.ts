@@ -1,6 +1,6 @@
 import { removeLinksFromHtml } from '@repo/utils'
-import _omit from 'lodash/omit'
 import { ulid } from 'ulidx'
+import { omit } from '@gorgias/toolkit'
 
 import type { Campaign, CampaignCreatePayload } from '../types/Campaign'
 import type { CampaignVariant } from '../types/CampaignVariant'
@@ -30,7 +30,7 @@ export const duplicateCampaign = (
     )
 
     return {
-        ..._omit(campaign, 'id'),
+        ...omit(campaign, 'id'),
         channel_connection_id: channelConnectionId,
         name: `(Copy) ${campaign.name}`,
         status: CampaignStatus.Inactive,

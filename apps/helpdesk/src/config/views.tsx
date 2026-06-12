@@ -1,10 +1,9 @@
 import { sanitizeHtmlDefault } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isUndefined from 'lodash/isUndefined'
-
 import type { TicketTag } from '@gorgias/helpdesk-types'
 import { TicketPriority } from '@gorgias/helpdesk-types'
+import { isUndefined } from '@gorgias/toolkit'
 
 import { fromAST } from 'common/utils'
 import { ticketLanguages } from 'config/ticketLanguages'
@@ -39,7 +38,7 @@ export const MAX_TICKET_COUNT_PER_VIEW = 5000
 export const defaultCell = (fieldName: string, item: Map<any, any>) => {
     const value = item.get(fieldName) as Maybe<string>
 
-    if (_isUndefined(value)) {
+    if (isUndefined(value)) {
         console.error('Invalid field type in view table cell', fieldName)
         return ''
     }

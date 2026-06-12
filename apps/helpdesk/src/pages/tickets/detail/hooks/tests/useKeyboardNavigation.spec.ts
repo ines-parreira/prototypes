@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { useKeyboardNavigation } from '../useKeyboardNavigation'
 
 jest.mock('@repo/utils', () => ({
@@ -13,8 +12,8 @@ jest.mock('@repo/utils', () => ({
 }))
 
 describe('useKeyboardNavigation', () => {
-    const next = _noop
-    const previous = _noop
+    const next = noop
+    const previous = noop
 
     it('should bind to the shortcut manager on mount', () => {
         renderHook(() => useKeyboardNavigation({ next, previous }))

@@ -1,5 +1,3 @@
-import _flatten from 'lodash/flatten'
-
 import {
     AutomateAiAgentsChart,
     AutomateAiAgentsReportConfig,
@@ -349,7 +347,7 @@ export const getReportConfig = (
     reportId: string,
     withLegacyReports?: boolean,
 ): ReportConfig<string> | null => {
-    const availableReports = _flatten(
+    const availableReports = (
         (withLegacyReports
             ? [
                   ...REPORTS_CONFIG,
@@ -362,8 +360,8 @@ export const getReportConfig = (
                   ...REVAMPED_REPORTS_CONFIG,
                   ...PERFORMANCE_REPORTS_CONFIG,
               ]
-        ).map((report) => report.children),
-    )
+        ).map((report) => report.children) ?? []
+    ).flat()
 
     const report = availableReports.find(
         (report) => report.config.id === reportId,
@@ -375,14 +373,14 @@ export const getReportConfig = (
 export const getReportConfigFromPath = (
     reportPath: string,
 ): ReportConfig<string> | null => {
-    const availableReports = _flatten(
+    const availableReports = (
         [
             ...REPORTS_CONFIG,
             ...REVAMPED_REPORTS_CONFIG,
             ...PERFORMANCE_REPORTS_CONFIG,
             ...LEGACY_REPORTS_CONFIG,
-        ].map((report) => report.children),
-    )
+        ].map((report) => report.children) ?? []
+    ).flat()
 
     const report = availableReports.find(
         (report) =>

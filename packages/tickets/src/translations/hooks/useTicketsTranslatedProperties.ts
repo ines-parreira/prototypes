@@ -2,8 +2,6 @@ import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
-import { isNumber } from 'lodash'
-
 import { useListTicketTranslations } from '@gorgias/helpdesk-queries'
 import type {
     HttpResponse,
@@ -11,6 +9,7 @@ import type {
     TicketLanguage,
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
+import { isNumber } from '@gorgias/toolkit'
 
 import { KeyPrefixes } from './constants'
 import type { TicketTranslationsQueryKeyParams } from './types'

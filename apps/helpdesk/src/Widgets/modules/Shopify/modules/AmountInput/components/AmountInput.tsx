@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { getMoneySymbol } from '@repo/utils'
 import classnames from 'classnames'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { NON_FRACTIONAL_CURRENCIES } from 'constants/integrations/shopify'
 import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
@@ -40,7 +39,7 @@ export class AmountInput extends PureComponent<Props> {
         required: true,
         disabled: false,
         symbol: null,
-        saveInputRef: _noop,
+        saveInputRef: noop,
     }
 
     _onChange = (nextValue?: number) => {

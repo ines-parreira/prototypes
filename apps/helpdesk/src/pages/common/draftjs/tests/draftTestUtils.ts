@@ -12,9 +12,7 @@ import {
     SelectionState,
 } from 'draft-js'
 import type { Map } from 'immutable'
-import _isArray from 'lodash/isArray'
-import _noop from 'lodash/noop'
-
+import { isArray, noop } from '@gorgias/toolkit'
 import { convertFromHTML } from '../../../../utils/editor'
 import type { PluginMethods } from '../plugins/types'
 
@@ -29,7 +27,7 @@ export const mockPluginMethods = (
         setEditorState: (newState) => {
             state = newState
         },
-        getProps: _noop,
+        getProps: noop,
     }
 }
 
@@ -130,7 +128,7 @@ export const createEditorStateFromHtml = (html: string) => {
 
 export const createCompositeDecorator = (decorators: any = []) => {
     return new CompositeDecorator(
-        !_isArray(decorators) ? [decorators] : decorators,
+        !isArray(decorators) ? [decorators] : decorators,
     )
 }
 

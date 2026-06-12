@@ -1,7 +1,6 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import _omit from 'lodash/omit'
-
+import { omit } from '@gorgias/toolkit'
 import type { UserSetting } from '../../../config/types/user'
 import { UserSettingType } from '../../../config/types/user'
 import { createUserSetting, updateUserSetting } from '../resources'
@@ -26,7 +25,7 @@ describe('user resources', () => {
         it('should resolve on success', async () => {
             mockedServer.onPost('/api/users/0/settings/').reply(200, mockedData)
 
-            const res = await createUserSetting(_omit(mockedData, 'id'))
+            const res = await createUserSetting(omit(mockedData, 'id'))
             expect(res).toMatchSnapshot()
         })
 
@@ -35,7 +34,7 @@ describe('user resources', () => {
                 .onPost('/api/users/0/settings/')
                 .reply(503, { message: 'error' })
             return expect(
-                createUserSetting(_omit(mockedData, 'id')),
+                createUserSetting(omit(mockedData, 'id')),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

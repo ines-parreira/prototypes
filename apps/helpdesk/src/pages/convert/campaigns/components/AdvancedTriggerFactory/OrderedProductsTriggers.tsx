@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-
-import _debounce from 'lodash/debounce'
-
 import { LegacyButton as Button } from '@gorgias/axiom'
+import { debounce, Duration } from '@gorgias/toolkit'
 
 import { useProductsFromShopifyIntegration } from 'models/integration/queries'
 import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
@@ -59,9 +57,9 @@ export const OrderedProductsTriggers = ({
         })
     }
 
-    const handleChangeSelectFilter = _debounce((nextFilter: string) => {
+    const handleChangeSelectFilter = debounce((nextFilter: string) => {
         setInnerFilter(nextFilter)
-    }, 200)
+    }, Duration.millis(200))
 
     const products = useMemo(() => {
         return x.data

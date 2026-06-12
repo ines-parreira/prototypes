@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { noop } from '@gorgias/toolkit'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
@@ -75,9 +74,9 @@ const HelpCenterFilter = ({ value = emptyFilter, dispatchUpdate }: Props) => {
             logicalOperators={[]}
             filterOptionGroups={filterItems}
             onChangeOption={onOptionChange}
-            onSelectAll={_noop}
-            onRemoveAll={_noop}
-            onChangeLogicalOperator={_noop}
+            onSelectAll={noop}
+            onRemoveAll={noop}
+            onChangeLogicalOperator={noop}
             onDropdownClosed={handleDropdownClosed}
         />
     )

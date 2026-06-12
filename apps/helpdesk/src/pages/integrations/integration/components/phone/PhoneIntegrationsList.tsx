@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import { history } from '@repo/routing'
-import { reverse, sortBy } from 'lodash'
 import { Container } from 'reactstrap'
+import { get, sortBy } from '@gorgias/toolkit'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
@@ -89,8 +89,8 @@ export function PhoneIntegrationsList({ type }: Props): JSX.Element | null {
     const sortedRows = useMemo(
         () =>
             orderDirection === OrderDirection.Asc
-                ? sortBy(rows, orderBy)
-                : reverse(sortBy(rows, orderBy)),
+                ? sortBy(rows, (row) => get(row, orderBy))
+                : sortBy(rows, (row) => get(row, orderBy)).reverse(),
         [rows, orderBy, orderDirection],
     )
 

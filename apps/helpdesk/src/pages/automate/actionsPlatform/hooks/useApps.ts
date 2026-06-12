@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
 import type { DefinedUseQueryResult } from '@tanstack/react-query'
-import _keyBy from 'lodash/keyBy'
-
+import { keyBy } from '@gorgias/toolkit'
 import type { IntegrationConfig } from 'config'
 import { INTEGRATION_TYPE_CONFIG } from 'config'
 import { IntegrationType } from 'models/integration/constants'
@@ -41,7 +40,7 @@ const useApps = <T extends App['type'] = App['type']>(
         isInitialLoading: isActionsAppsInitialLoading,
     } = useListActionsApps()
     const actionsAppsById = useMemo(
-        () => _keyBy(actionsApps, 'id'),
+        () => keyBy(actionsApps, 'id'),
         [actionsApps],
     )
     const { data: appsList = [], isInitialLoading } = useGetApps()
@@ -51,7 +50,7 @@ const useApps = <T extends App['type'] = App['type']>(
             return []
         }
 
-        const appById = _keyBy(appsList, 'id')
+        const appById = keyBy(appsList, 'id')
 
         return actionsApps
             .filter((actionsApp) => !(actionsApp.id in appById))

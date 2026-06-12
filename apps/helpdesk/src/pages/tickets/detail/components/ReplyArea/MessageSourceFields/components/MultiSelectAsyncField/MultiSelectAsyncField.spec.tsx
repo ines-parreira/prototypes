@@ -2,16 +2,16 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
-import _debounce from 'lodash/debounce'
-
+import { debounce } from '@gorgias/toolkit'
 import type { ReceiverValue } from 'state/ticket/utils'
 import { isEmail } from 'utils'
 
 import { MultiSelectAsyncField } from './MultiSelectAsyncField'
 
-jest.mock('lodash/debounce', () =>
-    jest.fn((fn: (...args: any[]) => void) => fn),
-)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: jest.fn((fn: (...args: any[]) => void) => fn),
+}))
 
 describe('MultiSelectAsyncField component', () => {
     const minProps = {
@@ -172,7 +172,7 @@ describe('MultiSelectAsyncField component', () => {
 
     it('should display a loading skeleton when searching', () => {
         ;(
-            _debounce as jest.MockedFunction<typeof _debounce>
+            debounce as jest.MockedFunction<typeof debounce>
         ).mockImplementationOnce((() => (fn: (...args: any[]) => void) => {
             setTimeout(fn)
         }) as any)

@@ -2,10 +2,10 @@ import type { ComponentProps } from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
@@ -92,7 +92,7 @@ describe('<LinkPopover />', () => {
 
         const { getByText } = render(
             <Provider store={store}>
-                <Modal isOpen onClose={_noop}>
+                <Modal isOpen onClose={noop}>
                     <LinkPopover {...minProps}>{label}</LinkPopover>
                 </Modal>
             </Provider>,

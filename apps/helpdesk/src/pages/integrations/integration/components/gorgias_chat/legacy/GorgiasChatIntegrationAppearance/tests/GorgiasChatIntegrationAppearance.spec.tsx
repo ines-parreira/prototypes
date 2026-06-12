@@ -50,10 +50,13 @@ const defaultState = {
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
-jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    uniqueId: (id?: string) => `${id || ''}42`,
+}))
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
-    useId: jest.fn(() => require('lodash/uniqueId')()),
+    useId: jest.fn(() => require('@gorgias/toolkit').uniqueId()),
 }))
 const mockUseId = useId as jest.MockedFunction<typeof useId>
 
@@ -137,7 +140,9 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseId.mockImplementation(() => require('lodash/uniqueId')())
+        mockUseId.mockImplementation(() =>
+            require('@gorgias/toolkit').uniqueId(),
+        )
 
         const fixedDate = new Date('2019-06-24')
         jest.spyOn(Date, 'now').mockImplementation(() => fixedDate.getTime())

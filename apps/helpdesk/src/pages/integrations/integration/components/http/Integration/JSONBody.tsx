@@ -1,9 +1,7 @@
 import { Component } from 'react'
 import type { ComponentProps } from 'react'
-
-import _isEqual from 'lodash/isEqual'
-import _some from 'lodash/some'
 import { FormGroup, FormText, Label } from 'reactstrap'
+import { isEqual } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -44,7 +42,7 @@ export class JSONBody extends Component<Props, State> {
 
     _onDropdownChange = (form: Record<string, unknown> | string) => {
         this.props.onChange(
-            _isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form,
+            isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form,
         )
     }
 
@@ -63,8 +61,8 @@ export class JSONBody extends Component<Props, State> {
         const presetOptionsValues = this.presetOptions.map(
             (option) => option.value,
         )
-        return _some(presetOptionsValues, (presetOptionValue) =>
-            _isEqual(presetOptionValue, form),
+        return presetOptionsValues.some((presetOptionValue) =>
+            isEqual(presetOptionValue, form),
         )
     }
 
@@ -98,7 +96,7 @@ export class JSONBody extends Component<Props, State> {
                         value={dropdownValue as any}
                     />
                 </div>
-                {_isEqual(dropdownValue, DEFAULT_FORM) ? (
+                {isEqual(dropdownValue, DEFAULT_FORM) ? (
                     <div>
                         <JsonField
                             name="http.form"

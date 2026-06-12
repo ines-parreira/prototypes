@@ -7,12 +7,9 @@ import { logViewEvent, setViewsCount } from '@repo/views'
 import * as Sentry from '@sentry/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { cloneDeep } from 'lodash'
-import _find from 'lodash/find'
-import { Duration } from '@gorgias/toolkit'
-
 import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
+import { cloneDeep, Duration } from '@gorgias/toolkit'
 
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { store as reduxStore } from 'common/store'
@@ -440,8 +437,7 @@ const receivedEvents: ReceivedEvent[] = [
 
             const account = (json as AccountUpdatedEvent).account
             const newTicketAssignmentSetting = fromJS(
-                _find(
-                    account.settings || [],
+                (account.settings || []).find(
                     (setting) =>
                         setting.type ===
                         currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,

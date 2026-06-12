@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import type { PreferenceSet } from '@knocklabs/client'
 import { useKnockClient } from '@knocklabs/react'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _merge from 'lodash/merge'
+import { merge } from '@gorgias/toolkit'
 import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { AI_AGENT_SET_AND_OPTIMIZED_TYPE } from 'automate/notifications/constants'
@@ -191,7 +191,7 @@ export function useSettings() {
 
         // we need to preserve existing workflow channels - e.g "push"
         const preferenceWorkflows = knockPreferences?.workflows || {}
-        const mergedWorkflows = _merge(preferenceWorkflows, workflows)
+        const mergedWorkflows = merge(preferenceWorkflows, workflows)
 
         await Promise.all([
             knockClient.user.setPreferences({

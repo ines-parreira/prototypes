@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { sanitizeHtmlDefault } from '@repo/utils'
 import { produce } from 'immer'
-import { set } from 'lodash'
-
+import { set } from '@gorgias/toolkit'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,

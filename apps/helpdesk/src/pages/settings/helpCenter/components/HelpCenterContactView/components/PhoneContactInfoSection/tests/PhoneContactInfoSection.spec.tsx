@@ -1,10 +1,10 @@
 import type React from 'react'
 
 import { render } from '@repo/testing'
-import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { keyBy } from '@gorgias/toolkit'
 
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
@@ -31,7 +31,7 @@ const defaultState: Partial<RootState> = {
     entities: {
         contactForm: {
             contactForms: {
-                contactFormById: _keyBy([ContactFormFixture], 'id'),
+                contactFormById: keyBy([ContactFormFixture], 'id'),
             },
         },
         helpCenter: {

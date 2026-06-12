@@ -1,7 +1,5 @@
 import client from '@repo/api-resources'
-import _throttle from 'lodash/throttle'
-import { Duration } from '@gorgias/toolkit'
-
+import { Duration, throttle } from '@gorgias/toolkit'
 import type { RecentChatTicket } from '../../business/types/recentChats'
 import type { Ticket } from '../../models/ticket/types'
 import { browserNotification } from '../../services/browserNotification'
@@ -29,7 +27,7 @@ export const fetchChats =
             )
     }
 
-export const fetchChatsThrottled = _throttle((dispatch: StoreDispatch) => {
+export const fetchChatsThrottled = throttle((dispatch: StoreDispatch) => {
     void dispatch(fetchChats())
 }, Duration.seconds(10))
 

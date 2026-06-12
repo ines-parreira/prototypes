@@ -2,10 +2,7 @@ import type { ContentState } from 'draft-js'
 import { convertToRaw } from 'draft-js'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { omit } from 'lodash'
-import _forOwn from 'lodash/forOwn'
-import _get from 'lodash/get'
-
+import { get, omit } from '@gorgias/toolkit'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { AttachmentEnum } from 'common/types'
 import { isImmutable } from 'common/utils'
@@ -65,10 +62,10 @@ export function getMentionIds(
 
     if (contentState && isInternalNoteMessage) {
         const entityMap = convertToRaw(contentState).entityMap
-        _forOwn(entityMap, (entity) => {
+        Object.entries(entityMap).forEach(([, entity]) => {
             if (entity.type === 'mention') {
                 // don't push duplicate ids
-                const id = _get(entity.data.mention, 'id')
+                const id = get(entity.data.mention, 'id')
                 if (!ids.includes(id)) {
                     ids = ids.push(id)
                 }

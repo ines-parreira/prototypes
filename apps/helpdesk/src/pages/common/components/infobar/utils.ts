@@ -1,24 +1,20 @@
 import { reportError } from '@repo/logging'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _compact from 'lodash/compact'
-import _forEach from 'lodash/forEach'
-import _forIn from 'lodash/forIn'
-import _get from 'lodash/get'
-import _initial from 'lodash/initial'
-import _isArray from 'lodash/isArray'
-import _isBoolean from 'lodash/isBoolean'
-import _isObject from 'lodash/isObject'
-import _isString from 'lodash/isString'
-import _last from 'lodash/last'
-import _omitBy from 'lodash/omitBy'
-import _pickBy from 'lodash/pickBy'
-import _size from 'lodash/size'
-import _sortBy from 'lodash/sortBy'
-import _toLower from 'lodash/toLower'
 import type { MomentInput } from 'moment'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
+import {
+    compact,
+    get,
+    isArray,
+    isBoolean as isBooleanValue,
+    isObject as isObjectValue,
+    isString,
+    omitBy,
+    pickBy,
+    sortBy,
+} from '@gorgias/toolkit'
 
 import { isImmutable } from 'common/utils'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
@@ -47,14 +43,14 @@ import * as utils from 'utils'
 export function isArrayOfObjects(
     value: any,
 ): value is Record<string, unknown>[] {
-    return _isArray(value) && !!value.length && _isObject(value[0])
+    return isArray(value) && !!value.length && isObjectValue(value[0])
 }
 
 /**
  * Check if is a real object (since arrays are objects, we just want objects (no arrays) here)
  */
 export function isObject(value: any) {
-    return !!value && _isObject(value) && !_isArray(value)
+    return !!value && isObjectValue(value) && !isArray(value)
 }
 
 /**
@@ -101,8 +97,8 @@ export function stripLastListsFromPath(
 ) {
     let newPath = path
 
-    while (_last(newPath) === '[]') {
-        newPath = _initial(newPath)
+    while (newPath?.at(-1) === '[]') {
+        newPath = newPath.slice(0, -1)
     }
 
     return newPath as string
@@ -141,11 +137,11 @@ export function isDate(string: string) {
  * Guess if a passed string is a boolean
  */
 export function isBoolean(string: any) {
-    if (_isBoolean(string)) {
+    if (isBooleanValue(string)) {
         return true
     }
 
-    if (_isString(string)) {
+    if (isString(string)) {
         return string === 'true' || string === 'false'
     }
 
@@ -300,7 +296,7 @@ export function jsonToTemplate(
 
         if (isObject(value)) {
             // Filter private keys always, metafields only in Shopify context
-            const filteredValue = _omitBy(
+            const filteredValue = omitBy(
                 value,
                 (v, k: string) =>
                     k.startsWith('_') ||
@@ -310,23 +306,27 @@ export function jsonToTemplate(
             let enhancedValues: Record<string, unknown> = {}
 
             // order keys in alphabetical order
-            _sortBy(Object.keys(filteredValue), _toLower).forEach((v) => {
+            sortBy(Object.keys(filteredValue), (value) =>
+                value.toLowerCase(),
+            ).forEach((v) => {
                 enhancedValues[v] = filteredValue[v]
             })
 
             // order keys by simple fields, then objects and finally arrays
             enhancedValues = {
-                ..._pickBy(enhancedValues, (v) => {
+                ...pickBy(enhancedValues, (v) => {
                     return !isObject(v) && !isArrayOfObjects(v)
                 }),
-                ..._pickBy(enhancedValues, isObject),
-                ..._pickBy(enhancedValues, isArrayOfObjects),
+                ...pickBy(enhancedValues, isObject),
+                ...pickBy(enhancedValues, isArrayOfObjects),
             }
 
             const widgets: Record<string, unknown>[] = []
-            _forIn(enhancedValues, (v, k) =>
-                widgets.push(jsonToTemplate(v, k, false, isShopifyContext)),
-            )
+            Object.entries(enhancedValues).forEach(([key, value]) => {
+                widgets.push(
+                    jsonToTemplate(value, key, false, isShopifyContext),
+                )
+            })
 
             const response: {
                 type: string
@@ -349,7 +349,7 @@ export function jsonToTemplate(
         // other kind of field
         let type = 'text'
 
-        if (_isArray(value)) {
+        if (isArray(value)) {
             type = 'array'
         } else if (key === 'birthday') {
             type = 'age'
@@ -418,7 +418,7 @@ export function jsonToWidgets(
 
         let typeByPath = fromJS({}) as Map<any, any>
         mutableDataSourcePaths.forEach((mutableDataSourcePath) => {
-            const data = _get(json, mutableDataSourcePath, {}) as Record<
+            const data = get(json, mutableDataSourcePath, {}) as Record<
                 string,
                 unknown
             >
@@ -434,7 +434,7 @@ export function jsonToWidgets(
             //      ['customer', CUSTOMER_EXTERNAL_DATA_KEY, 'fooBarAppId'], ['customer', CUSTOMER_EXTERNAL_DATA_KEY, 'fooBarAppId2']
             //      ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid'], ['customer', CUSTOMER_ECOMMERCE_DATA_KEY, 'foo-bar-store-uuid2']
             //  ]
-            _forEach(data, (datum, datumId) => {
+            Object.entries(data).forEach(([datumId, datum]) => {
                 // datum = integrations, CUSTOMER_EXTERNAL_DATA_KEY or CUSTOMER_ECOMMERCE_DATA_KEY
                 // datumId = integrationId, appId or storeUuid
 
@@ -488,12 +488,12 @@ export function jsonToWidgets(
         })
 
         const widgets = dataSourcePaths.map((sourcePath, i) => {
-            let source = _get(json, sourcePath, {}) as Record<string, unknown>
+            let source = get(json, sourcePath, {}) as Record<string, unknown>
 
             // remove private keys from source before we transform it into a template
-            source = _omitBy(source, (v, k: string) => k.startsWith('_'))
+            source = omitBy(source, (v, k: string) => k.startsWith('_'))
 
-            if (!source || !_size(source)) {
+            if (!source || !Object.keys(source).length) {
                 return null
             }
 
@@ -506,7 +506,7 @@ export function jsonToWidgets(
             const template = jsonToTemplate(source, '', false, isShopifyContext)
 
             /* istanbul ignore next, defensive check */
-            if (!template || !_size(template)) {
+            if (!template || !Object.keys(template).length) {
                 return null
             }
 
@@ -523,7 +523,7 @@ export function jsonToWidgets(
         })
 
         // remove null widgets
-        return _compact(widgets)
+        return compact(widgets)
     } catch (err) {
         reportError(err, {
             extra: {

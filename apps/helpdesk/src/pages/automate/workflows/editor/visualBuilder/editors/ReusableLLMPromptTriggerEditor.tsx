@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
-
-import _noop from 'lodash/noop'
-
 import { LegacyLabel as Label } from '@gorgias/axiom'
+import { noop } from '@gorgias/toolkit'
 
 import { ActionFormInputs } from 'pages/aiAgent/actions/components/ActionFormInputs'
 import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
@@ -131,7 +129,7 @@ export function ReusableLLMPromptTriggerEditor({
                                 showNoneOption
                                 type={nodeInEdition.data.conditionsType}
                                 conditions={nodeInEdition.data.conditions}
-                                onDeleteBranch={_noop}
+                                onDeleteBranch={noop}
                                 onConditionDelete={(index) => {
                                     dispatch({
                                         type: 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION',

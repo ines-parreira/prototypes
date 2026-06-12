@@ -10,7 +10,10 @@ import { DefaultExportPhoneNumberInput as PhoneNumberInput } from '../PhoneNumbe
 
 jest.mock('@repo/logging')
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id || ''}42`)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    uniqueId: (id: string) => `${id || ''}42`,
+}))
 jest.mock('pages/common/components/Loader/Loader', () => ({
     Loader: () => <div data-testid="loader" />,
 }))

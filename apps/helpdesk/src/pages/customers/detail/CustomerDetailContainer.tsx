@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
-
-import _pick from 'lodash/pick'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { pick } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -50,7 +49,7 @@ export const CustomerDetailContainer = ({
     useEffect(() => {
         if (activeCustomer.get('id')) {
             const customer = activeCustomer.toJS()
-            const pickedCustomer = _pick(customer, pickedCustomerFields)
+            const pickedCustomer = pick(customer, pickedCustomerFields)
             void setRecentItem(pickedCustomer)
         }
     }, [activeCustomer, setRecentItem])

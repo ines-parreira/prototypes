@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
-import _difference from 'lodash/difference'
-import _isEqual from 'lodash/isEqual'
+import { difference, isEqual } from '@gorgias/toolkit'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
@@ -95,7 +94,7 @@ export const IntentsFeedback = ({
     const hasUnsavedIntents = useMemo((): boolean => {
         const previousIntentNames = getIntentsFromMessage(intents)
 
-        return !_isEqual(previousIntentNames, activeIntentsNames)
+        return !isEqual(previousIntentNames, activeIntentsNames)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [intents, activeIntentsNames])
 
@@ -196,7 +195,7 @@ export const IntentsFeedback = ({
             messageId={message.id!}
             onToggle={toggle}
             activeIntentsNames={activeIntentsNames}
-            availableIntentsNames={_difference(
+            availableIntentsNames={difference(
                 allIntentsNames,
                 activeIntentsNames,
             )}

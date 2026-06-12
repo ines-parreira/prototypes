@@ -1,5 +1,4 @@
-import _isNil from 'lodash/isNil'
-
+import { isNil } from '@gorgias/toolkit'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useSentimentPerProduct } from 'domains/reporting/hooks/voice-of-customer/useSentimentPerProduct'
 import { Sentiment } from 'domains/reporting/models/stat/types'
@@ -100,7 +99,7 @@ const createSentimentMetricCell = (
             sentimentCustomFieldId,
         )
 
-        const isDrillDownEnabled = !_isNil(data.value)
+        const isDrillDownEnabled = !isNil(data.value)
 
         return (
             <CellWrapper column={column} isLoading={isFetching}>

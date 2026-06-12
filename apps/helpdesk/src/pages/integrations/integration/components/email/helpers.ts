@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { isEmpty } from 'lodash'
-
 import type {
     EmailIntegration as NEW_EmailIntegration,
     GmailIntegration as NEW_GmailIntegration,
 } from '@gorgias/helpdesk-queries'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import {

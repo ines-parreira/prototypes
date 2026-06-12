@@ -1,8 +1,5 @@
 import type { MutableRefObject } from 'react'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-
-import { omit } from 'lodash'
-
 import type { DomainEvent } from '@gorgias/events'
 import { isDomainEvent } from '@gorgias/events'
 import type { ListLiveCallQueueVoiceCallsParams } from '@gorgias/helpdesk-queries'
@@ -15,6 +12,7 @@ import {
 import { AgentStatus } from '@gorgias/helpdesk-types'
 import type { ChannelNameOptions } from '@gorgias/realtime'
 import { useAccountId } from '@gorgias/realtime'
+import { omit } from '@gorgias/toolkit'
 
 import {
     addVoiceCallToLiveCallsQueryCache,

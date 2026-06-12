@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { history } from '@repo/routing'
 import type { Location } from 'history'
-import _noop from 'lodash/noop'
 import { Prompt } from 'react-router-dom'
+import { noop } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -83,7 +83,7 @@ export const ConfirmNavigationPrompt = ({
                 }}
             />
 
-            <Modal isOpen={show} isClosable={false} onClose={_noop}>
+            <Modal isOpen={show} isClosable={false} onClose={noop}>
                 <ModalHeader title={title} />
                 <ModalBody>{bodyText}</ModalBody>
                 <ModalFooter className={css.footer}>

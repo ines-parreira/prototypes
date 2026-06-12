@@ -1,11 +1,8 @@
 import type React from 'react'
 import { useCallback, useState } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import { debounce, isArray } from 'lodash'
-
 import { useSearch } from '@gorgias/helpdesk-queries'
 import { SearchType } from '@gorgias/helpdesk-types'
+import { debounce, Duration, isArray } from '@gorgias/toolkit'
 
 import type { UserSearchResult } from 'models/search/types'
 import { isUserSearchResult } from 'models/search/types'

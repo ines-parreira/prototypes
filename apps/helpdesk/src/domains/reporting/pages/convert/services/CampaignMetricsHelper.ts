@@ -1,13 +1,5 @@
-import _bind from 'lodash/bind'
-import _divide from 'lodash/divide'
-import _get from 'lodash/get'
-import _mapValues from 'lodash/mapValues'
-import _pickBy from 'lodash/pickBy'
-import _reduce from 'lodash/reduce'
-import _unzip from 'lodash/unzip'
-import _values from 'lodash/values'
-import _zip from 'lodash/zip'
 import moment from 'moment'
+import { get, pickBy, unzip, zip } from '@gorgias/toolkit'
 
 import { getMomentGranularityFromReportingGranularity } from 'domains/reporting/hooks/helpers'
 import type {
@@ -53,16 +45,80 @@ import type {
 import { getMetricValue } from 'domains/reporting/pages/convert/services/utils'
 import { ensureNumberValue, formatPercentage } from 'pages/common/utils/numbers'
 
+const hasOwnProperty = (object: object, key: PropertyKey): boolean =>
+    Object.prototype.hasOwnProperty.call(object, key)
+
+type RawMetricValue = string | number | undefined
+
+const getValue = <T>(
+    object: Record<string, any> | null | undefined,
+    path: string | undefined,
+    defaultValue: T,
+): T => {
+    if (!object || path === undefined) {
+        return defaultValue
+    }
+
+    if (hasOwnProperty(object, path)) {
+        return object[path] as T
+    }
+
+    return (get(object, path, defaultValue) ?? defaultValue) as T
+}
+
+const mapRecordValues = <TValue, TResult>(
+    object: Record<string, TValue>,
+    iteratee: (value: TValue) => TResult,
+): Record<string, TResult> => {
+    return Object.fromEntries(
+        Object.entries(object).map(([key, value]) => [key, iteratee(value)]),
+    )
+}
+
+const getRawMetricValue = (
+    metric: CubeMetric,
+    path: string,
+): RawMetricValue => {
+    return getValue<RawMetricValue>(metric, path, undefined)
+}
+
+const getGroupKey = (
+    metric: CubeMetric,
+    cube: Cube,
+    groupDimension: GroupDimension,
+): string => {
+    return String(
+        getValue<string | number | undefined>(
+            metric,
+            `${cube}.${groupDimension}`,
+            undefined,
+        ),
+    )
+}
+
+const toMetricNumber = (value: RawMetricValue): number => {
+    return value === undefined ? Number.NaN : ensureNumberValue(value)
+}
+
+const normalizeMetricValues = (
+    values: Record<string, RawMetricValue>,
+): Partial<CampaignPerformanceData> => {
+    return mapRecordValues(
+        values,
+        toMetricNumber,
+    ) as Partial<CampaignPerformanceData>
+}
+
 export const getDataFromStatResult = (result: Stat): StatData => {
-    return _get(result, 'data.data', []) as StatData
+    return getValue(result, 'data.data', [])
 }
 
 export const getMetricFromCubeData = (data: any): CubeMetric => {
-    return _get(data, 'data.data[0]', {}) as CubeMetric
+    return getValue(data, 'data.data[0]', {})
 }
 
 export const getDataFromResult = (data: any): CubeData => {
-    return _get(data, 'data.data', []) as CubeData
+    return getValue(data, 'data.data', [])
 }
 
 const _getMetricOrDefault = (data: CubeMetric | undefined): CubeMetric => {
@@ -157,23 +213,17 @@ export const transformToStoreTotal = (
 export const transformToRevenueByDate = (
     data: CubeData | undefined,
 ): RevenueByDate => {
-    return _reduce(
-        data || [],
-        (acc, revenuePoint) => {
-            const date = _get(
-                revenuePoint,
-                OrderConversionDimension.createdDatatime,
-            )
-            if (date !== undefined) {
-                acc[date] = getMetricValue(
-                    revenuePoint,
-                    OrderConversionMeasure.gmv,
-                )
-            }
-            return acc
-        },
-        {} as RevenueByDate,
-    )
+    return (data || []).reduce((acc, revenuePoint) => {
+        const date = getValue<string | undefined>(
+            revenuePoint,
+            OrderConversionDimension.createdDatatime,
+            undefined,
+        )
+        if (date !== undefined) {
+            acc[date] = getMetricValue(revenuePoint, OrderConversionMeasure.gmv)
+        }
+        return acc
+    }, {} as RevenueByDate)
 }
 
 export const transformToRevenueShareOverTime = (
@@ -181,11 +231,12 @@ export const transformToRevenueShareOverTime = (
     revenueData: RevenueByDate,
     granularityValue: ReportingGranularity,
 ): RevenueGraphDataPoint => {
-    const createdDatetime = _get(
+    const createdDatetime = getValue<string | undefined>(
         dataPoint,
         OrderConversionDimension.createdDatatime,
+        undefined,
     )
-    const totalSales = _get(revenueData, createdDatetime, 0)
+    const totalSales = getValue(revenueData, createdDatetime, 0)
     const campaignSales = getMetricValue(
         dataPoint,
         OrderConversionMeasure.campaignSales,
@@ -248,7 +299,9 @@ const _transformToGraphOverTime = (
 ): RevenueGraphDataPoint => {
     return {
         y: getMetricValue(dataPoint, yColname),
-        x: moment(_get(dataPoint, xDateColname)).format(dateFormat),
+        x: moment(getValue(dataPoint, xDateColname, undefined)).format(
+            dateFormat,
+        ),
     }
 }
 
@@ -257,7 +310,7 @@ export const transformToChatConversionRateOverTime = (
 ): RevenueGraphDataPoint[] => {
     if (data === undefined) return []
 
-    const combinedData = _zip(
+    const combinedData = zip(
         data.axes.x, // timestamps
         data.lines[0].data, // tickets created
         data.lines[1].data, // tickets converted
@@ -300,7 +353,7 @@ export const backFillGraphData = (
         })
     })
 
-    return _unzip(_values(allDates))
+    return unzip(Object.values(allDates)) as RevenueGraphDataPoint[][]
 }
 
 const _getDefaultsForAllDates = (
@@ -335,43 +388,31 @@ export const transformToCampaignsPerformanceTable = (
     campaignsOrdersData: CubeData | undefined,
     storeTotal: CubeMetric | undefined,
 ): CampaignsPerformanceDataset => {
-    const eventsDataset = _reduce(
-        eventsData,
-        _bind(
-            _eventsPerformanceReducer,
-            _bind.placeholder,
-            _bind.placeholder,
-            _bind.placeholder,
-            groupDimension,
-        ),
-        {},
+    const eventsDataset = (eventsData || []).reduce(
+        (dataset, metric) =>
+            _eventsPerformanceReducer(dataset, metric, groupDimension),
+        {} as CampaignsPerformanceDataset,
     )
 
-    const ordersDataset = _reduce(
-        _getCubeDataOrDefault(ordersData),
-        _bind(
-            _ordersPerformanceReducer,
-            _bind.placeholder,
-            _bind.placeholder,
-            _bind.placeholder,
-            _getMetricOrDefault(storeTotal),
-            groupDimension,
-        ),
+    const ordersDataset = _getCubeDataOrDefault(ordersData).reduce(
+        (dataset, metric) =>
+            _ordersPerformanceReducer(
+                dataset,
+                metric,
+                _getMetricOrDefault(storeTotal),
+                groupDimension,
+            ),
         eventsDataset,
     )
-    const campaignsOrdersDataset = _reduce(
-        _getCubeDataOrDefault(campaignsOrdersData),
-        _bind(
-            _campaignsOrdersPerformanceReducer,
-            _bind.placeholder,
-            _bind.placeholder,
-            _bind.placeholder,
-            groupDimension,
-        ),
+    const campaignsOrdersDataset = _getCubeDataOrDefault(
+        campaignsOrdersData,
+    ).reduce(
+        (dataset, metric) =>
+            _campaignsOrdersPerformanceReducer(dataset, metric, groupDimension),
         ordersDataset,
     )
 
-    return _mapValues(
+    return mapRecordValues(
         { ...campaignsOrdersDataset } as CampaignsPerformanceDataset,
         _processCampaignsPerformanceData,
     )
@@ -387,9 +428,10 @@ export const transformToCampaignAbTestEvent = (
             metric,
             CampaignOrderEventsMeasure.orderCount,
         ),
-        [AbTestMetricNames.firstImpression]: _get(
+        [AbTestMetricNames.firstImpression]: getValue(
             metric,
             CampaignOrderEventsMeasure.firstCampaignDisplay,
+            undefined,
         ),
     }
 }
@@ -399,19 +441,16 @@ const _eventsPerformanceReducer = (
     metric: CubeMetric,
     groupDimension: GroupDimension,
 ): CampaignsPerformanceDataset => {
-    const groupId = _get(metric, `${Cube.events}.${groupDimension}`)
-    const eventMetricValue = _mapValues(
-        {
-            impressions: _get(metric, EventsMeasure.impressions),
-            clicks: _get(metric, EventsMeasure.clicks),
-            clicksRate: _get(metric, EventsMeasure.clicksRate),
-            ticketsCreated: _get(metric, EventsMeasure.ticketsCreated),
-        },
-        ensureNumberValue,
-    )
+    const groupId = getGroupKey(metric, Cube.events, groupDimension)
+    const eventMetricValue = normalizeMetricValues({
+        impressions: getRawMetricValue(metric, EventsMeasure.impressions),
+        clicks: getRawMetricValue(metric, EventsMeasure.clicks),
+        clicksRate: getRawMetricValue(metric, EventsMeasure.clicksRate),
+        ticketsCreated: getRawMetricValue(metric, EventsMeasure.ticketsCreated),
+    })
 
     const value = {
-        ..._get(dataset, groupId, {}),
+        ...getValue<Partial<CampaignPerformanceData>>(dataset, groupId, {}),
         ...eventMetricValue,
     }
 
@@ -424,48 +463,55 @@ const _ordersPerformanceReducer = (
     storeTotalMetric: CubeMetric,
     groupDimension: GroupDimension,
 ): CampaignsPerformanceDataset => {
-    const groupId = _get(metric, `${Cube.orderConversion}.${groupDimension}`)
+    const groupId = getGroupKey(metric, Cube.orderConversion, groupDimension)
 
-    const totalRevenue = _get(metric, OrderConversionMeasure.campaignSales)
-    const totalStoreRevenue = _get(storeTotalMetric, OrderConversionMeasure.gmv)
-
-    const totalRevenueShare = _divide(
-        parseFloat(totalRevenue),
-        parseFloat(totalStoreRevenue),
+    const totalRevenue = getRawMetricValue(
+        metric,
+        OrderConversionMeasure.campaignSales,
+    )
+    const totalStoreRevenue = getRawMetricValue(
+        storeTotalMetric,
+        OrderConversionMeasure.gmv,
     )
 
-    const orderMetricValue = _mapValues(
-        {
-            totalRevenue: totalRevenue,
-            totalRevenueShare: totalRevenueShare * 100,
-            ticketsConverted: _get(
-                metric,
-                OrderConversionMeasure.ticketSalesCount,
-            ),
-            ticketsRevenue: _get(metric, OrderConversionMeasure.ticketSales),
-            clicksRevenue: _get(metric, OrderConversionMeasure.clickSales),
-            clicksConverted: _get(
-                metric,
-                OrderConversionMeasure.clickSalesCount,
-            ),
-            discountCodesUsed: _get(
-                metric,
-                OrderConversionMeasure.discountSalesCount,
-            ),
-            discountCodesRevenue: _get(
-                metric,
-                OrderConversionMeasure.discountSales,
-            ),
-            campaignSalesCount: _get(
-                metric,
-                OrderConversionMeasure.campaignSalesCount,
-            ),
-        },
-        ensureNumberValue,
-    )
+    const totalRevenueShare =
+        toMetricNumber(totalRevenue) / toMetricNumber(totalStoreRevenue)
+
+    const orderMetricValue = normalizeMetricValues({
+        totalRevenue: totalRevenue,
+        totalRevenueShare: totalRevenueShare * 100,
+        ticketsConverted: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.ticketSalesCount,
+        ),
+        ticketsRevenue: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.ticketSales,
+        ),
+        clicksRevenue: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.clickSales,
+        ),
+        clicksConverted: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.clickSalesCount,
+        ),
+        discountCodesUsed: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.discountSalesCount,
+        ),
+        discountCodesRevenue: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.discountSales,
+        ),
+        campaignSalesCount: getRawMetricValue(
+            metric,
+            OrderConversionMeasure.campaignSalesCount,
+        ),
+    })
 
     const value = {
-        ..._get(dataset, groupId, {}),
+        ...getValue<Partial<CampaignPerformanceData>>(dataset, groupId, {}),
         ...orderMetricValue,
     }
 
@@ -477,27 +523,28 @@ const _campaignsOrdersPerformanceReducer = (
     metric: CubeMetric,
     groupDimension: GroupDimension,
 ): CampaignsPerformanceDataset => {
-    const groupId = _get(
+    const groupId = getGroupKey(
         metric,
-        `${Cube.campaignOrderEvents}.${groupDimension}`,
+        Cube.campaignOrderEvents,
+        groupDimension,
     )
-    const campaignOrderMetricValue = _mapValues(
-        {
-            engagement: _get(metric, CampaignOrderEventsMeasure.engagement),
-            totalConversionRate: _get(
-                metric,
-                CampaignOrderEventsMeasure.totalConversionRate,
-            ),
-            clickThroughRate: _get(
-                metric,
-                CampaignOrderEventsMeasure.campaignCTR,
-            ),
-        },
-        ensureNumberValue,
-    )
+    const campaignOrderMetricValue = normalizeMetricValues({
+        engagement: getRawMetricValue(
+            metric,
+            CampaignOrderEventsMeasure.engagement,
+        ),
+        totalConversionRate: getRawMetricValue(
+            metric,
+            CampaignOrderEventsMeasure.totalConversionRate,
+        ),
+        clickThroughRate: getRawMetricValue(
+            metric,
+            CampaignOrderEventsMeasure.campaignCTR,
+        ),
+    })
 
     const value = {
-        ..._get(dataset, groupId, {}),
+        ...getValue<Partial<CampaignPerformanceData>>(dataset, groupId, {}),
         ...campaignOrderMetricValue,
     }
 
@@ -537,7 +584,7 @@ const _addDefaultValues = (
 
     return {
         ...defaultValues,
-        ..._pickBy(
+        ...pickBy(
             campaign,
             (value) => value !== undefined && value !== null && !isNaN(value),
         ),
@@ -547,12 +594,12 @@ const _addDefaultValues = (
 const _computeCompoundMetrics = (
     campaign: CampaignPerformanceData,
 ): CampaignPerformanceData => {
-    const impressions = _get(campaign, 'impressions') || 0
-    const clicks = _get(campaign, 'clicks') || 0
-    const clicksConverted = _get(campaign, 'clicksConverted') || 0
+    const impressions = getValue(campaign, 'impressions', 0) || 0
+    const clicks = getValue(campaign, 'clicks', 0) || 0
+    const clicksConverted = getValue(campaign, 'clicksConverted', 0) || 0
 
-    const ticketsCreated = _get(campaign, 'ticketsCreated') || 0
-    const ticketsConverted = _get(campaign, 'ticketsConverted') || 0
+    const ticketsCreated = getValue(campaign, 'ticketsCreated', 0) || 0
+    const ticketsConverted = getValue(campaign, 'ticketsConverted', 0) || 0
 
     const clicksConversionRate = clicks ? clicksConverted / clicks : 0
     const ticketsCreationRate = impressions ? ticketsCreated / impressions : 0

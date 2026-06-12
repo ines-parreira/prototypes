@@ -21,10 +21,14 @@ import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosQuickReply } from '../MacrosQuickReply'
 
-jest.mock('lodash/debounce', () => {
-    const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
-    return _identity
-})
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (() => {
+        const _identity: <T>(v: T) => T =
+            jest.requireActual('@gorgias/toolkit').identity
+        return _identity
+    })(),
+}))
 jest.mock('pages/tickets/common/macros/Preview/Preview', () => ({
     Preview: () => <>Preview</>,
 }))

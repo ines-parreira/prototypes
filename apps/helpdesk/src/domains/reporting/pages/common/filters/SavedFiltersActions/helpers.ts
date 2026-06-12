@@ -1,5 +1,4 @@
-import _isEmpty from 'lodash/isEmpty'
-
+import { isEmpty } from '@gorgias/toolkit'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import {
     FilterComponentKey,
@@ -14,7 +13,7 @@ export const isFilterFilled = (
     switch (filterKey) {
         case FilterKey.Period:
         case FilterKey.AggregationWindow:
-            return !_isEmpty(filters?.[filterKey])
+            return !isEmpty(filters?.[filterKey])
         case FilterKey.Agents:
         case FilterKey.IsDuringBusinessHours:
         case FilterKey.CampaignStatuses:
@@ -40,16 +39,16 @@ export const isFilterFilled = (
         case FilterKey.ResolutionCompleteness:
         case FilterKey.VoiceQueues:
         case FilterKey.AssignedTeam:
-            return !_isEmpty(filters?.[filterKey]?.values)
+            return !isEmpty(filters?.[filterKey]?.values)
         case FilterKey.Tags:
         case FilterKey.CustomFields:
             return (
                 filters?.[filterKey]?.some(
-                    (filter) => !_isEmpty(filter?.values),
+                    (filter) => !isEmpty(filter?.values),
                 ) || false
             )
         case FilterComponentKey.PhoneIntegrations:
-            return !_isEmpty(filters?.[FilterKey.Integrations]?.values)
+            return !isEmpty(filters?.[FilterKey.Integrations]?.values)
     }
 }
 

@@ -1,10 +1,8 @@
 import type { FC } from 'react'
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { sanitizeHtmlDefault } from '@repo/utils'
-import _keyBy from 'lodash/keyBy'
+import { Duration, keyBy } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -85,7 +83,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
 
     const entity = isLoading(article.article) ? null : article.article
     const ratingScore = useRatingScore(entity?.rating)
-    const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
+    const localesByCode = useMemo(() => keyBy(locales, 'code'), [locales])
     const articleRowActions = useArticleRowActions(article.id)
 
     const languageList = useMemo(() => {

@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react'
 
 import copy from 'copy-to-clipboard'
-import { isEmpty } from 'lodash'
-
 import {
     LegacyButton as Button,
     LegacyLabel as Label,
     toast,
 } from '@gorgias/axiom'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { InputGroup } from 'pages/common/forms/input/InputGroup'
 import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'

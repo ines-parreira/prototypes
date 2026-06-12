@@ -2,8 +2,7 @@ import type { ComponentType, CSSProperties } from 'react'
 import React from 'react'
 
 import classNames from 'classnames'
-import _isEqual from 'lodash/isEqual'
-
+import { isEqual } from '@gorgias/toolkit'
 import { TAGS_LIMIT } from 'models/integration/constants'
 
 import { Dropdown } from './Dropdown'
@@ -83,14 +82,14 @@ export function MultiSelectOptionsField(props: Props) {
         filterOptions(options, selectedOptions),
     )
 
-    if (!_isEqual(previousSelectedOptions, selectedOptions)) {
+    if (!isEqual(previousSelectedOptions, selectedOptions)) {
         const filteredOptions = filterOptions(options, selectedOptions)
         setInput('')
         setPreviousSelectedOptions(selectedOptions)
         setFilteredOptions(filteredOptions)
     }
 
-    if (!_isEqual(options, previousOptions)) {
+    if (!isEqual(options, previousOptions)) {
         const filteredOptions = filterOptions(options, selectedOptions, input)
         setPreviousOptions(options)
         setFilteredOptions(filteredOptions)

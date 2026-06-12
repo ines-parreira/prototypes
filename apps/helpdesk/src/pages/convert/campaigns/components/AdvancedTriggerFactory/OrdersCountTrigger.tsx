@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import toInteger from 'lodash/toInteger'
-
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
@@ -28,7 +26,7 @@ export const OrdersCountTrigger = ({
         trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<number | undefined>(
-        toInteger(trigger.value),
+        Math.trunc(Number(trigger.value) || 0),
     )
 
     const handleChangeOperator = (operator: Value) =>
@@ -48,20 +46,20 @@ export const OrdersCountTrigger = ({
         } else if (!isTriggerValueNonNegative(value)) {
             setInnerValue(0)
         } else {
-            setInnerValue(toInteger(value))
+            setInnerValue(Math.trunc(Number(value) || 0))
         }
     }
 
     const handleBlurValue = () => {
         onUpdateTrigger(id, {
             ...trigger,
-            value: toInteger(innerValue),
+            value: Math.trunc(Number(innerValue) || 0),
         })
     }
 
     useEffect(() => {
         setInnerOperator(trigger.operator)
-        setInnerValue(toInteger(trigger.value))
+        setInnerValue(Math.trunc(Number(trigger.value) || 0))
     }, [trigger.operator, trigger.value])
 
     return (

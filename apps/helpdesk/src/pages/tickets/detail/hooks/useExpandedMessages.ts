@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react'
-
-import _xor from 'lodash/xor'
+import { xor } from '@gorgias/toolkit'
 
 export function useExpandedMessages() {
     const [messages, setMessages] = useState<number[]>([])
 
     const toggleMessage = useCallback((messageId: number | undefined) => {
         if (!messageId) return
-        setMessages((msgs) => _xor(msgs, [messageId]))
+        setMessages((msgs) => xor(msgs, [messageId]))
     }, [])
 
     return [messages, toggleMessage] as const

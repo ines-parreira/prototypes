@@ -1,6 +1,5 @@
-import _noop from 'lodash/noop'
-
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { noop } from '@gorgias/toolkit'
 
 import type { Option } from '../../../../../common/components/RichDropdown/types'
 import { Messages } from './constants'
@@ -18,7 +17,7 @@ type Props = {
 export const AvailableIntentItem = ({
     messageId,
     option,
-    onConfirm = _noop,
+    onConfirm = noop,
     isDisabled = false,
     tooltipContainer,
 }: Props) => {
@@ -26,7 +25,7 @@ export const AvailableIntentItem = ({
 
     return (
         <DropdownOptionItem
-            onClick={() => (isDisabled ? _noop() : onConfirm(option.key))}
+            onClick={() => (isDisabled ? noop() : onConfirm(option.key))}
             option={option}
             disabled={isDisabled}
             hoverable={true}

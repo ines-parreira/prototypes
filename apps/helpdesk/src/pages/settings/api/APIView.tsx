@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
 import { fromJS } from 'immutable'
-import _camelCase from 'lodash/camelCase'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import type { InputType } from 'reactstrap/es/Input'
+import { camelCase, Duration } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
@@ -90,7 +88,7 @@ export class APIViewContainer extends Component<Props, State> {
 
             copy(data)
 
-            const targetPart = _camelCase(clipboardTarget)
+            const targetPart = camelCase(clipboardTarget)
             const stateProp = `isCopied${targetPart
                 .charAt(0)
                 .toUpperCase()}${targetPart.slice(1)}` as keyof Omit<

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
-import _isNumber from 'lodash/isNumber'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
+import { isNumber } from '@gorgias/toolkit'
 
 import { DefaultExportTextInput as TextInput } from 'pages/common/forms/input/TextInput'
 import { SelectField } from 'pages/common/forms/SelectField/SelectField'
@@ -63,7 +63,7 @@ export function IntegrationSelectContainer({
             placeholder="Select an integration"
             value={value}
             onChange={(value: number | string) => {
-                onChange(_isNumber(value) ? value : parseInt(value))
+                onChange(isNumber(value) ? value : parseInt(value))
             }}
             options={options.toJS() || []}
         />

@@ -2,10 +2,10 @@ import { history } from '@repo/routing'
 import { render } from '@repo/testing'
 import type { Location } from 'history'
 import type { Map } from 'immutable'
-import _noop from 'lodash/noop'
 import { compressToEncodedURIComponent } from 'lz-string'
 import { stringify } from 'qs'
 import { useLocation } from 'react-router-dom'
+import { noop } from '@gorgias/toolkit'
 
 import * as viewsConfig from 'config/views'
 import { EntityType } from 'models/view/types'
@@ -79,7 +79,7 @@ describe('withViewSearchUrlSync', () => {
         mockedUseLocation.mockReturnValue(createLocation())
         ;(
             history.push as jest.MockedFunction<typeof history.push>
-        ).mockImplementation(_noop)
+        ).mockImplementation(noop)
     })
 
     it('should inject urlSearchView', () => {

@@ -1,12 +1,11 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _ceil from 'lodash/ceil'
 
 import {
     DiscountType,
     NonFractionalCurrency,
 } from '../../constants/integrations/types/shopify'
-import { formatPercentage, formatPrice } from './number'
+import { ceilWithPrecision, formatPercentage, formatPrice } from './number'
 
 export function initLineItemAppliedDiscount(
     lineItem: Map<any, any>,
@@ -88,7 +87,7 @@ export function getDraftOrderLineItemDiscountedPrice(
     const decimals = isNonFractional ? 0 : 2
 
     return appliedDiscount
-        ? _ceil(price - discountAmount / quantity, decimals)
+        ? ceilWithPrecision(price - discountAmount / quantity, decimals)
         : price
 }
 
@@ -156,5 +155,5 @@ export function getOrderLineItemDiscountedPrice(
     )
     const decimals = isNonFractional ? 0 : 2
 
-    return _ceil(price - discountAmount, decimals)
+    return ceilWithPrecision(price - discountAmount, decimals)
 }

@@ -2,10 +2,9 @@ import { useCallback, useState } from 'react'
 
 import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
-import _get from 'lodash/get'
-
 import { toast } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
+import { get } from '@gorgias/toolkit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
@@ -61,7 +60,7 @@ export const useOpportunityCTAs = ({
             if (!selectedOpportunity) return
 
             const isConflictError =
-                isAxiosError(error) && _get(error, 'response.status') === 409
+                isAxiosError(error) && get(error, 'response.status') === 409
             if (isConflictError) {
                 onArchive(selectedOpportunity.key)
 

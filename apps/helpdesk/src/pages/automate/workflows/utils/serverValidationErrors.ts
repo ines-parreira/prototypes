@@ -1,6 +1,5 @@
 import type { AxiosError } from 'axios'
-import _set from 'lodash/set'
-
+import { set } from '@gorgias/toolkit'
 import type { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
 
 interface ServerValidationError {
@@ -79,7 +78,7 @@ export function mapServerErrorsToGraph(
                 node.data.errors = {}
             }
 
-            _set(node.data.errors, field, errorMessage)
+            set(node.data.errors, field, errorMessage)
             updatedGraph.nodes[nodeIndex] = node
         }
     }

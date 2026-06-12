@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
-
-import _groupBy from 'lodash/groupBy'
 import moment from 'moment'
+import { groupBy } from '@gorgias/toolkit'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
@@ -879,7 +878,7 @@ export const parseIntentsDataByResource = (
 
     // Group by resourceSourceId and resourceSourceSetId combination
     // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
-    const grouped = _groupBy(allData, (record) => {
+    const grouped = groupBy(allData, (record) => {
         const resourceSourceId =
             record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
             record[TicketInsightsTaskDimension.ResourceSourceId]

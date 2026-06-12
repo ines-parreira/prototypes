@@ -1,9 +1,9 @@
 import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _omit from 'lodash/omit'
 import type * as ReactRouterDom from 'react-router-dom'
 import { Route, useParams } from 'react-router-dom'
+import { omit } from '@gorgias/toolkit'
 
 import { billingState } from 'fixtures/billing'
 import { campaign } from 'fixtures/campaign'
@@ -394,7 +394,7 @@ describe('<CampaignsView/>', () => {
 
             await waitFor(() => {
                 const duplicateCampaign = {
-                    ..._omit(activeCampaign, 'id'),
+                    ...omit(activeCampaign, 'id'),
                     name: `(Copy) ${activeCampaign.name}`,
                     channel_connection_id: channelConnection.id,
                     trigger_rule: `{${mockUlid}}`,

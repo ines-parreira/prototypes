@@ -5,10 +5,9 @@ import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isArray from 'lodash/isArray'
-import _omit from 'lodash/omit'
 import { Input } from 'reactstrap'
 import type { InputType } from 'reactstrap/lib/Input'
+import { isArray, omit } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
@@ -181,7 +180,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
 
         const disabled = isUploading
 
-        const previewUrl = _isArray(value) ? value[0] : value
+        const previewUrl = isArray(value) ? value[0] : value
 
         return (
             <div className="d-flex align-center">
@@ -225,7 +224,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                     onChange={this.handleOnChange as any}
                     disabled={disabled}
                     className={classnames(css.input, className)}
-                    {..._omit(this.props, [
+                    {...omit(this.props, [
                         'children',
                         'error',
                         'help',

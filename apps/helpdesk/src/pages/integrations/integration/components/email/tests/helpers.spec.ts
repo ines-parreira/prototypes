@@ -1,7 +1,6 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import { cloneDeep } from 'lodash'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import type {
     DomainDNSRecord,

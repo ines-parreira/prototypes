@@ -1,6 +1,5 @@
-import { orderBy } from 'lodash'
-
 import type { Tag } from '@gorgias/helpdesk-queries'
+import { orderBy } from '@gorgias/toolkit'
 
 import { getTagValuesByOperator } from 'domains/reporting/hooks/helpers'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'

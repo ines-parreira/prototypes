@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
+import { uniqueId as createUniqueId } from '@gorgias/toolkit'
 import { useCallbackRef, useElementSize } from '@gorgias/toolkit-react'
 
 import {
@@ -56,7 +56,7 @@ const TicketTags = ({
         [ticketTags],
     )
 
-    const uniqueId = useMemo(() => _uniqueId(), [])
+    const uniqueId = useMemo(() => createUniqueId(), [])
 
     const [isExpanded, setExpanded] = useState(false)
 

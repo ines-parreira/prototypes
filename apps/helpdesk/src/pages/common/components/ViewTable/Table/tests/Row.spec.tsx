@@ -4,8 +4,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { useAgentsViewing } from 'hooks/realtime/useAgentsViewing'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
@@ -47,7 +46,7 @@ describe('ViewTable::Table::Row', () => {
         item: fromJS(ticketFixtures.ticket),
         isSelected: false,
         itemUrl: '/app/ticket/123',
-        onItemClick: _noop,
+        onItemClick: noop,
         hasCursor: false,
         selectable: true,
     }

@@ -1,11 +1,6 @@
-import _clone from 'lodash/clone'
-import _findIndex from 'lodash/findIndex'
-import _get from 'lodash/get'
-import _isFunction from 'lodash/isFunction'
-import _isObject from 'lodash/isObject'
-import _merge from 'lodash/merge'
 import type { ExtendedKeyboardEvent } from 'mousetrap'
 import Mousetrap from 'mousetrap'
+import { clone, get, isFunction, isObject, merge } from '@gorgias/toolkit'
 
 import { shortcuts } from './shortcuts'
 import type { KeyboardAction, KeyMap } from './types'
@@ -65,7 +60,7 @@ export class ShortcutManager {
         )
     }
 
-    _keymap: typeof shortcuts & { [key: string]: KeyMap } = _clone(shortcuts)
+    _keymap: typeof shortcuts & { [key: string]: KeyMap } = clone(shortcuts)
 
     _getComponentKeymap(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
@@ -94,9 +89,9 @@ export class ShortcutManager {
         // from different component.
         this._setComponentKeymap(
             component,
-            _merge(this._getComponentKeymap(component), { actions }),
+            merge(this._getComponentKeymap(component), { actions }),
         )
-        const index = _findIndex(this._bound, (b) => b.name === component)
+        const index = this._bound.findIndex((b) => b.name === component)
 
         const paused = this._whitelist.includes(component)
             ? false
@@ -113,7 +108,7 @@ export class ShortcutManager {
     }
 
     unbind(component: string) {
-        const index = _findIndex(this._bound, (b) => b.name === component)
+        const index = this._bound.findIndex((b) => b.name === component)
         if (~index) {
             this._bound.splice(index, 1)
         }
@@ -169,9 +164,9 @@ export class ShortcutManager {
             Object.keys(keymap.actions).forEach((a) => {
                 const action = keymap.actions[a]
                 const hasCombo =
-                    (_isObject(action.key) && action.key.includes(combo)) ||
+                    (isObject(action.key) && action.key.includes(combo)) ||
                     action.key === combo
-                if (hasCombo && _isFunction(action.action)) {
+                if (hasCombo && isFunction(action.action)) {
                     action.action(e)
                 }
             })
@@ -197,11 +192,7 @@ export class ShortcutManager {
     }
 
     triggerAction(component = 'global', actionName: string) {
-        const config = _get(
-            this._keymap,
-            [component, 'actions', actionName],
-            {},
-        )
+        const config = get(this._keymap, [component, 'actions', actionName], {})
 
         if (!config) {
             return

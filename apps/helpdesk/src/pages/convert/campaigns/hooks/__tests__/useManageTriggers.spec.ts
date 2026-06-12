@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
-import _omit from 'lodash/omit'
-
+import { omit } from '@gorgias/toolkit'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
 import type { CampaignTrigger } from '../../types/CampaignTrigger'
@@ -10,7 +9,7 @@ import { createTrigger } from '../../utils/createTrigger'
 import { useManageTriggers } from '../useManageTriggers'
 
 const removeIds = (triggers: CampaignTrigger[]) =>
-    triggers.map((trigger: CampaignTrigger) => _omit(trigger, 'id'))
+    triggers.map((trigger: CampaignTrigger) => omit(trigger, 'id'))
 
 describe('useManageTriggers()', () => {
     describe('is not convert subscriber', () => {

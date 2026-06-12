@@ -1,5 +1,4 @@
-import _omit from 'lodash/omit'
-
+import { omit } from '@gorgias/toolkit'
 import type { Props as ColorPickerProps } from '../components/ColorPicker/ColorPicker'
 import { ColorPicker } from '../components/ColorPicker/ColorPicker'
 import type { InputFieldProps } from './DEPRECATED_InputField'
@@ -9,7 +8,7 @@ type Props = ColorPickerProps & InputFieldProps<string>
 
 export class ColorField extends DEPRECATED_InputField<Props> {
     _getField = () => {
-        const { value, onChange, ...rest } = _omit(this.props, [
+        const { value, onChange, ...rest } = omit(this.props, [
             'error',
             'help',
             'inline',

@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -20,7 +19,7 @@ import type { RootState } from 'state/types'
 export const getStateWithHelpdeskPlan = (
     helpdeskPlan: HelpdeskPlan = basicMonthlyHelpdeskPlan,
 ) => {
-    const productsWithExtraPlan = _cloneDeep(products)
+    const productsWithExtraPlan = cloneDeep(products)
     const helpdeskProduct =
         productsWithExtraPlan[0] as AvailablePlansOf<ProductType.Helpdesk>
     helpdeskProduct.prices.push(helpdeskPlan)

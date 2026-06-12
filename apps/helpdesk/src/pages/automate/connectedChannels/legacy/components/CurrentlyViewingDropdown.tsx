@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
 import classNames from 'classnames'
-import { startCase } from 'lodash'
 import { Link } from 'react-router-dom'
+import { startCase } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,

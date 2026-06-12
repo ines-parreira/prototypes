@@ -2,8 +2,8 @@ import type { ComponentType } from 'react'
 import React from 'react'
 
 import { history } from '@repo/routing'
-import _memoize from 'lodash/memoize'
 import type { RouteComponentProps } from 'react-router-dom'
+import { memoize } from '@gorgias/toolkit'
 
 import type { PageSection } from 'config/pages'
 import type { UserRole } from 'config/types/user'
@@ -43,6 +43,6 @@ export function rootWithUserRoleRequired<
     return UserRoleRequired
 }
 
-export const memoizedWithUserRoleRequired = _memoize(
+export const memoizedWithUserRoleRequired = memoize(
     rootWithUserRoleRequired,
 ) as typeof rootWithUserRoleRequired

@@ -2,10 +2,8 @@ import type { ComponentType } from 'react'
 import { useState } from 'react'
 
 import classnames from 'classnames'
-import _isEqual from 'lodash/isEqual'
-import _max from 'lodash/max'
-import _min from 'lodash/min'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
+import { isEqual, max, min } from '@gorgias/toolkit'
 
 import type { DropdownMenuProps } from './dropdownMenuTypes'
 import { Input } from './Input'
@@ -55,7 +53,7 @@ export function Dropdown(props: Props) {
     const [previousOptions, setPreviousOptions] = useState(options)
     const [activeIndex, setActiveIndex] = useState(0)
 
-    if (!_isEqual(previousOptions, options)) {
+    if (!isEqual(previousOptions, options)) {
         setActiveIndex(0)
         setPreviousOptions(options)
     }
@@ -69,11 +67,11 @@ export function Dropdown(props: Props) {
     }
 
     const handleInputUp = () => {
-        setActiveIndex(_max([activeIndex - 1, 0])!)
+        setActiveIndex(max([activeIndex - 1, 0])!)
     }
 
     const handleInputDown = () => {
-        setActiveIndex(_min([activeIndex + 1, options.length - 1])!)
+        setActiveIndex(min([activeIndex + 1, options.length - 1])!)
     }
 
     const handleOptionActivate = (index: number) => {

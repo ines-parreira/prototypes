@@ -1,8 +1,6 @@
 import { useState } from 'react'
 
 import { useShortcuts } from '@repo/utils'
-import { isNumber } from 'lodash'
-
 import {
     Avatar,
     Icon,
@@ -11,6 +9,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 import type { TicketUser, User } from '@gorgias/helpdesk-queries'
+import { isNumber } from '@gorgias/toolkit'
 
 import { SELECT_WIDTH } from './constant'
 import { UserSelectBase } from './UserSelectBase'

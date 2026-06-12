@@ -1,6 +1,6 @@
 import classNamesBind from 'classnames/bind'
-import { noop } from 'lodash'
 import { Col, Container, Row } from 'reactstrap'
+import { noop } from '@gorgias/toolkit'
 
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 

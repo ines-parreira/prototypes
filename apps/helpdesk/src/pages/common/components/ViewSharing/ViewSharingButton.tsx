@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 import type { Map } from 'immutable'
-import _capitalize from 'lodash/capitalize'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
+import { capitalize } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -26,7 +26,7 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 export function ViewSharingButtonContainer({ currentUser, view }: Props) {
     const isSystem = ViewCategory.System === view.get('category')
-    const label = _capitalize(view.get('visibility'))
+    const label = capitalize(view.get('visibility'))
     const [isOpen, setOpen] = useState(false)
     const isAllowed = hasRole(currentUser, AGENT_ROLE)
     const isEditable = isAllowed && !isSystem

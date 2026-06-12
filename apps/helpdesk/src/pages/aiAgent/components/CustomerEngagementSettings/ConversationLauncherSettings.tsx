@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import { get } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
+import { get } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -206,10 +206,11 @@ export const ConversationLauncherAdvancedSettings = ({
                             <div className={css.translateInputFields}>
                                 <Label>Placeholder text</Label>
                                 <TextArea
-                                    aria-label={get(translations, needHelpKey)}
-                                    defaultValue={get(
-                                        translations,
-                                        needHelpKey,
+                                    aria-label={String(
+                                        get(translations, needHelpKey) || '',
+                                    )}
+                                    defaultValue={String(
+                                        get(translations, needHelpKey) || '',
                                     )}
                                     maxLength={
                                         translationsAvailableKeys.general[

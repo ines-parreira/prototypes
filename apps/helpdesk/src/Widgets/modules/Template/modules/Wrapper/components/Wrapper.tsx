@@ -4,7 +4,6 @@ import { useContext } from 'react'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _last from 'lodash/last'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -181,7 +180,7 @@ export function useIntegration(
     widgetType: WidgetType,
     integration_id: number,
 ) {
-    const lastAbsolutePath = _last(absolutePath) || ''
+    const lastAbsolutePath = absolutePath?.at(-1) || ''
     let integrationId = null
     // Check for uuid, and if it is not in the path, then the leaf is the integration id
     if (

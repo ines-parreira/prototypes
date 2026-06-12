@@ -5,10 +5,10 @@ import { assumeMock, render, userEvent } from '@repo/testing'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { clone } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { clone } from '@gorgias/toolkit'
 
 import { UserRole, UserSettingType } from 'config/types/user'
 import {

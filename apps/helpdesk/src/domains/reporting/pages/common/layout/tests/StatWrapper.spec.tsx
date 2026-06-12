@@ -4,10 +4,10 @@ import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
 import { downloadStat } from 'domains/reporting/models/stat/resources'
@@ -142,7 +142,7 @@ describe('StatWrapper', () => {
     })
 
     it('should display spinner while downloading the stat', () => {
-        downloadStatMock.mockImplementation(() => new Promise(_noop))
+        downloadStatMock.mockImplementation(() => new Promise(noop))
 
         const { container, getByText } = render(
             <Provider store={mockStore(defaultState)}>
@@ -155,7 +155,7 @@ describe('StatWrapper', () => {
     })
 
     it('should log event on download button click', () => {
-        downloadStatMock.mockImplementation(() => new Promise(_noop))
+        downloadStatMock.mockImplementation(() => new Promise(noop))
 
         const { getByText } = render(
             <Provider store={mockStore(defaultState)}>

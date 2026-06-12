@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-
-import _clone from 'lodash/clone'
-import _trim from 'lodash/trim'
 import { Col, Row } from 'reactstrap'
+import { clone, trim } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -22,7 +20,7 @@ type Props = {
 export class ObjectListField extends Component<Props> {
     _add = () => {
         return this.props.onChange(
-            _clone(this.props.fields).concat([
+            clone(this.props.fields).concat([
                 {
                     key: '',
                     value: '',
@@ -32,14 +30,14 @@ export class ObjectListField extends Component<Props> {
     }
 
     _update = (index: number, key: string, value: string) => {
-        const fields = _clone(this.props.fields)
+        const fields = clone(this.props.fields)
         fields[index][key as keyof Field] = value
 
         return this.props.onChange(fields)
     }
 
     _remove = (index: number) => {
-        const fields = _clone(this.props.fields)
+        const fields = clone(this.props.fields)
         fields.splice(index, 1)
         return this.props.onChange(fields)
     }
@@ -69,7 +67,7 @@ export class ObjectListField extends Component<Props> {
                                         : undefined
                                 }
                                 onChange={(value) => {
-                                    this._update(index, 'key', _trim(value))
+                                    this._update(index, 'key', trim(value))
                                 }}
                             />
                         </Col>

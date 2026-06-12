@@ -1,9 +1,7 @@
 import { useCallback, useState } from 'react'
 import type { ReactNode } from 'react'
-
-import { isEqual } from 'lodash'
-
 import { Box } from '@gorgias/axiom'
+import { isEqual } from '@gorgias/toolkit'
 
 import { FlowItem } from './FlowItem'
 import type { Workflow, WorkflowConfiguration } from './types'

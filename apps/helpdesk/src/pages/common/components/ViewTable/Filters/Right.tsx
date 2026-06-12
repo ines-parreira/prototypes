@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import {
     DateAndTimeFormatting,
     formatDatetime,
@@ -10,12 +8,11 @@ import {
 import type { ArrayExpression, Expression, Identifier, Literal } from 'estree'
 import type { List, Map, Seq } from 'immutable'
 import { fromJS } from 'immutable'
-import _debounce from 'lodash/debounce'
-import _upperFirst from 'lodash/upperFirst'
 import moment from 'moment-timezone'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Input } from 'reactstrap'
+import { debounce, Duration, upperFirst } from '@gorgias/toolkit'
 
 import type { StoreMapping } from '@gorgias/helpdesk-types'
 
@@ -176,7 +173,7 @@ export class RightContainer extends Component<Props, State> {
         }))
     }
 
-    _debouncedUpdateFieldFilter = _debounce(
+    _debouncedUpdateFieldFilter = debounce(
         this.props.updateFieldFilter,
         Duration.millis(300),
     )
@@ -563,7 +560,7 @@ export class RightContainer extends Component<Props, State> {
                 )
                     .map((val) => ({
                         value: val,
-                        label: _upperFirst(val),
+                        label: upperFirst(val ?? ''),
                     }))
                     .toJS()
 

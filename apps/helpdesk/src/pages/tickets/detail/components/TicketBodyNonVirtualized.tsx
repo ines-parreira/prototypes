@@ -1,12 +1,10 @@
-import { Duration } from '@gorgias/toolkit'
+import { debounce, Duration, xor } from '@gorgias/toolkit'
 // TODO: remove component entirely after Virtualization is tested out
 import { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
 import type { List, Map } from 'immutable'
-import _debounce from 'lodash/debounce'
-import _xor from 'lodash/xor'
 import type { Moment } from 'moment'
 import moment from 'moment'
 import type { ConnectedProps } from 'react-redux'
@@ -81,11 +79,11 @@ export class TicketBodyNonVirtualized extends Component<Props, State> {
         shortcutManager.unbind('TicketDetailContainer')
     }
 
-    _updateCursorState = _debounce(() => {
+    _updateCursorState = debounce(() => {
         this.setState({
             messageCursor: this._messageCursor,
         })
-    })
+    }, 0)
 
     _moveCursor(direction: MoveIndexDirection = MoveIndexDirection.Next) {
         const newCursorPosition = moveIndex(
@@ -113,7 +111,7 @@ export class TicketBodyNonVirtualized extends Component<Props, State> {
     toggleQuote = (messageId: number | undefined) => {
         if (messageId) {
             this.setState({
-                expandedMessages: _xor(
+                expandedMessages: xor(
                     [...this.state.expandedMessages],
                     [messageId],
                 ),

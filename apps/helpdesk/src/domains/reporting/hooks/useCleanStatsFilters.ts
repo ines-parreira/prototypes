@@ -1,7 +1,5 @@
 import { useEffect, useMemo } from 'react'
-
-import _isEqual from 'lodash/isEqual'
-
+import { isEqual } from '@gorgias/toolkit'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { statFiltersWithLogicalOperatorsCleanWithPayload } from 'domains/reporting/state/ui/stats/actions'
 import {
@@ -17,7 +15,7 @@ export function useCleanStatsFilters() {
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
     const dispatch = useAppDispatch()
     const cleanStatsShouldUpdate = useMemo(() => {
-        return !isFilterDirty && !_isEqual(cleanStatsFilters, statsFilters)
+        return !isFilterDirty && !isEqual(cleanStatsFilters, statsFilters)
     }, [cleanStatsFilters, isFilterDirty, statsFilters])
 
     useEffect(() => {

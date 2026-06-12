@@ -1,8 +1,8 @@
 import { memo } from 'react'
 
 import type { List, Map } from 'immutable'
-import _isEqual from 'lodash/isEqual'
 import { Bar } from 'react-chartjs-2'
+import { isEqual } from '@gorgias/toolkit'
 
 import {
     chartMaxHeight,
@@ -65,6 +65,6 @@ export function BarStat({ config, data, legend }: Props) {
 }
 
 // Use memo to prevent redrawing on state change
-const DefaultExportBarStat = memo(BarStat, (prev, next) => _isEqual(prev, next))
+const DefaultExportBarStat = memo(BarStat, (prev, next) => isEqual(prev, next))
 
 export { DefaultExportBarStat }

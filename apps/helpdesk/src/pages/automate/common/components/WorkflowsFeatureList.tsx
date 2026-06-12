@@ -2,10 +2,8 @@ import type { ReactNode } from 'react'
 import React, { useMemo, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _isEqual from 'lodash/isEqual'
-import _keyBy from 'lodash/keyBy'
-import _uniq from 'lodash/uniq'
 import { Link } from 'react-router-dom'
+import { isEqual, keyBy, uniq } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
@@ -63,12 +61,12 @@ const WorkflowsFeatureList = ({
         useWorkflowChannelSupportContext()
 
     const configurationsById = useMemo(
-        () => _keyBy(configurations, 'id'),
+        () => keyBy(configurations, 'id'),
         [configurations],
     )
     const entrypoints = useMemo(() => {
-        const entrypointsByWorkflowId = _keyBy(entrypointsProp, 'workflow_id')
-        const allEntrypointsByWorkflowId = _keyBy(allEntrypoints, 'workflow_id')
+        const entrypointsByWorkflowId = keyBy(entrypointsProp, 'workflow_id')
+        const allEntrypointsByWorkflowId = keyBy(allEntrypoints, 'workflow_id')
         const missingEntrypoints = allEntrypoints
             .filter(
                 (entrypoint) =>
@@ -119,7 +117,7 @@ const WorkflowsFeatureList = ({
         setDirtyEntrypoints(nextDirtyEntrypoints)
     }
     const handleDrop = () => {
-        if (!_isEqual(dirtyEntrypoints, entrypoints)) {
+        if (!isEqual(dirtyEntrypoints, entrypoints)) {
             onChange(dirtyEntrypoints)
         }
     }
@@ -163,7 +161,7 @@ const WorkflowsFeatureList = ({
                     channelType,
                     configurationsById[entrypoint.workflow_id],
                 )
-                const onlySupportedChannels = _uniq(
+                const onlySupportedChannels = uniq(
                     unsupportedNodeTypes.reduce(
                         (acc, nodeType) => [
                             ...acc,

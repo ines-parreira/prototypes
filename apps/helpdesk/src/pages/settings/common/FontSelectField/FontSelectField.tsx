@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-
-import uniq from 'lodash/uniq'
-
+import { uniq } from '@gorgias/toolkit'
 import { SelectField } from '../../../common/forms/SelectField/SelectField'
 import { SelectFieldDropdownAction } from '../../../common/forms/SelectField/SelectFieldDropdownAction'
 import type { Option, Value } from '../../../common/forms/SelectField/types'

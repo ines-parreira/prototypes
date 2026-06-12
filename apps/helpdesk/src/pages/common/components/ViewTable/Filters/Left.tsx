@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _capitalize from 'lodash/capitalize'
 import { Button } from 'reactstrap'
+import { capitalize } from '@gorgias/toolkit'
 
 import * as viewsConfig from 'config/views'
 import { OBJECT_PATHS, OBJECT_TYPES } from 'custom-fields/constants'
@@ -67,7 +67,7 @@ export function Left({
             <Button className="btn-frozen" tag="div" size="sm" color="primary">
                 {field
                     ? field.get('title')
-                    : _capitalize(humanizeString(suffixPath))}
+                    : capitalize(humanizeString(suffixPath))}
             </Button>
             {isQaScoreFieldObject && (
                 <QAScoreSelect

@@ -8,7 +8,6 @@ import { useHelpdeskV2MS3Flag } from '@repo/tickets/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _omit from 'lodash/omit'
 import moment from 'moment'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -16,6 +15,7 @@ import { Provider } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { omit } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 import {
@@ -285,12 +285,12 @@ afterAll(() => {
 describe('<TicketHeader />', () => {
     const defaultStore: Partial<RootState> = {
         currentUser: fromJS(user),
-        ticket: fromJS(_omit(ticket, 'id')),
+        ticket: fromJS(omit(ticket, 'id')),
     }
 
     const minProps = {
         className: '',
-        ticket: fromJS(_omit(ticket, 'id')),
+        ticket: fromJS(omit(ticket, 'id')),
         hideTicket: () => Promise.resolve(),
         setStatus: jest.fn(),
     }
@@ -2120,7 +2120,7 @@ describe('<TicketHeader />', () => {
             })
 
             it('should not show follow-ups toggle action for new tickets without ID', () => {
-                const newTicket = fromJS(_omit(ticket, 'id'))
+                const newTicket = fromJS(omit(ticket, 'id'))
 
                 const { queryByText } = render(
                     <QueryClientProvider client={appQueryClient}>
@@ -2175,7 +2175,7 @@ describe('<TicketHeader />', () => {
         })
 
         it('should not show actions for new tickets without ID', () => {
-            const newTicket = fromJS(_omit(ticket, 'id'))
+            const newTicket = fromJS(omit(ticket, 'id'))
 
             render(
                 <QueryClientProvider client={appQueryClient}>

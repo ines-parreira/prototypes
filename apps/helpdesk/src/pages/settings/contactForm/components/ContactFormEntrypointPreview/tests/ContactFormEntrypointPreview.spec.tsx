@@ -4,10 +4,10 @@ import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { keyBy } from '@gorgias/toolkit'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
@@ -92,7 +92,7 @@ const renderComponent = ({
                     },
                 },
                 contactForms: {
-                    contactFormById: _keyBy([contactForm], 'id'),
+                    contactFormById: keyBy([contactForm], 'id'),
                 },
             },
             selfServiceConfigurations: selfServiceConfigurationFixture,

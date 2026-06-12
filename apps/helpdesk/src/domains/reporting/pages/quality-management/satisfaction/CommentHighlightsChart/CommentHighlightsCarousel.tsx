@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
-
-import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
+import { truncate } from '@gorgias/toolkit'
 
 import { Skeleton } from '@gorgias/axiom'
 
@@ -154,7 +153,7 @@ function CommentHighlightsCarouselItem({
                     {customerName || NOT_AVAILABLE_PLACEHOLDER}
                 </div>
                 <div className={css.commentBody}>
-                    {_truncate(comment || NOT_AVAILABLE_PLACEHOLDER, {
+                    {truncate(comment || NOT_AVAILABLE_PLACEHOLDER, {
                         length: MAX_COMMENT_LENGTH,
                         omission: '...',
                     })}

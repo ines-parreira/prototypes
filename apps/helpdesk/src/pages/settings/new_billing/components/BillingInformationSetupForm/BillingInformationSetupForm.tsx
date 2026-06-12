@@ -10,9 +10,9 @@ import type { FormProps } from '@repo/forms'
 import { Form } from '@repo/forms'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
-import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
+import { mapValues } from '@gorgias/toolkit'
 
 import { useSubmitBillingAddress } from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
 import type {
@@ -80,7 +80,10 @@ const useDefaultValues = (billingInformation: BillingContactDetailResponse) => {
 
         return {
             ...defaultValues,
-            ...mapValues(billingInformation.tax_ids, (taxId) => taxId?.value),
+            ...mapValues(
+                billingInformation.tax_ids ?? {},
+                (taxId) => taxId?.value,
+            ),
         }
     }, [billingInformation])
 }

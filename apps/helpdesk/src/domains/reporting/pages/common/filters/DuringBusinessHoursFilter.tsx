@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { noop } from '@gorgias/toolkit'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -57,8 +56,8 @@ export const DuringBusinessHoursFilter = ({
     onRemove,
     dispatchUpdate,
     dispatchRemove,
-    dispatchStatFiltersDirty = _noop,
-    dispatchStatFiltersClean = _noop,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
     warningType,
     isDisabled,
 }: Props) => {
@@ -106,9 +105,9 @@ export const DuringBusinessHoursFilter = ({
             selectedOptions={selectedOptions}
             onChangeOption={handleFilterValuesChange}
             logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
-            onSelectAll={_noop}
-            onRemoveAll={_noop}
+            onChangeLogicalOperator={noop}
+            onSelectAll={noop}
+            onRemoveAll={noop}
             onDropdownClosed={handleDropdownClosed}
             onDropdownOpen={handleDropdownOpen}
             onRemove={() => {

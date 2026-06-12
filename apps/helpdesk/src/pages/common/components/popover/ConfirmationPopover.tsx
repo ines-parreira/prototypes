@@ -2,8 +2,8 @@ import type { ComponentProps, ReactNode, SyntheticEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import classnames from 'classnames'
-import _get from 'lodash/get'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+import { get } from '@gorgias/toolkit'
 import { useId, useIsMounted } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -80,7 +80,9 @@ export function ConfirmationPopover({
     const handleDisplayConfirmation = useCallback(
         (event?: SyntheticEvent) => {
             if (buttonProps?.type === 'submit') {
-                const form: HTMLFormElement = _get(event, ['target', 'form'])
+                const form = get(event, ['target', 'form']) as
+                    | HTMLFormElement
+                    | undefined
 
                 if (form && !form.checkValidity()) {
                     return

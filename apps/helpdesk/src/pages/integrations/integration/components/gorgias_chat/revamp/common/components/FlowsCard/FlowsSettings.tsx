@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
-
-import { keyBy } from 'lodash'
-
 import { Box, Button, Menu, MenuItem } from '@gorgias/axiom'
+import { keyBy } from '@gorgias/toolkit'
 
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'

@@ -5,8 +5,8 @@ import type { RawDraftContentState, SelectionState } from 'draft-js'
 import { convertFromRaw } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
-import _isEmpty from 'lodash/isEmpty'
 import { v4 as uuidv4 } from 'uuid'
+import { isEmpty } from '@gorgias/toolkit'
 import { useEffectOnce, usePrevious } from '@gorgias/toolkit-react'
 
 import type { Macro, TicketPriority } from '@gorgias/helpdesk-queries'
@@ -91,7 +91,7 @@ export const isTicketDraftEmpty = (ticketDraft: TicketDraft | null) => {
             assignee_team === null &&
             assignee_user === null &&
             attachments.length === 0 &&
-            _isEmpty(custom_fields) &&
+            isEmpty(custom_fields) &&
             customer === null &&
             priority === undefined &&
             source.type === TicketMessageSourceType.Email &&
@@ -256,7 +256,7 @@ export function useTicketDraft(isTicketNew = false) {
             assigneeUser === null &&
             attachments.size === 0 &&
             bodyText === '' &&
-            _isEmpty(customFields) &&
+            isEmpty(customFields) &&
             customer === null &&
             source.get('type') === TicketMessageSourceType.Email &&
             (!!source.get('to')

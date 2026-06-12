@@ -10,12 +10,9 @@ import type { DateTimeResultFormatType } from '@repo/utils'
 import type { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
-import drop from 'lodash/drop'
-import _get from 'lodash/get'
-import _isArray from 'lodash/isArray'
-import _isUndefined from 'lodash/isUndefined'
 import { Input } from 'reactstrap'
 import type { InputType } from 'reactstrap/lib/Input'
+import { get, isArray, isUndefined } from '@gorgias/toolkit'
 
 import type { UploadType } from 'common/types'
 import { BASIC_OPERATORS } from 'config'
@@ -197,7 +194,7 @@ const Widget = ({
             let newValue = value
 
             // transform the array of string to an array of AST Literal object
-            if (_isArray(newValue)) {
+            if (isArray(newValue)) {
                 newValue = newValue.map((val: string | number) => ({
                     type: 'Literal',
                     raw: `'${val}'`,
@@ -450,7 +447,7 @@ const Widget = ({
                         const def = ref.split('/')[2]
                         // get the remaining path
                         const newLeft = List(['definitions', def, 'properties'])
-                        const newRight = List(drop(left.toJS(), path.length))
+                        const newRight = List(left.toJS().slice(path.length))
                         return resolveLeft(
                             newLeft.concat(newRight) as List<any>,
                             schemas,
@@ -507,7 +504,7 @@ const Widget = ({
             if (prop.hasOwnProperty('meta')) {
                 // hide prop if it is hidden in rules and not used
                 if (
-                    _get(prop, ['meta', 'rules', 'hide']) === true &&
+                    get(prop, ['meta', 'rules', 'hide']) === true &&
                     key !== widget.value
                 ) {
                     continue
@@ -516,7 +513,7 @@ const Widget = ({
                 widget.options.push({
                     value: key,
                     label:
-                        _get(prop, ['meta', 'rules', 'label']) ||
+                        String(get(prop, ['meta', 'rules', 'label']) || '') ||
                         humanizeString(
                             removeSuffix(key, '_datetime'),
                         ).toLowerCase(),
@@ -587,7 +584,7 @@ const Widget = ({
         // display a multi select field in case current attribute is an array AND
         // it's has no specific input AND callee is a collection operator
         if (
-            _isArray(widget.value) &&
+            isArray(widget.value) &&
             (!widget.type || widget.type === 'input') &&
             collectionOperators.includes(calleeName)
         ) {
@@ -758,7 +755,7 @@ const Widget = ({
                     onChange={handleChange}
                     caseInsensitive={caseInsensitive}
                     multiple={
-                        _isUndefined(widget.multiple) ? true : widget.multiple
+                        isUndefined(widget.multiple) ? true : widget.multiple
                     }
                 />
             )

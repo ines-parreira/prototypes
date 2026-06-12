@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 
 import type { Chart, ChartType, TooltipModel } from 'chart.js'
-import _isEqual from 'lodash/isEqual'
+import { isEqual } from '@gorgias/toolkit'
 
 export type TooltipStyle = {
     opacity: number
@@ -47,7 +47,7 @@ export const useCustomTooltip = () => {
                 top: canvasPosition.y + positionY + tooltipModel.caretY,
             }
 
-            if (!_isEqual(tooltipStyle, newTooltipStyle))
+            if (!isEqual(tooltipStyle, newTooltipStyle))
                 setTooltipStyle(newTooltipStyle)
         },
         [tooltipStyle],

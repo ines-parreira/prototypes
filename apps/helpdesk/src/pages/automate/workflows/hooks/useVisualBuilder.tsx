@@ -1,9 +1,7 @@
 import type { Dispatch } from 'react'
 import type React from 'react'
 import { createContext, useCallback, useContext, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 
@@ -257,7 +255,7 @@ export function createVisualBuilderContextForPreview(
         visualBuilderGraph,
         initialVisualBuilderGraph: visualBuilderGraph,
         checkNodeHasVariablesUsedInChildren: () => false,
-        dispatch: _noop,
+        dispatch: noop,
         getVariableListInChildren: () => [],
         checkNewVisualBuilderNode: () => false,
         getVariableListForNode: () => [],

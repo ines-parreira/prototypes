@@ -4,9 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { isAxiosError } from 'axios'
-import { get } from 'lodash'
-import _debounce from 'lodash/debounce'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import { debounce, Duration, get } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
@@ -129,7 +128,7 @@ export const HelpCenterInstallationView: React.FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
-        _debounce(async () => {
+        debounce(async () => {
             if (
                 client &&
                 subdomainValue &&
@@ -150,7 +149,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     }
                 }
             }
-        }, 500),
+        }, Duration.millis(500)),
         [subdomainValue],
     )
 
@@ -176,7 +175,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     const errorMessage =
                         (isAxiosError(err) &&
                             get(err, 'response.status') === 400 &&
-                            get(err, 'response.data.message')) ||
+                            String(get(err, 'response.data.message') || '')) ||
                         'Could not delete the Help Center'
 
                     void dispatch(

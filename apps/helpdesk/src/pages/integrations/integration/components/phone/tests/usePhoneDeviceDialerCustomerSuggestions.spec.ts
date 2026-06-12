@@ -10,10 +10,10 @@ import * as searchTypes from 'models/search/types'
 import { usePhoneDeviceDialerCustomerSuggestions } from '../usePhoneDeviceDialerCustomerSuggestions'
 
 jest.mock(
-    'lodash',
+    '@gorgias/toolkit',
     () =>
         ({
-            ...jest.requireActual('lodash'),
+            ...jest.requireActual('@gorgias/toolkit'),
             debounce: jest.fn((fn: () => void) => fn),
         }) as Record<string, any>,
 )

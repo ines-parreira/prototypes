@@ -8,15 +8,16 @@ import type {
 } from 'react'
 
 import classnames from 'classnames'
-import _cloneDeep from 'lodash/cloneDeep'
-import _debounce from 'lodash/debounce'
-import _find from 'lodash/find'
-import _initial from 'lodash/initial'
-import _isArray from 'lodash/isArray'
-import _max from 'lodash/max'
-import _min from 'lodash/min'
-import _trim from 'lodash/trim'
 import { findDOMNode } from 'react-dom'
+import {
+    cloneDeep,
+    debounce,
+    Duration,
+    isArray,
+    max,
+    min,
+    trim,
+} from '@gorgias/toolkit'
 
 import { Skeleton } from '@gorgias/axiom'
 
@@ -179,8 +180,8 @@ class MultiSelectAsyncField extends Component<Props, State> {
         // look for "Name <address@mail.com>"
         const formattedAddresses = inputValue.match(/<([^>]+)>/g) || []
         if (formattedAddresses.length) {
-            const name = _trim(inputValue.split('<')[0])
-            const address = _trim(formattedAddresses[0], '<>')
+            const name = trim(inputValue.split('<')[0] ?? '')
+            const address = trim(formattedAddresses[0] ?? '', '<>')
 
             return {
                 name,
@@ -189,7 +190,7 @@ class MultiSelectAsyncField extends Component<Props, State> {
         }
 
         return {
-            value: _trim(inputValue),
+            value: trim(inputValue),
         }
     }
 
@@ -208,7 +209,7 @@ class MultiSelectAsyncField extends Component<Props, State> {
         }
         let formattedValues = values
 
-        if (!_isArray(formattedValues)) {
+        if (!isArray(formattedValues)) {
             formattedValues = [formattedValues]
         }
 
@@ -243,7 +244,9 @@ class MultiSelectAsyncField extends Component<Props, State> {
     ) => {
         const { value, onChange } = this.props
         const filteredItems = items.filter((item) => {
-            return !_find(value, { value: item.value })
+            return !value.find(
+                (existingItem) => existingItem.value === item.value,
+            )
         })
 
         const newValue = value.concat(filteredItems as ReceiverValue[])
@@ -253,7 +256,7 @@ class MultiSelectAsyncField extends Component<Props, State> {
 
     removeValue = (index: number) => {
         const { value, onChange } = this.props
-        const newValue = _cloneDeep(value)
+        const newValue = cloneDeep(value)
         newValue.splice(index, 1)
         onChange(newValue)
     }
@@ -274,13 +277,13 @@ class MultiSelectAsyncField extends Component<Props, State> {
         })
     }
 
-    handleLoadOptions = _debounce(() => {
+    handleLoadOptions = debounce(() => {
         const { inputValue } = this.state
 
         void this.props.loadOptions!(inputValue, (options) => {
             this.setState({ isLoading: false, options })
         })
-    }, 300)
+    }, Duration.millis(300))
 
     onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         const { value, onChange } = this.props
@@ -305,12 +308,12 @@ class MultiSelectAsyncField extends Component<Props, State> {
             // delete previous value
             case 'Backspace':
                 if (!inputValue) {
-                    onChange(_initial(value))
+                    onChange(value.slice(0, -1))
                 }
                 break
             // move option selection down
             case 'ArrowUp': {
-                const newFocusedOptionIndex = _max([
+                const newFocusedOptionIndex = max([
                     focusedOptionIndex - 1,
                     0,
                 ]) as number
@@ -319,7 +322,7 @@ class MultiSelectAsyncField extends Component<Props, State> {
             }
             // move option selection up
             case 'ArrowDown': {
-                const newFocusedOptionIndex = _min([
+                const newFocusedOptionIndex = min([
                     focusedOptionIndex + 1,
                     options.length - 1,
                 ]) as number

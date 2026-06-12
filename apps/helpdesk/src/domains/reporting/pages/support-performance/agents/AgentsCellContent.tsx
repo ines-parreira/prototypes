@@ -1,9 +1,8 @@
 import type { PropsWithRef } from 'react'
 
 import classNames from 'classnames'
-import _isNil from 'lodash/isNil'
-
 import { Skeleton } from '@gorgias/axiom'
+import { isNil } from '@gorgias/toolkit'
 
 import type { User } from 'config/types/user'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -63,7 +62,7 @@ export const AgentsCellContent = ({
 
     const heatmapLevel =
         metricValue &&
-        !_isNil(decile) &&
+        !isNil(decile) &&
         isHeatmapMode &&
         !isLoading &&
         css[`p${decile}`]

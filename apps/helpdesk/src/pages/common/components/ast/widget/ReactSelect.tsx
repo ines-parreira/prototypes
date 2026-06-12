@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 
 import { List } from 'immutable'
-import _noop from 'lodash/noop'
-import sortBy from 'lodash/sortBy'
-
+import { noop, sortBy } from '@gorgias/toolkit'
 import 'react-select/dist/react-select.css'
 
 import { SelectField } from '../../../forms/SelectField/SelectField'
@@ -36,7 +34,7 @@ type Option = SelectOption | SelectValue
  */
 export class Select extends Component<Props> {
     static defaultProps = {
-        onSearchChange: _noop,
+        onSearchChange: noop,
         sortOptions: true,
     }
 

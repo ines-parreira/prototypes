@@ -18,10 +18,13 @@ import type { StoreDispatch } from '../../../../types'
 import * as actions from '../../refundOrder/actions'
 import { initialState } from '../reducers'
 
-jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
-    fn.cancel = jest.fn()
-    return fn
-})
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (fn: Record<string, unknown>) => {
+        fn.cancel = jest.fn()
+        return fn
+    },
+}))
 
 jest.useFakeTimers()
 

@@ -1,5 +1,3 @@
-import _partial from 'lodash/partial'
-
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
@@ -32,18 +30,10 @@ export interface ShoutoutConfig {
     }
 }
 
-const formatDecimals = _partial(
-    formatMetricValue,
-    _partial.placeholder,
-    'decimal',
-    NOT_AVAILABLE_PLACEHOLDER,
-)
-const formatDuration = _partial(
-    formatMetricValue,
-    _partial.placeholder,
-    'duration',
-    NOT_AVAILABLE_PLACEHOLDER,
-)
+const formatDecimals: typeof formatMetricValue = (value) =>
+    formatMetricValue(value, 'decimal', NOT_AVAILABLE_PLACEHOLDER)
+const formatDuration: typeof formatMetricValue = (value) =>
+    formatMetricValue(value, 'duration', NOT_AVAILABLE_PLACEHOLDER)
 
 export enum TopPerformersChart {
     TopCSATPerformers = 'top_performers_csat_performers',

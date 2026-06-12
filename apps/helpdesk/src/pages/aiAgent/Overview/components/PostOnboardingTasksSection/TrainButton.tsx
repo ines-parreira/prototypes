@@ -1,7 +1,5 @@
 import { useRef } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { DefaultExportDropdownButton as DropdownButton } from 'pages/common/components/button/DropdownButton'
 import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 import { DefaultExportDropdownItem as DropdownItem } from 'pages/common/components/dropdown/DropdownItem'
@@ -30,7 +28,7 @@ export const TrainButton = ({
                 className={css.dropdownButton}
                 intent="primary"
                 fillStyle="fill"
-                onToggleClick={_noop}
+                onToggleClick={noop}
                 size="medium"
                 ref={dropdownTargetRef}
                 customIcon="keyboard_arrow_down"

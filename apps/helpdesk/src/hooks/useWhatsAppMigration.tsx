@@ -3,7 +3,7 @@ import { createContext, useContext, useMemo, useState } from 'react'
 
 import { history } from '@repo/routing'
 import { isValidPhoneNumber } from 'libphonenumber-js'
-import { get, isEmpty, isString, noop } from 'lodash'
+import { get, isEmpty, isString, noop } from '@gorgias/toolkit'
 import { useDebouncedEffect, useLocalStorage } from '@gorgias/toolkit-react'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'

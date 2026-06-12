@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
-
-import { uniq } from 'lodash'
-
+import { uniq } from '@gorgias/toolkit'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { useGetOnboardings } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardings'

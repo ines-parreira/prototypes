@@ -1,10 +1,8 @@
 import type { ComponentProps } from 'react'
 import React, { Component } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import type { ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
-import _isEqual from 'lodash/isEqual'
+import { Duration, isEqual } from '@gorgias/toolkit'
 
 import 'draft-js/dist/Draft.css'
 
@@ -74,7 +72,7 @@ export class RichField extends Component<Props, State> {
     componentDidUpdate(prevProps: Props) {
         // update editor state only if value has changed externally (display-only or allowExternalChanges)
         if (
-            !_isEqual(this.props.value, prevProps.value) &&
+            !isEqual(this.props.value, prevProps.value) &&
             (prevProps.displayOnly || prevProps.allowExternalChanges)
         ) {
             this._updateEditorState(this.props.value)

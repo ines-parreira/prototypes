@@ -1,9 +1,8 @@
 import type React from 'react'
 import { useMemo } from 'react'
-
-import _get from 'lodash/get'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import { get } from '@gorgias/toolkit'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
@@ -124,7 +123,10 @@ const VariantsList: React.FC<Props> = ({
         const variants: VariantTableEntry[] = [
             {
                 variant: null, // Control Version
-                metrics: _get(variantData, campaign.id, {}),
+                metrics: get(variantData, campaign.id, {}) as Record<
+                    string,
+                    string | number
+                >,
                 abGroup: campaign.ab_group as ABGroup,
                 isWinner: isCompleted && winnerId === null,
                 variantName: 'Control Variant',
@@ -144,7 +146,10 @@ const VariantsList: React.FC<Props> = ({
         campaign.variants?.forEach((variant, idx) => {
             variants.push({
                 variant,
-                metrics: _get(variantData, variant.id, {}),
+                metrics: get(variantData, variant.id, {}) as Record<
+                    string,
+                    string | number
+                >,
                 abGroup: campaign.ab_group as ABGroup,
                 variantName: generateVariantName(idx),
                 link: abVariantEditorUrl(

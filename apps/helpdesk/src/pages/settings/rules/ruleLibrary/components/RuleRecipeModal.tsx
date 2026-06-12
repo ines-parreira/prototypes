@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
-import _flatten from 'lodash/flatten'
 import pluralize from 'pluralize'
 import { Badge, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
@@ -167,9 +166,9 @@ export const RuleRecipeModal = ({
         if (!views_per_section || !Object.keys(views_per_section).length)
             return <></>
 
-        const viewNames = _flatten(Object.values(views_per_section)).map(
-            ({ name }) => name,
-        )
+        const viewNames = (Object.values(views_per_section) ?? [])
+            .flat()
+            .map(({ name }) => name)
 
         const viewDescriptions: Record<string, string> = {
             'Order status': 'if tickets contain a shipping-related intent',

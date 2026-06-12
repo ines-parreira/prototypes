@@ -3,9 +3,8 @@ import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
-import _keyBy from 'lodash/keyBy'
-import _noop from 'lodash/noop'
 import { Badge } from 'reactstrap'
+import { keyBy, noop } from '@gorgias/toolkit'
 
 import {
     LegacyLoadingSpinner as LoadingSpinner,
@@ -125,7 +124,7 @@ const DroppableCategoriesTableRow = ({
 
     const categoryRowActions = useCategoryRowActions(category.id, level)
 
-    const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
+    const localesByCode = useMemo(() => keyBy(locales, 'code'), [locales])
 
     const languageList = useMemo(() => {
         if (category.available_locales.length > 0) {
@@ -186,10 +185,10 @@ const DroppableCategoriesTableRow = ({
                     category.translation.parent_category_id,
                 ),
             }}
-            onDragStart={canUpdateCategory ? onDragStart : _noop}
-            onMoveEntity={canUpdateCategory ? onMoveEntity : _noop}
-            onDropEntity={canUpdateCategory ? onDropEntity : _noop}
-            onCancelDnD={canUpdateCategory ? onCancelDnD : _noop}
+            onDragStart={canUpdateCategory ? onDragStart : noop}
+            onMoveEntity={canUpdateCategory ? onMoveEntity : noop}
+            onDropEntity={canUpdateCategory ? onDropEntity : noop}
+            onCancelDnD={canUpdateCategory ? onCancelDnD : noop}
             category={category}
         >
             {headerCell}

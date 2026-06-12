@@ -3,10 +3,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { isAxiosError } from 'axios'
-import _get from 'lodash/get'
-import _isEqual from 'lodash/isEqual'
-
 import { toast } from '@gorgias/axiom'
+import { get, isEqual } from '@gorgias/toolkit'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
@@ -131,13 +129,13 @@ export const useConfigurationForm = ({
     }, [defaultValues])
 
     const isFormDirty = useMemo(
-        () => !_isEqual(formValues, defaultValues),
+        () => !isEqual(formValues, defaultValues),
         [formValues, defaultValues],
     )
 
     const isFieldDirty = useCallback(
         (key: keyof FormValues) => {
-            return !_isEqual(formValues[key], DEFAULT_FORM_VALUES[key])
+            return !isEqual(formValues[key], DEFAULT_FORM_VALUES[key])
         },
         [formValues],
     )
@@ -265,7 +263,7 @@ export const useConfigurationForm = ({
 
             return res
         } catch (error) {
-            if (isAxiosError(error) && _get(error, 'response.status') === 409) {
+            if (isAxiosError(error) && get(error, 'response.status') === 409) {
                 toast.error(
                     'Email address or chat channel already used by AI Agent on a different store.',
                 )

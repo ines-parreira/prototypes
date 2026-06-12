@@ -3,8 +3,7 @@ import React from 'react'
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { Map } from 'immutable'
-import { noop } from 'lodash'
-
+import { noop } from '@gorgias/toolkit'
 import { migrationProviders } from '../../fixtures/migration-providers'
 import { MigrationCredentialsModal } from './MigrationCredentialsModal'
 

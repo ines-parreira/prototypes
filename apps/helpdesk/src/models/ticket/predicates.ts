@@ -1,7 +1,6 @@
-import { isObject } from 'lodash'
-import _get from 'lodash/get'
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
+import { get, isObject } from '@gorgias/toolkit'
 
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
@@ -98,7 +97,7 @@ export const isGorgiasContactFormTicketMeta = (
     ticketMetaObj: unknown,
 ): ticketMetaObj is { gorgias_contact_form: GorgiasContactFormTicketMeta } => {
     return (
-        typeof _get(
+        typeof get(
             ticketMetaObj,
             ['gorgias_contact_form', 'contact_form_id'],
             null,

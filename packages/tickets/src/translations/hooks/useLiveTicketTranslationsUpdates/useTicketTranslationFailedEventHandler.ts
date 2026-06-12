@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
-
-import { noop } from 'lodash'
+import { noop } from '@gorgias/toolkit'
 
 export function useTicketTranslationFailedEventHandler() {
     const handleTicketTranslationFailed = useCallback(noop, [])

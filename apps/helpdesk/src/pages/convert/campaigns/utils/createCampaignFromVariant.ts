@@ -1,6 +1,6 @@
 import { removeLinksFromHtml } from '@repo/utils'
-import _omit from 'lodash/omit'
 import { ulid } from 'ulidx'
+import { omit } from '@gorgias/toolkit'
 
 import type { Campaign, CampaignCreatePayload } from '../types/Campaign'
 import type { CampaignVariant } from '../types/CampaignVariant'
@@ -36,7 +36,7 @@ export const createCampaignFromVariant = (
     }
 
     return {
-        ..._omit(campaign, 'id', 'variants'),
+        ...omit(campaign, 'id', 'variants'),
         channel_connection_id: channelConnectionId,
         status: CampaignStatus.Inactive,
         triggers: triggers,

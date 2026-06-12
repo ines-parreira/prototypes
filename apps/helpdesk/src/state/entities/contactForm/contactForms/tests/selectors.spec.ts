@@ -1,5 +1,4 @@
-import _keyBy from 'lodash/keyBy'
-
+import { keyBy } from '@gorgias/toolkit'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { initialState as contactFormInitialState } from 'state/entities/contactForm/reducer'
 import type { StoreState } from 'state/types'
@@ -22,7 +21,7 @@ describe('Entities/Contact Form', () => {
                 entities: {
                     contactForm: {
                         contactForms: {
-                            contactFormById: _keyBy([ContactFormFixture], 'id'),
+                            contactFormById: keyBy([ContactFormFixture], 'id'),
                         },
                     },
                 } as any,

@@ -2,8 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { AccordionBody } from '../AccordionBody'
 import { SortableAccordion } from '../SortableAccordion'
 import { SortableAccordionHeader } from '../SortableAccordionHeader'
@@ -12,7 +11,7 @@ import { SortableAccordionItem } from '../SortableAccordionItem'
 describe('<SortableAccordion />', () => {
     it('should render sortable accordion component', () => {
         const { container } = render(
-            <SortableAccordion onReorder={_noop}>
+            <SortableAccordion onReorder={noop}>
                 <SortableAccordionItem id="1">
                     <SortableAccordionHeader>Header 1</SortableAccordionHeader>
                     <AccordionBody>

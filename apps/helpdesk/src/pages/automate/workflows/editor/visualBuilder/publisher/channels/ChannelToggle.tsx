@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _ from 'lodash'
+import { cloneDeep } from '@gorgias/toolkit'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
@@ -59,7 +59,7 @@ const ChannelToggle = ({
     const idKey = isChat ? 'workflow_id' : 'id'
 
     const clonedWorkflows = useMemo(() => {
-        return _.cloneDeep(workflows || [])
+        return cloneDeep(workflows || [])
     }, [workflows])
     const currentFlowIndex = clonedWorkflows.findIndex(
         (entry) => entry[idKey] === configuration.id,

@@ -1,5 +1,4 @@
-import { isEmpty } from 'lodash'
-
+import { isEmpty } from '@gorgias/toolkit'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
 import { getActiveCustomer } from 'state/customers/selectors'

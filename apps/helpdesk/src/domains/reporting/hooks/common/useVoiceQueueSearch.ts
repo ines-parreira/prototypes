@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import { debounce } from 'lodash'
-import _flatten from 'lodash/flatten'
-
 import { toast } from '@gorgias/axiom'
+import { debounce, Duration } from '@gorgias/toolkit'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 
@@ -36,7 +32,7 @@ export const useVoiceQueueSearch = () => {
     )
 
     const voiceQueues = useMemo(
-        () => _flatten(data?.pages.map((page) => page.data.data)),
+        () => (data?.pages.map((page) => page.data.data) ?? []).flat(),
         [data],
     )
 

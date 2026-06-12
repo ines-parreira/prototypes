@@ -2,8 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { isCancel } from 'axios'
 import type { Map } from 'immutable'
 import { List } from 'immutable'
-import _debounce from 'lodash/debounce'
-
+import { debounce, Duration } from '@gorgias/toolkit'
 import {
     initRefundOrderLineItems,
     initRefundOrderPayload,
@@ -150,7 +149,7 @@ export const onPayloadChange =
         return calculateRefund(integrationId, dispatch, getState)
     }
 
-export const calculateRefund = _debounce(
+export const calculateRefund = debounce(
     async (
         integrationId: number,
         dispatch: StoreDispatch,
@@ -201,7 +200,7 @@ export const calculateRefund = _debounce(
             )
         }
     },
-    500,
+    Duration.millis(500),
 )
 
 export const onCancel = (via: string) => () => {
@@ -216,7 +215,7 @@ export const onCancel = (via: string) => () => {
 
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
-export const resetState = _debounce(
+export const resetState = debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250,
+    Duration.millis(250),
 )

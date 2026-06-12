@@ -1,16 +1,14 @@
 import React from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
-import { times } from 'lodash'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
+import { Duration, times } from '@gorgias/toolkit'
 
 import {
     mockGetCustomerHandler,

@@ -9,10 +9,10 @@ import { ContentState } from 'draft-js'
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
 import type { Map as ImmutableMap } from 'immutable'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
@@ -175,7 +175,7 @@ describe('TicketReplyEditor component', () => {
                 <Provider store={store}>
                     <TicketReplyEditorContainer
                         {...minProps}
-                        addAttachments={_noop}
+                        addAttachments={noop}
                         newMessage={fromJS({
                             state: {
                                 contentState: ContentState.createFromText(''),
@@ -214,7 +214,7 @@ describe('TicketReplyEditor component', () => {
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
-                    addAttachments={_noop}
+                    addAttachments={noop}
                     newMessage={fromJS({
                         state: {
                             contentState: ContentState.createFromText(''),
@@ -254,7 +254,7 @@ describe('TicketReplyEditor component', () => {
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
-                    addAttachments={_noop}
+                    addAttachments={noop}
                     newMessage={fromJS({
                         state: {
                             contentState: ContentState.createFromText(''),
@@ -292,7 +292,7 @@ describe('TicketReplyEditor component', () => {
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
-                    addAttachments={_noop}
+                    addAttachments={noop}
                     newMessage={fromJS({
                         state: {
                             contentState: ContentState.createFromText(''),

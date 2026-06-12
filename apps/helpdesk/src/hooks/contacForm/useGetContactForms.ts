@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import _flatten from 'lodash/flatten'
-
 import { useGetContactFormList } from 'pages/settings/contactForm/queries'
 import { notEmpty } from 'utils'
 
@@ -42,9 +40,9 @@ export const useGetContactFromIntegrationIdsForStore = ({
                 .filter(notEmpty)
                 .map((page) => page.data)
 
-            const allContactForms = _flatten(allContactFormListPageDto).filter(
-                notEmpty,
-            )
+            const allContactForms = (allContactFormListPageDto ?? [])
+                .flat()
+                .filter(notEmpty)
 
             allContactForms.forEach((cf) => {
                 if (

@@ -1,9 +1,7 @@
 import { useMemo } from 'react'
-
-import isEmpty from 'lodash/isEmpty'
-
 import type { TicketCustomerChannel } from '@gorgias/helpdesk-queries'
 import type { Customer } from '@gorgias/helpdesk-types'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { separateChannelsByType } from '../utils/separateChannelsByType'
 

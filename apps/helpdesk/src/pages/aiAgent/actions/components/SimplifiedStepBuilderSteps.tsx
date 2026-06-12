@@ -2,8 +2,8 @@ import type { Dispatch } from 'react'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Node } from '@xyflow/react'
-import _isEqual from 'lodash/isEqual'
 import { useParams } from 'react-router-dom'
+import { isEqual } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -119,7 +119,7 @@ export const SimplifiedStepBuilderSteps = ({
             return
         }
 
-        if (!_isEqual(dirtyNodes, orderedNodes)) {
+        if (!isEqual(dirtyNodes, orderedNodes)) {
             dispatch({
                 type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
                 nodeIds: dirtyNodes.map((node) => node.id),

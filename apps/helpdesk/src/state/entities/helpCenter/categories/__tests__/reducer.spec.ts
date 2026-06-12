@@ -1,6 +1,5 @@
 import { produce } from 'immer'
-import _keyBy from 'lodash/keyBy'
-
+import { keyBy } from '@gorgias/toolkit'
 import type { Category } from 'models/helpCenter/types'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
 import { getSingleCategoryEnglish as categoryResponse } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
@@ -180,7 +179,7 @@ describe('Help Center/Categories reducer', () => {
         it('restores the initial state', () => {
             const nextState = reducer(
                 {
-                    categoriesById: _keyBy(categoriesResponse, 'id'),
+                    categoriesById: keyBy(categoriesResponse, 'id'),
                 },
                 resetCategories(),
             )

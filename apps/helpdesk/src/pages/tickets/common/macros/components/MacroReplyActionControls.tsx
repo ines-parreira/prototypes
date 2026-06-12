@@ -1,8 +1,7 @@
 import type React from 'react'
 import { useCallback, useRef, useState } from 'react'
-
-import _upperFirst from 'lodash/upperFirst'
 import { UncontrolledTooltip } from 'reactstrap'
+import { upperFirst } from '@gorgias/toolkit'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { DefaultExportReceiversSelectField as ReceiversSelectField } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField'
@@ -28,7 +27,7 @@ const MacroReplyActionField: React.FC<MacroReplyActionFieldProps> = ({
     children,
 }) => (
     <div className={css.recipient}>
-        <span className={css.fieldLabel}>{_upperFirst(field)}:</span>
+        <span className={css.fieldLabel}>{upperFirst(field)}:</span>
         {children}
     </div>
 )

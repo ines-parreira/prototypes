@@ -1,9 +1,7 @@
 import { history } from '@repo/routing'
-import _isString from 'lodash/isString'
-import _throttle from 'lodash/throttle'
 import type { PushNotification } from 'push.js'
 import notification from 'push.js'
-import { Duration } from '@gorgias/toolkit'
+import { Duration, isString, throttle } from '@gorgias/toolkit'
 
 import { store } from 'common/store'
 import { notificationSounds } from 'services'
@@ -14,7 +12,7 @@ import { assetsUrl } from 'utils'
 const icon = assetsUrl('/img/icons/logo.png')
 
 export class BrowserNotification {
-    playSound = _throttle(
+    playSound = throttle(
         () => {
             const notificationSettings = getNotificationSettings(
                 store.getState(),
@@ -52,27 +50,24 @@ export class BrowserNotification {
             this.playSound()
         }
 
-        void notification.create(
-            _isString(title) && title ? title : 'Gorgias',
-            {
-                body: _isString(body) && body ? body : 'You received an answer',
-                icon,
-                timeout: requireInteraction ? undefined : Duration.seconds(5),
-                onClick: function () {
-                    // go to the ticket
-                    if (ticketId) {
-                        history.push(`/app/ticket/${ticketId}`)
-                    }
-                    window.focus()
-                    ;(this as PushNotification).close()
-                },
-                requireInteraction: !!requireInteraction,
+        void notification.create(isString(title) && title ? title : 'Gorgias', {
+            body: isString(body) && body ? body : 'You received an answer',
+            icon,
+            timeout: requireInteraction ? undefined : Duration.seconds(5),
+            onClick: function () {
+                // go to the ticket
+                if (ticketId) {
+                    history.push(`/app/ticket/${ticketId}`)
+                }
+                window.focus()
+                ;(this as PushNotification).close()
             },
-        )
+            requireInteraction: !!requireInteraction,
+        })
     }
 
     // FIXME: remove once PLTCO-2134 is done
-    newMessageThrottled = _throttle(this.newMessage, Duration.seconds(10), {
+    newMessageThrottled = throttle(this.newMessage, Duration.seconds(10), {
         trailing: false,
     })
 }

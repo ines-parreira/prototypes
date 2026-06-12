@@ -1,9 +1,9 @@
 import type { Map } from 'immutable'
-import _trim from 'lodash/trim'
-
 import { isImmutable, toImmutable } from 'common/utils'
 import type { CustomerChannel } from 'models/customerChannel/types'
 import { normalizeAddress } from 'tickets/common/utils'
+
+const trimValue = (value: unknown): string => String(value ?? '').trim()
 
 /**
  * Return name of customer
@@ -26,7 +26,7 @@ export const getDisplayName = (
 
     const formattedCustomer = immutableCustomer.set(
         'name',
-        _trim(immutableCustomer.get('name')),
+        trimValue(immutableCustomer.get('name')),
     )
 
     return (

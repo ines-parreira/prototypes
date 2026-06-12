@@ -4,10 +4,10 @@ import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _range from 'lodash/range'
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { range } from '@gorgias/toolkit'
 
 import type { JobType } from '@gorgias/helpdesk-queries'
 
@@ -1240,7 +1240,7 @@ describe('actions', () => {
             ).mockReturnValue(
                 (() =>
                     fromJS(
-                        _range(101),
+                        range(101),
                     ) as unknown as List<any>) as unknown as ReturnType<
                     typeof viewsSelectors.getViewIdsOrderedByCollapsedSections
                 >,

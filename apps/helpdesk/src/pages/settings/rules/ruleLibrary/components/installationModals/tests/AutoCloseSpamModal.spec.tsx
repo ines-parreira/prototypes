@@ -2,8 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { emptyManagedRule } from 'fixtures/rule'
 
 import { AutoCloseSpamModal } from '../AutoCloseSpamModal'
@@ -14,8 +13,8 @@ describe('<AutoCloseSpamModal/>', () => {
         recipeSlug: 'non-support-related-emails',
         triggeredCount: 10,
         viewCreationCheckbox: () => <>view creation checkbox</>,
-        handleInstallationError: _noop,
-        handleDefaultSettings: _noop,
+        handleInstallationError: noop,
+        handleDefaultSettings: noop,
     }
     it('should render the autoclose spam body when AI Agent is subscribed', () => {
         const { container } = render(<AutoCloseSpamModal {...minProps} />)

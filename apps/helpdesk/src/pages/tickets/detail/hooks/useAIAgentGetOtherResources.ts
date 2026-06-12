@@ -1,7 +1,5 @@
 import { useEffect, useMemo } from 'react'
 
-import _flatten from 'lodash/flatten'
-
 import type { ResourceFeedbackOnMessage } from 'models/aiAgentFeedback/types'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useGetAICompatibleMacros } from 'models/macro/queries'
@@ -69,7 +67,9 @@ export const useAIAgentGetOtherResources = ({
     const getMacrosList = useGetAICompatibleMacros()
 
     const macrosList = useMemo(() => {
-        return _flatten(getMacrosList.data?.pages.map((page) => page.data.data))
+        return (
+            getMacrosList.data?.pages.map((page) => page.data.data) ?? []
+        ).flat()
     }, [getMacrosList.data])
 
     useEffect(() => {

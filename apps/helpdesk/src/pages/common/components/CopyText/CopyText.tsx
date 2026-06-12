@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
+import { uniqueId } from '@gorgias/toolkit'
 import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import { IconButton } from '../button/IconButton'
@@ -14,7 +14,7 @@ export type CopyTextProps = {
 
 const CopyText = ({ text, className }: CopyTextProps) => {
     const [, copyToClipboard] = useCopyToClipboard()
-    const textId = _uniqueId(`copy-text`)
+    const textId = uniqueId(`copy-text`)
 
     const handleCopyCode = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,

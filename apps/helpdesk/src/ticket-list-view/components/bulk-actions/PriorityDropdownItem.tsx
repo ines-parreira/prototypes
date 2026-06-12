@@ -1,6 +1,5 @@
-import _capitalize from 'lodash/capitalize'
-
 import type { TicketPriority } from '@gorgias/helpdesk-types'
+import { capitalize } from '@gorgias/toolkit'
 
 import type { Item } from 'components/Dropdown'
 import { PriorityIcon } from 'pages/tickets/common/components/PriorityIcon'
@@ -11,7 +10,7 @@ export function PriorityDropdownItem({ item }: { item: Item }) {
     return (
         <div aria-label={item.name} className={css.item}>
             <PriorityIcon priority={item.name! as TicketPriority} />
-            {_capitalize(item.name!)}
+            {capitalize(item.name!)}
         </div>
     )
 }

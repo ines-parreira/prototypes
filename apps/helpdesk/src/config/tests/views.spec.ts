@@ -4,8 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isObject from 'lodash/isObject'
-
+import { isObject } from '@gorgias/toolkit'
 import { isImmutable } from 'common/utils'
 import { defaultTicketView } from 'config/views'
 import * as viewsConfig from 'config/views'
@@ -292,7 +291,7 @@ describe('Config: views', () => {
             it('view structure', () => {
                 const view = viewConfig.toJS() as Record<string, unknown>
 
-                expect(_isObject(view)).toBe(true)
+                expect(isObject(view)).toBe(true)
                 expect(view).toHaveProperty('name')
                 expect(view).toHaveProperty('type')
                 expect(view).toHaveProperty('routeItem')
@@ -313,7 +312,7 @@ describe('Config: views', () => {
                 ).toJS() as Record<string, unknown>[]
 
                 fields.forEach((field) => {
-                    expect(_isObject(field)).toBe(true)
+                    expect(isObject(field)).toBe(true)
                     expect(field).toHaveProperty('name')
                     expect(field).toHaveProperty('title')
                 })

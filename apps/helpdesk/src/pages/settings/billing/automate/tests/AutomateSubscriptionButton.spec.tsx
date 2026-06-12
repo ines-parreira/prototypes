@@ -3,10 +3,10 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { cloneDeep } from '@gorgias/toolkit'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -53,7 +53,7 @@ describe('AutomateSubscriptionButton', () => {
     })
 
     it('should pass label "Upgrade" and undefined onClick and the state with AI Agent checked and basic plan modal opened to the upgrade button for the starter plan', () => {
-        const availablePlansWithStarterPlan = _cloneDeep(products)
+        const availablePlansWithStarterPlan = cloneDeep(products)
         const helpdeskProduct =
             availablePlansWithStarterPlan[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(starterHelpdeskPlan)

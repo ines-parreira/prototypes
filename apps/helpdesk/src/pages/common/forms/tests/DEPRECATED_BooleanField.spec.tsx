@@ -2,9 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import _noop from 'lodash/noop'
-import _omit from 'lodash/omit'
-
+import { noop, omit } from '@gorgias/toolkit'
 import { DEPRECATED_BooleanField } from '../DEPRECATED_BooleanField'
 
 describe('DEPRECATED_BooleanField', () => {
@@ -13,12 +11,12 @@ describe('DEPRECATED_BooleanField', () => {
         type: 'text',
         label: 'label',
         value: false,
-        onChange: _noop,
+        onChange: noop,
         placeholder: 'placeholder',
     }
 
     it('should use default props', () => {
-        const props = _omit(minProps, ['type'])
+        const props = omit(minProps, ['type'])
 
         const { container } = render(<DEPRECATED_BooleanField {...props} />)
 

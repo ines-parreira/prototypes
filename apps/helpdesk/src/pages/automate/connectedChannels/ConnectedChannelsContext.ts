@@ -1,7 +1,5 @@
 import { createContext, useContext } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 export type ConnectedChannelsContextType = {
@@ -13,7 +11,7 @@ export type ConnectedChannelsContextType = {
 const ConnectedChannelsContext = createContext<ConnectedChannelsContextType>({
     channels: [],
     channel: undefined,
-    onChannelChange: _noop,
+    onChannelChange: noop,
 })
 
 export const useConnectedChannelsContext = () =>

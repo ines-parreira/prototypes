@@ -7,9 +7,9 @@ import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classNamesBind from 'classnames/bind'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _memoize from 'lodash/memoize'
 import type { Moment } from 'moment'
 import moment from 'moment'
+import { memoize } from '@gorgias/toolkit'
 
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
 import { IntegrationType } from 'models/integration/constants'
@@ -154,7 +154,7 @@ export class Container extends Component<Props> {
                 badgeBorderColor = 'var(--neutral-grey-0)'
                 status = 'offline'
 
-                const memoizedCustomerIntegrationsData = _memoize(
+                const memoizedCustomerIntegrationsData = memoize(
                     (customer: Map<any, any>): Map<any, any> =>
                         customer.get('integrations') as Map<any, any>,
                 )

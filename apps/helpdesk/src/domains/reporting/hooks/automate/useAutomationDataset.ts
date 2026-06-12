@@ -16,8 +16,32 @@ import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automa
 import { fetchFilteredAutomatedInteractionsSeries } from 'domains/reporting/hooks/automate/useFilteredAutomatedInteractionsSeries'
 import { automateInteractionsByEventTypeToTimeSeries } from 'domains/reporting/hooks/automate/utils'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
+
+type EventTypeTimeSeries = Record<string, TimeSeriesDataItem[][]>
+type EventTypeTimeSeriesResponse =
+    | EventTypeTimeSeries
+    | {
+          data?: EventTypeTimeSeries
+      }
+
+function hasWrappedEventTypeTimeSeriesData(
+    data: EventTypeTimeSeriesResponse,
+): data is { data: EventTypeTimeSeries } {
+    return (
+        'data' in data && data.data !== undefined && !Array.isArray(data.data)
+    )
+}
+
+function getEventTypeTimeSeriesData(
+    data: EventTypeTimeSeriesResponse,
+): EventTypeTimeSeries {
+    return hasWrappedEventTypeTimeSeriesData(data)
+        ? data.data
+        : (data as EventTypeTimeSeries)
+}
 
 export const useAutomateMetricsTimeSeries = (
     filters: StatsFilters,
@@ -103,7 +127,9 @@ export const fetchAutomateMetricsTimeSeries = async (
                     automateInteractionsByEventTypeToTimeSeries(
                         filters,
                         granularity,
-                        filteredAutomatedInteractionsDataByEventType,
+                        getEventTypeTimeSeriesData(
+                            filteredAutomatedInteractionsDataByEventType,
+                        ),
                     ),
             }
         },

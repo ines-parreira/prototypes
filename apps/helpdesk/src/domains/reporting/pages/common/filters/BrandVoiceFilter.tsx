@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
-
-import noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { noop } from '@gorgias/toolkit'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'

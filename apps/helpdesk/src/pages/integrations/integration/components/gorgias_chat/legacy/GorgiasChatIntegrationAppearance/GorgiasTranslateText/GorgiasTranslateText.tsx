@@ -6,7 +6,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { produce } from 'immer'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { get, set } from 'lodash'
 import { connect } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import {
@@ -18,6 +17,7 @@ import {
     Form,
     Row,
 } from 'reactstrap'
+import { get, set } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyLoadingSpinner as LoadingSpinner, toast } from '@gorgias/axiom'

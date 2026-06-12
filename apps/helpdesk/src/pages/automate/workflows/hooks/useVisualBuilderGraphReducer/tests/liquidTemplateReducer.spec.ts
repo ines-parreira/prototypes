@@ -1,5 +1,4 @@
-import _cloneDeep from 'lodash/cloneDeep'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -155,7 +154,7 @@ describe('liquidTemplateReducer', () => {
 
     describe('INSERT_LIQUID_TEMPLATE_NODE', () => {
         it('should insert a liquid template node before the specified node', () => {
-            const graph = _cloneDeep(simpleGraphFixture)
+            const graph = cloneDeep(simpleGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'INSERT_LIQUID_TEMPLATE_NODE',
                 beforeNodeId: 'end1',
@@ -191,7 +190,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should maintain original nodes when inserting', () => {
-            const graph = _cloneDeep(simpleGraphFixture)
+            const graph = cloneDeep(simpleGraphFixture)
             const originalNodeCount = graph.nodes.length
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'INSERT_LIQUID_TEMPLATE_NODE',
@@ -210,7 +209,7 @@ describe('liquidTemplateReducer', () => {
 
     describe('SET_LIQUID_TEMPLATE_EXPRESSION', () => {
         it('should update the template expression for the specified node', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const newTemplate = '{{ order.total | money }}'
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_EXPRESSION',
@@ -227,7 +226,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not modify other node properties', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_EXPRESSION',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -244,7 +243,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should handle empty template string', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_EXPRESSION',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -260,7 +259,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not update anything if node is not found', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_EXPRESSION',
                 liquidTemplateNodeId: 'non_existent_node',
@@ -272,7 +271,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not update anything if node is not a liquid template type', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_EXPRESSION',
                 liquidTemplateNodeId: 'end1', // This is an end node, not liquid template
@@ -286,7 +285,7 @@ describe('liquidTemplateReducer', () => {
 
     describe('SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE', () => {
         it('should update the output data type for the specified node', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -307,7 +306,7 @@ describe('liquidTemplateReducer', () => {
             > = ['string', 'number', 'boolean', 'date', 'json']
 
             dataTypes.forEach((dataType) => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const nextGraph = liquidTemplateReducer(graph, {
                     type: 'SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE',
                     liquidTemplateNodeId: 'liquid_template1',
@@ -325,7 +324,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not modify other node properties', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -342,7 +341,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not update anything if node is not found', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE',
                 liquidTemplateNodeId: 'non_existent_node',
@@ -354,7 +353,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not update anything if node is not a liquid template type', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE',
                 liquidTemplateNodeId: 'trigger1', // This is a trigger node, not liquid template
@@ -368,7 +367,7 @@ describe('liquidTemplateReducer', () => {
 
     describe('SET_LIQUID_TEMPLATE_NAME', () => {
         it('should update the name for the specified node', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const newName = 'Updated Template Name'
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
@@ -385,7 +384,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should handle empty name string', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -403,7 +402,7 @@ describe('liquidTemplateReducer', () => {
         it('should handle special characters and long names', () => {
             const specialName =
                 'Template with special chars: áéíóú & 特殊字符 😀'
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -419,7 +418,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not modify other node properties', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
                 liquidTemplateNodeId: 'liquid_template1',
@@ -436,7 +435,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not update anything if node is not found', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
                 liquidTemplateNodeId: 'non_existent_node',
@@ -448,7 +447,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should not update anything if node is not a liquid template type', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
                 liquidTemplateNodeId: 'end1', // This is an end node, not liquid template
@@ -462,8 +461,8 @@ describe('liquidTemplateReducer', () => {
 
     describe('Edge cases and integration', () => {
         it('should maintain graph immutability', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
-            const originalGraph = _cloneDeep(graph)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
+            const originalGraph = cloneDeep(graph)
 
             liquidTemplateReducer(graph, {
                 type: 'SET_LIQUID_TEMPLATE_NAME',
@@ -476,7 +475,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should handle multiple liquid template nodes correctly', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
 
             // Add another liquid template node
             const secondLiquidTemplate = buildLiquidTemplateNode()
@@ -505,7 +504,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should preserve node positions after insertion', () => {
-            const graph = _cloneDeep(simpleGraphFixture)
+            const graph = cloneDeep(simpleGraphFixture)
             const nextGraph = liquidTemplateReducer(graph, {
                 type: 'INSERT_LIQUID_TEMPLATE_NODE',
                 beforeNodeId: 'end1',
@@ -520,7 +519,7 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should handle complex template expressions', () => {
-            const graph = _cloneDeep(liquidTemplateGraphFixture)
+            const graph = cloneDeep(liquidTemplateGraphFixture)
             const complexTemplate = `
                 {% assign total = 0 %}
                 {% for item in order.line_items %}
@@ -548,7 +547,7 @@ describe('liquidTemplateReducer', () => {
     describe('Advanced edge cases and integration scenarios', () => {
         describe('Complex liquid template expressions', () => {
             it('should handle liquid templates with conditional logic', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const conditionalTemplate = `
                     {% if customer.total_spent > 100 %}
                         Welcome back, valued customer {{ customer.name }}!
@@ -576,7 +575,7 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should handle liquid templates with loops and arrays', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const loopTemplate = `
                     {% for item in order.line_items %}
                         Product: {{ item.name }}
@@ -602,7 +601,7 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should handle liquid templates with nested objects and filters', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const nestedTemplate = `
                     Customer: {{ customer.billing_address.first_name | capitalize }} {{ customer.billing_address.last_name | upcase }}
                     Address: {{ customer.billing_address.address1 | default: "No address provided" }}
@@ -626,7 +625,7 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should handle liquid templates with custom assignments and calculations', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const calculationTemplate = `
                     {% assign subtotal = 0 %}
                     {% assign tax_rate = 0.08 %}
@@ -662,7 +661,7 @@ describe('liquidTemplateReducer', () => {
 
         describe('Data type edge cases', () => {
             it('should handle rapid data type changes', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const dataTypes: Array<
                     'string' | 'number' | 'boolean' | 'date' | 'json'
                 > = [
@@ -694,7 +693,7 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should handle data type changes with complex templates', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
 
                 // Set a complex template first
                 let nextGraph = liquidTemplateReducer(graph, {
@@ -726,7 +725,7 @@ describe('liquidTemplateReducer', () => {
 
         describe('Batch operations and performance', () => {
             it('should handle multiple consecutive operations efficiently', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const operations = [
                     {
                         type: 'SET_LIQUID_TEMPLATE_NAME' as const,
@@ -776,7 +775,7 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should maintain performance with large template content', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const largeTemplate = Array.from(
                     { length: 100 },
                     (_, i) =>
@@ -804,7 +803,7 @@ describe('liquidTemplateReducer', () => {
 
         describe('Graph consistency and relationships', () => {
             it('should maintain node order after multiple operations', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
                 const originalNodeOrder = graph.nodes.map((n) => n.id)
 
                 // Perform multiple operations
@@ -836,8 +835,8 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should preserve edge relationships during updates', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
-                const originalEdges = _cloneDeep(graph.edges)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
+                const originalEdges = cloneDeep(graph.edges)
 
                 const nextGraph = liquidTemplateReducer(graph, {
                     type: 'SET_LIQUID_TEMPLATE_EXPRESSION',
@@ -856,7 +855,7 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should handle updates to liquid template nodes in complex graphs', () => {
-                const complexGraph = _cloneDeep(liquidTemplateGraphFixture)
+                const complexGraph = cloneDeep(liquidTemplateGraphFixture)
 
                 // Add more nodes to create a complex graph using the same structure as existing test
                 const additionalLiquidTemplate = {
@@ -916,7 +915,7 @@ describe('liquidTemplateReducer', () => {
 
         describe('Error resilience', () => {
             it('should handle malformed action objects gracefully', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
 
                 // Test with missing liquidTemplateNodeId
                 const resultWithMissingId = liquidTemplateReducer(graph, {
@@ -929,8 +928,8 @@ describe('liquidTemplateReducer', () => {
             })
 
             it('should preserve graph state when operations target non-liquid-template nodes', () => {
-                const graph = _cloneDeep(liquidTemplateGraphFixture)
-                const originalState = _cloneDeep(graph)
+                const graph = cloneDeep(liquidTemplateGraphFixture)
+                const originalState = cloneDeep(graph)
 
                 // Try to update a trigger node as if it were a liquid template
                 const result = liquidTemplateReducer(graph, {

@@ -1,7 +1,5 @@
 import type { shortcutManager } from '@repo/utils'
 import { act } from '@testing-library/react'
-import _findLast from 'lodash/findLast'
-import _last from 'lodash/last'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -27,11 +25,12 @@ export const makeExecuteKeyboardAction = (
 
     return (shortcutName: string) => {
         const lastCall = component
-            ? _findLast(
-                  shortcutManagerMock.bind.mock.calls,
-                  ([name]) => component === name,
-              )
-            : _last(shortcutManagerMock.bind.mock.calls)
+            ? [...shortcutManagerMock.bind.mock.calls]
+                  .reverse()
+                  .find(([name]) => component === name)
+            : shortcutManagerMock.bind.mock.calls[
+                  shortcutManagerMock.bind.mock.calls.length - 1
+              ]
         if (!lastCall) {
             return
         }

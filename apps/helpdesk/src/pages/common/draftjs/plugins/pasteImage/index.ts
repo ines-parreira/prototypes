@@ -1,5 +1,4 @@
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { EditorHandledNotHandled } from 'utils/editor'
 
 import type { ImagePluginConfig, PluginMethods } from '../types'
@@ -29,7 +28,7 @@ const _handlePastedFiles =
 const pasteImagePlugin = (
     config: ImagePluginConfig = {
         notify: () => Promise.resolve(),
-        getAttachFiles: () => _noop,
+        getAttachFiles: () => noop,
         getCanDropFiles: () => false,
         getCanInsertInlineImages: () => false,
     },

@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 import type { Map } from 'immutable'
-import _startCase from 'lodash/startCase'
 import { Link } from 'react-router-dom'
+import { startCase } from '@gorgias/toolkit'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { Event } from 'models/event/types'
@@ -59,7 +59,7 @@ const UserAuditRow = ({ eventItem }: Props) => {
         if (objectTypeRoutes[objectType]) {
             return <Link to={objectTypeRoutes[objectType]}>{text}</Link>
         }
-        return `${_startCase(objectType)} #${eventItem.object_id}`
+        return `${startCase(objectType)} #${eventItem.object_id}`
     }, [eventItem])
 
     const eventType = useMemo(() => {

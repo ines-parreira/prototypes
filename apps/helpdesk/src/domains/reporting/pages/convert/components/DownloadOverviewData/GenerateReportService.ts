@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
-
-import _get from 'lodash/get'
 import moment from 'moment'
+import { get } from '@gorgias/toolkit'
 
 import type { Period, StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
@@ -105,7 +104,10 @@ export const useCampaignReportData = () => {
         return selectedCampaigns.map((campaign) => {
             return {
                 campaign,
-                metrics: _get(data, campaign.id, {}),
+                metrics: get(data, campaign.id, {}) as Record<
+                    string,
+                    string | number
+                >,
             }
         })
     }, [campaigns, campaignIds, data])
@@ -144,7 +146,10 @@ const getExportableData = (
     return selectedCampaigns.map((campaign) => {
         return {
             campaign,
-            metrics: _get(data, campaign.id, {}),
+            metrics: get(data, campaign.id, {}) as Record<
+                string,
+                string | number
+            >,
         }
     })
 }

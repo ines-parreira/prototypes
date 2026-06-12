@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { FilterComponentKey } from 'domains/reporting/models/stat/types'
 import { Filter } from 'domains/reporting/pages/common/components/Filter'
@@ -87,9 +85,9 @@ export const CustomFieldFilter = ({ warningType }: OptionalFilterProps) => {
             logicalOperators={[]}
             selectedLogicalOperator={null}
             onChangeOption={onOptionChange}
-            onSelectAll={_noop}
-            onRemoveAll={_noop}
-            onChangeLogicalOperator={_noop}
+            onSelectAll={noop}
+            onRemoveAll={noop}
+            onChangeLogicalOperator={noop}
             onDropdownClosed={handleDropdownClosed}
         />
     )

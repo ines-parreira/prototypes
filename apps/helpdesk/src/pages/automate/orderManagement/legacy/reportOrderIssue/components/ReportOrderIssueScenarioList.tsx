@@ -1,8 +1,5 @@
 import React, { useMemo, useState } from 'react'
-
-import _isEqual from 'lodash/isEqual'
-import _uniqueId from 'lodash/uniqueId'
-
+import { isEqual, uniqueId } from '@gorgias/toolkit'
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import { ReportOrderIssueScenarioItem } from './ReportOrderIssueScenarioItem'
@@ -19,7 +16,7 @@ const ReportOrderIssueScenarioList = ({
     onReorder,
 }: Props) => {
     const itemsWithId = useMemo(
-        () => items.map((item) => ({ ...item, id: _uniqueId() })),
+        () => items.map((item) => ({ ...item, id: uniqueId() })),
         [items],
     )
 
@@ -39,7 +36,7 @@ const ReportOrderIssueScenarioList = ({
         setDirtyItemsWithId(nextDirtyItemsWithId)
     }
     const handleDrop = () => {
-        if (!_isEqual(dirtyItemsWithId, itemsWithId)) {
+        if (!isEqual(dirtyItemsWithId, itemsWithId)) {
             onReorder(
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 dirtyItemsWithId.map(({ id, ...dirtyItem }) => dirtyItem),

@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
-
-import _isNil from 'lodash/isNil'
-
+import { isNil } from '@gorgias/toolkit'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTicketCountPerProductWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
@@ -43,7 +41,7 @@ export const TicketsVolumeMetricCell = ({ product }: PropsWithProduct) => {
         [column, product],
     )
 
-    const isDrillDownEnabled = !_isNil(data?.value)
+    const isDrillDownEnabled = !isNil(data?.value)
 
     return (
         <CellWrapper column={column} isLoading={isFetching}>

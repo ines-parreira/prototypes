@@ -2,13 +2,12 @@ import type { ComponentProps } from 'react'
 import { useState } from 'react'
 
 import type { Call } from '@twilio/voice-sdk'
-import { get } from 'lodash'
-
 import { Button, toast } from '@gorgias/axiom'
 import {
     useTransferCall,
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
+import { get } from '@gorgias/toolkit'
 
 import { getCallSid } from 'hooks/integrations/phone/twilioCall.utils'
 import type { UserSearchResult } from 'models/search/types'
@@ -149,7 +148,7 @@ const CallTransferDropdown = ({
                 },
                 onError: (error) => {
                     const message =
-                        get(error, 'response.data.error.msg') ??
+                        String(get(error, 'response.data.error.msg') ?? '') ||
                         'Call transfer failed because an error occurred. Please try again.'
                     const isWarning = error.response?.status === 400
 

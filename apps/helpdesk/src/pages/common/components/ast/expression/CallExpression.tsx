@@ -2,8 +2,7 @@ import type { ComponentProps } from 'react'
 
 import type { Map } from 'immutable'
 import { List } from 'immutable'
-import _upperFirst from 'lodash/upperFirst'
-
+import { upperFirst } from '@gorgias/toolkit'
 import { Action } from 'pages/common/components/ast/actions/Action'
 import {
     actionsConfig,
@@ -27,6 +26,9 @@ type Props = {
     schemas: Map<any, any>
     depth: number
 }
+
+const upperFirstValue = (value: unknown): string =>
+    value === null || value === undefined ? '' : upperFirst(String(value))
 
 export function CallExpression({
     actions,
@@ -70,7 +72,7 @@ export function CallExpression({
                 ]
         } else {
             // if we can't find it just try to uppercase the first letter
-            definition = _upperFirst(definition)
+            definition = upperFirstValue(definition)
         }
         left = left.set(1, definition)
         // each object in the swagger spec has properties

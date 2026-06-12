@@ -1,8 +1,7 @@
 import type { ContentBlock } from 'draft-js'
 import { ContentState, SelectionState } from 'draft-js'
 import { fromJS } from 'immutable'
-import _omit from 'lodash/omit'
-
+import { omit } from '@gorgias/toolkit'
 import { TicketChannel } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
 import type {
@@ -102,7 +101,7 @@ describe('emailExtraUtils', () => {
 
         it('should filter out non-messages', () => {
             const message = {
-                ..._omit(messageFixture, 'isMessage'),
+                ...omit(messageFixture, 'isMessage'),
             } as TicketMessage
             const event = {
                 ...message,

@@ -8,10 +8,13 @@ import { ContentType } from 'models/api/types'
 
 import { DefaultExportForm as Form } from '..'
 
-jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
-    fn.cancel = jest.fn()
-    return fn
-})
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (fn: Record<string, unknown>) => {
+        fn.cancel = jest.fn()
+        return fn
+    },
+}))
 
 describe('<Form/>', () => {
     const onClose = jest.fn()

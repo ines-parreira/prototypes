@@ -1,13 +1,9 @@
 import type { ComponentType, FormEvent, ReactNode } from 'react'
 import React, { Component } from 'react'
-
-import _isUndefined from 'lodash/isUndefined'
-import _noop from 'lodash/noop'
-import _omit from 'lodash/omit'
-import _uniqueId from 'lodash/uniqueId'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+import { isUndefined, noop, omit, uniqueId } from '@gorgias/toolkit'
 
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { ButtonProps } from '@gorgias/axiom'
@@ -85,7 +81,7 @@ export class ActionButtonContainer extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props)
-        this.id = _uniqueId('action-button-')
+        this.id = uniqueId('action-button-')
     }
 
     componentDidMount() {
@@ -104,7 +100,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         // the user will confirm he wants to execute the action.
         if (parameters) {
             parameters.forEach((parameter) => {
-                defaultParameters[parameter.name] = _isUndefined(
+                defaultParameters[parameter.name] = isUndefined(
                     parameter.defaultValue,
                 )
                     ? null
@@ -205,7 +201,7 @@ export class ActionButtonContainer extends Component<Props, State> {
     updateActionParameter = (
         name: string,
         value: string | number | boolean | Record<string, unknown>,
-        callback: () => void = _noop,
+        callback: () => void = noop,
     ) => {
         this.setState(
             {
@@ -223,7 +219,7 @@ export class ActionButtonContainer extends Component<Props, State> {
             name: string
             value: string | number | boolean | Record<string, unknown>
         }>,
-        callback: () => void = _noop,
+        callback: () => void = noop,
     ) => {
         const { parameters } = this.state
 
@@ -260,7 +256,7 @@ export class ActionButtonContainer extends Component<Props, State> {
             }
 
             // we don't need the defaultValue as it's set in the state as current value of the parameter
-            const inputAttributes: Record<string, unknown> = _omit(parameter, [
+            const inputAttributes: Record<string, unknown> = omit(parameter, [
                 'defaultValue',
             ])
 

@@ -1,10 +1,7 @@
 import { ContentState } from 'draft-js'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _assign from 'lodash/assign'
-import _omit from 'lodash/omit'
-import _pick from 'lodash/pick'
-
+import { omit, pick } from '@gorgias/toolkit'
 import type { TicketVia } from 'business/types/ticket'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import type { DiscountCode } from 'models/discountCodes/types'
@@ -590,7 +587,10 @@ export function reducer(
         }
 
         case types.NEW_MESSAGE_SET_RECEIVERS: {
-            const receivers = _pick(action.receivers, getReceiversProperties())
+            const receivers = pick(
+                action.receivers ?? {},
+                getReceiversProperties(),
+            )
             const replaceAll = action.replaceAll
 
             const currentSource = (
@@ -607,20 +607,22 @@ export function reducer(
                 newReceivers = receivers
             } else {
                 // we merge existing receivers with passed ones
-                const currentReceivers = _pick(
+                const currentReceivers = pick(
                     currentSource,
                     getReceiversProperties(),
                 )
-                newReceivers = _assign(currentReceivers, receivers)
+                newReceivers = Object.assign(currentReceivers, receivers)
             }
 
             // removing current receivers from source
-            const sourceWithoutReceivers = _omit(
-                currentSource,
+            const sourceWithoutReceivers = omit(
+                currentSource ?? {},
                 getReceiversProperties(),
             )
 
-            const source = fromJS(_assign(sourceWithoutReceivers, newReceivers))
+            const source = fromJS(
+                Object.assign(sourceWithoutReceivers, newReceivers),
+            )
 
             if (action.ticketId) {
                 ticketReplyCache.set(action.ticketId as string, {

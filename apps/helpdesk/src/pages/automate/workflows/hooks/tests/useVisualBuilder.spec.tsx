@@ -1,6 +1,5 @@
 import { renderHook } from '@repo/testing'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { visualBuilderGraphSimpleChoicesFixture } from '../../tests/visualBuilderGraph.fixtures'
 import {
     createVisualBuilderContextForPreview,
@@ -13,7 +12,7 @@ describe('useVisualBuilder()', () => {
             const { result } = renderHook(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
-                    _noop,
+                    noop,
                     true,
                 ),
             )
@@ -27,7 +26,7 @@ describe('useVisualBuilder()', () => {
             const { result } = renderHook(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
-                    _noop,
+                    noop,
                     false,
                 ),
             )
@@ -41,7 +40,7 @@ describe('useVisualBuilder()', () => {
             const { result } = renderHook(() =>
                 useVisualBuilder(
                     visualBuilderGraphSimpleChoicesFixture,
-                    _noop,
+                    noop,
                     false,
                 ),
             )
@@ -68,7 +67,7 @@ describe('createVisualBuilderContextForPreview()', () => {
         expect(
             contextValue.checkNodeHasVariablesUsedInChildren('conditions1'),
         ).toEqual(false)
-        expect(contextValue.dispatch).toEqual(_noop)
+        expect(contextValue.dispatch).toEqual(noop)
         expect(contextValue.getVariableListInChildren('conditions1')).toEqual(
             [],
         )

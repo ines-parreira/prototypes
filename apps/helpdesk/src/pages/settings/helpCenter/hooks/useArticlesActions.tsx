@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { chain as _chain } from 'lodash'
+import { sortBy } from '@gorgias/toolkit'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -37,10 +37,9 @@ function updatePositionRequest(
     articles: Article[],
     params: { helpCenterId: number; categoryId: number | null },
 ) {
-    const sortedArticlesIds = _chain(articles)
-        .sortBy(['position'])
-        .map((article) => article.id)
-        .value()
+    const sortedArticlesIds = sortBy(articles, ['position']).map(
+        (article) => article.id,
+    )
 
     if (typeof params.categoryId === 'number') {
         return client

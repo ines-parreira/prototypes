@@ -1,10 +1,10 @@
 import { useCallback, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { get } from 'lodash'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
+import { get } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
@@ -72,8 +72,9 @@ export const AiAgentCustomerEngagement = () => {
     })
 
     const primaryLanguageTexts = texts[primaryLanguage as keyof typeof texts]
-    const needHelpTextInitialValue =
-        get(primaryLanguageTexts, 'sspTexts.needHelp') || ''
+    const needHelpTextInitialValue = String(
+        get(primaryLanguageTexts, 'sspTexts.needHelp') || '',
+    )
 
     const methods = useForm<CustomerEngagementData>({
         values: {

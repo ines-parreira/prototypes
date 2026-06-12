@@ -1,7 +1,6 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import uniqueId from 'lodash/uniqueId'
-
+import { uniqueId } from '@gorgias/toolkit'
 import {
     DROPDOWN_NESTING_DELIMITER as delimiter,
     OBJECT_TYPES,
@@ -12,7 +11,10 @@ import { DefaultExportDropdownInput as DropdownInput } from '../DropdownInput'
 import { DefaultExportDropdownInputRow as DropdownInputRow } from '../DropdownInputRow'
 
 let idCount = 1
-jest.mock('lodash/uniqueId')
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    uniqueId: jest.fn(),
+}))
 const uniqueIdMock = uniqueId as jest.Mock
 uniqueIdMock.mockImplementation((id: string) => `${id || ''}${idCount++}`)
 jest.mock('../DropdownInputRow', () => ({

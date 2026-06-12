@@ -1,8 +1,7 @@
 import type { ContentBlock, ContentState } from 'draft-js'
 import { EditorState, Modifier, SelectionState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
-import _capitalize from 'lodash/capitalize'
-
+import { capitalize } from '@gorgias/toolkit'
 import logoGorgias from 'assets/img/icons/gorgias-icon-logo-black.png'
 import logoShopify from 'assets/img/integrations/shopify.svg'
 import type {
@@ -187,7 +186,7 @@ export const replaceGuidanceVariablesPlaceholdersWithLabels = (
         const variable = parseGuidanceVariable(match, guidanceVariables)
         if (!variable) return match
 
-        return `${_capitalize(variable.category)}: ${variable.name}`
+        return `${capitalize(variable.category)}: ${variable.name}`
     })
 }
 

@@ -1,7 +1,7 @@
 import type { List } from 'immutable'
 import { fromJS, Map } from 'immutable'
-import _capitalize from 'lodash/capitalize'
 import { createSelector } from 'reselect'
+import { capitalize } from '@gorgias/toolkit'
 
 import { createImmutableSelector, makeGetPlainJS } from '../../utils'
 import type { RootState } from '../types'
@@ -40,7 +40,7 @@ export const getTeamsMinimalWithEmojiJS = makeGetPlainJS<
 
 export const getLabelledTeams = createSelector(getTeams, (teams) =>
     teams.map((team) => ({
-        label: _capitalize(team?.get('name')),
+        label: capitalize(team?.get('name')),
         id: team?.get('id'),
         members: (team?.get('members', fromJS([])) as List<any>)
             .map((user: Map<any, any>) => user.get('id') as number)

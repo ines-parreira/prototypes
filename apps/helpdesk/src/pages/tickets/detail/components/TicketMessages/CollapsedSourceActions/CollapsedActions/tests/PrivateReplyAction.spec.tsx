@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import _noop from 'lodash/noop'
 import { Dropdown } from 'reactstrap'
+import { noop } from '@gorgias/toolkit'
 
 import { message } from 'models/ticket/tests/mocks'
 
@@ -10,11 +10,11 @@ import { PrivateReplyAction } from '../PrivateReplyAction'
 
 const renderAction = ({ isFacebookComment = false } = {}) =>
     render(
-        <Dropdown toggle={_noop}>
+        <Dropdown toggle={noop}>
             <PrivateReplyAction
                 message={message}
                 isFacebookComment={isFacebookComment}
-                onClick={_noop}
+                onClick={noop}
             />
         </Dropdown>,
     )

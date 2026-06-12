@@ -5,10 +5,10 @@ import { useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useStatResource } from 'domains/reporting/hooks/useStatResource'
@@ -129,7 +129,7 @@ describe('LiveAgents', () => {
     } as unknown as RootState
 
     beforeEach(() => {
-        useStatResourceMock.mockReturnValue([null, true, _noop])
+        useStatResourceMock.mockReturnValue([null, true, noop])
         useFlagMock.mockReturnValue(false)
         usePerformancePageAgentPhoneStatusesMock.mockReturnValue({
             data: undefined,
@@ -141,7 +141,7 @@ describe('LiveAgents', () => {
 
     it('should render the filters and stats when stats filters are defined', () => {
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
+            return [userPerformanceOverview, false, noop]
         })
 
         const { container } = render(<LiveAgents />, {
@@ -209,7 +209,7 @@ describe('LiveAgents', () => {
 
     it('should render the filters and stats with online status instead of online time', () => {
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
+            return [userPerformanceOverview, false, noop]
         })
 
         const { getByText } = render(<LiveAgents />, {
@@ -223,7 +223,7 @@ describe('LiveAgents', () => {
     it('should not render availability column when feature flag is disabled', () => {
         useFlagMock.mockReturnValue(false)
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
+            return [userPerformanceOverview, false, noop]
         })
 
         render(<LiveAgents />, { storeState: defaultState })
@@ -234,7 +234,7 @@ describe('LiveAgents', () => {
     it('should render availability column when feature flag is enabled', () => {
         useFlagMock.mockReturnValue(true)
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
+            return [userPerformanceOverview, false, noop]
         })
 
         render(<LiveAgents />, { storeState: defaultState })
@@ -245,7 +245,7 @@ describe('LiveAgents', () => {
     it('should call usePerformancePageAgentPhoneStatuses with enabled=true when feature flag is enabled', () => {
         useFlagMock.mockReturnValue(true)
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
+            return [userPerformanceOverview, false, noop]
         })
 
         render(<LiveAgents />, { storeState: defaultState })
@@ -258,7 +258,7 @@ describe('LiveAgents', () => {
     it('should call usePerformancePageAgentPhoneStatuses with enabled=false when feature flag is disabled', () => {
         useFlagMock.mockReturnValue(false)
         useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
+            return [userPerformanceOverview, false, noop]
         })
 
         render(<LiveAgents />, { storeState: defaultState })

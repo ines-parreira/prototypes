@@ -2,8 +2,6 @@ import { useCallback, useState } from 'react'
 
 import { useShortcuts } from '@repo/utils'
 import { Emoji } from 'emoji-mart'
-import { isNumber } from 'lodash'
-
 import {
     Box,
     Icon,
@@ -15,6 +13,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 import type { Team, TicketTeam } from '@gorgias/helpdesk-queries'
+import { isNumber } from '@gorgias/toolkit'
 
 import type { TeamOption, TeamSection } from '../hooks/useTeamOptions'
 import { NO_TEAM_OPTION, useTeamOptions } from '../hooks/useTeamOptions'

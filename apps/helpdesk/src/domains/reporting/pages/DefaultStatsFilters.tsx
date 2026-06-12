@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react'
 import React, { useEffect, useMemo } from 'react'
-
-import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
+import { isEqual } from '@gorgias/toolkit'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCurrentFilters } from 'domains/reporting/hooks/useCurrentFilters'
@@ -52,7 +51,7 @@ export function DefaultStatsFilters({ children, notReadyFallback }: Props) {
         useCurrentFilters(defaultFilters)
 
     const isReady = useMemo(
-        () => !_isEqual(reduxFilters, defaultStatsFilters),
+        () => !isEqual(reduxFilters, defaultStatsFilters),
         [reduxFilters],
     )
 
@@ -70,7 +69,7 @@ export function DefaultStatsFilters({ children, notReadyFallback }: Props) {
         if (
             isReady &&
             !isFilterDirty &&
-            !_isEqual(sessionFilters, reduxFilters)
+            !isEqual(sessionFilters, reduxFilters)
         ) {
             persistFilters(reduxFilters)
         }

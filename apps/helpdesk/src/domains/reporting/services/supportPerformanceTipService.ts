@@ -1,5 +1,4 @@
 import type { PlanName } from '@repo/billing'
-import _findLastIndex from 'lodash/findLastIndex'
 
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { MetricName } from 'domains/reporting/services/constants'
@@ -155,12 +154,22 @@ function getGrade(gradeIndex: number) {
 }
 
 const higherIsBetterGrade = (baselines: MetricBaseline, value: number) => {
-    const gradeIndex = _findLastIndex(baselines, (item) => value > item) + 1
+    const gradeIndex =
+        baselines.reduce(
+            (lastIndex, baseline, index) =>
+                value > baseline ? index : lastIndex,
+            -1,
+        ) + 1
     return getGrade(gradeIndex)
 }
 
 const lowerIsBetterGrade = (baselines: MetricBaseline, value: number) => {
-    const gradeIndex = _findLastIndex(baselines, (item) => value < item) + 1
+    const gradeIndex =
+        baselines.reduce(
+            (lastIndex, baseline, index) =>
+                value < baseline ? index : lastIndex,
+            -1,
+        ) + 1
     return getGrade(gradeIndex)
 }
 

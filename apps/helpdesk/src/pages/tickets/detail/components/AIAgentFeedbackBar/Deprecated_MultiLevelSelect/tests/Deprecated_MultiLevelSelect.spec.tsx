@@ -14,7 +14,10 @@ jest.mock('state/currentUser/selectors', () => ({
     })),
 }))
 
-jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (fn: (...args: any[]) => void) => fn,
+}))
 
 const renderComponent = (props = {}) => {
     return render(

@@ -9,11 +9,11 @@ import { NavigationSectionGroup, useSidebar } from '@repo/navigation'
 import { CollapsedDefaultViews } from '@repo/tickets'
 import { systemViewIcons } from '@repo/tickets/utils/views'
 import { shortcutManager } from '@repo/utils'
-import _debounce from 'lodash/debounce'
 import type { DropTargetMonitor } from 'react-dnd'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
+import { debounce } from '@gorgias/toolkit'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Box, Separator, toast } from '@gorgias/axiom'
@@ -263,7 +263,7 @@ function TicketNavbarLegacySource({
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateUrl = useCallback(
-        _debounce((viewUrl: string) => history.push(viewUrl)),
+        debounce((viewUrl: string) => history.push(viewUrl), 0),
         [],
     )
 

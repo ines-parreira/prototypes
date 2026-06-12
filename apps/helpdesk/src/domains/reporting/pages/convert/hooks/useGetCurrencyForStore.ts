@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import _head from 'lodash/head'
-
 import { useShopifyIntegrations } from 'domains/reporting/pages/convert/hooks/useShopifyIntegrations'
 import type { ShopifyIntegration } from 'models/integration/types'
 
@@ -11,15 +9,13 @@ export function useGetCurrencyForStore(selectedIntegrations: number[]) {
     const currency = useMemo(() => {
         const selected = selectedIntegrations || []
         return (
-            _head(
-                shopifyIntegrations
-                    .filter((integration) =>
-                        selected.some(
-                            (integrationId) => integrationId === integration.id,
-                        ),
-                    )
-                    .map((integration) => integration.meta?.currency),
-            ) || 'USD'
+            shopifyIntegrations
+                .filter((integration) =>
+                    selected.some(
+                        (integrationId) => integrationId === integration.id,
+                    ),
+                )
+                .map((integration) => integration.meta?.currency)?.[0] || 'USD'
         )
     }, [selectedIntegrations, shopifyIntegrations])
 

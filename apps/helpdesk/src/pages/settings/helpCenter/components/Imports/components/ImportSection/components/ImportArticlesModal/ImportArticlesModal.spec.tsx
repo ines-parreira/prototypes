@@ -2,9 +2,9 @@ import type React from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { noop } from 'lodash'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { noop } from '@gorgias/toolkit'
 
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'

@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import type { Map } from 'immutable'
-import _rangeRight from 'lodash/rangeRight'
-
+import { rangeRight } from '@gorgias/toolkit'
 import type { DistributionStatVariant } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 import { DistributionVariantStat } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
 import css from 'domains/reporting/pages/common/components/charts/KeyMetricStat/DistributionKeyMetricStat.less'
@@ -18,7 +17,7 @@ export function DistributionKeyMetricStat({ config, formattedValue }: Props) {
 
     return (
         <div>
-            {_rangeRight(minValue, maxValue + 1).map((index) => (
+            {rangeRight(minValue, maxValue + 1).map((index) => (
                 <div className={classnames('mb-1', 'row')} key={index}>
                     <div className="col-md-6 ta-left">
                         <DistributionVariantStat

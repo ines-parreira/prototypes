@@ -1,9 +1,9 @@
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
-import { sortBy } from 'lodash'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { sortBy } from '@gorgias/toolkit'
 
 import {
     mockAnalyticsCustomReport,

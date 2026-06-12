@@ -2,11 +2,7 @@ import { sanitizeHtmlForFacebookMessenger } from '@repo/utils'
 import { ContentState, convertFromRaw, SelectionState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _findIndex from 'lodash/findIndex'
-import _pick from 'lodash/pick'
-import _take from 'lodash/take'
-import _takeRight from 'lodash/takeRight'
-
+import { pick } from '@gorgias/toolkit'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import type { DiscountCode } from 'models/discountCodes/types'
 import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
@@ -288,7 +284,7 @@ export const applyMacro = (context: MessageContext): MessageContext => {
     }
 
     const ticketState = action.ticket.toJS()
-    const currentUser = _pick(action.currentUser.toJS(), [
+    const currentUser = pick(action.currentUser.toJS(), [
         'name',
         'firstname',
         'lastname',
@@ -328,7 +324,7 @@ export const applyMacro = (context: MessageContext): MessageContext => {
         if (selectionState) {
             // Here we cut the current content at the cursor position to insert the macro.
             // Ex. : content is [1, 2, 3, 4, 5], we want to insert the macro ['a', 'b'] at index 2
-            let idx = _findIndex(currBlocks, {
+            let idx = currBlocks.findIndex({
                 key: (selectionState as SelectionState & { focusKey: string })
                     .focusKey,
             } as any)
@@ -343,9 +339,9 @@ export const applyMacro = (context: MessageContext): MessageContext => {
             }
 
             // We first take the `index` first items (e.g. [1, 2])
-            const left = _take(currBlocks, idx)
+            const left = currBlocks.slice(0, idx)
             // Then the `length - index` last items (e.g. [3, 4, 5])
-            const right = _takeRight(currBlocks, currBlocks.length - idx)
+            const right = currBlocks.slice(-(currBlocks.length - idx))
 
             // Then we concat the new array to the left part, and the right part to the result of this
             // => [1, 2, 'a', 'b']

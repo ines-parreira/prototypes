@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-
-import isEqual from 'lodash/isEqual'
+import { isEqual } from '@gorgias/toolkit'
 import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'

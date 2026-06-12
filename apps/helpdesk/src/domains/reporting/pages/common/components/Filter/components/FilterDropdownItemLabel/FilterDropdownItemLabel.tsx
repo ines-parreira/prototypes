@@ -3,9 +3,8 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
-import _escapeRegExp from 'lodash/escapeRegExp'
-
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { escapeRegExp } from '@gorgias/toolkit'
 
 import css from 'domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.less'
 import { LABEL_MAX_WIDTH } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -34,7 +33,7 @@ const FilterDropdownItemLabel = ({ label, icon }: Props) => {
             return label
         }
 
-        return highlightString(label, _escapeRegExp(query))
+        return highlightString(label, escapeRegExp(query))
     }, [label, query])
 
     const [showTooltip, setShowTooltip] = useState(false)

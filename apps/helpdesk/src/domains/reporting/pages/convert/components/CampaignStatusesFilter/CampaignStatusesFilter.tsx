@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
@@ -67,8 +65,8 @@ export function CampaignStatusesFilter({
     onRemove,
     dispatchUpdate,
     dispatchRemove,
-    dispatchStatFiltersDirty = _noop,
-    dispatchStatFiltersClean = _noop,
+    dispatchStatFiltersDirty = noop,
+    dispatchStatFiltersClean = noop,
     warningType,
     isDisabled,
 }: Props) {
@@ -143,7 +141,7 @@ export function CampaignStatusesFilter({
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}
             logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
+            onChangeLogicalOperator={noop}
             onSelectAll={onSelectAllFilters}
             onRemoveAll={onRemoveAllFilters}
             onRemove={onRemoveCampaignStatuses}

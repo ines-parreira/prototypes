@@ -12,10 +12,6 @@ import type {
 import React, { Component, createRef, Fragment } from 'react'
 
 import classnames from 'classnames'
-import _isEqual from 'lodash/isEqual'
-import _max from 'lodash/max'
-import _min from 'lodash/min'
-import _noop from 'lodash/noop'
 import {
     DropdownItem,
     DropdownMenu,
@@ -23,6 +19,7 @@ import {
     UncontrolledDropdown,
     UncontrolledTooltip,
 } from 'reactstrap'
+import { isEqual, max, min, noop } from '@gorgias/toolkit'
 
 import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
@@ -86,7 +83,7 @@ export class SelectField extends Component<Props, State> {
         placeholder: 'Select an option',
         singular: 'option',
         style: {},
-        onSearchChange: _noop,
+        onSearchChange: noop,
         fixedWidth: false,
         fullWidth: false,
         required: false,
@@ -125,7 +122,7 @@ export class SelectField extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const hasNewOptions = !_isEqual(prevProps.options, this.props.options)
+        const hasNewOptions = !isEqual(prevProps.options, this.props.options)
 
         if (
             prevProps.value !== this.props.value ||
@@ -300,7 +297,7 @@ export class SelectField extends Component<Props, State> {
                 }
 
                 this.setState({
-                    selectedOptionIndex: _max([
+                    selectedOptionIndex: max([
                         possibleIndex,
                         minSelectedOptionIndex,
                     ])!,
@@ -315,7 +312,7 @@ export class SelectField extends Component<Props, State> {
                 }
 
                 this.setState({
-                    selectedOptionIndex: _min([
+                    selectedOptionIndex: min([
                         possibleIndex,
                         filteredOptions.length - 1,
                     ])!,
@@ -407,7 +404,7 @@ export class SelectField extends Component<Props, State> {
             isFocused,
         } = this.state
         const selectedOption = options.find((option) =>
-            'value' in option ? _isEqual(option.value, value) : false,
+            'value' in option ? isEqual(option.value, value) : false,
         ) as SelectableOption | undefined
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
@@ -422,7 +419,7 @@ export class SelectField extends Component<Props, State> {
         // we use this value to increase the min width of the input, and
         // the label to increase or decrease according to its content
         const selectMinWidth = fixedWidth
-            ? _max(
+            ? max(
                   options.map((option: Option) => {
                       if (
                           'isHeader' in option ||
@@ -443,7 +440,7 @@ export class SelectField extends Component<Props, State> {
               )! *
                   APPROXIMATE_CHAR_WIDTH +
               ARROW_ICON_WIDTH
-            : _min([
+            : min([
                   input.length * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH,
                   MAXIMUM_MIN_WIDTH,
               ])

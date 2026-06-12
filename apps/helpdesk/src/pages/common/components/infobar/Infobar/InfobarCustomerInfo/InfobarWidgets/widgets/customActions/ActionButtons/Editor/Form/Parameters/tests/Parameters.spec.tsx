@@ -8,10 +8,13 @@ import { DefaultExportParameters as Parameters } from '../Parameters'
 jest.mock('../Parameter', () => ({
     DefaultExportParameter: jest.fn(() => null),
 }))
-jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
-    fn.cancel = jest.fn()
-    return fn
-})
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (fn: Record<string, unknown>) => {
+        fn.cancel = jest.fn()
+        return fn
+    },
+}))
 
 const ParameterMock = assumeMock(Parameter)
 

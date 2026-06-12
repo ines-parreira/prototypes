@@ -1,5 +1,4 @@
-import _isEmpty from 'lodash/isEmpty'
-import _isEqual from 'lodash/isEqual'
+import { isEmpty, isEqual } from '@gorgias/toolkit'
 import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import {
@@ -64,13 +63,13 @@ export const validateAndParseFilters = (
         const parsedSessionFilters: StatsFiltersWithLogicalOperator =
             JSON.parse(sessionFilters)
 
-        if (_isEqual(parsedSessionFilters, defaultStatsFilters)) {
+        if (isEqual(parsedSessionFilters, defaultStatsFilters)) {
             return defaultFilters
         }
 
         if (
             typeof parsedSessionFilters !== 'object' ||
-            _isEmpty(parsedSessionFilters) ||
+            isEmpty(parsedSessionFilters) ||
             !parsedSessionFilters[FilterKey.Period]
         ) {
             console.error('Invalid filter structure.')

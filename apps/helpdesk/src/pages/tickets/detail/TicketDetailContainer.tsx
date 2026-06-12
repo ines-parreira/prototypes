@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { localForageManager } from '@repo/browser-storage'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -17,10 +15,10 @@ import {
 import { isMacOs, shortcutManager } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _pick from 'lodash/pick'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
+import { Duration, pick } from '@gorgias/toolkit'
 import {
     useAsyncFn,
     useEffectOnce,
@@ -813,8 +811,8 @@ export const TicketDetailContainer = ({
             const ticketJS = ticket.toJS() as Ticket
             const ticketCustomer = ticketJS.customer || {}
 
-            const pickedTicket = _pick(ticketJS, pickedTicketFields)
-            const pickedCustomer = _pick(ticketCustomer, [
+            const pickedTicket = pick(ticketJS, pickedTicketFields)
+            const pickedCustomer = pick(ticketCustomer, [
                 'id',
                 'name',
                 'email',

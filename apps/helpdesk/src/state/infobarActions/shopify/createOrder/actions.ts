@@ -3,8 +3,7 @@ import type { AxiosResponse } from 'axios'
 import { isCancel } from 'axios'
 import { fromJS, List } from 'immutable'
 import type { Map } from 'immutable'
-import _debounce from 'lodash/debounce'
-
+import { debounce, Duration } from '@gorgias/toolkit'
 import { getCalculateDraftOrderPayload } from 'business/shopify/calculatedDraftOrder'
 import {
     getDiscountAmount,
@@ -351,9 +350,9 @@ export const onCancel =
 
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
-export const resetState = _debounce(
+export const resetState = debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250,
+    Duration.millis(250),
 )
 
 export const sendInvoice =

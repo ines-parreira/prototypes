@@ -2,9 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 import type { Draft } from 'immer'
 import { produce } from 'immer'
-import { chain as _chain } from 'lodash'
-import _defaults from 'lodash/defaults'
 import isUrl from 'validator/lib/isURL'
+import { defaults, orderBy } from '@gorgias/toolkit'
 
 import type {
     LocaleCode,
@@ -27,22 +26,21 @@ function decorateLocaleLinks(
     group: NavigationLinkGroup,
     links: NavigationLink[],
 ): LocalNavigationLink[] {
-    return _chain(links)
-        .filter((link) => link.group === group)
-        .orderBy(['position'])
-        .map<LocalNavigationLink>((link) => {
-            return {
-                id: link.id,
-                label: link.label,
-                value: link.value,
-                locale: link.locale,
-                group: link.group,
-                created_datetime: link.created_datetime,
-                updated_datetime: link.updated_datetime,
-                key: `${link.id}-${link.label}-${link.locale}`,
-            }
-        })
-        .value()
+    return orderBy(
+        links.filter((link) => link.group === group),
+        [(link) => (link as NavigationLink & { position?: number }).position],
+    ).map<LocalNavigationLink>((link) => {
+        return {
+            id: link.id,
+            label: link.label,
+            value: link.value,
+            locale: link.locale,
+            group: link.group,
+            created_datetime: link.created_datetime,
+            updated_datetime: link.updated_datetime,
+            key: `${link.id}-${link.label}-${link.locale}`,
+        }
+    })
 }
 
 function draftRemoveLink<
@@ -108,7 +106,7 @@ export const useNavigationLinks = (
     }, [response, group])
 
     const innerOptions = useMemo(
-        () => _defaults(options, DEFAULT_OPTIONS),
+        () => defaults(options ?? {}, DEFAULT_OPTIONS) as Options,
         [options],
     )
 
@@ -172,7 +170,7 @@ export const useSocialNavigationLinks = (
     }, [response])
 
     const innerOptions = useMemo(
-        () => _defaults(options, DEFAULT_OPTIONS),
+        () => defaults(options ?? {}, DEFAULT_OPTIONS) as Options,
         [options],
     )
 

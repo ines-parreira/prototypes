@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
-
-import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { noop } from '@gorgias/toolkit'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -124,10 +123,10 @@ const HelpCenterLanguageFilter = ({
             logicalOperators={helpCenterLanguageFilterLogicalOperators}
             filterOptionGroups={languages}
             onChangeOption={onOptionChange}
-            onRemove={_noop}
+            onRemove={noop}
             onChangeLogicalOperator={handleFilterOperatorChange}
-            onSelectAll={_noop}
-            onRemoveAll={_noop}
+            onSelectAll={noop}
+            onRemoveAll={noop}
             onDropdownClosed={handleDropdownClosed}
         />
     )

@@ -1,5 +1,5 @@
-import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
+import { truncate } from '@gorgias/toolkit'
 
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
@@ -24,7 +24,7 @@ function getRulePreview(code: string | null | undefined) {
         return null
     }
 
-    return _truncate(code, {
+    return truncate(code, {
         length: RULE_PREVIEW_MAX_LENGTH,
         omission: RULE_PREVIEW_OMISSION,
     })

@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import _debounce from 'lodash/debounce'
-import _isEmpty from 'lodash/isEmpty'
-import _isEqual from 'lodash/isEqual'
+import { debounce, isEmpty, isEqual } from '@gorgias/toolkit'
 import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { RecentItems } from 'hooks/useRecentItems/constants'
@@ -39,15 +37,15 @@ const useRecentItems = <T extends { id: number }>(
         useAsyncFn(async () => {
             const recentItems = await getRecentItems()
 
-            if (!_isEmpty(recentItems)) {
+            if (!isEmpty(recentItems)) {
                 setItems(recentItems)
             }
         }, [getRecentItems])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const setRecentItem = useCallback(
-        _debounce(async (item: T) => {
-            if (_isEqual(previousItemRef.current, item)) {
+        debounce(async (item: T) => {
+            if (isEqual(previousItemRef.current, item)) {
                 return
             }
 

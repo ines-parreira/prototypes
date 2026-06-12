@@ -3,11 +3,11 @@ import type React from 'react'
 import { UNDEFINED_VARIATION_TEXT } from '@repo/reporting'
 import { renderHook } from '@repo/testing'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
-import _keyBy from 'lodash/keyBy'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { keyBy } from '@gorgias/toolkit'
 
 import type { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
@@ -74,7 +74,7 @@ describe('stats components utils', () => {
     describe('useStatsViewFilters', () => {
         const defaultState = {
             entities: {
-                tags: _keyBy(tags, 'id'),
+                tags: keyBy(tags, 'id'),
             },
         } as RootState
         const defaultStatsFilters: LegacyStatsFilters = {

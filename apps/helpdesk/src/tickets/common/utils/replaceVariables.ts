@@ -1,10 +1,6 @@
 import { unescapeQuoteEntities } from '@repo/utils'
 import type { Map } from 'immutable'
-import _first from 'lodash/first'
-import _get from 'lodash/get'
-import _last from 'lodash/last'
-import _set from 'lodash/set'
-
+import { get, set } from '@gorgias/toolkit'
 import { INTEGRATION_TYPE_WITH_VARIABLES } from 'config/integrations'
 import type { notify as notifyAction } from 'state/notifications/actions'
 
@@ -47,16 +43,12 @@ export function replaceVariables(
         ticket: ticket ? ticket.toJS() : ticket,
         current_user: currentUser ? currentUser.toJS() : currentUser,
     }
-    _set(
-        context,
-        ['ticket', 'first_message'],
-        _first(_get(context, ['ticket', 'messages'])),
-    )
-    _set(
-        context,
-        ['ticket', 'last_message'],
-        _last(_get(context, ['ticket', 'messages'])),
-    )
+    const messages = get(context, ['ticket', 'messages']) as
+        | unknown[]
+        | undefined
+
+    set(context, ['ticket', 'first_message'], messages?.[0])
+    set(context, ['ticket', 'last_message'], messages?.[messages.length - 1])
 
     return renderObject(newArgument, context)
 }

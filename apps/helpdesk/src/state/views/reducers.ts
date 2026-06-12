@@ -1,8 +1,8 @@
 import { tryLocalStorage } from '@repo/browser-storage'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isNumber from 'lodash/isNumber'
 import moment from 'moment'
+import { isNumber } from '@gorgias/toolkit'
 
 import { MAX_RECENT_VIEWS } from 'config/views'
 import type { View } from 'models/view/types'
@@ -392,7 +392,7 @@ export function reducer(
             let newState = state
             try {
                 // if fetched view is a real view (not new view created, not search, etc.) we save it's id
-                if (_isNumber(action.viewId) && action.viewId > 0) {
+                if (isNumber(action.viewId) && action.viewId > 0) {
                     newState = newState.setIn(
                         ['_internal', 'lastViewId'],
                         action.viewId,

@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 
 import { produce } from 'immer'
-import _set from 'lodash/set'
-
+import { set } from '@gorgias/toolkit'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getCancelSubscriptionNodeErrors,
@@ -27,10 +26,10 @@ const useValidateActionStepGraph = (
                 if (draft.touched?.name) {
                     if (!draft.name) {
                         draft.errors ??= {}
-                        _set(draft.errors, 'name', 'Name is required')
+                        set(draft.errors, 'name', 'Name is required')
                     } else if (draft.name.length > 100) {
                         draft.errors ??= {}
-                        _set(
+                        set(
                             draft.errors,
                             'name',
                             'Name must be less than 100 characters',
@@ -40,7 +39,7 @@ const useValidateActionStepGraph = (
 
                 if (draft.touched?.nodes && draft.nodes.length === 2) {
                     draft.errors ??= {}
-                    _set(draft.errors, 'nodes', 'At least one step is required')
+                    set(draft.errors, 'nodes', 'At least one step is required')
                 }
 
                 draft.nodes.forEach((node) => {

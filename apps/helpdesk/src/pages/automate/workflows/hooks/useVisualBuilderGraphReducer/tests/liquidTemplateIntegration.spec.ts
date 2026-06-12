@@ -1,5 +1,4 @@
-import _cloneDeep from 'lodash/cloneDeep'
-
+import { cloneDeep } from '@gorgias/toolkit'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -106,7 +105,7 @@ const complexWorkflowFixture: VisualBuilderGraph<ChannelTriggerNodeType> = {
 describe('Liquid Template Integration Tests', () => {
     describe('Variable processing and references', () => {
         it('should handle references to previous step variables', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const variableTemplate = `
                 Customer Name: {{ steps_state.http_request1.content.customer_data.name }}
                 Order Total: {{ steps_state.http_request1.content.order_total | money }}
@@ -128,7 +127,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should handle complex variable transformations', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const transformationTemplate = `
                 {% assign customer = steps_state.http_request1.content.customer_data %}
                 {% assign total = steps_state.http_request1.content.order_total %}
@@ -163,7 +162,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should handle cross-node variable dependencies', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
 
             // Add another HTTP request node
             const secondHttpNode: HttpRequestNodeType = {
@@ -228,7 +227,7 @@ describe('Liquid Template Integration Tests', () => {
 
     describe('Data type consistency and validation', () => {
         it('should handle data type changes affecting downstream nodes', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
 
             // First set a numeric template
             let nextGraph = liquidTemplateReducer(graph, {
@@ -257,7 +256,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should handle boolean output with conditional logic', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const booleanTemplate = `
                 {% assign total = steps_state.http_request1.content.order_total %}
                 {% if total > 100 %}
@@ -289,7 +288,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should handle date output with date formatting', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const dateTemplate = `
                 {% assign order_date = steps_state.http_request1.content.customer_data.created_at %}
                 {{ order_date | date: "%Y-%m-%d" }}
@@ -319,7 +318,7 @@ describe('Liquid Template Integration Tests', () => {
 
     describe('Workflow complexity and performance', () => {
         it('should handle multiple liquid template nodes in sequence', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
 
             // Add second liquid template
             const secondLiquidTemplate: LiquidTemplateNodeType = {
@@ -383,7 +382,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should maintain workflow integrity during concurrent updates', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const originalNodeCount = graph.nodes.length
             const originalEdgeCount = graph.edges.length
 
@@ -435,7 +434,7 @@ describe('Liquid Template Integration Tests', () => {
 
     describe('Error handling and edge cases', () => {
         it('should handle invalid variable references gracefully', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const invalidTemplate =
                 '{{ steps_state.non_existent_node.some_value }}'
 
@@ -455,7 +454,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should handle very long template expressions', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const longTemplate = [
                 '{% assign customer = steps_state.http_request1.content.customer_data %}',
                 ...Array.from(
@@ -490,7 +489,7 @@ describe('Liquid Template Integration Tests', () => {
         })
 
         it('should preserve graph structure under stress testing', () => {
-            const graph = _cloneDeep(complexWorkflowFixture)
+            const graph = cloneDeep(complexWorkflowFixture)
             const originalGraphStructure = {
                 nodeCount: graph.nodes.length,
                 edgeCount: graph.edges.length,

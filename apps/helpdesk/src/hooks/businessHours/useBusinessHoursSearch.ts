@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import { debounce } from 'lodash'
-import _flatten from 'lodash/flatten'
-
+import { debounce, Duration } from '@gorgias/toolkit'
 import { useInfiniteListBusinessHours } from 'hooks/businessHours/useInfiniteListBusinessHours'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
@@ -40,7 +36,7 @@ export const useBusinessHoursSearch = () => {
     )
 
     const businessHours = useMemo(
-        () => _flatten(data?.pages.map((page) => page.data.data)),
+        () => (data?.pages.map((page) => page.data.data) ?? []).flat(),
         [data],
     )
 

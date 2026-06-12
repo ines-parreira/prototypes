@@ -1,4 +1,4 @@
-import _isEqual from 'lodash/isEqual'
+import { isEqual } from '@gorgias/toolkit'
 
 export type PurchasedProductValue = {
     productId: string
@@ -8,7 +8,7 @@ export type PurchasedProductValue = {
 export function isPurchasedProductValue(
     value: PurchasedProductValue,
 ): value is PurchasedProductValue {
-    return _isEqual(Object.keys(value), ['productId', 'productTitle'])
+    return isEqual(Object.keys(value), ['productId', 'productTitle'])
 }
 
 export type CampaignValue =

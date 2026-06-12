@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 import classnames from 'classnames'
 import { fromJS } from 'immutable'
-import _truncate from 'lodash/truncate'
 import { Badge } from 'reactstrap'
+import { truncate } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -326,5 +326,5 @@ function getActionArg(action: Action) {
     if (action.name === MacroActionName.AddTags) {
         arg = arg.split(',').join(', ')
     }
-    return _truncate(arg, { length: 20 })
+    return truncate(arg, { length: 20 })
 }

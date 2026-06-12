@@ -2,8 +2,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { noop } from 'lodash'
-
+import { noop } from '@gorgias/toolkit'
 import { migrationProviders } from '../../fixtures/migration-providers'
 import {
     emptyMigrationStats,

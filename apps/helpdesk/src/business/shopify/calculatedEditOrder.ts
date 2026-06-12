@@ -1,7 +1,6 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isEqual from 'lodash/isEqual'
-
+import { isEqual } from '@gorgias/toolkit'
 import type { Edit_to_perform } from '../../constants/integrations/types/shopify'
 import { EditOrderAction } from '../../constants/integrations/types/shopify'
 
@@ -31,7 +30,7 @@ export function calculateEditDiff(
         //new item is most probably at the end of the newListArray
         for (let i = newListArray.length - 1; i >= 0; i--) {
             const alreadyExists = oldListArray.some((oldVariant) =>
-                _isEqual(oldVariant, newListArray[i]),
+                isEqual(oldVariant, newListArray[i]),
             )
 
             if (!alreadyExists) {
@@ -64,7 +63,7 @@ export function calculateEditDiff(
 
         oldListArray.some(function (oldVariant) {
             const index = newListArray.findIndex((newVariant) =>
-                _isEqual(oldVariant, newVariant),
+                isEqual(oldVariant, newVariant),
             )
             //old item has not been found
             if (index === -1) {
@@ -77,7 +76,7 @@ export function calculateEditDiff(
         // a variant line has been changed (quantity)
         const changed_item_index = newListArray.findIndex(
             function (newVariant, index) {
-                return !_isEqual(newVariant, oldListArray[index])
+                return !isEqual(newVariant, oldListArray[index])
             },
         )
 

@@ -1,9 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
-
-import _keyBy from 'lodash/keyBy'
-import _noop from 'lodash/noop'
-
 import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
+import { keyBy, noop } from '@gorgias/toolkit'
 
 import { ConfirmationToggle } from 'pages/aiAgent/actionsV2/sidePanel/actionForm/ConfirmationToggle'
 import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -38,7 +35,7 @@ const ActionsPlatformTemplateConfirmation = ({
     )
 
     const requiresConfirmationFromSteps = useMemo(() => {
-        const stepsById = _keyBy(steps, 'id')
+        const stepsById = keyBy(steps, 'id')
 
         return reusableLLMPromptCallNodes.some((node) => {
             const step = stepsById[node.data.configuration_id]
@@ -77,7 +74,7 @@ const ActionsPlatformTemplateConfirmation = ({
             <Modal
                 isOpen={isOpen}
                 isClosable={false}
-                onClose={_noop}
+                onClose={noop}
                 size="medium"
             >
                 <ModalHeader title="Disable confirmation requirement?" />

@@ -1,8 +1,7 @@
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-
-import _isEqual from 'lodash/isEqual'
 import { Col, Container, Form, Row } from 'reactstrap'
+import { isEqual } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -45,7 +44,7 @@ export function VoiceIntegrationIvr(props: Props): JSX.Element | null {
         }
     }, [integration, payload, setPayload])
 
-    const isSubmittable = !_isEqual(
+    const isSubmittable = !isEqual(
         cleanUpIvrPayload(payload),
         cleanUpIvrPayload(initialSettings),
     )

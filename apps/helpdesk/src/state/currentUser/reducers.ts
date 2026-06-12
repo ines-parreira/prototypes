@@ -1,7 +1,6 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _isUndefined from 'lodash/isUndefined'
-
+import { isUndefined } from '@gorgias/toolkit'
 import type { User, UserSetting } from 'config/types/user'
 
 import * as agentConstants from '../agents/constants'
@@ -83,7 +82,7 @@ export function reducer(
 
         case constants.TOGGLE_ACTIVE_STATUS:
             return state.update('is_active', (status) =>
-                _isUndefined(action.status) ? !status : action.status,
+                isUndefined(action.status) ? !status : action.status,
             )
 
         case constants.SET_IS_AVAILABLE:

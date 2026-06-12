@@ -1,8 +1,7 @@
 import { useState } from 'react'
-
-import { noop as _noop } from 'lodash'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
+import { noop } from '@gorgias/toolkit'
 
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
@@ -15,9 +14,9 @@ const storyConfig: Meta = {
 }
 
 const defaultProps: SubjectLineProps = {
-    onDelete: _noop,
-    onChange: _noop,
-    onMoveEntity: _noop,
+    onDelete: noop,
+    onChange: noop,
+    onMoveEntity: noop,
     position: 0,
     value: '',
 }

@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react'
-
-import { startCase } from 'lodash'
-
 import type { MetafieldType } from '@gorgias/helpdesk-types'
+import { startCase } from '@gorgias/toolkit'
 
 import type { FullShopifyMetafield } from '../types'
 import {

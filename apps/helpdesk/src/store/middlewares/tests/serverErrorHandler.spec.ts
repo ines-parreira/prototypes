@@ -1,8 +1,8 @@
 import { waitFor } from '@testing-library/react'
-import _get from 'lodash/get'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { get } from '@gorgias/toolkit'
 
 import { serverErrorHandler } from '../serverErrorHandler'
 
@@ -118,10 +118,14 @@ describe('middlewares', () => {
 
             const payload = Object.assign(
                 {},
-                _get(store.getActions(), [0, 'payload']),
+                get(store.getActions(), [0, 'payload']),
                 {
                     message: removeWhitespace(
-                        _get(store.getActions(), [0, 'payload', 'message']),
+                        get(
+                            store.getActions(),
+                            [0, 'payload', 'message'],
+                            '',
+                        ) as string,
                     ),
                 },
             )
@@ -228,7 +232,7 @@ describe('middlewares', () => {
             it('should dispatch an upgrade notification when the merchant can self-serve', () => {
                 store.dispatch(buildLimitReachedAction(25, 25, true))
 
-                const payload = _get(store.getActions(), [0, 'payload'])
+                const payload = get(store.getActions(), [0, 'payload'])
                 expect(payload).toMatchObject({
                     title: "You've reached your plan's limit of 25 channels.",
                     message: 'Upgrade your plan to add more channels.',
@@ -241,7 +245,7 @@ describe('middlewares', () => {
             it('should dispatch a CSM-contact notification when the merchant is on a non-upgradable plan', () => {
                 store.dispatch(buildLimitReachedAction(50, 50, false))
 
-                const payload = _get(store.getActions(), [0, 'payload'])
+                const payload = get(store.getActions(), [0, 'payload'])
                 expect(payload).toMatchObject({
                     title: "You've reached your plan's limit of 50 channels.",
                     message:
@@ -259,7 +263,7 @@ describe('middlewares', () => {
 
                 store.dispatch(buildLimitReachedAction(10, 12, true))
 
-                const buttons = _get(store.getActions(), [
+                const buttons = get(store.getActions(), [
                     0,
                     'payload',
                     'buttons',

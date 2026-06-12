@@ -1,8 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import { Set } from 'immutable'
-import _pick from 'lodash/pick'
-
+import { pick } from '@gorgias/toolkit'
 import { teams as teamsFixtures } from 'fixtures/teams'
 import { OrderDirection } from 'models/api/types'
 import { Cancel, CancelToken } from 'tests/axiosRuntime'
@@ -102,7 +101,7 @@ describe('team resources', () => {
     })
 
     describe('createTeam', () => {
-        const teamDraftMock = _pick(teamsFixtures[0], ['name', 'members'])
+        const teamDraftMock = pick(teamsFixtures[0], ['name', 'members'])
 
         it('should resolve with a new Team on success', async () => {
             mockedServer.onPost('/api/teams/').reply(200, teamsFixtures[0])

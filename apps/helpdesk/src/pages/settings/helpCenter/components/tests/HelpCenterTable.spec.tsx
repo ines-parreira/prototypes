@@ -3,8 +3,7 @@ import type { ComponentProps } from 'react'
 import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import _keyBy from 'lodash/keyBy'
-
+import { keyBy } from '@gorgias/toolkit'
 import type { Locale } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 
@@ -31,7 +30,7 @@ describe('<HelpCenterTable />', () => {
     const props: ComponentProps<typeof HelpCenterTable> = {
         isLoading: false,
         list: getHelpCentersResponseFixture.data,
-        locales: _keyBy<Locale>(getLocalesResponseFixture, 'code'),
+        locales: keyBy<Locale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
         duplicateHelpCenter: mockedDuplicateHelpCenter,
     }

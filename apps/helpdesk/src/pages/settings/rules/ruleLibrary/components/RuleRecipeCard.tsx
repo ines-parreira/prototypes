@@ -4,8 +4,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
-import _getIn from 'lodash/get'
 import { Badge } from 'reactstrap'
+import { get as getIn } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 
@@ -110,7 +110,7 @@ function RuleRecipeCard({
     }
 
     const getCondition = (path: List<any>) =>
-        fromAST(_getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>
+        fromAST(getIn(rule, ['code_ast', ...path.toJS()])) as Map<any, any>
 
     const handleRule = {
         modifyCodeAST: handleCodeAst,

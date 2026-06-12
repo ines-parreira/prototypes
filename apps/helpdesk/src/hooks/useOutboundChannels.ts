@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { uniq } from 'lodash'
-
+import { uniq } from '@gorgias/toolkit'
 import { PhoneUseCase } from 'business/twilio'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { useAppDispatch } from 'hooks/useAppDispatch'

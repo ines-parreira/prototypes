@@ -1,6 +1,4 @@
 import type { Map } from 'immutable'
-import { get } from 'lodash'
-
 import {
     Banner,
     Button,
@@ -11,6 +9,7 @@ import {
     SelectField,
     Skeleton,
 } from '@gorgias/axiom'
+import { get } from '@gorgias/toolkit'
 
 import type { LanguageChat } from 'constants/languages'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -180,10 +179,12 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
                                 <TranslateInputRow
                                     key={`${language?.get('value')}-${key}`}
                                     keyName={key}
-                                    value={
-                                        get(textsOfSelectedLanguage, key) || ''
-                                    }
-                                    defaultValue={get(translations, key)}
+                                    value={String(
+                                        get(textsOfSelectedLanguage, key) || '',
+                                    )}
+                                    defaultValue={String(
+                                        get(translations, key) || '',
+                                    )}
                                     maxLength={
                                         section.formPropsValues[key].maxLength
                                     }

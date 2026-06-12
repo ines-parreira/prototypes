@@ -1,6 +1,5 @@
 import { fromJS } from 'immutable'
-import { keyBy } from 'lodash'
-
+import { keyBy } from '@gorgias/toolkit'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'

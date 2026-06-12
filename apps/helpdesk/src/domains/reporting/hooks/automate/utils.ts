@@ -1,13 +1,13 @@
 import type { Scale, TooltipItem } from 'chart.js'
-import difference from 'lodash/difference'
-import flatMap from 'lodash/flatMap'
-import groupBy from 'lodash/groupBy'
-import keyBy from 'lodash/keyBy'
-import map from 'lodash/map'
-import mapValues from 'lodash/mapValues'
-import orderBy from 'lodash/orderBy'
 import type { Moment } from 'moment'
 import moment from 'moment'
+import {
+    difference,
+    groupBy,
+    keyBy,
+    mapValues,
+    orderBy,
+} from '@gorgias/toolkit'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
 import { OrderDirection } from '@gorgias/helpdesk-types'
@@ -260,9 +260,9 @@ export function automateInteractionsByEventTypeToTimeSeries(
         AutomateEventType.FLOW_ENDED_WITHOUT_ACTION,
     ])
 
-    return flatMap(mergedData, (value, key) =>
-        map(value, (obj) =>
-            map(obj, (item) => {
+    return Object.entries(mergedData).flatMap(([key, value]) =>
+        value.map((obj) =>
+            obj.map((item) => {
                 return {
                     ...item,
                     label: getAutomateStatsEventTypeMap(key),
@@ -434,10 +434,13 @@ export function computeWorkflowStepsMetrics(
     steps: WorkflowStep[],
 ): WorkflowStepMetricsMap {
     const eventsGrouped = groupBy(
-        eventsData,
+        eventsData ?? [],
         WorkflowDatasetDimension.FlowStepId,
     )
-    const dropoffMap = keyBy(dropoffData, WorkflowDatasetDimension.FlowStepId)
+    const dropoffMap = keyBy(
+        dropoffData ?? [],
+        WorkflowDatasetDimension.FlowStepId,
+    )
     const stepsMap = keyBy(steps, 'id')
     const workflowStarted = getCountEventsByEventType(eventsData, FLOW_STARTED)
 

@@ -29,10 +29,13 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import * as actions from '../actions'
 import { initialState } from '../reducers'
 
-jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
-    fn.cancel = jest.fn()
-    return fn
-})
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (fn: Record<string, unknown>) => {
+        fn.cancel = jest.fn()
+        return fn
+    },
+}))
 
 jest.mock('../../../../infobar/actions')
 jest.useFakeTimers()

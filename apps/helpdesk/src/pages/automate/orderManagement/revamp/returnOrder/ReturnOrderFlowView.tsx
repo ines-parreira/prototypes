@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-
-import _isEqual from 'lodash/isEqual'
 import { useParams } from 'react-router-dom'
+import { isEqual } from '@gorgias/toolkit'
 
 import { Heading } from '@gorgias/axiom'
 
@@ -89,7 +88,7 @@ export const ReturnOrderFlowView = () => {
                         delete nextErrors[path]
                     }
 
-                    return _isEqual(prevErrors, nextErrors)
+                    return isEqual(prevErrors, nextErrors)
                         ? prevErrors
                         : nextErrors
                 })

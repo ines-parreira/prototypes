@@ -1,11 +1,10 @@
 import { produce } from 'immer'
-import _get from 'lodash/get'
-
 import type { Option } from 'pages/common/forms/SelectField/types'
 
 import { ACTION_PARAMETER_PATHS, DROPDOWN_VALUES_LIMIT } from '../../constants'
 import type { Action, Parameter } from '../../types'
 import { ParameterTypes } from '../../types'
+import { getActionPathValue } from './path'
 
 export function splitDropdownValue(value?: string) {
     let values: string[] = []
@@ -24,17 +23,15 @@ export function splitDropdownValue(value?: string) {
 export function prepareDropdownValue(action: Action) {
     const updatedAction = produce(action, (draft) => {
         ACTION_PARAMETER_PATHS.forEach((path) => {
-            ;(_get(draft, path) as Parameter[] | undefined)?.forEach(
-                (param) => {
-                    if (param.type === ParameterTypes.Dropdown) {
-                        if (param.mandatory) {
-                            param.value = splitDropdownValue(param.value)[0]
-                        } else {
-                            param.value = ''
-                        }
+            getActionPathValue<Parameter[]>(draft, path)?.forEach((param) => {
+                if (param.type === ParameterTypes.Dropdown) {
+                    if (param.mandatory) {
+                        param.value = splitDropdownValue(param.value)[0]
+                    } else {
+                        param.value = ''
                     }
-                },
-            )
+                }
+            })
         })
     })
     return updatedAction

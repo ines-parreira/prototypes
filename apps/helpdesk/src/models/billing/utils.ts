@@ -6,12 +6,10 @@ import {
     getInvoiceCadenceName,
     PRODUCT_INFO,
 } from '@repo/billing'
-import _capitalize from 'lodash/capitalize'
-import _minBy from 'lodash/minBy'
-
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import type { SubscriptionSummary as SdkSubscriptionSummary } from '@gorgias/helpdesk-types'
 import { InvoiceCadence } from '@gorgias/helpdesk-types'
+import { capitalize, minBy } from '@gorgias/toolkit'
 
 import type {
     AutomatePlan,
@@ -119,7 +117,7 @@ export function getFormattedAmount(amountInCents: number) {
 
 export const getCheapestPlan = (plans?: Plan[], cadence?: Cadence) =>
     !!plans
-        ? _minBy(
+        ? minBy(
               plans.filter(
                   (plan) => plan.cadence === cadence && plan.amount !== 0,
               ),
@@ -210,7 +208,7 @@ export function getPlanDescription(plan: Plan): string {
     const amountPerCadence = getPlanAmountPerInvoiceCadence(plan)
     const unitsPerCadence = getPlanUnitsPerCadence(plan)
 
-    return `${_capitalize(planName)}${amountPerCadence}, ${unitsPerCadence}`
+    return `${capitalize(planName)}${amountPerCadence}, ${unitsPerCadence}`
 }
 
 export function getPlanPrice(plan: Plan | undefined | null): number {

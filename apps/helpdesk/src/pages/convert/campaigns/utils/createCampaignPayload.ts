@@ -1,7 +1,6 @@
 import { produce } from 'immer'
 import type { Map } from 'immutable'
-import _trim from 'lodash/trim'
-
+import { trim } from '@gorgias/toolkit'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import type {
     CampaignContactFormAttachment,
@@ -56,7 +55,7 @@ export const createCampaignPayload = ({
                   return transformProductToAttachment(
                       product,
                       {
-                          campaignName: _trim(campaignData.name),
+                          campaignName: trim(campaignData.name),
                           currency: shopifyIntegration.getIn([
                               'meta',
                               'currency',
@@ -71,7 +70,7 @@ export const createCampaignPayload = ({
             : []
 
     const payload: Campaign = produce(campaignData, (draft) => {
-        const trimmedCampaignName = _trim(draft.name)
+        const trimmedCampaignName = trim(draft.name)
 
         draft.name = trimmedCampaignName
         draft.triggers = triggers.filter((trigger) => {

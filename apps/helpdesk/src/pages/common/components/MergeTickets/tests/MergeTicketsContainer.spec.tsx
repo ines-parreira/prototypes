@@ -4,8 +4,7 @@ import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { DefaultExportMergeTicketsContainer as MergeTicketsContainer } from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 
 describe('MergeTicketsContainer component', () => {
@@ -24,7 +23,7 @@ describe('MergeTicketsContainer component', () => {
 
     const commonProps = {
         isOpen: true,
-        toggleModal: _noop,
+        toggleModal: noop,
     }
 
     it('should render a closed modal because isOpen==false', () => {

@@ -1,18 +1,18 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import _noop from 'lodash/noop'
 import { Dropdown } from 'reactstrap'
+import { noop } from '@gorgias/toolkit'
 
 import { HideAction } from '../HideAction'
 
 const renderAction = ({ shouldHide = false, isFacebookComment = true } = {}) =>
     render(
-        <Dropdown toggle={_noop}>
+        <Dropdown toggle={noop}>
             <HideAction
                 shouldHide={shouldHide}
                 isFacebookComment={isFacebookComment}
-                toggleHideComment={_noop}
+                toggleHideComment={noop}
             />
         </Dropdown>,
     )

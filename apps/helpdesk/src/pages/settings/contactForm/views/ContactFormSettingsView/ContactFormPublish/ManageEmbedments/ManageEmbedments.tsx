@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
-import _upperFirst from 'lodash/upperFirst'
 import { Link, useHistory } from 'react-router-dom'
+import { upperFirst } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
@@ -51,7 +51,7 @@ type ManageEmbedmentsProps = {
 const PositionOptions = Object.values(PageEmbedmentPosition).map(
     (position) => ({
         value: position,
-        label: _upperFirst(position.toLowerCase()),
+        label: upperFirst(position.toLowerCase()),
     }),
 )
 

@@ -1,5 +1,5 @@
-import _noop from 'lodash/noop'
 import { DropdownItem } from 'reactstrap'
+import { noop } from '@gorgias/toolkit'
 
 import { MenuItem } from 'pages/common/forms/MultiSelectOptionsField/MenuItem'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
@@ -40,7 +40,7 @@ export function Menu({
                     isActive={activeIndex === index}
                     onActivate={() => onActivate(index)}
                     onSelect={() =>
-                        option.isDeprecated ? _noop() : onSelect(option)
+                        option.isDeprecated ? noop() : onSelect(option)
                     }
                     isDeprecated={option.isDeprecated}
                 >

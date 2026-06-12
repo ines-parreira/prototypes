@@ -1,7 +1,6 @@
 import { isAxiosError } from 'axios'
-import _get from 'lodash/get'
-
 import { toast } from '@gorgias/axiom'
+import { get } from '@gorgias/toolkit'
 
 import {
     PostStoreInstallationStepStatus,
@@ -122,7 +121,7 @@ export const decideChatWarning = (
 }
 
 export const handleAiAgentConfigurationError = (error: unknown): void => {
-    if (isAxiosError(error) && _get(error, 'response.status') === 409) {
+    if (isAxiosError(error) && get(error, 'response.status') === 409) {
         toast.error(
             'Email address or chat channel already used by AI Agent on a different store.',
         )

@@ -1,10 +1,8 @@
 import type { RefObject } from 'react'
 import { useEffect } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import _throttle from 'lodash/throttle'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import getScrollParent from 'scrollparent'
+import { Duration, throttle } from '@gorgias/toolkit'
 
 const useScrollActiveItemIntoView = (
     elementRef: RefObject<HTMLElement>,
@@ -19,7 +17,7 @@ const useScrollActiveItemIntoView = (
             })
         }
 
-        const throttledScroll = _throttle(scroll, Duration.millis(300))
+        const throttledScroll = throttle(scroll, Duration.millis(300))
         const elementRefCurrent = elementRef.current
 
         if (isActive && elementRefCurrent) {

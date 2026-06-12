@@ -6,10 +6,8 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import _uniqBy from 'lodash/uniqBy'
 import { Popover } from 'reactstrap'
+import { Duration, uniqBy } from '@gorgias/toolkit'
 
 import { useAppNode } from 'appNode'
 
@@ -39,7 +37,7 @@ export const CampaignPreviewPopover = ({
     const appNode = useAppNode()
 
     const uniqueTriggers = useMemo(() => {
-        return _uniqBy(triggers, 'type').filter((trigger) => {
+        return uniqBy(triggers ?? [], 'type').filter((trigger) => {
             const noShowTriggers = [
                 CampaignTriggerType.SingleInView,
                 CampaignTriggerType.DeviceType,

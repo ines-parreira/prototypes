@@ -5,8 +5,8 @@ import { render } from '@repo/testing'
 import { useShortcuts } from '@repo/utils'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import _noop from 'lodash/noop'
 import type { Moment } from 'moment'
+import { noop } from '@gorgias/toolkit'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 
@@ -55,7 +55,7 @@ describe('Snooze', () => {
     })
 
     it('should render the snooze button', () => {
-        render(<Snooze onUpdate={_noop} />)
+        render(<Snooze onUpdate={noop} />)
 
         expect(
             screen.getByRole('button', { name: 'Snooze' }),
@@ -63,7 +63,7 @@ describe('Snooze', () => {
     })
 
     it('should bind keyboard shortcuts', () => {
-        render(<Snooze onUpdate={_noop} />)
+        render(<Snooze onUpdate={noop} />)
         expect(useShortcutsMock).toHaveBeenCalledWith('TicketDetailContainer', {
             OPEN_SNOOZE_TICKET: {
                 action: expect.any(Function),
@@ -77,7 +77,7 @@ describe('Snooze', () => {
 
     it('should show the snooze picker when not currently snoozed', async () => {
         const user = userEvent.setup({ skipHover: true })
-        render(<Snooze onUpdate={_noop} />)
+        render(<Snooze onUpdate={noop} />)
 
         const button = screen.getByRole('button', { name: 'Snooze' })
 
@@ -141,7 +141,7 @@ describe('Snooze', () => {
 
     it('should show the standalone tooltip message when disabled', async () => {
         const user = userEvent.setup()
-        render(<Snooze disabled onUpdate={_noop} />)
+        render(<Snooze disabled onUpdate={noop} />)
 
         const button = screen.getByRole('button', { name: 'Snooze' })
 

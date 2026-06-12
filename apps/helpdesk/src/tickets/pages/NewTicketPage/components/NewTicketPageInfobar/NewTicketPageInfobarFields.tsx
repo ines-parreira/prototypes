@@ -8,7 +8,7 @@ import {
     useTicketFieldsStore,
 } from '@repo/tickets'
 import type { FieldEventHandlerParams } from '@repo/tickets'
-import { noop } from 'lodash'
+import { noop } from '@gorgias/toolkit'
 
 export function NewTicketPageInfobarFields() {
     const fields = useTicketFieldsStore((state) => state.fields)

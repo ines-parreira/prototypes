@@ -3,8 +3,8 @@ import React, { useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 import type { List } from 'immutable'
-import _isEqual from 'lodash/isEqual'
 import { Col, Row } from 'reactstrap'
+import { isEqual } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -162,7 +162,7 @@ const TicketAssignment = () => {
                 autoAssignToTeams !==
                 ticketAssignmentSettings.getIn(['data', 'auto_assign_to_teams'])
 
-            const assignmentChannelsHaveChanged = !_isEqual(
+            const assignmentChannelsHaveChanged = !isEqual(
                 assignmentChannels,
                 (
                     ticketAssignmentSettings.getIn([
@@ -211,7 +211,7 @@ const TicketAssignment = () => {
         )
     }
 
-    const isDirty = !_isEqual(initialFormState, {
+    const isDirty = !isEqual(initialFormState, {
         unassignOnReply,
         unassignOnUserUnavailability,
         autoAssignToTeams,

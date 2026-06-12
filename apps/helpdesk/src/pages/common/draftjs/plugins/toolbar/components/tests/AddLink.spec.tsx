@@ -6,8 +6,8 @@ import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ContentState, EditorState, Modifier, SelectionState } from 'draft-js'
-import _noop from 'lodash/noop'
 import ReactPlayer from 'react-player'
+import { noop } from '@gorgias/toolkit'
 
 import { utmConfiguration } from 'fixtures/utmConfiguration'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
@@ -61,11 +61,11 @@ describe('<AddLink />', () => {
     const defaultProps = {
         isOpen: true,
         getEditorState: () => EditorState.createEmpty(),
-        setEditorState: _noop,
+        setEditorState: noop,
         onClose: mockOnClose,
-        onOpen: _noop,
-        onTextChange: _noop,
-        onUrlChange: _noop,
+        onOpen: noop,
+        onTextChange: noop,
+        onUrlChange: noop,
         text: '',
         url: '',
         linkEditionStarted: jest.fn(),

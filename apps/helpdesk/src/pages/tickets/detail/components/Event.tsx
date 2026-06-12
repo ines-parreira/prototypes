@@ -3,10 +3,9 @@ import { useCallback, useState } from 'react'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _capitalize from 'lodash/capitalize'
-import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 import { Card, CardBody } from 'reactstrap'
+import { capitalize, isObject } from '@gorgias/toolkit'
 
 import { getActionByName } from 'config/actions'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -49,7 +48,7 @@ export function renderDetails(isError: boolean, eventData: Map<any, any>) {
                             // Necessary to display correctly booleans
                             if (typeof value === 'boolean') {
                                 formattedValue = value.toString()
-                            } else if (_isObject(value)) {
+                            } else if (isObject(value)) {
                                 formattedValue = (
                                     <JSONPretty
                                         data={(value as Map<any, any>).toJS()}
@@ -179,7 +178,7 @@ export function EventContainer({ event, isLast = false }: Props) {
                             <span className={css.equalFiller}>on</span>
                             <span className={css.actionName}>
                                 {hasIntegration &&
-                                    _capitalize(
+                                    capitalize(
                                         getDisplayableType(
                                             integration.get('type'),
                                         ),

@@ -1,11 +1,9 @@
 import type { LegacyRef } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import bytes from 'bytes'
 import classnames from 'classnames'
-import { zip } from 'lodash'
 import type FroalaEditorComponentType from 'react-froala-wysiwyg'
+import { Duration, zip } from '@gorgias/toolkit'
 
 import { Skeleton } from '@gorgias/axiom'
 

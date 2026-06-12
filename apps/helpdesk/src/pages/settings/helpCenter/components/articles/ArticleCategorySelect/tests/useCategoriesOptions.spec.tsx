@@ -1,10 +1,10 @@
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
-import { keyBy as _keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { keyBy } from '@gorgias/toolkit'
 
 import type { Category, NonRootCategory } from 'models/helpCenter/types'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
@@ -49,7 +49,7 @@ const defaultState: Partial<RootState> = {
     entities: {
         helpCenter: {
             ...helpCenterInitialState,
-            categories: { categoriesById: _keyBy(categories, 'id') },
+            categories: { categoriesById: keyBy(categories, 'id') },
         },
     } as any,
     ui: { helpCenter: uiState } as any,

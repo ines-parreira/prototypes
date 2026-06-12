@@ -1,9 +1,7 @@
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-
-import { debounce } from 'lodash'
-
 import { useAgentActivity } from '@gorgias/realtime'
+import { debounce } from '@gorgias/toolkit'
 
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
 

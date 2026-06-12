@@ -1,13 +1,10 @@
 import { useCallback } from 'react'
-
-import _omit from 'lodash/omit'
-import _pick from 'lodash/pick'
-
 import type {
     UpdateUserBody,
     UserLanguagePreferencesSetting,
 } from '@gorgias/helpdesk-types'
 import { UserSettingType } from '@gorgias/helpdesk-types'
+import { omit, pick } from '@gorgias/toolkit'
 
 import { normalizeUserName } from 'common/utils'
 
@@ -84,7 +81,7 @@ export function useYourProfileMutations({
     const handleSettingsPreferenceSubmit = useCallback(async () => {
         const hasExistingSettingsPreferences = settingsPreferences?.id
 
-        const newSettingsPreferences = _omit(formValues.preferences, [
+        const newSettingsPreferences = omit(formValues.preferences, [
             'primary',
             'proficient',
             'enabled',
@@ -115,7 +112,7 @@ export function useYourProfileMutations({
 
     const handleUserInfoSubmit = useCallback(async () => {
         const includedKeys = Object.keys(
-            _omit(defaultContent, [
+            omit(defaultContent, [
                 'id',
                 'preferences',
                 'settings',
@@ -125,7 +122,7 @@ export function useYourProfileMutations({
             ]),
         )
 
-        const normalizedValues = _pick(
+        const normalizedValues = pick(
             formValues,
             includedKeys,
         ) as UpdateUserBody

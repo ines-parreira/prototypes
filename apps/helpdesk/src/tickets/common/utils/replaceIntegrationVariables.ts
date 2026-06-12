@@ -1,7 +1,6 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import _capitalize from 'lodash/capitalize'
-
+import { capitalize } from '@gorgias/toolkit'
 import type { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -46,7 +45,7 @@ export function replaceIntegrationVariables(
     if (!integrationId && notify) {
         notify({
             type: NotificationStatus.Warning,
-            title: `This customer does not have any ${_capitalize(
+            title: `This customer does not have any ${capitalize(
                 integrationType,
             )} information`,
         })

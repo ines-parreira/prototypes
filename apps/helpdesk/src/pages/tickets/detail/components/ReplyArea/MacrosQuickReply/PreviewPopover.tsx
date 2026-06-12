@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
-
-import _noop from 'lodash/noop'
 import { Popover, PopoverBody } from 'reactstrap'
+import { noop } from '@gorgias/toolkit'
 
 import { useAppNode } from 'appNode'
 import type { MacroDraft } from 'models/macro/types'
@@ -44,7 +43,7 @@ export const PreviewPopover = ({ isOpen, targetId, actions }: Props) => {
         <Popover
             target={targetId}
             isOpen={isOpen}
-            toggle={_noop}
+            toggle={noop}
             placement="top-end"
             flip={false}
             popperClassName={css.previewPopover}

@@ -1,8 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import _pick from 'lodash/pick'
-
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
+import { pick } from '@gorgias/toolkit'
 
 import { tags as tagsFixtures } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
@@ -96,7 +95,7 @@ describe('tag resources', () => {
     })
 
     describe('createTag', () => {
-        const tagDraftMock = _pick(tagsFixtures[0], ['name'])
+        const tagDraftMock = pick(tagsFixtures[0], ['name'])
 
         it('should resolve with a new Tag on success', async () => {
             mockedServer.onPost('/api/tags/').reply(200, tagsFixtures[0])

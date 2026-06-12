@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 
 import { produce } from 'immer'
-import _set from 'lodash/set'
-
+import { set } from '@gorgias/toolkit'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getAutomatedMessageNodeErrors,
@@ -27,14 +26,14 @@ const useValidateWorkflowGraph = (
 
                 if (!draft.name) {
                     draft.errors ??= {}
-                    _set(
+                    set(
                         draft.errors,
                         'name',
                         `You must add a flow name in order to ${isDraft || !draft.is_draft ? 'save' : 'publish'}`,
                     )
                 } else if (draft.name.length > 100) {
                     draft.errors ??= {}
-                    _set(
+                    set(
                         draft.errors,
                         'name',
                         'Flow name must be less than 100 characters',
@@ -43,7 +42,7 @@ const useValidateWorkflowGraph = (
 
                 if (!isDraft && draft.nodes.length === 2) {
                     draft.errors ??= {}
-                    _set(
+                    set(
                         draft.errors,
                         'nodes',
                         'You must add at least one step after the trigger button in order to publish',

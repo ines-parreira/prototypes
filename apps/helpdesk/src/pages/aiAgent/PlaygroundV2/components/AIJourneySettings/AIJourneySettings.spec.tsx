@@ -48,9 +48,10 @@ jest.mock(
     }),
 )
 
-jest.mock('lodash/debounce', () =>
-    jest.fn((fn: (...args: unknown[]) => unknown) => fn),
-)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: jest.fn((fn: (...args: unknown[]) => unknown) => fn),
+}))
 
 jest.mock('../../contexts/AIJourneyContext', () => ({
     ...jest.requireActual('../../contexts/AIJourneyContext'),

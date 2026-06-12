@@ -2,8 +2,8 @@ import type { ComponentProps, ComponentType } from 'react'
 import { createElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import _isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
+import { isEqual } from '@gorgias/toolkit'
 import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -326,8 +326,8 @@ export const FiltersPanelComponent = ({
 
         if (
             newFilters.length > 0 ||
-            (!_isEqual(updatedActiveFilters, activeFilters) &&
-                !_isEqual(cleanStatsFilters, previousCleanStatsFilters))
+            (!isEqual(updatedActiveFilters, activeFilters) &&
+                !isEqual(cleanStatsFilters, previousCleanStatsFilters))
         ) {
             const newActiveFilters = getActiveFilters(
                 newFilters,

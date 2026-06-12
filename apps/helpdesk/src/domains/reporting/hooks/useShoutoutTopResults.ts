@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
 import { notUndefined } from '@repo/utils'
-import _takeWhile from 'lodash/takeWhile'
-
+import { takeWhile } from '@gorgias/toolkit'
 import type { User } from 'config/types/user'
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { formatMetricValue } from 'domains/reporting/pages/common/utils'
@@ -45,7 +44,7 @@ export function getShoutoutTopResults({
 
     const firstMetric = filteredData[0]
 
-    const sameValueMetrics = _takeWhile(
+    const sameValueMetrics = takeWhile(
         filteredData,
         (metric) =>
             formatValue(Number(metric[measure])) ===

@@ -1,7 +1,5 @@
 import type { Map } from 'immutable'
-import _compact from 'lodash/compact'
-import _trim from 'lodash/trim'
-
+import { compact, trim } from '@gorgias/toolkit'
 import { isImmutable, toImmutable } from 'common/utils'
 
 import type { Rule, RuleDraft } from './types'
@@ -20,7 +18,7 @@ export const eventTypes = (rule: Rule | RuleDraft): Array<string> => {
 
     const types = (ruleMap.get('event_types') as string) || ''
 
-    return _compact(types.split(',').map((t) => _trim(t)))
+    return compact(types.split(',').map((t) => trim(t)))
 }
 
 /**

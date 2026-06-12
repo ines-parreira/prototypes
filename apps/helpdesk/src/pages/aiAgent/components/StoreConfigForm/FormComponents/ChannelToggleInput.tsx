@@ -1,8 +1,8 @@
 import { useMemo, useRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
+import { upperFirst } from '@gorgias/toolkit'
 import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
@@ -114,7 +114,7 @@ export const ChannelToggleInput = ({
     const channelName = useMemo(() => {
         if (type === SettingsBannerType.Sms) return 'SMS'
         if (type === SettingsBannerType.Socials) return 'Socials'
-        return _upperFirst(type)
+        return upperFirst(type)
     }, [type])
 
     return (

@@ -1,5 +1,4 @@
-import _startCase from 'lodash/startCase'
-
+import { startCase } from '@gorgias/toolkit'
 import type { MacroAction } from 'models/macroAction/types'
 import { getActionTemplate } from 'utils'
 
@@ -54,7 +53,7 @@ export function getFallbackArgumentLabel(
     key: string,
 ): string {
     const templateArgument = getActionTemplate(action.name)?.arguments?.[key]
-    return templateArgument?.label ?? _startCase(key)
+    return templateArgument?.label ?? startCase(key)
 }
 
 export function getFallbackSummaries(action: MacroAction): string[] {

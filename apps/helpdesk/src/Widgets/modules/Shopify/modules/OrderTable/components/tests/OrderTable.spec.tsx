@@ -13,7 +13,10 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { DefaultExportOrderTable as OrderTable } from '../OrderTable'
 
-jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
+jest.mock('@gorgias/toolkit', () => ({
+    ...jest.requireActual('@gorgias/toolkit'),
+    debounce: (fn: (...args: any[]) => void) => fn,
+}))
 jest.mock('@repo/logging')
 
 describe('<OrderTable/>', () => {

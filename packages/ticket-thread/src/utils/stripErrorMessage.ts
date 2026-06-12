@@ -1,4 +1,4 @@
-import _trim from 'lodash/trim'
+import { trim } from '@gorgias/toolkit'
 
 /**
  * Clean error message sent from server before we display it
@@ -8,5 +8,5 @@ export function stripErrorMessage(text: string): string {
     const regex = /\[[\w-]+]/g
     const result = text.replace(regex, '')
 
-    return _trim(result, '. ')
+    return trim(result, '. ')
 }

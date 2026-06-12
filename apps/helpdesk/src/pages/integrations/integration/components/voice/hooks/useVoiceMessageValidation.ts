@@ -1,10 +1,9 @@
-import _pick from 'lodash/pick'
-
 import { toast } from '@gorgias/axiom'
 import {
     VoiceQueueWaitMusicCustomRecordingTypeType,
     VoiceQueueWaitMusicLibraryTypeType,
 } from '@gorgias/helpdesk-queries'
+import { pick } from '@gorgias/toolkit'
 
 import type {
     IvrMenuAction,
@@ -134,14 +133,14 @@ export function useVoiceMessageValidation() {
         }
         switch (payload.voice_message_type) {
             case VoiceMessageType.None:
-                return _pick(payload, ['voice_message_type'])
+                return pick(payload, ['voice_message_type'])
             case VoiceMessageType.TextToSpeech:
-                return _pick(payload, [
+                return pick(payload, [
                     'voice_message_type',
                     'text_to_speech_content',
                 ])
             case VoiceMessageType.VoiceRecording:
-                return _pick(payload, [
+                return pick(payload, [
                     'voice_message_type',
                     'voice_recording_file_path',
                     'new_voice_recording_file',

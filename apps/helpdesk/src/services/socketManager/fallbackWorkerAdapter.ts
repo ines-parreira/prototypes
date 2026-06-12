@@ -7,9 +7,9 @@
  * create this adapter that behaves like the `SharedWorker` would, except it runs in the tab directly.
  */
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _noop from 'lodash/noop'
 import type { Socket } from 'socket.io-client'
 import io from 'socket.io-client'
+import { noop } from '@gorgias/toolkit'
 
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
@@ -130,7 +130,7 @@ export const fallbackWorkerAdapter = {
             fallbackWorker.onConnect()
         },
         postMessage: (message: WSMessage) => fallbackWorker.onMessage(message),
-        onmessage: _noop,
+        onmessage: noop,
     },
     postMessage: (message: WSMessage) =>
         fallbackWorkerAdapter.port.onmessage({ data: message }),
@@ -143,7 +143,9 @@ export const fallbackBroadcastChannelAdapter = {
     ) => {
         fallbackBroadcastChannelAdapter.onmessage = handler
     },
-    onmessage: _noop,
+    onmessage: noop as (event: MessageEvent) => void,
     postMessage: (message: WSMessage) =>
-        fallbackBroadcastChannelAdapter.onmessage({ data: message }),
+        fallbackBroadcastChannelAdapter.onmessage({
+            data: message,
+        } as MessageEvent),
 }

@@ -6,8 +6,7 @@ import { fireEvent, screen } from '@testing-library/react'
 import type { ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import type { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
@@ -67,17 +66,17 @@ describe('Toolbar', () => {
         editorState: fromJS({}),
         onFocus: jest.fn(),
         onBlur: jest.fn(),
-        detectGrammarly: _noop,
+        detectGrammarly: noop,
         onChange: jest.fn(),
         linkIsOpen: false,
         linkText: '',
         linkUrl: '',
         linkTarget: '_blank',
-        onLinkUrlChange: _noop,
-        onLinkTextChange: _noop,
-        onLinkOpen: _noop,
-        onLinkClose: _noop,
-        onLinkTargetChange: _noop,
+        onLinkUrlChange: noop,
+        onLinkTextChange: noop,
+        onLinkOpen: noop,
+        onLinkClose: noop,
+        onLinkTargetChange: noop,
         canDropFiles: false,
         isRequired: false,
         isFocused: false,
@@ -85,7 +84,7 @@ describe('Toolbar', () => {
         onMentionSearchChange: jest.fn(),
         attachments: fromJS([]),
         quickReply: null,
-        attachFiles: _noop,
+        attachFiles: noop,
         displayedActions: [] as ActionName[],
         setEditorState: jest.fn(),
     }

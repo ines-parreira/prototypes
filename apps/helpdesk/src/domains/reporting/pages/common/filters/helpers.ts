@@ -1,9 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import isArray from 'lodash/isArray'
-import isFunction from 'lodash/isFunction'
-
+import { isArray, isFunction } from '@gorgias/toolkit'
 import type {
     CleanFilterComponentKeys,
     CustomFieldFilter,

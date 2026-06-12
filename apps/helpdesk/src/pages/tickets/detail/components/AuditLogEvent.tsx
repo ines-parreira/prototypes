@@ -4,12 +4,11 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
-import _omit from 'lodash/omit'
-import _truncate from 'lodash/truncate'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap'
+import { omit, truncate } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -60,7 +59,7 @@ export type HighlightedElements = {
 }
 
 const CONTENTFUL_EVENT_TYPES = Object.freeze({
-    ..._omit(TICKET_EVENT_TYPES, ['TicketMessageCreated', 'TicketUpdated']),
+    ...omit(TICKET_EVENT_TYPES, ['TicketMessageCreated', 'TicketUpdated']),
     ...SATISFACTION_SURVEY_EVENT_TYPES,
 })
 
@@ -356,7 +355,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                     placement="top"
                     target={`rule-code-${rule_id}-${context}`}
                 >
-                    {_truncate(data.get('code'), {
+                    {truncate(String(data.get('code') ?? ''), {
                         length: 500,
                         omission:
                             '... [see the rest of the rule in the settings]',

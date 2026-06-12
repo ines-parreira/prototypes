@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
-import _isEqual from 'lodash/isEqual'
+import { isEqual } from '@gorgias/toolkit'
 import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { fetchStat } from 'domains/reporting/models/stat/resources'
@@ -111,7 +111,7 @@ export function useStatResource<T>({
 
     useDebouncedEffect(
         () => {
-            if (statsFilters && !_isEqual(statsFilters, filters)) {
+            if (statsFilters && !isEqual(statsFilters, filters)) {
                 setFilters(statsFilters)
                 setCursor(undefined)
             }

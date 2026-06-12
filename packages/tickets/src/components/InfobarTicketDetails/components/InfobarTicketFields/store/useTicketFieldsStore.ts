@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash'
 import { create } from 'zustand'
+import { isEmpty } from '@gorgias/toolkit'
 
 import { getNumberOrUndefined } from '../../../../InfobarCustomerFields/utils'
 

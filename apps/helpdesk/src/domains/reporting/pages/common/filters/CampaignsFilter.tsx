@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-
-import noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'

@@ -1,5 +1,4 @@
-import _isBoolean from 'lodash/isBoolean'
-
+import { isBoolean } from '@gorgias/toolkit'
 import { isPublic } from '../isPublic'
 
 describe('isPublic', () => {
@@ -7,7 +6,7 @@ describe('isPublic', () => {
         const values: any[] = ['email', 'unknown-value', 1, undefined, null, []]
 
         values.forEach((value: any) => {
-            expect(_isBoolean(isPublic(value))).toBe(true)
+            expect(isBoolean(isPublic(value))).toBe(true)
         })
     })
 })

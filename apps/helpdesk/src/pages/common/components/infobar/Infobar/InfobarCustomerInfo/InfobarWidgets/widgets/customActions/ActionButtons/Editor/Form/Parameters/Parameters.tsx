@@ -1,8 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
-import debounce from 'lodash/debounce'
 import { ulid } from 'ulidx'
+import { debounce, Duration } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

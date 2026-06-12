@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react'
-
-import _noop from 'lodash/noop'
-
+import { noop } from '@gorgias/toolkit'
 import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import type { DropdownOption } from 'domains/reporting/pages/types'
 import { DefaultExportSearch as Search } from 'pages/common/components/Search'
@@ -52,7 +50,7 @@ const ActionsPlatformTemplatesFilters = ({
                         },
                     ]}
                     logicalOperators={[]}
-                    onChangeLogicalOperator={_noop}
+                    onChangeLogicalOperator={noop}
                     onChangeOption={(option) => {
                         onAppChange(
                             apps.find((app) => app.id === option.value) ?? null,
@@ -61,8 +59,8 @@ const ActionsPlatformTemplatesFilters = ({
                     onRemove={() => {
                         onAppChange(null)
                     }}
-                    onRemoveAll={_noop}
-                    onSelectAll={_noop}
+                    onRemoveAll={noop}
+                    onSelectAll={noop}
                     selectedLogicalOperator={null}
                     selectedOptions={selectedAppOptions}
                     isMultiple={false}

@@ -2,8 +2,7 @@ import client from '@repo/api-resources'
 import type { SelectedPlans } from '@repo/billing'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
-import _capitalize from 'lodash/capitalize'
-
+import { capitalize } from '@gorgias/toolkit'
 import { AgentAvailabilityTableViews } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { AgentsTableViews } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { ChannelsTableViews } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
@@ -34,6 +33,10 @@ import { notify } from 'state/notifications/actions'
 import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
+
+const capitalizeValue = (value: unknown): string => {
+    return value == null ? '' : capitalize(String(value))
+}
 
 export const fetchAccount =
     () =>
@@ -126,7 +129,7 @@ export function submitSetting(
                             status: NotificationStatus.Success,
                             message:
                                 notification ??
-                                `${_capitalize(setting.type)} settings saved`,
+                                `${capitalizeValue(setting.type)} settings saved`,
                         }),
                     )
 

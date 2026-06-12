@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { produce } from 'immer'
-import { set as _set } from 'lodash'
+
+import { setActionPathValue } from '../helpers/path'
 
 export function useImmerState<T extends Record<string, unknown>>(
     initialState: T,
@@ -11,7 +12,7 @@ export function useImmerState<T extends Record<string, unknown>>(
         (path: string, value: any) =>
             setActionState((previousActionState) =>
                 produce(previousActionState, (draft) => {
-                    _set(draft, path, value)
+                    setActionPathValue(draft, path, value)
                 }),
             ),
         [],

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
-
-import _keyBy from 'lodash/keyBy'
 import { useHistory } from 'react-router-dom'
+import { keyBy } from '@gorgias/toolkit'
 
 import { IntegrationType } from 'models/integration/constants'
 import { AutomateFormView } from 'pages/automate/common/components/AutomateFormView'
@@ -24,7 +23,7 @@ const ActionsPlatformCreateAppFormView = () => {
     const isLoading = isAppsLoading
 
     const filteredApps = useMemo(() => {
-        const actionsAppsByAppId = _keyBy(actionsApps, 'id')
+        const actionsAppsByAppId = keyBy(actionsApps, 'id')
 
         return apps.filter((app) => !(app.id in actionsAppsByAppId))
     }, [apps, actionsApps])
