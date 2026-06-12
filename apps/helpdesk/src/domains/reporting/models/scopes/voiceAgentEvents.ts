@@ -1,8 +1,14 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
+import {
+    hasFilter,
+    withLogicalOperator,
+} from 'domains/reporting/models/queryFactories/utils'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
-import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import {
+    createScopeFilters,
+    getBreakdownQuery,
+} from 'domains/reporting/models/scopes/utils'
 import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
@@ -256,3 +262,56 @@ export const declinedCallsPerAgent = voiceAgentEventsScope
 export const declinedCallsPerAgentQueryV2Factory = (
     ctx: VoiceAgentEventsContext,
 ) => declinedCallsPerAgent.build(ctx)
+
+const transferredCallsBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: VoiceAgentEventsContext
+    config: typeof voiceAgentEventsScope.config
+}) => ({
+    measures: ['voiceCallsCount'] as const,
+    filters: createScopeFilters(
+        { ...ctx.filters, transferredCalls: withLogicalOperator(['1']) },
+        config,
+    ),
+})
+
+export const {
+    breakdownQueryFactory:
+        channelsVoiceTransferredInboundBreakdownQueryFactoryV2,
+} = getBreakdownQuery(
+    voiceAgentEventsScope,
+    transferredCallsBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TRANSFERRED_INBOUND_BREAKDOWN,
+    {
+        agentId:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TRANSFERRED_INBOUND_BREAKDOWN_PER_AGENT,
+    },
+)
+
+const declinedCallsBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: VoiceAgentEventsContext
+    config: typeof voiceAgentEventsScope.config
+}) => ({
+    measures: ['voiceCallsCount'] as const,
+    filters: createScopeFilters(
+        { ...ctx.filters, declinedCalls: withLogicalOperator(['1']) },
+        config,
+    ),
+})
+
+export const {
+    breakdownQueryFactory: channelsVoiceDeclinedInboundBreakdownQueryFactoryV2,
+} = getBreakdownQuery(
+    voiceAgentEventsScope,
+    declinedCallsBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN,
+    {
+        agentId:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN_PER_AGENT,
+    },
+)

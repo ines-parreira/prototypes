@@ -1,3 +1,4 @@
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceCallDimension,
@@ -599,6 +600,59 @@ export const {
     METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_TIMESERIES,
     'createdDatetime',
 )
+
+/**
+ * Builds a `voiceCallsCount` breakdown by `filteringAgentId` for the given call
+ * segment. The dimension is fixed to `filteringAgentId` (the agent the call is
+ * filtered by), so these power the Channels > Voice agents breakdown table where
+ * call volumes are attributed to the filtering agent.
+ */
+const channelsVoiceCallsCountPerFilteringAgent = (
+    metricName: MetricName,
+    segment?: VoiceCallSegment,
+) =>
+    voiceCallsScope
+        .defineMetricName(metricName)
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['voiceCallsCount'] as const,
+            dimensions: ['filteringAgentId'] as const,
+            filters: createScopeFilters(
+                withVoiceCallSegment(ctx.filters, segment),
+                config,
+            ),
+            limit: 10000,
+        }))
+
+export const channelsVoiceTotalCallsPerFilteringAgentQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) =>
+    channelsVoiceCallsCountPerFilteringAgent(
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_PER_FILTERING_AGENT,
+    ).build(ctx)
+
+export const channelsVoiceInboundAnsweredPerFilteringAgentQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) =>
+    channelsVoiceCallsCountPerFilteringAgent(
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_INBOUND_ANSWERED_PER_FILTERING_AGENT,
+        VoiceCallSegment.inboundAnsweredCallsByAgent,
+    ).build(ctx)
+
+export const channelsVoiceInboundUnansweredPerFilteringAgentQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) =>
+    channelsVoiceCallsCountPerFilteringAgent(
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_INBOUND_UNANSWERED_PER_FILTERING_AGENT,
+        VoiceCallSegment.inboundUnansweredCallsByAgent,
+    ).build(ctx)
+
+export const channelsVoiceOutboundPerFilteringAgentQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) =>
+    channelsVoiceCallsCountPerFilteringAgent(
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_OUTBOUND_PER_FILTERING_AGENT,
+        VoiceCallSegment.outboundCalls,
+    ).build(ctx)
 
 const channelsVoiceAverageTalkTimeBaseQuery = () => ({
     measures: ['averageTalkTimeInSeconds'] as const,

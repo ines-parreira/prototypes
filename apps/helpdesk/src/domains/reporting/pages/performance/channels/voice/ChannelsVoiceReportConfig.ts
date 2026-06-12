@@ -17,6 +17,11 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import {
+    CHANNELS_VOICE_AGENT_TABLE,
+    ChannelsVoiceAgentTable,
+    fetchChannelsVoiceAgentAsConfigurableTable,
+} from 'domains/reporting/pages/performance/channels/voice/charts/breakdownTables/ChannelsVoiceAgentTable'
 import { ChannelsVoiceConfigurableGraph } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/ChannelsVoiceConfigurableGraph'
 import { ChannelsVoiceAverageTalkTimeCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceAverageTalkTimeCard'
 import { ChannelsVoiceAverageWaitTimeCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceAverageWaitTimeCard'
@@ -48,6 +53,7 @@ export enum PerformanceChannelsVoiceChart {
     MissedCallsCard = 'performance-channels-voice-missed-calls-card',
     AverageTalkTimeCard = 'performance-channels-voice-average-talk-time-card',
     AverageWaitTimeCard = 'performance-channels-voice-average-wait-time-card',
+    AgentTable = 'performance-channels-voice-agent-table',
 }
 
 export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceChart> =
@@ -203,6 +209,18 @@ export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceCha
                 csvProducer: null,
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal',
+            },
+            [PerformanceChannelsVoiceChart.AgentTable]: {
+                chartComponent: ChannelsVoiceAgentTable,
+                label: CHANNELS_VOICE_AGENT_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchChannelsVoiceAgentAsConfigurableTable,
+                    },
+                ],
+                description: CHANNELS_VOICE_AGENT_TABLE.description,
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

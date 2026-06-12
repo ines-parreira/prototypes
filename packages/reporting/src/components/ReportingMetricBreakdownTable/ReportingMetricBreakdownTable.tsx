@@ -86,6 +86,11 @@ export function ReportingMetricBreakdownTable<TData>({
     const savedItem = context?.layoutConfig.sections
         .flatMap((s) => s.items)
         .find((item) => item.chartId === chartId)
+    const section = context?.layoutConfig.sections.find((s) =>
+        s.items.some((item) => item.chartId === chartId),
+    )
+    const sectionHasTabs = (section?.items.length ?? 0) > 1
+
     const schemaColumns =
         customDashboardChartSchema?.metadata?.preferences?.columns
     const defaultVisibleColumns = useMemo(
@@ -179,7 +184,11 @@ export function ReportingMetricBreakdownTable<TData>({
             display="flex"
             flex={1}
             flexDirection="column"
-            paddingTop={enableSearch && !isCustomDashboard ? '42px' : 0}
+            paddingTop={
+                enableSearch && !isCustomDashboard && sectionHasTabs
+                    ? '42px'
+                    : 0
+            }
         >
             {isCustomDashboard && name && (
                 <Box

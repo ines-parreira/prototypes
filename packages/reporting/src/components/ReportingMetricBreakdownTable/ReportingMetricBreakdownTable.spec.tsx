@@ -54,6 +54,34 @@ const contextWithSavedColumns = (
     },
 })
 
+const contextWithSiblingTables = (
+    siblingChartIds: string[],
+): DashboardContextValue => ({
+    ...baseContext,
+    layoutConfig: {
+        sections: [
+            {
+                id: 'section_tables',
+                type: ChartType.Table,
+                items: [
+                    {
+                        chartId: CHART_ID,
+                        gridSize: 12,
+                        visibility: true,
+                        visibleColumns: null,
+                    },
+                    ...siblingChartIds.map((id) => ({
+                        chartId: id,
+                        gridSize: 12 as const,
+                        visibility: true,
+                        visibleColumns: null,
+                    })),
+                ],
+            },
+        ],
+    },
+})
+
 type Row = { name: string; value: number }
 
 const nameColumns = [{ accessor: 'name', label: 'Name' }]
@@ -190,6 +218,94 @@ describe('ReportingMetricBreakdownTable', () => {
         )
 
         expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+    })
+
+    describe('search bar padding', () => {
+        it('reserves top padding when search is enabled and the section shows tabs', () => {
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSiblingTables(['other_table']),
+            )
+
+            const { container } = render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    enableSearch
+                />,
+            )
+
+            expect(container.firstChild).toHaveStyle({ paddingTop: '42px' })
+        })
+
+        it('does not reserve padding for a single-table section (no tabs)', () => {
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSiblingTables([]),
+            )
+
+            const { container } = render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    enableSearch
+                />,
+            )
+
+            expect(container.firstChild).not.toHaveStyle({
+                paddingTop: '42px',
+            })
+        })
+
+        it('does not reserve padding when search is disabled', () => {
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSiblingTables(['other_table']),
+            )
+
+            const { container } = render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                />,
+            )
+
+            expect(container.firstChild).not.toHaveStyle({
+                paddingTop: '42px',
+            })
+        })
+
+        it('does not reserve padding on a custom dashboard even with tabs', () => {
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSiblingTables(['other_table']),
+            )
+
+            const { container } = render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    chartId={CHART_ID}
+                    enableSearch
+                    customDashboardChartSchema={{}}
+                />,
+            )
+
+            expect(container.firstChild).not.toHaveStyle({
+                paddingTop: '42px',
+            })
+        })
     })
 
     describe('actionMenu', () => {

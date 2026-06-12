@@ -320,6 +320,26 @@ export const METRIC_TOOLTIPS = {
         caption:
             'Total number of inbound calls (received from customers) during the selected period.',
     },
+    voiceInboundAnsweredCalls: {
+        title: 'Inbound answered',
+        caption:
+            'Total number of inbound calls that were answered by an agent during the selected period.',
+    },
+    voiceInboundMissedCalls: {
+        title: 'Inbound missed',
+        caption:
+            'Total number of inbound calls that were not answered by an agent when they were rang during the selected period.',
+    },
+    voiceInboundTransfers: {
+        title: 'Inbound transfers',
+        caption:
+            'Total number of inbound calls that an agent transferred to an agent, queue or external number, during the selected period.',
+    },
+    voiceInboundDeclined: {
+        title: 'Inbound declined',
+        caption:
+            'Total number of inbound calls that an agent declined during the selected period.',
+    },
     voiceUnansweredCalls: {
         title: 'Unanswered calls',
         caption:

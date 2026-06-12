@@ -1,6 +1,9 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    channelsVoiceDeclinedInboundBreakdownQueryFactoryV2,
+    channelsVoiceTransferredInboundBreakdownQueryFactoryV2,
     declinedCallsPerAgent,
     declinedCallsPerAgentQueryV2Factory,
     declinedVoiceCallsCount,
@@ -401,5 +404,61 @@ describe('voiceAgentEventsScope', () => {
 
             expect(factoryResult).toEqual(buildResult)
         })
+    })
+
+    describe('performance channels voice agent-event breakdowns', () => {
+        const periodFilters = [
+            {
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: ['2025-09-03T00:00:00.000'],
+            },
+            {
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: ['2025-09-03T23:59:59.000'],
+            },
+        ]
+
+        it.each([
+            [
+                channelsVoiceTransferredInboundBreakdownQueryFactoryV2,
+                'transferredCalls',
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TRANSFERRED_INBOUND_BREAKDOWN,
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TRANSFERRED_INBOUND_BREAKDOWN_PER_AGENT,
+            ],
+            [
+                channelsVoiceDeclinedInboundBreakdownQueryFactoryV2,
+                'declinedCalls',
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN,
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN_PER_AGENT,
+            ],
+        ] as const)(
+            'breaks voiceCallsCount down by dimension, applies the segment filter, and routes the agentId override (%#)',
+            (factory, segmentMember, defaultName, perAgentName) => {
+                expect(
+                    factory({ ...context, dimensions: ['callDirection'] }),
+                ).toEqual({
+                    metricName: defaultName,
+                    scope: 'voice-agent-events',
+                    measures: ['voiceCallsCount'],
+                    dimensions: ['callDirection'],
+                    timezone: 'utc',
+                    filters: [
+                        ...periodFilters,
+                        {
+                            member: segmentMember,
+                            operator: 'one-of',
+                            values: ['1'],
+                        },
+                    ],
+                    limit: 10000,
+                })
+
+                expect(
+                    factory({ ...context, dimensions: ['agentId'] }).metricName,
+                ).toBe(perAgentName)
+            },
+        )
     })
 })

@@ -69,5 +69,26 @@ export const DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT: DashboardLayoutConfig<Pe
                     },
                 ],
             },
+            {
+                id: 'breakdown',
+                type: ChartType.Table,
+                tableTitle: 'Performance breakdown',
+                items: [
+                    {
+                        chartId: PerformanceChannelsVoiceChart.AgentTable,
+                        gridSize: 12,
+                        visibility: true,
+                        visibleColumns: [
+                            'totalCalls',
+                            'inboundAnswered',
+                            'inboundMissed',
+                            'inboundTransferred',
+                            'inboundDeclined',
+                            'outbound',
+                            'averageTalkTime',
+                        ],
+                    },
+                ],
+            },
         ],
     }

@@ -779,26 +779,22 @@ export const METRIC_NAMES = {
         'performance-channels-voice-call-outcome-value',
     PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_TIMESERIES:
         'performance-channels-voice-call-outcome-timeseries',
-    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_BREAKDOWN:
-        'performance-channels-voice-total-calls-breakdown',
-    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_BREAKDOWN_PER_AGENT:
-        'performance-channels-voice-total-calls-breakdown-per-agent',
-    PERFORMANCE_CHANNELS_VOICE_OUTBOUND_CALLS_BREAKDOWN:
-        'performance-channels-voice-outbound-calls-breakdown',
-    PERFORMANCE_CHANNELS_VOICE_OUTBOUND_CALLS_BREAKDOWN_PER_AGENT:
-        'performance-channels-voice-outbound-calls-breakdown-per-agent',
-    PERFORMANCE_CHANNELS_VOICE_INBOUND_CALLS_BREAKDOWN:
-        'performance-channels-voice-inbound-calls-breakdown',
-    PERFORMANCE_CHANNELS_VOICE_INBOUND_CALLS_BREAKDOWN_PER_AGENT:
-        'performance-channels-voice-inbound-calls-breakdown-per-agent',
-    PERFORMANCE_CHANNELS_VOICE_UNANSWERED_CALLS_BREAKDOWN:
-        'performance-channels-voice-unanswered-calls-breakdown',
-    PERFORMANCE_CHANNELS_VOICE_UNANSWERED_CALLS_BREAKDOWN_PER_AGENT:
-        'performance-channels-voice-unanswered-calls-breakdown-per-agent',
-    PERFORMANCE_CHANNELS_VOICE_MISSED_CALLS_BREAKDOWN:
-        'performance-channels-voice-missed-calls-breakdown',
-    PERFORMANCE_CHANNELS_VOICE_MISSED_CALLS_BREAKDOWN_PER_AGENT:
-        'performance-channels-voice-missed-calls-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_PER_FILTERING_AGENT:
+        'performance-channels-voice-total-calls-per-filtering-agent',
+    PERFORMANCE_CHANNELS_VOICE_INBOUND_ANSWERED_PER_FILTERING_AGENT:
+        'performance-channels-voice-inbound-answered-per-filtering-agent',
+    PERFORMANCE_CHANNELS_VOICE_INBOUND_UNANSWERED_PER_FILTERING_AGENT:
+        'performance-channels-voice-inbound-unanswered-per-filtering-agent',
+    PERFORMANCE_CHANNELS_VOICE_OUTBOUND_PER_FILTERING_AGENT:
+        'performance-channels-voice-outbound-per-filtering-agent',
+    PERFORMANCE_CHANNELS_VOICE_TRANSFERRED_INBOUND_BREAKDOWN:
+        'performance-channels-voice-transferred-inbound-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_TRANSFERRED_INBOUND_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-transferred-inbound-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN:
+        'performance-channels-voice-declined-inbound-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-declined-inbound-breakdown-per-agent',
     PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_VALUE:
         'performance-channels-voice-average-talk-time-value',
     PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN:

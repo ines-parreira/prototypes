@@ -291,6 +291,8 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'callDirection':
             case 'callTerminationStatus':
             case 'callSlaStatus':
+            case 'transferredCalls':
+            case 'declinedCalls':
             case 'isAnsweredByAgent':
             case 'isDuringBusinessHours':
             case 'displayStatus':

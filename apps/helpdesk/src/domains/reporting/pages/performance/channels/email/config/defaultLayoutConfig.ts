@@ -85,7 +85,7 @@ export const DEFAULT_PERFORMANCE_CHANNELS_EMAIL_LAYOUT: DashboardLayoutConfig<Pe
             {
                 id: 'breakdown',
                 type: ChartType.Table,
-                tableTitle: 'Email performance breakdown',
+                tableTitle: 'Performance breakdown',
                 items: [
                     {
                         chartId: PerformanceChannelsEmailChart.AgentTable,

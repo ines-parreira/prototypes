@@ -14,6 +14,11 @@ import {
     channelsVoiceAverageWaitTimeTimeseriesQueryFactoryV2,
     channelsVoiceAverageWaitTimeValueQueryFactoryV2,
     channelsVoiceCallOutcomeTimeseriesQueryFactoryV2,
+    channelsVoiceCallOutcomeValueQueryFactoryV2,
+    channelsVoiceInboundAnsweredPerFilteringAgentQueryFactoryV2,
+    channelsVoiceInboundUnansweredPerFilteringAgentQueryFactoryV2,
+    channelsVoiceOutboundPerFilteringAgentQueryFactoryV2,
+    channelsVoiceTotalCallsPerFilteringAgentQueryFactoryV2,
     mapVoiceCallDirectionToScopeOrder,
     voiceCallsAchievedExposures,
     voiceCallsAchievedExposuresQueryFactoryV2,
@@ -499,6 +504,92 @@ describe('voiceCallsScope', () => {
                 limit: 10000,
             })
         })
+
+        it('builds the call outcome value query with every outcome measure', () => {
+            expect(
+                channelsVoiceCallOutcomeValueQueryFactoryV2(granularContext),
+            ).toEqual({
+                metricName:
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_VALUE,
+                scope: MetricScope.VoiceCalls,
+                measures: [
+                    'voiceCallsCount',
+                    'inboundCallsCount',
+                    'outboundCallsCount',
+                    'inboundAnsweredCallsCount',
+                    'inboundUnansweredCallsCount',
+                    'inboundMissedCallsCount',
+                    'inboundAbandonedCallsCount',
+                    'inboundCancelledCallsCount',
+                    'inboundCallbackRequestedCallsCount',
+                ],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
+            })
+        })
+    })
+
+    describe('performance channels voice per-filtering-agent call counts', () => {
+        const expectedPeriodFilters = [
+            {
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: ['2025-09-03T00:00:00.000'],
+            },
+            {
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: ['2025-09-03T23:59:59.000'],
+            },
+        ]
+
+        it('builds the total calls breakdown by filtering agent (no segment)', () => {
+            expect(
+                channelsVoiceTotalCallsPerFilteringAgentQueryFactoryV2(context),
+            ).toEqual({
+                metricName:
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_PER_FILTERING_AGENT,
+                scope: MetricScope.VoiceCalls,
+                measures: ['voiceCallsCount'],
+                dimensions: ['filteringAgentId'],
+                timezone: 'utc',
+                filters: expectedPeriodFilters,
+                limit: 10000,
+            })
+        })
+
+        it.each([
+            [
+                channelsVoiceInboundAnsweredPerFilteringAgentQueryFactoryV2,
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_INBOUND_ANSWERED_PER_FILTERING_AGENT,
+            ],
+            [
+                channelsVoiceInboundUnansweredPerFilteringAgentQueryFactoryV2,
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_INBOUND_UNANSWERED_PER_FILTERING_AGENT,
+            ],
+            [
+                channelsVoiceOutboundPerFilteringAgentQueryFactoryV2,
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_OUTBOUND_PER_FILTERING_AGENT,
+            ],
+        ] as const)(
+            'breaks voiceCallsCount down by filtering agent with a segment filter (%#)',
+            (factory, metricName) => {
+                const query = factory(context)
+
+                expect(query.metricName).toBe(metricName)
+                expect(query.measures).toEqual(['voiceCallsCount'])
+                expect(query.dimensions).toEqual(['filteringAgentId'])
+                expect(query.limit).toBe(10000)
+                expect(query.filters).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({ member: 'callDirection' }),
+                    ]),
+                )
+            },
+        )
     })
 
     describe('voiceCallsCountQueryFactoryV2', () => {
