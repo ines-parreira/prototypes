@@ -132,57 +132,64 @@ export const KnowledgeEditorSkillContent = ({ isSidePanelLoading }: Props) => {
                     <Box
                         flexDirection="column"
                         flex={1}
-                        alignItems="center"
-                        className={css.editorContent}
+                        minWidth={0}
+                        className={css.editorScroll}
                     >
-                        <KnowledgeEditorSkillVersionBanner />
+                        <Box
+                            flexDirection="column"
+                            flex={1}
+                            alignItems="center"
+                            className={css.editorContent}
+                        >
+                            <KnowledgeEditorSkillVersionBanner />
 
-                        {mode !== 'diff' && <SkillDisabledActionsBar />}
+                            {mode !== 'diff' && <SkillDisabledActionsBar />}
 
-                        {mode === 'diff' && (
-                            <DiffView
-                                oldTitle={
-                                    historicalVersion
-                                        ? historicalVersion.title
-                                        : (comparisonVersion?.title ?? '')
-                                }
-                                oldContent={
-                                    historicalVersion
-                                        ? historicalVersion.content
-                                        : (comparisonVersion?.content ?? '')
-                                }
-                                newTitle={
-                                    historicalVersion
-                                        ? (comparisonVersion?.title ?? '')
-                                        : title
-                                }
-                                newContent={
-                                    historicalVersion
-                                        ? (comparisonVersion?.content ?? '')
-                                        : content
-                                }
-                                availableVariables={guidanceVariables}
-                                availableActions={guidanceActions}
-                            />
-                        )}
+                            {mode === 'diff' && (
+                                <DiffView
+                                    oldTitle={
+                                        historicalVersion
+                                            ? historicalVersion.title
+                                            : (comparisonVersion?.title ?? '')
+                                    }
+                                    oldContent={
+                                        historicalVersion
+                                            ? historicalVersion.content
+                                            : (comparisonVersion?.content ?? '')
+                                    }
+                                    newTitle={
+                                        historicalVersion
+                                            ? (comparisonVersion?.title ?? '')
+                                            : title
+                                    }
+                                    newContent={
+                                        historicalVersion
+                                            ? (comparisonVersion?.content ?? '')
+                                            : content
+                                    }
+                                    availableVariables={guidanceVariables}
+                                    availableActions={guidanceActions}
+                                />
+                            )}
 
-                        {mode === 'read' && (
-                            <KnowledgeEditorSkillReadView
-                                content={content}
-                                availableActions={guidanceActions}
-                                availableVariables={guidanceVariables}
-                            />
-                        )}
+                            {mode === 'read' && (
+                                <KnowledgeEditorSkillReadView
+                                    content={content}
+                                    availableActions={guidanceActions}
+                                    availableVariables={guidanceVariables}
+                                />
+                            )}
 
-                        {isEditableMode && (
-                            <KnowledgeEditorSkillEditView
-                                content={content}
-                                onChangeContent={onChangeContent}
-                                shopName={shopName}
-                                availableActions={guidanceActions}
-                                availableVariables={guidanceVariables}
-                            />
-                        )}
+                            {isEditableMode && (
+                                <KnowledgeEditorSkillEditView
+                                    content={content}
+                                    onChangeContent={onChangeContent}
+                                    shopName={shopName}
+                                    availableActions={guidanceActions}
+                                    availableVariables={guidanceVariables}
+                                />
+                            )}
+                        </Box>
                     </Box>
                 </Box>
                 {isPreviewMode ? (

@@ -191,6 +191,124 @@ describe('KnowledgeEditorSkillContent', () => {
         expect(screen.getByText('Diff View')).toBeInTheDocument()
     })
 
+    it('renders diff view with no comparison version', () => {
+        mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+            selector({
+                state: {
+                    mode: 'diff',
+                    title: 'Draft Title',
+                    content: '<p>draft</p>',
+                    historicalVersion: null,
+                    comparisonVersion: null,
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: null,
+                },
+                config: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    onClose: jest.fn(),
+                    isPreviewMode: false,
+                },
+                dispatch: jest.fn(),
+            }),
+        )
+        render(<KnowledgeEditorSkillContent />)
+
+        expect(screen.getByText('Diff View')).toBeInTheDocument()
+    })
+
+    it('renders diff view with historical version and no comparison version', () => {
+        mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+            selector({
+                state: {
+                    mode: 'diff',
+                    title: 'Draft Title',
+                    content: '<p>draft</p>',
+                    historicalVersion: {
+                        title: 'Old Title',
+                        content: '<p>old</p>',
+                    },
+                    comparisonVersion: null,
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: null,
+                },
+                config: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    onClose: jest.fn(),
+                    isPreviewMode: false,
+                },
+                dispatch: jest.fn(),
+            }),
+        )
+        render(<KnowledgeEditorSkillContent />)
+
+        expect(screen.getByText('Diff View')).toBeInTheDocument()
+    })
+
+    describe('save status', () => {
+        const makeStore = (state: Record<string, unknown>) => ({
+            state: {
+                mode: 'edit',
+                title: 'Test Skill',
+                content: '<p>content</p>',
+                isAutoSaving: false,
+                hasAutoSavedInSession: false,
+                autoSaveError: false,
+                skill: null,
+                ...state,
+            },
+            config: {
+                shopName: 'test-shop',
+                shopType: 'shopify',
+                onClose: jest.fn(),
+                isPreviewMode: false,
+            },
+            dispatch: jest.fn(),
+        })
+
+        it('renders while auto-saving', () => {
+            mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+                selector(makeStore({ isAutoSaving: true })),
+            )
+            render(<KnowledgeEditorSkillContent />)
+
+            expect(screen.getByText('Header')).toBeInTheDocument()
+        })
+
+        it('renders with a last updated time after saving in session', () => {
+            mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+                selector(
+                    makeStore({
+                        hasAutoSavedInSession: true,
+                        skill: { lastUpdated: '2026-06-12T10:00:00.000Z' },
+                    }),
+                ),
+            )
+            render(<KnowledgeEditorSkillContent />)
+
+            expect(screen.getByText('Header')).toBeInTheDocument()
+        })
+
+        it('renders after saving in session without a last updated time', () => {
+            mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+                selector(
+                    makeStore({
+                        hasAutoSavedInSession: true,
+                        skill: { lastUpdated: null },
+                    }),
+                ),
+            )
+            render(<KnowledgeEditorSkillContent />)
+
+            expect(screen.getByText('Header')).toBeInTheDocument()
+        })
+    })
+
     describe('preview mode (isPreviewMode=true)', () => {
         const makePreviewStore = (isDetailsView: boolean) => ({
             state: {

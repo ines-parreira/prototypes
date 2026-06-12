@@ -49,7 +49,7 @@ export const SkillEditorHeader = ({
             justifyContent="space-between"
             padding={!isPreview ? 'lg' : undefined}
             gap="sm"
-            minWidth={570}
+            minWidth={0}
             className={isPreview ? css.header : undefined}
         >
             <Box alignItems="center" gap="sm" flex={1} minWidth={0}>
