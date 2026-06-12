@@ -8,7 +8,7 @@ import {
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
-export const ChannelsVoiceTotalCallsCard = ({
+export const ChannelsVoiceInboundCallsCard = ({
     chartId,
     dashboard,
     chartConfig,
@@ -16,7 +16,7 @@ export const ChannelsVoiceTotalCallsCard = ({
     const trendCardProps = useReportingTrendCardProps({
         useTrend: getStatsTrendHook(
             channelsVoiceCallOutcomeValueQueryFactoryV2,
-            'voiceCallsCount',
+            'inboundCallsCount',
         ),
         chartConfig: chartConfig!,
         isAiAgentTrendCard: false,
@@ -24,7 +24,7 @@ export const ChannelsVoiceTotalCallsCard = ({
         dashboard,
         timeSeriesView: {
             queryFactory: channelsVoiceCallOutcomeTimeseriesQueryFactoryV2,
-            measureName: 'voiceCallsCount',
+            measureName: 'inboundCallsCount',
         },
     })
 

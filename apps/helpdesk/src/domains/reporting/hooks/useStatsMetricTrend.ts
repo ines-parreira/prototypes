@@ -1,6 +1,7 @@
 import type { MetricTrend } from '@repo/reporting'
 
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import type { MeasureNameOf } from 'domains/reporting/hooks/useStatsMetric'
 import {
     fetchStatsMetric,
     useStatsMetric,
@@ -26,9 +27,16 @@ export async function fetchStatsMetricTrend<
 >(
     currentPeriodQuery: BuiltQuery<TMeta>,
     prevPeriodQuery: BuiltQuery<TMeta>,
+    measureName?: MeasureNameOf<TMeta>,
 ): Promise<GenericMetricTrend> {
-    const currentPeriodMetric = fetchStatsMetric<TMeta>(currentPeriodQuery)
-    const prevPeriodMetric = fetchStatsMetric<TMeta>(prevPeriodQuery)
+    const currentPeriodMetric = fetchStatsMetric<TMeta>(
+        currentPeriodQuery,
+        measureName,
+    )
+    const prevPeriodMetric = fetchStatsMetric<TMeta>(
+        prevPeriodQuery,
+        measureName,
+    )
 
     return Promise.all([currentPeriodMetric, prevPeriodMetric])
         .then(([currentPeriodResult, previousPeriodResult]) => ({
@@ -57,12 +65,18 @@ export function useStatsMetricTrend<TMeta extends ScopeMeta>(
     currentPeriodQuery: BuiltQuery<TMeta>,
     prevPeriodQuery: BuiltQuery<TMeta>,
     enabled: boolean = true,
+    measureName?: MeasureNameOf<TMeta>,
 ): GenericMetricTrend {
     const currentPeriodMetric = useStatsMetric<TMeta>(
         currentPeriodQuery,
         enabled,
+        measureName,
     )
-    const prevPeriodMetric = useStatsMetric<TMeta>(prevPeriodQuery, enabled)
+    const prevPeriodMetric = useStatsMetric<TMeta>(
+        prevPeriodQuery,
+        enabled,
+        measureName,
+    )
 
     return {
         isFetching:
@@ -86,6 +100,7 @@ export const getStatsTrendHook =
         TContext extends Context<TMeta> = Context<TMeta>,
     >(
         query: MetricQueryFactory<TMeta, TMetricName, TContext>,
+        measureName?: MeasureNameOf<TMeta>,
     ) =>
     (filters: StatsFilters, timezone: string) =>
         useStatsMetricTrend(
@@ -97,6 +112,8 @@ export const getStatsTrendHook =
                 },
                 timezone,
             } as TContext),
+            true,
+            measureName,
         )
 
 export const getStatsTrendFetch =
@@ -106,6 +123,7 @@ export const getStatsTrendFetch =
         TContext extends Context<TMeta> = Context<TMeta>,
     >(
         query: MetricQueryFactory<TMeta, TMetricName, TContext>,
+        measureName?: MeasureNameOf<TMeta>,
     ) =>
     (filters: StatsFilters, timezone: string) =>
         fetchStatsMetricTrend(
@@ -117,4 +135,5 @@ export const getStatsTrendFetch =
                 },
                 timezone,
             } as TContext),
+            measureName,
         )

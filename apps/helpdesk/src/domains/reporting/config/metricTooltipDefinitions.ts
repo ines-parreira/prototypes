@@ -303,6 +303,41 @@ export const METRIC_TOOLTIPS = {
     voiceTotalCalls: {
         title: 'Total calls',
         caption:
-            'Total number of inbound and outbound calls during the selected period.',
+            'Total number of (inbound and outbound) calls during the selected period.',
+    },
+    voiceTicketsCreated: {
+        title: 'Voice tickets created',
+        caption:
+            'Total number of tickets created through the phone channel during the selected period.',
+    },
+    voiceOutboundCalls: {
+        title: 'Outbound calls',
+        caption:
+            'Total number of outbound calls (placed by agents) during the selected period.',
+    },
+    voiceInboundCalls: {
+        title: 'Inbound calls',
+        caption:
+            'Total number of inbound calls (received from customers) during the selected period.',
+    },
+    voiceUnansweredCalls: {
+        title: 'Unanswered calls',
+        caption:
+            'Total number of inbound calls that were not answered during the selected period. It includes missed, cancelled, abandoned calls and callback requests.',
+    },
+    voiceMissedCalls: {
+        title: 'Missed calls',
+        caption:
+            'Total number of inbound calls that were ended by the caller before reaching an agent or voicemail during the selected period.',
+    },
+    voiceAverageTalkTime: {
+        title: 'Average talk time',
+        caption:
+            'Average time agents spent talking on calls during the selected period.',
+    },
+    voiceAverageWaitTime: {
+        title: 'Average wait time',
+        caption:
+            'Average time customers waited before their inbound call was answered or ended by a flow during the selected period.',
     },
 } as const satisfies Record<string, MetricTooltipConfig>

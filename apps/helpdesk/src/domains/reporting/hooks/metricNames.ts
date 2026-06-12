@@ -775,10 +775,52 @@ export const METRIC_NAMES = {
         'voice-call-count-per-filtering-agent',
     VOICE_CALL_LIST: 'voice-call-list',
     VOICE_CALL_WITH_SLA_STATUS_LIST: 'voice-call-with-sla-status-list',
-    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE:
-        'performance-channels-voice-total-calls-value',
     PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_VALUE:
         'performance-channels-voice-call-outcome-value',
+    PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_TIMESERIES:
+        'performance-channels-voice-call-outcome-timeseries',
+    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_BREAKDOWN:
+        'performance-channels-voice-total-calls-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-total-calls-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_OUTBOUND_CALLS_BREAKDOWN:
+        'performance-channels-voice-outbound-calls-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_OUTBOUND_CALLS_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-outbound-calls-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_INBOUND_CALLS_BREAKDOWN:
+        'performance-channels-voice-inbound-calls-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_INBOUND_CALLS_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-inbound-calls-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_UNANSWERED_CALLS_BREAKDOWN:
+        'performance-channels-voice-unanswered-calls-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_UNANSWERED_CALLS_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-unanswered-calls-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_MISSED_CALLS_BREAKDOWN:
+        'performance-channels-voice-missed-calls-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_MISSED_CALLS_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-missed-calls-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_VALUE:
+        'performance-channels-voice-average-talk-time-value',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN:
+        'performance-channels-voice-average-talk-time-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-average-talk-time-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_TIMESERIES:
+        'performance-channels-voice-average-talk-time-timeseries',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_TIMESERIES_PER_CALL_DIRECTION:
+        'performance-channels-voice-average-talk-time-timeseries-per-call-direction',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_VALUE:
+        'performance-channels-voice-average-wait-time-value',
+    PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_TIMESERIES:
+        'performance-channels-voice-average-wait-time-timeseries',
+    PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_VALUE:
+        'performance-channels-voice-tickets-created-value',
+    PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_BREAKDOWN:
+        'performance-channels-voice-tickets-created-breakdown',
+    PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_BREAKDOWN_PER_AGENT:
+        'performance-channels-voice-tickets-created-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_TIMESERIES:
+        'performance-channels-voice-tickets-created-timeseries',
 
     // VoiceCallsSummary scope
     VOICE_CALL_SUMMARY: 'voice-call-summary',

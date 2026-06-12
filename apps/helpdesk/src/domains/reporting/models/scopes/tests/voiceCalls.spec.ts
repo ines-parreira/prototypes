@@ -8,7 +8,12 @@ import {
 import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import {
-    channelsVoiceTotalCallsValueQueryFactoryV2,
+    channelsVoiceAverageTalkTimeBreakdownQueryFactoryV2,
+    channelsVoiceAverageTalkTimeTimeseriesQueryFactoryV2,
+    channelsVoiceAverageTalkTimeValueQueryFactoryV2,
+    channelsVoiceAverageWaitTimeTimeseriesQueryFactoryV2,
+    channelsVoiceAverageWaitTimeValueQueryFactoryV2,
+    channelsVoiceCallOutcomeTimeseriesQueryFactoryV2,
     mapVoiceCallDirectionToScopeOrder,
     voiceCallsAchievedExposures,
     voiceCallsAchievedExposuresQueryFactoryV2,
@@ -36,7 +41,10 @@ import {
     voiceWaitTimeCallsAllDimensions,
     voiceWaitTimeCallsAllDimensionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
-import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall', () => ({
@@ -300,26 +308,196 @@ describe('voiceCallsScope', () => {
         })
     })
 
-    describe('channelsVoiceTotalCallsValueQueryFactoryV2', () => {
-        it('builds the total calls value query for the channels voice dashboard', () => {
-            const result = channelsVoiceTotalCallsValueQueryFactoryV2(context)
+    describe('performance channels voice triplets', () => {
+        const granularContext: VoiceCallsContext = {
+            ...context,
+            granularity: 'day' as AggregationWindow,
+        }
 
-            expect(result).toMatchObject({
-                measures: ['voiceCallsCount'],
-                timezone: 'utc',
+        const periodFilters = [
+            {
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: ['2025-09-03T00:00:00.000'],
+            },
+            {
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: ['2025-09-03T23:59:59.000'],
+            },
+        ]
+
+        const inboundCallDirectionFilter = {
+            member: 'callDirection',
+            operator: 'one-of',
+            values: ['inbound'],
+        }
+
+        it.each([
+            [
+                channelsVoiceAverageTalkTimeValueQueryFactoryV2,
+                'averageTalkTimeInSeconds',
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_VALUE,
+            ],
+        ] as const)(
+            'value factory builds the value query with auto-injected time_dimensions (%#)',
+            (factory, measure, metricName) => {
+                expect(factory(granularContext)).toEqual({
+                    metricName,
+                    scope: MetricScope.VoiceCalls,
+                    measures: [measure],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            },
+        )
+
+        it('builds the average wait time value query filtered to inbound calls', () => {
+            expect(
+                channelsVoiceAverageWaitTimeValueQueryFactoryV2(
+                    granularContext,
+                ),
+            ).toEqual({
                 metricName:
-                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE,
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_VALUE,
                 scope: MetricScope.VoiceCalls,
+                measures: ['averageWaitTimeInSeconds'],
+                timezone: 'utc',
+                filters: [...periodFilters, inboundCallDirectionFilter],
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
             })
         })
 
-        it('does not apply a call direction segment filter', () => {
-            const result = channelsVoiceTotalCallsValueQueryFactoryV2(context)
+        it.each([
+            [
+                channelsVoiceAverageTalkTimeBreakdownQueryFactoryV2,
+                'averageTalkTimeInSeconds',
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN,
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN_PER_AGENT,
+            ],
+        ] as const)(
+            'breakdown factory routes default + agentId override (%#)',
+            (factory, measure, defaultName, perAgentName) => {
+                expect(
+                    factory({
+                        ...granularContext,
+                        dimensions: ['callDirection'],
+                    }),
+                ).toEqual({
+                    metricName: defaultName,
+                    scope: MetricScope.VoiceCalls,
+                    measures: [measure],
+                    dimensions: ['callDirection'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                    limit: 10000,
+                })
 
-            const callDirectionFilter = result.filters?.find(
-                (f: { member: string }) => f.member === 'callDirection',
+                expect(
+                    factory({ ...granularContext, dimensions: ['agentId'] })
+                        .metricName,
+                ).toBe(perAgentName)
+            },
+        )
+
+        it.each([
+            [
+                channelsVoiceAverageTalkTimeTimeseriesQueryFactoryV2,
+                'averageTalkTimeInSeconds',
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_TIMESERIES,
+            ],
+        ] as const)(
+            'timeseries factory pins createdDatetime and adds limit (%#)',
+            (factory, measure, metricName) => {
+                expect(factory({ ...granularContext, dimensions: [] })).toEqual(
+                    {
+                        metricName,
+                        scope: MetricScope.VoiceCalls,
+                        measures: [measure],
+                        dimensions: [],
+                        time_dimensions: [
+                            {
+                                dimension: 'createdDatetime',
+                                granularity: 'day',
+                            },
+                        ],
+                        timezone: 'utc',
+                        filters: periodFilters,
+                        limit: 10000,
+                    },
+                )
+            },
+        )
+
+        it('builds the average wait time timeseries filtered to inbound calls', () => {
+            expect(
+                channelsVoiceAverageWaitTimeTimeseriesQueryFactoryV2({
+                    ...granularContext,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_TIMESERIES,
+                scope: MetricScope.VoiceCalls,
+                measures: ['averageWaitTimeInSeconds'],
+                dimensions: [],
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
+                timezone: 'utc',
+                filters: [...periodFilters, inboundCallDirectionFilter],
+                limit: 10000,
+            })
+        })
+
+        it('routes average talk time timeseries to the callDirection override', () => {
+            expect(
+                channelsVoiceAverageTalkTimeTimeseriesQueryFactoryV2({
+                    ...granularContext,
+                    dimensions: ['callDirection'],
+                }).metricName,
+            ).toBe(
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_TIMESERIES_PER_CALL_DIRECTION,
             )
-            expect(callDirectionFilter).toBeUndefined()
+        })
+
+        it('builds the call outcome timeseries with every outcome measure', () => {
+            expect(
+                channelsVoiceCallOutcomeTimeseriesQueryFactoryV2({
+                    ...granularContext,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_TIMESERIES,
+                scope: MetricScope.VoiceCalls,
+                measures: [
+                    'voiceCallsCount',
+                    'inboundCallsCount',
+                    'outboundCallsCount',
+                    'inboundAnsweredCallsCount',
+                    'inboundUnansweredCallsCount',
+                    'inboundMissedCallsCount',
+                    'inboundAbandonedCallsCount',
+                    'inboundCancelledCallsCount',
+                    'inboundCallbackRequestedCallsCount',
+                ],
+                dimensions: [],
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
+                timezone: 'utc',
+                filters: periodFilters,
+                limit: 10000,
+            })
         })
     })
 

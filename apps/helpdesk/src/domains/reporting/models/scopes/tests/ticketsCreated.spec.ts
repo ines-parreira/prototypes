@@ -1,6 +1,9 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
+    channelsVoiceTicketsCreatedBreakdownQueryFactoryV2,
+    channelsVoiceTicketsCreatedTimeseriesQueryFactoryV2,
+    channelsVoiceTicketsCreatedValueQueryFactoryV2,
     createdTicketsBreakdownQueryFactoryV2,
     createdTicketsCount,
     createdTicketsCountQueryV2Factory,
@@ -394,6 +397,94 @@ describe('ticketsCreatedScope', () => {
                 ).toBe(
                     'performance-overview-created-tickets-timeseries-per-channel',
                 )
+            })
+        })
+
+        describe('channels voice tickets created triplet', () => {
+            const periodFilters = [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ]
+
+            const phoneChannelFilter = {
+                member: 'channel',
+                operator: 'one-of',
+                values: ['phone'],
+            }
+
+            it('value hardcodes the phone channel filter', () => {
+                expect(
+                    channelsVoiceTicketsCreatedValueQueryFactoryV2(context),
+                ).toEqual({
+                    metricName:
+                        'performance-channels-voice-tickets-created-value',
+                    scope: 'tickets-created',
+                    measures: ['ticketCount'],
+                    timezone: 'utc',
+                    filters: [...periodFilters, phoneChannelFilter],
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it('breakdown keeps the phone channel filter and forwards ctx.dimensions', () => {
+                expect(
+                    channelsVoiceTicketsCreatedBreakdownQueryFactoryV2({
+                        ...context,
+                        dimensions: ['agentId'],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-channels-voice-tickets-created-breakdown-per-agent',
+                    scope: 'tickets-created',
+                    measures: ['ticketCount'],
+                    dimensions: ['agentId'],
+                    timezone: 'utc',
+                    filters: [...periodFilters, phoneChannelFilter],
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                    limit: 10000,
+                })
+            })
+
+            it('breakdown falls back to the default metric name for unmapped dims', () => {
+                expect(
+                    channelsVoiceTicketsCreatedBreakdownQueryFactoryV2({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }).metricName,
+                ).toBe('performance-channels-voice-tickets-created-breakdown')
+            })
+
+            it('timeseries pins createdDatetime and keeps the phone channel filter', () => {
+                expect(
+                    channelsVoiceTicketsCreatedTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-channels-voice-tickets-created-timeseries',
+                    scope: 'tickets-created',
+                    measures: ['ticketCount'],
+                    dimensions: [],
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                    timezone: 'utc',
+                    filters: [...periodFilters, phoneChannelFilter],
+                    limit: 10000,
+                })
             })
         })
     })

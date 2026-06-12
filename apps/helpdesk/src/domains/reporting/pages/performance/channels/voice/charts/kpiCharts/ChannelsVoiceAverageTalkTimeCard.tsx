@@ -3,28 +3,26 @@ import { TrendCard } from '@repo/reporting'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
-    channelsVoiceCallOutcomeTimeseriesQueryFactoryV2,
-    channelsVoiceCallOutcomeValueQueryFactoryV2,
+    channelsVoiceAverageTalkTimeTimeseriesQueryFactoryV2,
+    channelsVoiceAverageTalkTimeValueQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
-export const ChannelsVoiceTotalCallsCard = ({
+export const ChannelsVoiceAverageTalkTimeCard = ({
     chartId,
     dashboard,
     chartConfig,
 }: DashboardChartProps) => {
     const trendCardProps = useReportingTrendCardProps({
         useTrend: getStatsTrendHook(
-            channelsVoiceCallOutcomeValueQueryFactoryV2,
-            'voiceCallsCount',
+            channelsVoiceAverageTalkTimeValueQueryFactoryV2,
         ),
         chartConfig: chartConfig!,
         isAiAgentTrendCard: false,
         chartId,
         dashboard,
         timeSeriesView: {
-            queryFactory: channelsVoiceCallOutcomeTimeseriesQueryFactoryV2,
-            measureName: 'voiceCallsCount',
+            queryFactory: channelsVoiceAverageTalkTimeTimeseriesQueryFactoryV2,
         },
     })
 

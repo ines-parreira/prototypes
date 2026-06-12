@@ -134,6 +134,46 @@ describe('useStatsMetric', () => {
 
             expect(result).toBe(100)
         })
+
+        it('should read the named measure when measureName is provided', () => {
+            const queryWithMultipleMeasures = {
+                ...defaultQuery,
+                measures: ['ticketCount', 'openTickets'] as any,
+            }
+            const data = {
+                data: {
+                    data: [{ ticketCount: '100', openTickets: '200' }],
+                },
+            } as any
+
+            const result = selectStatsMeasure(
+                data,
+                queryWithMultipleMeasures,
+                'openTickets' as any,
+            )
+
+            expect(result).toBe(200)
+        })
+
+        it('should return null when the named measure is absent from the data', () => {
+            const queryWithMultipleMeasures = {
+                ...defaultQuery,
+                measures: ['ticketCount', 'openTickets'] as any,
+            }
+            const data = {
+                data: {
+                    data: [{ ticketCount: '100' }],
+                },
+            } as any
+
+            const result = selectStatsMeasure(
+                data,
+                queryWithMultipleMeasures,
+                'openTickets' as any,
+            )
+
+            expect(result).toBe(null)
+        })
     })
 
     describe('useStatsMetric hook', () => {
@@ -357,6 +397,25 @@ describe('useStatsMetric', () => {
             const result = await fetchStatsMetric(queryWithMultipleMeasures)
 
             expect(result.data).toEqual({ value: 100 })
+        })
+
+        it('should read the named measure when measureName is provided', async () => {
+            const queryWithMultipleMeasures = {
+                ...defaultQuery,
+                measures: ['ticketCount', 'openTickets'] as any,
+            }
+            fetchPostStatsMock.mockResolvedValue({
+                data: {
+                    data: [{ ticketCount: '100', openTickets: '200' }],
+                },
+            } as any)
+
+            const result = await fetchStatsMetric(
+                queryWithMultipleMeasures,
+                'openTickets' as any,
+            )
+
+            expect(result.data).toEqual({ value: 200 })
         })
     })
 })

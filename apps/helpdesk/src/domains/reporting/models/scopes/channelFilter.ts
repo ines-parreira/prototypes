@@ -8,6 +8,8 @@ import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 
 export const EMAIL_AND_CONTACT_FORM_CHANNELS = ['email', 'contact_form']
 
+export const VOICE_CHANNELS = ['phone']
+
 /**
  * Builds the scope filters for a query while forcing a fixed `channel` filter,
  * so a base query can scope itself to a set of channels directly (e.g. the
@@ -29,3 +31,8 @@ export const getEmailChannelScopeFilters = <TMeta extends ScopeMeta>(
     config: TMeta,
 ): ScopeFilters<TMeta> =>
     getChannelScopeFilters(EMAIL_AND_CONTACT_FORM_CHANNELS, ctx, config)
+
+export const getVoiceChannelScopeFilters = <TMeta extends ScopeMeta>(
+    ctx: Context<TMeta>,
+    config: TMeta,
+): ScopeFilters<TMeta> => getChannelScopeFilters(VOICE_CHANNELS, ctx, config)

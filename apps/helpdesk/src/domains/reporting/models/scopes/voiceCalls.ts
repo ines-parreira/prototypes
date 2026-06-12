@@ -12,6 +12,8 @@ import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import {
     createScopeFilters,
+    getGenericQueries,
+    getTimeseriesQuery,
     getValueQuery,
 } from 'domains/reporting/models/scopes/utils'
 import type {
@@ -88,6 +90,7 @@ const voiceCallsScope = defineScope({
         'talkTime',
         'waitTime',
     ],
+    timeDimensions: ['createdDatetime'],
 })
 
 export type VoiceCallsContext = Context<typeof voiceCallsScope.config>
@@ -566,19 +569,9 @@ export const voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2 = (
     })
 }
 
-const channelsVoiceTotalCallsBaseQuery = () => ({
-    measures: ['voiceCallsCount'] as const,
-})
-
-export const { valueQueryFactory: channelsVoiceTotalCallsValueQueryFactoryV2 } =
-    getValueQuery(
-        voiceCallsScope,
-        channelsVoiceTotalCallsBaseQuery,
-        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_VALUE,
-    )
-
 const channelsVoiceCallOutcomeBaseQuery = () => ({
     measures: [
+        'voiceCallsCount',
         'inboundCallsCount',
         'outboundCallsCount',
         'inboundAnsweredCallsCount',
@@ -596,4 +589,72 @@ export const {
     voiceCallsScope,
     channelsVoiceCallOutcomeBaseQuery,
     METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_VALUE,
+)
+
+export const {
+    timeseriesQueryFactory: channelsVoiceCallOutcomeTimeseriesQueryFactoryV2,
+} = getTimeseriesQuery(
+    voiceCallsScope,
+    channelsVoiceCallOutcomeBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_CALL_OUTCOME_TIMESERIES,
+    'createdDatetime',
+)
+
+const channelsVoiceAverageTalkTimeBaseQuery = () => ({
+    measures: ['averageTalkTimeInSeconds'] as const,
+})
+
+export const {
+    valueQueryFactory: channelsVoiceAverageTalkTimeValueQueryFactoryV2,
+    breakdownQueryFactory: channelsVoiceAverageTalkTimeBreakdownQueryFactoryV2,
+    timeseriesQueryFactory:
+        channelsVoiceAverageTalkTimeTimeseriesQueryFactoryV2,
+} = getGenericQueries(voiceCallsScope, channelsVoiceAverageTalkTimeBaseQuery, {
+    valueMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        agentId:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        callDirection:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_TIMESERIES_PER_CALL_DIRECTION,
+    },
+    timeDimension: 'createdDatetime',
+})
+
+const channelsVoiceAverageWaitTimeBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: VoiceCallsContext
+    config: typeof voiceCallsScope.config
+}) => ({
+    measures: ['averageWaitTimeInSeconds'] as const,
+    filters: createScopeFilters(
+        withVoiceCallSegment(ctx.filters, VoiceCallSegment.inboundCalls),
+        config,
+    ),
+})
+
+export const {
+    valueQueryFactory: channelsVoiceAverageWaitTimeValueQueryFactoryV2,
+} = getValueQuery(
+    voiceCallsScope,
+    channelsVoiceAverageWaitTimeBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_VALUE,
+)
+
+export const {
+    timeseriesQueryFactory:
+        channelsVoiceAverageWaitTimeTimeseriesQueryFactoryV2,
+} = getTimeseriesQuery(
+    voiceCallsScope,
+    channelsVoiceAverageWaitTimeBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_TIMESERIES,
+    'createdDatetime',
 )

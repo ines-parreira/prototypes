@@ -2,13 +2,21 @@ import { TrendCard } from '@repo/reporting'
 import type { MetricTooltipConfig, MetricTrendFormat } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
 
+import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type {
     ChartConfig,
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { ChannelsVoiceAverageTalkTimeCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceAverageTalkTimeCard'
+import { ChannelsVoiceAverageWaitTimeCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceAverageWaitTimeCard'
+import { ChannelsVoiceInboundCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceInboundCallsCard'
+import { ChannelsVoiceMissedCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceMissedCallsCard'
+import { ChannelsVoiceOutboundCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceOutboundCallsCard'
+import { ChannelsVoiceTicketsCreatedCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTicketsCreatedCard'
 import { ChannelsVoiceTotalCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTotalCallsCard'
+import { ChannelsVoiceUnansweredCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceUnansweredCallsCard'
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
@@ -76,7 +84,7 @@ const createChartConfig = ({
     label,
     csvProducer: null,
     tooltipConfig,
-    chartType: ChartType.Card,
+    chartType: ChartType.CardWithTimeseries,
     metricFormat,
     interpretAs: 'more-is-better',
 })
@@ -96,21 +104,119 @@ type TestCase = {
 }
 
 describe('Performance Channels Voice Trend Cards', () => {
+    const timeSeriesView = { queryFactory: expect.any(Function) }
+
     const testCases = [
+        {
+            name: 'ChannelsVoiceTicketsCreatedCard',
+            Component: ChannelsVoiceTicketsCreatedCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceTicketsCreated.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceTicketsCreated,
+                metricFormat: 'decimal',
+                value: 420,
+                prevValue: 380,
+            },
+            timeSeriesView,
+        },
         {
             name: 'ChannelsVoiceTotalCallsCard',
             Component: ChannelsVoiceTotalCallsCard,
             config: {
-                label: 'Total calls',
-                tooltipConfig: {
-                    title: 'Total calls',
-                    caption:
-                        'Total number of inbound and outbound calls during the selected period.',
-                },
+                label: METRIC_TOOLTIPS.voiceTotalCalls.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceTotalCalls,
                 metricFormat: 'decimal',
                 value: 1234,
                 prevValue: 1000,
             },
+            timeSeriesView: {
+                ...timeSeriesView,
+                measureName: 'voiceCallsCount',
+            },
+        },
+        {
+            name: 'ChannelsVoiceOutboundCallsCard',
+            Component: ChannelsVoiceOutboundCallsCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceOutboundCalls.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceOutboundCalls,
+                metricFormat: 'decimal',
+                value: 500,
+                prevValue: 450,
+            },
+            timeSeriesView: {
+                ...timeSeriesView,
+                measureName: 'outboundCallsCount',
+            },
+        },
+        {
+            name: 'ChannelsVoiceInboundCallsCard',
+            Component: ChannelsVoiceInboundCallsCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceInboundCalls.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceInboundCalls,
+                metricFormat: 'decimal',
+                value: 734,
+                prevValue: 550,
+            },
+            timeSeriesView: {
+                ...timeSeriesView,
+                measureName: 'inboundCallsCount',
+            },
+        },
+        {
+            name: 'ChannelsVoiceUnansweredCallsCard',
+            Component: ChannelsVoiceUnansweredCallsCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceUnansweredCalls.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceUnansweredCalls,
+                metricFormat: 'decimal',
+                value: 120,
+                prevValue: 150,
+            },
+            timeSeriesView: {
+                ...timeSeriesView,
+                measureName: 'inboundUnansweredCallsCount',
+            },
+        },
+        {
+            name: 'ChannelsVoiceMissedCallsCard',
+            Component: ChannelsVoiceMissedCallsCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceMissedCalls.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceMissedCalls,
+                metricFormat: 'decimal',
+                value: 80,
+                prevValue: 95,
+            },
+            timeSeriesView: {
+                ...timeSeriesView,
+                measureName: 'inboundMissedCallsCount',
+            },
+        },
+        {
+            name: 'ChannelsVoiceAverageTalkTimeCard',
+            Component: ChannelsVoiceAverageTalkTimeCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceAverageTalkTime.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceAverageTalkTime,
+                metricFormat: 'duration',
+                value: 245,
+                prevValue: 260,
+            },
+            timeSeriesView,
+        },
+        {
+            name: 'ChannelsVoiceAverageWaitTimeCard',
+            Component: ChannelsVoiceAverageWaitTimeCard,
+            config: {
+                label: METRIC_TOOLTIPS.voiceAverageWaitTime.title,
+                tooltipConfig: METRIC_TOOLTIPS.voiceAverageWaitTime,
+                metricFormat: 'duration',
+                value: 30,
+                prevValue: 45,
+            },
+            timeSeriesView,
         },
     ] as TestCase[]
 

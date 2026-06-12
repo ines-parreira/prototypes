@@ -43,10 +43,24 @@ const formatTimeSeriesValues = (
 export const toTimeSeriesData = (
     result: { data: TimeSeriesDataItem[][]; isFetching: boolean },
     granularity?: ReportingGranularity,
-) => ({
-    data: formatTimeSeriesValues(result.data?.[0], granularity),
-    isLoading: result.isFetching,
-})
+    measureName?: string,
+    valueTransform?: (value: number | null) => number | null,
+) => {
+    const series = measureName
+        ? (result.data?.find((s) => s[0]?.label === measureName) ?? [])
+        : result.data?.[0]
+    const values = formatTimeSeriesValues(series, granularity)
+
+    return {
+        data: valueTransform
+            ? values.map((item) => ({
+                  ...item,
+                  value: valueTransform(item.value),
+              }))
+            : values,
+        isLoading: result.isFetching,
+    }
+}
 
 export const toMultipleTimeSeriesData = (
     result: {

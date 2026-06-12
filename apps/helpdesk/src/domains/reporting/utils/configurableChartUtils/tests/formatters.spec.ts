@@ -81,7 +81,7 @@ describe('formatPeriod', () => {
 })
 
 const buildSeries = (
-    points: { dateTime: string; value: number }[],
+    points: { dateTime: string; value: number; label?: string }[],
 ): TimeSeriesDataItem[] => points as TimeSeriesDataItem[]
 
 describe('formatTimeSeriesDate', () => {
@@ -139,6 +139,86 @@ describe('toTimeSeriesData', () => {
                 ReportingGranularity.Day,
             ),
         ).toEqual({ data: [], isLoading: true })
+    })
+
+    it('selects the series matching measureName by its label', () => {
+        const result = {
+            data: [
+                buildSeries([
+                    { dateTime: '2024-01-01', value: 1, label: 'inboundCalls' },
+                    { dateTime: '2024-01-02', value: 2, label: 'inboundCalls' },
+                ]),
+                buildSeries([
+                    {
+                        dateTime: '2024-01-01',
+                        value: 9,
+                        label: 'outboundCalls',
+                    },
+                    {
+                        dateTime: '2024-01-02',
+                        value: 8,
+                        label: 'outboundCalls',
+                    },
+                ]),
+            ],
+            isFetching: false,
+        }
+
+        expect(
+            toTimeSeriesData(result, ReportingGranularity.Day, 'outboundCalls'),
+        ).toEqual({
+            data: [
+                { date: 'Jan 1', value: 9 },
+                { date: 'Jan 2', value: 8 },
+            ],
+            isLoading: false,
+        })
+    })
+
+    it('returns empty data when no series matches measureName', () => {
+        const result = {
+            data: [
+                buildSeries([
+                    { dateTime: '2024-01-01', value: 1, label: 'inboundCalls' },
+                ]),
+            ],
+            isFetching: false,
+        }
+
+        expect(
+            toTimeSeriesData(
+                result,
+                ReportingGranularity.Day,
+                'missingMeasure',
+            ),
+        ).toEqual({ data: [], isLoading: false })
+    })
+
+    it('applies valueTransform to each point', () => {
+        const result = {
+            data: [
+                buildSeries([
+                    { dateTime: '2024-01-01', value: 60 },
+                    { dateTime: '2024-01-02', value: 120 },
+                ]),
+            ],
+            isFetching: false,
+        }
+
+        expect(
+            toTimeSeriesData(
+                result,
+                ReportingGranularity.Day,
+                undefined,
+                (value) => (value === null ? null : value / 60),
+            ),
+        ).toEqual({
+            data: [
+                { date: 'Jan 1', value: 1 },
+                { date: 'Jan 2', value: 2 },
+            ],
+            isLoading: false,
+        })
     })
 })
 

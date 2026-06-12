@@ -10,11 +10,20 @@ import type {
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
 
+/**
+ * Union of the measure names declared by a scope's meta, e.g.
+ * `'inboundCallsCount' | 'outboundCallsCount' | ...`. Used to type the optional
+ * `measureName` argument so a caller can pick a specific column from a
+ * multi-measure value query.
+ */
+export type MeasureNameOf<TMeta extends ScopeMeta> = TMeta['measures'][number]
+
 export const selectStatsMeasure = <TMeta extends ScopeMeta = ScopeMeta>(
     data: UsePostReportingQueryData<QueryReturnType<string>>,
     statsQuery: BuiltQuery<TMeta>,
+    measureName?: MeasureNameOf<TMeta>,
 ) => {
-    const measure = statsQuery.measures[0]
+    const measure = measureName ?? statsQuery.measures[0]
     if (!measure) return null
     const dataMeasure = data.data.data?.[0]?.[measure] ?? null
     return dataMeasure !== null ? parseFloat(dataMeasure) : null
@@ -23,13 +32,15 @@ export const selectStatsMeasure = <TMeta extends ScopeMeta = ScopeMeta>(
 export function useStatsMetric<TMeta extends ScopeMeta = ScopeMeta>(
     statsQuery: BuiltQuery<TMeta>,
     enabled: boolean = true,
+    measureName?: MeasureNameOf<TMeta>,
 ): Metric {
     const currentPeriodMetric = usePostStats<
         ReportingMetricItem<string>[],
         number | null,
         TMeta
     >(statsQuery, {
-        select: (data) => selectStatsMeasure<TMeta>(data, statsQuery),
+        select: (data) =>
+            selectStatsMeasure<TMeta>(data, statsQuery, measureName),
         enabled,
     })
 
@@ -47,6 +58,7 @@ export function useStatsMetric<TMeta extends ScopeMeta = ScopeMeta>(
 
 export const fetchStatsMetric = async <TMeta extends ScopeMeta = ScopeMeta>(
     statsQuery: BuiltQuery<TMeta>,
+    measureName?: MeasureNameOf<TMeta>,
 ): Promise<Metric> => {
     return fetchPostStats<ReportingMetricItem<string>[], number | null, TMeta>(
         statsQuery,
@@ -57,7 +69,11 @@ export const fetchStatsMetric = async <TMeta extends ScopeMeta = ScopeMeta>(
             data:
                 res.data.data !== undefined
                     ? {
-                          value: selectStatsMeasure<TMeta>(res, statsQuery),
+                          value: selectStatsMeasure<TMeta>(
+                              res,
+                              statsQuery,
+                              measureName,
+                          ),
                       }
                     : undefined,
         }))

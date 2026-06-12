@@ -185,11 +185,39 @@ describe('useStatsMetricTrend', () => {
                 1,
                 currentQuery,
                 true,
+                undefined,
             )
             expect(useStatsMetricMock).toHaveBeenNthCalledWith(
                 2,
                 prevQuery,
                 true,
+                undefined,
+            )
+        })
+
+        it('should forward measureName to both queries', () => {
+            useStatsMetricMock.mockReturnValue(defaultMetric)
+
+            renderHook(() =>
+                useStatsMetricTrend(
+                    defaultQuery,
+                    defaultQuery,
+                    true,
+                    'openTickets' as any,
+                ),
+            )
+
+            expect(useStatsMetricMock).toHaveBeenNthCalledWith(
+                1,
+                defaultQuery,
+                true,
+                'openTickets',
+            )
+            expect(useStatsMetricMock).toHaveBeenNthCalledWith(
+                2,
+                defaultQuery,
+                true,
+                'openTickets',
             )
         })
     })
@@ -252,8 +280,29 @@ describe('useStatsMetricTrend', () => {
             expect(useStatsMetricMock).toHaveBeenCalledWith(
                 mockCurrentQuery,
                 true,
+                undefined,
             )
-            expect(useStatsMetricMock).toHaveBeenCalledWith(mockPrevQuery, true)
+            expect(useStatsMetricMock).toHaveBeenCalledWith(
+                mockPrevQuery,
+                true,
+                undefined,
+            )
+        })
+
+        it('forwards measureName through to useStatsMetric', () => {
+            const useTrend = getStatsTrendHook(mockQuery, 'openTickets' as any)
+            renderHook(() => useTrend(filters, timezone))
+
+            expect(useStatsMetricMock).toHaveBeenCalledWith(
+                mockCurrentQuery,
+                true,
+                'openTickets',
+            )
+            expect(useStatsMetricMock).toHaveBeenCalledWith(
+                mockPrevQuery,
+                true,
+                'openTickets',
+            )
         })
 
         it('returns value from current period and prevValue from previous period', () => {
@@ -349,8 +398,31 @@ describe('useStatsMetricTrend', () => {
             const fetchTrend = getStatsTrendFetch(mockQuery)
             await fetchTrend(filters, timezone)
 
-            expect(fetchStatsMetricMock).toHaveBeenCalledWith(mockCurrentQuery)
-            expect(fetchStatsMetricMock).toHaveBeenCalledWith(mockPrevQuery)
+            expect(fetchStatsMetricMock).toHaveBeenCalledWith(
+                mockCurrentQuery,
+                undefined,
+            )
+            expect(fetchStatsMetricMock).toHaveBeenCalledWith(
+                mockPrevQuery,
+                undefined,
+            )
+        })
+
+        it('forwards measureName through to fetchStatsMetric', async () => {
+            const fetchTrend = getStatsTrendFetch(
+                mockQuery,
+                'openTickets' as any,
+            )
+            await fetchTrend(filters, timezone)
+
+            expect(fetchStatsMetricMock).toHaveBeenCalledWith(
+                mockCurrentQuery,
+                'openTickets',
+            )
+            expect(fetchStatsMetricMock).toHaveBeenCalledWith(
+                mockPrevQuery,
+                'openTickets',
+            )
         })
 
         it('returns value from current period and prevValue from previous period', async () => {
@@ -528,8 +600,13 @@ describe('useStatsMetricTrend', () => {
             expect(fetchStatsMetricMock).toHaveBeenNthCalledWith(
                 1,
                 currentQuery,
+                undefined,
             )
-            expect(fetchStatsMetricMock).toHaveBeenNthCalledWith(2, prevQuery)
+            expect(fetchStatsMetricMock).toHaveBeenNthCalledWith(
+                2,
+                prevQuery,
+                undefined,
+            )
         })
     })
 })

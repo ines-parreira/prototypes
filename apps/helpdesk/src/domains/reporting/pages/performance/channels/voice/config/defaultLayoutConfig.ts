@@ -11,7 +11,47 @@ export const DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT: DashboardLayoutConfig<Pe
                 type: ChartType.Card,
                 items: [
                     {
+                        chartId:
+                            PerformanceChannelsVoiceChart.TicketsCreatedCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
                         chartId: PerformanceChannelsVoiceChart.TotalCallsCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            PerformanceChannelsVoiceChart.AverageTalkTimeCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            PerformanceChannelsVoiceChart.AverageWaitTimeCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            PerformanceChannelsVoiceChart.OutboundCallsCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceChannelsVoiceChart.InboundCallsCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            PerformanceChannelsVoiceChart.UnansweredCallsCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceChannelsVoiceChart.MissedCallsCard,
                         gridSize: 3,
                         visibility: true,
                     },

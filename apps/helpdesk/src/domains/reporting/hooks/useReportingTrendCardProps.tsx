@@ -5,17 +5,17 @@ import { formatMetricValue } from '@repo/reporting'
 import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import { useStatsMetricTimeSeries } from 'domains/reporting/hooks/useStatsMetricTimeSeries'
+import type { MetricQueryFactory } from 'domains/reporting/models/scopes/scope'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type {
     ChartConfig,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { toTimeSeriesData } from 'domains/reporting/utils/configurableChartUtils/formatters'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-
-import { useOverallTimeSeries } from '../../../pages/aiAgent/utils/aiAgentMetrics.utils'
-import type { MetricQueryFactory } from '../models/scopes/scope'
 
 export const useReportingTrendCardProps = ({
     chartConfig,
@@ -42,6 +42,7 @@ export const useReportingTrendCardProps = ({
         queryFactory?: MetricQueryFactory
         valueFormatter?: (value: number) => string
         valueTransform?: (value: number | null) => number | null
+        measureName?: string
     }
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
@@ -82,16 +83,21 @@ export const useReportingTrendCardProps = ({
             }
         }
 
-        const { queryFactory, valueFormatter, valueTransform } = timeSeriesView
+        const { queryFactory, valueFormatter, valueTransform, measureName } =
+            timeSeriesView
         return {
             comingSoon: timeSeriesView.comingSoon ?? false,
             useChartData: queryFactory
                 ? () =>
-                      useOverallTimeSeries(
-                          queryFactory,
-                          filters,
-                          userTimezone,
+                      toTimeSeriesData(
+                          useStatsMetricTimeSeries(
+                              queryFactory,
+                              filters,
+                              userTimezone,
+                              granularity,
+                          ),
                           granularity,
+                          measureName,
                           valueTransform,
                       )
                 : undefined,

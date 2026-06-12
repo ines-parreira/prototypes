@@ -5,6 +5,7 @@ import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { useStatsMetricTimeSeries } from 'domains/reporting/hooks/useStatsMetricTimeSeries'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
@@ -15,19 +16,20 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
+import { toTimeSeriesData } from 'domains/reporting/utils/configurableChartUtils/formatters'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-import { useOverallTimeSeries } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 jest.mock('@repo/reporting', () => ({
     formatMetricValue: jest.fn(),
 }))
 const mockFormatMetricValue = jest.mocked(formatMetricValue)
 
-jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
-    useOverallTimeSeries: jest.fn(),
-}))
-const mockUseOverallTimeSeries = jest.mocked(useOverallTimeSeries)
+jest.mock('domains/reporting/hooks/useStatsMetricTimeSeries')
+const mockUseStatsMetricTimeSeries = jest.mocked(useStatsMetricTimeSeries)
+
+jest.mock('domains/reporting/utils/configurableChartUtils/formatters')
+const mockToTimeSeriesData = jest.mocked(toTimeSeriesData)
 
 jest.mock('domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown')
 const useAiAgentTrendCardDrillDownMock = assumeMock(
@@ -120,7 +122,11 @@ describe('useReportingTrendCardProps', () => {
             },
         } as any)
         mockFormatMetricValue.mockReturnValue('42%')
-        mockUseOverallTimeSeries.mockReturnValue({ data: [], isLoading: false })
+        mockUseStatsMetricTimeSeries.mockReturnValue({
+            data: [[]],
+            isFetching: false,
+        } as any)
+        mockToTimeSeriesData.mockReturnValue({ data: [], isLoading: false })
     })
 
     it('should return trend data with correct structure', () => {
@@ -576,14 +582,14 @@ describe('useReportingTrendCardProps', () => {
             expect(result.current.timeSeriesView).toBeUndefined()
         })
 
-        it('calls useOverallTimeSeries with correct args when useChartData is invoked', () => {
+        it('builds the time series from useStatsMetricTimeSeries when useChartData is invoked', () => {
             const { result } = renderWithTimeSeries({
                 queryFactory: mockQueryFactory,
             })
 
             result.current.timeSeriesView?.useChartData?.()
 
-            expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
+            expect(mockUseStatsMetricTimeSeries).toHaveBeenCalledWith(
                 mockQueryFactory,
                 {
                     period: mockCleanStatsFilters.period,
@@ -591,28 +597,30 @@ describe('useReportingTrendCardProps', () => {
                 },
                 'UTC',
                 ReportingGranularity.Day,
+            )
+            expect(mockToTimeSeriesData).toHaveBeenCalledWith(
+                { data: [[]], isFetching: false },
+                ReportingGranularity.Day,
+                undefined,
                 undefined,
             )
         })
 
-        it('passes valueTransform to useOverallTimeSeries when provided', () => {
+        it('passes measureName and valueTransform to toTimeSeriesData when provided', () => {
             const valueTransform = jest.fn((v: number | null) => v)
 
             const { result } = renderWithTimeSeries({
                 queryFactory: mockQueryFactory,
+                measureName: 'inboundCallsCount',
                 valueTransform,
             })
 
             result.current.timeSeriesView?.useChartData?.()
 
-            expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
-                mockQueryFactory,
-                {
-                    period: mockCleanStatsFilters.period,
-                    stores: mockCleanStatsFilters.stores,
-                },
-                'UTC',
+            expect(mockToTimeSeriesData).toHaveBeenCalledWith(
+                { data: [[]], isFetching: false },
                 ReportingGranularity.Day,
+                'inboundCallsCount',
                 valueTransform,
             )
         })

@@ -1,5 +1,8 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
+import {
+    getEmailChannelScopeFilters,
+    getVoiceChannelScopeFilters,
+} from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -160,6 +163,39 @@ export const {
             channel:
                 METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_TIMESERIES_PER_CHANNEL,
         },
+        timeDimension: 'createdDatetime',
+    },
+)
+
+const channelsVoiceTicketsCreatedBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: TicketsCreatedContext
+    config: typeof ticketsCreatedScope.config
+}) => ({
+    measures: ['ticketCount'] as const,
+    filters: getVoiceChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsVoiceTicketsCreatedValueQueryFactoryV2,
+    breakdownQueryFactory: channelsVoiceTicketsCreatedBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: channelsVoiceTicketsCreatedTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    ticketsCreatedScope,
+    channelsVoiceTicketsCreatedBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            agentId:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TICKETS_CREATED_TIMESERIES,
         timeDimension: 'createdDatetime',
     },
 )
