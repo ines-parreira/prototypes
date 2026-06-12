@@ -145,5 +145,10 @@ apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization* @gorgias/ai-ag
 apps/helpdesk/src/pages/aiAgent/analyticsAiAgent @gorgias/cplt-analytics-frontend
 apps/helpdesk/src/pages/aiAgent/analyticsOverview @gorgias/cplt-analytics-frontend
 
+# Copilot scope @gorgias/copilot
+
+apps/helpdesk/src/copilot @gorgias/copilot
+apps/helpdesk/src/common/copilot @gorgias/copilot
+
 .trivyignore @gorgias/platform-sre
 .gitleaks.toml @gorgias/platform-sre
