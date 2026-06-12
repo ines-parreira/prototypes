@@ -57,6 +57,7 @@ export type ProductPlanSelectionProps = {
     periodEnd: string
     currentUsage?: CurrentProductsUsages
     editingAvailable: boolean
+    isCancellationGated?: boolean
     customer?: CustomerSummary | null
     updateSubscription: () => Promise<unknown>
     scheduledToCancelAt?: string | null
@@ -78,6 +79,7 @@ const ProductPlanSelection = ({
     periodEnd,
     currentUsage,
     editingAvailable,
+    isCancellationGated = false,
     customer,
     updateSubscription,
     scheduledToCancelAt,
@@ -415,7 +417,7 @@ const ProductPlanSelection = ({
                 </>
             )
         }
-        if (!editingAvailable) {
+        if (!editingAvailable || isCancellationGated) {
             return null
         }
 

@@ -269,14 +269,11 @@ describe('PaymentInformationView', () => {
                     }),
                 },
             })
-            await act(() =>
-                userEvent.hover(screen.getByText('Change Frequency')),
-            )
             expect(
-                screen.getByText(`Because you're on a custom plan, please`, {
-                    exact: false,
-                }),
-            )
+                await screen.findByText(
+                    /Because you.re on a custom plan, please/,
+                ),
+            ).toBeInTheDocument()
         },
     )
     it('should display "Annual plan (billed monthly)" for annual plan with separate monthly invoice cadence', () => {

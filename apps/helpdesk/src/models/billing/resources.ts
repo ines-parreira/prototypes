@@ -2,6 +2,7 @@ import client from '@repo/api-resources'
 
 import type {
     BillingState,
+    CancellationRequestPayload,
     ChurnMitigationOfferDecisionEvent,
     CouponForSales,
     InternalProductCatalogResponse,
@@ -23,6 +24,10 @@ export const fetchSubscription = async () => {
     const res = await client.get<SubscriptionCycle>('/api/billing/subscription')
     return res.data
 }
+
+export const submitCancellationRequest = async (
+    payload: CancellationRequestPayload,
+) => client.post('/api/billing/subscription/cancellation-request/', payload)
 
 export const trackBillingEvent = async (
     eventName: string,

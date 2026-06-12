@@ -137,6 +137,12 @@ export type SubscriptionCycle = {
     scheduled_changes?: ScheduledChange[]
 }
 
+export type CancellationRequestPayload = {
+    primary_reason: string
+    secondary_reason: string | null
+    other_reason: string | null
+}
+
 export type ChurnMitigationOfferDecisionEvent = {
     product_type: ProductType
     primary_reason: string
@@ -268,6 +274,12 @@ export type AchDebitBankAccount = {
     last4: string
 }
 
+export enum CancellationGatingStrategy {
+    None = 'none',
+    Gated = 'gated',
+    SelfServe = 'self_serve',
+}
+
 type CustomerSummary = {
     trial_extended_until?: string | null // isoformatted datetime
     coupon?: CouponSummary | null
@@ -279,6 +291,8 @@ type CustomerSummary = {
     is_vetted: boolean
     billing_address_validation_status: BillingAddressValidationStatus
     unbilled_charges?: number | null
+    cancellation_gating_strategy?: CancellationGatingStrategy
+    csm_calendly_url?: string | null
 }
 
 export type CurrentPlans = {

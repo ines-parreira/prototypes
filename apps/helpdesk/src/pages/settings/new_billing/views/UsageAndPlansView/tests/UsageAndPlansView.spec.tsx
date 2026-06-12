@@ -1706,7 +1706,7 @@ describe('UsageAndPlansView', () => {
     })
 
     describe('CustomPlanBanner', () => {
-        it('should render CustomPlanBanner for custom yearly plan', async () => {
+        it('should render CustomPlanBanner for yearly contract plan with separate invoice cadence', async () => {
             const alteredBilling = {
                 ...mockedBilling,
                 products: [
@@ -1743,9 +1743,10 @@ describe('UsageAndPlansView', () => {
                 { storeState: alteredStore },
             )
 
-            expect(await screen.findByText('Contact us')).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /close/i }),
+                await screen.findByText(
+                    /Because you.re on a custom plan, please/,
+                ),
             ).toBeInTheDocument()
         })
 

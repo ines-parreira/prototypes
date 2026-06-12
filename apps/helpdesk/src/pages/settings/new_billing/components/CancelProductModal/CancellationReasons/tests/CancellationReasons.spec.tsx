@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { CancellationPrimaryReasonLabel } from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { DEFAULT_STATE } from 'pages/settings/new_billing/components/CancelProductModal/reducers'
@@ -23,12 +24,9 @@ describe('CancellationReasons - Helpdesk', () => {
         )
         expect(opinionElement).toBeInTheDocument()
 
-        const instructionElement = container.querySelector(
-            'div[class=instruction]',
-        )
-        expect(instructionElement).toHaveTextContent('Cancellation reason*')
-
-        const selectorElement = getByRole('combobox')
+        const selectorElement = getByRole('button', {
+            name: /cancellation reason/i,
+        })
         expect(selectorElement).toBeInTheDocument()
 
         // Additional details should NOT be rendered until primary reason is selected
@@ -50,7 +48,7 @@ describe('CancellationReasons - Helpdesk', () => {
             completed: true,
         }
 
-        const { container, getByText, getByRole } = render(
+        const { getByText, getByRole } = render(
             <CancellationReasons
                 reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                 reasonsState={state}
@@ -62,13 +60,10 @@ describe('CancellationReasons - Helpdesk', () => {
         )
         expect(opinionElement).toBeInTheDocument()
 
-        const instructionElement = container.querySelector(
-            'div[class=instruction]',
-        )
-        expect(instructionElement).toHaveTextContent('Cancellation reason*')
-
-        const selectorElement = getByRole('combobox')
-        expect(selectorElement).toHaveTextContent(state.primaryReason.label)
+        expect(
+            getByRole('button', { name: /cancellation reason/i }),
+        ).toBeInTheDocument()
+        expect(getByText(state.primaryReason.label)).toBeInTheDocument()
 
         const secondaryReasons = screen.getByText(
             'Could you please share more?',
@@ -89,6 +84,32 @@ describe('CancellationReasons - Helpdesk', () => {
         expect(additionalDetailsValue).toBeInTheDocument()
         // No asterisk shown (not required)
         expect(within(additionalDetails).queryByText('*')).toBeNull()
+    })
+
+    it('handles the change of primary reason', async () => {
+        const user = userEvent.setup()
+        const mockDispatch = jest.fn()
+        const primaryReason =
+            HELPDESK_CANCELLATION_SCENARIO.reasons[1].primaryReason
+
+        render(
+            <CancellationReasons
+                reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
+                reasonsState={DEFAULT_STATE}
+                dispatchCancellationReasonsAction={mockDispatch}
+            />,
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: /cancellation reason/i }),
+        )
+        const listbox = await screen.findByRole('listbox')
+        await user.click(within(listbox).getByText(primaryReason.label))
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: CancellationReasonsActionType.PrimaryReasonSelected,
+            primaryReason: { label: primaryReason.label },
+        })
     })
 
     it('handles the change of secondary reason', () => {

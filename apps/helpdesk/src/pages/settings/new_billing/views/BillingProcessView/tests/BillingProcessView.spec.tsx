@@ -1,5 +1,5 @@
 import client from '@repo/api-resources'
-import { useBillingState } from '@repo/billing'
+import { CancellationGatingStrategy, useBillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -9,6 +9,10 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
+import {
+    CancellationPrimaryReasonLabel,
+    CancellationSecondaryReasonLabel,
+} from 'pages/settings/new_billing/components/CancelProductModal/constants'
 
 import {
     AUTOMATION_PRODUCT_ID,
@@ -1650,6 +1654,489 @@ describe('BillingProcessView', () => {
             expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 '/app/settings/billing/manage/helpdesk',
             )
+        })
+
+        it('should redirect for gated plans with separate invoice cadence', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: {
+                        is_paused: false,
+                        resource_version: 1,
+                    },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            const separateInvoiceCadenceProducts = products.map((product) => {
+                if (product.type === ProductType.Helpdesk) {
+                    return {
+                        ...product,
+                        prices: [
+                            ...product.prices,
+                            basicYearlyInvoicedMonthlyHelpdeskPlan,
+                        ],
+                    }
+                }
+                return product
+            })
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: {
+                        ...storeInitialState,
+                        billing: fromJS({
+                            ...storeInitialState.billing.toJS(),
+                            products: separateInvoiceCadenceProducts,
+                        }),
+                        currentAccount: fromJS({
+                            current_subscription: {
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                                },
+                                scheduled_to_cancel_at: null,
+                            },
+                        }),
+                    },
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('Current path'),
+                ).not.toHaveTextContent(
+                    '/app/settings/billing/process/helpdesk',
+                )
+            })
+            expect(
+                screen.queryByText(
+                    /Your account is on a managed plan. To cancel products on your account/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Gated cancellation', () => {
+        it('should render the gated cancellation banner for gated non-yearly plans', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: {
+                        is_paused: false,
+                        resource_version: 1,
+                    },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: storeInitialState,
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            expect(
+                await screen.findByText(
+                    /Your account is on a managed plan. To cancel products on your account/i,
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByLabelText('Current path')).toHaveTextContent(
+                '/app/settings/billing/process/helpdesk',
+            )
+        })
+
+        it('should render a Book a call button that opens Calendly in a new tab when gated', async () => {
+            const openSpy = jest
+                .spyOn(window, 'open')
+                .mockImplementation(() => null)
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: {
+                        is_paused: false,
+                        resource_version: 1,
+                    },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                        csm_calendly_url:
+                            'https://calendly.com/gorgias/csm-call',
+                    },
+                },
+            } as any)
+
+            const { getByRole } = render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: storeInitialState,
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await screen.findByText(
+                /Your account is on a managed plan. To cancel products on your account/i,
+            )
+
+            const user = userEvent.setup()
+            await user.click(getByRole('button', { name: 'Contact us' }))
+            await user.click(
+                await screen.findByRole('button', { name: 'Book a call' }),
+            )
+
+            expect(openSpy).toHaveBeenCalledWith(
+                'https://calendly.com/gorgias/csm-call',
+                '_blank',
+            )
+            openSpy.mockRestore()
+        })
+
+        it('should hide Remove product button for subscribed products when gated', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: {
+                        is_paused: false,
+                        resource_version: 1,
+                    },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: {
+                        ...storeInitialState,
+                        currentAccount: fromJS({
+                            current_subscription: {
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        basicMonthlyHelpdeskPlan.plan_id,
+                                    [AUTOMATION_PRODUCT_ID]:
+                                        basicMonthlyAutomationPlan.plan_id,
+                                },
+                                scheduled_to_cancel_at: null,
+                            },
+                        }),
+                    },
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await screen.findByText(
+                /Your account is on a managed plan. To cancel products on your account/i,
+            )
+            expect(
+                screen.queryByRole('button', { name: 'Remove product' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide Cancel auto-renewal button for helpdesk when gated', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: {
+                        is_paused: false,
+                        resource_version: 1,
+                    },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: storeInitialState,
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await screen.findByText(
+                /Your account is on a managed plan. To cancel products on your account/i,
+            )
+            expect(
+                screen.queryByRole('button', { name: 'Cancel auto-renewal' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should open the cancellation modal when Contact us is clicked', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: { is_paused: false, resource_version: 1 },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: storeInitialState,
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await screen.findByText(
+                /Your account is on a managed plan. To cancel products on your account/i,
+            )
+
+            const user = userEvent.setup()
+            await user.click(screen.getByRole('button', { name: 'Contact us' }))
+
+            expect(
+                await screen.findByText(
+                    'Tell us more about your cancellation request',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should call submitCancellationRequest with reasons and close modal on submit', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockedServer
+                .onPost('/api/billing/subscription/cancellation-request/')
+                .reply(200)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: { is_paused: false, resource_version: 1 },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: storeInitialState,
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await screen.findByText(
+                /Your account is on a managed plan. To cancel products on your account/i,
+            )
+
+            const user = userEvent.setup()
+            await user.click(screen.getByRole('button', { name: 'Contact us' }))
+            await screen.findByText(
+                'Tell us more about your cancellation request',
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /cancellation reason/i }),
+            )
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByText(
+                    CancellationPrimaryReasonLabel.Pricing,
+                ),
+            )
+            await user.click(
+                screen.getByLabelText(
+                    CancellationSecondaryReasonLabel.TooExpensive,
+                ),
+            )
+
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() =>
+                expect(
+                    screen.queryByText(
+                        'Tell us more about your cancellation request',
+                    ),
+                ).not.toBeInTheDocument(),
+            )
+        })
+
+        it('should include other_reason in cancellation request when additional details are filled', async () => {
+            const postSpy = jest.spyOn(mockedServer, 'onPost')
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+            mockedServer
+                .onPost('/api/billing/subscription/cancellation-request/')
+                .reply(200)
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                isFetching: false,
+                data: {
+                    subscription: { is_paused: false, resource_version: 1 },
+                    customer: {
+                        cancellation_gating_strategy:
+                            CancellationGatingStrategy.Gated,
+                    },
+                },
+            } as any)
+
+            render(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                {
+                    storeState: storeInitialState,
+                    initialEntries: ['/app/settings/billing/process/helpdesk'],
+                },
+            )
+
+            await screen.findByText(
+                /Your account is on a managed plan. To cancel products on your account/i,
+            )
+
+            const user = userEvent.setup()
+            await user.click(screen.getByRole('button', { name: 'Contact us' }))
+            await screen.findByText(
+                'Tell us more about your cancellation request',
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /cancellation reason/i }),
+            )
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByText(
+                    CancellationPrimaryReasonLabel.Pricing,
+                ),
+            )
+            await user.click(
+                screen.getByLabelText(
+                    CancellationSecondaryReasonLabel.TooExpensive,
+                ),
+            )
+            await user.type(
+                screen.getByPlaceholderText(/It didn't work out/i),
+                'Too expensive for our budget',
+            )
+
+            await user.click(screen.getByRole('button', { name: 'Submit' }))
+
+            await waitFor(() =>
+                expect(
+                    screen.queryByText(
+                        'Tell us more about your cancellation request',
+                    ),
+                ).not.toBeInTheDocument(),
+            )
+
+            postSpy.mockRestore()
         })
     })
 

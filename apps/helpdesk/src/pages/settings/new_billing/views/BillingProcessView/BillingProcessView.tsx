@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import type { PlansByProduct, SelectedPlans } from '@repo/billing'
 import {
     BILLING_BASE_PATH,
+    CancellationGatingStrategy,
     PRICING_DETAILS_URL,
     ProductType,
     useBillingState,
@@ -19,9 +20,14 @@ import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
+import { submitCancellationRequest } from 'models/billing/resources'
 import { getProductInfo, hasSeparateInvoiceCadence } from 'models/billing/utils'
 import { Loader } from 'pages/common/components/Loader/Loader'
 import { PendingChangesModal } from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
+import {
+    PRIMARY_REASON_LABEL_TO_INTERNAL_NAME,
+    SECONDARY_REASON_LABEL_TO_INTERNAL_NAME,
+} from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { useHasAchPaymentMethod } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasAchPaymentMethod'
 import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
@@ -36,8 +42,10 @@ import { ProductPlanSelection } from '../../components/ProductPlanSelection'
 import { ScheduledCancellationSummary } from '../../components/ScheduledCancellationSummary'
 import { VoiceOrSmsChangeReviewAlert } from '../../components/VoiceOrSmsChangeReviewAlert'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
+import { GatedCancellationBanner } from '../UsageAndPlansView/CustomPlanBanner'
 import { BillingSummaryCard } from './BillingSummaryCard'
 import { EnterprisePlanCard } from './EnterprisePlanCard'
+import { GatedCancellationModal } from './GatedCancellationModal'
 import { useCancellationSummary } from './hooks/useCancellationSummary'
 import { useScheduledChangesSummary } from './hooks/useScheduledChangesSummary'
 import { buildEnterpriseMessage } from './utils'
@@ -133,6 +141,13 @@ export const BillingProcessView = ({
             undefined,
     })
     const isBillingPaused = !!billingState.data?.subscription.is_paused
+    const cancellationGatingStrategy =
+        billingState.data?.customer?.cancellation_gating_strategy
+    const csmBookingUrl = billingState.data?.customer?.csm_calendly_url ?? null
+    const showGatedCancellationBanner =
+        !hasSeparateInvoiceCadence(currentHelpdeskPlan) &&
+        cancellationGatingStrategy === CancellationGatingStrategy.Gated
+    const [isGatedModalOpen, setIsGatedModalOpen] = useState(false)
     const showsLegacyEnterpriseCard =
         !isMidCycleUpgradeEnabled && isEnterpriseHelpdeskPlanSelected
 
@@ -384,6 +399,39 @@ export const BillingProcessView = ({
             <div className={css.header}>
                 <BackLink />
             </div>
+            {showGatedCancellationBanner && (
+                <GatedCancellationBanner
+                    contactUsCallback={() => setIsGatedModalOpen(true)}
+                />
+            )}
+            {isGatedModalOpen && (
+                <GatedCancellationModal
+                    isOpen={isGatedModalOpen}
+                    onClose={() => setIsGatedModalOpen(false)}
+                    onSubmit={(reasonsState) => {
+                        if (
+                            !reasonsState.primaryReason ||
+                            !reasonsState.secondaryReason
+                        )
+                            return
+                        void submitCancellationRequest({
+                            primary_reason:
+                                PRIMARY_REASON_LABEL_TO_INTERNAL_NAME[
+                                    reasonsState.primaryReason
+                                        .label as keyof typeof PRIMARY_REASON_LABEL_TO_INTERNAL_NAME
+                                ],
+                            secondary_reason:
+                                SECONDARY_REASON_LABEL_TO_INTERNAL_NAME[
+                                    reasonsState.secondaryReason
+                                        .label as keyof typeof SECONDARY_REASON_LABEL_TO_INTERNAL_NAME
+                                ] ?? null,
+                            other_reason:
+                                reasonsState.additionalDetails?.label ?? null,
+                        })
+                    }}
+                    bookACallUrl={csmBookingUrl}
+                />
+            )}
             <VoiceOrSmsChangeReviewAlert
                 selectedPlans={selectedPlans}
             ></VoiceOrSmsChangeReviewAlert>
@@ -424,6 +472,9 @@ export const BillingProcessView = ({
                                     currentUsage={config.currentUsage}
                                     editingAvailable={
                                         !isCurrentSubscriptionScheduledToCancel
+                                    }
+                                    isCancellationGated={
+                                        showGatedCancellationBanner
                                     }
                                     updateSubscription={updateSubscription}
                                     scheduledToCancelAt={
