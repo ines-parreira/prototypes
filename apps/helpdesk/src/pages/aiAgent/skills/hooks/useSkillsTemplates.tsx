@@ -89,6 +89,28 @@ export const SkillTemplatesData: SkillTemplateConfig[] = [
         guidanceId: 'when-the-customer-asks-to-cancel-their-subscription',
         intentNames: ['subscription::cancel'],
     },
+    {
+        id: 'feedback',
+        name: 'Feedback',
+        guidanceId: 'when-the-customer-expresses-positive-or-negative-feedback',
+        intentNames: [
+            'feedback::positive',
+            'feedback::negative',
+            'feedback::other',
+        ],
+    },
+    {
+        id: 'marketing',
+        name: 'Marketing',
+        guidanceId:
+            'when-the-customer-sends-a-partnership-campaign-reply-or-unsubscribe-message',
+        intentNames: [
+            'marketing::advertising',
+            'marketing::collaboration',
+            'marketing::unsubscribe',
+            'marketing::other',
+        ],
+    },
 ]
 
 export const useSkillsTemplates = () => {
