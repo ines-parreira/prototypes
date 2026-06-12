@@ -400,6 +400,24 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(typeof csvProducer?.fetch).toBe('function')
     })
 
+    it('should have buy through rate card config with decimal-to-percent format', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.BuyThroughRateCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Buy through rate')
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
+        expect(config.metricFormat).toBe('decimal-to-percent')
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0]).toMatchObject({
+            type: DataExportFormat.Trend,
+            metricFormat: 'decimal-to-percent',
+        })
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have conversion rate card config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[

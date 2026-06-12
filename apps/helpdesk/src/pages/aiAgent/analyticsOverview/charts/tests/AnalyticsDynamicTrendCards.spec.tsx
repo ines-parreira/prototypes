@@ -283,7 +283,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 label: 'Buy through rate',
                 description:
                     'The percentage of tickets with product recommendations that led to a purchase.',
-                metricFormat: 'percent' as const,
+                metricFormat: 'decimal-to-percent' as const,
                 value: 0.42,
                 prevValue: 0.38,
             },

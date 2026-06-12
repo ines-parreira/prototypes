@@ -255,12 +255,12 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAiAgentBuyThroughRateTrend,
-                        metricFormat: 'percent',
+                        metricFormat: 'decimal-to-percent',
                     },
                 ],
                 tooltipConfig: METRIC_TOOLTIPS.buyThroughRate,
                 chartType: ChartType.CardWithTimeseries,
-                metricFormat: 'percent',
+                metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard]: {
