@@ -130,6 +130,7 @@ function useSdkDefaultViewsVisibilitySettingId({
                 enabled,
                 staleTime: Duration.minutes(10),
                 refetchOnWindowFocus: false,
+                refetchOnMount: 'always',
                 select: (data) =>
                     data?.data?.data?.find((setting) =>
                         isViewsVisibilityData(setting.data),
@@ -176,6 +177,7 @@ function useLegacyDefaultViews({
             query: {
                 enabled,
                 staleTime: Duration.minutes(10),
+                refetchOnMount: 'always',
                 refetchOnWindowFocus: false,
                 select: (data) => data?.data?.data?.[0],
             },
