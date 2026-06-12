@@ -11,12 +11,8 @@ import {
 import {
     addFieldIdToCustomFieldValues,
     addOptionalFilter,
-    isFilterWithLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
-import type {
-    StatsFilters,
-    WithLogicalOperator,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingFilter } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
@@ -39,14 +35,10 @@ export const automationDatasetDefaultFilters = (
 export const automationDatasetAdditionalFilters = (
     filters: StatsFilters,
 ): ReportingFilter[] =>
-    addOptionalFilter(
-        [],
-        mapTicketChannelsToAutomateChannelsInFilter(filters.channels),
-        {
-            member: AutomationDatasetFilterMember.Channel,
-            operator: ReportingFilterOperator.Equals,
-        },
-    )
+    addOptionalFilter([], filters.channels, {
+        member: AutomationDatasetFilterMember.Channel,
+        operator: ReportingFilterOperator.Equals,
+    })
 
 export const billableTicketDatasetDefaultFilters = (
     filters: StatsFilters,
@@ -191,47 +183,6 @@ export const aiAgentTicketsFromTicketCustomFieldsDefaultFilters = ({
                   },
               ]),
     ]
-}
-
-export const billableTicketDatasetAdditionalFilters = (
-    filters: StatsFilters,
-): ReportingFilter[] =>
-    addOptionalFilter(
-        [],
-        mapTicketChannelsToAutomateChannelsInFilter(filters.channels),
-        {
-            member: BillableTicketDatasetFilterMember.Channel,
-            operator: ReportingFilterOperator.Equals,
-        },
-    )
-
-const ticketChannelToAutomateChannel = (channel: string) =>
-    channel === 'contact_form' ? 'contact-form' : channel
-
-export const mapTicketChannelsToAutomateChannels = (
-    channels: string[] | undefined,
-): string[] => {
-    if (channels === undefined) {
-        return []
-    }
-
-    return channels.map(ticketChannelToAutomateChannel)
-}
-
-export const mapTicketChannelsToAutomateChannelsInFilter = (
-    channels: string[] | WithLogicalOperator<string> | undefined,
-): string[] | WithLogicalOperator<string> => {
-    if (channels === undefined) {
-        return []
-    }
-    if (isFilterWithLogicalOperator(channels)) {
-        return {
-            ...channels,
-            values: channels.values.map(ticketChannelToAutomateChannel),
-        }
-    }
-
-    return channels.map(ticketChannelToAutomateChannel)
 }
 
 export const aiAgentInteractionsBySkillDefaultFilters = (

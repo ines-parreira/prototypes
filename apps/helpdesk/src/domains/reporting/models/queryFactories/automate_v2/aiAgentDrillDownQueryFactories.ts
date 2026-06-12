@@ -41,7 +41,6 @@ import {
     TicketMember,
     TicketSegment,
 } from 'domains/reporting/models/cubes/TicketCube'
-import { mapTicketChannelsToAutomateChannels } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
@@ -54,20 +53,8 @@ import {
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
-// Maps ticket channel values (e.g. 'contact_form') to automate cube channel values ('contact-form')
-const withAutomateChannels = (filters: StatsFilters): StatsFilters => {
-    if (!filters.channels) return filters
-    return {
-        ...filters,
-        channels: {
-            ...filters.channels,
-            values: mapTicketChannelsToAutomateChannels(
-                filters.channels.values,
-            ),
-        },
-    }
-}
-
+// Channels and stores are conditionally included when the AiAgentAnalyticsFilters feature flag is enabled —
+// useDrillDownQuery (domains/reporting/hooks/useDrillDownData.ts) passes them via useAiAgentStatsFilters
 const automatedInteractionsFiltersMembers: StatsFiltersMembers = {
     periodStart: AIAgentAutomatedInteractionsV2FilterMember.PeriodStart,
     periodEnd: AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
@@ -127,7 +114,7 @@ export const allAgentsAutomatedInteractionsDrillDownQueryFactory = (
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
     filters: statsFiltersToReportingFilters(
         automatedInteractionsFiltersMembers,
-        withAutomateChannels(filters),
+        filters,
     ),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
@@ -153,7 +140,7 @@ export const shoppingAssistantAutomatedInteractionsDrillDownQueryFactory = (
         },
         ...statsFiltersToReportingFilters(
             automatedInteractionsFiltersMembers,
-            withAutomateChannels(filters),
+            filters,
         ),
     ],
     timezone,
@@ -180,7 +167,7 @@ export const supportAgentAutomatedInteractionsDrillDownQueryFactory = (
         },
         ...statsFiltersToReportingFilters(
             automatedInteractionsFiltersMembers,
-            withAutomateChannels(filters),
+            filters,
         ),
     ],
     timezone,
@@ -207,7 +194,7 @@ export const allAgentsHandoverInteractionsDrillDownQueryFactory = (
         },
         ...statsFiltersToReportingFilters(
             handoverInteractionsFiltersMembers,
-            withAutomateChannels(filters),
+            filters,
         ),
     ],
     timezone,
@@ -232,7 +219,7 @@ export const shoppingAssistantHandoverInteractionsDrillDownQueryFactory = (
         },
         ...statsFiltersToReportingFilters(
             handoverInteractionsFiltersMembers,
-            withAutomateChannels(filters),
+            filters,
         ),
     ],
     timezone,
@@ -262,7 +249,7 @@ export const shoppingAssistantProductRecommendationsDrillDownQueryFactory = (
         },
         ...statsFiltersToReportingFilters(
             aiSalesAgentActivityDrillDownFiltersMembers,
-            withAutomateChannels(filters),
+            filters,
         ),
     ],
     timezone,
@@ -287,7 +274,7 @@ export const supportAgentHandoverInteractionsDrillDownQueryFactory = (
         },
         ...statsFiltersToReportingFilters(
             handoverInteractionsFiltersMembers,
-            withAutomateChannels(filters),
+            filters,
         ),
     ],
     timezone,

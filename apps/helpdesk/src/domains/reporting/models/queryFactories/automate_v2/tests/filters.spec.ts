@@ -1,5 +1,4 @@
 import { AutomationDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
-import { BillableTicketDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMember } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
@@ -7,65 +6,10 @@ import {
     aiAgentTicketsDefaultFilters,
     aiAgentTicketsFromTicketCustomFieldsDefaultFilters,
     automationDatasetAdditionalFilters,
-    billableTicketDatasetAdditionalFilters,
-    mapTicketChannelsToAutomateChannels,
 } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
-
-describe('billableTicketDatasetAdditionalFilters', () => {
-    const statsFiltersWithLogicalOperator: StatsFilters = {
-        period: {
-            start_datetime: '',
-            end_datetime: '',
-        },
-        channels: withDefaultLogicalOperator(['email', 'contact_form']),
-    }
-
-    it.each([statsFiltersWithLogicalOperator])(
-        'should return BillableTickets filter for channels',
-        (statsFilters) => {
-            const reportingFilters =
-                billableTicketDatasetAdditionalFilters(statsFilters)
-
-            expect(reportingFilters).toContainEqual({
-                member: BillableTicketDatasetFilterMember.Channel,
-                operator: ReportingFilterOperator.Equals,
-                values: mapTicketChannelsToAutomateChannels(
-                    statsFiltersWithLogicalOperator.channels?.values,
-                ),
-            })
-        },
-    )
-
-    it('should return no filter when channels filter is undefined in filters state', () => {
-        const statsFilters = {
-            period: {
-                start_datetime: '',
-                end_datetime: '',
-                channels: undefined,
-            },
-        }
-        const reportingFilters =
-            billableTicketDatasetAdditionalFilters(statsFilters)
-
-        expect(reportingFilters).toEqual([])
-    })
-
-    it('should return no filter when there is no channels filter key in filters state', () => {
-        const statsFilters = {
-            period: {
-                start_datetime: '',
-                end_datetime: '',
-            },
-        }
-        const reportingFilters =
-            billableTicketDatasetAdditionalFilters(statsFilters)
-
-        expect(reportingFilters).toEqual([])
-    })
-})
 
 describe('automationDatasetAdditionalFilters', () => {
     const statsFiltersWithLogicalOperator: StatsFilters = {
@@ -85,9 +29,7 @@ describe('automationDatasetAdditionalFilters', () => {
             expect(reportingFilters).toContainEqual({
                 member: AutomationDatasetFilterMember.Channel,
                 operator: ReportingFilterOperator.Equals,
-                values: mapTicketChannelsToAutomateChannels(
-                    statsFiltersWithLogicalOperator.channels?.values,
-                ),
+                values: statsFiltersWithLogicalOperator.channels?.values,
             })
         },
     )
@@ -100,10 +42,8 @@ describe('automationDatasetAdditionalFilters', () => {
                 channels: undefined,
             },
         }
-        const reportingFilters =
-            billableTicketDatasetAdditionalFilters(statsFilters)
 
-        expect(reportingFilters).toEqual([])
+        expect(automationDatasetAdditionalFilters(statsFilters)).toEqual([])
     })
 
     it('should return no filter when no channels filter', () => {
@@ -113,16 +53,8 @@ describe('automationDatasetAdditionalFilters', () => {
                 end_datetime: '',
             },
         }
-        const reportingFilters =
-            billableTicketDatasetAdditionalFilters(statsFilters)
 
-        expect(reportingFilters).toEqual([])
-    })
-})
-
-describe('mapTicketChannelsToAutomateChannels', () => {
-    it('should return empty array on undefined', () => {
-        expect(mapTicketChannelsToAutomateChannels(undefined)).toEqual([])
+        expect(automationDatasetAdditionalFilters(statsFilters)).toEqual([])
     })
 })
 
