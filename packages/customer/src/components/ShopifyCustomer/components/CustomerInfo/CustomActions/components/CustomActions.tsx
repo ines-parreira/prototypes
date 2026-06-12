@@ -38,25 +38,10 @@ export function CustomActions({
 
     return (
         <Box
-            flexWrap="wrap"
+            flexDirection="column"
             gap={compact ? 'xxs' : 'sm'}
             pb={compact ? undefined : 'md'}
         >
-            <Box gap="xs" flexWrap="wrap">
-                {buttons.map((button, index) => (
-                    <Box
-                        key={`button-${index}-${button.label}-${button.action.url}`}
-                    >
-                        <ActionButton
-                            config={button}
-                            integrationId={integrationId}
-                            customerId={customerId}
-                            ticketId={ticketId}
-                        />
-                    </Box>
-                ))}
-            </Box>
-
             {links.length > 0 && (
                 <OverflowList nonExpandedLineCount={3} gap="sm">
                     {links.map((link, index) => (
@@ -79,6 +64,21 @@ export function CustomActions({
                     <OverflowListShowLess />
                 </OverflowList>
             )}
+
+            <Box gap="xs" flexWrap="wrap">
+                {buttons.map((button, index) => (
+                    <Box
+                        key={`button-${index}-${button.label}-${button.action.url}`}
+                    >
+                        <ActionButton
+                            config={button}
+                            integrationId={integrationId}
+                            customerId={customerId}
+                            ticketId={ticketId}
+                        />
+                    </Box>
+                ))}
+            </Box>
         </Box>
     )
 }

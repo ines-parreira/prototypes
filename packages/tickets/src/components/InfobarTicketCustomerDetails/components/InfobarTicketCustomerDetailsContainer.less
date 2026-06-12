@@ -1,6 +1,18 @@
 :local {
     .container {
         background: var(--elevation-neutral-default);
+    }
+
+    .withBorder {
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .spacer {
+        height: 1px;
+        background: var(--elevation-neutral-low);
+
+        :global(.dark) & {
+            background: var(--elevation-neutral-mid);
+        }
     }
 }

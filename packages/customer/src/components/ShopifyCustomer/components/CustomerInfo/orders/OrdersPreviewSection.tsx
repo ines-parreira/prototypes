@@ -26,12 +26,14 @@ type OrdersPreviewSectionProps = {
     onEditOrderClick: () => void
     addMenu?: ReactNode
     actionsList?: ReactNode
+    showOrderCard?: boolean
 }
 
 export function OrdersPreviewSection({
     onEditOrderClick,
     addMenu,
     actionsList,
+    showOrderCard = true,
 }: OrdersPreviewSectionProps) {
     return (
         <div className={css.section}>
@@ -58,7 +60,7 @@ export function OrdersPreviewSection({
 
                 {actionsList}
 
-                <OrderCard order={placeholderOrder} />
+                {showOrderCard && <OrderCard order={placeholderOrder} />}
             </Box>
         </div>
     )

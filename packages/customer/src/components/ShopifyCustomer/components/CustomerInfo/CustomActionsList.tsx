@@ -79,24 +79,6 @@ export function CustomActionsList({
     return (
         <>
             <Box flexDirection="column" gap="xxxs">
-                {buttons.map((button, index) => (
-                    <EditableActionRow
-                        key={`button-${index}-${button.label}-${button.action.url}`}
-                        label={
-                            <Button variant="secondary">{button.label}</Button>
-                        }
-                        editAriaLabel={`Edit ${button.label}`}
-                        deleteAriaLabel={`Delete ${button.label}`}
-                        onEdit={() =>
-                            setButtonDialog({
-                                mode: 'edit',
-                                index,
-                                button,
-                            })
-                        }
-                        onDelete={() => handleRemoveButton(index)}
-                    />
-                ))}
                 {links.map((link, index) => (
                     <EditableActionRow
                         key={`link-${index}-${link.label}-${link.url}`}
@@ -115,6 +97,24 @@ export function CustomActionsList({
                             })
                         }
                         onDelete={() => handleRemoveLink(index)}
+                    />
+                ))}
+                {buttons.map((button, index) => (
+                    <EditableActionRow
+                        key={`button-${index}-${button.label}-${button.action.url}`}
+                        label={
+                            <Button variant="secondary">{button.label}</Button>
+                        }
+                        editAriaLabel={`Edit ${button.label}`}
+                        deleteAriaLabel={`Delete ${button.label}`}
+                        onEdit={() =>
+                            setButtonDialog({
+                                mode: 'edit',
+                                index,
+                                button,
+                            })
+                        }
+                        onDelete={() => handleRemoveButton(index)}
                     />
                 ))}
             </Box>

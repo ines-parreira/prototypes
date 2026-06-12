@@ -21,6 +21,11 @@ import type {
 } from '../../types'
 import { IntermediateEditPanel } from '../IntermediateEditPanel'
 
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: { NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar' },
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 vi.mock('react-dnd', () => ({
     useDrag: () => [{ isDragging: false }, vi.fn(), vi.fn()],
     useDrop: () => [{ isOver: false }, vi.fn()],

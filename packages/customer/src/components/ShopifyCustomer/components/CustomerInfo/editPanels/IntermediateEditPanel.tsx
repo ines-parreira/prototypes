@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { Box, Button, Separator, toast } from '@gorgias/axiom'
 
 import { AddCustomActionMenu } from '../AddCustomActionMenu'
@@ -62,6 +64,8 @@ export function IntermediateEditPanel({
     integrationName,
     sections,
 }: IntermediateEditPanelProps) {
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
+
     const [isEditMetricsOpen, setIsEditMetricsOpen] = useState(false)
     const [isEditOrderOpen, setIsEditOrderOpen] = useState(false)
 
@@ -188,6 +192,7 @@ export function IntermediateEditPanel({
                     <Separator />
                     <OrdersPreviewSection
                         onEditOrderClick={() => setIsEditOrderOpen(true)}
+                        showOrderCard={!hasNewOrdersSidebar}
                         addMenu={
                             <AddCustomActionMenu
                                 links={effectiveOrderActions.links}

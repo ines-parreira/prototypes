@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { useCallback, useState } from 'react'
 
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import classNames from 'classnames'
 
 import {
     Box,
@@ -72,6 +72,13 @@ export function CustomerDetailsPanel({
             isLoadingPurchaseSummary ||
             isLoadingIntegrations ||
             !!isLoadingTicket)
+
+    const addresses = context.shopper?.data?.addresses ?? []
+    const resolvedSections = hasData
+        ? sections.flatMap((section) =>
+              resolveSectionFields(section, addresses),
+          )
+        : []
 
     const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
     const showToggle = hasNewOrdersSidebar
@@ -148,27 +155,32 @@ export function CustomerDetailsPanel({
             {(!showToggle || isExpanded) && (
                 <>
                     {hasNewOrdersSidebar ? (
-                        <Box
-                            flexDirection="column"
-                            gap="sm"
-                            pt={0}
-                            pb="md"
-                            className={css.panelBody}
-                        >
-                            <CustomerLink
-                                selectedIntegration={selectedIntegration}
-                                shopper={shopper}
-                                isLoading={isLoadingIntegrations}
-                            />
-                            <CustomActions
-                                integrationId={selectedIntegration?.id}
-                                customerId={customerId}
-                                ticketId={ticketId}
-                            />
-                            {isLoadingDetails ? (
-                                <CustomerDetailsBodySkeleton />
-                            ) : hasData ? (
-                                <>
+                        <>
+                            <Box
+                                flexDirection="column"
+                                gap="sm"
+                                pt={0}
+                                pb="md"
+                                className={css.panelBody}
+                            >
+                                <div>
+                                    <CustomerLink
+                                        selectedIntegration={
+                                            selectedIntegration
+                                        }
+                                        shopper={shopper}
+                                        isLoading={isLoadingIntegrations}
+                                    />
+                                </div>
+
+                                <CustomActions
+                                    integrationId={selectedIntegration?.id}
+                                    customerId={customerId}
+                                    ticketId={ticketId}
+                                />
+                                {isLoadingDetails ? (
+                                    <CustomerDetailsBodySkeleton />
+                                ) : hasData ? (
                                     <Box flexDirection="column" gap="xxs">
                                         <CustomerInfoFieldList
                                             fields={customerFields}
@@ -187,25 +199,28 @@ export function CustomerDetailsPanel({
                                             }
                                         />
                                     </Box>
-                                    {sections.map((section) => {
-                                        const addresses =
-                                            context.shopper?.data?.addresses ??
-                                            []
-                                        return resolveSectionFields(
-                                            section,
-                                            addresses,
-                                        ).map((rs) => (
+                                ) : null}
+                            </Box>
+                            {hasData &&
+                                !isLoadingDetails &&
+                                resolvedSections.map((rs) => (
+                                    <div key={rs.key}>
+                                        <div
+                                            className={classNames(
+                                                css.sectionSpacer,
+                                                css.narrow,
+                                            )}
+                                        />
+                                        <div className={css.sectionContent}>
                                             <CollapsibleFieldSection
-                                                key={rs.key}
                                                 label={rs.label}
                                                 fields={rs.fields}
                                                 context={context}
                                             />
-                                        ))
-                                    })}
-                                </>
-                            ) : null}
-                        </Box>
+                                        </div>
+                                    </div>
+                                ))}
+                        </>
                     ) : (
                         <Box flexDirection="column" gap="sm" padding="md">
                             <CustomerLink
@@ -240,22 +255,14 @@ export function CustomerDetailsPanel({
                                             }
                                         />
                                     </Box>
-                                    {sections.map((section) => {
-                                        const addresses =
-                                            context.shopper?.data?.addresses ??
-                                            []
-                                        return resolveSectionFields(
-                                            section,
-                                            addresses,
-                                        ).map((rs) => (
-                                            <CollapsibleFieldSection
-                                                key={rs.key}
-                                                label={rs.label}
-                                                fields={rs.fields}
-                                                context={context}
-                                            />
-                                        ))
-                                    })}
+                                    {resolvedSections.map((rs) => (
+                                        <CollapsibleFieldSection
+                                            key={rs.key}
+                                            label={rs.label}
+                                            fields={rs.fields}
+                                            context={context}
+                                        />
+                                    ))}
                                 </>
                             ) : null}
                         </Box>

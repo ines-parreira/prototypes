@@ -21,4 +21,24 @@
         padding: var(--spacing-sm) calc(var(--spacing-md) + var(--spacing-xxxs));
         background-color: var(--elevation-neutral-default);
     }
+
+    .sectionSpacer {
+        height: 4px;
+        background: var(--elevation-neutral-low);
+
+        :global(.dark) & {
+            background: var(--elevation-neutral-mid);
+        }
+
+        &.narrow {
+            height: 1px;
+        }
+    }
+
+    .sectionContent {
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+        padding-left: calc(var(--spacing-md) + var(--spacing-xxxs));
+        padding-right: calc(var(--spacing-md) + var(--spacing-xxxs));
+    }
 }

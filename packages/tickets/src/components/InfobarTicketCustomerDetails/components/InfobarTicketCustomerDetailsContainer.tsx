@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import classNames from 'classnames'
 
 import { Box } from '@gorgias/axiom'
 
@@ -14,14 +15,19 @@ export function InfobarTicketCustomerDetailsContainer({
     const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
 
     return (
-        <Box
-            className={css.container}
-            flexDirection="column"
-            gap="xs"
-            paddingTop={hasNewOrdersSidebar ? undefined : 'md'}
-            paddingBottom="sm"
-        >
-            {children}
-        </Box>
+        <>
+            <Box
+                className={classNames(css.container, {
+                    [css.withBorder]: !hasNewOrdersSidebar,
+                })}
+                flexDirection="column"
+                gap="xs"
+                paddingTop={hasNewOrdersSidebar ? undefined : 'md'}
+                paddingBottom="sm"
+            >
+                {children}
+            </Box>
+            {hasNewOrdersSidebar && <div className={css.spacer} />}
+        </>
     )
 }
