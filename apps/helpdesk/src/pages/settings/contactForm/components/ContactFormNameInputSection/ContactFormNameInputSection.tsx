@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
+import _debounce from 'lodash/debounce'
+
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import { DefaultExportInputField as InputField } from 'pages/common/forms/input/InputField'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
@@ -47,7 +50,7 @@ const ContactFormNameInputSection = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkNameAvailability = useCallback(
-        debounce(async (name: string) => {
+        _debounce(async (name: string) => {
             if (!isApiReady || !isNameCheckEnabled) return
 
             const [error, result] = await catchAsync(() =>

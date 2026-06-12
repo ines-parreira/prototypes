@@ -1,5 +1,7 @@
 import type { ComponentProps } from 'react'
 import React, { useMemo, useState } from 'react'
+
+import { flatMap } from 'lodash'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -20,7 +22,7 @@ const Template: StoryFn<ComponentProps<typeof Filter>> = (props) => {
         )
 
     const allValues = useMemo(
-        () => props.filterOptionGroups.flatMap((option) => option.options),
+        () => flatMap(props.filterOptionGroups, (option) => option.options),
         [props.filterOptionGroups],
     )
 

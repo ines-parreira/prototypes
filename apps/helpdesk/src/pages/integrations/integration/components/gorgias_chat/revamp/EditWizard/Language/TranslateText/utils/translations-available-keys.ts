@@ -1,3 +1,5 @@
+import { omit } from 'lodash'
+
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_NAME_MAX_LENGTH,
@@ -27,37 +29,7 @@ const keysToDelete = [
 ]
 
 export const deleteUnusedKeys = (obj: TextsPerLanguage): TextsPerLanguage => {
-    return keysToDelete.reduce<TextsPerLanguage>(
-        (acc, path) => omitNestedPath(acc, path),
-        obj,
-    )
-}
-
-function omitNestedPath<T extends Record<string, any>>(
-    object: T,
-    path: string,
-): T {
-    const [key, ...remainingPath] = path.split('.')
-
-    if (!(key in object)) {
-        return object
-    }
-
-    const nextObject: Record<string, any> = { ...object }
-
-    if (remainingPath.length === 0) {
-        delete nextObject[key]
-        return nextObject as T
-    }
-
-    if (nextObject[key] && typeof nextObject[key] === 'object') {
-        nextObject[key] = omitNestedPath(
-            nextObject[key] as Record<string, any>,
-            remainingPath.join('.'),
-        )
-    }
-
-    return nextObject as T
+    return omit(obj, keysToDelete) as TextsPerLanguage
 }
 
 const filterByAutomateSubscriber = ({ isAutomateSubscriber }: FilterProps) => {

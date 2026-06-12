@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
+
+import noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 
 import { useVoiceQueueSearch } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'

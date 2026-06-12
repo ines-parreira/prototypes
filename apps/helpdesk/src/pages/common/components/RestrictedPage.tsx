@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react'
 
 import indefinite from 'indefinite'
-import { startCase } from '@gorgias/toolkit'
+import _startCase from 'lodash/startCase'
+
 import type { PageSection } from 'config/pages'
 import { roleRestrictionConfigs } from 'config/roleRestrictions'
 import { UserRole } from 'config/types/user'
@@ -25,7 +26,7 @@ const RestrictedPage = ({ requiredRole, page }: Props) => {
         const requiredRoles = USER_ROLES_ORDERED_BY_PRIVILEGES.slice(
             roleIndex,
         ).map((role) =>
-            role === UserRole.Agent ? 'Lead Agent' : startCase(role),
+            role === UserRole.Agent ? 'Lead Agent' : _startCase(role),
         )
 
         return requiredRoles.reduce((acc: string, role: string, index) => {

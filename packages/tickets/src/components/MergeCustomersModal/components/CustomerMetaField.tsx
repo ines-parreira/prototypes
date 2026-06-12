@@ -1,5 +1,7 @@
+import isEmpty from 'lodash/isEmpty'
+import isObject from 'lodash/isObject'
+import omit from 'lodash/omit'
 import JSONPretty from 'react-json-pretty'
-import { isEmpty, isObject, omit } from '@gorgias/toolkit'
 
 import { Box, RadioCard, RadioGroup } from '@gorgias/axiom'
 

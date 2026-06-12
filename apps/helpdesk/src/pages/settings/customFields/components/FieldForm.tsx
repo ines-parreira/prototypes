@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import type { AxiosResponse } from 'axios'
+import { cloneDeep, pick, set } from 'lodash'
+
 import {
     LegacyBadge as Badge,
     LegacyButton as Button,
@@ -10,7 +12,6 @@ import {
     toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
-import { cloneDeep, pick, set } from '@gorgias/toolkit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'

@@ -1,5 +1,6 @@
 import { produce } from 'immer'
-import { keyBy } from '@gorgias/toolkit'
+import _keyBy from 'lodash/keyBy'
+
 import { createArticleFromDto } from 'models/helpCenter/utils'
 import {
     getArticlesResponseFixture,
@@ -145,7 +146,7 @@ describe('Help Center/Articles reducer', () => {
         it('restores the initial state', () => {
             const nextState = reducer(
                 {
-                    articlesById: keyBy(articlesResponse, 'id'),
+                    articlesById: _keyBy(articlesResponse, 'id'),
                 },
                 resetArticles(),
             )

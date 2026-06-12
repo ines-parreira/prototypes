@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import { get } from '@gorgias/toolkit'
+import get from 'lodash/get'
+
 import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 import { DefaultExportDropdownHeader as DropdownHeader } from 'pages/common/components/dropdown/DropdownHeader'
@@ -129,7 +130,7 @@ const ArticleSelect = ({
         data,
         path,
         data,
-    ) as Components.Schemas.CategoryTreeDto | null
+    )
 
     useEffect(() => {
         if (includeAllArticles) {

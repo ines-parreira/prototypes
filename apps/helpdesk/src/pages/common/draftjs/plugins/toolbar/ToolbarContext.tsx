@@ -2,7 +2,8 @@ import type { ComponentType } from 'react'
 import React, { createContext, useContext } from 'react'
 
 import { List } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import type { DiscountCode } from 'models/discountCodes/types'
 import type {
     ProductCardDetails,
@@ -71,29 +72,29 @@ export type ToolbarContextType = {
 export const ToolbarContext = createContext<ToolbarContextType>({
     placementType: undefined,
     canAddVideoPlayer: false,
-    onInsertVideoAddedFromInsertLink: noop,
+    onInsertVideoAddedFromInsertLink: _noop,
     canAddVideoLink: false,
-    onInsertVideoOpen: noop,
-    onInsertVideoAdded: noop,
+    onInsertVideoOpen: _noop,
+    onInsertVideoAdded: _noop,
     canAddDiscountCodeLink: false,
-    onInsertDiscountCodeOpen: noop,
-    onInsertDiscountCodeAdded: noop,
+    onInsertDiscountCodeOpen: _noop,
+    onInsertDiscountCodeAdded: _noop,
     canAddProductCard: false,
-    onAddUniqueDiscountOfferAttachment: noop,
+    onAddUniqueDiscountOfferAttachment: _noop,
     canAddProductLink: false,
     canAddProductAutomations: false,
     canAddUtm: false,
     toolbarTour: undefined,
     disableOutOfStockProducts: false,
     disableVariantSelection: false,
-    onAddProductCardAttachment: noop,
-    onAddProductAutomationAttachment: noop,
-    onInsertProductLinkOpen: noop,
-    onInsertProductLinkAdded: noop,
+    onAddProductCardAttachment: _noop,
+    onAddProductAutomationAttachment: _noop,
+    onInsertProductLinkOpen: _noop,
+    onInsertProductLinkAdded: _noop,
     shopifyIntegrations: List([]),
     canAddUniqueDiscountOffer: false,
     supportsUniqueDiscountOffer: false,
-    onContactFormOpenChange: noop,
+    onContactFormOpenChange: _noop,
     contactFormButtonEnabled: true,
 })
 

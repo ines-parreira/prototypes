@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
+
+import noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import type { TagFilter } from 'domains/reporting/models/stat/types'

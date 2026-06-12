@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
-import { noop } from '@gorgias/toolkit'
 
 import { Box, Button, toast } from '@gorgias/axiom'
 
@@ -503,7 +504,7 @@ const ActionConfigTabInner = ({ configuration }: Props) => {
 
                     <PanelFooter
                         onSubmit={() => {
-                            void handleSave().catch(noop)
+                            void handleSave().catch(_noop)
                         }}
                         onDismiss={handleDiscard}
                         submitLabel="Save"

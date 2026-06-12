@@ -15,7 +15,8 @@ import React, {
 } from 'react'
 
 import classnames from 'classnames'
-import { isFunction, isString } from '@gorgias/toolkit'
+import _isFunction from 'lodash/isFunction'
+import _isString from 'lodash/isString'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
@@ -172,10 +173,10 @@ export const DropdownItem = <T extends boolean | number | string | null>(
 
     const label: ReactNode | string = useMemo(() => {
         if (children) {
-            if (isString(children)) {
+            if (_isString(children)) {
                 return getHighlightedLabel(children)
             }
-            if (isFunction(children)) {
+            if (_isFunction(children)) {
                 const highlighted = getHighlightedLabel(option.label)
                 return children(highlighted)
             }

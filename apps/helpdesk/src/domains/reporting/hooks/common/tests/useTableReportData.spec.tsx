@@ -3,10 +3,10 @@ import React from 'react'
 import { assumeMock, renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { keyBy } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { TableDataSources } from 'domains/reporting/hooks/common/useTableReportData'
@@ -76,7 +76,7 @@ describe('useTable hooks', () => {
             all: agents,
         }),
         entities: {
-            tags: keyBy(tags, 'id'),
+            tags: _keyBy(tags, 'id'),
         },
         ui: {
             stats: {
@@ -156,7 +156,7 @@ describe('useTable hooks', () => {
                     all: agents,
                 }),
                 entities: {
-                    tags: keyBy(tags, 'id'),
+                    tags: _keyBy(tags, 'id'),
                 },
                 ui: {
                     stats: {

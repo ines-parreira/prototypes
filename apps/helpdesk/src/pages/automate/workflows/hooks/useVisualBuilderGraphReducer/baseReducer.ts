@@ -1,5 +1,6 @@
 import { produce } from 'immer'
-import { merge } from '@gorgias/toolkit'
+import _merge from 'lodash/merge'
+
 import type { App } from 'pages/automate/actionsPlatform/types'
 import {
     buildEdgeCommonProperties,
@@ -847,9 +848,9 @@ export function baseReducer(
                     const node = draft.nodes.find((n) => n.id === action.nodeId)
 
                     if (node) {
-                        node.data.touched = merge(
-                            node.data.touched ?? {},
-                            action.touched ?? {},
+                        node.data.touched = _merge(
+                            node.data.touched,
+                            action.touched,
                         )
                     }
                 } else if (action.appId) {
@@ -861,10 +862,7 @@ export function baseReducer(
                         }
                     }
                 } else {
-                    draft.touched = merge(
-                        draft.touched ?? {},
-                        action.touched ?? {},
-                    )
+                    draft.touched = _merge(draft.touched, action.touched)
                 }
             })
     }

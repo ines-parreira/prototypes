@@ -3,7 +3,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { MultiSelectField } from '../MultiSelectField'
 
 describe('MultiSelectField', () => {
@@ -27,7 +28,7 @@ describe('MultiSelectField', () => {
     const props: ComponentProps<typeof MultiSelectField> = {
         options: minProps.options,
         values: [1, 3],
-        onChange: noop,
+        onChange: _noop,
         plural: 'tags',
         singular: 'tag',
         allowCustomValues: true,

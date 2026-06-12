@@ -1,15 +1,17 @@
-import { isArray, isObject } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+
 import { getVariablesList } from '../getVariablesList'
 
 describe('getVariablesList', () => {
     const list = getVariablesList()
 
     it('is array', () => {
-        expect(isArray(list)).toBe(true)
+        expect(_isArray(list)).toBe(true)
     })
 
     it('is array of objects', () => {
-        expect(isObject(list[0])).toBe(true)
+        expect(_isObject(list[0])).toBe(true)
     })
 
     it('structure of objects', () => {

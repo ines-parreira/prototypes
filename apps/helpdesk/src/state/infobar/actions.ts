@@ -2,7 +2,8 @@ import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { isCancel } from 'axios'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { searchCustomers } from 'models/customer/resources'
 import type { Customer } from 'models/customer/types'
 import type { ActionExecutedEvent } from 'services/socketManager/types'
@@ -129,7 +130,7 @@ export const executeAction =
         appId,
         customerId,
         payload = {},
-        callback = noop,
+        callback = _noop,
     }: {
         actionName: string
         actionLabel?: string

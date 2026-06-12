@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { rangeRight } from '@gorgias/toolkit'
+import _rangeRight from 'lodash/rangeRight'
+
 import emptyStar from 'assets/img/satisfaction-survey/empty-star.svg'
 import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
 import css from 'domains/reporting/pages/common/components/charts/DistributionVariantStat.less'
@@ -75,7 +76,7 @@ export function DistributionVariantStat({
 
     return (
         <span className={classNames(css.distribution)}>
-            {rangeRight(minValue, maxValue + 1).map((index) =>
+            {_rangeRight(minValue, maxValue + 1).map((index) =>
                 index <= maxValue - currentValue
                     ? variantComponent.empty(index)
                     : variantComponent.fill(index),

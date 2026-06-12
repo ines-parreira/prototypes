@@ -7,8 +7,9 @@ import {
     getDateAndTimeFormat,
 } from '@repo/utils'
 import type { AxiosError } from 'axios'
+import _get from 'lodash/get'
+import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
-import { get, isUndefined } from '@gorgias/toolkit'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import type {
@@ -93,7 +94,7 @@ export function updateCurrentUser(data: Partial<EditableUserProfile>) {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Success,
-                            message: get(data, ['meta', 'profile_picture_url'])
+                            message: _get(data, ['meta', 'profile_picture_url'])
                                 ? 'User picture successfully updated'
                                 : 'User successfully updated',
                         }),
@@ -198,7 +199,7 @@ export const toggleActiveStatus =
         const { currentUser } = getState()
         const currentStatus = currentUser.get('is_active')
 
-        if (isUndefined(status) || status !== currentStatus) {
+        if (_isUndefined(status) || status !== currentStatus) {
             dispatch({
                 type: constants.TOGGLE_ACTIVE_STATUS,
                 status,

@@ -3,11 +3,16 @@ import React, { Component } from 'react'
 
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _clone from 'lodash/clone'
+import _find from 'lodash/find'
+import _isError from 'lodash/isError'
+import _isUndefined from 'lodash/isUndefined'
+import _merge from 'lodash/merge'
+import _pick from 'lodash/pick'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Form } from 'reactstrap'
 import { bindActionCreators } from 'redux'
-import { clone, isError, isUndefined, merge, pick } from '@gorgias/toolkit'
 
 import { Button } from '@gorgias/axiom'
 
@@ -74,7 +79,7 @@ class CustomerForm extends Component<Props> {
     constructor(props: Props) {
         super(props)
 
-        this.state = merge(
+        this.state = _merge(
             {
                 submitting: false,
                 errors: {},
@@ -108,7 +113,7 @@ class CustomerForm extends Component<Props> {
     }
 
     _updateField = (value: Partial<State>) => {
-        const newState: State = Object.assign(clone(this.state), value)
+        const newState: State = Object.assign(_clone(this.state), value)
 
         this.setState(
             Object.assign(value, {
@@ -120,10 +125,10 @@ class CustomerForm extends Component<Props> {
     _getForm: () => Content = () => {
         if (this.props.isUpdate) {
             const customer = this.props.customer.toJS()
-            return this._docToForm(pick(customer, Object.keys(defaultContent)))
+            return this._docToForm(_pick(customer, Object.keys(defaultContent)))
         }
 
-        return clone(defaultContent)
+        return _clone(defaultContent)
     }
 
     _docToForm = (doc: Content = {}): Content => {
@@ -133,9 +138,7 @@ class CustomerForm extends Component<Props> {
         // this should not exist but some customers apparently have email in "email" not in "channels"
         const email = doc.email
         if (email) {
-            const hasEmailAsChannel = channels.find(
-                (item) => item.address === email,
-            )
+            const hasEmailAsChannel = _find(channels, { address: email })
             if (!hasEmailAsChannel) {
                 channels.push({
                     type: 'email',
@@ -210,7 +213,7 @@ class CustomerForm extends Component<Props> {
     _handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
         let doc: Map<any, any> = fromJS(
-            pick(this.state, Object.keys(defaultContent)),
+            _pick(this.state, Object.keys(defaultContent)),
         )
 
         let promise: Promise<Maybe<{ error: unknown }>>
@@ -237,7 +240,7 @@ class CustomerForm extends Component<Props> {
                 submitting: false,
             })
 
-            if ((response && response.error) || isError(response)) {
+            if ((response && response.error) || _isError(response)) {
                 return
             }
 
@@ -326,7 +329,7 @@ class CustomerForm extends Component<Props> {
 const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     const customer = ownProps.customer || fromJS({})
     return {
-        isUpdate: !isUndefined(customer.get('id')),
+        isUpdate: !_isUndefined(customer.get('id')),
     }
 }
 

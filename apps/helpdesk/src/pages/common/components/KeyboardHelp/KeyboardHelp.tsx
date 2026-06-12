@@ -7,8 +7,9 @@ import {
     useShortcuts,
 } from '@repo/utils'
 import classnames from 'classnames'
+import { omit } from 'lodash'
+
 import { LegacyBadge as Badge } from '@gorgias/axiom'
-import { omit } from '@gorgias/toolkit'
 
 import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'

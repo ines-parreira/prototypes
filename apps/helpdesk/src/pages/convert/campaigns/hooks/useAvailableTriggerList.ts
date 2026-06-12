@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
-import { pickBy } from '@gorgias/toolkit'
+
+import _pickBy from 'lodash/pickBy'
+
 import type { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import { CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG } from '../constants/triggers'
@@ -56,7 +58,7 @@ export function useAvailableTriggerList({
             })
         }
 
-        return pickBy(TRIGGERS_CONFIG, filterFn)
+        return _pickBy(TRIGGERS_CONFIG, filterFn)
     }, [
         isLightCampaign,
         isShopifyStore,

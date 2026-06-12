@@ -1,7 +1,8 @@
 import type React from 'react'
 import { useEffect, useState } from 'react'
+
+import _isEqual from 'lodash/isEqual'
 import { Form } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import { Button } from '@gorgias/axiom'
 
@@ -45,7 +46,7 @@ export function VoiceIntegrationVoicemail({
     const [isLoading, setIsLoading] = useState(false)
 
     const isSubmittable =
-        !isEqual(cleanUpPayload(payload), cleanUpPayload(initialSettings)) &&
+        !_isEqual(cleanUpPayload(payload), cleanUpPayload(initialSettings)) &&
         isValidTextToSpeech(payload)
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export function VoiceIntegrationVoicemail({
         }
         if (
             !initialSettings ||
-            !isEqual(initialSettings, integration?.meta?.voicemail)
+            !_isEqual(initialSettings, integration?.meta?.voicemail)
         ) {
             setInitialSettings(integration?.meta?.voicemail)
             setPayload(integration?.meta?.voicemail)

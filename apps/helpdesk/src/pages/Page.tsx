@@ -1,6 +1,8 @@
 import type { ComponentType, ReactNode } from 'react'
 import { memo } from 'react'
-import { isEqual } from '@gorgias/toolkit'
+
+import _isEqual from 'lodash/isEqual'
+
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 
 import { AppFrame } from './AppFrame'
@@ -27,6 +29,6 @@ const Page = ({ navbar: Navbar, children }: Props) => (
     </AppFrame>
 )
 
-const DefaultExportPage = memo(Page, isEqual)
+const DefaultExportPage = memo(Page, _isEqual)
 
 export { DefaultExportPage }

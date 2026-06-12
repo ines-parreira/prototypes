@@ -1,4 +1,6 @@
-import { isArray, isObject } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+
 import * as actionsConfig from '../actions'
 
 describe('Config: actions', () => {
@@ -6,11 +8,11 @@ describe('Config: actions', () => {
         const { actions } = actionsConfig
 
         it('is array', () => {
-            expect(isArray(actions)).toBe(true)
+            expect(_isArray(actions)).toBe(true)
         })
 
         it('is array of objects', () => {
-            expect(isObject(actions[0])).toBe(true)
+            expect(_isObject(actions[0])).toBe(true)
         })
 
         it('structure of objects', () => {

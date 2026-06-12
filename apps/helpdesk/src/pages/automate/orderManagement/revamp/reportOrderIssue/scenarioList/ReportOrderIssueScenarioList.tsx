@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { uniqueId } from '@gorgias/toolkit'
+
+import _uniqueId from 'lodash/uniqueId'
+
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import { ReportOrderIssueScenarioItem } from './ReportOrderIssueScenarioItem'
@@ -14,7 +16,7 @@ export const ReportOrderIssueScenarioList = ({
     onReorder,
 }: Props) => {
     const scenariosWithId = useMemo(
-        () => scenarios.map((scenario) => ({ ...scenario, id: uniqueId() })),
+        () => scenarios.map((scenario) => ({ ...scenario, id: _uniqueId() })),
         [scenarios],
     )
 

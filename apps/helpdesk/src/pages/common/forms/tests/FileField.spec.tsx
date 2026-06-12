@@ -3,8 +3,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import _noop from 'lodash/noop'
 import type { Input } from 'reactstrap'
-import { noop } from '@gorgias/toolkit'
 
 import { uploadFiles } from 'common/utils'
 
@@ -44,15 +44,12 @@ jest.mock('reactstrap', () => {
     } as unknown
 })
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: () => 'input-1',
-}))
+jest.mock('lodash/uniqueId', () => () => 'input-1')
 
 describe('<FileField/>', () => {
     const minProps = {
         value: 'value',
-        onChange: noop,
+        onChange: _noop,
     }
 
     describe('handleRemove()', () => {
@@ -200,7 +197,7 @@ describe('<FileField/>', () => {
                 <FileFieldContainer
                     {...minProps}
                     value="value"
-                    onChange={noop}
+                    onChange={_noop}
                 />,
             )
 

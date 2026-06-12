@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
-import { sortBy } from '@gorgias/toolkit'
+
+import _sortBy from 'lodash/sortBy'
+
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTicketsPerProductTrend } from 'domains/reporting/hooks/voice-of-customer/useTicketsPerProductTrend'
 import {
@@ -34,7 +36,7 @@ function getTicketCount(value?: ItemType) {
         : 0
 }
 
-const sortProductsBy = <T extends ItemType>(
+const sortBy = <T extends ItemType>(
     currentTopData: T[],
     previousTopData: T[],
     sorting: ColumnSorting<ProductsPerTicketColumn>,
@@ -44,18 +46,18 @@ const sortProductsBy = <T extends ItemType>(
 
     switch (sorting.field) {
         case ProductsPerTicketColumn.Product:
-            sortedData = sortBy(currentTopData, PRODUCT_NAME_FIELD)
+            sortedData = _sortBy(currentTopData, PRODUCT_NAME_FIELD)
             break
 
         case ProductsPerTicketColumn.TicketVolume:
-            sortedData = sortBy(currentTopData, (record) => {
+            sortedData = _sortBy(currentTopData, (record) => {
                 const value = record[TICKET_COUNT_FIELD]
                 return value ? Number(value) : value
             })
             break
 
         case ProductsPerTicketColumn.Delta: {
-            sortedData = sortBy(currentTopData, (record) => {
+            sortedData = _sortBy(currentTopData, (record) => {
                 const prevValue = previousTopData.find(
                     (item) =>
                         item[PRODUCT_ID_FIELD] === record[PRODUCT_ID_FIELD],
@@ -105,11 +107,7 @@ export const useTicketsPerProductDistribution = (topAmount = 10) => {
         getValuesUptoTopAmount(data.value, topAmount, data.value.length),
     )
 
-    const sortedTopData = sortProductsBy(
-        currentTopData,
-        previousTopData,
-        sorting,
-    )
+    const sortedTopData = sortBy(currentTopData, previousTopData, sorting)
 
     const dataToRender = useMemo(() => {
         return sortedTopData.map((item) => {

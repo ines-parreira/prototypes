@@ -2,7 +2,8 @@ import type { ContentBlock } from 'draft-js'
 import { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import JSZip from 'jszip'
-import { get } from '@gorgias/toolkit'
+import _get from 'lodash/get'
+
 import { MAX_ATTACHMENTS_SIZE } from '../config/editor'
 
 export const EOL = '\r\n'
@@ -90,7 +91,7 @@ const getInlineImagesSize = (editorState: EditorState): number => {
             >
             if (entity.get('type') === 'img') {
                 const data = entity.get('data')
-                size = size + (get(data, 'size', 0) as number)
+                size = size + (_get(data, 'size', 0) as number)
             }
             return false
         })

@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react'
 
 import classNames from 'classnames'
+import _isString from 'lodash/isString'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { isString } from '@gorgias/toolkit'
 
 import type { SliderRef } from 'utils/wrappers/Slider'
 import { Slider } from 'utils/wrappers/Slider'
@@ -85,7 +86,7 @@ const HeroImageCarousel = ({
                                     )}
                                     src={imageUrl}
                                     alt={
-                                        isString(description)
+                                        _isString(description)
                                             ? description
                                             : header
                                     }

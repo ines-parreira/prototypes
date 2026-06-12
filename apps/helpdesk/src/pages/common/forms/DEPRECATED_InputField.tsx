@@ -3,9 +3,10 @@ import { Component } from 'react'
 import type { ChangeEvent, ReactNode } from 'react'
 
 import classnames from 'classnames'
+import _omit from 'lodash/omit'
+import _uniqueId from 'lodash/uniqueId'
 import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
 import type { InputProps } from 'reactstrap/lib/Input'
-import { omit, uniqueId } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -60,12 +61,12 @@ export class InputField<
     }
 
     _getId = () => {
-        const name: string = this.props.name ?? uniqueId('input-')
+        const name: string = this.props.name ?? _uniqueId('input-')
         return `id-${name}`
     }
 
     _getField = () => {
-        const { children, error, ...rest } = omit(this.props, [
+        const { children, error, ...rest } = _omit(this.props, [
             'leftAddon',
             'rightAddon',
             'caseInsensitive',
@@ -76,7 +77,7 @@ export class InputField<
             'onChange',
             'tooltip',
             'className',
-        ]) as T & { error?: unknown }
+        ])
 
         return (
             <BootstrapInput
@@ -113,7 +114,7 @@ export class InputField<
         const color = error ? 'danger' : ''
 
         if (type === 'hidden') {
-            const hiddenInputProps = omit(this.props, [
+            const hiddenInputProps = _omit(this.props, [
                 'leftAddon',
                 'rightAddon',
             ])

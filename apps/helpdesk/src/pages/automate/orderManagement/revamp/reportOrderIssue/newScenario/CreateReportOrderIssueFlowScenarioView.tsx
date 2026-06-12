@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
+
+import _isEqual from 'lodash/isEqual'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
-import { isEqual } from '@gorgias/toolkit'
 
 import { Box, Text, TextAreaField, TextField } from '@gorgias/axiom'
 
@@ -156,7 +157,7 @@ export const CreateReportOrderIssueScenarioView = () => {
                     } else {
                         delete next[path]
                     }
-                    return isEqual(prev, next) ? prev : next
+                    return _isEqual(prev, next) ? prev : next
                 })
             },
         }),

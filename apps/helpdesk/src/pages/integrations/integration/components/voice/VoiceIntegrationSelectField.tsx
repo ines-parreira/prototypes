@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
+
+import flatten from 'lodash/flatten'
 import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, Skeleton, toast } from '@gorgias/axiom'
@@ -62,12 +64,9 @@ export function VoiceIntegrationSelectField({
 
     const options = useMemo(
         () =>
-            (data?.pages.map((page) => page.data.data) ?? [])
-                .flat()
-                .filter(
-                    (integration) =>
-                        !hiddenIntegrations?.includes(integration.id),
-                ),
+            flatten(data?.pages.map((page) => page.data.data)).filter(
+                (integration) => !hiddenIntegrations?.includes(integration.id),
+            ),
         [data, hiddenIntegrations],
     )
 

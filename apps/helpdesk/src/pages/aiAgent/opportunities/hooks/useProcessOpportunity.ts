@@ -1,6 +1,8 @@
 import { normalizeHtml } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
+import _get from 'lodash/get'
+
 import {
     queryKeys,
     useProcessOpportunityForShopOpportunity,
@@ -13,7 +15,6 @@ import type {
     ProcessOpportunityOneOfThreeDismissReason,
 } from '@gorgias/knowledge-service-types'
 import { ProcessOpportunityOneOfVisibilityStatus } from '@gorgias/knowledge-service-types'
-import { get } from '@gorgias/toolkit'
 
 import type { Opportunity, ResourceFormFields } from '../types'
 import { ResourceType } from '../types'
@@ -36,7 +37,7 @@ export const useProcessOpportunity = (shopIntegrationId?: number) => {
             onError: async (error) => {
                 if (
                     isAxiosError(error) &&
-                    get(error, 'response.status') === 409 &&
+                    _get(error, 'response.status') === 409 &&
                     shopIntegrationId
                 ) {
                     await queryClient.invalidateQueries({

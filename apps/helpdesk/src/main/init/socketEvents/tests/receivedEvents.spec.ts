@@ -5,16 +5,19 @@ import {
 } from 'fixtures/plans'
 
 import type { EnhancedStore } from '@reduxjs/toolkit'
+import { fromJS } from 'immutable'
+import _find from 'lodash/find'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+
 import * as activityTracker from '@repo/activity-tracker'
 import { ActivityEvents } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { waitFor } from '@testing-library/react'
-import { fromJS } from 'immutable'
 import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
-import { isArray, isObject } from '@gorgias/toolkit'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'
@@ -221,11 +224,11 @@ describe('receivedEvents', () => {
     })
 
     it('is array', () => {
-        expect(isArray(receivedEvents)).toBe(true)
+        expect(_isArray(receivedEvents)).toBe(true)
     })
 
     it('is array of objects', () => {
-        expect(isObject(receivedEvents[0])).toBe(true)
+        expect(_isObject(receivedEvents[0])).toBe(true)
     })
 
     it('structure of objects', () => {
@@ -236,9 +239,9 @@ describe('receivedEvents', () => {
     })
 
     describe('ACCOUNT_UPDATED handler', () => {
-        const accountUpdatedHandler = receivedEvents.find(
-            (item) => item.name === SocketEventType.AccountUpdated,
-        )
+        const accountUpdatedHandler = _find(receivedEvents, {
+            name: SocketEventType.AccountUpdated,
+        })
         const getAvailablePlansMapSpy = jest.spyOn(
             billingSelectors,
             'getAvailablePlansMap',
@@ -507,9 +510,9 @@ describe('receivedEvents', () => {
     })
 
     describe('TICKET_MESSAGE_CHAT_CREATED handler', () => {
-        const ticketMessageChatCreatedHandler = receivedEvents.find(
-            (item) => item.name === SocketEventType.TicketMessageChatCreated,
-        )
+        const ticketMessageChatCreatedHandler = _find(receivedEvents, {
+            name: SocketEventType.TicketMessageChatCreated,
+        })
 
         class MockSocketManager {
             ticketMessageChatCreatedHandler = ticketMessageChatCreatedHandler
@@ -649,9 +652,9 @@ describe('receivedEvents', () => {
     })
 
     describe('TICKET_CHAT_UPDATED handler', () => {
-        const ticketChatUpdatedHandler = receivedEvents.find(
-            (item) => item.name === SocketEventType.TicketChatUpdated,
-        )
+        const ticketChatUpdatedHandler = _find(receivedEvents, {
+            name: SocketEventType.TicketChatUpdated,
+        })
 
         it('should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` returned `true`', () => {
             ;(
@@ -729,10 +732,9 @@ describe('receivedEvents', () => {
     })
 
     describe('FACEBOOK_INTEGRATIONS_RECONNECTED handler', () => {
-        const handler = receivedEvents.find(
-            (item) =>
-                item.name === SocketEventType.FacebookIntegrationsReconnected,
-        )
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.FacebookIntegrationsReconnected,
+        })
 
         it('should fetch integrations', () => {
             const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
@@ -762,9 +764,9 @@ describe('receivedEvents', () => {
     })
 
     describe('VIEW_DEACTIVATED handler', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === SocketEventType.ViewDeactivated,
-        )
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.ViewDeactivated,
+        })
 
         it('should show a warning toast', () => {
             const event = {
@@ -794,9 +796,9 @@ describe('receivedEvents', () => {
     })
 
     describe('WhatsAppOnboardingSucceeded handler', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === SocketEventType.WhatsAppOnboardingSucceeded,
-        )
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingSucceeded,
+        })
 
         beforeEach(() => {
             jest.resetModules()
@@ -829,9 +831,9 @@ describe('receivedEvents', () => {
     })
 
     describe('WhatsAppOnboardingFailed handler', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === SocketEventType.WhatsAppOnboardingFailed,
-        )
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingFailed,
+        })
 
         it('should show an error toast with the API message', async () => {
             const spy = jest.spyOn(toast, 'error')
@@ -860,12 +862,12 @@ describe('receivedEvents', () => {
     })
 
     describe('WhatsApp onboarding handlers', () => {
-        const successHandler = receivedEvents.find(
-            (item) => item.name === SocketEventType.WhatsAppOnboardingSucceeded,
-        )
-        const failedHandler = receivedEvents.find(
-            (item) => item.name === SocketEventType.WhatsAppOnboardingFailed,
-        )
+        const successHandler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingSucceeded,
+        })
+        const failedHandler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingFailed,
+        })
 
         beforeEach(() => {
             window.history.pushState({}, '', '/app/settings/integrations')
@@ -971,9 +973,9 @@ describe('receivedEvents', () => {
     })
 
     describe('OutboundPhoneCallInitiated handler', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === SocketEventType.OutboundPhoneCallInitiated,
-        )
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.OutboundPhoneCallInitiated,
+        })
 
         it('should redirect to ticket page because agent is on the original ticket page', () => {
             const originalTicketId = 123
@@ -1038,9 +1040,9 @@ describe('receivedEvents', () => {
     })
 
     describe('views-count-updated', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'views-count-updated',
-        )
+        const handler = _find(receivedEvents, {
+            name: 'views-count-updated',
+        })
 
         it('should dispatch the views count', () => {
             if (handler) {
@@ -1060,9 +1062,9 @@ describe('receivedEvents', () => {
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.ViewSectionCreated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionCreated,
+            }) as ReceivedEvent
             await handler.onReceive({
                 event: {
                     type: SocketEventType.ViewSectionCreated,
@@ -1085,9 +1087,9 @@ describe('receivedEvents', () => {
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.ViewSectionUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionUpdated,
+            }) as ReceivedEvent
             await handler.onReceive({
                 event: {
                     type: SocketEventType.ViewSectionUpdated,
@@ -1110,9 +1112,9 @@ describe('receivedEvents', () => {
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.ViewSectionDeleted,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionDeleted,
+            }) as ReceivedEvent
             await handler.onReceive({
                 event: {
                     type: SocketEventType.ViewSectionDeleted,
@@ -1134,9 +1136,9 @@ describe('receivedEvents', () => {
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.ViewSectionCreated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionCreated,
+            }) as ReceivedEvent
 
             await handler.onReceive({
                 event: {
@@ -1155,9 +1157,9 @@ describe('receivedEvents', () => {
     })
 
     describe('view-created', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'view-created',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'view-created',
+        }) as ReceivedEvent
 
         it('should dispatch the new view', () => {
             ;(
@@ -1230,9 +1232,9 @@ describe('receivedEvents', () => {
     })
 
     describe('view-updated', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'view-updated',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'view-updated',
+        }) as ReceivedEvent
 
         it('should dispatch the updated view', () => {
             ;(
@@ -1308,9 +1310,9 @@ describe('receivedEvents', () => {
     })
 
     describe('view-deleted', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'view-deleted',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'view-deleted',
+        }) as ReceivedEvent
 
         it('should dispatch the deleted view', () => {
             handler.onReceive({ view } as any)
@@ -1336,9 +1338,9 @@ describe('receivedEvents', () => {
     })
 
     describe('ticket-updated', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'ticket-updated',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'ticket-updated',
+        }) as ReceivedEvent
 
         it('should dispatch the updated ticket', () => {
             handler.onReceive({ ticket: { id: 1 } } as any)
@@ -1384,9 +1386,9 @@ describe('receivedEvents', () => {
     })
 
     describe('ticket-message-created', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'ticket-message-created',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'ticket-message-created',
+        }) as ReceivedEvent
 
         const createTicketMessageCreatedEvent = () => {
             const message = ticket.messages[0] as TicketMessage
@@ -1542,9 +1544,9 @@ describe('receivedEvents', () => {
     })
 
     describe('ticket-message-action-failed', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'ticket-message-action-failed',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'ticket-message-action-failed',
+        }) as ReceivedEvent
 
         beforeEach(() => {
             mockFetchFlag.mockResolvedValue({ flag: false, error: null })
@@ -1608,9 +1610,9 @@ describe('receivedEvents', () => {
     })
 
     describe('agent-availability-updated', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === SocketEventType.AgentAvailabilityUpdated,
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.AgentAvailabilityUpdated,
+        }) as ReceivedEvent
 
         it('should dispatch the availability status', () => {
             handler.onReceive({
@@ -1627,9 +1629,9 @@ describe('receivedEvents', () => {
     })
 
     describe('customer-updated', () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === 'customer-updated',
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: 'customer-updated',
+        }) as ReceivedEvent
 
         it('should dispatch mergeCustomer action and call throttledUpdateCustomerCache with customer id', () => {
             const invalidateQueriesSpy = jest
@@ -1694,9 +1696,9 @@ describe('receivedEvents', () => {
     })
 
     describe(SocketEventType.CustomerExternalDataUpdated, () => {
-        const handler = receivedEvents.find(
-            (item) => item.name === SocketEventType.CustomerExternalDataUpdated,
-        ) as ReceivedEvent
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.CustomerExternalDataUpdated,
+        }) as ReceivedEvent
 
         it('should dispatch the updated external data for customer id', () => {
             const customerExternalDataUpdatedEvent = {
@@ -1733,11 +1735,9 @@ describe('receivedEvents', () => {
         })
 
         it('MigrationIntegrationInboundVerified - should find migration and dispatch onVerifyMigrationForwarding action with correct args', async () => {
-            const handler = receivedEvents.find(
-                (item) =>
-                    item.name ===
-                    SocketEventType.MigrationIntegrationInboundVerified,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.MigrationIntegrationInboundVerified,
+            }) as ReceivedEvent
 
             jest.spyOn(reduxStore, 'getState').mockReturnValueOnce({
                 integrations: fromJS({
@@ -1772,11 +1772,9 @@ describe('receivedEvents', () => {
         it('MigrationIntegrationInboundVerified - should not dispatch when the Ably migration feature flag is enabled', async () => {
             mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
 
-            const handler = receivedEvents.find(
-                (item) =>
-                    item.name ===
-                    SocketEventType.MigrationIntegrationInboundVerified,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.MigrationIntegrationInboundVerified,
+            }) as ReceivedEvent
 
             const getStateSpy = jest.spyOn(reduxStore, 'getState')
             const spy = jest.spyOn(
@@ -1796,11 +1794,9 @@ describe('receivedEvents', () => {
         })
 
         it('MigrationIntegrationInboundFailed - should find migration and dispatch onVerifyMigrationForwardingFailure action with correct args', async () => {
-            const handler = receivedEvents.find(
-                (item) =>
-                    item.name ===
-                    SocketEventType.MigrationIntegrationInboundFailed,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.MigrationIntegrationInboundFailed,
+            }) as ReceivedEvent
 
             jest.spyOn(reduxStore, 'getState').mockReturnValueOnce({
                 integrations: fromJS({
@@ -1835,11 +1831,9 @@ describe('receivedEvents', () => {
         it('MigrationIntegrationInboundFailed - should not dispatch when the Ably migration feature flag is enabled', async () => {
             mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
 
-            const handler = receivedEvents.find(
-                (item) =>
-                    item.name ===
-                    SocketEventType.MigrationIntegrationInboundFailed,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.MigrationIntegrationInboundFailed,
+            }) as ReceivedEvent
 
             const getStateSpy = jest.spyOn(reduxStore, 'getState')
             const spy = jest.spyOn(
@@ -1861,9 +1855,9 @@ describe('receivedEvents', () => {
 
     describe('voice-call-created', () => {
         it('should update query cache', () => {
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.VoiceCallCreated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallCreated,
+            }) as ReceivedEvent
 
             const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
             isVoiceCallSpy.mockReturnValueOnce(true)
@@ -1890,9 +1884,9 @@ describe('receivedEvents', () => {
         })
 
         it('should update helpdesk-queries listVoiceCalls cache', () => {
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.VoiceCallCreated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallCreated,
+            }) as ReceivedEvent
 
             const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
             isVoiceCallSpy.mockReturnValueOnce(true)
@@ -1924,9 +1918,9 @@ describe('receivedEvents', () => {
 
     describe('voice-call-updated', () => {
         it('should update query cache when voiceCall exists', () => {
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.VoiceCallUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
 
             const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
 
@@ -1955,9 +1949,9 @@ describe('receivedEvents', () => {
         })
 
         it('should not update query cache when voiceCall does not exist', () => {
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.VoiceCallUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
 
             const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
             isVoiceCallSpy.mockReturnValueOnce(true)
@@ -1986,9 +1980,9 @@ describe('receivedEvents', () => {
         })
 
         it('should update helpdesk-queries listVoiceCalls cache when voiceCall exists', () => {
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.VoiceCallUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
 
             const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
             isVoiceCallSpy.mockReturnValueOnce(true)
@@ -2018,9 +2012,9 @@ describe('receivedEvents', () => {
         })
 
         it('should not update helpdesk-queries listVoiceCalls cache when voiceCall does not exist', () => {
-            const handler = receivedEvents.find(
-                (item) => item.name === SocketEventType.VoiceCallUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
 
             const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
             isVoiceCallSpy.mockReturnValueOnce(true)
@@ -2052,10 +2046,9 @@ describe('receivedEvents', () => {
 
     describe('voice-call-recording-updated', () => {
         it('should refetch query when the transcription status is provided', () => {
-            const handler = receivedEvents.find(
-                (item) =>
-                    item.name === SocketEventType.VoiceCallRecordingUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallRecordingUpdated,
+            }) as ReceivedEvent
 
             const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
 
@@ -2088,10 +2081,9 @@ describe('receivedEvents', () => {
         })
 
         it('should not refetch query when the transcription status is not provided', () => {
-            const handler = receivedEvents.find(
-                (item) =>
-                    item.name === SocketEventType.VoiceCallRecordingUpdated,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallRecordingUpdated,
+            }) as ReceivedEvent
 
             const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
 
@@ -2116,9 +2108,9 @@ describe('receivedEvents', () => {
             SocketEventType.ShopperCreated,
             SocketEventType.ShopperUpdated,
         ])('should dispatch the shopper data for customer id', (eventType) => {
-            const handler = receivedEvents.find(
-                (item) => item.name === eventType,
-            ) as ReceivedEvent
+            const handler = _find(receivedEvents, {
+                name: eventType,
+            }) as ReceivedEvent
             const shopperEvent = {
                 event: {
                     type: eventType,
@@ -2141,9 +2133,9 @@ describe('receivedEvents', () => {
         ])(
             'should dispatch the shopper address data for customer id',
             (eventType) => {
-                const handler = receivedEvents.find(
-                    (item) => item.name === eventType,
-                ) as ReceivedEvent
+                const handler = _find(receivedEvents, {
+                    name: eventType,
+                }) as ReceivedEvent
                 const shopperEvent = {
                     event: {
                         type: eventType,
@@ -2166,9 +2158,9 @@ describe('receivedEvents', () => {
         it.each([SocketEventType.OrderCreated, SocketEventType.OrderUpdated])(
             'should dispatch the order data for customer id',
             (eventType) => {
-                const handler = receivedEvents.find(
-                    (item) => item.name === eventType,
-                ) as ReceivedEvent
+                const handler = _find(receivedEvents, {
+                    name: eventType,
+                }) as ReceivedEvent
                 const orderEvent = {
                     event: {
                         type: eventType,

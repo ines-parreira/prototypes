@@ -1,6 +1,7 @@
 import { formatNumTickets } from '@repo/billing'
 import type { SelectedPlans } from '@repo/billing'
-import { capitalize } from '@gorgias/toolkit'
+import _capitalize from 'lodash/capitalize'
+
 import type { PlanForProductType } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo, isEnterprise } from 'models/billing/utils'
@@ -194,7 +195,7 @@ export function buildEnterpriseMessage(
             const tickets = `${formatNumTickets(selectedPlan?.num_quota_tickets ?? 0)}${isEnterprisePlan ? '+' : ''}`
             const suffix = isEnterprisePlan ? ' (Enterprise)' : ''
 
-            return ` • ${capitalize(type)} - ${tickets} ${productInfo.counter}/${cadence}${suffix}`
+            return ` • ${_capitalize(type)} - ${tickets} ${productInfo.counter}/${cadence}${suffix}`
         })
 
     return header + '\n' + productLines.join('\n')

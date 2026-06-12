@@ -1,4 +1,5 @@
-import { cloneDeep, isEqual, isObject } from '@gorgias/toolkit'
+import { cloneDeep, isEqual, isObject } from 'lodash'
+
 import type { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 const removeUndefinedProperties = (obj: any): any => {

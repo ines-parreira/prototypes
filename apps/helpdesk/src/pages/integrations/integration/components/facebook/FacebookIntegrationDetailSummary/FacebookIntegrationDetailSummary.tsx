@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { truncate } from '@gorgias/toolkit'
+import { truncate } from 'lodash'
+
 import { FacebookIntegrationLoginButton } from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
 import css from './FacebookIntegrationDetailSummary.less'

@@ -18,13 +18,10 @@ import { AccessContainer } from '../Access'
 
 const useFlagWithLoadingMock = useFlagWithLoading as jest.Mock
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: (id?: string) => `${id || ''}42`,
-}))
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
-    useId: jest.fn(() => require('@gorgias/toolkit').uniqueId()),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
 }))
 
 const accessSettings = fromJS({

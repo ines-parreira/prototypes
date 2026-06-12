@@ -1,4 +1,7 @@
-import { isString, upperFirst, words } from '@gorgias/toolkit'
+import _isString from 'lodash/isString'
+import _trim from 'lodash/trim'
+import _upperFirst from 'lodash/upperFirst'
+import _words from 'lodash/words'
 
 /**
  * Remove a suffix from a string.
@@ -17,7 +20,7 @@ export const removeSuffix = (data: string, suffix: string): string => {
  * Count lines of a text.
  */
 export const countLines = (text: string): number => {
-    if (!isString(text)) {
+    if (!_isString(text)) {
         return 0
     }
 
@@ -25,7 +28,7 @@ export const countLines = (text: string): number => {
 }
 
 export const countWords = (text: string): number => {
-    return words(text, /\S+/g).length
+    return _words(text, /\S+/g).length
 }
 
 export const truncateWords = (text: string, n: number): string => {
@@ -55,9 +58,8 @@ export const truncateWords = (text: string, n: number): string => {
 }
 
 export function humanize(text: string): string {
-    return upperFirst(
-        String(text ?? '')
-            .replace(/^[._-]+|[._-]+$/g, '')
+    return _upperFirst(
+        _trim(text, '.-_')
             .replace(/([A-Z])/g, ' $1')
             .replace(/[-_.\s]+/g, ' ')
             .toLowerCase(),

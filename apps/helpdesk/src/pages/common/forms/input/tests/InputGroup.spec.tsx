@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
+import _noop from 'lodash/noop'
+
 import { Button } from '@gorgias/axiom'
-import { noop } from '@gorgias/toolkit'
 
 import { DefaultExportNumberInput as NumberInput } from 'pages/common/forms/input/NumberInput'
 
@@ -13,7 +14,7 @@ describe('<InputGroup />', () => {
         const { container } = render(
             <InputGroup>
                 <Button variant="secondary">Foo</Button>
-                <NumberInput onChange={noop} />
+                <NumberInput onChange={_noop} />
                 <Button variant="secondary">Bar</Button>
                 <Button variant="secondary">Baz</Button>
             </InputGroup>,

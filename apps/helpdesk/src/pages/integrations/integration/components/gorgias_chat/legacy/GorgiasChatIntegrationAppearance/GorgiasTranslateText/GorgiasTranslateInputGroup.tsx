@@ -1,5 +1,5 @@
+import { get } from 'lodash'
 import { Col, Container, Row } from 'reactstrap'
-import { get } from '@gorgias/toolkit'
 
 import type {
     TextsPerLanguage,
@@ -64,10 +64,8 @@ const GorgiasTranslateInputGroup = ({
                             <GorgiasTranslateInputField
                                 maxLength={propOption.maxLength}
                                 keyName={key}
-                                value={String(get(textsPerLanguage, key) || '')}
-                                defaultValue={String(
-                                    get(translations, key) || '',
-                                )}
+                                value={get(textsPerLanguage, key) || ''}
+                                defaultValue={get(translations, key)}
                                 saveValue={saveValue}
                                 trackInputMethod={trackInputMethod}
                                 isRequired={requiredKeys.includes(key)}

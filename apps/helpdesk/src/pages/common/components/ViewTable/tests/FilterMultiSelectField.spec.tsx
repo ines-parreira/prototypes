@@ -3,7 +3,8 @@ import React from 'react'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { MultiSelectOptionsField } from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import type { FieldSearchResult } from 'state/views/types'
@@ -30,10 +31,10 @@ describe('FilterMultiSelectField', () => {
         plural: 'foos',
         singular: 'foo',
         selectedOptions: [],
-        onChange: noop,
+        onChange: _noop,
         field: Map(),
         fieldEnumSearchCancellable: mockedSearchFunction,
-        cancelFieldEnumSearchCancellable: noop,
+        cancelFieldEnumSearchCancellable: _noop,
         mapSearchResults: mockedMapSearchResults,
         dropdownMenu: () => <div>DropdownMenu</div>,
     }

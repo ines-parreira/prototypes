@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
+import { isEmpty, kebabCase } from 'lodash'
 import { Link, NavLink, useHistory, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { Duration, isEmpty, kebabCase } from '@gorgias/toolkit'
 import { useEffectOnce, useTitle } from '@gorgias/toolkit-react'
 
 import {

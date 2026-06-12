@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import React, { useCallback } from 'react'
+
+import _noop from 'lodash/noop'
 import type { ModalProps } from 'reactstrap'
 import {
     Modal as BootstrapModal,
@@ -7,7 +9,6 @@ import {
     ModalFooter,
     ModalHeader,
 } from 'reactstrap'
-import { noop } from '@gorgias/toolkit'
 
 import { useAppNode } from 'appNode'
 
@@ -51,7 +52,7 @@ export function DEPRECATED_Modal({
     }, [dismissible, onClose])
 
     const toggleProps = {
-        toggle: noop,
+        toggle: _noop,
     }
 
     if (dismissible) {

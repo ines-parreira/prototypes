@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 
 import { notUndefined } from '@repo/utils'
-import { zip } from '@gorgias/toolkit'
+import _zip from 'lodash/zip'
+
 import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -118,7 +119,7 @@ export function enrichWithPercentagesAndDeciles(
             (acc, currentValue) => acc + (currentValue[valueField] || 0),
             0,
         )
-    const columnsSum = zip(...data.map((item) => item.timeSeries))
+    const columnsSum = _zip(...data.map((item) => item.timeSeries))
     const sums =
         topLevelTimeSeriesSums ||
         columnsSum.map((column) => {

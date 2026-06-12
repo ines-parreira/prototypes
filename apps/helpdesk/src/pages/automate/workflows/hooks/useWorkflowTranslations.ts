@@ -8,15 +8,16 @@
  * even if text are emptied on save and saved in a translation dictionary instead.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-    get,
-    isArray,
-    isEqual,
-    isObject,
-    mapValues,
-    omit,
-    pick,
-} from '@gorgias/toolkit'
+
+import _get from 'lodash/get'
+import _isArray from 'lodash/isArray'
+import _isEqual from 'lodash/isEqual'
+import _isObject from 'lodash/isObject'
+import _keys from 'lodash/keys'
+import _mapValues from 'lodash/mapValues'
+import _omit from 'lodash/omit'
+import _pick from 'lodash/pick'
+
 import {
     useDeleteWorkflowConfigurationTranslations,
     useFetchWorkflowConfigurationTranslations,
@@ -138,7 +139,7 @@ export function useWorkflowTranslations(
 
             for (const languageCode of availableLanguages) {
                 if (
-                    !isEqual(
+                    !_isEqual(
                         nextTranslationsByLangDirty[languageCode],
                         translationsByLang[languageCode],
                     )
@@ -243,7 +244,7 @@ export function useWorkflowTranslations(
                 )
             }
             setTranslationsByLangDirty((translationsByLangDirty) =>
-                omit(translationsByLangDirty, languageCode),
+                _omit(translationsByLangDirty, languageCode),
             )
             return {
                 ...g,
@@ -283,7 +284,7 @@ export function useWorkflowTranslations(
         () =>
             availableLanguages.find(
                 (languageCode) =>
-                    !isEqual(
+                    !_isEqual(
                         translationsByLang[languageCode],
                         translationsByLangDirty[languageCode],
                     ),
@@ -314,14 +315,14 @@ function walkDeep<T>(
     elementMapper: (v: any) => any,
     options?: { ignoreKeys?: string[] },
 ): T {
-    if (isArray(value)) {
+    if (_isArray(value)) {
         const withValuesMapped = value.map((el) =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             walkDeep(el, elementMapper),
         )
         return elementMapper(withValuesMapped) as T
-    } else if (isObject(value)) {
-        const withValuesMapped = mapValues(value, (v, k) => {
+    } else if (_isObject(value)) {
+        const withValuesMapped = _mapValues(value, (v, k) => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             if (options?.ignoreKeys?.includes(k)) return v
             return walkDeep(v, elementMapper)
@@ -338,17 +339,16 @@ function translateDeep<T>(
 ): T {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return walkDeep(o, (el) => {
-        if (isObject(el)) {
-            const tkeys = Object.keys(el).filter((k) => k.match(/_tkey$/))
+        if (_isObject(el)) {
+            const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
             return tkeys.reduce((acc, tkey) => {
                 const translatedKey = tkey.replace(/_tkey$/, '')
-                const translationKey = String(get(el, tkey) ?? '')
                 const translatedValue =
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    translationDict[translationKey] ??
+                    translationDict[_get(el, tkey)] ??
                     (options?.doNotFallback
                         ? ''
-                        : String(get(el, translatedKey) ?? ''))
+                        : (_get(el, translatedKey) ?? ''))
                 return {
                     ...acc,
                     [translatedKey]: translatedValue,
@@ -367,14 +367,12 @@ function snapshotTranslations(
 ): TranslationsByLang {
     const translations: Record<string, string> = {}
     walkDeep(graph, (el) => {
-        if (isObject(el)) {
-            const tkeys = Object.keys(el).filter((k) => k.match(/_tkey$/))
+        if (_isObject(el)) {
+            const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
             tkeys.forEach((tkey) => {
                 const translatedKey = tkey.replace(/_tkey$/, '')
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                translations[String(get(el, tkey) ?? '')] = String(
-                    get(el, translatedKey) ?? '',
-                )
+                translations[_get(el, tkey)] = _get(el, translatedKey) ?? ''
             })
         }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -389,7 +387,7 @@ function snapshotTranslations(
     ).reduce<TranslationsByLang>(
         (acc, [lang, translations]) => ({
             ...acc,
-            [lang]: translations ? pick(translations, tkeys) : {},
+            [lang]: _pick(translations, tkeys),
         }),
         {},
     )
@@ -402,8 +400,8 @@ function snapshotTranslations(
 
 export function emptyTranslatedTexts<T>(o: T): T {
     return walkDeep(o, (el) => {
-        if (isObject(el)) {
-            const tkeys = Object.keys(el).filter((k) => k.match(/_tkey$/))
+        if (_isObject(el)) {
+            const tkeys = _keys(el).filter((k) => k.match(/_tkey$/))
             return tkeys.reduce((acc, tkey) => {
                 const translatedKey = tkey.replace(/_tkey$/, '')
                 return {

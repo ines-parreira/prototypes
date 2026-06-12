@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { debounce, Duration } from '@gorgias/toolkit'
+
+import _debounce from 'lodash/debounce'
+
 import type { OptionSelection } from 'models/integration/resources/bigcommerce'
 import type {
     BigCommerceCartLineItem,
@@ -62,13 +64,13 @@ export function OrderLineItemRow({
 }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceOnChange = useCallback(
-        debounce(async (newQuantity: number, oldQuantity: number) => {
+        _debounce(async (newQuantity: number, oldQuantity: number) => {
             try {
                 await onChange(index, newQuantity)
             } catch {
                 setQuantity(oldQuantity)
             }
-        }, Duration.millis(250)),
+        }, 250),
         [index, onChange],
     )
 

@@ -2,9 +2,9 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { Container } from 'reactstrap'
-import { debounce, Duration } from '@gorgias/toolkit'
 import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
@@ -45,13 +45,13 @@ export function RulesList() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const logSearch = useCallback(
-        debounce((key: string) => {
+        _debounce((key: string) => {
             logEvent(SegmentEvent.RuleSearch, {
                 domain: currentAccount?.get('domain'),
                 key,
                 from: 'rules-library',
             })
-        }, Duration.millis(400)),
+        }, 400),
         [currentAccount],
     )
 

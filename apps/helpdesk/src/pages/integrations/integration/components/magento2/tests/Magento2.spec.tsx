@@ -4,9 +4,9 @@ import React from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { cloneDeep } from '@gorgias/toolkit'
 
 import { billingState } from 'fixtures/billing'
 import {
@@ -113,7 +113,7 @@ describe('<Magento2/>', () => {
         })
     })
     describe('Not in price', () => {
-        const productsWithMagentoDisabled = cloneDeep(products)
+        const productsWithMagentoDisabled = _cloneDeep(products)
         const basicPlanWithMagentoDisabled = basicMonthlyHelpdeskPlan
         basicPlanWithMagentoDisabled.features.magento_integration.enabled = false
         productsWithMagentoDisabled[0].prices[0] = basicPlanWithMagentoDisabled

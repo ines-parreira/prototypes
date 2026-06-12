@@ -3,8 +3,8 @@ import type { ComponentType, RefObject } from 'react'
 
 import type { Placement } from '@floating-ui/react'
 import classNames from 'classnames'
+import _xor from 'lodash/xor'
 import { Link } from 'react-router-dom'
-import { xor } from '@gorgias/toolkit'
 import { useDimensions } from '@gorgias/toolkit-react'
 
 import {
@@ -193,7 +193,7 @@ export function MultiLevelSelect<
                 ? onChange(
                       (!newValue
                           ? []
-                          : xor(
+                          : _xor(
                                 [newValue],
                                 value,
                             )) as unknown as InferCustomFieldValueType<AllowMultiValues>,

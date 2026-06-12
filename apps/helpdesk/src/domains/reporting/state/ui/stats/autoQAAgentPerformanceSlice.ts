@@ -1,6 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import { getSortByName } from '@repo/utils'
+import _intersectionBy from 'lodash/intersectionBy'
+
 import type { User } from 'config/types/user'
 import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -112,8 +114,13 @@ export const getFilteredAgents = createSelector(
                     (agent) => !filters.agents?.values.includes(agent.id),
                 )
             }
-            const agentIds = new Set(filters.agents.values)
-            return agents.filter((agent) => agentIds.has(agent.id))
+            return _intersectionBy(
+                agents,
+                filters.agents.values.map((agentId: number) => ({
+                    id: agentId,
+                })),
+                'id',
+            )
         }
         return agents
     },

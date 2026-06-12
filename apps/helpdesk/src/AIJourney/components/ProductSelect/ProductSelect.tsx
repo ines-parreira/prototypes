@@ -1,4 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
+import _debounce from 'lodash/debounce'
+
 import {
     Icon,
     ListItem,
@@ -7,7 +11,6 @@ import {
     Skeleton,
     Text,
 } from '@gorgias/axiom'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import {
     useAIJourneyProductList,
@@ -63,7 +66,7 @@ export const ProductSelect = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSetSearch = useCallback(
-        debounce((value: string) => {
+        _debounce((value: string) => {
             setDebouncedSearch(value)
         }, Duration.millis(250)),
         [],

@@ -1,5 +1,6 @@
 import type { SelectionState } from 'draft-js'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { EditorHandledNotHandled } from 'utils/editor'
 
 import type { ImagePluginConfig, PluginMethods } from '../types'
@@ -46,8 +47,8 @@ const _handleDroppedFiles =
 
 const dndUploadPlugin = (
     config: ImagePluginConfig = {
-        notify: noop as any,
-        getAttachFiles: () => noop,
+        notify: _noop as any,
+        getAttachFiles: () => _noop,
         getCanDropFiles: () => false,
         getCanInsertInlineImages: () => false,
     },

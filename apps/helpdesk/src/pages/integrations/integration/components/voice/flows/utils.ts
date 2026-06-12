@@ -1,6 +1,6 @@
 import type { Edge } from '@xyflow/react'
+import { cloneDeep } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
-import { cloneDeep } from '@gorgias/toolkit'
 
 import type {
     CallRoutingFlow,

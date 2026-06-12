@@ -1,6 +1,7 @@
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { upperFirst } from '@gorgias/toolkit'
+import _upperFirst from 'lodash/upperFirst'
+
 import { TICKET_STATUSES } from 'config'
 import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
@@ -30,7 +31,7 @@ const SetStatusAction = ({
                 }
                 options={TICKET_STATUSES.map((status) => ({
                     value: status,
-                    label: upperFirst(status),
+                    label: _upperFirst(status),
                 }))}
                 fullWidth={fullWidth}
                 container={dropdownContainer}

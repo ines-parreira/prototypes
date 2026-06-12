@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
-import { pick } from '@gorgias/toolkit'
+import _pick from 'lodash/pick'
+
 import type { ApiListResponseLegacyPagination } from '../api/types'
 import type { Section, SectionDraft } from './types'
 
@@ -18,7 +19,7 @@ export const createSection = async (sectionDraft: SectionDraft) => {
 export const updateSection = async (section: Section) => {
     const res = await client.put<Section>(
         `/api/view-sections/${section.id}/`,
-        pick(section, ['decoration', 'name']),
+        _pick(section, ['decoration', 'name']),
     )
     return res.data
 }

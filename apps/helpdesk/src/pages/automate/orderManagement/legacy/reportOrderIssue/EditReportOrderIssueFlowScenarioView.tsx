@@ -1,7 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react'
+
+import _isEqual from 'lodash/isEqual'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import type { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import { AutomateView } from 'pages/automate/common/components/AutomateView'
@@ -67,7 +68,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
                             delete nextErrors[path]
                         }
 
-                        return isEqual(prevErrors, nextErrors)
+                        return _isEqual(prevErrors, nextErrors)
                             ? prevErrors
                             : nextErrors
                     })
@@ -86,7 +87,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
         setDirtyScenario(scenario)
     }
 
-    const isScenarioDirty = !isEqual(dirtyScenario, scenario)
+    const isScenarioDirty = !_isEqual(dirtyScenario, scenario)
     const isLoading = !selfServiceConfiguration || !dirtyScenario
 
     return (

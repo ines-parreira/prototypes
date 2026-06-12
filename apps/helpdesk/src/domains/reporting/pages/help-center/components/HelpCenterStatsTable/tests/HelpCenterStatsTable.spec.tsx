@@ -3,10 +3,10 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
+import noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop } from '@gorgias/toolkit'
 
 import {
     HelpCenterStatsTable,

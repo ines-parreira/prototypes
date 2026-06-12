@@ -1,6 +1,8 @@
 import type { ComponentType } from 'react'
 import React from 'react'
-import { memoize } from '@gorgias/toolkit'
+
+import _memoize from 'lodash/memoize'
+
 import type { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { FeaturePaywall } from 'pages/common/components/FeaturePaywall/FeaturePaywall'
@@ -31,6 +33,6 @@ export function withFeaturePaywall<P extends Record<string, unknown>>(
     }
 }
 
-export const memoizedWithFeaturePaywall = memoize(
+export const memoizedWithFeaturePaywall = _memoize(
     withFeaturePaywall,
 ) as typeof withFeaturePaywall

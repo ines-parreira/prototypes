@@ -3,9 +3,9 @@ import { useContext, useMemo } from 'react'
 import { UNDEFINED_VARIATION_TEXT } from '@repo/reporting'
 import type { DateTimeResultFormatType } from '@repo/utils'
 import { formatDatetime } from '@repo/utils'
+import _isNumber from 'lodash/isNumber'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
-import { isNumber } from '@gorgias/toolkit'
 
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
@@ -80,7 +80,7 @@ export const formatNumber = (value: number) => {
 
 // format a value and display it as a percentage
 export const formatPercent = (value: unknown) => {
-    return isNumber(value) ? `${value}%` : ''
+    return _isNumber(value) ? `${value}%` : ''
 }
 
 /**

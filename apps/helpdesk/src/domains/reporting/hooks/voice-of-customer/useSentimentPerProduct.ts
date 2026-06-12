@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
-import { get } from '@gorgias/toolkit'
+
+import _get from 'lodash/get'
+
 import type {
     QueryReturnType,
     StringWhichShouldBeNumber,
@@ -93,7 +95,7 @@ export const useSentimentPerProduct = (
     }, [data, sentiment])
 
     const value: number | null = productId
-        ? (get(normalizedData, [productId, sentiment], null) as number | null)
+        ? _get(normalizedData, [productId, sentiment], null)
         : null
 
     return {

@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { emptyManagedRule } from 'fixtures/rule'
 import { ManagedRulesSlugs } from 'state/rules/types'
 
@@ -14,8 +15,8 @@ describe('<AutoReplyReturnModal/>', () => {
         recipeSlug: ManagedRulesSlugs.AutoReplyReturn,
         triggeredCount: 10,
         viewCreationCheckbox: () => <>view creation checkbox</>,
-        handleInstallationError: noop,
-        handleDefaultSettings: noop,
+        handleInstallationError: _noop,
+        handleDefaultSettings: _noop,
     }
     it('should render the instalation modal when AI Agent is subscribed', () => {
         const { container } = render(<AutoReplyReturnModal {...minProps} />)

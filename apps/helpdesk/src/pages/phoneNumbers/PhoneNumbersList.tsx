@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
-import { get, sortBy } from '@gorgias/toolkit'
+import { reverse, sortBy } from 'lodash'
+
 import { PhoneUseCase } from 'business/twilio'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
@@ -41,10 +42,8 @@ export function PhoneNumbersList(): JSX.Element | null {
         const numbers = Object.values(phoneNumbers)
         setSortedPhoneNumbers(
             orderDirection === OrderDirection.Asc
-                ? sortBy(numbers, (phoneNumber) => get(phoneNumber, orderBy))
-                : sortBy(numbers, (phoneNumber) =>
-                      get(phoneNumber, orderBy),
-                  ).reverse(),
+                ? sortBy(numbers, orderBy)
+                : reverse(sortBy(numbers, orderBy)),
         )
     }, [phoneNumbers, orderBy, orderDirection, setSortedPhoneNumbers])
 

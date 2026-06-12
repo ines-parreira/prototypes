@@ -1,13 +1,13 @@
 import { Fragment } from 'react'
+
+import _isArray from 'lodash/isArray'
+import _isBoolean from 'lodash/isBoolean'
+import _isInteger from 'lodash/isInteger'
+import _isNull from 'lodash/isNull'
+import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment'
-import {
-    isArray,
-    isBoolean,
-    isNull,
-    isObject,
-    isString,
-    isUndefined,
-} from '@gorgias/toolkit'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
@@ -31,16 +31,16 @@ export function getValueFromData(
             : potentiallyImmutableData
     ) as unknown
 
-    if (isUndefined(data) || isNull(data)) {
+    if (_isUndefined(data) || _isNull(data)) {
         return FALLBACK_VALUE
     }
 
     if (!type) {
-        if (isBoolean(data)) {
+        if (_isBoolean(data)) {
             assignedType = 'boolean'
-        } else if (isString(data) || typeof data === 'number') {
+        } else if (_isString(data) || typeof data === 'number') {
             assignedType = 'text'
-        } else if (isArray(data)) {
+        } else if (_isArray(data)) {
             assignedType = 'array'
         } else {
             return FALLBACK_VALUE
@@ -50,19 +50,19 @@ export function getValueFromData(
     // We should map over default leaf types with a config object instead of a switch
     switch (assignedType) {
         case 'text': {
-            if ((isString(data) && data) || typeof data === 'number') {
+            if ((_isString(data) && data) || typeof data === 'number') {
                 return data
             }
             break
         }
         case 'date': {
-            if (isString(data) && data) {
+            if (_isString(data) && data) {
                 return <DatetimeLabel dateTime={data} />
             }
             break
         }
         case 'age': {
-            if (isString(data) && moment(data).isValid()) {
+            if (_isString(data) && moment(data).isValid()) {
                 return `${moment().diff(data, 'years')} (${moment(data).format(
                     'YYYY-MM-DD',
                 )})`
@@ -70,7 +70,7 @@ export function getValueFromData(
             break
         }
         case 'url': {
-            if (isString(data) && isUrl(data)) {
+            if (_isString(data) && isUrl(data)) {
                 return (
                     <a href={data} target="_blank" rel="noopener noreferrer">
                         {data.length > 60 ? `${data.slice(0, 57)}...` : data}
@@ -80,7 +80,7 @@ export function getValueFromData(
             break
         }
         case 'email': {
-            if (isString(data) && isEmail(data)) {
+            if (_isString(data) && isEmail(data)) {
                 return (
                     <a
                         href={`mailto:${data}`}
@@ -96,15 +96,15 @@ export function getValueFromData(
         case 'boolean': {
             let isTrue = true
 
-            if (isBoolean(data)) {
+            if (_isBoolean(data)) {
                 isTrue = data
             }
 
-            if (isString(data)) {
+            if (_isString(data)) {
                 isTrue = data === 'true' || data.toString() === '1'
             }
 
-            if (Number.isInteger(data)) {
+            if (_isInteger(data)) {
                 isTrue = data !== 0
             }
 
@@ -115,13 +115,13 @@ export function getValueFromData(
             )
         }
         case 'array': {
-            if (isArray(data)) {
+            if (_isArray(data)) {
                 if (!data.length) {
                     return FALLBACK_VALUE
                 }
                 // This case means the array was empty when the template was generated
                 // so we could not guess the type of data it would contains
-                if (isObject(data[0])) {
+                if (_isObject(data[0])) {
                     return 'Undetermined value'
                 }
                 return data.map(
@@ -203,11 +203,11 @@ export function getValueFromData(
         }
     }
 
-    return isString(data) && data ? data : FALLBACK_VALUE
+    return _isString(data) && data ? data : FALLBACK_VALUE
 }
 
 export function getStringFromData(data: any, type: string): string | null {
-    if (isUndefined(data) || isNull(data)) {
+    if (_isUndefined(data) || _isNull(data)) {
         return null
     }
 
@@ -222,13 +222,13 @@ export function getStringFromData(data: any, type: string): string | null {
             break
         }
         case 'url': {
-            if (isString(data) && isUrl(data)) {
+            if (_isString(data) && isUrl(data)) {
                 return data
             }
             break
         }
         case 'email': {
-            if (isString(data) && isEmail(data)) {
+            if (_isString(data) && isEmail(data)) {
                 return data
             }
             break
@@ -244,15 +244,15 @@ export function getStringFromData(data: any, type: string): string | null {
         case 'boolean': {
             let isTrue = true
 
-            if (isBoolean(data)) {
+            if (_isBoolean(data)) {
                 isTrue = data
             }
 
-            if (isString(data)) {
+            if (_isString(data)) {
                 isTrue = data === 'true' || data.toString() === '1'
             }
 
-            if (Number.isInteger(data)) {
+            if (_isInteger(data)) {
                 isTrue = data !== 0
             }
 

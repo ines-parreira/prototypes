@@ -1,5 +1,5 @@
+import { flatMap, uniq } from 'lodash'
 import moment from 'moment-timezone'
-import { uniq } from '@gorgias/toolkit'
 
 import type {
     WorkflowStepMetrics,
@@ -38,7 +38,7 @@ export const displayPercentMetric = (
     isValidNumber(value) ? toPercentage(value!) : shouldDisplayZero ? '0%' : '-'
 
 export const extractUniqueRates = (data: WorkflowStepMetricsMap): number[] => {
-    const rates = Object.values(data).flatMap((step: WorkflowStepMetrics) => [
+    const rates = flatMap(data, (step: WorkflowStepMetrics) => [
         step.dropoffRate,
     ])
 

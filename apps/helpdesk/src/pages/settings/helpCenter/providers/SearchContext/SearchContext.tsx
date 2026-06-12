@@ -1,7 +1,10 @@
 import type { Dispatch, SetStateAction } from 'react'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { debounce, Duration } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
+
+import _debounce from 'lodash/debounce'
+
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { AlgoliaSearchClient } from 'pages/settings/helpCenter/utils/algolia'
 import { initSearchClient } from 'pages/settings/helpCenter/utils/algolia'
@@ -70,7 +73,7 @@ export const SearchContextProvider = ({
     > | null>(null)
 
     useEffect(() => {
-        const queryCall = debounce((query: string) => {
+        const queryCall = _debounce((query: string) => {
             if (!searchIndex) {
                 return
             }

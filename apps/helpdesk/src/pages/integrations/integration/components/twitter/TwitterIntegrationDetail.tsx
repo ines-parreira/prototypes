@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
@@ -14,7 +15,6 @@ import {
     FormGroup,
     Row,
 } from 'reactstrap'
-import { truncate } from '@gorgias/toolkit'
 
 import { IntegrationType } from 'models/integration/types'
 import { ConfirmButton } from 'pages/common/components/button/ConfirmButton'
@@ -189,7 +189,7 @@ export function TwitterIntegrationDetail({
                                         {integrationDescription}
                                     </span>
                                     <p className="mt-2">
-                                        {truncate(integrationAbout, {
+                                        {_truncate(integrationAbout, {
                                             length: 250,
                                         })}
                                     </p>

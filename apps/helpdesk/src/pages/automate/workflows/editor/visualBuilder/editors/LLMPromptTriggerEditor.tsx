@@ -1,6 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react'
+
+import _noop from 'lodash/noop'
+
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import { noop } from '@gorgias/toolkit'
 
 import { ActionFormInputs } from 'pages/aiAgent/actions/components/ActionFormInputs'
 import { VisualBuilderActionIcon } from 'pages/automate/workflows/components/VisualBuilderActionIcon'
@@ -100,7 +102,7 @@ export function LLMPromptTriggerEditor({
                                                             label: option.name,
                                                             value: option.name,
                                                         }}
-                                                        onClick={noop}
+                                                        onClick={_noop}
                                                     >
                                                         <DropdownItemLabel
                                                             prefix={
@@ -143,7 +145,7 @@ export function LLMPromptTriggerEditor({
                                                             label: option.name,
                                                             value: option.name,
                                                         }}
-                                                        onClick={noop}
+                                                        onClick={_noop}
                                                     >
                                                         <DropdownItemLabel
                                                             prefix={

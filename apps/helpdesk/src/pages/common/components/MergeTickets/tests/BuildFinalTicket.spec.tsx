@@ -3,7 +3,8 @@ import React from 'react'
 import { render } from '@repo/testing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { BuildFinalTicket } from '../BuildFinalTicket'
 
 describe('BuildFinalTicket component', () => {
@@ -18,7 +19,7 @@ describe('BuildFinalTicket component', () => {
             name: 'Maria Curie',
         },
     }) as Map<any, any>
-    const updateFinalTicket = noop
+    const updateFinalTicket = _noop
 
     it('should not display any fields because they are all identical', () => {
         const { container } = render(

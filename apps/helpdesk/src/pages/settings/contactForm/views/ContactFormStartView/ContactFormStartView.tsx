@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 
 import { reportError } from '@repo/logging'
+import _flatten from 'lodash/flatten'
 import {
     Link,
     NavLink,
@@ -76,9 +77,9 @@ const ContactFormStartView = (): JSX.Element => {
             .filter(notEmpty)
             .map((page) => page.data)
 
-        const allContactForms = (allContactFormListPageDto ?? [])
-            .flat()
-            .filter(notEmpty)
+        const allContactForms = _flatten(allContactFormListPageDto).filter(
+            notEmpty,
+        )
 
         return allContactForms.filter((cf) => cf.source === 'manual')
     }, [getContactFormList.data, getContactFormList.status])

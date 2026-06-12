@@ -1,13 +1,15 @@
-import { isArray, isObject } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+
 import { sendEvents } from '../sendEvents'
 
 describe('sendEvents', () => {
     it('is array', () => {
-        expect(isArray(sendEvents)).toBe(true)
+        expect(_isArray(sendEvents)).toBe(true)
     })
 
     it('is array of objects', () => {
-        expect(isObject(sendEvents[0])).toBe(true)
+        expect(_isObject(sendEvents[0])).toBe(true)
     })
 
     it('structure of objects', () => {
@@ -16,7 +18,7 @@ describe('sendEvents', () => {
             expect(event).toHaveProperty('dataToSend')
 
             const dataToSend = event.dataToSend()
-            expect(isObject(dataToSend)).toBe(true)
+            expect(_isObject(dataToSend)).toBe(true)
             expect(dataToSend).toHaveProperty('event')
         })
     })

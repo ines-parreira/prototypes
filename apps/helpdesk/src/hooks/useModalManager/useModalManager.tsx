@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { defaultsDeep } from '@gorgias/toolkit'
+
+import _defaultsDeep from 'lodash/defaultsDeep'
+
 import type { ModalManager } from './Manager'
 import type {
     CallbackFunction,
@@ -32,8 +34,8 @@ export const useModalManager = (
     const _name = name
     const [, update] = useState(0)
     const innerConfig: HookConfig = useMemo(
-        // ? We need to cast the return because the signature of "defaultsDeep" returns "any"
-        () => defaultsDeep(config ?? {}, { autoDestroy: true }) as HookConfig,
+        // ? We need to cast the return because the signature of "_defaultsDeep" returns "any"
+        () => _defaultsDeep(config, { autoDestroy: true }) as HookConfig,
         [config],
     )
 

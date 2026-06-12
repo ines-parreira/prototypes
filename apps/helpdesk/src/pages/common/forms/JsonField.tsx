@@ -1,7 +1,8 @@
 import type { ChangeEvent } from 'react'
 import React from 'react'
+
+import _omit from 'lodash/omit'
 import { FormGroup, Input } from 'reactstrap'
-import { omit } from '@gorgias/toolkit'
 
 import type { HTTPForm } from 'models/integration/types/http'
 import type { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
@@ -68,7 +69,7 @@ export class JsonField extends DEPRECATED_InputField<Props, State> {
     }
 
     _getField = () => {
-        const { children, ...rest } = omit(this.props, [
+        const { children, ...rest } = _omit(this.props, [
             'error',
             'type',
             'help',

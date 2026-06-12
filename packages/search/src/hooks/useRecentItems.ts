@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { localForageManager } from '@repo/browser-storage'
-import { debounce, isEqual, Duration } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
+import _isEqual from 'lodash/isEqual'
 
 type RecentItem = {
     id: number
@@ -56,8 +59,8 @@ export function useRecentItems<T extends RecentItem>(
 
     const debouncedSetRecentItem = useMemo(
         () =>
-            debounce(async (item: T) => {
-                if (isEqual(previousItemRef.current, item)) {
+            _debounce(async (item: T) => {
+                if (_isEqual(previousItemRef.current, item)) {
                     return
                 }
 

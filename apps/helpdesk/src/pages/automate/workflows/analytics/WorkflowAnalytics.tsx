@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import { isEqual } from 'lodash'
 import moment from 'moment'
 import { Container } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import { useWorkflowDataset } from 'domains/reporting/hooks/automate/useWorkflowDataset'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'

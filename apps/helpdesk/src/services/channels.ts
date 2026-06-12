@@ -1,5 +1,7 @@
 import { appQueryClient } from '@repo/api-resources'
-import { Duration, isObject } from '@gorgias/toolkit'
+import { isObject } from 'lodash'
+import { Duration } from '@gorgias/toolkit'
+
 import type {
     TicketChannel,
     TicketMessageSourceType,

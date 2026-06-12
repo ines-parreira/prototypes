@@ -17,7 +17,8 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { UserRole } from 'config/types/user'
 import { section } from 'fixtures/section'
 import { user } from 'fixtures/users'
@@ -484,7 +485,7 @@ describe('<TicketNavbar/>', () => {
         mockedServer.onPut(/\/api\/view-sections\/\d+\//).reply(200, section)
         mockedServer.onDelete(/\/api\/view-sections\/\d+\//).reply(200)
 
-        useSplitTicketViewSwitcherMock.mockImplementation(noop)
+        useSplitTicketViewSwitcherMock.mockImplementation(_noop)
         mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
         mockUseVisibleNavigationViewIds.mockReturnValue([])
         mockUseSidebar.mockReturnValue({

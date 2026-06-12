@@ -1,6 +1,6 @@
 import classnames from 'classnames'
+import _truncate from 'lodash/truncate'
 import { Link } from 'react-router-dom'
-import { truncate } from '@gorgias/toolkit'
 
 import { HTTP_METHOD_GET } from 'config'
 import { useGetHTTPEvents } from 'models/integration/queries/http'
@@ -29,9 +29,7 @@ function Event({
                 className={classnames(css.inlineGrid, css.link)}
             >
                 <span>{event.request?.method || HTTP_METHOD_GET}</span>
-                <span>
-                    {truncate(event.request?.url ?? '', { length: 100 })}
-                </span>
+                <span>{_truncate(event.request?.url, { length: 100 })}</span>
                 <span>
                     <HTTPStatusLabel
                         hasNoRequest={!event.request}

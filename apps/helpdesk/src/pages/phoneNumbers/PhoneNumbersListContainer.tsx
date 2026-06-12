@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
 import { history } from '@repo/routing'
+import { isEmpty } from 'lodash'
 import { Container, Row } from 'reactstrap'
-import { isEmpty } from '@gorgias/toolkit'
 import { useAsyncFn, useCallbackRef } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'

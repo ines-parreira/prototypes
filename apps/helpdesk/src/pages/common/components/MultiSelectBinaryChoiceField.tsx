@@ -2,8 +2,15 @@ import type { ReactNode } from 'react'
 import React, { Component } from 'react'
 
 import classNames from 'classnames'
+import _compact from 'lodash/compact'
+import _find from 'lodash/find'
+import _findIndex from 'lodash/findIndex'
+import _forEach from 'lodash/forEach'
+import _isEqual from 'lodash/isEqual'
+import _isUndefined from 'lodash/isUndefined'
+import _noop from 'lodash/noop'
+import _pick from 'lodash/pick'
 import { FormGroup } from 'reactstrap'
-import { compact, isEqual, isUndefined, noop, pick } from '@gorgias/toolkit'
 
 import type {
     CustomerChannel,
@@ -29,12 +36,12 @@ type Props = {
 class MultiSelectBinaryChoiceField extends Component<Props> {
     static defaultProps: Pick<Props, 'propertiesToCompare' | 'onChange'> = {
         propertiesToCompare: [],
-        onChange: noop,
+        onChange: _noop,
     }
     componentDidUpdate(prevProps: Props) {
         if (
-            isEqual(prevProps.requiredValues, this.props.requiredValues) &&
-            isEqual(prevProps.value, this.props.value)
+            _isEqual(prevProps.requiredValues, this.props.requiredValues) &&
+            _isEqual(prevProps.value, this.props.value)
         ) {
             return
         }
@@ -45,7 +52,7 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
         )
 
         // Force selection of non-selected required values
-        requiredValues.forEach((requiredValue) => {
+        _forEach(requiredValues, (requiredValue) => {
             if (!activeIds.includes(requiredValue.id)) {
                 this._onChange(requiredValue, true)
             }
@@ -53,25 +60,21 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
     }
 
     _onChange(value: CustomerChannel, forceAdd = false) {
-        if (isUndefined(value)) {
+        if (_isUndefined(value)) {
             return
         }
 
-        const newVal = compact(this.props.value) || []
+        const newVal = _compact(this.props.value) || []
 
         // compare whole value by default
         let referenceValue: Partial<CustomerChannel> = value
 
         // reduce properties to compare in value to get a match
         if (this.props.propertiesToCompare.length) {
-            referenceValue = pick(value, this.props.propertiesToCompare)
+            referenceValue = _pick(value, this.props.propertiesToCompare)
         }
 
-        const index = newVal.findIndex((item) =>
-            Object.entries(referenceValue).every(
-                ([key, value]) => item[key as keyof CustomerChannel] === value,
-            ),
-        )
+        const index = _findIndex(newVal, referenceValue)
 
         if (index === -1) {
             // if property not in list, add
@@ -92,8 +95,8 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
         )
 
         return optionSet.map((option, idx) => {
-            const active = this.props.value.find((channel) =>
-                isEqual(channel, option.value),
+            const active = _find(this.props.value, (channel) =>
+                _isEqual(channel, option.value),
             )
             const disabled = requiredValuesIds.includes(option.value.id)
             const className = classNames({ active, disabled }, 'option')

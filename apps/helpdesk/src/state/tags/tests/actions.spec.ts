@@ -3,10 +3,10 @@ import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _isEqual from 'lodash/isEqual'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { isEqual } from '@gorgias/toolkit'
 
 import type { Tag } from '@gorgias/helpdesk-types'
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
@@ -252,7 +252,7 @@ describe('tags actions', () => {
 
     it('merge', async () => {
         mockServer.onPut('/api/tags/3/merge/').reply((config) => {
-            if (isEqual(config.data, { source_tags_ids: [1, 2] })) {
+            if (_isEqual(config.data, { source_tags_ids: [1, 2] })) {
                 return [200]
             }
 
@@ -270,7 +270,7 @@ describe('tags actions', () => {
 
     it('merge error', async () => {
         mockServer.onPut('/api/tags/3/merge/').reply((config) => {
-            if (isEqual(config.data, { source_tags_ids: [1, 2] })) {
+            if (_isEqual(config.data, { source_tags_ids: [1, 2] })) {
                 return [200]
             }
 

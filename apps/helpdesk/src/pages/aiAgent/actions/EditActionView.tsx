@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
-import { noop } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -314,7 +315,7 @@ const EditActionView = ({ configuration }: Props) => {
                         onClick={() => {
                             setIsSaveAndTestButtonClicked(false)
 
-                            void handleSave().catch(noop)
+                            void handleSave().catch(_noop)
                         }}
                         isLoading={isEditActionLoading}
                     >
@@ -326,7 +327,7 @@ const EditActionView = ({ configuration }: Props) => {
                         onClick={() => {
                             setIsSaveAndTestButtonClicked(true)
 
-                            void handleSave().catch(noop)
+                            void handleSave().catch(_noop)
                         }}
                         isLoading={isEditActionLoading}
                         isDisabled={

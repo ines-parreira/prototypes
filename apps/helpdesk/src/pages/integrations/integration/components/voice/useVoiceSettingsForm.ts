@@ -1,4 +1,7 @@
 import { history } from '@repo/routing'
+import { merge } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
+
 import { toast } from '@gorgias/axiom'
 import type {
     HttpResponse,
@@ -9,7 +12,6 @@ import {
     useDeleteIntegration,
     useUpdateAllPhoneSettings,
 } from '@gorgias/helpdesk-queries'
-import { cloneDeep, merge } from '@gorgias/toolkit'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'

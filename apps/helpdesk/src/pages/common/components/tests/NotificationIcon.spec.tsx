@@ -2,14 +2,14 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
+import _omit from 'lodash/omit'
 import { STATUSES } from 'reapop'
-import { omit } from '@gorgias/toolkit'
 
 import { theme as notificationsTheme } from '../../components/Notifications'
 import { NotificationIcon } from '../NotificationIcon'
 
 describe('<NotificationIcon />', () => {
-    it.each(Object.values(omit(STATUSES, STATUSES.none)))(
+    it.each(Object.values(_omit(STATUSES, STATUSES.none)))(
         'should render an icon for %s notification type',
         (status) => {
             const notification = {

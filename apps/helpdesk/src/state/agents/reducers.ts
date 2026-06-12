@@ -1,6 +1,7 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { isEqual } from '@gorgias/toolkit'
+import _isEqual from 'lodash/isEqual'
+
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
 
@@ -39,7 +40,7 @@ export function reducer(
             let newState = state
 
             // This is a bit lame but that's the proper definition of an agent.
-            if (isEqual(action.roles, Object.values(UserRole))) {
+            if (_isEqual(action.roles, Object.values(UserRole))) {
                 newState = newState.set(
                     'all',
                     fromJS((action.resp as { data: unknown }).data),

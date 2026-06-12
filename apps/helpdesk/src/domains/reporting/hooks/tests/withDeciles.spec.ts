@@ -1,3 +1,5 @@
+import { forEach } from 'lodash'
+
 import type { DataResponse } from 'domains/reporting/hooks/withDeciles'
 import {
     getDecilesIndex,
@@ -31,7 +33,7 @@ describe('withDeciles', () => {
         it('should add decile field to ordered results', () => {
             const resultsWithDeciles = selectWithDeciles(results)
 
-            deciles.forEach((decile) => {
+            forEach(deciles, (decile) => {
                 const resultsPerDecile = resultsWithDeciles.filter(
                     (result) => result.decile === decile,
                 ).length
@@ -52,7 +54,7 @@ describe('withDeciles', () => {
             const resultsWithDeciles = selectWithDeciles(limitedResults)
 
             expect(limitedResults.length).toBeLessThan(10)
-            smallerThenDecilesBuckets.forEach((decile) => {
+            forEach(smallerThenDecilesBuckets, (decile) => {
                 const resultsPerDecile = resultsWithDeciles.filter(
                     (result) => result.decile === decile.decile,
                 ).length

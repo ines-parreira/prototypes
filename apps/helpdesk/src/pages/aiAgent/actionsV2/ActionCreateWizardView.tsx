@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import _noop from 'lodash/noop'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
-import { noop } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
@@ -336,7 +337,7 @@ const ActionCreateWizardView = () => {
     const handleSaveClick = useCallback(
         (saveAndTest: boolean) => {
             setIsSaveAndTest(saveAndTest)
-            void handleSave().catch(noop)
+            void handleSave().catch(_noop)
         },
         [handleSave],
     )
@@ -425,7 +426,7 @@ const ActionCreateWizardView = () => {
             </div>
             <UnsavedChangesPrompt
                 when={!isCreateActionSuccess}
-                onSave={noop}
+                onSave={_noop}
                 shouldShowSaveButton={false}
                 title="Discard new Action?"
                 body="You will lose all information entered for this Action."

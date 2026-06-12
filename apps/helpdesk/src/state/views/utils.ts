@@ -4,8 +4,12 @@ import { Syntax } from 'esprima'
 import type { BaseCallExpression, BaseNode } from 'estree'
 import type { List, Map, Seq } from 'immutable'
 import { fromJS } from 'immutable'
+import _isArray from 'lodash/isArray'
+import _isInteger from 'lodash/isInteger'
+import _isNumber from 'lodash/isNumber'
+import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
 import moment from 'moment'
-import { isArray, isNumber, isObject, isString } from '@gorgias/toolkit'
 
 import type { User } from '@gorgias/helpdesk-queries'
 
@@ -231,7 +235,7 @@ export function updateFilterValue(
     index: number,
     value: string | number | Array<string | number> | null,
 ): Map<any, any> {
-    if (isArray(value)) {
+    if (_isArray(value)) {
         const astLiterals = value.map((item) => ({
             type: 'Literal',
             value: item,
@@ -471,7 +475,7 @@ export class RecentViewsStorage {
             return
         }
 
-        if (!isArray(recentViews)) {
+        if (!_isArray(recentViews)) {
             return
         }
 
@@ -484,7 +488,7 @@ export class RecentViewsStorage {
         const now = moment.utc().toISOString()
 
         recentViews.forEach((viewId: number) => {
-            if (Number.isInteger(viewId)) {
+            if (_isInteger(viewId)) {
                 views[viewId] = {
                     inserted_datetime: now,
                     updated_datetime: now,
@@ -627,7 +631,7 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
             (acc, [key, value]) =>
                 key === 'arguments'
                     ? acc.concat(nodeObj as BaseCallExpression)
-                    : isObject(value)
+                    : _isObject(value)
                       ? acc.concat(findCallExpressions(value as BaseNode))
                       : acc,
             [] as BaseCallExpression[],
@@ -672,7 +676,7 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
             return acc.concat({
                 left: fieldName,
                 right:
-                    isString(fieldValue) || isNumber(fieldValue)
+                    _isString(fieldValue) || _isNumber(fieldValue)
                         ? fieldValue
                         : JSON.stringify(fieldValue),
                 operator:

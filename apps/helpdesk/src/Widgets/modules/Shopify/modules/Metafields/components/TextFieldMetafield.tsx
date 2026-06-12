@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+
+import { truncate } from 'lodash'
+
 import {
     Button,
     Modal,
@@ -8,7 +11,6 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
-import { truncate } from '@gorgias/toolkit'
 
 import { CopyButton } from 'components/CopyButton/CopyButton'
 

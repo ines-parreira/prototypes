@@ -6,8 +6,9 @@ import { useTicketFieldsStore } from '@repo/tickets'
 import type { SelectionState } from 'draft-js'
 import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
+import _isEqual from 'lodash/isEqual'
 import { v4 as uuidv4 } from 'uuid'
-import { isEmpty, isEqual } from '@gorgias/toolkit'
 import { useEffectOnce, usePrevious } from '@gorgias/toolkit-react'
 
 import type {
@@ -229,7 +230,7 @@ export function useNewTicketDraft({
     )
 
     const isDraftEmpty = useMemo(
-        () => isDraftEmptyExceptCustomFields && isEmpty(customFields),
+        () => isDraftEmptyExceptCustomFields && _isEmpty(customFields),
         [customFields, isDraftEmptyExceptCustomFields],
     )
 
@@ -250,7 +251,7 @@ export function useNewTicketDraft({
     const syncCustomFieldsStore = useCallback(
         (customFields?: Ticket['custom_fields']) => {
             resetFields()
-            if (customFields && !isEmpty(customFields)) {
+            if (customFields && !_isEmpty(customFields)) {
                 initializeFields(customFields as TicketFieldsState)
             }
         },
@@ -290,10 +291,10 @@ export function useNewTicketDraft({
         return (
             subject === restoredLocalState.subject &&
             priority === restoredLocalState.priority &&
-            isEqual(assigneeUser, restoredLocalState.assigneeUser) &&
-            isEqual(assigneeTeam, restoredLocalState.assigneeTeam) &&
-            isEqual(customer, restoredLocalState.customer) &&
-            isEqual(tags, restoredLocalState.tags)
+            _isEqual(assigneeUser, restoredLocalState.assigneeUser) &&
+            _isEqual(assigneeTeam, restoredLocalState.assigneeTeam) &&
+            _isEqual(customer, restoredLocalState.customer) &&
+            _isEqual(tags, restoredLocalState.tags)
         )
     }, [
         assigneeTeam,

@@ -1,4 +1,5 @@
-import { isArray } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
+
 import css from 'domains/reporting/pages/common/components/Legend/Legend.less'
 
 export type Label = {
@@ -13,7 +14,7 @@ type Props = {
 }
 
 export function Legend({ labels }: Props) {
-    if (!isArray(labels) || !labels.length) {
+    if (!_isArray(labels) || !labels.length) {
         return null
     }
 

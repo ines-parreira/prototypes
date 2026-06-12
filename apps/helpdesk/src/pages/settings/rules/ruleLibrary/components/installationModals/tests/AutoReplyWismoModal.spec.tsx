@@ -3,10 +3,10 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop } from '@gorgias/toolkit'
 
 import { emptyManagedRule } from 'fixtures/rule'
 import { IntegrationType } from 'models/integration/constants'
@@ -20,8 +20,8 @@ describe('<AutoReplyWismoModal/>', () => {
         recipeSlug: 'auto-reply-wismo',
         triggeredCount: 10,
         viewCreationCheckbox: () => <></>,
-        handleInstallationError: noop,
-        handleDefaultSettings: noop,
+        handleInstallationError: _noop,
+        handleDefaultSettings: _noop,
     }
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,

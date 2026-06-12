@@ -1,6 +1,9 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { isObject } from '@gorgias/toolkit'
+import _initial from 'lodash/initial'
+import _isObject from 'lodash/isObject'
+import _last from 'lodash/last'
+
 import { IntegrationType } from 'models/integration/constants'
 import {
     isRootSource,
@@ -174,7 +177,7 @@ export function reducer(
             const strippedKey = stripLastListsFromPath(key)
 
             // prepare data to be transformed into widget
-            const isSimpleField = !isObject(sourceData)
+            const isSimpleField = !_isObject(sourceData)
             const preparedData = {
                 [strippedKey]: isSimpleField
                     ? sourceData
@@ -330,9 +333,9 @@ export function reducer(
             // remove last lists in source absolute path, since objects and arrays are here considered the same
             let listCounter = 0
 
-            while (newAbsolutePath?.at(-1) === '[]') {
+            while (_last(newAbsolutePath) === '[]') {
                 listCounter++
-                newAbsolutePath = newAbsolutePath.slice(0, -1)
+                newAbsolutePath = _initial(newAbsolutePath)
             }
 
             // remove last lists from template path

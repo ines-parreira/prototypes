@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { shortcutManager } from '@repo/utils'
 import { useViewCount } from '@repo/views'
 import type { List, Map } from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import {
@@ -14,7 +15,6 @@ import {
     PopoverHeader,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import { isUndefined } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -90,7 +90,7 @@ class CustomerListActions extends Component<Props, State> {
     }
 
     toggleActionsDropdown = (visible: boolean) => {
-        const opens = !isUndefined(visible)
+        const opens = !_isUndefined(visible)
             ? visible
             : !this._isPopoverOpen('delete')
         this._togglePopover(opens ? 'delete' : '')

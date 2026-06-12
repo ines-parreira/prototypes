@@ -3,11 +3,12 @@ import React, { Component } from 'react'
 
 import type { ChartDataset, ChartOptions } from 'chart.js'
 import type { List, Map } from 'immutable'
+import _flatten from 'lodash/flatten'
+import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import { Line } from 'react-chartjs-2'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { isEqual } from '@gorgias/toolkit'
 
 import {
     chartMaxHeight,
@@ -85,11 +86,11 @@ export class LineStatContainer extends Component<Props> {
             background: dataset.backgroundColor as string,
         }))
         const extraProps = {
-            plugins: [
+            plugins: _flatten([
                 config.get('hasBusinessHoursHighlight') && businessRanges
                     ? [highlightTimeRanges]
                     : [],
-            ].flat(),
+            ]),
         } as Partial<ComponentProps<typeof Line>>
 
         return (
@@ -125,7 +126,7 @@ const connector = connect((state: RootState) => ({
 
 // Use memo to prevent redrawing on state change
 const DefaultExportLineStat = connector(
-    React.memo(LineStatContainer, (prev, next) => isEqual(prev, next)),
+    React.memo(LineStatContainer, (prev, next) => _isEqual(prev, next)),
 )
 
 export { DefaultExportLineStat }

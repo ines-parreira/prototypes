@@ -2,10 +2,10 @@ import type React from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop } from '@gorgias/toolkit'
 
 import { AGENT_ADDED_FONTS } from '../../../constants'
 import * as hooks from '../../../hooks'
@@ -134,9 +134,9 @@ describe('getFontsAfterSearch', () => {
 
 const defaultProps: React.ComponentProps<typeof FontCatalogueModal> = {
     recentlyAddedFonts: [],
-    setFontsFromLocalStorage: noop,
+    setFontsFromLocalStorage: _noop,
     isModalOpen: false,
-    setIsModalOpen: noop,
+    setIsModalOpen: _noop,
     currentPrimaryFont: '',
 }
 

@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { DateAndTimeFormatting } from '@repo/utils'
 import classnames from 'classnames'
-import { isArray } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
 import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -161,7 +161,7 @@ function SourceAddressElement({
     if (!fieldSource) {
         return null
     }
-    fieldSource = isArray(fieldSource) ? fieldSource : [fieldSource]
+    fieldSource = _isArray(fieldSource) ? fieldSource : [fieldSource]
 
     if (!fieldSource.length) {
         return null

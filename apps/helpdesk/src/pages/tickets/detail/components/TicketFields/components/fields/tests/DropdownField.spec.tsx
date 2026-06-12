@@ -17,10 +17,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { DropdownField } from '../DropdownField'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    debounce: (fn: (...args: any[]) => void) => fn,
-}))
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 const mockStore = configureMockStore()
 const queryClient = mockQueryClient()

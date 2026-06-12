@@ -2,8 +2,9 @@ import { useEffect, useMemo } from 'react'
 
 import { FormField, useFormContext } from '@repo/forms'
 import cn from 'classnames'
+import { get } from 'lodash'
+
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
-import { get } from '@gorgias/toolkit'
 
 import { SelectDropdownField } from 'pages/common/forms/SelectDropdownField'
 import {

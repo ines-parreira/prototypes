@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
-import { noop } from '@gorgias/toolkit'
+
+import _noop from 'lodash/noop'
 
 type MessageContextState = {
     expandedQuotes: number[]
@@ -8,7 +9,7 @@ type MessageContextState = {
 
 const MessageQuoteContext = createContext<MessageContextState>({
     expandedQuotes: [],
-    toggleQuote: noop,
+    toggleQuote: _noop,
 })
 
 export { MessageQuoteContext }

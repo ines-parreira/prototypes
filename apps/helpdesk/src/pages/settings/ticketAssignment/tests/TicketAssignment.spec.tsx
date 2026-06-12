@@ -4,10 +4,11 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _keyBy from 'lodash/keyBy'
+import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { keyBy, noop } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { account } from 'fixtures/account'
@@ -93,7 +94,7 @@ const defaultState = {
         settings: [ticketAssignmentSetting],
     }) as Map<any, any>,
     currentUser: fromJS(user),
-    teams: fromJS({ all: keyBy(teams, 'id') }),
+    teams: fromJS({ all: _keyBy(teams, 'id') }),
 } as RootState
 
 const mockStore = configureMockStore<RootState>([thunk])
@@ -420,7 +421,7 @@ describe('<TicketAssignment />', () => {
     })
 
     it('should render the "Save changes" button loading and disabled when the setting are being saved', () => {
-        submitSettingMock.mockReturnValueOnce(() => new Promise(noop))
+        submitSettingMock.mockReturnValueOnce(() => new Promise(_noop))
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketAssignment />

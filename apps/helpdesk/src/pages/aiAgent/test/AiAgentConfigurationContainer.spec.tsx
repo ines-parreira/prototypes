@@ -6,8 +6,8 @@ import {
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { keyBy } from 'lodash'
 import { Route, useLocation } from 'react-router-dom'
-import { keyBy } from '@gorgias/toolkit'
 
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'

@@ -1,6 +1,8 @@
+import _find from 'lodash/find'
+import _noop from 'lodash/noop'
+import _throttle from 'lodash/throttle'
 import { dismissNotification } from 'reapop'
-import type { AnyAction } from 'redux'
-import { Duration, noop, throttle } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { store } from 'common/store'
@@ -36,8 +38,6 @@ const CONNECTION_TIMEOUT = 10
 
 const currentBrowserSupportsSharedWorker =
     window.BroadcastChannel && window.SharedWorker
-
-type SocketReduxAction = AnyAction | ReturnType<typeof notify>
 
 /**
  * Manage the connection with the shared worker that handles the websocket connection with the back-end.
@@ -143,9 +143,9 @@ export class SocketManager {
         }
 
         // find config of received event
-        const config = this.receivedEvents.find(
-            (item) => item.name === json.event.type,
-        )
+        const config = _find(this.receivedEvents, {
+            name: json.event.type,
+        })
         if (!config) {
             return
         }
@@ -207,7 +207,7 @@ export class SocketManager {
      * socketManagerInstance.send('ticket-viewed', 12
      */
     send = (configName: SocketEventType, ...args: Array<any>) => {
-        const config = this.sendEvents.find((item) => item.name === configName)
+        const config = _find(this.sendEvents, { name: configName })
 
         if (!config) {
             return
@@ -224,7 +224,7 @@ export class SocketManager {
      * socketManagerInstance.join('ticket', 12
      */
     join = (configName: JoinEventType, ...args: Array<any>) => {
-        const config = this.joinEvents.find((item) => item.name === configName)
+        const config = _find(this.joinEvents, { name: configName })
 
         if (!config) {
             return
@@ -239,7 +239,7 @@ export class SocketManager {
      * socketManagerInstance.leave('ticket', 12)
      */
     leave = (configName: JoinEventType, ...args: Array<any>) => {
-        const config = this.joinEvents.find((item) => item.name === configName)
+        const config = _find(this.joinEvents, { name: configName })
 
         if (!config) {
             return
@@ -257,12 +257,8 @@ export class SocketManager {
      * Dispatch action to store
      * Throttled to prevent a too high frequency of state refresh
      */
-    dispatchReduxAction = throttle((data: SocketReduxAction) => {
-        const dispatch = store.dispatch as (
-            action: SocketReduxAction,
-        ) => ReturnType<StoreDispatch>
-
-        return dispatch(data)
+    dispatchReduxAction = _throttle((data) => {
+        return store.dispatch(data) as ReturnType<StoreDispatch>
     }, Duration.millis(100))
 
     /**
@@ -284,7 +280,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._joinRoom({dataType: 'Ticket', data: 12})
      */
-    _joinRoom = (data: SendData, callback: () => void = noop) => {
+    _joinRoom = (data: SendData, callback: () => void = _noop) => {
         // if no object id or object type, we don't join anything
         if (!data.data || !data.dataType) {
             return
@@ -327,7 +323,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._leaveRoom({dataType: 'Ticket', data: 12})
      */
-    _leaveRoom = (data: SendData, callback: () => void = noop) => {
+    _leaveRoom = (data: SendData, callback: () => void = _noop) => {
         // if no object id or object type, we don't leave anything
         if (!data.data || !data.dataType) {
             return

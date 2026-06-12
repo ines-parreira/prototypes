@@ -2,8 +2,9 @@ import type { ReactNode } from 'react'
 import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import _difference from 'lodash/difference'
+import _intersection from 'lodash/intersection'
 import { Link } from 'react-router-dom'
-import { difference, intersection } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
@@ -106,7 +107,7 @@ export function useLanguagesMismatchWarnings(
                 ) ?? []
             // There is no overlap between the flow language and the channel language.
             if (
-                intersection(channelLanguages, workflowLanguages).length === 0
+                _intersection(channelLanguages, workflowLanguages).length === 0
             ) {
                 return {
                     type: 'error',
@@ -153,7 +154,7 @@ export function useLanguagesMismatchWarnings(
             }
 
             // The channel has a language that the flow doesn’t have
-            const extraChannelLanguages = difference(
+            const extraChannelLanguages = _difference(
                 channelLanguages,
                 workflowLanguages,
             )
@@ -177,7 +178,7 @@ export function useLanguagesMismatchWarnings(
             }
 
             // If the flow has a language that the channel doesn’t have.
-            const extraWorkflowLanguages = difference(
+            const extraWorkflowLanguages = _difference(
                 workflowLanguages,
                 channelLanguages,
             )

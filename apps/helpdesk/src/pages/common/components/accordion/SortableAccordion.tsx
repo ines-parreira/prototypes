@@ -7,7 +7,9 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import { isEqual } from '@gorgias/toolkit'
+
+import _isEqual from 'lodash/isEqual'
+
 import type { AccordionProps } from './Accordion'
 import { Accordion } from './Accordion'
 import type { SortableAccordionContextType } from './SortableAccordionContext'
@@ -55,7 +57,7 @@ const SortableAccordion = <T extends string | string[] | null>({
         orderedItems.current,
     )
 
-    if (!isEqual(orderedItems.current, nextOrderedItems)) {
+    if (!_isEqual(orderedItems.current, nextOrderedItems)) {
         orderedItems.current = nextOrderedItems
 
         setDirtyOrderedItems(orderedItems.current)
@@ -79,12 +81,12 @@ const SortableAccordion = <T extends string | string[] | null>({
                 setDirtyOrderedItems(nextDirtyOrderedItems)
             },
             onDrop: () => {
-                if (!isEqual(dirtyOrderedItems, orderedItems.current)) {
+                if (!_isEqual(dirtyOrderedItems, orderedItems.current)) {
                     onReorder(dirtyOrderedItems)
                 }
             },
             onCancel: () => {
-                if (!isEqual(dirtyOrderedItems, orderedItems.current)) {
+                if (!_isEqual(dirtyOrderedItems, orderedItems.current)) {
                     setDirtyOrderedItems(orderedItems.current)
                 }
             },

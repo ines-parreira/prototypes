@@ -1,4 +1,4 @@
-import { trim } from '@gorgias/toolkit'
+import _trim from 'lodash/trim'
 
 // An improved version of encodeURIComponent that also encodes !, ', (, ), and *
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#encoding_for_rfc3986
@@ -28,8 +28,8 @@ export function attachSearchParamsToUrl(
 
         Object.entries(params).forEach(([key, value]) => {
             url.searchParams.set(
-                trim(key),
-                encodeRFC3986URIComponent(trim(value)),
+                _trim(key),
+                encodeRFC3986URIComponent(_trim(value)),
             )
         })
 

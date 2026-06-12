@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
-import { isNumber } from '@gorgias/toolkit'
+
+import { isNumber } from 'lodash'
+
 import { ExpandedMessagesContext } from './context'
 
 type ExpandedMessagesProviderProps = {

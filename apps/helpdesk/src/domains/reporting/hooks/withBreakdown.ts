@@ -1,5 +1,8 @@
 import { notUndefined } from '@repo/utils'
-import { groupBy, orderBy, zip } from '@gorgias/toolkit'
+import _groupBy from 'lodash/groupBy'
+import _orderBy from 'lodash/orderBy'
+import _zip from 'lodash/zip'
+
 import type {
     TimeSeriesDataItem,
     TimeSeriesDataItemWithPercentageAndDecile,
@@ -122,7 +125,7 @@ export const selectTimeSeriesWithBreakdown = (
         )
     })
 
-    return orderBy(
+    return _orderBy(
         compact(hierarchy, mergeTimeSeries(order), breakdownField, valueField),
         orderIteratee(order.column, breakdownField, valueField),
         order.direction,
@@ -143,7 +146,7 @@ const compact = <
     breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValue,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ) => {
-    const grouped = groupBy(data, (el) => String(el[breakdownField]))
+    const grouped = _groupBy(data, (el) => el[breakdownField])
 
     return Object.values(grouped).map((item) =>
         merge(item, breakdownField, valueField),
@@ -176,7 +179,7 @@ const mergeTimeSeries =
         valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData> =>
         data.reduce((acc, currVal) => {
-            const zipped: (TimeSeriesDataItem | undefined)[][] = zip(
+            const zipped: (TimeSeriesDataItem | undefined)[][] = _zip(
                 acc.timeSeries,
                 currVal.timeSeries,
             )
@@ -209,7 +212,7 @@ const mergeTimeSeries =
                       ]
                     : null,
                 timeSeries: summed,
-                children: orderBy(
+                children: _orderBy(
                     compact(
                         [...acc.children, ...currVal.children],
                         mergeTimeSeries(order),

@@ -1,5 +1,8 @@
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
+
+import _get from 'lodash/get'
+
 import { toast } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import type {
@@ -7,7 +10,6 @@ import type {
     CustomRecordingType,
 } from '@gorgias/helpdesk-types'
 import { VoiceMessageType as ApiVoiceMessageType } from '@gorgias/helpdesk-types'
-import { get } from '@gorgias/toolkit'
 
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
@@ -81,7 +83,7 @@ const DEPRECATED_VoiceMessageField = ({
                 onChange(newValue)
             },
             onError: (err) => {
-                const error = get(err, 'response.data.error', '') as
+                const error = _get(err, 'response.data.error', '') as
                     | GorgiasApiResponseDataError
                     | undefined
                 toast.error(error?.msg || 'Failed to upload custom recording')

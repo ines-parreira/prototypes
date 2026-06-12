@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { TicketChannel } from 'business/types/ticket'
 import {
     INTENTS_BREAKDOWN_PER_DAY,
@@ -62,17 +63,17 @@ describe('AutomateIntents', () => {
     } as RootState
 
     beforeEach(() => {
-        useStatResourceMock.mockReturnValue([null, true, noop])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
         useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (resourceName === INTENTS_OVERVIEW) {
-                return [intentsOverview, false, noop]
+                return [intentsOverview, false, _noop]
             } else if (resourceName === INTENTS_BREAKDOWN_PER_DAY) {
-                return [intentsBreakdownPerDay, false, noop]
+                return [intentsBreakdownPerDay, false, _noop]
             }
-            return [intentsOccurrence, false, noop]
+            return [intentsOccurrence, false, _noop]
         })
 
         const { container } = render(<AutomateIntents />, {

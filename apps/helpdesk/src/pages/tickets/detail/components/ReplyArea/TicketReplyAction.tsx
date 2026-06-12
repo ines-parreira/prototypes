@@ -3,9 +3,9 @@ import { Component } from 'react'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _debounce from 'lodash/debounce'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
@@ -71,9 +71,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
             : action.set('arguments', currentArguments)
     }
 
-    debouncedUpdateActionArgs = debounce(
+    debouncedUpdateActionArgs = _debounce(
         this.props.updateActionArgsOnApplied,
-        Duration.millis(200),
+        200,
     )
 
     setListDictValue = (
@@ -95,15 +95,16 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         }
     }
 
-    setArguments = debounce(
-        (index: number, args: Map<any, any> = fromJS({}) as Map<any, any>) => {
+    setArguments = _debounce(
+        (index: number, args = fromJS({})) => {
             this.props.updateActionArgsOnApplied(
                 index,
                 args,
                 this.props.ticketId,
             )
         },
-        Duration.millis(200),
+        200,
+        { leading: true, trailing: false },
     )
 
     setValue(

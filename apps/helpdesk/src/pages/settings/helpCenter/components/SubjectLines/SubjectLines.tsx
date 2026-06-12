@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
+import _uniqueId from 'lodash/uniqueId'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { uniqueId } from '@gorgias/toolkit'
 
 import type { UpdateSubjectLinesProps } from 'models/contactForm/types'
 import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
@@ -46,7 +48,7 @@ const SubjectLines = ({
         ) {
             setSubjectLinesWithId(
                 subjectLines.options.map((option) => ({
-                    id: uniqueId('subject-line-'),
+                    id: _uniqueId('subject-line-'),
                     value: option,
                 })),
             )
@@ -107,7 +109,7 @@ const SubjectLines = ({
     const handleOnAdd = () => {
         updateSubjectLinesWithId([
             ...subjectLinesWithId,
-            { id: uniqueId('subject-line-'), value: '' },
+            { id: _uniqueId('subject-line-'), value: '' },
         ])
         setSubjectLinesExpanded(true)
         setIsDirty(true)

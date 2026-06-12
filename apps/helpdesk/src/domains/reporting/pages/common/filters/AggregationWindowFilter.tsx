@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
+
+import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
 
@@ -128,9 +129,9 @@ export const AggregationWindowFilter = ({
             selectedOptions={selectedOptions}
             onChangeOption={handleFilterValuesChange}
             logicalOperators={[]}
-            onChangeLogicalOperator={noop}
-            onSelectAll={noop}
-            onRemoveAll={noop}
+            onChangeLogicalOperator={_noop}
+            onSelectAll={_noop}
+            onRemoveAll={_noop}
             onDropdownClosed={handleDropdownClosed}
             isMultiple={false}
             showSearch={false}

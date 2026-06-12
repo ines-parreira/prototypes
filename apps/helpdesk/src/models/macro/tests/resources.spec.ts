@@ -1,6 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import { pick } from '@gorgias/toolkit'
+import _pick from 'lodash/pick'
+
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { OrderDirection } from 'models/api/types'
 import { Cancel, CancelToken } from 'tests/axiosRuntime'
@@ -83,7 +84,7 @@ describe('macro resources', () => {
     })
 
     describe('createMacro', () => {
-        const macroDraftMock = pick(macrosFixtures[0], [
+        const macroDraftMock = _pick(macrosFixtures[0], [
             'actions',
             'name',
             'language',

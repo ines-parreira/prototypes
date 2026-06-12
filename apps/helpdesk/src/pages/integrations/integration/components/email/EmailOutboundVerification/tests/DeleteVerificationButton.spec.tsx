@@ -8,9 +8,9 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
+import { merge } from 'lodash'
 import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
-import { merge } from '@gorgias/toolkit'
 
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+
+import _noop from 'lodash/noop'
 import moment from 'moment'
-import { noop } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Filter } from 'domains/reporting/pages/common/components/Filter'
@@ -149,9 +150,9 @@ export function ActionEventsHeader({
                         },
                     ]}
                     onChangeOption={handleFilterChange}
-                    onRemoveAll={noop}
-                    onSelectAll={noop}
-                    onChangeLogicalOperator={noop}
+                    onRemoveAll={_noop}
+                    onSelectAll={_noop}
+                    onChangeLogicalOperator={_noop}
                     selectedOptions={statusFilterOptions}
                     selectedLogicalOperator={null}
                     isMultiple={true}

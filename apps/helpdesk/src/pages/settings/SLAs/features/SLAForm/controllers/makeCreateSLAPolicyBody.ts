@@ -1,5 +1,7 @@
+import { isString } from 'lodash'
+import _isNumber from 'lodash/isNumber'
+
 import type { CreateSLAPolicy, SLAPolicyMetric } from '@gorgias/helpdesk-types'
-import { isNumber, isString } from '@gorgias/toolkit'
 
 import { mapConditionsToFilters } from './mapConditionFilters'
 import type { SLAFormValues } from './useFormValues'
@@ -13,7 +15,7 @@ export function makeCreateSLAPolicyBody(
         ...rest,
         target_channels: rest?.target_channels?.filter(isString) ?? [],
         metrics: rest?.metrics?.reduce((acc, metric) => {
-            if (isNumber(metric.threshold)) {
+            if (_isNumber(metric.threshold)) {
                 return [...acc, metric as SLAPolicyMetric]
             }
             return acc

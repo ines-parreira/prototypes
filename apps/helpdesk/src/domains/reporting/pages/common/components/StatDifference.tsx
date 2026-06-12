@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { isNumber } from '@gorgias/toolkit'
+import _isNumber from 'lodash/isNumber'
+
 import css from 'domains/reporting/pages/common/components/StatDifference.less'
 
 type Props = {
@@ -15,7 +16,7 @@ export function StatDifference({
     moreIsBetter,
     isPercentage = true,
 }: Props) {
-    if (!isNumber(value)) {
+    if (!_isNumber(value)) {
         return null
     }
     const icon =

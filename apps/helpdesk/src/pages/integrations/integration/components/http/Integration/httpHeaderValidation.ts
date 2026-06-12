@@ -1,4 +1,4 @@
-import { range } from '@gorgias/toolkit'
+import _range from 'lodash/range'
 
 export function validateHeaderName(headerName: string) {
     if (!headerName) {
@@ -6,7 +6,7 @@ export function validateHeaderName(headerName: string) {
     }
 
     // via https://tools.ietf.org/html/rfc822.html#section-3.2
-    const printableCharCodes = range(33, 127) // no need to filter out the colon( : ) code here
+    const printableCharCodes = _range(33, 127) // no need to filter out the colon( : ) code here
 
     // list created using javascript's Header class, by appending each printable ASCII code as a header name
     // and filtering the ones that threw an error (58 is the colon char code)

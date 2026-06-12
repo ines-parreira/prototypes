@@ -1,6 +1,7 @@
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import { shopifyDataMappers } from '../Mappings'
@@ -15,7 +16,7 @@ describe('<ProductSearchInput/>', () => {
                 >
                     <ProductSearchInput
                         dataMappers={shopifyDataMappers}
-                        onVariantClicked={noop}
+                        onVariantClicked={_noop}
                     />
                 </IntegrationContext.Provider>,
             )

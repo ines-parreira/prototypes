@@ -1,6 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import { omit } from '@gorgias/toolkit'
+import _omit from 'lodash/omit'
+
 import { section } from '../../../fixtures/section'
 import {
     createSection,
@@ -11,7 +12,7 @@ import {
 import type { SectionDraft } from '../types'
 
 const mockedServer = new MockAdapter(client)
-const sectionDraft: SectionDraft = omit(section, [
+const sectionDraft: SectionDraft = _omit(section, [
     'id',
     'created_datetime',
     'updated_datetime',

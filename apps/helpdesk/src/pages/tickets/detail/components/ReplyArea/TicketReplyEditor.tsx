@@ -1,13 +1,16 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
+import _debounce from 'lodash/debounce'
+import _noop from 'lodash/noop'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { debounce, Duration, noop } from '@gorgias/toolkit'
 
 import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-queries'
@@ -53,7 +56,7 @@ type Props = {
     TypingActivityProps & { isTranslationPending: boolean }
 
 // debounce the updating of the redux because it's slow otherwise when we type
-export const updateMessageText = debounce(
+export const updateMessageText = _debounce(
     (
         { newMessage, setResponseText }: Props & TypingActivityProps,
         editorState: EditorState,
@@ -72,7 +75,7 @@ export const updateMessageText = debounce(
             }),
         )
     },
-    Duration.millis(100),
+    100,
 )
 
 type validationRegexType = string | RegExp
@@ -85,7 +88,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
     richArea: Maybe<RichField>
 
     static defaultProps: Pick<Props, 'richAreaRef' | 'attachments'> = {
-        richAreaRef: noop,
+        richAreaRef: _noop,
         attachments: fromJS([]),
     }
 

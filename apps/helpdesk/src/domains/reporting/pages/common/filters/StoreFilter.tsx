@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
+
+import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
@@ -90,9 +91,9 @@ export function StoreFilter({
             filterOptionGroups={options}
             logicalOperators={[]}
             onChangeOption={onOptionChange}
-            onSelectAll={noop}
-            onRemoveAll={noop}
-            onChangeLogicalOperator={noop}
+            onSelectAll={_noop}
+            onRemoveAll={_noop}
+            onChangeLogicalOperator={_noop}
             selectedOptions={selectedOptions}
             isMultiple={false}
             showSearch={false}

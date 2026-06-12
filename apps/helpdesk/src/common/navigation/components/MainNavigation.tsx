@@ -2,13 +2,13 @@ import React, { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
+import _kebabCase from 'lodash/kebabCase'
 import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import { kebabCase } from '@gorgias/toolkit'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -49,7 +49,7 @@ export function MainNavigation({ activeContent }: Props) {
         [activeContent, mainMenu],
     )
 
-    const canduId = `navbar-section-${kebabCase(activeContent)}`
+    const canduId = `navbar-section-${_kebabCase(activeContent)}`
 
     return (
         <UncontrolledDropdown className={css.dropdown}>

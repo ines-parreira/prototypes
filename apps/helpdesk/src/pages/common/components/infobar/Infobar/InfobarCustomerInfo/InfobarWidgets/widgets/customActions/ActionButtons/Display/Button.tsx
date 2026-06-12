@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
 import { Button as BaseButton } from '@gorgias/axiom'
@@ -30,7 +31,6 @@ import { executeAction } from 'state/infobar/actions'
 import { getPendingActionCallbacks } from 'state/infobar/selectors'
 
 import { ACTION_PARAMETER_PATHS } from '../../constants'
-import { getActionPathValue } from '../helpers/path'
 import { ActionEditor } from './ActionEditor'
 
 import css from './Button.less'
@@ -142,7 +142,7 @@ export { DefaultExportButton }
 function shouldDisplayEditor(action: Action): boolean {
     let shouldDisplayEditor = false
     ACTION_PARAMETER_PATHS.forEach((fieldPath) => {
-        const specificParameters = getActionPathValue<Parameter[]>(
+        const specificParameters: Parameter[] | undefined = _get(
             action,
             fieldPath,
         )

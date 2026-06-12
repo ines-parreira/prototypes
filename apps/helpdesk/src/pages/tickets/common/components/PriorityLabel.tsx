@@ -1,10 +1,11 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react'
 
 import cn from 'classnames'
+import _capitalize from 'lodash/capitalize'
+
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { TicketPriority } from '@gorgias/helpdesk-types'
-import { capitalize } from '@gorgias/toolkit'
 
 import css from './PriorityLabel.less'
 
@@ -19,14 +20,12 @@ type PriorityLabelProps = {
     className?: string
     displayLabel?: boolean
     hasTooltip?: boolean
-    priority?: TicketPriority
+    priority: TicketPriority
 }
 
 export const PriorityLabel = forwardRef<HTMLDivElement, PriorityLabelProps>(
     ({ className, displayLabel = true, hasTooltip = false, priority }, ref) => {
-        const type = priority
-            ? (PRIORITY_TO_BADGE[priority] ?? 'modern')
-            : 'modern'
+        const type = PRIORITY_TO_BADGE[priority] || 'modern'
 
         const elementRef = useRef<HTMLDivElement>(null)
         useImperativeHandle(ref, () => elementRef.current!)
@@ -38,12 +37,12 @@ export const PriorityLabel = forwardRef<HTMLDivElement, PriorityLabelProps>(
                     className={cn({ [css.badge]: !displayLabel }, className)}
                     type={type}
                 >
-                    <i className={cn(css.icon, priority && css[priority])} />
+                    <i className={cn(css.icon, css[priority])} />
                     {displayLabel && priority}
                 </Badge>
                 {hasTooltip && (
                     <Tooltip target={elementRef}>
-                        {`Priority: ${capitalize(priority ?? '')}`}
+                        {`Priority: ${_capitalize(priority)}`}
                     </Tooltip>
                 )}
             </>

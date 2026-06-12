@@ -4,8 +4,9 @@ import {
     useTicketMessageDisplayState,
     useTicketMessageTranslations,
 } from '@repo/tickets'
+import { isNumber } from 'lodash'
+
 import { useGetTicket } from '@gorgias/helpdesk-queries'
-import { isNumber } from '@gorgias/toolkit'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 

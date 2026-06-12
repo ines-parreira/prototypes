@@ -8,10 +8,10 @@ import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { omit } from 'lodash'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { omit } from '@gorgias/toolkit'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 

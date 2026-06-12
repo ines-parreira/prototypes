@@ -7,6 +7,7 @@ import type {
 import React, { createRef, useCallback, useEffect, useState } from 'react'
 
 import classNames from 'classnames'
+import _toArray from 'lodash/toArray'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -69,7 +70,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
 
             if (event?.dataTransfer && event.dataTransfer.items.length > 0) {
                 const dragIsAccepted = accept
-                    ? Array.from(event.dataTransfer.items).every((item) =>
+                    ? _toArray(event.dataTransfer.items).every((item) =>
                           accept?.includes(item.type),
                       )
                     : true
@@ -108,7 +109,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
 
             if (event?.dataTransfer && event.dataTransfer.items.length > 0) {
                 const dragIsAccepted = accept
-                    ? Array.from(event.dataTransfer.items).every((item) =>
+                    ? _toArray(event.dataTransfer.items).every((item) =>
                           accept?.includes(item.type),
                       )
                     : true

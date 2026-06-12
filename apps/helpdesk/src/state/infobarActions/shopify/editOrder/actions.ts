@@ -2,7 +2,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { isCancel } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
-import { debounce, Duration } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
+
 import { calculateEditDiff } from 'business/shopify/calculatedEditOrder'
 import { refreshAppliedDiscounts } from 'business/shopify/discount'
 import {
@@ -536,7 +537,7 @@ export const onCancel =
  */
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
-export const resetState = debounce(
+export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    Duration.millis(250),
+    250,
 )

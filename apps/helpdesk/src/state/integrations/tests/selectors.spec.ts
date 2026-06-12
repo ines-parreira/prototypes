@@ -1,6 +1,7 @@
 import { appQueryClient } from '@repo/api-resources'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
+import { size } from 'lodash'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { applications as mockApplications } from 'fixtures/applications'
@@ -519,7 +520,7 @@ describe('integrations selectors', () => {
 
             const shopiFyIntegrations: ShopifyIntegration[] =
                 getShopifyIntegrationsWithoutFacebook(state).toJS()
-            expect(shopiFyIntegrations).toHaveLength(1)
+            expect(size(shopiFyIntegrations)).toEqual(1)
 
             const integration = shopiFyIntegrations[0]
             expect(integration.id).toEqual(2)

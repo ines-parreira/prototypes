@@ -1,4 +1,5 @@
-import { omit } from '@gorgias/toolkit'
+import _omit from 'lodash/omit'
+
 import { campaign, campaignId } from 'fixtures/campaign'
 import { channelConnectionId } from 'fixtures/channelConnection'
 import type {
@@ -45,7 +46,7 @@ describe('Campaign resources', () => {
             } as unknown as RevenueAddonClient
 
             const res = await resources.createCampaign(client, {
-                ...omit(campaign, [
+                ..._omit(campaign, [
                     'id',
                     'created_datetime',
                     'updated_datetime',

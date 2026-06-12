@@ -1,6 +1,6 @@
 import type { List, Map } from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import { DropdownItem } from 'reactstrap'
-import { capitalize } from '@gorgias/toolkit'
 
 import { isImmutable } from 'common/utils'
 import { ViewField } from 'models/view/types'
@@ -65,7 +65,7 @@ export function FilterDropdownItems({
         } else if (fieldName === ViewField.Channel) {
             renderValue = humanizeChannel(value)
         } else if (fieldName === ViewField.Priority) {
-            renderValue = capitalize(value)
+            renderValue = _capitalize(value)
         }
 
         const passedValue = isImmutable(value) ? value.toJS() : value

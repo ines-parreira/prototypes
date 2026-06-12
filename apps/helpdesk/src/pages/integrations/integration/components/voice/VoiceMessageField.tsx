@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
+
+import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
-import { get } from '@gorgias/toolkit'
 
 import { Box, Label, toast } from '@gorgias/axiom'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
@@ -103,7 +104,7 @@ const VoiceMessageField = ({
                 onChange(newValue)
             },
             onError: (err) => {
-                const error = get(err, 'response.data.error', '') as
+                const error = _get(err, 'response.data.error', '') as
                     | GorgiasApiResponseDataError
                     | undefined
                 toast.error(error?.msg || 'Failed to upload custom recording')

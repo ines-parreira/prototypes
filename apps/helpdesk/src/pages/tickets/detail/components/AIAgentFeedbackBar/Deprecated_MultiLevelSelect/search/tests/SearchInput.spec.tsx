@@ -5,13 +5,10 @@ import { screen } from '@testing-library/react'
 
 import { SearchInput } from '../SearchInput'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    debounce: (fn: { cancel: () => void }) => {
-        fn.cancel = jest.fn()
-        return fn
-    },
-}))
+jest.mock('lodash/debounce', () => (fn: { cancel: () => void }) => {
+    fn.cancel = jest.fn()
+    return fn
+})
 const setSearch = jest.fn()
 
 describe('SearchInput', () => {

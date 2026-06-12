@@ -41,10 +41,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    debounce: (fn: (...args: any[]) => void) => fn,
-}))
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 describe('<OrderLineItemRow/>', () => {
     describe('render()', () => {

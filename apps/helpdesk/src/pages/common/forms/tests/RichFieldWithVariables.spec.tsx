@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { RichFieldWithVariables } from '../RichFieldWithVariables'
 
 jest.mock('../RichField/TicketRichField', () => ({
@@ -13,7 +14,7 @@ describe('RichFieldWithVariables', () => {
         const { container } = render(
             <RichFieldWithVariables
                 value={{ text: 'text', html: 'html' }}
-                onChange={noop}
+                onChange={_noop}
                 variableTypes={['ticket.customer', 'current_user']}
             />,
         )

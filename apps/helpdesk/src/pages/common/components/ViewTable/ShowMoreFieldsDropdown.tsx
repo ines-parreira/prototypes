@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { List, Map } from 'immutable'
+import _throttle from 'lodash/throttle'
 import {
     DropdownItem,
     DropdownMenu,
@@ -30,7 +31,7 @@ const ShowMoreFieldsDropdown = ({
 }: Props) => {
     const dispatch = useAppDispatch()
 
-    const computePosition = (data: any) => {
+    const computePosition = _throttle((data: any) => {
         const toggleRect = data.instance.reference.getBoundingClientRect()
         const isOverflowing =
             toggleRect && toggleRect.right + 20 > window.innerWidth
@@ -47,7 +48,7 @@ const ShowMoreFieldsDropdown = ({
             ...data,
             styles: styles as CSSStyleDeclaration,
         }
-    }
+    }, 300)
 
     const handleFieldVisibility = useCallback(
         (name: string, state: boolean) => {

@@ -2,7 +2,8 @@ import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import type { VoiceCallRecording } from 'models/voiceCall/types'
 import {
     VoiceCallRecordingErrorCode,
@@ -29,7 +30,7 @@ describe('VoiceCallTranscription', () => {
         toggleTranscriptionOpened: mockToggleTranscription,
         openedRecordings: [],
         closedTranscriptions: [],
-        toggleRecordingOpened: noop,
+        toggleRecordingOpened: _noop,
     } as VoiceRecordingsContextState)
 
     const renderComponent = (

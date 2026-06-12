@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 
 import type { Map } from 'immutable'
-import { isEmpty } from '@gorgias/toolkit'
+import _isEmpty from 'lodash/isEmpty'
+
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -28,7 +29,7 @@ const useSelfServiceConfiguration = (
     )
 
     const selfServiceConfigurationEnabled = useMemo(() => {
-        if (isEmpty(selfServiceConfiguration)) return false
+        if (_isEmpty(selfServiceConfiguration)) return false
 
         const canTrackOrders =
             selfServiceConfiguration?.trackOrderPolicy.enabled

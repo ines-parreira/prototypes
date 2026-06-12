@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import _isEqual from 'lodash/isEqual'
 import { useLocation, useParams } from 'react-router-dom'
-import { Duration, isEqual } from '@gorgias/toolkit'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { safeDivide } from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
@@ -294,7 +296,7 @@ export const useStoreActivations = ({
             },
         }
 
-        if (isEqual(storeConfigUpdateAction, updateAction)) {
+        if (_isEqual(storeConfigUpdateAction, updateAction)) {
             return
         }
 

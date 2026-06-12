@@ -1,6 +1,7 @@
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { capitalize } from '@gorgias/toolkit'
+import { capitalize } from 'lodash'
+
 import { integrationBase } from 'fixtures/integrations'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import type {

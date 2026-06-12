@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { reportError } from '@repo/logging'
-import { uniq } from '@gorgias/toolkit'
+import _uniq from 'lodash/uniq'
+
 import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 
@@ -107,7 +108,7 @@ const DefaultExportReducer = createReducer<HelpCenterCategoriesState>(
                 if (state.categoriesById[payload.categoryId.toString()]) {
                     state.categoriesById[
                         payload.categoryId.toString()
-                    ].available_locales = uniq([
+                    ].available_locales = _uniq([
                         ...state.categoriesById[payload.categoryId.toString()]
                             .available_locales,
                         ...payload.supportedLocales,

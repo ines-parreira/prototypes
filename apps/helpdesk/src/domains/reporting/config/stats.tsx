@@ -1,13 +1,16 @@
 import type { ComponentType, ReactElement, ReactNode, ReactText } from 'react'
 import React from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { formatDuration } from '@repo/reporting'
 import type { ChartType, Scale, TooltipItem } from 'chart.js'
 import { defaults } from 'chart.js'
 import classNames from 'classnames'
 import type { List, Map } from 'immutable'
+import _isString from 'lodash/isString'
+import _merge from 'lodash/merge'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import { Duration, isString, merge } from '@gorgias/toolkit'
 
 import { toImmutable } from 'common/utils'
 import css from 'domains/reporting/config/stats.less'
@@ -141,7 +144,7 @@ const getIntentsOptions = (): Record<string, IntentOption> => {
 const intentsOptions = getIntentsOptions()
 
 // Default configuration for Chart.js
-merge(defaults, {
+_merge(defaults, {
     maintainAspectRatio: false,
     clip: 16,
     layout: {
@@ -427,7 +430,7 @@ export const stats = toImmutable<
             },
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
@@ -438,7 +441,7 @@ export const stats = toImmutable<
                         borderDash: [2],
                         tickBorderDash: [2],
                     },
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: function (
                             this: Scale<any>,
                             val: any,
@@ -455,11 +458,11 @@ export const stats = toImmutable<
                     }),
                 },
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatTicketAxeCb,
                     }),
                     grid: {
@@ -481,7 +484,7 @@ export const stats = toImmutable<
         callbacks: {
             cell: ({ value, axis }) => {
                 if (
-                    isString(value) &&
+                    _isString(value) &&
                     value.toLowerCase() === 'without macro'
                 ) {
                     return (
@@ -522,7 +525,7 @@ export const stats = toImmutable<
         downloadable: true,
         callbacks: {
             cell: ({ value, axis, line }) => {
-                if (isString(value) && value.toLowerCase() === 'unassigned') {
+                if (_isString(value) && value.toLowerCase() === 'unassigned') {
                     return (
                         <i>
                             <b>{value}</b>
@@ -552,23 +555,23 @@ export const stats = toImmutable<
         options: (legend: Map<any, any>) => ({
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     stacked: true,
                     grid: defaultXAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb,
                     }),
                 },
 
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatTicketAxeCb,
                     }),
                     min: 0,
@@ -601,22 +604,22 @@ export const stats = toImmutable<
         options: (legend: Map<any, any>) => ({
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     stacked: false,
                     grid: defaultXAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb,
                     }),
                 },
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatTicketAxeCb,
                     }),
                     min: 0,
@@ -716,22 +719,22 @@ export const stats = toImmutable<
             },
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     grid: defaultXAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb,
                     }),
                 },
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
                     grid: defaultYAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDurationAxeCb,
                     }),
                     min: 0,
@@ -773,22 +776,22 @@ export const stats = toImmutable<
             },
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     grid: defaultXAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb,
                     }),
                 },
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
                     grid: defaultYAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDurationAxeCb,
                     }),
                     min: 0,
@@ -887,22 +890,22 @@ export const stats = toImmutable<
         options: (legend: Map<any, any>) => ({
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     stacked: false,
                     grid: defaultXAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb,
                     }),
                 },
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatTicketAxeCb,
                     }),
                     min: 0,
@@ -947,23 +950,23 @@ export const stats = toImmutable<
         options: (legend: Map<any, any>) => ({
             scales: {
                 x: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'x']),
                         display: !!legend.getIn(['axes', 'x']),
                     }),
                     stacked: true,
                     grid: defaultXAxeGridLines,
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatDateAxeCb,
                     }),
                 },
 
                 y: {
-                    title: merge({}, defaultScaleLabel, {
+                    title: _merge({}, defaultScaleLabel, {
                         text: legend.getIn(['axes', 'y']),
                         display: !!legend.getIn(['axes', 'y']),
                     }),
-                    ticks: merge({}, defaultTicks, {
+                    ticks: _merge({}, defaultTicks, {
                         callback: formatTicketAxeCb,
                     }),
                     min: 0,

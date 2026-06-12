@@ -2,6 +2,7 @@ import type { PropsWithChildren } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
+import flatMap from 'lodash/flatMap'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Tooltip, TooltipContent } from '@gorgias/axiom'
@@ -147,7 +148,7 @@ const Filter = ({
     }, [isDropdownOpen, onDropdownClosed, onDropdownOpen])
 
     const allValues = useMemo(() => {
-        return filterOptionGroups.flatMap((option) =>
+        return flatMap(filterOptionGroups, (option) =>
             option.options.map((option) => option.label),
         )
     }, [filterOptionGroups])

@@ -1,11 +1,13 @@
 import { memo, useCallback, useState } from 'react'
+
+import uniqueId from 'lodash/uniqueId'
+
 import {
     LegacyButton as Button,
     LegacyLabel as Label,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import type { CreateCustomField } from '@gorgias/helpdesk-types'
-import { uniqueId } from '@gorgias/toolkit'
 
 import {
     DROPDOWN_NESTING_DELIMITER,

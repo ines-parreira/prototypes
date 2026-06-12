@@ -1,4 +1,4 @@
-import { isObject } from '@gorgias/toolkit'
+import isObject from 'lodash/isObject'
 
 export function isForwardedMessageSource(source?: { extra?: unknown } | null) {
     const extra = source?.extra

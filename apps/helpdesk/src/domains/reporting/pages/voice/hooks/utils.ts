@@ -1,6 +1,8 @@
 import { appQueryClient } from '@repo/api-resources'
+import { cloneDeep, merge } from 'lodash'
+import debounce from 'lodash/debounce'
 import moment from 'moment/moment'
-import { cloneDeep, debounce, Duration, merge } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     ListLiveCallQueueAgentsResult,

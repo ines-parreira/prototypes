@@ -1,4 +1,6 @@
-import { isArray, isObject } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+
 import * as rulesConfig from '../rules'
 
 describe('Config: rules', () => {
@@ -9,11 +11,11 @@ describe('Config: rules', () => {
         }[]
 
         it('is array', () => {
-            expect(isArray(events)).toBe(true)
+            expect(_isArray(events)).toBe(true)
         })
 
         it('is array of objects', () => {
-            expect(isObject(events[0])).toBe(true)
+            expect(_isObject(events[0])).toBe(true)
         })
 
         it('structure of objects', () => {

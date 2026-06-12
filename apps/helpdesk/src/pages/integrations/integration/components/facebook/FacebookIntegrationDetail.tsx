@@ -4,6 +4,9 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
+import merge from 'lodash/merge'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -15,7 +18,6 @@ import {
     FormGroup,
     Row,
 } from 'reactstrap'
-import { isEmpty, isEqual, merge } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

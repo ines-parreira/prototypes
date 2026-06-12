@@ -1,4 +1,7 @@
-import { isArray, isObject, isString } from '@gorgias/toolkit'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+import _isString from 'lodash/isString'
+
 import {
     CHANNELS,
     DEFAULT_CHANNEL,
@@ -12,37 +15,37 @@ import {
 
 describe('DEFAULT_CHANNEL', () => {
     it('is string', () => {
-        expect(isString(DEFAULT_CHANNEL)).toBe(true)
+        expect(_isString(DEFAULT_CHANNEL)).toBe(true)
     })
 })
 
 describe('DEFAULT_SOURCE_TYPE', () => {
     it('is string', () => {
-        expect(isString(DEFAULT_SOURCE_TYPE)).toBe(true)
+        expect(_isString(DEFAULT_SOURCE_TYPE)).toBe(true)
     })
 })
 
 describe('STATUSES', () => {
     it('is array', () => {
-        expect(isArray(STATUSES)).toBe(true)
+        expect(_isArray(STATUSES)).toBe(true)
     })
 })
 
 describe('CHANNELS', () => {
     it('is array', () => {
-        expect(isArray(CHANNELS)).toBe(true)
+        expect(_isArray(CHANNELS)).toBe(true)
     })
 })
 
 describe('SYSTEM_SOURCE_TYPES', () => {
     it('is array', () => {
-        expect(isArray(SYSTEM_SOURCE_TYPES)).toBe(true)
+        expect(_isArray(SYSTEM_SOURCE_TYPES)).toBe(true)
     })
 })
 
 describe('USABLE_SOURCE_TYPES', () => {
     it('is array', () => {
-        expect(isArray(USABLE_SOURCE_TYPES)).toBe(true)
+        expect(_isArray(USABLE_SOURCE_TYPES)).toBe(true)
     })
 })
 
@@ -51,11 +54,11 @@ describe.each([
     ['PREVIOUS_VARIABLES', PREVIOUS_VARIABLES],
 ])('%s', (_name, value) => {
     it('is array', () => {
-        expect(isArray(value)).toBe(true)
+        expect(_isArray(value)).toBe(true)
     })
 
     it('is array of objects', () => {
-        expect(isObject(value[0])).toBe(true)
+        expect(_isObject(value[0])).toBe(true)
     })
 
     it('structure of objects', () => {

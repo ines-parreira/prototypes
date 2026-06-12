@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
+
+import noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'

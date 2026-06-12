@@ -1,4 +1,5 @@
-import { groupBy } from '@gorgias/toolkit'
+import _groupBy from 'lodash/groupBy'
+
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { getPeriodDateTimesFromFilters } from 'domains/reporting/hooks/helpers'
 import { objectMap } from 'domains/reporting/hooks/useTimeSeries'
@@ -68,10 +69,7 @@ export const selectPerDimension =
         }
 
         return objectMap(
-            groupBy(
-                escapedResponse,
-                dimension as keyof (typeof escapedResponse)[number],
-            ),
+            _groupBy(escapedResponse, dimension),
             select(statsQuery),
         )
     }

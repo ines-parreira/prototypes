@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { getByText } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { Tag } from '../Tag'
 import type { Option } from '../types'
 
@@ -16,7 +17,7 @@ describe('multi select options field tag', () => {
     const defaultOptions = {
         option,
         color: '#f00',
-        onRemove: noop,
+        onRemove: _noop,
     }
 
     it('should display displayLabel first and label as a fallback', () => {

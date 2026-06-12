@@ -3,10 +3,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 
 import { DefaultExportSearch as Search } from '../Search'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: (id?: string) => `${id || ''}42`,
-}))
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 describe('<Search />', () => {
     beforeEach(() => {

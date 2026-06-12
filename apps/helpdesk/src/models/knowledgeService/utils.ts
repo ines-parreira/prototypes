@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash'
+
 import type {
     FeedbackExecutionsItem,
     FeedbackExecutionsItemResourcesItem,
@@ -5,7 +7,6 @@ import type {
     FindFeedbackParams,
     FindFeedbackResult,
 } from '@gorgias/knowledge-service-client'
-import { cloneDeep } from '@gorgias/toolkit'
 
 import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 

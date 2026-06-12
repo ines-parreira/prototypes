@@ -1,5 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
+import { chain } from 'lodash'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
@@ -114,7 +115,10 @@ describe('useGetHelpCenterArticles', () => {
             const { result } = renderHook(() =>
                 useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
-            const resultArray = Object.values(result.current.articles).flat()
+            const resultArray = chain(result.current.articles)
+                .values()
+                .flatten()
+                .value()
             expect(resultArray[0].isSelected).toBeTruthy()
         })
 

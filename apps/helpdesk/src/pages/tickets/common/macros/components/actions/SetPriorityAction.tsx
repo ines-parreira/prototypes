@@ -1,7 +1,8 @@
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _upperFirst from 'lodash/upperFirst'
+
 import { TicketPriority } from '@gorgias/helpdesk-types'
-import { upperFirst } from '@gorgias/toolkit'
 
 import { SelectField } from 'pages/common/forms/SelectField/SelectField'
 
@@ -31,7 +32,7 @@ const SetPriorityAction = ({
                 }
                 options={Object.values(TicketPriority).map((priority) => ({
                     value: priority,
-                    label: upperFirst(priority),
+                    label: _upperFirst(priority),
                 }))}
                 fullWidth={fullWidth}
                 container={dropdownContainer}

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { sleep } from '@repo/utils'
+import { chunk, isNumber } from 'lodash'
+
 import type { DomainEvent } from '@gorgias/events'
 import { isDomainEvent } from '@gorgias/events'
 import {
@@ -9,7 +11,6 @@ import {
     useRequestTicketTranslation,
 } from '@gorgias/helpdesk-queries'
 import type { Language, TicketMessage } from '@gorgias/helpdesk-types'
-import { chunk, isNumber } from '@gorgias/toolkit'
 
 import { getTranslatableTicketMessages } from '../../helpers/getTranslatableTicketMessages'
 import { DisplayedContent, FetchingState } from '../../store/constants'

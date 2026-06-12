@@ -3,8 +3,8 @@ import { PureComponent } from 'react'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { List } from 'immutable'
+import _debounce from 'lodash/debounce'
 import { Label } from 'reactstrap'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -55,7 +55,7 @@ export class OrderTotals extends PureComponent<Props, State> {
         this.setState({ shipping: newShipping })
     }
 
-    _updatePayload = debounce(() => {
+    _updatePayload = _debounce(() => {
         const { onPayloadChange, currencyCode, payload } = this.props
         const { shipping } = this.state
 
@@ -64,7 +64,7 @@ export class OrderTotals extends PureComponent<Props, State> {
             formatPrice(shipping, currencyCode),
         )
         onPayloadChange(newPayload)
-    }, Duration.millis(250))
+    }, 250)
 
     render() {
         const {

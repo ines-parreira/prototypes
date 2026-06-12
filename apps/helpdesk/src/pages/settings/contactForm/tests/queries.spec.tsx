@@ -3,7 +3,8 @@ import type React from 'react'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { get } from '@gorgias/toolkit'
+import _get from 'lodash/get'
+
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -52,7 +53,7 @@ describe('useGetContactFormList', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
-        expect(get(result, ['current', 'data', 'pages', 0])).toEqual(
+        expect(_get(result, ['current', 'data', 'pages', 0])).toEqual(
             mocks.fixtures.ContactFormListFixtures,
         )
     })
@@ -208,7 +209,7 @@ describe('useCreateContactForm', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
-        expect(get(result, ['current', 'data'])).toEqual(
+        expect(_get(result, ['current', 'data'])).toEqual(
             mocks.fixtures.ContactFormFixture,
         )
     })
@@ -267,7 +268,7 @@ describe('useCreatePageEmbedment', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
-        expect(get(result, ['current', 'data'])).toEqual(
+        expect(_get(result, ['current', 'data'])).toEqual(
             mocks.fixtures.PageEmbedmentFixture,
         )
     })
@@ -327,7 +328,7 @@ describe('useUpdatePageEmbedment', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
-        expect(get(result, ['current', 'data'])).toEqual(
+        expect(_get(result, ['current', 'data'])).toEqual(
             mocks.fixtures.PageEmbedmentFixture,
         )
     })

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
 import {
     Dropdown,
     DropdownItem,
@@ -11,7 +12,6 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 import type { Direction } from 'reactstrap/lib/Dropdown'
-import { isUndefined } from '@gorgias/toolkit'
 
 import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
@@ -156,7 +156,7 @@ const TicketAssignee = ({
             return
         }
 
-        const opens = !isUndefined(visible) ? visible : !isDropdownOpen
+        const opens = !_isUndefined(visible) ? visible : !isDropdownOpen
 
         setIsDropdownOpen(opens)
 

@@ -1,8 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
+
+import _keyBy from 'lodash/keyBy'
+import _noop from 'lodash/noop'
 import { useHistory } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { ulid } from 'ulidx'
-import { keyBy, noop } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -184,7 +186,7 @@ const ActionsPlatformCreateStepView = () => {
     )
 
     const selectableApps = useMemo(() => {
-        const actionsAppsByAppId = keyBy(actionsApps ?? [], 'id')
+        const actionsAppsByAppId = _keyBy(actionsApps, 'id')
 
         return apps.filter(
             (app) => app.type !== 'app' || app.id in actionsAppsByAppId,
@@ -256,7 +258,7 @@ const ActionsPlatformCreateStepView = () => {
                 <Modal
                     isOpen={!visualBuilderGraphDirty.apps?.length}
                     isClosable={false}
-                    onClose={noop}
+                    onClose={_noop}
                 >
                     <ModalHeader title="Select App" />
                     <ModalBody>

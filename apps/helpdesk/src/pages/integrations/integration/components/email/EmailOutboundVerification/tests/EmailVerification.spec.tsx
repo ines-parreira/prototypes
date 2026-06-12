@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen, within } from '@testing-library/react'
-import { merge } from '@gorgias/toolkit'
+import { merge } from 'lodash'
+
 import { integrationsState } from 'fixtures/integrations'
 import type { EmailIntegration } from 'models/integration/types'
 import { OutboundVerificationStatusValue } from 'models/integration/types'

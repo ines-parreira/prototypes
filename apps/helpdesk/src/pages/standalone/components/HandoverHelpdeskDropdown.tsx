@@ -1,5 +1,7 @@
 import React, { useRef } from 'react'
 
+import { toPairs } from 'lodash'
+
 import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
 // oxlint-disable-next-line no-named-as-default
@@ -37,7 +39,7 @@ export const HandoverHelpdeskDropdown: React.FC<Props> = ({
     const [isOpen, setIsOpen] = React.useState(false)
 
     // This cast is safe and necessary to ensure TypeScript understands the structure of the integrations mapping.
-    const integrationsArray = Object.entries(INTEGRATIONS_MAPPING) as Array<
+    const integrationsArray = toPairs(INTEGRATIONS_MAPPING) as Array<
         [HelpdeskIntegrationOptions, HelpdeskIntegrationProperties]
     >
     const activeIntegrations = integrationsArray.filter(

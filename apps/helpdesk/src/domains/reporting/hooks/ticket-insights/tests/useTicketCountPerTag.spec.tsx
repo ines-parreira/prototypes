@@ -1,9 +1,9 @@
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import { keyBy } from '@gorgias/toolkit'
 
 import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
@@ -47,7 +47,7 @@ describe('useTicketCountPerTag', () => {
     }
     const defaultState = {
         entities: {
-            tags: keyBy(tags, 'id'),
+            tags: _keyBy(tags, 'id'),
         },
         stats: {
             filters: { period },

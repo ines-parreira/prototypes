@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import type {
     ActiveElement,
     ChartData,
@@ -8,8 +10,8 @@ import type {
     Plugin,
 } from 'chart.js'
 import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
 import { Doughnut } from 'react-chartjs-2'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import { Skeleton } from '@gorgias/axiom'
 import colors from '@gorgias/design-tokens/tokens/colors'
@@ -102,7 +104,7 @@ const DonutChart = ({
     )
 
     const debouncedOnMouseLeave = useMemo(
-        () => debounce(() => setHoveredIndex(null), Duration.millis(100)),
+        () => _debounce(() => setHoveredIndex(null), Duration.millis(100)),
         [],
     )
 

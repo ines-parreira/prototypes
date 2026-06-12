@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
+import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
-import { pick } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
@@ -170,7 +170,7 @@ export function RuleSuggestion({ ticket, isCollapsed }: Props) {
                 extra: {},
             },
             channel: TicketChannel.Email,
-            sender: pick(currentUser.toJS(), ['email', 'id', 'name']),
+            sender: _pick(currentUser.toJS(), ['email', 'id', 'name']),
             body_text: text?.body_text ?? '',
             body_html: text?.body_html ?? '',
             attachments: [],

@@ -14,7 +14,7 @@ import { AfterTitle, BeforeContent, TitleWrapper, Wrapper } from '../Order'
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
-    useId: jest.fn(() => require('@gorgias/toolkit').uniqueId()),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
 }))
 
 const mockStore = configureMockStore([thunk])

@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { uniq } from '@gorgias/toolkit'
+import _uniq from 'lodash/uniq'
+
 import * as articleActions from './actions'
 import type { HelpCenterArticlesState } from './types'
 
@@ -51,7 +52,7 @@ const DefaultExportReducer = createReducer<HelpCenterArticlesState>(
                     if (state.articlesById[payload.articleId.toString()]) {
                         state.articlesById[
                             payload.articleId.toString()
-                        ].available_locales = uniq([
+                        ].available_locales = _uniq([
                             ...state.articlesById[payload.articleId.toString()]
                                 .available_locales,
                             ...payload.supportedLocales,

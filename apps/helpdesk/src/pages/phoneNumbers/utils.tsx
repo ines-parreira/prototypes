@@ -5,7 +5,8 @@ import parsePhoneNumber, {
     isValidPhoneNumber,
     Metadata,
 } from 'libphonenumber-js'
-import { get, has } from '@gorgias/toolkit'
+import { get, has, join, parseInt, startsWith, toString } from 'lodash'
+
 import {
     CAPABILITY_TYPE_LABELS,
     PHONE_TYPE_LABELS,
@@ -210,12 +211,11 @@ export function getCountryFromPhoneNumber(
     const metadata = new Metadata()
     const callingCodes = get(metadata, 'metadata.country_calling_codes')
 
-    const callingCode =
-        parsedNumber?.countryCallingCode ?? Number.parseInt(number, 10)
+    const callingCode = parsedNumber?.countryCallingCode ?? parseInt(number)
 
     if (callingCode) {
         return get(callingCodes, [
-            String(callingCode),
+            toString(callingCode),
             0,
         ]) as unknown as CountryCode
     }
@@ -229,11 +229,11 @@ export function buildInternationalNumber(
 ): string {
     const callingCode = getCountryCallingCode(country)
     return normalizeNumber(
-        [
+        join([
             '+',
-            String(callingCode),
+            toString(callingCode),
             formatAsNationalNumber(nationalNumber, country),
-        ].join(),
+        ]),
     )
 }
 
@@ -241,13 +241,13 @@ export function formatAsNationalNumber(
     number: string,
     country?: CountryCode,
 ): string {
-    if (!number.startsWith('+')) {
+    if (!startsWith(number, '+')) {
         return number
     }
     const internationalFormatted = formatIncompletePhoneNumber(number, country)
     const segments = internationalFormatted.split(' ')
     segments.shift()
-    return segments.join(' ')
+    return join(segments, ' ')
 }
 
 export function normalizeNumber(number: string): string {

@@ -51,6 +51,8 @@
         "vitest": "catalog:test"
     },
     "dependencies": {
-        "@splitsoftware/splitio-react": "^2.6.1"
+        "@splitsoftware/splitio-react": "^2.6.1",
+        "@types/lodash": "^4.17.24",
+        "lodash": "4.18.1"
     }
 }

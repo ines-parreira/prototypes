@@ -3,6 +3,7 @@ import type React from 'react'
 import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { get as _get } from 'lodash'
 import type {
     Action,
     Parameter,
@@ -19,7 +20,6 @@ import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ACTION_PARAMETER_PATHS } from '../../constants'
 import { getDropdownOptions, prepareDropdownValue } from '../helpers/dropdown'
-import { getActionPathValue } from '../helpers/path'
 import { useImmerState } from '../hooks/useImmerState'
 
 import css from './ActionsEditor.less'
@@ -81,7 +81,7 @@ function ActionEditor({ action, onSubmit, onClose, trackingData }: Props) {
                                         required={mandatory}
                                         options={getDropdownOptions(
                                             value,
-                                            getActionPathValue(
+                                            _get(
                                                 action,
                                                 `${path}[${index}].value`,
                                             ),
@@ -119,13 +119,7 @@ function ActionEditor({ action, onSubmit, onClose, trackingData }: Props) {
                 <form onSubmit={handleSubmit}>
                     <ModalBody>
                         {ACTION_PARAMETER_PATHS.map((param) =>
-                            mapParamsToInput(
-                                param,
-                                getActionPathValue<Parameter[]>(
-                                    actionState,
-                                    param,
-                                ),
-                            ),
+                            mapParamsToInput(param, _get(actionState, param)),
                         )}
                     </ModalBody>
                     <ModalActionsFooter>

@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { TicketChannel } from 'business/types/ticket'
 import { MergeCustomersModal } from 'pages/common/components/MergeCustomers/MergeCustomersModal'
 import { mergeCustomers } from 'state/customers/actions'
@@ -56,8 +57,8 @@ describe('<MergeCustomersModal/>', () => {
                     destinationCustomer={customer1}
                     sourceCustomer={customer2}
                     mergeCustomers={mergeCustomers as any}
-                    toggleModal={noop}
-                    onSuccess={noop}
+                    toggleModal={_noop}
+                    onSuccess={_noop}
                     isOpen={true}
                     isLoading={false}
                     requiredAddresses={fromJS([address1])}

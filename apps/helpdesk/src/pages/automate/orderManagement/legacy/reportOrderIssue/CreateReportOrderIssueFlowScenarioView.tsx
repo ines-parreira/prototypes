@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react'
+
+import _isEqual from 'lodash/isEqual'
 import { Link, useHistory, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import type {
     ReportIssueCaseReason,
@@ -58,7 +59,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                             delete nextErrors[path]
                         }
 
-                        return isEqual(prevErrors, nextErrors)
+                        return _isEqual(prevErrors, nextErrors)
                             ? prevErrors
                             : nextErrors
                     })

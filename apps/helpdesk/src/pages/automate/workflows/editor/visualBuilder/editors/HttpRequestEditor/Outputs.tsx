@@ -1,8 +1,10 @@
 import React, { useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
+import _keyBy from 'lodash/keyBy'
+import _noop from 'lodash/noop'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { keyBy, noop } from '@gorgias/toolkit'
 
 import type { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { IconButton } from 'pages/common/components/button/IconButton'
@@ -40,7 +42,7 @@ const Outputs = ({
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     const availableVariables = useMemo(() => {
-        const outputsByPath = keyBy(outputs ?? [], 'path')
+        const outputsByPath = _keyBy(outputs ?? [], 'path')
 
         return variables.filter(
             (variable) =>
@@ -91,7 +93,7 @@ const Outputs = ({
                         <SelectField
                             showSelectedOption
                             value={variable.data_type}
-                            onChange={noop}
+                            onChange={_noop}
                             options={[
                                 { label: 'String', value: 'string' },
                                 { label: 'Number', value: 'number' },

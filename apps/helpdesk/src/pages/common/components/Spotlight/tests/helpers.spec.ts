@@ -1,3 +1,5 @@
+import _pick from 'lodash/pick'
+
 import { TicketChannel } from 'business/types/ticket'
 import { ticket } from 'fixtures/ticket'
 import type { Customer } from 'models/customer/types'
@@ -260,7 +262,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlights: { email: highlight.email },
+            highlights: _pick(highlight, 'email'),
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -272,7 +274,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlights: { name: highlight.name },
+            highlights: _pick(highlight, 'name'),
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -284,7 +286,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlights: { channels: { address: highlight.channels?.address } },
+            highlights: _pick(highlight, 'channels.address'),
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,

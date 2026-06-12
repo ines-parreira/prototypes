@@ -1,5 +1,6 @@
+import _throttle from 'lodash/throttle'
 import type { AnyAction } from 'redux'
-import { Duration, throttle } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
 
 import { store as reduxStore } from 'common/store'
 import { toggleActiveStatus } from 'state/currentUser/actions'
@@ -20,7 +21,7 @@ class UserActivityManager {
      * Set the current user as active and
      * set him as inactive after a period of inactivity
      */
-    setCurrentUserActive = throttle(() => {
+    setCurrentUserActive = _throttle(() => {
         socketManager.send(SocketEventType.AgentActive)
 
         this.userActivityFn && clearTimeout(this.userActivityFn)

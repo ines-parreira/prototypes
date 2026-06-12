@@ -3,11 +3,11 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
+import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import type { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { keyBy } from '@gorgias/toolkit'
 
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
@@ -46,7 +46,7 @@ describe('DEPRECATED_TagsStatsFilter', () => {
     const defaultState = {
         stats: initialState,
         entities: {
-            tags: keyBy(tagsFixtures, (tag) => tag.id),
+            tags: _keyBy(tagsFixtures, (tag) => tag.id),
         } as unknown as RootState['entities'],
     } as RootState
 

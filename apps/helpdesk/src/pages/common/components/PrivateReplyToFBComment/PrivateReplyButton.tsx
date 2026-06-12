@@ -1,8 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
+import _noop from 'lodash/noop'
 import moment from 'moment'
 import { UncontrolledTooltip } from 'reactstrap'
-import { noop } from '@gorgias/toolkit'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
@@ -41,7 +41,7 @@ export function PrivateReplyButton({
     messageCreatedDatetime,
     isFacebookComment,
     className,
-    onClick = noop,
+    onClick = _noop,
 }: Props) {
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
     const icon = isFacebookComment ? messengerIcon : instagramDirectMessageIcon

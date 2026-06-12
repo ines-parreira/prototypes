@@ -1,5 +1,6 @@
 import classnames from 'classnames'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { THEME_NAME } from 'core/theme'
 import { RichField } from 'pages/common/forms/RichField/RichField'
 import { FakeOrderTracking } from 'pages/settings/rules/components/FakeOrderTracking'
@@ -30,7 +31,7 @@ export const AutoReplyWismoDemo = ({ settings }: Props) => (
                                 text: settings.body_text,
                                 html: settings.body_html,
                             }}
-                            onChange={noop}
+                            onChange={_noop}
                             displayOnly
                         />
                     </div>
@@ -46,7 +47,7 @@ export const AutoReplyWismoDemo = ({ settings }: Props) => (
                                 text: settings.signature_text,
                                 html: settings.signature_html,
                             }}
-                            onChange={noop}
+                            onChange={_noop}
                             displayOnly
                         />
                     </div>

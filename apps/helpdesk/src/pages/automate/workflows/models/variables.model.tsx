@@ -3,7 +3,11 @@ import React from 'react'
 
 import { Liquid, Output } from 'liquidjs'
 import type { IdentifierToken, PropertyAccessToken } from 'liquidjs/dist/tokens'
-import { get, keyBy, set } from '@gorgias/toolkit'
+import _flatten from 'lodash/flatten'
+import _get from 'lodash/get'
+import _keyBy from 'lodash/keyBy'
+import _set from 'lodash/set'
+
 import { AppIcon } from 'pages/automate/actionsPlatform/components/AppIcon'
 import type { App } from 'pages/automate/actionsPlatform/types'
 import { validateJSON } from 'utils'
@@ -164,7 +168,7 @@ export const buildWorkflowVariableFromApp = (
     | WorkflowVariableGroup
     | WorkflowVariableList
     | undefined => {
-    const appsById = keyBy(apps, 'id')
+    const appsById = _keyBy(apps, 'id')
 
     return graph.apps?.filter(isVisualBuilderGraphAppApp).map((actionApp) => {
         const appId = actionApp.app_id
@@ -1454,13 +1458,13 @@ export function extractVariablesFromNode(
                 ...extractVariablesFromText(node.data.content.text).map(
                     (variable) => variable.value,
                 ),
-                ...(
+                ..._flatten(
                     node.data.choices.map((choice) =>
                         extractVariablesFromText(choice.label).map(
                             (variable) => variable.value,
                         ),
-                    ) ?? []
-                ).flat(),
+                    ),
+                ),
             ]
             break
         case 'automated_message':
@@ -1476,23 +1480,23 @@ export function extractVariablesFromNode(
                 ...extractVariablesFromText(node.data.url).map(
                     (variable) => variable.value,
                 ),
-                ...(
+                ..._flatten(
                     node.data.headers.map((header) =>
                         extractVariablesFromText(header.value).map(
                             (variable) => variable.value,
                         ),
-                    ) ?? []
-                ).flat(),
+                    ),
+                ),
                 ...extractVariablesFromText(node.data.json ?? '').map(
                     (variable) => variable.value,
                 ),
-                ...(
+                ..._flatten(
                     node.data.formUrlencoded?.map((item) =>
                         extractVariablesFromText(item.value).map(
                             (variable) => variable.value,
                         ),
-                    ) ?? []
-                ).flat(),
+                    ),
+                ),
                 ...extractVariablesFromText(
                     node.data.serviceConnectionSettings?.path ?? '',
                 ).map((variable) => variable.value),
@@ -1534,12 +1538,15 @@ export function extractVariablesFromNode(
             }
             break
         case 'reusable_llm_prompt_call':
-            variables = Object.values(node.data.custom_inputs ?? {}).flatMap(
-                (value) =>
-                    extractVariablesFromText(value).map(
-                        (variable) => variable.value,
+            variables = [
+                ..._flatten(
+                    Object.values(node.data.custom_inputs ?? {}).map((value) =>
+                        extractVariablesFromText(value).map(
+                            (variable) => variable.value,
+                        ),
                     ),
-            )
+                ),
+            ]
             break
         case 'cancel_order':
         case 'refund_order':
@@ -1747,12 +1754,12 @@ export function prerenderVariables(
 
         for (const tpl of tpls) {
             if (tpl instanceof Output) {
-                const propertyAccessToken = get(tpl, [
+                const propertyAccessToken: PropertyAccessToken = _get(tpl, [
                     'value',
                     'initial',
                     'postfix',
                     '0',
-                ]) as PropertyAccessToken
+                ])
                 const identifierTokens =
                     propertyAccessToken.props as IdentifierToken[]
                 const props = identifierTokens.map((token) => token.content)
@@ -1769,22 +1776,22 @@ export function prerenderVariables(
 
                 switch (variable.type) {
                     case 'string':
-                        set(context, props, '')
+                        _set(context, props, '')
                         break
                     case 'number':
-                        set(context, props, 0)
+                        _set(context, props, 0)
                         break
                     case 'date':
-                        set(context, props, new Date())
+                        _set(context, props, new Date())
                         break
                     case 'boolean':
-                        set(context, props, true)
+                        _set(context, props, true)
                         break
                     case 'array':
-                        set(context, props, [{ test: 'test' }])
+                        _set(context, props, [{ test: 'test' }])
                         break
                     case 'json':
-                        set(context, props, {})
+                        _set(context, props, {})
                         break
                 }
             }

@@ -2,7 +2,9 @@ import { appQueryClient } from '@repo/api-resources'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
-import { Duration, mapValues } from '@gorgias/toolkit'
+import _mapValues from 'lodash/mapValues'
+import { Duration } from '@gorgias/toolkit'
+
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
 import type {
     OperationMethods,
@@ -589,7 +591,7 @@ export const useListWorkflowEntryPoints = ({
             )
             return response.data
         },
-        select: (data) => mapValues(data, 'label'),
+        select: (data) => _mapValues(data, 'label'),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         enabled: ids?.length > 0 && !!language,

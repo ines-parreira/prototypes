@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { isEmpty } from '@gorgias/toolkit'
+import _isEmpty from 'lodash/isEmpty'
 import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import css from './TabNavigator.less'
@@ -91,7 +91,7 @@ const TabNavigator = ({
                     </div>
                 ))}
             </div>
-            {activeTab != null && !isEmpty(tabs) && tabDimensions && (
+            {activeTab != null && !_isEmpty(tabs) && tabDimensions && (
                 <div
                     className={css.activeIndicator}
                     style={{

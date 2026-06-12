@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { keyBy as _keyBy } from 'lodash'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
-import { keyBy } from '@gorgias/toolkit'
 
 import { Button } from '@gorgias/axiom'
 
@@ -49,7 +50,7 @@ export const ManageHelpCenters = ({
 
     const localeOptions = useSupportedLocales()
     const localesByCode = useMemo(
-        () => keyBy<Locale>(localeOptions, 'code'),
+        () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions],
     )
     const history = useHistory()

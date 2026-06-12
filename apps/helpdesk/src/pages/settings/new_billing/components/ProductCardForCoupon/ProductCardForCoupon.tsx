@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 import { DATE_FORMAT } from '@repo/billing'
 import classNames from 'classnames'
+import _capitalize from 'lodash/capitalize'
 import moment from 'moment/moment'
-import { capitalize } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -110,7 +110,7 @@ export function ProductCardForCoupon({
             </div>
             <div>
                 <span className={css.bold}>Billing frequency: </span>
-                <span>{capitalize(plan.cadence)}ly</span>
+                <span>{_capitalize(plan.cadence)}ly</span>
             </div>
             <div>
                 <span className={css.bold}>Plan: </span>

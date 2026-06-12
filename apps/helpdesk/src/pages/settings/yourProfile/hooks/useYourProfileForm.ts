@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
+
+import _merge from 'lodash/merge'
+
 import type { LegacySelectFieldOption as SelectFieldOption } from '@gorgias/axiom'
 import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
-import { merge } from '@gorgias/toolkit'
 
 import { DEFAULT_PREFERENCES } from 'config'
 import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
@@ -52,7 +54,7 @@ export function useYourProfileForm({
     const [isLoading, setIsLoading] = useState(false)
 
     const defaultFormValues = useMemo(() => {
-        return merge(defaultContent, {
+        return _merge(defaultContent, {
             ...currentUser,
             preferences: {
                 ...DEFAULT_PREFERENCES,

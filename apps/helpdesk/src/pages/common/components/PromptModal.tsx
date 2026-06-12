@@ -3,8 +3,8 @@ import { createContext, useCallback, useEffect, useRef, useState } from 'react'
 
 import { history } from '@repo/routing'
 import type { Location } from 'history'
+import _noop from 'lodash/noop'
 import { Prompt } from 'react-router-dom'
-import { noop } from '@gorgias/toolkit'
 
 import { DefaultExportModal as Modal } from 'pages/common/components/modal/Modal'
 
@@ -15,8 +15,8 @@ type PromptModalContextType = {
 }
 
 export const PromptModalContext = createContext<PromptModalContextType>({
-    redirectToOriginalLocation: noop,
-    hideModal: noop,
+    redirectToOriginalLocation: _noop,
+    hideModal: _noop,
 })
 
 type Props = {
@@ -74,7 +74,7 @@ const PromptModal: React.FC<Props> = ({ when, children }) => {
                     return true
                 }}
             />
-            <Modal isOpen={show} isClosable={false} onClose={noop}>
+            <Modal isOpen={show} isClosable={false} onClose={_noop}>
                 {children}
             </Modal>
         </PromptModalContext.Provider>

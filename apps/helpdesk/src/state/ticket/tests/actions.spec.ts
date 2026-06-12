@@ -5,11 +5,11 @@ import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _pick from 'lodash/pick'
 import moment from 'moment'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { pick } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 import type { ListSatisfactionSurveys200, Tag } from '@gorgias/helpdesk-types'
@@ -1764,7 +1764,7 @@ describe('ticket actions', () => {
             const ticket = { id: 2, customerId: 1, messages: [], events: [] }
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
             store = mockStore({
@@ -1825,10 +1825,10 @@ describe('ticket actions', () => {
             const firstNavigation = store.dispatch(actions.goToNextTicket(1))
             const secondNavigation = store.dispatch(actions.goToNextTicket(1))
 
-            resolveSecondNavigation([200, pick(secondTicket, ['id'])])
+            resolveSecondNavigation([200, _pick(secondTicket, ['id'])])
             await secondNavigation
 
-            resolveFirstNavigation([200, pick(firstTicket, ['id'])])
+            resolveFirstNavigation([200, _pick(firstTicket, ['id'])])
             await firstNavigation
 
             const fetchTicketSuccessActions = store
@@ -1861,7 +1861,7 @@ describe('ticket actions', () => {
                 }
                 mockServer
                     .onPut('/api/views/1/tickets/1/next')
-                    .reply(200, pick(ticket, ['id']))
+                    .reply(200, _pick(ticket, ['id']))
                 mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
                 store = mockStore({
@@ -1885,7 +1885,7 @@ describe('ticket actions', () => {
             const ticket = { id: 2, messages: [], events: [] }
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
             store = mockStore({
@@ -1915,7 +1915,7 @@ describe('ticket actions', () => {
             }
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
             store = mockStore({
@@ -1941,7 +1941,7 @@ describe('ticket actions', () => {
             }
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
             store = mockStore({
@@ -2025,7 +2025,7 @@ describe('ticket actions', () => {
             const ticket = { id: 1, customerId: 1, messages: [], events: [] }
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/1').reply(200, ticket)
 
             store = mockStore({
@@ -2056,7 +2056,7 @@ describe('ticket actions', () => {
                 }
                 mockServer
                     .onPut('/api/views/1/tickets/2/prev')
-                    .reply(200, pick(ticket, ['id']))
+                    .reply(200, _pick(ticket, ['id']))
                 mockServer.onGet('/api/tickets/1').reply(200, ticket)
 
                 store = mockStore({
@@ -2082,7 +2082,7 @@ describe('ticket actions', () => {
             const ticket = { id: 1, messages: [], events: [] }
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/1').reply(200, ticket)
 
             store = mockStore({
@@ -2114,7 +2114,7 @@ describe('ticket actions', () => {
             }
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
             store = mockStore({
@@ -2140,7 +2140,7 @@ describe('ticket actions', () => {
             }
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
-                .reply(200, pick(ticket, ['id']))
+                .reply(200, _pick(ticket, ['id']))
             mockServer.onGet('/api/tickets/2').reply(200, ticket)
 
             store = mockStore({

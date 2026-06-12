@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react'
+
+import isString from 'lodash/isString'
+import noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { isString, noop } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'

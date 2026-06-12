@@ -1,4 +1,5 @@
-import { keyBy } from '@gorgias/toolkit'
+import _keyBy from 'lodash/keyBy'
+
 import { createArticleFromDto } from 'models/helpCenter/utils'
 import { getArticlesResponseFixture } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {
@@ -30,10 +31,10 @@ const store: Partial<StoreState> = {
     entities: {
         helpCenter: {
             articles: {
-                articlesById: keyBy(articlesResponse, 'id'),
+                articlesById: _keyBy(articlesResponse, 'id'),
             },
             categories: {
-                categoriesById: keyBy(getCategoriesFlatSorted, 'id'),
+                categoriesById: _keyBy(getCategoriesFlatSorted, 'id'),
             },
         },
     } as any,

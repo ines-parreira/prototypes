@@ -6,11 +6,11 @@ import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _isArray from 'lodash/isArray'
 import { parse, stringify } from 'qs'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import type { RouteComponentProps } from 'react-router-dom'
-import { isArray } from '@gorgias/toolkit'
 
 import { getConfigByName } from 'config/views'
 import type { ViewVisibility } from 'models/view/types'
@@ -118,7 +118,7 @@ export class ViewTableContainer extends Component<Props> {
                         storedFieldConfig as string,
                     )
 
-                    if (isArray(parsedFieldConfig)) {
+                    if (_isArray(parsedFieldConfig)) {
                         fieldConfig = parsedFieldConfig
                     }
                 } catch {}

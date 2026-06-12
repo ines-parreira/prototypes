@@ -5,11 +5,11 @@ import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import classnames from 'classnames'
 import { produce } from 'immer'
+import _debounce from 'lodash/debounce'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -137,7 +137,7 @@ const HelpCenterNewView = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
-        debounce(async () => {
+        _debounce(async () => {
             if (
                 client &&
                 newHelpCenter.subdomain &&
@@ -157,7 +157,7 @@ const HelpCenterNewView = ({
                     }
                 }
             }
-        }, Duration.millis(500)),
+        }, 500),
         [newHelpCenter.subdomain],
     )
 

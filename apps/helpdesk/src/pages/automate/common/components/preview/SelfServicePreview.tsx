@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
 import type { History } from 'history'
+import _uniqueId from 'lodash/uniqueId'
 import { Router, Switch } from 'react-router-dom'
-import { uniqueId } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
@@ -21,7 +21,7 @@ const SelfServicePreview = ({ channel, history }: Props) => {
     //
     // https://github.com/remix-run/react-router/blob/v5.3.4/packages/react-router/modules/Router.js#L95
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const key = useMemo(() => uniqueId(), [history])
+    const key = useMemo(() => _uniqueId(), [history])
 
     return (
         <Router key={key} history={history}>

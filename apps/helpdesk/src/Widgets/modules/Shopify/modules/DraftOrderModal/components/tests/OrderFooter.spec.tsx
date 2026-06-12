@@ -19,10 +19,7 @@ import { OrderFooterComponent } from '../OrderFooter'
 
 jest.useFakeTimers()
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    debounce: (fn: (...args: any[]) => void) => fn,
-}))
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 jest.mock('models/integration/resources/shopify', () => {
     return {

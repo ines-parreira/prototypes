@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import classnames from 'classnames'
-import { difference, uniq, upperFirst, xor } from '@gorgias/toolkit'
+import _difference from 'lodash/difference'
+import _uniq from 'lodash/uniq'
+import _upperFirst from 'lodash/upperFirst'
+import _xor from 'lodash/xor'
+
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -131,7 +135,7 @@ export function MessageSourceFields({ onRecipientsChange }: Props = {}) {
     }, [isOpen])
 
     const toggleOptionalField = (field: string) => {
-        setDisplayedFields(xor(displayedFields, [field]))
+        setDisplayedFields(_xor(displayedFields, [field]))
     }
 
     // fields that are displayed by default
@@ -153,13 +157,13 @@ export function MessageSourceFields({ onRecipientsChange }: Props = {}) {
     })
 
     // remaining optional fields not already displayed
-    const remainingOptionalFields = difference(
+    const remainingOptionalFields = _difference(
         availableOptionalFields,
         displayedOptionalFields,
     )
 
     // final displayed fields
-    const finalDisplayedFields = uniq(
+    const finalDisplayedFields = _uniq(
         mandatoryFields.concat(displayedOptionalFields),
     )
 
@@ -201,7 +205,7 @@ export function MessageSourceFields({ onRecipientsChange }: Props = {}) {
                             return (
                                 <div key={prop} className={css.sourceField}>
                                     <span className={css.label}>
-                                        {upperFirst(prop)}:{' '}
+                                        {_upperFirst(prop)}:{' '}
                                     </span>
                                     <ReceiversSelectField
                                         sourceType={sourceType}
@@ -248,7 +252,7 @@ export function MessageSourceFields({ onRecipientsChange }: Props = {}) {
                                                 toggleOptionalField(prop)
                                             }}
                                         >
-                                            {upperFirst(prop)}
+                                            {_upperFirst(prop)}
                                         </span>
                                         {index <
                                             remainingOptionalFields.length -

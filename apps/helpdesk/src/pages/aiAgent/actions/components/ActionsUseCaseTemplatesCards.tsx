@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 import classnames from 'classnames'
+import _orderBy from 'lodash/orderBy'
 import { useHistory, useParams } from 'react-router-dom'
-import { orderBy } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -50,7 +50,7 @@ const ActionsUseCaseTemplatesCards = ({
                 : categoryIndex
         }
 
-        return orderBy(
+        return _orderBy(
             templates.filter((template) => {
                 if (!template.category) {
                     return false

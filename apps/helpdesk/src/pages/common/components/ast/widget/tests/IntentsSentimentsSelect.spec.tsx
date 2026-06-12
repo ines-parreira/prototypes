@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { IntentsSentimentsSelect } from '../IntentsSentimentsSelect'
 
 const minProps: ComponentProps<typeof IntentsSentimentsSelect> = {
@@ -12,7 +13,7 @@ const minProps: ComponentProps<typeof IntentsSentimentsSelect> = {
     values: [],
     singular: 'intent',
     plural: 'intents',
-    onChange: noop,
+    onChange: _noop,
 }
 
 describe('<IntentsSentimentsSelect />', () => {

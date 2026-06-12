@@ -1,17 +1,6 @@
+import _floor from 'lodash/floor'
+
 import { NonFractionalCurrency } from '../../constants/integrations/types/shopify'
-
-function shiftDecimal(value: number, exponent: number): number {
-    const [coefficient, currentExponent = '0'] = `${value}e`.split('e')
-    return Number(`${coefficient}e${Number(currentExponent) + exponent}`)
-}
-
-export function floorWithPrecision(value: number, precision: number): number {
-    return shiftDecimal(Math.floor(shiftDecimal(value, precision)), -precision)
-}
-
-export function ceilWithPrecision(value: number, precision: number): number {
-    return shiftDecimal(Math.ceil(shiftDecimal(value, precision)), -precision)
-}
 
 export function formatPrice(
     price: number | string,
@@ -27,7 +16,7 @@ export function formatPrice(
     const parsedPrice = parseFloat(parseFloat(price as string).toFixed(3))
 
     return shouldFloor
-        ? floorWithPrecision(parsedPrice, decimals).toFixed(decimals)
+        ? _floor(parsedPrice, decimals).toFixed(decimals)
         : parsedPrice.toFixed(decimals)
 }
 

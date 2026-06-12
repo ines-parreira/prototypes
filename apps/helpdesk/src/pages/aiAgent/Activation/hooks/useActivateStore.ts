@@ -1,4 +1,5 @@
-import { cloneDeep } from '@gorgias/toolkit'
+import cloneDeep from 'lodash/cloneDeep'
+
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { State } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'

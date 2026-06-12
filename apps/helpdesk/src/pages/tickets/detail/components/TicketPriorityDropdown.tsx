@@ -1,7 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
+
+import _capitalize from 'lodash/capitalize'
+
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
-import { capitalize } from '@gorgias/toolkit'
 
 import { Dropdown } from 'pages/common/components/dropdown/Dropdown'
 import { DefaultExportDropdownBody as DropdownBody } from 'pages/common/components/dropdown/DropdownBody'
@@ -74,14 +76,14 @@ const TicketPriorityDropdown = ({
                             key={option}
                             onClick={handlePriorityChange}
                             option={{
-                                label: capitalize(option),
+                                label: _capitalize(option),
                                 value: option,
                             }}
                             shouldCloseOnSelect
                         >
                             <PriorityIcon priority={option} />
                             <span className={css.label}>
-                                {capitalize(option)}
+                                {_capitalize(option)}
                             </span>
                         </DropdownItem>
                     ))}

@@ -1,11 +1,12 @@
-import { omit } from '@gorgias/toolkit'
+import _omit from 'lodash/omit'
+
 import type { CampaignTrigger } from '../../types/CampaignTrigger'
 import { CampaignTriggerBusinessHoursValuesEnum } from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
 import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 import { createTrigger } from '../createTrigger'
 
-const removeId = (trigger: CampaignTrigger) => omit(trigger, 'id')
+const removeId = (trigger: CampaignTrigger) => _omit(trigger, 'id')
 
 describe('createTrigger(key)', () => {
     it('throws an error if the key is not found', () => {

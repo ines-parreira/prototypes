@@ -7,8 +7,8 @@ import { useViewCount } from '@repo/views'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _uniqWith from 'lodash/uniqWith'
 import { Col, Container, Row } from 'reactstrap'
-import { uniqWith } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -305,7 +305,7 @@ const MacroModal = ({
 
         // keep only one action by type
         const uniqActions = fromJS(
-            uniqWith(
+            _uniqWith(
                 filteredActions ? filteredActions.toJS() : {},
                 (first: Record<string, unknown>, second) => {
                     if (

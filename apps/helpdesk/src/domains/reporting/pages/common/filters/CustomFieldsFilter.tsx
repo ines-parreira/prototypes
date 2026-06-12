@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
+
+import noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 
 import { isDropdownInput } from 'custom-fields/helpers/typeGuards'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

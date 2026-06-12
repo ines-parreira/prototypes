@@ -3,13 +3,14 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { InputField as DEPRECATED_InputField } from 'pages/common/forms/DEPRECATED_InputField'
 
 describe('DEPRECATED_InputField', () => {
     const minProps: ComponentProps<typeof DEPRECATED_InputField> = {
         value: 'value',
-        onChange: noop,
+        onChange: _noop,
     }
 
     it('should use default props', () => {

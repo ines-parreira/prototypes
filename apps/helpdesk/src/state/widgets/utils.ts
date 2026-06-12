@@ -1,6 +1,8 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { cloneDeep } from '@gorgias/toolkit'
+import _cloneDeep from 'lodash/cloneDeep'
+import _values from 'lodash/values'
+
 import { DEFAULT_SOURCE_PATHS } from 'config'
 
 import {
@@ -46,15 +48,15 @@ export function getSourcePathFromContext(
     context: WidgetEnvironment,
     type = '',
 ) {
-    // Using cloneDeep so that we don't mess with the `DEFAULT_SOURCE_PATHS`
+    // Using _cloneDeep so that we don't mess with the `DEFAULT_SOURCE_PATHS`
     // object. We only want that object to act as a CONSTANT and have
     // a new copy of it each time that we use.
-    const config = cloneDeep(DEFAULT_SOURCE_PATHS[context])
+    const config = _cloneDeep(DEFAULT_SOURCE_PATHS[context])
 
     // if we can't find a source for the context type
     // return the standalone context type
     if (!config) {
-        return cloneDeep(
+        return _cloneDeep(
             DEFAULT_SOURCE_PATHS[WidgetEnvironment.Ticket][
                 STANDALONE_WIDGET_TYPE
             ],
@@ -62,7 +64,7 @@ export function getSourcePathFromContext(
     }
 
     if (!type) {
-        return Object.values(config)
+        return _values(config)
     }
 
     let sourcePath = config[type as keyof typeof config]

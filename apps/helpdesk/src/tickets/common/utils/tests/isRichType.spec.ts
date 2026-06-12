@@ -1,4 +1,5 @@
-import { isBoolean } from '@gorgias/toolkit'
+import _isBoolean from 'lodash/isBoolean'
+
 import { isRichType } from '../isRichType'
 
 describe('isRichType', () => {
@@ -14,7 +15,7 @@ describe('isRichType', () => {
         ]
 
         values.forEach((value: any) => {
-            expect(isBoolean(isRichType(value))).toBe(true)
+            expect(_isBoolean(isRichType(value))).toBe(true)
         })
     })
 })

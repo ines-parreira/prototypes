@@ -25,10 +25,7 @@ jest.mock('state/currentUser/selectors', () => ({
     })),
 }))
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    debounce: (fn: (...args: any[]) => void) => fn,
-}))
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 const mockedHasRole = assumeMock(hasRole)
 
 describe('<MultiLevelSelect />', () => {

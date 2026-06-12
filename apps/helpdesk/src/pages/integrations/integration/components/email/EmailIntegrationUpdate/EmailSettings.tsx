@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react'
 
 import type { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import { Form, FormGroup } from 'reactstrap'
-import { capitalize } from '@gorgias/toolkit'
 
 import {
     LegacyToggleField as ToggleField,
@@ -157,7 +157,7 @@ const EmailSettings = ({
                                                 outlookDisplayNameLimitationTooltip}
                                         </div>
                                     }
-                                    placeholder={`${capitalize(domain)} Support`}
+                                    placeholder={`${_capitalize(domain)} Support`}
                                     isRequired={!isOutlook}
                                     caption={nameHelp}
                                     error={errors?.name ?? ''}

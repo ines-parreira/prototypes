@@ -3,8 +3,8 @@ import { cloneElement } from 'react'
 import { countWords, linkify, parseHtml, truncateWords } from '@repo/utils'
 import type { IConvertFromHTMLConfig } from 'draft-convert'
 import {
-    convertFromHTML as draftConvertFromHTML,
-    convertToHTML as draftConvertToHTML,
+    convertFromHTML as _convertFromHTML,
+    convertToHTML as _convertToHTML,
 } from 'draft-convert'
 import type { ContentBlock } from 'draft-js'
 import {
@@ -16,7 +16,8 @@ import {
 } from 'draft-js'
 import type { Map } from 'immutable'
 import linkifyhtml from 'linkify-html'
-import { kebabCase } from '@gorgias/toolkit'
+import _kebabeCase from 'lodash/kebabCase'
+
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 import { HORIZONTAL_RULE_ENTITY } from 'pages/common/draftjs/plugins/horizontalRule'
 import {
@@ -167,7 +168,7 @@ const fixLinkVars = (html: string, callback: (T: string) => string): string => {
  */
 export function convertToHTML(contentState: ContentState): string {
     return fixLinkVars(
-        draftConvertToHTML({
+        _convertToHTML({
             blockToHTML: (block) => {
                 const { type, key, depth } = block
                 const contentBlock = contentState.getBlockForKey(key)
@@ -246,7 +247,7 @@ export function convertToHTML(contentState: ContentState): string {
                             }),
                     )
                     const quoteDataAttr = {
-                        [`data-${kebabCase(QUOTE_DEPTH_DATASET_KEY)}`]:
+                        [`data-${_kebabeCase(QUOTE_DEPTH_DATASET_KEY)}`]:
                             quoteDepth,
                     }
                     return {
@@ -443,7 +444,7 @@ export function convertFromHTML(html: string): ContentState {
     unwrapParagraphsInListItems(wrapper)
     flattenNestedListsInListItems(wrapper)
 
-    let converted: ContentState = draftConvertFromHTML({
+    let converted: ContentState = _convertFromHTML({
         htmlToBlock: (nodeName: string, node) => {
             let blockType
             const data: Record<string, unknown> = {}

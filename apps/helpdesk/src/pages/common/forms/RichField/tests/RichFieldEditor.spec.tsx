@@ -14,11 +14,12 @@ import {
     SelectionState,
 } from 'draft-js'
 import { fromJS, List as ImmutableList, Map as ImmutableMap } from 'immutable'
+import _noop from 'lodash/noop'
+import _omit from 'lodash/omit'
 import { marked } from 'marked'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop, omit } from '@gorgias/toolkit'
 
 import { predictionKey } from 'pages/common/draftjs/plugins/prediction/state'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
@@ -65,11 +66,11 @@ describe('RichFieldEditor', () => {
         linkText: '',
         linkUrl: '',
         linkTarget: '_blank',
-        onLinkUrlChange: noop,
-        onLinkTextChange: noop,
-        onLinkTargetChange: noop,
-        onLinkOpen: noop,
-        onLinkClose: noop,
+        onLinkUrlChange: _noop,
+        onLinkTextChange: _noop,
+        onLinkTargetChange: _noop,
+        onLinkOpen: _noop,
+        onLinkClose: _noop,
         isRequired: false,
         isFocused: false,
         mentionSearchResults: fromJS({}),
@@ -250,7 +251,7 @@ describe('RichFieldEditor', () => {
 
         const { container } = render(
             <WrappedRichFieldEditor
-                {...omit(defaultProps, 'createToolbarPlugin')}
+                {..._omit(defaultProps, 'createToolbarPlugin')}
                 editorKey="editor"
                 editorState={editorState}
                 onChange={spyOnchange}
@@ -473,7 +474,7 @@ describe('RichFieldEditor', () => {
 
         const { container } = render(
             <WrappedRichFieldEditor
-                {...omit(defaultProps, 'createToolbarPlugin')}
+                {..._omit(defaultProps, 'createToolbarPlugin')}
                 editorKey="editor"
                 editorState={editorState}
                 onChange={spyOnchange}

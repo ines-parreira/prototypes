@@ -1,6 +1,7 @@
 import { isRecord } from '@repo/utils'
+import _truncate from 'lodash/truncate'
+
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
-import { truncate } from '@gorgias/toolkit'
 
 type Action = NonNullable<TicketMessage['actions']>[number]
 
@@ -57,7 +58,7 @@ function getActionArg(action: Action): string {
     const args = action.arguments
     const arg = isRecord(args) && key ? args[key] : null
 
-    return truncate(formatActionArg(name, arg), { length: 20 })
+    return _truncate(formatActionArg(name, arg), { length: 20 })
 }
 
 function formatActionArg(actionName: string, arg: unknown): string {

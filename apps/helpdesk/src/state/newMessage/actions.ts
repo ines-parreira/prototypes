@@ -11,9 +11,14 @@ import { isCancel } from 'axios'
 import { ContentState, convertFromHTML } from 'draft-js'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _assign from 'lodash/assign'
+import _isNull from 'lodash/isNull'
+import _omit from 'lodash/omit'
+import _pick from 'lodash/pick'
+import _split from 'lodash/split'
+
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { Macro } from '@gorgias/helpdesk-queries'
-import { isNull, omit, pick } from '@gorgias/toolkit'
 
 import {
     TicketChannel,
@@ -831,7 +836,7 @@ export function prepareTicketDataToSend(
             const lastMessage = lastSameTypeMessage.toJS() as NewMessage
 
             if (lastMessage.source.extra) {
-                newMessage.source.extra = Object.assign(
+                newMessage.source.extra = _assign(
                     {},
                     newMessage.source.extra,
                     lastMessage.source.extra,
@@ -846,7 +851,7 @@ export function prepareTicketDataToSend(
 
         if (!newMessage.sender) {
             newMessage.sender = fromJS(
-                pick(currentUser.toJS(), ['email', 'id', 'name']),
+                _pick(currentUser.toJS(), ['email', 'id', 'name']),
             )
         }
 
@@ -908,7 +913,7 @@ export function prepareTicketDataToSend(
 
     return {
         replyAreaState,
-        ticket: omit(ticket, [
+        ticket: _omit(ticket, [
             'state',
             '_internal',
             'newMessage',
@@ -937,7 +942,7 @@ export const prepareNewMessageDiscountCodes = (
             // there's a risk of having old discount codes present
             // only delimiter which is likely to be present unless deleted by agent
             const delimiter = '</a>&gt; wrote:'
-            currentMessage = newMessage.body_html.split(delimiter, 2)[0]
+            currentMessage = _split(newMessage.body_html, delimiter, 2)[0]
         }
     }
 
@@ -1134,7 +1139,7 @@ export function prepareTicketMessage({
                     emailThreadSizeFF,
                 )
 
-                if (!dataToSend || isNull(dataToSend)) {
+                if (!dataToSend || _isNull(dataToSend)) {
                     dispatch({
                         type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                         reason: 'Message was not sent. Sent data is invalid.',
@@ -1182,13 +1187,7 @@ export function prepareTicketMessage({
             }
 
             if (isNewChannel(messageToSend?.source?.type)) {
-                messageToSend = {
-                    ...messageToSend,
-                    source: omit(
-                        messageToSend.source,
-                        'type',
-                    ) as NewMessage['source'],
-                }
+                messageToSend = _omit(messageToSend, 'source.type')
                 if (messageToSend?.source?.from?.address) {
                     const integration =
                         integrationSelectors.getIntegrationByAddress(
@@ -1680,7 +1679,7 @@ export function resetReceiversAndSender(
     if (cachedSource?.get('type') === type) {
         void dispatch(
             setReceivers(
-                pick(cachedSource.toJS(), selectors.getReceiversProperties()),
+                _pick(cachedSource.toJS(), selectors.getReceiversProperties()),
             ),
         )
     } else {

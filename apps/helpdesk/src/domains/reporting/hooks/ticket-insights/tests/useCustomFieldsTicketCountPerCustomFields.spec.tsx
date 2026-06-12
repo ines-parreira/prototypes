@@ -3,9 +3,9 @@ import React from 'react'
 import { assumeMock, renderHook } from '@repo/testing'
 import { notUndefined } from '@repo/utils'
 import type { UseQueryResult } from '@tanstack/react-query'
+import _zip from 'lodash/zip'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import { zip } from '@gorgias/toolkit'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -337,7 +337,7 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             column: number,
         ) => {
             const baseValue = tagValues[column]
-            const zipped = zip(tag1DailyValues, tag2DailyValues)
+            const zipped = _zip(tag1DailyValues, tag2DailyValues)
             const columnSum = zipped
                 .map((day) =>
                     day.reduce((sum, v) => Number(sum) + Number(v), 0),

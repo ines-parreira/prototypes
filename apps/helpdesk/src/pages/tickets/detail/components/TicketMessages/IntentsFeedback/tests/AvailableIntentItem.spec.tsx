@@ -2,7 +2,8 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { AvailableIntentItem } from '../AvailableIntentItem'
 
 const minProps: ComponentProps<typeof AvailableIntentItem> = {
@@ -13,7 +14,7 @@ const minProps: ComponentProps<typeof AvailableIntentItem> = {
         description: 'A request for a discount',
     },
     tooltipContainer: 'body',
-    onConfirm: noop,
+    onConfirm: _noop,
     isDisabled: false,
 }
 

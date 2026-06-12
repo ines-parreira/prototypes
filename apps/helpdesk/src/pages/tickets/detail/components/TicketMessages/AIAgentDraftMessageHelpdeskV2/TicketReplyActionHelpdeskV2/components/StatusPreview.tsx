@@ -1,5 +1,6 @@
+import _startCase from 'lodash/startCase'
+
 import { StatusButton } from '@gorgias/axiom'
-import { startCase } from '@gorgias/toolkit'
 
 type StatusPreviewProps = {
     status?: string
@@ -24,7 +25,7 @@ export function StatusPreview({ status }: StatusPreviewProps) {
         default:
             return (
                 <StatusButton color="purple" leadingSlot="inbox">
-                    {startCase(normalizedStatus ?? '')}
+                    {_startCase(normalizedStatus ?? '')}
                 </StatusButton>
             )
     }

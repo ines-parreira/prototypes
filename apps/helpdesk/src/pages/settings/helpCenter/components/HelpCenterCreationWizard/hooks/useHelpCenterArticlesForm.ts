@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { mapValues } from '@gorgias/toolkit'
+import { filter, flatMap, map, mapValues } from 'lodash'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import type {
     HelpCenter,
@@ -98,7 +99,7 @@ export const useHelpCenterArticlesForm = (
         }
         setArticles((prevState) =>
             mapValues(prevState, (articles) =>
-                articles.map((article) =>
+                map(articles, (article) =>
                     updateArticleItemByKey(key, article, customPayload),
                 ),
             ),
@@ -109,7 +110,7 @@ export const useHelpCenterArticlesForm = (
     const handleArticleSelect = useCallback((key: string) => {
         setArticles((prevState) =>
             mapValues(prevState, (articles) =>
-                articles.map((article) =>
+                map(articles, (article) =>
                     updateArticleItemByKey(key, article, {
                         isSelected: !article.isSelected,
                     }),
@@ -249,7 +250,7 @@ export const useHelpCenterArticlesForm = (
     }
 
     const trackSelectedItems = () => {
-        Object.values(newArticles).forEach((items) => {
+        flatMap(newArticles, (items) => {
             items.forEach((item) => {
                 if (item.isSelected) {
                     logEvent(SegmentEvent.WizardArticleSaved, {
@@ -264,15 +265,12 @@ export const useHelpCenterArticlesForm = (
         // Track every selected item
         trackSelectedItems()
 
-        const selectedItemsWithoutId = Object.values(newArticles).flatMap(
-            (items) =>
-                items.filter(
-                    ({ isSelected, id }) => isSelected === true && !id,
-                ),
+        const selectedItemsWithoutId = flatMap(newArticles, (items) =>
+            filter(items, ({ isSelected, id }) => isSelected === true && !id),
         )
 
-        const itemsWithId = Object.values(newArticles).flatMap((items) =>
-            items.filter(({ id }) => id !== undefined),
+        const itemsWithId = flatMap(newArticles, (items) =>
+            filter(items, ({ id }) => id !== undefined),
         )
 
         const handleArticlesFromTemplate = selectedItemsWithoutId.map(

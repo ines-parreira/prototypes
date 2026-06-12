@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
+import _isEmpty from 'lodash/isEmpty'
+import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 import { Table } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 import {
     useAsyncFn,
     useDebouncedEffect,
@@ -54,7 +55,6 @@ const UserAuditList = () => {
     const agents = useAppSelector(getHumanAgents)
     const auditLogEvents = useAppSelector(getAuditLogEvents)
     const datetimeLabelFormat = useGetDateAndTimeFormat(DATETIME_LABEL_FORMAT)
-    const hasAuditLogEvents = Boolean(auditLogEvents?.length)
 
     const [meta, setMeta] = useState<CursorPaginationMeta | null>(null)
     const [startDatetime, setStartDatetime] = useState<string>(
@@ -138,7 +138,7 @@ const UserAuditList = () => {
 
     useDebouncedEffect(
         () => {
-            if (!isEqual(previousFetchOptions, fetchOptions)) {
+            if (!_isEqual(previousFetchOptions, fetchOptions)) {
                 void fetchUsersAudit()
             }
         },
@@ -218,7 +218,7 @@ const UserAuditList = () => {
                 </div>
                 {isLoading ? (
                     <Loader />
-                ) : !hasAuditLogEvents ? (
+                ) : _isEmpty(auditLogEvents) ? (
                     <div>
                         There is no event recorded matching these filters.
                     </div>

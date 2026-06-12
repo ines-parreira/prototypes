@@ -3,7 +3,8 @@ import type { FC, ReactNode } from 'react'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { keyBy } from '@gorgias/toolkit'
+import _keyBy from 'lodash/keyBy'
+
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { FontCatalogueModal } from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
@@ -23,7 +24,7 @@ import { HelpCenterAppearanceView } from '../HelpCenterAppearanceView/HelpCenter
 
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
-    useId: jest.fn(() => require('@gorgias/toolkit').uniqueId()),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
 }))
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
@@ -47,7 +48,7 @@ const defaultState: Partial<RootState> = {
     entities: {
         contactForm: {
             contactForms: {
-                contactFormById: keyBy([ContactFormFixture], 'id'),
+                contactFormById: _keyBy([ContactFormFixture], 'id'),
             },
         },
         helpCenter: {

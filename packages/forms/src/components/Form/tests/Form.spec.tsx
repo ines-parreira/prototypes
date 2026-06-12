@@ -2,8 +2,8 @@ import React from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
+import _set from 'lodash/set'
 import { vi } from 'vitest'
-import { set } from '@gorgias/toolkit'
 
 import type { FormErrors } from '../../../utils/validation'
 import type { FormFieldRenderProps } from '../../FormField/FormField'
@@ -334,19 +334,19 @@ describe('<Form />', () => {
             const validate = (values: Values) => {
                 return produce<FormErrors<Values>>({}, (errors) => {
                     if (!values.name) {
-                        set(errors, 'name', 'Name is required')
+                        _set(errors, 'name', 'Name is required')
                     }
 
                     if (!values.address?.street) {
-                        set(errors, 'address.street', 'Street is required')
+                        _set(errors, 'address.street', 'Street is required')
                     }
 
                     if (!values.items?.[0]?.name) {
-                        set(errors, 'items.0.name', 'First item is required')
+                        _set(errors, 'items.0.name', 'First item is required')
                     }
 
                     if (!values.items?.[1]?.name) {
-                        set(errors, 'items.1.name', 'Second item is required')
+                        _set(errors, 'items.1.name', 'Second item is required')
                     }
                 })
             }

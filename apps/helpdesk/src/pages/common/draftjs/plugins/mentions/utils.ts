@@ -1,6 +1,6 @@
 import type { EditorState, SelectionState } from 'draft-js'
 import type { List, Map } from 'immutable'
-import { deburr } from '@gorgias/toolkit'
+import _deburr from 'lodash/deburr'
 
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
@@ -26,11 +26,11 @@ export const defaultSuggestionsFilter = (
     searchValue: string,
     suggestions: List<Map<string, string>>,
 ) => {
-    const value = deburr(searchValue.toLowerCase())
+    const value = _deburr(searchValue.toLowerCase())
     const filteredSuggestions = suggestions.filter(
         (suggestion) =>
             !value ||
-            deburr((suggestion?.get('name') || '').toLowerCase()).indexOf(
+            _deburr((suggestion?.get('name') || '').toLowerCase()).indexOf(
                 value,
             ) > -1,
     )

@@ -12,7 +12,7 @@ import { history } from '@repo/routing'
 import { isMacOs } from '@repo/utils'
 import type { CancelToken } from 'axios'
 import { isCancel } from 'axios'
-import { isEmpty } from '@gorgias/toolkit'
+import _isEmpty from 'lodash/isEmpty'
 import {
     useAsyncFn,
     useDelayedAsyncFn,
@@ -477,13 +477,13 @@ export const useSearch = () => {
     }
 
     const resetSearch = () => {
-        !isEmpty(tickets) && setTickets([])
-        !isEmpty(customers) && setCustomers([])
-        !isEmpty(calls) && setCalls([])
+        !_isEmpty(tickets) && setTickets([])
+        !_isEmpty(customers) && setCustomers([])
+        !_isEmpty(calls) && setCalls([])
         hasSearched && setHasSearched(false)
-        !isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
-        !isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
-        !isEmpty(callSearchMeta) && setCallSearchMeta(undefined)
+        !_isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
+        !_isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
+        !_isEmpty(callSearchMeta) && setCallSearchMeta(undefined)
         setSearchItemsType(defaultSearchItemsType)
         setLastSearchQueries({
             customers: '',
@@ -517,12 +517,12 @@ export const useSearch = () => {
             !hasSearched &&
             !isLoading &&
             ((searchItemsType === ViewType.TicketList &&
-                isEmpty(recentTickets)) ||
+                _isEmpty(recentTickets)) ||
                 (searchItemsType === ViewType.CustomerList &&
-                    isEmpty(recentCustomers)) ||
+                    _isEmpty(recentCustomers)) ||
                 (showCallsTab &&
                     searchItemsType === ViewType.CallList &&
-                    isEmpty(recentCalls)))
+                    _isEmpty(recentCalls)))
         )
     }, [
         hasSearched,

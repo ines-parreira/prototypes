@@ -1,5 +1,6 @@
 import { createContext } from 'react'
-import { noop } from '@gorgias/toolkit'
+
+import _noop from 'lodash/noop'
 import { useSafeContext } from '@gorgias/toolkit-react'
 
 export type SelectedNodeContext = {
@@ -9,7 +10,7 @@ export type SelectedNodeContext = {
 
 const VoiceFlowContext = createContext<SelectedNodeContext>({
     selectedNode: null,
-    setSelectedNode: noop,
+    setSelectedNode: _noop,
 })
 VoiceFlowContext.displayName = 'VoiceFlowContext'
 

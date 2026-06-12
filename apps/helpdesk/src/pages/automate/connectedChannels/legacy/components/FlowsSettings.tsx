@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import classnames from 'classnames'
+import { isEqual, keyBy, startCase } from 'lodash'
 import { Link } from 'react-router-dom'
-import { isEqual, keyBy, startCase } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,

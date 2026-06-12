@@ -1,8 +1,9 @@
 import classNames from 'classnames'
+import { isEmpty } from 'lodash'
+
 import { Card } from '@gorgias/analytics-ui-kit'
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { EmailDomain } from '@gorgias/helpdesk-queries'
-import { isEmpty } from '@gorgias/toolkit'
 
 import { EmailProvider } from 'models/integration/constants'
 import type { EmailMigrationOutboundVerification } from 'models/integration/types'

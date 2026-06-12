@@ -1,5 +1,6 @@
+import _startCase from 'lodash/startCase'
+
 import { Icon, StatusButton } from '@gorgias/axiom'
-import { startCase } from '@gorgias/toolkit'
 
 import type { MacroAction } from 'models/macroAction/types'
 
@@ -35,7 +36,7 @@ export function PriorityPreview({ priority }: PriorityPreviewProps) {
     const config = PRIORITY_PREVIEW_MAP[normalizedPriority] ?? {
         icon: 'equals',
         iconColor: 'grey',
-        label: startCase(normalizedPriority),
+        label: _startCase(normalizedPriority),
     }
 
     return (

@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react'
-import { isEqual } from '@gorgias/toolkit'
+
+import _isEqual from 'lodash/isEqual'
+
 import { CancellationsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
 import type { SelfServiceConfigurationFilter } from 'models/selfServiceConfiguration/types'
 import {
@@ -39,7 +41,7 @@ const CancelOrderEligibility = ({ eligibility, onChange }: Props) => {
     }
 
     const option = CancellationsDropdownOptionsList.find((option) =>
-        isEqual(option.statuses, eligibility?.value),
+        _isEqual(option.statuses, eligibility?.value),
     )
 
     return (

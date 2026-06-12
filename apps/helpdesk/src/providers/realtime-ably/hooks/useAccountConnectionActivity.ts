@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
-import { Duration, throttle } from '@gorgias/toolkit'
+
+import _throttle from 'lodash/throttle'
+import { Duration } from '@gorgias/toolkit'
+
 import type { AccountConnectionPresenceData } from './types'
 
 // Mirrors apps/helpdesk/src/services/userActivityManager.ts, with the added
@@ -43,7 +46,7 @@ export function useAccountConnectionActivity(
 
     const throttledResetConnectionActiveTimeout = useMemo(
         () =>
-            throttle(
+            _throttle(
                 resetConnectionActiveTimeout,
                 CONNECTION_ACTIVITY_WATCH_THROTTLING,
             ),

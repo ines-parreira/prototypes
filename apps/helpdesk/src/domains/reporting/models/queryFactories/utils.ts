@@ -1,3 +1,5 @@
+import _flatMap from 'lodash/flatMap'
+
 import type { CustomFieldValue } from 'custom-fields/types'
 import { AiSalesAgentOrdersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
@@ -196,9 +198,7 @@ export const addOptionalFilter = (
                     operator: FilterOperatorMap[customFieldFilter.operator],
                 }
             })
-        reportingFilters = values
-            .flatMap((value) => value)
-            .reduce(deduplicateCustomFields, [])
+        reportingFilters = _flatMap(values).reduce(deduplicateCustomFields, [])
         const uniqueCustomFieldIds = Array.from(
             new Set(
                 filter

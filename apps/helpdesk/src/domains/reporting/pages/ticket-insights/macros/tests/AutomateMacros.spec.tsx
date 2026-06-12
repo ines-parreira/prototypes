@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { TicketChannel } from 'business/types/ticket'
 import { useStatResource } from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -55,11 +56,15 @@ describe('AutomateMacros', () => {
     } as RootState
 
     beforeEach(() => {
-        useStatResourceMock.mockReturnValue([null, true, noop])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
-        useStatResourceMock.mockReturnValue([messagesSentPerMacro, false, noop])
+        useStatResourceMock.mockReturnValue([
+            messagesSentPerMacro,
+            false,
+            _noop,
+        ])
 
         const { container } = render(<AutomateMacros />, {
             storeState: defaultState,

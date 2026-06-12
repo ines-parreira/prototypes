@@ -2,7 +2,7 @@ import type React from 'react'
 import { useMemo, useState } from 'react'
 
 import type { CancelToken } from 'axios'
-import { isString } from '@gorgias/toolkit'
+import _isString from 'lodash/isString'
 import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
@@ -100,7 +100,7 @@ export const TagsSelectContainer = ({
         })
 
         setSearchTerm('')
-        onChange(isString(value) ? formattedTags.join(',') : formattedTags)
+        onChange(_isString(value) ? formattedTags.join(',') : formattedTags)
     }
     const _onChange = (newTag: string) => {
         if (!existingTagNames.includes(newTag)) {
@@ -127,7 +127,7 @@ export const TagsSelectContainer = ({
 
     const values = useMemo(() => {
         if (!multiple) return value as string
-        if (isString(value)) {
+        if (_isString(value)) {
             return value
                 .split(',')
                 .filter((val) => val !== '')

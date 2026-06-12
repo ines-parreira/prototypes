@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { capitalize } from '@gorgias/toolkit'
+
+import _capitalize from 'lodash/capitalize'
+
 import { ExecutionIdDisplay } from 'pages/aiAgent/components/ExecutionIdDisplay/ExecutionIdDisplay'
 import { ControlledCollapsibleDetails } from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 
@@ -43,7 +45,7 @@ const IngestionProductView = ({ product }: Props) => {
                     <div className={css.description}>
                         {product.metadata.map((item, index) => (
                             <div key={index}>
-                                {capitalize(item.question)}: {item.response}
+                                {_capitalize(item.question)}: {item.response}
                             </div>
                         ))}
                     </div>

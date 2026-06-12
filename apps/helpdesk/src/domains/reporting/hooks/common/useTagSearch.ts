@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { notUndefined } from '@repo/utils'
 import type { CancelToken } from 'axios'
+import { filter } from 'lodash'
 import { useAsyncFn, useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
@@ -94,8 +95,7 @@ export const useTagSearch = () => {
         await handleFetchTags(tagSearch, true)
     }, [handleFetchTags, tagSearch])
 
-    const tagsStateWithoutUndefined: Tag[] =
-        Object.values(tags).filter(notUndefined)
+    const tagsStateWithoutUndefined: Tag[] = filter(tags, notUndefined)
 
     return {
         handleTagsSearch,

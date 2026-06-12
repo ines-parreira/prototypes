@@ -1,4 +1,5 @@
-import { isEmpty } from '@gorgias/toolkit'
+import { isEmpty } from 'lodash'
+
 import type {
     EmailMigrationInboundVerification,
     EmailMigrationOutboundVerification,

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
+
+import _get from 'lodash/get'
 import { useParams } from 'react-router-dom'
-import { get } from '@gorgias/toolkit'
 
 import { ChartCard } from 'domains/reporting/pages/common/components/ChartCard'
 import { SharedDimension } from 'domains/reporting/pages/convert/clients/constants'
@@ -125,14 +126,11 @@ export const CampaignPerformanceTable = ({
                 campaign,
                 chatIntegration: chatIntegration,
                 currency,
-                metrics: get(data, campaign.id, {}) as Record<
-                    string,
-                    string | number
-                >,
+                metrics: _get(data, campaign.id, {}),
                 variantMetrics: variantIds.reduce(
                     (o, variantId) => ({
                         ...o,
-                        [variantId]: get(variantData, variantId, {}),
+                        [variantId]: _get(variantData, variantId, {}),
                     }),
                     {},
                 ),

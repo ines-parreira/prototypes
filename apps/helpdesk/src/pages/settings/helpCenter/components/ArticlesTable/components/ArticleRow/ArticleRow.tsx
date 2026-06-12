@@ -1,7 +1,9 @@
 import type React from 'react'
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import classNames from 'classnames'
-import { Duration, keyBy } from '@gorgias/toolkit'
+import _keyBy from 'lodash/keyBy'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -76,7 +78,7 @@ export const ArticleRow = ({
 
     const opacity = isDragging ? 0 : 1
 
-    const localesByCode = useMemo(() => keyBy(locales, 'code'), [locales])
+    const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
 
     const languageList = useMemo(() => {
         if (article.available_locales.length > 0) {

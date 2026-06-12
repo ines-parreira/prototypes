@@ -3,8 +3,8 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
+import _debounce from 'lodash/debounce'
 import { Col, Container, FormText, Row } from 'reactstrap'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 import { DefaultExportCheckBox as CheckBox } from 'pages/common/forms/CheckBox'
 
@@ -35,18 +35,18 @@ export function EditOrderForm({
         element.style.height = `${element.scrollHeight + padding}px`
     }
 
-    const _updateNotif = debounce((notif: boolean) => {
+    const _updateNotif = _debounce((notif: boolean) => {
         notifyCustomer(notif)
-    }, Duration.millis(800))
+    }, 800)
 
-    const _updatePayload = debounce((note: string) => {
+    const _updatePayload = _debounce((note: string) => {
         changeNote(note)
         _trackNoteChanged()
-    }, Duration.millis(800))
+    }, 800)
 
-    const _trackNoteChanged = debounce(() => {
+    const _trackNoteChanged = _debounce(() => {
         logEvent(SegmentEvent.ShopifyCreateOrderNotesChanged)
-    }, Duration.seconds(1))
+    }, 1000)
 
     return (
         <Container fluid>

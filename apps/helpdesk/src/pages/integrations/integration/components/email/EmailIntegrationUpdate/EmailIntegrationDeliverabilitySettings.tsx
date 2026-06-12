@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+
+import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
-import { capitalize } from '@gorgias/toolkit'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
@@ -52,7 +53,7 @@ export function EmailIntegrationDeliverabilitySettings({
         setCurrentProvider(selectedProvider as DeliverabilityProviderSetting)
     }
 
-    const capitalizedIntegrationType = capitalize(integration.type)
+    const capitalizedIntegrationType = _capitalize(integration.type)
     const isUseNativeProviderOptionDisabled =
         !canEnableEmailingViaInternalProvider(integration)
 

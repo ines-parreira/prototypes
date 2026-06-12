@@ -5,6 +5,7 @@ import {
     triggerWidthResize,
 } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
+import { forEach } from 'lodash'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -260,7 +261,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
 
         render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
-        screen.getAllByRole('cell').forEach((cell, index) => {
+        forEach(screen.getAllByRole('cell'), (cell, index) => {
             if (index > 0) {
                 expect(cell).toHaveClass('heatmap')
                 expect(cell).toHaveClass(`p${decile}`)
@@ -296,7 +297,7 @@ describe('<CustomFieldsTicketCountDataRowContent />', () => {
 
         render(<CustomFieldsTicketCountDataRowContent {...props} />)
 
-        screen.getAllByRole('cell').forEach((cell, index) => {
+        forEach(screen.getAllByRole('cell'), (cell, index) => {
             if (index > 0) {
                 expect(cell).not.toHaveClass('heatmap')
             }

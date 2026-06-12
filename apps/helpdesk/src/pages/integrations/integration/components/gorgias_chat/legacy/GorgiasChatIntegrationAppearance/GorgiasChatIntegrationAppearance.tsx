@@ -7,6 +7,10 @@ import classNames from 'classnames'
 import { produce } from 'immer'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { set } from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
+import _defaults from 'lodash/defaults'
+import _merge from 'lodash/merge'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
@@ -16,7 +20,6 @@ import {
     Form,
     Label as ReactStrapLabel,
 } from 'reactstrap'
-import { cloneDeep, defaults, merge, set } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -226,7 +229,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 }: Props & ConnectedProps<typeof connector>) => {
     const history = useHistory()
     const [state, setState] = useState<State>(
-        merge(
+        _merge(
             {
                 showSelectStoreField: true,
                 isCopied: false,
@@ -388,7 +391,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const initState = (integration: Map<any, any>) => {
         setState(
-            defaults(
+            _defaults(
                 {
                     name: integration.get('name'),
                     introductionText: integration.getIn([
@@ -482,7 +485,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     ),
                 },
                 defaultContent,
-            ) as State,
+            ),
         )
     }
 
@@ -683,7 +686,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             state.launcher.label ===
             GORGIAS_CHAT_WIDGET_TEXTS[state.language].chatWithUs
         ) {
-            newState.launcher = cloneDeep(state.launcher)
+            newState.launcher = _cloneDeep(state.launcher)
             newState.launcher.label =
                 GORGIAS_CHAT_WIDGET_TEXTS[language].chatWithUs
         }

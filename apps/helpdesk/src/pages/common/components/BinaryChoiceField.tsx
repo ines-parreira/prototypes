@@ -2,8 +2,9 @@ import type { ReactElement } from 'react'
 import React from 'react'
 
 import classNames from 'classnames'
+import _isEqual from 'lodash/isEqual'
+import _noop from 'lodash/noop'
 import { FormGroup } from 'reactstrap'
-import { isEqual, noop } from '@gorgias/toolkit'
 
 type Option = {
     label: string | ReactElement
@@ -28,7 +29,7 @@ export function BinaryChoiceField({
     options,
     tooltip,
     value,
-    onChange = noop,
+    onChange = _noop,
 }: Props) {
     const firstValue =
         typeof options[0] === 'object' ? options[0].value : options[0]
@@ -40,7 +41,7 @@ export function BinaryChoiceField({
                 : options[0],
         value: firstValue,
         className: classNames('option', {
-            active: isEqual(value, firstValue),
+            active: _isEqual(value, firstValue),
             disabled: firstIsDisabled,
         }),
     }
@@ -54,7 +55,7 @@ export function BinaryChoiceField({
         label: typeof options[1] === 'object' ? options[1].label : options[1],
         value: secondValue,
         className: classNames('option', {
-            active: isEqual(value, secondValue),
+            active: _isEqual(value, secondValue),
             disabled: secondIsDisabled,
         }),
     }

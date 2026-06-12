@@ -29,7 +29,7 @@ import {
     useFloating,
 } from '@floating-ui/react'
 import classnames from 'classnames'
-import { debounce, Duration } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
 import {
     useEvent,
     useKey,
@@ -152,16 +152,20 @@ const Dropdown = forwardRef(
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
         const handleUpdate = useCallback(
-            debounce(() => {
-                if (!refs.reference.current || !refs.floating.current) {
-                    return
-                }
-                return autoUpdate(
-                    refs.reference.current,
-                    refs.floating.current,
-                    update,
-                )
-            }, Duration.millis(50)),
+            _debounce(
+                () => {
+                    if (!refs.reference.current || !refs.floating.current) {
+                        return
+                    }
+                    return autoUpdate(
+                        refs.reference.current,
+                        refs.floating.current,
+                        update,
+                    )
+                },
+                50,
+                { leading: true },
+            ),
             [children, refs.reference, refs.floating, update],
         )
 

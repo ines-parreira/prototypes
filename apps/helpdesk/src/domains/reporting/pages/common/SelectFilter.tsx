@@ -18,6 +18,10 @@ import React, {
 } from 'react'
 
 import classnames from 'classnames'
+import _capitalize from 'lodash/capitalize'
+import _union from 'lodash/union'
+import _without from 'lodash/without'
+import _xor from 'lodash/xor'
 import {
     DropdownItem,
     DropdownMenu,
@@ -25,7 +29,6 @@ import {
     Input,
     UncontrolledDropdown,
 } from 'reactstrap'
-import { capitalize, union, without, xor } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -270,7 +273,7 @@ const SelectFilter = ({
         }
         if (isMultiple) {
             if (hideSelectedCount) {
-                return hasSelection ? capitalize(plural) : `All ${plural}`
+                return hasSelection ? _capitalize(plural) : `All ${plural}`
             }
             return hasSelection
                 ? `${value.length} ${value.length > 1 ? plural : singular}`
@@ -279,7 +282,7 @@ const SelectFilter = ({
 
         const selectedItem = items.find((item) => item.props.value === value[0])
 
-        return selectedItem ? selectedItem.props.label : capitalize(singular)
+        return selectedItem ? selectedItem.props.label : _capitalize(singular)
     }, [
         hasSelection,
         isMultiple,
@@ -320,7 +323,7 @@ const SelectFilter = ({
                 removedGroupIds.push(groupId)
             }
         })
-        setSelectedGroupIds(without(selectedGroupIds, ...removedGroupIds))
+        setSelectedGroupIds(_without(selectedGroupIds, ...removedGroupIds))
     }
 
     const handleItemChange = useCallback(
@@ -340,7 +343,7 @@ const SelectFilter = ({
                     nextValue = [itemId]
                 }
             } else {
-                nextValue = xor(value, [itemId])
+                nextValue = _xor(value, [itemId])
             }
 
             onChange(nextValue)
@@ -371,11 +374,11 @@ const SelectFilter = ({
                 return
             }
 
-            const nextValue = xor(selectedGroupIds, [groupId])
+            const nextValue = _xor(selectedGroupIds, [groupId])
             if (nextValue.length > selectedGroupIds.length) {
-                onChange(union(value, items))
+                onChange(_union(value, items))
             } else {
-                onChange(without(value, ...items))
+                onChange(_without(value, ...items))
             }
             setSelectedGroupIds(nextValue)
         },

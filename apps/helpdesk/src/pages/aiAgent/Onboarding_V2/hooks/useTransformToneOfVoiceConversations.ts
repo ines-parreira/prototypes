@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useMutation } from '@tanstack/react-query'
+import _isEqual from 'lodash/isEqual'
 import moment from 'moment/moment'
-import { isEqual } from '@gorgias/toolkit'
 
 import { AttachmentEnum } from 'common/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -129,7 +129,7 @@ export const useTransformToneOfVoiceConversations = (
                 }
 
                 if (
-                    isEqual(
+                    _isEqual(
                         Object.keys(cachedConversations).sort(),
                         Object.keys(conversationExamples).sort(),
                     )
@@ -226,7 +226,7 @@ export const useTransformToneOfVoiceConversations = (
             setOutputConversations(finalConversations)
             outputConversationRef.current = finalConversations
             setIsAllConversationsLoading(
-                isEqual(
+                _isEqual(
                     Object.keys(finalConversations),
                     Object.keys(conversationExamples),
                 ),

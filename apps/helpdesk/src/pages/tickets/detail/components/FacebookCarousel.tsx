@@ -1,3 +1,4 @@
+import _get from 'lodash/get'
 import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -16,8 +17,9 @@ type Props = {
 const FacebookCarousel = ({ data = [] }: Props) => (
     <div className={css.carousel}>
         {data.map((template, idx) => {
-            const templateType = template.payload.template_type
-            const elements = template.payload.elements ?? []
+            const templateType =
+                _get(template, ['payload', 'template_type']) || ''
+            const elements = _get(template, ['payload', 'elements']) || []
 
             // only render generic templates with elements
             if (templateType !== 'generic' || !elements.length) {

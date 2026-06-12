@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
-import { groupBy, keyBy } from '@gorgias/toolkit'
+
+import _groupBy from 'lodash/groupBy'
+import _keyBy from 'lodash/keyBy'
+
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
@@ -8,7 +11,7 @@ import { useGetIsActionStepEnabled } from './useGetIsActionStepEnabled'
 
 const useEnabledActionStepsByApp = (internalPlatformGrouping = false) => {
     const { apps } = useApps()
-    const appsById = useMemo(() => keyBy(apps, 'id'), [apps])
+    const appsById = useMemo(() => _keyBy(apps, 'id'), [apps])
 
     const { recharge: rechargeIntegration } = useStoreAppsContext()
 
@@ -31,7 +34,7 @@ const useEnabledActionStepsByApp = (internalPlatformGrouping = false) => {
             }
             return true
         })
-        const stepsByApp = groupBy(enabledSteps, (step) =>
+        const stepsByApp = _groupBy(enabledSteps, (step) =>
             step.apps[0].type === 'app'
                 ? step.apps[0].app_id
                 : step.apps[0].type,

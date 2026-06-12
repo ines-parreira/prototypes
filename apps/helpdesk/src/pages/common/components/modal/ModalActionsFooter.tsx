@@ -2,7 +2,8 @@ import type { ReactNode } from 'react'
 import { Children } from 'react'
 
 import classnames from 'classnames'
-import { isString } from '@gorgias/toolkit'
+import _isString from 'lodash/isString'
+
 import { ModalFooter } from 'pages/common/components/modal/ModalFooter'
 
 import css from './ModalActionsFooter.less'
@@ -35,7 +36,7 @@ const ModalActionsFooter = ({
             )}
         >
             {!!extra && (
-                <div className={classnames({ [css.extra]: isString(extra) })}>
+                <div className={classnames({ [css.extra]: _isString(extra) })}>
                     {extra}
                 </div>
             )}

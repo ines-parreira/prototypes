@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
 import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -28,8 +28,8 @@ const MacroList = ({
     currentMacro,
     areExternalActionsDisabled,
     loadMore,
-    onClickItem = noop,
-    onHoverItem = noop,
+    onClickItem = _noop,
+    onHoverItem = _noop,
     hasDataToLoad,
 }: Props) => {
     return (

@@ -1,7 +1,8 @@
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { cloneDeep } from '@gorgias/toolkit'
+import _cloneDeep from 'lodash/cloneDeep'
+
 import { Navigation } from 'components/Navigation/Navigation'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -33,7 +34,7 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
 
 describe('ConvertStatsNavbar', () => {
     const getState = (plan: HelpdeskPlan, enabled = false): RootState => {
-        const productsWithStarter = cloneDeep(products)
+        const productsWithStarter = _cloneDeep(products)
         const helpdeskProduct =
             productsWithStarter[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(plan)

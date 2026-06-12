@@ -10,9 +10,9 @@ import {
 } from 'react'
 
 import classnames from 'classnames'
+import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import { Label } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 import { useMeasure } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
@@ -179,7 +179,7 @@ export const ManagedRuleEditor = (
     useEffect(() => {
         const ruleSettings = forceEditorHtml(settings)
 
-        if (!isEqual(originalRuleSettings, ruleSettings)) {
+        if (!_isEqual(originalRuleSettings, ruleSettings)) {
             handleDirtyForm(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

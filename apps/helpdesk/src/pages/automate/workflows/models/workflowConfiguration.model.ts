@@ -1,5 +1,6 @@
+import _isNil from 'lodash/isNil'
+import _omit from 'lodash/omit'
 import { ulid } from 'ulidx'
-import { isNil, omit } from '@gorgias/toolkit'
 
 import { getFallibleNodeSuccessConditions } from '../hooks/useVisualBuilderGraphReducer/utils'
 import {
@@ -169,7 +170,7 @@ export function getTriggerNode(
                                 { kind: 'product' }
                             > => input.kind === 'product',
                         )
-                        .map((input) => omit(input, ['integration_id'])),
+                        .map((input) => _omit(input, ['integration_id'])),
                 ],
                 conditionsType,
                 conditions,
@@ -438,7 +439,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                     serviceConnectionSettings:
                         step.settings.service_connection_settings,
                     headers: Object.entries(
-                        omit(step.settings.headers ?? {}, 'content-type'),
+                        _omit(step.settings.headers ?? {}, 'content-type'),
                     ).map(([name, value]) => ({ name, value })),
                     json:
                         bodyContentType === 'application/json'
@@ -726,13 +727,13 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 source: nodeIdByStepId[previousStep.id],
                 target: n.id,
                 data: {
-                    ...(!isNil(incomingTransition?.event)
+                    ...(!_isNil(incomingTransition?.event)
                         ? { event: incomingTransition.event }
                         : undefined),
-                    ...(!isNil(incomingTransition?.name)
+                    ...(!_isNil(incomingTransition?.name)
                         ? { name: incomingTransition.name }
                         : undefined),
-                    ...(!isNil(incomingTransition?.conditions)
+                    ...(!_isNil(incomingTransition?.conditions)
                         ? { conditions: incomingTransition.conditions }
                         : undefined),
                 },

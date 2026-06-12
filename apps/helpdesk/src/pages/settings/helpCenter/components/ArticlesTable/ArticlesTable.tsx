@@ -2,7 +2,10 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 
 import classNames from 'classnames'
-import { noop, sortBy } from '@gorgias/toolkit'
+import { chain as _chain } from 'lodash'
+import _noop from 'lodash/noop'
+import _sortBy from 'lodash/sortBy'
+
 import type { Article } from 'models/helpCenter/types'
 import { HeaderCell } from 'pages/common/components/table/cells/HeaderCell'
 import { DefaultExportTableBody as TableBody } from 'pages/common/components/table/TableBody'
@@ -40,11 +43,13 @@ export const ArticlesTable = ({
     onClickSettings,
     onReorderFinish,
 }: Props): JSX.Element => {
-    const [records, setRecords] = useState(() => sortBy(articles, ['position']))
+    const [records, setRecords] = useState(() =>
+        _sortBy(articles, ['position']),
+    )
     const { isPassingRulesCheck } = useAbilityChecker()
 
     useEffect(() => {
-        setRecords(sortBy(articles, ['position']))
+        setRecords(_sortBy(articles, ['position']))
     }, [articles])
 
     const handleOnClickRow = (article: Article) => {
@@ -69,13 +74,13 @@ export const ArticlesTable = ({
             nextRecords.splice(dragIndex, 1)
             nextRecords.splice(hoverIndex, 0, dragRecord)
 
-            nextRecords = sortBy(
-                nextRecords.map((article: Article, index: number) => ({
+            nextRecords = _chain(nextRecords)
+                .map((article: Article, index: number) => ({
                     ...article,
                     position: index,
-                })),
-                'position',
-            )
+                }))
+                .sortBy('position')
+                .value()
 
             setRecords(nextRecords)
         }
@@ -113,10 +118,10 @@ export const ArticlesTable = ({
                         article={article}
                         position={index}
                         onMoveEntity={
-                            canUpdateArticle ? handleOnMoveArticle : noop
+                            canUpdateArticle ? handleOnMoveArticle : _noop
                         }
                         onDropEntity={
-                            canUpdateArticle ? handleOnReorderFinish : noop
+                            canUpdateArticle ? handleOnReorderFinish : _noop
                         }
                         onClickRow={handleOnClickRow}
                         onClickSettings={handleOnClickSettings}

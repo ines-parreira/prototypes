@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect } from 'react'
-import { noop } from '@gorgias/toolkit'
+
+import _noop from 'lodash/noop'
 
 export type ScenarioFormContextType = {
     setError: (path: string, hasError: boolean) => void
 }
 
 export const ScenarioFormContext = createContext<ScenarioFormContextType>({
-    setError: noop,
+    setError: _noop,
 })
 
 export const useScenarioFormContext = () => useContext(ScenarioFormContext)

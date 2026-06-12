@@ -4,7 +4,8 @@ import type { EditorChangeType, SelectionState } from 'draft-js'
 import { AtomicBlockUtils, EditorState, Modifier, RichUtils } from 'draft-js'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { get } from '@gorgias/toolkit'
+import _get from 'lodash/get'
+
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 import type { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
@@ -94,7 +95,7 @@ export const insertInlineImages = (
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
     const attachments = (
-        get(getProps(), 'attachments', fromJS([])) as List<any>
+        _get(getProps(), 'attachments', fromJS([])) as List<any>
     ).toJS()
     const maxSize = getMaxAttachmentSize(editorState, attachments)
     const currentSize = files.reduce((sum, file) => sum + (file.size || 0), 0)

@@ -4,7 +4,9 @@ import { appQueryClient } from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import type { TwilioError } from '@twilio/voice-sdk'
 import { Call } from '@twilio/voice-sdk'
-import { Duration, pick } from '@gorgias/toolkit'
+import { pick } from 'lodash'
+import { Duration } from '@gorgias/toolkit'
+
 import type { TwilioSocketEvent } from 'business/twilio'
 import { TwilioSocketEventType } from 'business/twilio'
 import {

@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react'
+
+import noop from 'lodash/noop'
 import { connect } from 'react-redux'
-import { noop } from '@gorgias/toolkit'
 
 import type { StoreIntegration } from '@gorgias/helpdesk-queries'
 import { useListStores } from '@gorgias/helpdesk-queries'

@@ -4,14 +4,14 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { http, HttpResponse } from 'msw'
+import _noop from 'lodash/noop'
+import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop } from '@gorgias/toolkit'
 
-import type { User } from '@gorgias/helpdesk-queries'
+import { mockListUsersHandler, mockUser } from '@gorgias/helpdesk-mocks'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -32,9 +32,7 @@ import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useStatResource')
-jest.mock('@gorgias/realtime', () => ({
-    useAgentsOnlineStatus: jest.fn(),
-}))
+jest.mock('@gorgias/realtime')
 jest.mock('react-chartjs-2', () => ({ Line: () => <canvas /> }))
 jest.mock('pages/common/components/FeaturePaywall/FeaturePaywall', () => ({
     FeaturePaywall: ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
@@ -75,18 +73,19 @@ function getMetricCard(label: string): HTMLElement {
     return card
 }
 
-const alice = { id: 1, name: 'Alice', active: true } as User
-const bob = { id: 2, name: 'Bob', active: true } as User
-const carol = { id: 3, name: 'Carol', active: true } as User
+const alice = mockUser({ id: 1, name: 'Alice', active: true })
+const bob = mockUser({ id: 2, name: 'Bob', active: true })
+const carol = mockUser({ id: 3, name: 'Carol', active: true })
 
-const server = setupServer(
-    http.get('*/api/users', () =>
-        HttpResponse.json({
-            data: [alice, bob, carol],
-            meta: { prev_cursor: null, next_cursor: null },
-        }),
-    ),
+const mockListUsers = mockListUsersHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        data: [alice, bob, carol],
+        meta: { prev_cursor: null, next_cursor: null },
+    }),
 )
+
+const server = setupServer(mockListUsers.handler)
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -128,9 +127,9 @@ describe('LiveOverview', () => {
     beforeEach(() => {
         useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (resourceName === OPEN_TICKETS_ASSIGNMENT_STATUSES) {
-                return [openTicketsAssignmentStatuses, false, noop]
+                return [openTicketsAssignmentStatuses, false, _noop]
             }
-            return [supportVolumePerHour, false, noop]
+            return [supportVolumePerHour, false, _noop]
         })
         useAgentsOnlineStatusMock.mockReturnValue({ onlineAgents: {} })
     })

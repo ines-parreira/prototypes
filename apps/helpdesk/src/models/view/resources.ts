@@ -1,6 +1,7 @@
 import client from '@repo/api-resources'
+import _omit from 'lodash/omit'
+
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
-import { omit } from '@gorgias/toolkit'
 
 import type {
     ApiListResponseCursorPagination,
@@ -44,7 +45,7 @@ export function getViewTicketUpdates(
 export const createView = async (viewDraft: ViewDraft) => {
     const res = await client.post<View>(
         '/api/views/',
-        omit(viewDraft, 'search', 'created_datetime', 'deactivated_datetime'),
+        _omit(viewDraft, 'search', 'created_datetime', 'deactivated_datetime'),
     )
     return res.data
 }
@@ -67,10 +68,10 @@ export const updateView = async (id: number, view: Partial<View>) => {
             : {},
     )
     const res = await client.put<SharedView>(`/api/views/${id}/`, {
-        ...omit(view, 'filters_ast', 'search'),
+        ..._omit(view, 'filters_ast', 'search'),
         ...sharedProps,
     })
-    return omit(res.data, ['shared_with_teams', 'shared_with_users']) as View
+    return _omit(res.data, ['shared_with_teams', 'shared_with_users']) as View
 }
 
 export const deleteView = async (viewId: number) => {

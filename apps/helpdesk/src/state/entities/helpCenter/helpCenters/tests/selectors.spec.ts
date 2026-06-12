@@ -1,4 +1,5 @@
-import { keyBy } from '@gorgias/toolkit'
+import _keyBy from 'lodash/keyBy'
+
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
@@ -30,7 +31,7 @@ describe('Entities/Help Center', () => {
                 entities: {
                     helpCenter: {
                         helpCenters: {
-                            helpCentersById: keyBy(
+                            helpCentersById: _keyBy(
                                 getHelpCentersResponseFixture.data,
                                 'id',
                             ),
@@ -59,7 +60,7 @@ describe('Entities/Help Center', () => {
                         helpCenter: {
                             helpCenters: {
                                 helpCentersById: {
-                                    ...keyBy(
+                                    ..._keyBy(
                                         getHelpCentersResponseFixture.data,
                                         'id',
                                     ),
@@ -82,7 +83,7 @@ describe('Entities/Help Center', () => {
                 entities: {
                     helpCenter: {
                         helpCenters: {
-                            helpCentersById: keyBy(
+                            helpCentersById: _keyBy(
                                 getHelpCentersResponseFixture.data,
                                 'id',
                             ),
@@ -102,7 +103,7 @@ describe('Entities/Help Center', () => {
                 entities: {
                     helpCenter: {
                         helpCenters: {
-                            helpCentersById: keyBy(
+                            helpCentersById: _keyBy(
                                 getHelpCentersResponseFixture.data,
                                 'id',
                             ),

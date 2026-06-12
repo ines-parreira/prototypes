@@ -1,4 +1,6 @@
 import { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import type {
     CallExpression as ESCallExpression,
     Expression,
@@ -8,9 +10,10 @@ import type {
 } from 'estree'
 import type { List, Map, Seq } from 'immutable'
 import { fromJS } from 'immutable'
+import _get from 'lodash/get'
+import _pickBy from 'lodash/pickBy'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { Duration, get, pickBy } from '@gorgias/toolkit'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 import type { StoreMapping } from '@gorgias/helpdesk-queries'
@@ -71,25 +74,25 @@ export const CallExpression = ({
 
             if (property && property.meta) {
                 let operators = {
-                    ...(get(property.meta, 'operators') as Record<
+                    ...(_get(property.meta, 'operators') as Record<
                         string,
                         unknown
                     >),
-                    ...(get(
+                    ...(_get(
                         property.meta,
                         'views.additional_operators',
                         {},
                     ) as Record<string, OperatorType>),
                 }
 
-                const excludedOperators = get(
+                const excludedOperators = _get(
                     property.meta,
                     'views.excluded_operators',
                     {},
                 ) as Record<string, OperatorType>
 
                 if (excludedOperators) {
-                    operators = pickBy(
+                    operators = _pickBy(
                         operators,
                         (_, key) =>
                             !Object.keys(excludedOperators).includes(key),

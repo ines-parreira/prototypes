@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
+
+import _keyBy from 'lodash/keyBy'
 import { useHistory } from 'react-router-dom'
-import { keyBy } from '@gorgias/toolkit'
 
 import { Button } from '@gorgias/axiom'
 
@@ -68,7 +69,7 @@ const ActionsPlatformUseCaseTemplatesView = () => {
         })
     }, [filteredTemplates, orderParam])
     const filteredApps = useMemo(() => {
-        const actionsAppsById = keyBy(actionsApps, 'id')
+        const actionsAppsById = _keyBy(actionsApps, 'id')
 
         return apps.filter(
             (app) => app.type !== 'app' || app.id in actionsAppsById,

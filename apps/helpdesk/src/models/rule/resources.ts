@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
-import { omit } from '@gorgias/toolkit'
+import omit from 'lodash/omit'
+
 import type { ApiListResponseLegacyPagination } from '../api/types'
 import type { Rule, RuleDraft, RulePriority } from './types'
 

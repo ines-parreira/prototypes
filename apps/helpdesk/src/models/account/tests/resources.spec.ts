@@ -1,6 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import { omit } from '@gorgias/toolkit'
+import _omit from 'lodash/omit'
+
 import type { AccountSetting } from '../../../state/currentAccount/types'
 import { AccountSettingType } from '../../../state/currentAccount/types'
 import {
@@ -33,7 +34,7 @@ describe('account resources', () => {
         it('should resolve on success', async () => {
             mockedServer.onPost('/api/account/settings/').reply(200, mockedData)
 
-            const res = await createAccountSetting(omit(mockedData, 'id'))
+            const res = await createAccountSetting(_omit(mockedData, 'id'))
             expect(res).toMatchSnapshot()
         })
 
@@ -42,7 +43,7 @@ describe('account resources', () => {
                 .onPost('/api/account/settings/')
                 .reply(503, { message: 'error' })
             return expect(
-                createAccountSetting(omit(mockedData, 'id')),
+                createAccountSetting(_omit(mockedData, 'id')),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

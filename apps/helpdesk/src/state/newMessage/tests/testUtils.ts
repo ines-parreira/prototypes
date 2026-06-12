@@ -1,4 +1,5 @@
-import { omit } from '@gorgias/toolkit'
+import _omit from 'lodash/omit'
+
 import type {
     BlockSnapshot,
     ContentStateSelectionSnapshot,
@@ -64,7 +65,7 @@ export const getReplyAreaStateSnapshot = (
     replyAreaState: ReplyAreaState,
 ): ReplyAreaStateSnapshot => {
     const snapshot: ReplyAreaStateSnapshot = {
-        ...omit(replyAreaState, 'selectionState'),
+        ..._omit(replyAreaState, 'selectionState'),
         contentState: getContentStateBlocksSnapshot(
             replyAreaState.contentState,
         ),

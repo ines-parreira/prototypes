@@ -2,8 +2,9 @@ import { useState } from 'react'
 
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _get from 'lodash/get'
+import _some from 'lodash/some'
 import { Form } from 'reactstrap'
-import { get } from '@gorgias/toolkit'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
@@ -60,12 +61,12 @@ const ManualIntegrationForm = ({
         <Form
             onSubmit={(event) => {
                 event.preventDefault()
-                const anySecret = [
+                const anySecret = _some([
                     values.consumerKey,
                     values.consumerSecret,
                     values.accessToken,
                     values.accessTokenSecret,
-                ].some(Boolean)
+                ])
 
                 const auth = anySecret
                     ? {
@@ -91,14 +92,10 @@ const ManualIntegrationForm = ({
                         integration.mergeDeep(data),
                     ),
                 ).then((response) => {
-                    const error = get(response, 'error')
+                    const error = _get(response, 'error')
 
                     if (error) {
-                        const { meta } = get(
-                            error,
-                            'response.data.error.data',
-                            {},
-                        ) as { meta?: Record<string, string> }
+                        const { meta } = _get(error, 'response.data.error.data')
                         if (meta) {
                             setErrors(meta)
                         }
@@ -141,10 +138,8 @@ const ManualIntegrationForm = ({
                             })
                         }
                     />
-                    {Boolean(get(errors, 'store_url')) && (
-                        <Caption
-                            error={String(get(errors, 'store_url') || '')}
-                        />
+                    {Boolean(_get(errors, 'store_url')) && (
+                        <Caption error={_get(errors, 'store_url')} />
                     )}
                 </>
             )}

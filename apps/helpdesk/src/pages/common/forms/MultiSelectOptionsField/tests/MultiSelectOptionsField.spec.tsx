@@ -3,7 +3,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { TAGS_LIMIT } from 'models/integration/constants'
 
 import { MultiSelectOptionsField as MultiSelectField } from '../MultiSelectOptionsField'
@@ -15,7 +16,7 @@ describe('MultiSelectField', () => {
         ComponentProps<typeof MultiSelectField>,
         'onChange'
     > = {
-        onChange: noop,
+        onChange: _noop,
     }
 
     const options: OptionProps = [
@@ -37,7 +38,7 @@ describe('MultiSelectField', () => {
         ComponentProps<typeof MultiSelectField>,
         'allowCustomOptions' | 'matchInput' | 'tagColor'
     > = {
-        onChange: noop,
+        onChange: _noop,
         selectedOptions: [],
         options: options,
         plural: 'tags',

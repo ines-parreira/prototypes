@@ -4,8 +4,10 @@ import type { AxiosError } from 'axios'
 import { isAxiosError } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _capitalize from 'lodash/capitalize'
+import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
-import { capitalize, Duration, sortBy } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
 
 import { isChannel } from 'config'
 import type {
@@ -60,7 +62,7 @@ export function fetchIntegrations() {
                 result = result.concat(page)
             }
 
-            result = sortBy(result, (integration) =>
+            result = _sortBy(result, (integration) =>
                 integration.name.toLowerCase(),
             )
 
@@ -154,7 +156,7 @@ export function activateOnboardingIntegrations(
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    const formattedType = `${capitalize(
+                    const formattedType = `${_capitalize(
                         integrationType,
                     )} integration${data.length > 1 ? 's' : ''}`
 
@@ -173,7 +175,7 @@ export function activateOnboardingIntegrations(
                     return dispatch({
                         type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_ERROR,
                         error,
-                        reason: `Failed to activate your ${capitalize(
+                        reason: `Failed to activate your ${_capitalize(
                             integrationType,
                         )} integration`,
                     })

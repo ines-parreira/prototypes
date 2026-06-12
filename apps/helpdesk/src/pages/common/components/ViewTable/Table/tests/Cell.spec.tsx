@@ -2,7 +2,8 @@ import { render, userEvent } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { omit } from '@gorgias/toolkit'
+import _omit from 'lodash/omit'
+
 import { views } from 'config/views'
 import { ticket } from 'fixtures/ticket'
 import { Cell } from 'pages/common/components/ViewTable/Table/Cell'
@@ -18,7 +19,7 @@ describe('ViewTable::Table::Cell', () => {
     }
 
     it('should use default props', () => {
-        const props = { ...omit(minProps, ['item']) }
+        const props = { ..._omit(minProps, ['item']) }
         const { container } = render(<Cell {...props} />)
 
         expect(container.firstChild).toMatchSnapshot()

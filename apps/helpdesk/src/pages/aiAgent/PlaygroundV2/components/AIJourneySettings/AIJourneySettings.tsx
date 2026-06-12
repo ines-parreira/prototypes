@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import classNames from 'classnames'
-import { debounce, Duration } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
 
 import {
     LegacyBanner as Banner,
@@ -115,7 +117,7 @@ export const AIJourneySettings: React.FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSetSearch = useCallback(
-        debounce((value: string) => {
+        _debounce((value: string) => {
             setDebouncedSearch(value)
         }, Duration.millis(250)),
         [],

@@ -1,4 +1,6 @@
 import { useMemo } from 'react'
+
+import { toNumber } from 'lodash'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -18,7 +20,7 @@ import type { ChannelWithMetadata } from '../../../types'
 export const useChannels = (): ChannelWithMetadata[] => {
     const { id } = useParams<{ id: string }>()
     const { stores, unassignedChannels } = useStoreManagementState()
-    const store = stores.find((store) => store.store.id === Number(id))
+    const store = stores.find((store) => store.store.id === toNumber(id))
 
     const assignedEmails = useMemo(
         () => store?.assignedChannels.filter(isEmailChannel),

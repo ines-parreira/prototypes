@@ -1,4 +1,5 @@
-import { snakeCase } from '@gorgias/toolkit'
+import _snakeCase from 'lodash/snakeCase'
+
 import { IntegrationType } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 import type { Source, Template } from 'models/widget/types'
@@ -75,5 +76,5 @@ export function getWidgetTitle({
 }
 
 export function getWidgetId(name: string) {
-    return snakeCase(name)
+    return _snakeCase(name)
 }

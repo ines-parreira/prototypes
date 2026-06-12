@@ -1,6 +1,7 @@
 import classnames from 'classnames'
+import _noop from 'lodash/noop'
+
 import { Button } from '@gorgias/axiom'
-import { noop } from '@gorgias/toolkit'
 
 import { THEME_NAME } from 'core/theme'
 import { RichField } from 'pages/common/forms/RichField/RichField'
@@ -31,7 +32,7 @@ export const AutoReplyReturnDemo = ({ settings }: Props) => (
                                 text: settings.body_text,
                                 html: settings.body_html,
                             }}
-                            onChange={noop}
+                            onChange={_noop}
                             displayOnly
                         />
                     </div>
@@ -47,7 +48,7 @@ export const AutoReplyReturnDemo = ({ settings }: Props) => (
                                 text: settings.signature_text,
                                 html: settings.signature_html,
                             }}
-                            onChange={noop}
+                            onChange={_noop}
                             displayOnly
                         />
                     </div>

@@ -1,4 +1,4 @@
-import { Duration, get, isUndefined, omitBy, set } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
 /* eslint-disable no-console */
 import type { ComponentType } from 'react'
 import { Component } from 'react'
@@ -11,6 +11,9 @@ import classnames from 'classnames'
 import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
 import { fromJS, Map } from 'immutable'
+import { get, set } from 'lodash'
+import _isUndefined from 'lodash/isUndefined'
+import _omitBy from 'lodash/omitBy'
 import moment from 'moment'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
@@ -231,7 +234,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
         }
 
         this.setState(
-            omitBy(
+            _omitBy(
                 {
                     isInitialized: true,
                     autoResponderEnabled: integration.getIn([
@@ -315,7 +318,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                         'control_ticket_volume',
                     ]),
                 },
-                isUndefined,
+                _isUndefined,
             ) as State,
         )
     }
@@ -351,11 +354,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
             let privacyPolicyDisclaimerText: string | undefined =
                 textsPerLanguage?.texts?.privacyPolicyDisclaimer
             if (!privacyPolicyDisclaimerText) {
-                privacyPolicyDisclaimerText = String(
-                    get(
-                        this.state.translations,
-                        'texts.privacyPolicyDisclaimer',
-                    ) || '',
+                privacyPolicyDisclaimerText = get(
+                    this.state.translations,
+                    'texts.privacyPolicyDisclaimer',
                 )
             }
             this.setState({

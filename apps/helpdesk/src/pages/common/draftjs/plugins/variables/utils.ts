@@ -1,6 +1,7 @@
 import { EditorState, Modifier, SelectionState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
-import { get } from '@gorgias/toolkit'
+import _get from 'lodash/get'
+
 import { templateRegex } from 'pages/common/utils/template'
 import { getVariableWithValue } from 'tickets/common/utils'
 
@@ -44,7 +45,7 @@ export const attachEntitiesToVariables = (
                 const entityData = entity.getData()
 
                 // turn variable immutable
-                if (immutable && !get(entityData, 'immutable')) {
+                if (immutable && !_get(entityData, 'immutable')) {
                     newContentState = newContentState.mergeEntityData(
                         entityKey,
                         {
@@ -54,7 +55,7 @@ export const attachEntitiesToVariables = (
                 }
 
                 // remove invalid variable
-                if (value !== get(entityData, 'result')) {
+                if (value !== _get(entityData, 'result')) {
                     const entitySelection = SelectionState.createEmpty(
                         block!.getKey(),
                     )
@@ -100,8 +101,8 @@ export const attachEntitiesToVariables = (
             if (oldEntityKey) {
                 const oldEntity = newContentState.getEntity(oldEntityKey)
                 const entityData = oldEntity.getData()
-                if (get(entityData, 'result') === value) {
-                    isImmutable = get(entityData, 'immutable')
+                if (_get(entityData, 'result') === value) {
+                    isImmutable = _get(entityData, 'immutable')
                 }
             }
 
@@ -161,7 +162,7 @@ export const setVariableEditable = (props: DecoratorComponentProps): any => {
 
     // get blockKey from offsetKey
     // https://github.com/Soreine/draft-js-simpledecorator/blob/4cd96de586724dd146f57cabef4b8fb15714060d/index.js#L59
-    const blockKey = get(offsetKey.split(KEY_SEPARATOR), 0)
+    const blockKey = _get(offsetKey.split(KEY_SEPARATOR), 0)
     if (!blockKey) {
         return
     }

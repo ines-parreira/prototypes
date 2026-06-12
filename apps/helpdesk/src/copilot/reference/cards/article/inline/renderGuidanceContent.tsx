@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { Fragment } from 'react'
-import { capitalize } from '@gorgias/toolkit'
+
+import _capitalize from 'lodash/capitalize'
+
 import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import {
     guidanceVariableRegex,
@@ -68,7 +70,7 @@ export function renderGuidanceContent(
         if (varMatch) {
             const variable = parseGuidanceVariable(varMatch, variables)
             if (variable) {
-                const label = `${capitalize(variable.category)}: ${variable.name}`
+                const label = `${_capitalize(variable.category)}: ${variable.name}`
                 truncate(label) // count toward the char budget
                 nodes.push(
                     <InlineVariablePill

@@ -1,5 +1,5 @@
+import { capitalize, isArray, isObject } from 'lodash'
 import type { FieldErrors, FieldValues, ResolverResult } from 'react-hook-form'
-import { capitalize, isArray, isObject } from '@gorgias/toolkit'
 
 import type { ValidationResult, Validator } from '@gorgias/helpdesk-validators'
 

@@ -15,9 +15,9 @@ import {
     useViewsOrderingCacheSync,
     useVisibleNavigationViewIds,
 } from '@repo/views'
+import _debounce from 'lodash/debounce'
 import type { DropTargetMonitor } from 'react-dnd'
 import { useHistory } from 'react-router-dom'
-import { debounce } from '@gorgias/toolkit'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Box, Separator, toast } from '@gorgias/axiom'
@@ -487,7 +487,7 @@ function WayfindingTicketNavbarSections({
         [sharedElements, privateElements],
     )
     const updateUrl = useMemo(
-        () => debounce((viewUrl: string) => history.push(viewUrl), 0),
+        () => _debounce((viewUrl: string) => history.push(viewUrl)),
         [history],
     )
     const moveCursor = useCallback(

@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import noop from 'lodash/noop'
+
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { ArchiveConfirmationModal } from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 

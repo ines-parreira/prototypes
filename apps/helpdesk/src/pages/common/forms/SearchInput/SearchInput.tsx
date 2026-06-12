@@ -7,13 +7,14 @@ import type {
 import React, { Component } from 'react'
 
 import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
+import _noop from 'lodash/noop'
 import {
     Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
-import { debounce, Duration, noop } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -78,8 +79,8 @@ export class SearchInput<
         autoFocus: true,
         searchOnFocus: false,
         placeholder: 'Search...',
-        onResultClicked: noop,
-        onSubResultClicked: noop,
+        onResultClicked: _noop,
+        onSubResultClicked: _noop,
         resultLabel: 'result',
         resultLabelPlural: 'results',
         subResultLabel: 'sub result',
@@ -227,7 +228,7 @@ export class SearchInput<
         }
     }
 
-    _fetchResults = debounce(async (filter: string) => {
+    _fetchResults = _debounce(async (filter: string) => {
         try {
             this.setState({ isLoading: true })
             this._gorgiasApi.cancelPendingRequests(true)
@@ -243,7 +244,7 @@ export class SearchInput<
         } finally {
             this.setState({ isLoading: false })
         }
-    }, Duration.millis(200))
+    }, 200)
 
     _onBackClicked = () => {
         this.setState({

@@ -7,9 +7,9 @@ import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import { noop } from '@gorgias/toolkit'
 
 import { UserRole } from 'config/types/user'
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
@@ -1250,7 +1250,7 @@ describe('TicketListActions component', () => {
 
             it('should disable buttons when job is being created', async () => {
                 mockedCreateJobTicket.mockImplementation((() => {
-                    return new Promise(noop)
+                    return new Promise(_noop)
                 }) as any)
                 const renderResult = render(
                     <Provider store={store}>
@@ -1281,7 +1281,7 @@ describe('TicketListActions component', () => {
 
             it('should deselect all items', async () => {
                 mockedCreateJobTicket.mockImplementation((() => {
-                    return new Promise(noop)
+                    return new Promise(_noop)
                 }) as any)
 
                 const renderResult = render(

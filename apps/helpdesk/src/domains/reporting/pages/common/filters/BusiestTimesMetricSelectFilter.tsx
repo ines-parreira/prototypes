@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react'
-import { noop } from '@gorgias/toolkit'
+
+import _noop from 'lodash/noop'
+
 import { FilterComponentKey } from 'domains/reporting/models/stat/types'
 import { Filter } from 'domains/reporting/pages/common/components/Filter'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
@@ -57,9 +59,9 @@ export const BusiestTimesMetricSelectFilter = () => {
             logicalOperators={[]}
             selectedLogicalOperator={null}
             onChangeOption={onOptionChange}
-            onSelectAll={noop}
-            onRemoveAll={noop}
-            onChangeLogicalOperator={noop}
+            onSelectAll={_noop}
+            onRemoveAll={_noop}
+            onChangeLogicalOperator={_noop}
             onDropdownClosed={handleDropdownClosed}
         />
     )

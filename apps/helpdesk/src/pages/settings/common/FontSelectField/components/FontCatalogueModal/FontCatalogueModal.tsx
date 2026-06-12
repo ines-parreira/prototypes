@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
+import _capitalize from 'lodash/capitalize'
+import _isEqual from 'lodash/isEqual'
+import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
-import { capitalize, isEqual, uniq } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -122,7 +124,7 @@ export const FontCatalogueModal = ({
 
     const canSaveSelectedFonts = useMemo(() => {
         if (
-            !isEqual(
+            !_isEqual(
                 recentlyAddedFonts.sort((a, b) => (a > b ? 1 : -1)),
                 selectedFonts,
             )
@@ -193,7 +195,7 @@ export const FontCatalogueModal = ({
                                     <SelectFilter.Item
                                         key={category}
                                         value={category}
-                                        label={capitalize(category)}
+                                        label={_capitalize(category)}
                                     />
                                 ))}
                             </SelectFilter>

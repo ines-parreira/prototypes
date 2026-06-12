@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
+import { get } from 'lodash'
+import _noop from 'lodash/noop'
 import { useHistory } from 'react-router-dom'
-import { get, noop } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
@@ -47,7 +48,7 @@ const ContactFormAutoEmbedModalAssistant = (
         contactFormId,
     }: ContactFormAutoEmbedModalAssistantProps = {
         isOpen: false,
-        onClose: noop,
+        onClose: _noop,
         pages: [],
         contactFormId: 0,
     },

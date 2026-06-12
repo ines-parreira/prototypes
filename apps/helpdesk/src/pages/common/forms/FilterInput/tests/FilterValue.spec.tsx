@@ -1,6 +1,7 @@
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
-import { times } from '@gorgias/toolkit'
+import _times from 'lodash/times'
+
 import {
     DefaultExportFilterValue as FilterValue,
     getTooltipLabels,
@@ -145,7 +146,7 @@ describe('FilterValue', () => {
 
 describe('getTooltipLabels', () => {
     const generateLabels = (length: number) => {
-        return times(length, (i) => `label ${i + 1}`)
+        return _times(length, (i) => `label ${i + 1}`)
     }
     it('should return a string with all labels separated by commas when the number of labels is less than or equal to 20', () => {
         const optionsLabels = generateLabels(3)

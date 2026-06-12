@@ -21,10 +21,7 @@ import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/stand
 
 import { TicketSubmitButtons } from '../TicketSubmitButtons'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    sample: (array: unknown[]) => array[0],
-}))
+jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
 jest.mock('providers/OutboundTranslationProvider')
 jest.mock('providers/standalone-ai/StandaloneAiContext')

@@ -3,8 +3,8 @@ import { memo } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import cn from 'classnames'
+import _isEqual from 'lodash/isEqual'
 import { Container } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -93,6 +93,6 @@ const LegacyPage = ({
     )
 }
 
-const DefaultExportLegacyPage = memo(LegacyPage, isEqual)
+const DefaultExportLegacyPage = memo(LegacyPage, _isEqual)
 
 export { DefaultExportLegacyPage }

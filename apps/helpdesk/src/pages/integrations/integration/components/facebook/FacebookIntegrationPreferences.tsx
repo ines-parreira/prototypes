@@ -4,11 +4,12 @@ import { Component } from 'react'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
+import _omitBy from 'lodash/omitBy'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Form } from 'reactstrap'
-import { isUndefined, omitBy } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -48,7 +49,7 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
 
     _initState = (integration: Map<any, any>) => {
         this.setState(
-            omitBy(
+            _omitBy(
                 {
                     autoResponderEnabled: integration.getIn([
                         'meta',
@@ -65,7 +66,7 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
                         ]) || CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
                     isInitialized: true,
                 },
-                isUndefined,
+                _isUndefined,
             ) as State,
         )
     }

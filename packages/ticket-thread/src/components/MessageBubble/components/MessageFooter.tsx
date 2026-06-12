@@ -1,5 +1,6 @@
+import { isNumber } from 'lodash'
+
 import { Box, Icon, Tag, TagColor } from '@gorgias/axiom'
-import { isNumber } from '@gorgias/toolkit'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import type {

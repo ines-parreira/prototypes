@@ -18,13 +18,13 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { DefaultExportOrderLineItemRow as OrderLineItemRow } from '../OrderLineItemRow'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    debounce:
+jest.mock(
+    'lodash/debounce',
+    () =>
         (fn: (...args: any[]) => void, delay: number) =>
         (...args: any[]) =>
             setTimeout(() => fn(...args), delay),
-}))
+)
 
 jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.Mock

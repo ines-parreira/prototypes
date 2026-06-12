@@ -1,5 +1,6 @@
+import _isEqual from 'lodash/isEqual'
+import times from 'lodash/times'
 import moment from 'moment'
-import { isEqual, times } from '@gorgias/toolkit'
 
 import type { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
@@ -199,7 +200,8 @@ export const getFormattedFilter = (
 export const areFiltersEqual = (
     savedFilters: AnalyticsFilter | null | undefined,
     filtersDraft: SavedFilterDraft | null | undefined,
-) => isEqual(getFormattedFilter(savedFilters), getFormattedFilter(filtersDraft))
+) =>
+    _isEqual(getFormattedFilter(savedFilters), getFormattedFilter(filtersDraft))
 
 export type FilterOptionWithOptionalLabel = OptionalProperty<
     DropdownOption,

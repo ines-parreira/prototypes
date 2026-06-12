@@ -1,6 +1,7 @@
 import { DateAndTimeFormatting } from '@repo/utils'
 import classNames from 'classnames'
-import { capitalize } from '@gorgias/toolkit'
+import _capitalize from 'lodash/capitalize'
+
 import type { ProcessedEvent } from 'models/voiceCall/processEvents'
 import { VoiceCallSubjectLabel } from 'pages/common/components/VoiceCallSubjectLabel/VoiceCallSubjectLabel'
 import { DatetimeLabel } from 'pages/common/utils/DatetimeLabel'
@@ -18,7 +19,7 @@ const TicketVoiceCallEvent = ({ event }: TicketVoiceCallEventProps) => {
         if (event.showTransferPrefix) {
             return `Transfer ${event.action}`
         }
-        return capitalize(event.action)
+        return _capitalize(event.action)
     }
 
     return (

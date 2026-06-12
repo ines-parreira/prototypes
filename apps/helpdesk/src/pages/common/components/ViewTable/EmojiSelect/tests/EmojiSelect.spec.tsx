@@ -3,7 +3,8 @@ import React from 'react'
 
 import { render, userEvent } from '@repo/testing'
 import type { EmojiData } from 'emoji-mart'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import type { EmojiPicker } from '../../../EmojiPicker/EmojiPicker'
 import { EmojiSelect } from '../EmojiSelect'
 
@@ -31,8 +32,8 @@ jest.mock('../../../EmojiPicker/EmojiPicker.tsx', () => ({
 
 const defaultProps = {
     emoji: '1',
-    onEmojiSelect: noop,
-    onEmojiClear: noop,
+    onEmojiSelect: _noop,
+    onEmojiClear: _noop,
 }
 
 // Hide popover by clicking the trigger.

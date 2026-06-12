@@ -8,8 +8,8 @@ import React, {
 } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import _isNil from 'lodash/isNil'
 import { DropdownItem } from 'reactstrap'
-import { isNil } from '@gorgias/toolkit'
 
 import { Icon } from '@gorgias/axiom'
 
@@ -1263,7 +1263,7 @@ function useMenuItems(
                             </>
                         )}
                         {visualBuilderGraph.isTemplate &&
-                            isNil(visualBuilderGraph.category) && (
+                            _isNil(visualBuilderGraph.category) && (
                                 <>
                                     <LLMPromptTemplateShopifyMenuItems
                                         nodeId={nodeId}

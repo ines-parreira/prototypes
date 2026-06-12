@@ -1,7 +1,7 @@
 import type { TwoDimensionalDataItem } from '@repo/reporting'
 import type { UseQueryResult } from '@tanstack/react-query'
+import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
-import { groupBy } from '@gorgias/toolkit'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { getPeriodDateTimesFromFilters } from 'domains/reporting/hooks/helpers'
@@ -78,7 +78,7 @@ export const seriesToTwoDimensionalDataItem = (
         return []
     }
 
-    const groupedByLabel = groupBy(
+    const groupedByLabel = _groupBy(
         series,
         (item) => options?.label ?? item.label ?? 'default',
     )
@@ -210,7 +210,7 @@ export const selectPerDimension =
         }
 
         return objectMap(
-            groupBy(escapedResponse, dimension),
+            _groupBy(escapedResponse, dimension),
             select(query, queryV2, isV2),
         )
     }

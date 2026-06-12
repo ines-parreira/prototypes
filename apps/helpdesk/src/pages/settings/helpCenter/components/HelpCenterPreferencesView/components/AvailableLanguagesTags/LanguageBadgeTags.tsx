@@ -2,8 +2,9 @@ import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import { produce } from 'immer'
+import _keyBy from 'lodash/keyBy'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { keyBy } from '@gorgias/toolkit'
 
 import type { Locale, LocaleCode } from 'models/helpCenter/types'
 import type { BadgeItemProps } from 'pages/common/components/BadgetItem'
@@ -55,7 +56,7 @@ export const LanguageBadgeTags = ({
     const [pendingLocale, setPendingLocale] = useState<BadgeItemProps | null>()
 
     const localesByCode = useMemo(
-        () => keyBy(availableLocales, 'code'),
+        () => _keyBy(availableLocales, 'code'),
         [availableLocales],
     )
 

@@ -3,7 +3,7 @@
  */
 import type { ContentBlock } from 'draft-js'
 import findWithRegex from 'find-with-regex'
-import { escapeRegExp } from '@gorgias/toolkit'
+import _escapeRegExp from 'lodash/escapeRegExp'
 
 const mentionSuggestionStrategy =
     (trigger: string, regExp: string) =>
@@ -12,7 +12,7 @@ const mentionSuggestionStrategy =
         callback: (start: number, end: number) => void,
     ) => {
         findWithRegex(
-            new RegExp(`(\\s|^)${escapeRegExp(trigger)}${regExp}`, 'g'),
+            new RegExp(`(\\s|^)${_escapeRegExp(trigger)}${regExp}`, 'g'),
             contentBlock,
             callback,
         )

@@ -1,7 +1,8 @@
 import { appQueryClient } from '@repo/api-resources'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { omit } from '@gorgias/toolkit'
+import { omit } from 'lodash'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -1896,7 +1897,7 @@ describe('ticket utils', () => {
                         {
                             ...pendingMessage,
                             source: omit(
-                                pendingMessage.source ?? {},
+                                pendingMessage.source,
                                 'type',
                             ) as Source,
                         },

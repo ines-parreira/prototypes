@@ -2,7 +2,8 @@ import type { ReactNode } from 'react'
 import React, { useMemo } from 'react'
 
 import { List } from 'immutable'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import type { ToolbarContextType } from './ToolbarContext'
 import { ToolbarContext } from './ToolbarContext'
 
@@ -13,13 +14,13 @@ type Props = {
 const ToolbarProvider = ({
     children,
     canAddVideoPlayer = false,
-    onInsertVideoAddedFromInsertLink = noop,
+    onInsertVideoAddedFromInsertLink = _noop,
     canAddVideoLink = false,
-    onInsertVideoOpen = noop,
-    onInsertVideoAdded = noop,
+    onInsertVideoOpen = _noop,
+    onInsertVideoAdded = _noop,
     canAddDiscountCodeLink = false,
-    onInsertDiscountCodeOpen = noop,
-    onInsertDiscountCodeAdded = noop,
+    onInsertDiscountCodeOpen = _noop,
+    onInsertDiscountCodeAdded = _noop,
     canAddProductCard = false,
     canAddProductLink = false,
     canAddProductAutomations = false,
@@ -27,10 +28,10 @@ const ToolbarProvider = ({
     toolbarTour = {},
     disableOutOfStockProducts = false,
     disableVariantSelection = false,
-    onAddProductCardAttachment = noop,
-    onAddProductAutomationAttachment = noop,
-    onInsertProductLinkOpen = noop,
-    onInsertProductLinkAdded = noop,
+    onAddProductCardAttachment = _noop,
+    onAddProductAutomationAttachment = _noop,
+    onInsertProductLinkOpen = _noop,
+    onInsertProductLinkAdded = _noop,
     shopifyIntegrations = List(),
     workflowVariables,
     workflowVariablesDataTypes,
@@ -38,7 +39,7 @@ const ToolbarProvider = ({
     guidanceActions,
     canAddUniqueDiscountOffer = false,
     supportsUniqueDiscountOffer = false,
-    onAddUniqueDiscountOfferAttachment = noop,
+    onAddUniqueDiscountOfferAttachment = _noop,
     placementType = undefined,
     shopName,
     guidanceActionEditorName,

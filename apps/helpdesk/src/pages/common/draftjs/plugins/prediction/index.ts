@@ -1,7 +1,9 @@
 import type { KeyboardEvent } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
-import { Duration } from '@gorgias/toolkit'
+import { debounce } from 'lodash'
 
 import type { Plugin, PluginMethods } from '../types'
 import { phrasePredictionClient as client } from './client'
@@ -78,37 +80,6 @@ const requestPrediction = async (
     resetCurrentPrediction(text, predictionText)
 }
 
-type RequestPrediction = typeof requestPrediction
-
-const debounceRequestPrediction = (
-    callback: RequestPrediction,
-    wait: number,
-) => {
-    let timeout: ReturnType<typeof setTimeout> | null = null
-    let pendingTrailingArgs: Parameters<RequestPrediction> | null = null
-
-    return (...args: Parameters<RequestPrediction>) => {
-        if (timeout) {
-            pendingTrailingArgs = args
-            clearTimeout(timeout)
-        } else {
-            void callback(...args)
-        }
-
-        timeout = setTimeout(() => {
-            timeout = null
-
-            if (!pendingTrailingArgs) {
-                return
-            }
-
-            const trailingArgs = pendingTrailingArgs
-            pendingTrailingArgs = null
-            void callback(...trailingArgs)
-        }, wait)
-    }
-}
-
 const sendFeedback = async (
     context: Map<any, any>,
     addedText: string,
@@ -179,11 +150,15 @@ const predictionPlugin = (config: {
     debounce?: number
 }): Plugin => {
     let lastQuery: string | null = null
-    const debouncedRequestPrediction = debounceRequestPrediction(
+    const debouncedRequestPrediction = debounce(
         requestPrediction,
         typeof config.debounce === 'number'
             ? config.debounce
             : Duration.millis(200),
+        {
+            leading: true,
+            trailing: true,
+        },
     )
 
     return {

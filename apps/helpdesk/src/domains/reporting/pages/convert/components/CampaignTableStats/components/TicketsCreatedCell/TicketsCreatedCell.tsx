@@ -2,7 +2,8 @@ import type { MouseEventHandler } from 'react'
 import React from 'react'
 
 import { history } from '@repo/routing'
-import { kebabCase } from '@gorgias/toolkit'
+import _kebabCase from 'lodash/kebabCase'
+
 import { formatNumber } from 'domains/reporting/pages/common/utils'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
 import type { CampaignTableContentCell } from 'domains/reporting/pages/convert/types/CampaignTableContentCell'
@@ -12,10 +13,6 @@ type Props = {
     cell: CampaignTableContentCell
     data: any
     isHighlighted?: boolean
-}
-
-const getSlug = (value: string): string => {
-    return kebabCase(value.replace(/['\u2019]/g, '')).toLowerCase()
 }
 
 export const TicketsCreatedCell = ({ cell, data, ...props }: Props) => {
@@ -31,7 +28,7 @@ export const TicketsCreatedCell = ({ cell, data, ...props }: Props) => {
         state: {
             filters: `containsAll(ticket.tags.name, [${safeTag}]) && gte(ticket.created_datetime, ${safeStartDate}) && lte(ticket.created_datetime, ${safeEndDate})`,
             viewName: viewName,
-            slug: getSlug(viewName),
+            slug: _kebabCase(viewName).toLowerCase(),
         },
     }
 

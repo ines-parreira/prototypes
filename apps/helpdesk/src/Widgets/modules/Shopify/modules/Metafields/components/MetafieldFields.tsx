@@ -2,6 +2,8 @@ import type React from 'react'
 import { createRef, useContext } from 'react'
 
 import { DateAndTimeFormatting } from '@repo/utils'
+import { isArray, map, truncate } from 'lodash'
+
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type {
     DimensionShopifyMetafieldData,
@@ -11,7 +13,6 @@ import type {
     WeightShopifyMetafieldData,
 } from '@gorgias/helpdesk-queries'
 import type { MetafieldType } from '@gorgias/helpdesk-types'
-import { isArray, truncate } from '@gorgias/toolkit'
 
 import { CopyButton } from 'components/CopyButton/CopyButton'
 import { Badge } from 'gorgias-design-system/Badge/Badge'
@@ -188,7 +189,7 @@ export function RichTextFieldMetafield({
         }
 
         if (isArray(node.children)) {
-            return node.children.map(render).join(' ')
+            return map(node.children, render).join(' ')
         }
 
         return ''

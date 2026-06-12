@@ -1,10 +1,11 @@
 import type { ForwardedRef } from 'react'
-import React, { forwardRef, useCallback } from 'react'
+import React, { forwardRef } from 'react'
 
 import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import type { CancelToken } from 'axios'
 import { isValidPhoneNumber } from 'libphonenumber-js'
-import { debounce, Duration } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
+
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useCancellableRequest } from 'hooks/useCancellableRequest'
@@ -90,7 +91,7 @@ const ReceiversSelectField = function ReceiversSelectField(
         searchRank.endScenario()
     }
 
-    const search = debounce(
+    const search = _debounce(
         async (input: string, callback: (options: ReceiverValue[]) => void) => {
             searchRank.endScenario()
             const queryText = input.toLowerCase()
@@ -123,7 +124,7 @@ const ReceiversSelectField = function ReceiversSelectField(
                 callback(valueFromState(resp.data))
             }
         },
-        Duration.millis(300),
+        300,
     )
 
     const _placeholder =
@@ -141,13 +142,6 @@ const ReceiversSelectField = function ReceiversSelectField(
     const allowCreateConstraint = isPhoneBasedSource(sourceType)
         ? isValidPhoneNumber
         : isEmail
-    const loadOptions = useCallback(
-        (input: string, callback: (options: ReceiverValue[]) => void) => {
-            search(input, callback)
-            return Promise.resolve()
-        },
-        [search],
-    )
 
     return (
         <MultiSelectAsyncField
@@ -155,7 +149,7 @@ const ReceiversSelectField = function ReceiversSelectField(
             tabIndex={tabIndex}
             value={valueFromState(value)}
             onChange={handleOnChange}
-            loadOptions={disableSearch ? undefined : loadOptions}
+            loadOptions={disableSearch ? undefined : search}
             disabled={disabled}
             required={required}
             allowCreate={allowCreate}

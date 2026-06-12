@@ -25,9 +25,11 @@ import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import type { List, Map } from 'immutable'
+import _isEqual from 'lodash/isEqual'
+import _noop from 'lodash/noop'
+import _uniq from 'lodash/uniq'
 import { marked } from 'marked'
 import ReactPlayer from 'react-player'
-import { isEqual, noop, uniq } from '@gorgias/toolkit'
 
 import type { UploadType } from 'common/types'
 import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
@@ -265,12 +267,12 @@ export class RichFieldEditor extends Component<Props, State> {
     > = {
         emailExtraEnabled: false,
         notify: () => Promise.resolve(),
-        attachFiles: noop,
+        attachFiles: _noop,
         canDropFiles: false,
         canInsertInlineImages: true,
         isFocused: false,
         canAddVideoPlayer: false,
-        onInsertVideoAddedFromPastedLink: noop,
+        onInsertVideoAddedFromPastedLink: _noop,
         isToolbarDisabled: false,
     }
 
@@ -415,7 +417,9 @@ export class RichFieldEditor extends Component<Props, State> {
         }
 
         // Force re-render since decorators depend on displayed actions
-        if (!isEqual(prevProps.displayedActions, this.props.displayedActions)) {
+        if (
+            !_isEqual(prevProps.displayedActions, this.props.displayedActions)
+        ) {
             editorState = refreshEditor(editorState)
         }
 
@@ -1185,10 +1189,10 @@ export class RichFieldEditor extends Component<Props, State> {
 
         if (this.props.canAddVideoPlayer) {
             const urls =
-                uniq(
+                _uniq(
                     extractUrlsFromString(text)?.filter((url) =>
                         ReactPlayer.canPlay(url),
-                    ) ?? [],
+                    ),
                 ) || []
 
             urls.forEach((url) => {

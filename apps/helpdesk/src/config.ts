@@ -1,5 +1,7 @@
 import { daysToHours, hoursToSeconds } from '@repo/utils'
-import { get } from '@gorgias/toolkit'
+import _find from 'lodash/find'
+import _get from 'lodash/get'
+
 import { TicketMessageSourceType } from 'business/types/ticket'
 import {
     RECHARGE_CANCELLATION_REASONS,
@@ -25,14 +27,6 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
-
-const findCustomerIntegration = (
-    customer: Pick<Partial<Customer>, 'integrations'>,
-    integrationType: IntegrationType,
-) =>
-    Object.values(customer.integrations ?? {}).find(
-        (integration) => integration.__integration_type__ === integrationType,
-    )
 
 /**
  * Action related
@@ -1011,33 +1005,30 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<Order>
                 },
                 error: 'This customer has no order to cancel.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
                     return (
-                        get(shopifyIntegration, [
+                        _get(shopifyIntegration, [
                             'orders',
                             '0',
                             'financial_status',
@@ -1048,13 +1039,12 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
                     return (
-                        get(shopifyIntegration, [
+                        _get(shopifyIntegration, [
                             'orders',
                             '0',
                             'financial_status',
@@ -1109,21 +1099,21 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order[]>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<
+                        Order[]
+                    >
                 },
                 error: 'This customer has no order to duplicate.',
             },
@@ -1205,33 +1195,32 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order[]>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<
+                        Order[]
+                    >
                 },
                 error: 'This customer has no order to edit.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
                     return (
-                        get(shopifyIntegration, [
+                        _get(shopifyIntegration, [
                             'orders',
                             '0',
                             'financial_status',
@@ -1254,39 +1243,36 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order[]>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<
+                        Order[]
+                    >
                 },
                 error: 'This customer has no order to refund.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
                     return !['refunded', 'accepted'].includes(
-                        String(
-                            get(shopifyIntegration, [
-                                'orders',
-                                '0',
-                                'financial_status',
-                            ]),
-                        ),
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ]),
                     )
                 },
                 error: "The last order has already been refunded or hasn't been paid for yet.",
@@ -1316,39 +1302,36 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order[]>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<
+                        Order[]
+                    >
                 },
                 error: 'This customer has no order to refund.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
                     return !['refunded', 'accepted'].includes(
-                        String(
-                            get(shopifyIntegration, [
-                                'orders',
-                                '0',
-                                'financial_status',
-                            ]),
-                        ),
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ]),
                     )
                 },
                 error: "The last order has already been refunded or hasn't been paid for yet.",
@@ -1380,39 +1363,36 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order[]>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<
+                        Order[]
+                    >
                 },
                 error: 'This customer has no order to refund.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
                     return !['refunded', 'accepted'].includes(
-                        String(
-                            get(shopifyIntegration, [
-                                'orders',
-                                '0',
-                                'financial_status',
-                            ]),
-                        ),
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ]),
                     )
                 },
                 error: "The last order has already been refunded or hasn't been paid for yet.",
@@ -1438,21 +1418,21 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
                 },
                 error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const shopifyIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Shopify,
-                    )
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Shopify,
+                    })
 
-                    return get(shopifyIntegration, ['orders']) as Maybe<Order[]>
+                    return _get(shopifyIntegration, ['orders']) as Maybe<
+                        Order[]
+                    >
                 },
                 error: 'This customer has no order to edit.',
             },
@@ -1486,33 +1466,30 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
                 },
                 error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
-                    return get(rechargeIntegration, ['subscriptions'])
+                    return _get(rechargeIntegration, ['subscriptions'])
                 },
                 error: 'This customer has no subscription to cancel.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
                     return (
-                        get(rechargeIntegration, [
+                        _get(rechargeIntegration, [
                             'subscriptions',
                             '0',
                             'cancelled_at',
@@ -1532,33 +1509,30 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
                 },
                 error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
-                    return get(rechargeIntegration, ['subscriptions'])
+                    return _get(rechargeIntegration, ['subscriptions'])
                 },
                 error: 'This customer has no subscription to activate.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
                     return (
-                        get(rechargeIntegration, [
+                        _get(rechargeIntegration, [
                             'subscriptions',
                             '0',
                             'cancelled_at',
@@ -1592,39 +1566,30 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
                 },
                 error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
-                    return get(rechargeIntegration, ['charges'])
+                    return _get(rechargeIntegration, ['charges'])
                 },
                 error: 'This customer has no charges to refund.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
                     return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(
-                        String(
-                            get(rechargeIntegration, [
-                                'charges',
-                                '0',
-                                'status',
-                            ]),
-                        ),
+                        _get(rechargeIntegration, ['charges', '0', 'status']),
                     )
                 },
                 error: 'The last charge is not refundable.',
@@ -1654,39 +1619,34 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         validators: [
             {
                 validate: (customer: Customer) => {
-                    return !!findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    return !!_find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
                 },
                 error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
-                    return get(rechargeIntegration, ['orders'])
+                    return _get(rechargeIntegration, ['orders'])
                 },
                 error: 'This customer has no orders to refund.',
             },
             {
                 validate: (customer: Customer) => {
-                    const rechargeIntegration = findCustomerIntegration(
-                        customer,
-                        IntegrationType.Recharge,
-                    )
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: IntegrationType.Recharge,
+                    })
 
                     return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(
-                        String(
-                            get(rechargeIntegration, [
-                                'orders',
-                                '0',
-                                'charge_status',
-                            ]),
-                        ),
+                        _get(rechargeIntegration, [
+                            'orders',
+                            '0',
+                            'charge_status',
+                        ]),
                     )
                 },
                 error: 'The last order is not refundable.',

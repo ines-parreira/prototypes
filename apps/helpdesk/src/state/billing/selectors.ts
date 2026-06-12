@@ -1,7 +1,7 @@
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
 import { createSelector } from 'reselect'
-import { isEmpty } from '@gorgias/toolkit'
 
 import type {
     AutomatePlan,
@@ -198,7 +198,7 @@ export const getCurrentPlansByProduct = createSelector(
             }
         })
 
-        return !isEmpty(currentPlansByProduct)
+        return !_isEmpty(currentPlansByProduct)
             ? currentPlansByProduct
             : undefined
     },

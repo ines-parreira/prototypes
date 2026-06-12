@@ -6,6 +6,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { getMoneySymbol } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
+import { isEqual } from 'lodash'
 import {
     FormGroup,
     InputGroup,
@@ -14,7 +15,6 @@ import {
     ModalHeader,
     Form as ReactStrapForm,
 } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 

@@ -1,5 +1,6 @@
+import _noop from 'lodash/noop'
+
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import { noop } from '@gorgias/toolkit'
 
 import { ConditionsBranchBody } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import { buildConditionSchemaByVariableType } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
@@ -64,7 +65,7 @@ const ActionsPlatformTemplateConditions = ({
                     showNoneOption
                     type={type}
                     conditions={conditions}
-                    onDeleteBranch={noop}
+                    onDeleteBranch={_noop}
                     onConditionDelete={onConditionDelete}
                     onVariableSelect={(variable) => {
                         const condition = buildConditionSchemaByVariableType(

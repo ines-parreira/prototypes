@@ -7,10 +7,7 @@ import { fromJS } from 'immutable'
 
 import { ChangePasswordContainer } from '../ChangePassword'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: (id: string) => `${id}42`,
-}))
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 type fillInFormTypes = {
     getAllByLabelText: (text: Matcher) => HTMLElement[]

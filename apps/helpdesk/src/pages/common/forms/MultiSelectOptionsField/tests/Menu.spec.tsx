@@ -2,7 +2,8 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { Menu } from 'pages/common/forms/MultiSelectOptionsField/Menu'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
@@ -22,8 +23,8 @@ describe('MultiSelectField Menu', () => {
     const defaultProps = {
         options,
         activeIndex: 0,
-        onActivate: noop,
-        onSelect: noop,
+        onActivate: _noop,
+        onSelect: _noop,
     }
 
     it('should render displayLabel first and label as a fallback', () => {

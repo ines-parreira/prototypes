@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
+import _ from 'lodash'
 import { useParams } from 'react-router-dom'
-import { uniq } from '@gorgias/toolkit'
 
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import { useWorkflowChannelSupport } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
@@ -23,7 +23,7 @@ const useOnlySupportedChannels = (
             configuration,
         )
 
-        const onlySupportedChannels = uniq(
+        const onlySupportedChannels = _.uniq(
             unsupportedNodeTypes.reduce<SelfServiceChannelType[]>(
                 (acc, nodeType) => [...acc, ...getSupportedChannels(nodeType)],
                 [],

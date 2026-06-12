@@ -4,8 +4,8 @@ import React from 'react'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _isObject from 'lodash/isObject'
 import moment from 'moment'
-import { isObject } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -109,7 +109,7 @@ export const renderValue = (
 
     const value = metric.get('value') as string | Map<any, any>
 
-    if (isObject(value)) {
+    if (_isObject(value)) {
         const formattedValue = fromJS(
             value.reduce(
                 (acc, value, key) => ({

@@ -1,8 +1,8 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import { keyBy } from '@gorgias/toolkit'
 
 import { tags } from 'fixtures/tag'
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -11,7 +11,7 @@ import type { RootState } from 'state/types'
 describe('useAppSelector', () => {
     const defaultState = {
         entities: {
-            tags: keyBy(tags, 'id'),
+            tags: _keyBy(tags, 'id'),
         },
     } as RootState
 

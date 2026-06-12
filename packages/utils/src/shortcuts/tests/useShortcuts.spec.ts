@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { useConditionalShortcuts } from '../useConditionalShortcuts'
 import { useShortcuts } from '../useShortcuts'
 
@@ -10,7 +11,7 @@ vi.mock('../useConditionalShortcuts', () => ({
 describe('useShortcuts', () => {
     const component = 'MyComponent'
     const actions = {
-        MY_SHORTCUT: { action: noop },
+        MY_SHORTCUT: { action: _noop },
     }
 
     beforeEach(() => {

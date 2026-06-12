@@ -1,6 +1,9 @@
 import { useMemo } from 'react'
+
+import _fromPairs from 'lodash/fromPairs'
+import _sortBy from 'lodash/sortBy'
+
 import type { Tag } from '@gorgias/helpdesk-queries'
-import { sortBy } from '@gorgias/toolkit'
 
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
 import { getTagValuesByOperator } from 'domains/reporting/hooks/helpers'
@@ -39,7 +42,7 @@ const getSortedData = (
     const sortingOrder = tagsTicketCount.data?.value.map((v) =>
         String(v['tagId' in v ? 'tagId' : TicketTagsEnrichedMember.TagId]),
     )
-    const sortedData = sortBy(Object.entries(data), ([key]) =>
+    const sortedData = _sortBy(Object.entries(data), ([key]) =>
         sortingOrder.indexOf(key),
     )
 
@@ -54,7 +57,7 @@ const getSortedData = (
         .map(([tagId, __]) => tagId)
         .map((tagId) => getTagById(tagId))
 
-    const initialVisibility = Object.fromEntries(
+    const initialVisibility = _fromPairs(
         topData.map((_, index) => [index, index < DATASET_VISIBILITY_ITEMS]),
     )
 

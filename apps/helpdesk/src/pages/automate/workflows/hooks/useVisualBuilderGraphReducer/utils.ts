@@ -1,7 +1,7 @@
 import { flextree } from 'd3-flextree'
 import { produce } from 'immer'
+import _keyBy from 'lodash/keyBy'
 import { ulid } from 'ulidx'
-import { keyBy } from '@gorgias/toolkit'
 
 import {
     buildNodeCommonProperties,
@@ -576,7 +576,7 @@ export function computeNodesPositions<
         spacing: nodeGap,
     })
 
-    const nodesById = keyBy(g.nodes, 'id')
+    const nodesById = _keyBy(g.nodes, 'id')
 
     const triggerNode = g.nodes[0]
 
@@ -588,7 +588,7 @@ export function computeNodesPositions<
 
     layout(root)
 
-    const flextreeNodesById = keyBy(root.nodes, (node) => node.data.id)
+    const flextreeNodesById = _keyBy(root.nodes, 'data.id')
 
     const nextNodes = g.nodes.map((node) => {
         const x = flextreeNodesById[node.id]?.x ?? node.position.x

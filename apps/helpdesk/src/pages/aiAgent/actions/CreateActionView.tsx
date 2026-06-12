@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import _noop from 'lodash/noop'
 import { Prompt, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
-import { noop } from '@gorgias/toolkit'
 import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
@@ -357,7 +358,7 @@ const CreateActionView = () => {
                         onClick={() => {
                             setIsCreateAndTestButtonClicked(false)
 
-                            void handleSave().catch(noop)
+                            void handleSave().catch(_noop)
                         }}
                         isLoading={isCreateActionLoading}
                         isDisabled={isLoadingOnboardingNotificationState}
@@ -370,7 +371,7 @@ const CreateActionView = () => {
                         onClick={() => {
                             setIsCreateAndTestButtonClicked(true)
 
-                            void handleSave().catch(noop)
+                            void handleSave().catch(_noop)
                         }}
                         isLoading={isCreateActionLoading}
                         isDisabled={
@@ -407,7 +408,7 @@ const CreateActionView = () => {
             <Modal
                 isOpen={isOpen}
                 isClosable={false}
-                onClose={noop}
+                onClose={_noop}
                 size="small"
             >
                 <ModalHeader title="Discard new Action?" />

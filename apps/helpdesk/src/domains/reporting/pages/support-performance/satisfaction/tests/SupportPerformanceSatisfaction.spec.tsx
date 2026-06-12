@@ -3,10 +3,10 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop } from '@gorgias/toolkit'
 
 import { TicketChannel } from 'business/types/ticket'
 import { SATISFACTION_SURVEYS } from 'domains/reporting/config/stats'
@@ -104,7 +104,7 @@ describe('SupportPerformanceSatisfaction', () => {
     } as RootState
 
     beforeEach(() => {
-        useStatResourceMock.mockReturnValue([null, true, noop])
+        useStatResourceMock.mockReturnValue([null, true, _noop])
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
@@ -119,9 +119,9 @@ describe('SupportPerformanceSatisfaction', () => {
     it('should render the filters and stats when stats filters are defined', () => {
         useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (resourceName === SATISFACTION_SURVEYS) {
-                return [satisfactionSurveys, false, noop]
+                return [satisfactionSurveys, false, _noop]
             }
-            return [latestSatisfactionSurveys, false, noop]
+            return [latestSatisfactionSurveys, false, _noop]
         })
 
         const { container } = render(<SupportPerformanceSatisfaction />, {

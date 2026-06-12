@@ -42,13 +42,10 @@ const defaultState = {
     }),
 } as unknown as RootState
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: (id?: string) => `${id || ''}42`,
-}))
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('@gorgias/toolkit-react', () => ({
     ...jest.requireActual('@gorgias/toolkit-react'),
-    useId: jest.fn(() => require('@gorgias/toolkit').uniqueId()),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
 }))
 const mockUseId = useId as jest.MockedFunction<typeof useId>
 
@@ -145,9 +142,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseId.mockImplementation(() =>
-            require('@gorgias/toolkit').uniqueId(),
-        )
+        mockUseId.mockImplementation(() => require('lodash/uniqueId')())
 
         const fixedDate = new Date('2019-06-24')
         jest.spyOn(Date, 'now').mockImplementation(() => fixedDate.getTime())

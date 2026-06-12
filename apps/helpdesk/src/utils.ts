@@ -19,22 +19,22 @@ import * as esprima from 'esprima'
 import htmlparser from 'htmlparser2'
 import type { Iterable, List, Map } from 'immutable'
 import Immutable, { fromJS } from 'immutable'
+import _filter from 'lodash/filter'
+import _get from 'lodash/get'
+import _has from 'lodash/has'
+import _isNumber from 'lodash/isNumber'
+import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
+import _last from 'lodash/last'
+import _startCase from 'lodash/startCase'
+import _trim from 'lodash/trim'
+import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
 import type { Moment } from 'moment-timezone'
 import type { Route } from 'react-router-dom'
 import type { Selector } from 'reselect'
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
-import {
-    get,
-    has,
-    isNumber,
-    isString,
-    isUndefined,
-    startCase,
-    trim,
-    upperFirst,
-} from '@gorgias/toolkit'
 
 import { fromAST, isImmutable, isPrivateAsset } from 'common/utils'
 import type { TicketEvent } from 'models/ticket/types'
@@ -90,7 +90,7 @@ export const devLog = (...args: Array<any>) => {
 }
 
 export const defined = (item: any): boolean => {
-    return !isUndefined(item) && item !== null
+    return !_isUndefined(item) && item !== null
 }
 
 /**
@@ -102,7 +102,7 @@ export const getHashOfObj = (obj: any): string => md5(JSON.stringify(obj))
  * Guess if a passed string is a url
  */
 export function isUrl(string: string): string is string {
-    if (!isString(string)) {
+    if (!_isString(string)) {
         return false
     }
 
@@ -113,7 +113,7 @@ export function isUrl(string: string): string is string {
  * Guess if a passed string is a domain
  */
 export function isDomain(string: string): string is string {
-    if (!isString(string)) {
+    if (!_isString(string)) {
         return false
     }
 
@@ -130,7 +130,7 @@ export function isDomain(string: string): string is string {
  * Guess if a passed string is an email
  */
 export function isEmail(string: string): string is string {
-    if (!isString(string)) {
+    if (!_isString(string)) {
         return false
     }
 
@@ -157,7 +157,7 @@ export function isEmailList(string?: string | null, delimiter = ','): boolean {
 }
 
 export function getAST(code: string): esprima.Program {
-    if (!isString(code)) {
+    if (!_isString(code)) {
         console.error('Not a string:', code)
     }
     return esprima.parseScript(code, { loc: true })
@@ -172,7 +172,7 @@ export function getFirstExpressionOfAST(ast: esprima.Program) {
 }
 
 export function getCode(ast: esprima.Program): string {
-    if (!isString(ast.type)) {
+    if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
     return escodegen.generate(ast, {
@@ -194,29 +194,8 @@ export function getLastMessage(
         return
     }
 
-    const filteredMessages =
-        options == null
-            ? [...messages]
-            : messages.filter((message) => {
-                  if (typeof options === 'function') {
-                      return options(message)
-                  }
-
-                  if (typeof options === 'object') {
-                      return Object.entries(options).every(([key, value]) =>
-                          Object.is(get(message, key), value),
-                      )
-                  }
-
-                  if (typeof options === 'string') {
-                      return Boolean(get(message, options))
-                  }
-
-                  return Boolean(message)
-              })
-
     // most recent message sorted to first element of array
-    return filteredMessages.sort((a, b) =>
+    return _filter(messages, options).sort((a, b) =>
         compare(b.created_datetime, a.created_datetime),
     )[0]
 }
@@ -262,7 +241,7 @@ export function findProperty(
     alwaysRef = false,
 ): Maybe<Property> {
     const parts = field.split('.')
-    const firstPart = resolvePropertyName(upperFirst(parts.shift() ?? ''))
+    const firstPart = resolvePropertyName(_upperFirst(parts.shift()))
     const definitions = schemas.get('definitions') as Map<any, any>
     let def = definitions.get(firstPart) as Map<any, any>
     let prop
@@ -336,7 +315,7 @@ export function getDefaultOperator(
         case 'string':
             if (prop.meta && (prop.meta as Record<string, unknown>).operators) {
                 if (
-                    has(
+                    _has(
                         (prop.meta as Record<string, unknown>).operators,
                         'containsAll',
                     )
@@ -366,7 +345,7 @@ export function resolveLiteral(
 }
 
 export function compactInteger(input: number, digits = 0): string {
-    if (!isNumber(input)) {
+    if (!_isNumber(input)) {
         return input
     }
 
@@ -636,7 +615,7 @@ export const parseMedia = (html: string, imageFormat = '1000x'): string => {
  * Slugify a string
  */
 export function slugify(string: string): string {
-    if (!isString(string)) {
+    if (!_isString(string)) {
         return string
     }
 
@@ -887,7 +866,7 @@ export const stripErrorMessage = (text: string): string => {
     // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
     const regex = /\[[\w-]+]/g
     let result = text.replace(regex, '')
-    result = trim(result, '. ')
+    result = _trim(result, '. ')
     return result
 }
 
@@ -917,7 +896,7 @@ export const compare = (a: any, b: any): number => {
  * Return current route object from routes config
  */
 export const currentRoute = (routes: Array<Route>) => {
-    return routes?.at(-1) as Route
+    return _last(routes) as Route
 }
 
 /**
@@ -933,7 +912,7 @@ export const subdomain = (url: string): string => {
     const split = url.split('.')[0]
 
     // split url on `://` and keep the last part
-    return split.split('://')?.at(-1) as string
+    return _last(split.split('://')) as string
 }
 
 type ValidationErrors = string | string[] | { [key: string]: ValidationErrors }
@@ -965,7 +944,7 @@ function flattenErrors(
 }
 
 export const errorToChildren = (incomingError: unknown): string | null => {
-    const error = get(incomingError, 'response.data.error', {}) as
+    const error = _get(incomingError, 'response.data.error', {}) as
         | GorgiasApiResponseDataError
         | { data: never }
     const { data } = error
@@ -979,7 +958,9 @@ export const errorToChildren = (incomingError: unknown): string | null => {
         <ul className="m-0">
             ${flattenErrors(data as ValidationErrors)
                 .map(({ key, value }) =>
-                    sanitizeHtmlDefault(`<li>${startCase(key)}: ${value}</li>`),
+                    sanitizeHtmlDefault(
+                        `<li>${_startCase(key)}: ${value}</li>`,
+                    ),
                 )
                 .join('')}
         </ul>
@@ -992,14 +973,14 @@ export const errorToChildren = (incomingError: unknown): string | null => {
  * falling back to the top-level `msg`. Returns `null` when neither is set.
  */
 export const errorToPlainText = (incomingError: unknown): string | null => {
-    const error = get(incomingError, 'response.data.error', {}) as
+    const error = _get(incomingError, 'response.data.error', {}) as
         | GorgiasApiResponseDataError
         | { data?: ValidationErrors; msg?: string }
     const validationErrors = error.data
 
     if (validationErrors) {
         const lines = flattenErrors(validationErrors as ValidationErrors).map(
-            ({ key, value }) => `${startCase(key)}: ${value}`,
+            ({ key, value }) => `${_startCase(key)}: ${value}`,
         )
         if (lines.length > 0) {
             return lines.join('\n')

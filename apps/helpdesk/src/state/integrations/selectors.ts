@@ -1,7 +1,7 @@
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _isArray from 'lodash/isArray'
 import { createSelector } from 'reselect'
-import { isArray } from '@gorgias/toolkit'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { INTEGRATION_TYPE_CONFIG, isChannel } from 'config'
@@ -226,7 +226,7 @@ export const DEPRECATED_getIntegrationsByTypes = (
     types: readonly IntegrationType[] | IntegrationType,
 ) =>
     createSelector(DEPRECATED_getIntegrations, (integrations) => {
-        const formattedTypes = !isArray(types) ? [types] : types
+        const formattedTypes = !_isArray(types) ? [types] : types
 
         return integrations.filter((integration: Map<any, any>) =>
             formattedTypes.includes(integration.get('type') as IntegrationType),
@@ -525,7 +525,7 @@ export const getSendersForChannel =
         ) {
             const sendersForSource =
                 getChannelsForSourceType(channelLike)(state).toJS()
-            return isArray(sendersForSource)
+            return _isArray(sendersForSource)
                 ? sendersForSource.filter(isSourceAddress)
                 : []
         }

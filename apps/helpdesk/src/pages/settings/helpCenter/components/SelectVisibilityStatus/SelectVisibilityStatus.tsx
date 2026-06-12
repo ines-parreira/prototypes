@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react'
 
 import classnames from 'classnames'
+import _upperFirst from 'lodash/upperFirst'
+
 import {
     Button,
     Label,
@@ -9,7 +11,6 @@ import {
     SelectTrigger,
     TextField,
 } from '@gorgias/axiom'
-import { upperFirst } from '@gorgias/toolkit'
 
 import type { CustomerVisibility } from 'models/helpCenter/types'
 import { CustomerVisibilityEnum } from 'models/helpCenter/types'
@@ -60,7 +61,7 @@ const SelectCustomerVisibility = ({
                 value: CustomerVisibilityEnum.PUBLIC,
                 title: 'Public',
                 description: `Visible to Help Center visitors.`,
-                descriptionInheritUnlisted: `${upperFirst(
+                descriptionInheritUnlisted: `${_upperFirst(
                     type,
                 )} is currently only accessible via direct link because one of its parent categories is unlisted.`,
                 icon: 'show',

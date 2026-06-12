@@ -3,8 +3,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import copy from 'copy-to-clipboard'
+import _isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router-dom'
-import { isEqual } from '@gorgias/toolkit'
 import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useLimitations } from 'hooks/helpCenter/useLimitations'
@@ -998,7 +998,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         const currentTranslation = selectedArticle?.translation
         const requiredFieldsArticle: typeof articleRequiredFields = []
 
-        const translationHasBeenChanged = !isEqual(
+        const translationHasBeenChanged = !_isEqual(
             currentTranslation,
             selectedExistingArticleTranslation,
         )

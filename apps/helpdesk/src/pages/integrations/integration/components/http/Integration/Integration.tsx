@@ -3,10 +3,12 @@ import { Component } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
+import { isArray } from 'lodash'
+import _forIn from 'lodash/forIn'
+import _isEmpty from 'lodash/isEmpty'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Container, Form, FormGroup, FormText } from 'reactstrap'
-import { isArray, isEmpty } from '@gorgias/toolkit'
 
 import {
     Box,
@@ -259,7 +261,7 @@ export class Integration extends Component<Props, State> {
     _objectToParameters(object: Record<string, unknown> = {}) {
         const obj = object || {}
         const params: Array<Record<string, unknown>> = []
-        Object.entries(obj).forEach(([key, value]) => {
+        _forIn(obj, (value, key) => {
             params.push({
                 key,
                 value,
@@ -376,7 +378,7 @@ export class Integration extends Component<Props, State> {
         const savedMethodIsGet = integration?.http?.method === HttpMethod.Get
         const isSwitchingFromGetToOther =
             method === HttpMethod.Get && newMethod !== HttpMethod.Get
-        const formIsEmpty = !form || isEmpty(form)
+        const formIsEmpty = !form || _isEmpty(form)
 
         if (
             (!isUpdate || savedMethodIsGet) &&

@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { AGENT_ADDED_FONTS } from '../constants'
 import { FontSelectField } from '../FontSelectField'
 
@@ -29,7 +30,7 @@ describe('<FontSelectField />', () => {
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="Abracadabra"
-                onChange={noop}
+                onChange={_noop}
             />,
         )
 
@@ -46,7 +47,7 @@ describe('<FontSelectField />', () => {
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="font"
-                onChange={noop}
+                onChange={_noop}
             />,
         )
 
@@ -60,7 +61,7 @@ describe('<FontSelectField />', () => {
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="font"
-                onChange={noop}
+                onChange={_noop}
             />,
         )
 
@@ -75,7 +76,7 @@ describe('<FontSelectField />', () => {
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="Roboto"
-                onChange={noop}
+                onChange={_noop}
             />,
         )
 
@@ -89,7 +90,7 @@ describe('<FontSelectField />', () => {
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="Roboto"
-                onChange={noop}
+                onChange={_noop}
             />,
         )
 

@@ -30,10 +30,7 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 jest.mock('hooks/useAppSelector', () => ({ useAppSelector: jest.fn() }))
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: () => '42',
-}))
+jest.mock('lodash/uniqueId', () => () => '42')
 
 jest.mock('state/tickets/actions')
 const mockCreateTicketJob = assumeMock(createTicketJob)

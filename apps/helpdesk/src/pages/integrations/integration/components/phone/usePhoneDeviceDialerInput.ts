@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { isValidNumber } from 'libphonenumber-js'
-import { debounce, Duration } from '@gorgias/toolkit'
+import { debounce } from 'lodash'
 
 import type { UserSearchResult } from 'models/search/types'
 import type { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'

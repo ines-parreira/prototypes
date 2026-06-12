@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
-import { get } from '@gorgias/toolkit'
+
+import _get from 'lodash/get'
+
 import type {
     CampaignSaleDetails,
     ConvertDrillDownRowData,
@@ -28,7 +30,7 @@ export const useGetCampaignSalesDrillDownData = (
         return metricData.map((row) => {
             return {
                 ...row.data,
-                campaignName: get(
+                campaignName: _get(
                     campaignData,
                     row.data.campaignId,
                     row.data.campaignId,

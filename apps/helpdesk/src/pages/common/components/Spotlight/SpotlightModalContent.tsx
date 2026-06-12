@@ -2,8 +2,8 @@ import type { RefObject } from 'react'
 import { useEffect, useRef } from 'react'
 
 import type { SearchRank } from '@repo/logging'
+import _isEmpty from 'lodash/isEmpty'
 import type { GroupedVirtuosoHandle, VirtuosoHandle } from 'react-virtuoso'
-import { isEmpty } from '@gorgias/toolkit'
 
 import type {
     PickedCustomer,
@@ -46,13 +46,13 @@ const hasNoResults = (
 ) => {
     switch (searchItemsType) {
         case ViewType.All:
-            return isEmpty(customers) && isEmpty(tickets) && isEmpty(calls)
+            return _isEmpty(customers) && _isEmpty(tickets) && _isEmpty(calls)
         case ViewType.CustomerList:
-            return isEmpty(customers)
+            return _isEmpty(customers)
         case ViewType.TicketList:
-            return isEmpty(tickets)
+            return _isEmpty(tickets)
         case ViewType.CallList:
-            return isEmpty(calls)
+            return _isEmpty(calls)
     }
 }
 const hasNoRecentResults = (
@@ -63,13 +63,13 @@ const hasNoRecentResults = (
 ) => {
     switch (searchItemsType) {
         case ViewType.All:
-            return isEmpty(tickets) && isEmpty(customers)
+            return _isEmpty(tickets) && _isEmpty(customers)
         case ViewType.CustomerList:
-            return isEmpty(customers)
+            return _isEmpty(customers)
         case ViewType.TicketList:
-            return isEmpty(tickets)
+            return _isEmpty(tickets)
         case ViewType.CallList:
-            return isEmpty(calls)
+            return _isEmpty(calls)
     }
 }
 
@@ -221,16 +221,17 @@ export const SpotlightModalContent = ({
 
     const shouldDisplayRecentItems =
         !hasSearched &&
-        ((searchItemsType === ViewType.TicketList && !isEmpty(recentTickets)) ||
+        ((searchItemsType === ViewType.TicketList &&
+            !_isEmpty(recentTickets)) ||
             (searchItemsType === ViewType.CustomerList &&
-                !isEmpty(recentCustomers)) ||
+                !_isEmpty(recentCustomers)) ||
             (showCallsTab &&
                 searchItemsType === ViewType.CallList &&
-                !isEmpty(recentCalls)) ||
+                !_isEmpty(recentCalls)) ||
             (searchItemsType === ViewType.All &&
-                (!isEmpty(recentCustomers) ||
-                    !isEmpty(recentTickets) ||
-                    (showCallsTab && !isEmpty(recentCalls)))))
+                (!_isEmpty(recentCustomers) ||
+                    !_isEmpty(recentTickets) ||
+                    (showCallsTab && !_isEmpty(recentCalls)))))
 
     const data = getData(
         searchItemsType,

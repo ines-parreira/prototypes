@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
+
+import _isEqual from 'lodash/isEqual'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
-import { isEqual } from '@gorgias/toolkit'
 
 import type { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
 import { AutomateView } from 'pages/automate/common/components/AutomateView'
@@ -49,7 +50,7 @@ export function TrackOrderFlowView() {
                         delete nextErrors[path]
                     }
 
-                    return isEqual(prevErrors, nextErrors)
+                    return _isEqual(prevErrors, nextErrors)
                         ? prevErrors
                         : nextErrors
                 })
@@ -81,7 +82,7 @@ export function TrackOrderFlowView() {
         setDirtyTrackOrderFlow(trackOrderFlow)
     }
 
-    const isTrackOrderFlowDirty = !isEqual(dirtyTrackOrderFlow, trackOrderFlow)
+    const isTrackOrderFlowDirty = !_isEqual(dirtyTrackOrderFlow, trackOrderFlow)
 
     const isLoading = !selfServiceConfiguration || !dirtyTrackOrderFlow
 

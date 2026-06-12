@@ -1,5 +1,5 @@
+import isObject from 'lodash/isObject'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
-import { isObject } from '@gorgias/toolkit'
 
 type MessageReviewMeta = {
     reviewLink: string | null

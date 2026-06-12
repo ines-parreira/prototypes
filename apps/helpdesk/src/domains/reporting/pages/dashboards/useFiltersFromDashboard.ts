@@ -1,4 +1,5 @@
-import { uniq } from '@gorgias/toolkit'
+import uniq from 'lodash/uniq'
+
 import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'

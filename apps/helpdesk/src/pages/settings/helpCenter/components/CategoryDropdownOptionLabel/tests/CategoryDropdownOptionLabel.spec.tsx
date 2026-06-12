@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
+import { keyBy as _keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { keyBy } from '@gorgias/toolkit'
 
 import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
@@ -20,7 +20,7 @@ const defaultState: Partial<RootState> = {
         helpCenter: {
             ...helpCenterState,
             categories: {
-                categoriesById: keyBy(getCategoriesFlatSorted, 'id'),
+                categoriesById: _keyBy(getCategoriesFlatSorted, 'id'),
             },
         },
     } as any,

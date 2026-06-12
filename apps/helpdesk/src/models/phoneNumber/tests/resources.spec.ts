@@ -1,6 +1,7 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-import { pick } from '@gorgias/toolkit'
+import _pick from 'lodash/pick'
+
 import {
     capabilities as capabilitiesFixtures,
     phoneNumbers as phoneNumbersFixtures,
@@ -64,7 +65,7 @@ describe('phone numbers resources', () => {
     })
 
     describe('createPhoneNumber', () => {
-        const phoneNumberDraftMock = pick(phoneNumbersFixtures[0], ['name'])
+        const phoneNumberDraftMock = _pick(phoneNumbersFixtures[0], ['name'])
 
         it('should resolve with a new PhoneNumber on success', async () => {
             mockedServer

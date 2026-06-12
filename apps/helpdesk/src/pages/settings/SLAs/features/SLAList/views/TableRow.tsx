@@ -3,7 +3,8 @@ import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { BodyCell } from 'pages/common/components/table/cells/BodyCell'
 import { DefaultExportTableBodyRow as TableBodyRow } from 'pages/common/components/table/TableBodyRow'
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
@@ -70,7 +71,7 @@ export function TableRow({
                 <React.Fragment key={`${column}-${policy.uuid}`}>
                     {React.createElement(getTableCell(column), {
                         policy,
-                        onToggle: onToggle || noop,
+                        onToggle: onToggle || _noop,
                         rowIndex: dragItem.position,
                         bodyCellProps: {
                             ...(column !== TableColumn.PolicyName && {

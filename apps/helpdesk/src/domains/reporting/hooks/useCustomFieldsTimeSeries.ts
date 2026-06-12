@@ -1,6 +1,10 @@
 import { useMemo } from 'react'
 
-import { sortBy } from '@gorgias/toolkit'
+import type { Dictionary } from 'lodash'
+import _flatten from 'lodash/flatten'
+import _fromPairs from 'lodash/fromPairs'
+import _sortBy from 'lodash/sortBy'
+
 import { transformCategoriesSeparator } from 'domains/reporting/hooks/helpers'
 import {
     useCustomFieldsForProductTicketCount,
@@ -44,22 +48,21 @@ const formatCustomFieldsTimeSeries = (
     topAmount: number,
     datasetVisibilityItems: number,
 ) => {
-    const sortedData: Record<string, TimeSeriesDataItem[][]> =
-        Object.fromEntries(
-            sortBy(Object.entries(data), ([key]) =>
-                customFieldsTicketCount.data?.allData
-                    .map(
-                        (v) =>
-                            v[
-                                TicketCustomFieldsDimension
-                                    .TicketCustomFieldsValueString
-                            ],
-                    )
-                    .indexOf(key),
-            ),
-        )
+    const sortedData: Dictionary<TimeSeriesDataItem[][]> = _fromPairs(
+        _sortBy(Object.entries(data), ([key]) =>
+            customFieldsTicketCount.data?.allData
+                .map(
+                    (v) =>
+                        v[
+                            TicketCustomFieldsDimension
+                                .TicketCustomFieldsValueString
+                        ],
+                )
+                .indexOf(key),
+        ),
+    )
 
-    const topData = (Object.values(sortedData) ?? []).flat().slice(0, topAmount)
+    const topData = _flatten(Object.values(sortedData)).slice(0, topAmount)
 
     return {
         topData,
@@ -74,7 +77,7 @@ const formatCustomFieldsTimeSeries = (
                 .slice(0, topAmount),
             tooltips: transformCategoriesSeparator(Object.keys(sortedData)),
         },
-        legendDatasetVisibility: Object.fromEntries(
+        legendDatasetVisibility: _fromPairs(
             topData.map((_, index) => [index, index < datasetVisibilityItems]),
         ),
     }
@@ -207,8 +210,8 @@ export const useCustomFieldsForProductTimeSeries = ({
         OrderDirection.Desc,
     )
 
-    const sortedData = Object.fromEntries(
-        sortBy(Object.entries(data), ([key]) =>
+    const sortedData = _fromPairs(
+        _sortBy(Object.entries(data), ([key]) =>
             customFieldsTicketCount.data?.allData
                 .map(
                     (v) =>
@@ -222,7 +225,7 @@ export const useCustomFieldsForProductTimeSeries = ({
     )
 
     const topData = useMemo(
-        () => (Object.values(sortedData) ?? []).flat().slice(0, topAmount),
+        () => _flatten(Object.values(sortedData)).slice(0, topAmount),
         [sortedData, topAmount],
     )
 
@@ -246,7 +249,7 @@ export const useCustomFieldsForProductTimeSeries = ({
                         .join(TICKET_CUSTOM_FIELDS_NEW_SEPARATOR),
                 ),
             },
-            legendDatasetVisibility: Object.fromEntries(
+            legendDatasetVisibility: _fromPairs(
                 topData.map((_, index) => [
                     index,
                     index < datasetVisibilityItems,
@@ -291,9 +294,7 @@ export const useSentimentsCustomFieldsTimeSeries = ({
     const formattedData = useMemo(() => {
         return Object.keys(data).length
             ? sentimentValueStrings.map((sentiment) => {
-                  const items: TimeSeriesDataItem[] = (
-                      data[sentiment] ?? []
-                  ).flat()
+                  const items: TimeSeriesDataItem[] = _flatten(data[sentiment])
                   return formatTimeSeries(sentiment, items, format)
               })
             : []

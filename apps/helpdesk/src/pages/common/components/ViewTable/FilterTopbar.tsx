@@ -7,11 +7,14 @@ import {
     useRef,
     useState,
 } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
+import _isNumber from 'lodash/isNumber'
 import pluralize from 'pluralize'
 import {
     ButtonDropdown,
@@ -22,7 +25,6 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
-import { Duration, isNumber } from '@gorgias/toolkit'
 import {
     useAsyncFn,
     usePrevious,
@@ -424,7 +426,7 @@ export const FilterTopbar = ({
                         <ViewSharingButton view={activeView} />
                     </div>
                 )}
-                {isNumber(totalSearchResources) && isSearch && (
+                {_isNumber(totalSearchResources) && isSearch && (
                     <p className={css.searchResourceCount}>
                         {`${totalSearchResources >= 5000 ? '5000+' : totalSearchResources} ${pluralize('ticket', totalSearchResources)}`}
                     </p>

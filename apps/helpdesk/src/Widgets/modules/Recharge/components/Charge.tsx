@@ -3,9 +3,10 @@ import { Component, createContext, useContext } from 'react'
 
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _groupBy from 'lodash/groupBy'
+import _lowerCase from 'lodash/lowerCase'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { groupBy, lowerCase } from '@gorgias/toolkit'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
@@ -202,13 +203,10 @@ export class AfterContent extends Component<{
     render() {
         const { source, isEditing } = this.props
 
-        const lineItems = toJS(source.get('line_items')) as (LineItem & {
-            subscription_id: string | number
-        })[]
-        const chargeSubscriptions = groupBy(
-            lineItems,
-            (item) => item.subscription_id,
-        )
+        const chargeSubscriptions = _groupBy(
+            toJS(source.get('line_items')),
+            (item: Record<string, unknown>) => item.subscription_id,
+        ) as { [key: string]: (LineItem & { id: string })[] }
 
         return Object.keys(chargeSubscriptions).map((k) => {
             return (
@@ -302,10 +300,6 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-const lowerCaseValue = (value: unknown): string => {
-    return value == null ? '' : lowerCase(String(value))
-}
-
 const Wrapper: FunctionComponent<{
     source: Map<string, any>
     children: ReactNode
@@ -316,7 +310,7 @@ const Wrapper: FunctionComponent<{
             value={{
                 charge,
                 chargeId: charge.get('id', null),
-                chargeStatus: lowerCaseValue(charge.get('status', null)),
+                chargeStatus: _lowerCase(charge.get('status', null)),
                 integrationId,
             }}
         >

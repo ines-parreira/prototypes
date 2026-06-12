@@ -3,11 +3,13 @@ import React, { Component } from 'react'
 
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
+import _isFunction from 'lodash/isFunction'
+import _trim from 'lodash/trim'
+import _truncate from 'lodash/truncate'
 import moment from 'moment-timezone'
 import type { RouteComponentProps } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
-import { isFunction, truncate } from '@gorgias/toolkit'
 
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -68,8 +70,6 @@ type State = {
     expanded: boolean
 }
 
-const trimValue = (value: unknown): string => String(value ?? '').trim()
-
 export class TableStat extends Component<
     OwnProps & RouteComponentProps,
     State
@@ -123,7 +123,7 @@ export class TableStat extends Component<
             'callbacks',
             'cell',
         ]) as StatConfigCallbacks['cell']
-        if (!isFunction(callback)) {
+        if (!_isFunction(callback)) {
             callback = ({ value }) => value
         }
 
@@ -462,8 +462,8 @@ export class TableStat extends Component<
                             metric.get('ticket_id') as string
                         }#satisfactionSurvey`}
                     >
-                        {truncate(
-                            trimValue(metric.get('comment')) || 'Go to ticket',
+                        {_truncate(
+                            _trim(metric.get('comment')) || 'Go to ticket',
                             {
                                 length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
                             },
@@ -476,7 +476,7 @@ export class TableStat extends Component<
                     <Link
                         to={`/app/ticket/${metric.get('ticket_id') as string}`}
                     >
-                        {truncate(
+                        {_truncate(
                             metric.get('subject') ||
                                 `Ticket #${metric.get('ticket_id') as string}`,
                             { length: TICKET_MAX_SUBJECT_LENGTH },

@@ -1,7 +1,10 @@
 import { createContext, useContext, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
+import _debounce from 'lodash/debounce'
+
 import { useAgentActivity } from '@gorgias/realtime'
-import { debounce, Duration } from '@gorgias/toolkit'
 
 type ViewedTicketsContextValue = {
     viewTickets: (ids: number[]) => void
@@ -20,7 +23,7 @@ const ViewedTicketsContext = createContext<ViewedTicketsContextValue | null>(
 export function ViewedTicketsProvider({ children }: Props) {
     const { viewTickets } = useAgentActivity()
     const debouncedViewTickets = useMemo(
-        () => debounce(viewTickets, TICKETS_VIEWING_DEBOUNCE_TIME),
+        () => _debounce(viewTickets, TICKETS_VIEWING_DEBOUNCE_TIME),
         [viewTickets],
     )
 

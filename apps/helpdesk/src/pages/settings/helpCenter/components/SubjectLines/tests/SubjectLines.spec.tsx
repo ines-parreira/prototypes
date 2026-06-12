@@ -16,16 +16,13 @@ import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import { SubjectLines } from '../SubjectLines'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: (() => {
-        let value = 0
-        return () => {
-            value += 1
-            return value.toString()
-        }
-    })(),
-}))
+jest.mock('lodash/uniqueId', () => {
+    let value = 0
+    return () => {
+        value += 1
+        return value.toString()
+    }
+})
 jest.mock('@gorgias/toolkit-react', () => {
     const React = jest.requireActual('react') as typeof import('react')
 
@@ -35,7 +32,7 @@ jest.mock('@gorgias/toolkit-react', () => {
             const id = React.useRef<string | undefined>(undefined)
 
             if (id.current === undefined) {
-                id.current = require('@gorgias/toolkit').uniqueId()
+                id.current = require('lodash/uniqueId')()
             }
 
             return id.current

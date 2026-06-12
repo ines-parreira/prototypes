@@ -1,9 +1,9 @@
 import { reportError } from '@repo/logging'
 import { render } from '@repo/testing'
+import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { noop } from '@gorgias/toolkit'
 
 import { PHONE_CALL_CONVERSATION_STARTED } from 'constants/event'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
@@ -77,11 +77,11 @@ describe('TicketBodyElement', () => {
         index: 0,
         isLast: false,
         lastMessageDatetimeAfterMount: null,
-        setHighlightedElements: noop,
+        setHighlightedElements: _noop,
     }
 
     beforeEach(() => {
-        ;(reportError as jest.Mock).mockImplementation(noop)
+        ;(reportError as jest.Mock).mockImplementation(_noop)
     })
 
     it('should display messages', () => {

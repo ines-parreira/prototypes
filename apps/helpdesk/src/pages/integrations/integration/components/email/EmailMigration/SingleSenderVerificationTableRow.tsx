@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 
 import classNames from 'classnames'
+import { isEmpty } from 'lodash'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { isEmpty } from '@gorgias/toolkit'
 
 import type { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import type { SenderInformation } from 'models/singleSenderVerification/types'

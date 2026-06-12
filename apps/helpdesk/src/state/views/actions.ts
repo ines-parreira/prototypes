@@ -6,10 +6,11 @@ import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _chunk from 'lodash/chunk'
 import type { Moment } from 'moment'
 import { notify as updateNotification } from 'reapop'
 import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
-import { chunk, Duration } from '@gorgias/toolkit'
+import { Duration } from '@gorgias/toolkit'
 
 import type { JobType } from '@gorgias/helpdesk-queries'
 import type { OrderDirection } from '@gorgias/helpdesk-types'
@@ -769,7 +770,7 @@ export const fetchActiveViewTickets =
 export const fetchVisibleViewsCounts =
     () => (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
-        const viewIdsChunks = chunk(
+        const viewIdsChunks = _chunk(
             viewsSelectors
                 .getViewIdsOrderedByCollapsedSections()(state)
                 .toJS() as number[],

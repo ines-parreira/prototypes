@@ -1,9 +1,12 @@
 import type { FormEvent } from 'react'
 import { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import _truncate from 'lodash/truncate'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -14,7 +17,6 @@ import {
     Form,
     FormGroup,
 } from 'reactstrap'
-import { Duration, truncate } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -455,7 +457,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                             ]
                                                         </span>
                                                         <span>
-                                                            {truncate(
+                                                            {_truncate(
                                                                 integration.getIn(
                                                                     [
                                                                         'meta',

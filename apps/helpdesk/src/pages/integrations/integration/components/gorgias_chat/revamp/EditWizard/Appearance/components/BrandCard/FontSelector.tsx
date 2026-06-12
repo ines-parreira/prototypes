@@ -1,4 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
+
+import uniq from 'lodash/uniq'
+
 import {
     ListHeader,
     ListHeaderItem,
@@ -6,7 +9,6 @@ import {
     ListSection,
     SelectField,
 } from '@gorgias/axiom'
-import { uniq } from '@gorgias/toolkit'
 
 import { GORGIAS_CHAT_DEFAULT_FONTS } from 'config/integrations/gorgias_chat'
 import {

@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
 
 import { produce } from 'immer'
-import { set } from '@gorgias/toolkit'
+import _set from 'lodash/set'
+
 import { useApps } from 'pages/automate/actionsPlatform/hooks/useApps'
 import type { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
@@ -30,10 +31,10 @@ const useValidateActionGraph = (
                 if (draft.touched?.name) {
                     if (!draft.name) {
                         draft.errors ??= {}
-                        set(draft.errors, 'name', 'Action name is required')
+                        _set(draft.errors, 'name', 'Action name is required')
                     } else if (draft.name.length > 100) {
                         draft.errors ??= {}
-                        set(
+                        _set(
                             draft.errors,
                             'name',
                             'Action name must be less than 100 characters',
@@ -46,7 +47,7 @@ const useValidateActionGraph = (
                         )
                     ) {
                         draft.errors ??= {}
-                        set(
+                        _set(
                             draft.errors,
                             'name',
                             'An Action already exists with this name. Choose a unique name.',
@@ -78,7 +79,7 @@ const useValidateActionGraph = (
 
                 if (draft.touched?.nodes && draft.nodes.length === 2) {
                     draft.errors ??= {}
-                    set(
+                    _set(
                         draft.errors,
                         'nodes',
                         'At least one Action step is required',

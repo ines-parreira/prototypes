@@ -12,14 +12,10 @@ import { EntityType } from 'models/view/types'
 import { HeaderContainer } from 'pages/common/components/ViewTable/Header'
 import { fetchViewItems } from 'state/views/actions'
 
-jest.mock('@gorgias/toolkit', () => ({
-    ...jest.requireActual('@gorgias/toolkit'),
-    uniqueId: () => '42',
-}))
+jest.mock('lodash/uniqueId', () => () => '42')
 
 jest.mock('state/views/actions.ts', () => {
-    const _identity: <T>(arg: T) => T =
-        jest.requireActual('@gorgias/toolkit').identity
+    const _identity: <T>(arg: T) => T = jest.requireActual('lodash/identity')
     return {
         fetchViewItems: jest.fn(() => _identity),
     }

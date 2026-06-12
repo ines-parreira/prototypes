@@ -1,3 +1,4 @@
+import { findLast } from 'lodash'
 import type { Node } from 'slack-message-parser'
 import slackMessageParser, { NodeType } from 'slack-message-parser'
 
@@ -88,9 +89,10 @@ export const createApplyExternalTemplateAction = (
 export const isWhatsAppWindowOpen = (
     customerMessages: TicketMessage[],
 ): boolean => {
-    const lastCustomerWhatsAppMessage = [...customerMessages]
-        .reverse()
-        .find((message) => message.channel === TicketChannel.WhatsApp)
+    const lastCustomerWhatsAppMessage = findLast(
+        customerMessages,
+        (message) => message.channel === TicketChannel.WhatsApp,
+    )
 
     if (!lastCustomerWhatsAppMessage) return false
 

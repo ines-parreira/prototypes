@@ -5,9 +5,10 @@ import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
+import _pick from 'lodash/pick'
 import { compressToEncodedURIComponent } from 'lz-string'
 import type { Moment } from 'moment'
-import { isEmpty, pick } from '@gorgias/toolkit'
 
 import { Button, toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -224,7 +225,7 @@ export const ticketPartialUpdate =
         dispatch: StoreDispatch,
         getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
-        if (isEmpty(args)) {
+        if (_isEmpty(args)) {
             return Promise.resolve()
         }
 
@@ -836,7 +837,7 @@ export const fetchTicket =
                         return Promise.resolve()
                     }
 
-                    if (isEmpty(response)) {
+                    if (_isEmpty(response)) {
                         console.error('No results for', url)
                         return Promise.resolve()
                     }
@@ -1018,7 +1019,7 @@ export const _goToNextOrPrevTicket = (
         }
 
         if (!viewId) {
-            payload_data.view = pick(view.toJS(), [
+            payload_data.view = _pick(view.toJS(), [
                 'filters',
                 'filters_ast',
                 'order_by',

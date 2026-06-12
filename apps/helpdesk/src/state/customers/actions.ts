@@ -2,9 +2,9 @@ import client, { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 import type { List } from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
 import { notify as updateNotification } from 'reapop'
 import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
-import { isUndefined } from '@gorgias/toolkit'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
@@ -72,7 +72,7 @@ export function fetchCustomer(customerId: string | number) {
 
 export function submitCustomer(data: CustomerDraft, customerId?: number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        const isUpdate = !isUndefined(customerId)
+        const isUpdate = !_isUndefined(customerId)
         let promise
 
         dispatch({

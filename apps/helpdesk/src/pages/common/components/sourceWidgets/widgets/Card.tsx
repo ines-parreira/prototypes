@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import _last from 'lodash/last'
 
 import type { Source, Template } from 'models/widget/types'
 import { DragWrapper } from 'pages/common/components/dragging/WidgetsDragWrapper'
@@ -17,7 +18,7 @@ export function Card({ template, isParentList, children }: Props) {
     const absolutePath = template.absolutePath || []
 
     let displayedTitle = stripLastListsFromPath(absolutePath)
-    displayedTitle = displayedTitle?.at(-1) || ''
+    displayedTitle = _last(displayedTitle) || ''
 
     return (
         <div

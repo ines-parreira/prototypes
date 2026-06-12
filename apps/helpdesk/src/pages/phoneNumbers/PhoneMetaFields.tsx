@@ -1,4 +1,6 @@
 import { useCallback, useMemo } from 'react'
+
+import { endsWith } from 'lodash'
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 
 import {
@@ -133,7 +135,7 @@ export function PhoneDetailsFields({
             areaCodeOptions.find(
                 (option) =>
                     option.value === area_code.toString() ||
-                    option.value.toString().endsWith(`-${area_code}`),
+                    endsWith(option.value.toString(), `-${area_code}`),
             )?.value) ??
         area_code
 

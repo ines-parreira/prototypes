@@ -9,8 +9,8 @@ import type {
     EditorState,
     SelectionState,
 } from 'draft-js'
+import _omit from 'lodash/omit'
 import ReactPlayer from 'react-player'
-import { omit } from '@gorgias/toolkit'
 
 type Props = {
     alt: string
@@ -40,7 +40,7 @@ class Video extends Component<Props> {
         const { alt, block, className, theme, contentState, ...otherProps } =
             this.props
 
-        const elementProps = omit(otherProps, [
+        const elementProps = _omit(otherProps, [
             'blockProps',
             'customStyleMap',
             'customStyleFn',

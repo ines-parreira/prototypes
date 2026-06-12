@@ -1,6 +1,9 @@
 import { useEffect, useMemo } from 'react'
-import { Box, LegacyLabel as Label, toast } from '@gorgias/axiom'
 import { Duration } from '@gorgias/toolkit'
+
+import _flatten from 'lodash/flatten'
+
+import { Box, LegacyLabel as Label, toast } from '@gorgias/axiom'
 
 import { useInfiniteListBusinessHoursIntegrations } from 'hooks/businessHours/useInfiniteListBusinessHoursIntegrations'
 import { InfiniteScroll } from 'pages/common/components/InfiniteScroll/InfiniteScroll'
@@ -19,7 +22,7 @@ export function LinkedIntegrationsList({ businessHoursId }: Props) {
         })
 
     const integrations = useMemo(
-        () => (data?.pages.map((page) => page.data.data) ?? []).flat(),
+        () => _flatten(data?.pages.map((page) => page.data.data)),
         [data],
     )
 

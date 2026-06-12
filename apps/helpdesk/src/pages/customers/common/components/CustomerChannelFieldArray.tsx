@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
+
+import _clone from 'lodash/clone'
 import { Col, FormGroup, Row } from 'reactstrap'
-import { clone } from '@gorgias/toolkit'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
@@ -32,7 +33,7 @@ class CustomerChannelFieldArray extends Component<Props> {
 
     _add = () => {
         return this.props.onChange(
-            clone(this.props.fields).concat([
+            _clone(this.props.fields).concat([
                 {
                     address: '',
                 },
@@ -45,14 +46,14 @@ class CustomerChannelFieldArray extends Component<Props> {
         key: K,
         value: CustomerChannelContact[K],
     ) => {
-        const fields = clone(this.props.fields)
+        const fields = _clone(this.props.fields)
         fields[index][key] = value
 
         return this.props.onChange(fields)
     }
 
     _remove = (index: number) => {
-        const fields = clone(this.props.fields)
+        const fields = _clone(this.props.fields)
         fields.splice(index, 1)
         return this.props.onChange(fields)
     }

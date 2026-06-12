@@ -1,4 +1,6 @@
-import { sortBy } from '@gorgias/toolkit'
+import _fromPairs from 'lodash/fromPairs'
+import _sortBy from 'lodash/sortBy'
+
 import type { User } from 'config/types/user'
 import type {
     TimeSeriesDataItem,
@@ -90,7 +92,7 @@ export const getSortedData = (
 
     const averageCSATScore = getAverageCSATScorePerDimension(defaultData)
     averageCSATScore.Average = Infinity
-    const sortedData = sortBy(Object.entries(data), ([key]) => {
+    const sortedData = _sortBy(Object.entries(data), ([key]) => {
         return -averageCSATScore[key]
     })
     const topData = sortedData.slice(0, topAmount)
@@ -104,7 +106,7 @@ export const getSortedData = (
     const labels = topData.map(([dim, __]) => dim)
     const tooltips = topData.map(([dim, __]) => dim)
 
-    const initialVisibility = Object.fromEntries(
+    const initialVisibility = _fromPairs(
         topData.map((_, index) => [index, index < DATASET_VISIBILITY_ITEMS]),
     )
 

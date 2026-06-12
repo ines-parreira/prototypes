@@ -5,10 +5,11 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
+import _isEqual from 'lodash/isEqual'
+import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
 import { Form, FormGroup, FormText } from 'reactstrap'
-import { isEqual, sortBy } from '@gorgias/toolkit'
 
 import {
     Avatar,
@@ -46,7 +47,7 @@ import { ForwardingCallsPreferences } from './ForwardingCallsPreferences'
 
 import css from './YourProfileView.less'
 
-const timezones = sortBy(
+const timezones = _sortBy(
     moment.tz
         .names()
         /*
@@ -148,7 +149,7 @@ export function YourProfileView({
             setIsLoading(true)
 
             if (
-                !isEqual(defaultFormValues.preferences, formValues.preferences)
+                !_isEqual(defaultFormValues.preferences, formValues.preferences)
             ) {
                 logEvent(SegmentEvent.UserSettingsUpdated, {
                     newSettings: formValues.preferences,

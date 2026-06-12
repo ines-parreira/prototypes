@@ -1,4 +1,5 @@
-import { keyBy } from '@gorgias/toolkit'
+import { keyBy as _keyBy } from 'lodash'
+
 import type { CategoryTranslation } from 'models/helpCenter/types'
 
 import { HELP_CENTER_DEFAULT_LOCALE } from '../../constants'
@@ -8,7 +9,7 @@ import {
     removeElementFromArray,
 } from '../getCategoriesToUpdate'
 
-const categories = keyBy(getCategoriesFlatSorted, 'id')
+const categories = _keyBy(getCategoriesFlatSorted, 'id')
 const translation: CategoryTranslation = {
     image_url: null,
     created_datetime: '2022-03-07T14:47:03.686Z',

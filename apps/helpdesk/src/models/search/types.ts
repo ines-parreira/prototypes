@@ -1,9 +1,10 @@
 import type { CancelToken } from 'axios'
+import { isObject } from 'lodash'
+
 import type {
     SearchVoiceCalls200DataItemHighlights,
     SearchVoiceCallsParams,
 } from '@gorgias/helpdesk-types'
-import { isObject } from '@gorgias/toolkit'
 
 import type {
     ApiListResponse,

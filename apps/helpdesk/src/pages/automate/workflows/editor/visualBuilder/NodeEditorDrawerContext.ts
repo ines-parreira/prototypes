@@ -1,12 +1,13 @@
 import { createContext, useContext } from 'react'
-import { noop } from '@gorgias/toolkit'
+
+import _noop from 'lodash/noop'
 
 export type NodeEditorDrawerContextType = {
     onClose: () => void
 }
 
 const NodeEditorDrawerContext = createContext<NodeEditorDrawerContextType>({
-    onClose: noop,
+    onClose: _noop,
 })
 
 export const useNodeEditorDrawerContext = () =>

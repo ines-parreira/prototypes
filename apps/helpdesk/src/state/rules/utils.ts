@@ -1,8 +1,12 @@
 import { isTimedelta } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import drop from 'lodash/drop'
+import _isArray from 'lodash/isArray'
+import _isInteger from 'lodash/isInteger'
+import _isString from 'lodash/isString'
+import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
-import { isArray, isString, isUndefined } from '@gorgias/toolkit'
 
 import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
 import type { Schemas } from '../../types'
@@ -176,7 +180,7 @@ const resolveArgSchema = (
                 const def = ref.split('/')[2]
                 // get the remaining path
                 const newLeft = ['definitions', def, 'properties']
-                const newRight = left.slice(pathLen)
+                const newRight = drop(left, pathLen)
                 return resolveArgSchema(
                     newLeft.concat(newRight as string[]),
                     schemas,
@@ -396,7 +400,7 @@ export function resolveSecondArg(
         default:
     }
 
-    const useCurValue = !reset && !isUndefined(curValue) && curValue !== ''
+    const useCurValue = !reset && !_isUndefined(curValue) && curValue !== ''
 
     if (isCollectionCallee) {
         // property has changed, so we have to reset the second argument
@@ -405,7 +409,7 @@ export function resolveSecondArg(
         }
 
         // current value is an array so we just create the raw value
-        if (isArray(curValue)) {
+        if (_isArray(curValue)) {
             return `[${
                 (args.get('elements') as List<any>)
                     .map((elem: Map<any, any>) => elem.get('raw') as string)
@@ -445,12 +449,12 @@ export function resolveSecondArg(
                     return `'${firstLit as string}'`
                 }
 
-                return useCurValue && isString(curValue)
+                return useCurValue && _isString(curValue)
                     ? `'${curValue}'`
                     : "''"
 
             case 'integer':
-                return useCurValue && Number.isInteger(curValue)
+                return useCurValue && _isInteger(curValue)
                     ? (args.get('raw') as string)
                     : "''"
 

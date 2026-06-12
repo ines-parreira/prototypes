@@ -4,7 +4,8 @@ import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { get } from '@gorgias/toolkit'
+import _get from 'lodash/get'
+
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -172,7 +173,7 @@ describe('useCreatePageEmbedment', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
-        expect(get(result, ['current', 'data'])).toEqual(
+        expect(_get(result, ['current', 'data'])).toEqual(
             mocks.fixtures.PageEmbedmentFixture,
         )
     })
@@ -232,7 +233,7 @@ describe('useUpdatePageEmbedment', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
-        expect(get(result, ['current', 'data'])).toEqual(
+        expect(_get(result, ['current', 'data'])).toEqual(
             mocks.fixtures.PageEmbedmentFixture,
         )
     })

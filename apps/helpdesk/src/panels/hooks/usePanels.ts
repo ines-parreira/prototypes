@@ -1,6 +1,7 @@
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { isEqual } from '@gorgias/toolkit'
+
+import _isEqual from 'lodash/isEqual'
 import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import type { Config } from '../types'
@@ -29,7 +30,7 @@ export function usePanels(config: Config): UsePanelsReturn {
     )
 
     useUpdateEffect(() => {
-        if (isEqual(config, previousConfig)) {
+        if (_isEqual(config, previousConfig)) {
             setPanelWidths((panelWidths) =>
                 computeDefaultWidths({
                     config: createConfig(panelWidths, config),

@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
+
 import { useInfiniteQuery } from '@tanstack/react-query'
+import _flatten from 'lodash/flatten'
+import _isEqual from 'lodash/isEqual'
 import { notify } from 'reapop'
-import { Duration, isEqual } from '@gorgias/toolkit'
 import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -46,7 +49,7 @@ export function useMacrosSearch({ params, ticket }: Props) {
     )
 
     useEffect(() => {
-        if (isEqual(debouncedSearchOptions, previousSearchOptions.current)) {
+        if (_isEqual(debouncedSearchOptions, previousSearchOptions.current)) {
             return
         }
         previousSearchOptions.current = debouncedSearchOptions
@@ -72,7 +75,7 @@ export function useMacrosSearch({ params, ticket }: Props) {
         data?.pages[data?.pages.length - 1].data.meta?.next_cursor
 
     const macrosData = useMemo(
-        () => (data?.pages.map((page) => page.data.data) ?? []).flat(),
+        () => _flatten(data?.pages.map((page) => page.data.data)),
         [data],
     )
 

@@ -1,6 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map as ImmutableMap } from 'immutable'
-import { debounce, Duration, omit } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
+import _omit from 'lodash/omit'
+
 import type { OptionSelection } from 'models/integration/resources/bigcommerce'
 import {
     addBigCommerceCheckoutBillingAddress,
@@ -186,7 +188,7 @@ export const onCancel = ({
     logEvent(eventName, { via })
 }
 
-export const onReset = debounce(
+export const onReset = _debounce(
     ({
         actionName,
         setCart,
@@ -211,7 +213,7 @@ export const onReset = debounce(
                 : SegmentEvent.BigCommerceDuplicateOrderResetModal
         logEvent(eventName)
     },
-    Duration.millis(250),
+    250,
 )
 
 export const updateCheckoutDiscount = async ({
@@ -1161,7 +1163,7 @@ export const addCheckoutBillingAddress = async ({
     return addBigCommerceCheckoutBillingAddress(
         integrationId,
         cart.id,
-        omit(selectedAddress, ['custom_fields']),
+        _omit(selectedAddress, ['custom_fields']),
     )
 }
 
@@ -1190,7 +1192,7 @@ export async function upsertCheckoutConsignment({
     }
 
     const singleConsignmentPayload = {
-        address: omit(shippingAddress, ['custom_fields']),
+        address: _omit(shippingAddress, ['custom_fields']),
         line_items: lineItems,
     }
 

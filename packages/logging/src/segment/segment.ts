@@ -1,7 +1,7 @@
 /// <reference types="@types/segment-analytics" />
 import { isDevelopment } from '@repo/utils'
+import _isUndefined from 'lodash/isUndefined'
 import notification from 'push.js'
-import { isUndefined } from '@gorgias/toolkit'
 
 import { devLog } from '../utils/devLog'
 import { deprecatedEvents } from './deprecated-events'
@@ -11,7 +11,7 @@ export const SAMPLE_RATE_FOR_HIGH_TRAFFIC = 0.1
 const shouldSendEvent = () =>
     !(
         window.USER_IMPERSONATED ||
-        isUndefined(window.analytics) ||
+        _isUndefined(window.analytics) ||
         isDevelopment()
     )
 

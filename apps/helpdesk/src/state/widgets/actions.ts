@@ -1,7 +1,10 @@
 import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
-import { isUndefined, pick } from '@gorgias/toolkit'
+import _isUndefined from 'lodash/isUndefined'
+import _last from 'lodash/last'
+import _pick from 'lodash/pick'
+import _size from 'lodash/size'
 
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import { fetchWidgets as fetchWidgetsRequest } from 'models/widget/resources'
@@ -159,7 +162,7 @@ export function drop(
         // edit-widgets for new tickets
         if (
             source.get('ticket') &&
-            isUndefined(source.getIn(['ticket', 'id']))
+            _isUndefined(source.getIn(['ticket', 'id']))
         ) {
             source = getSourcesWithCustomer(state)
         }
@@ -168,7 +171,7 @@ export function drop(
         // include its id in the call to the reducer; this way we can set the `integration_id` correctly in the new
         // widget, and filter out widget that are already present in the list.
         if (splitKey.includes('integrations')) {
-            const currentIntegrationId = parseInt(splitKey?.at(-1) || '')
+            const currentIntegrationId = parseInt(_last(splitKey) || '')
 
             if (!isNaN(currentIntegrationId)) {
                 const integration =
@@ -185,7 +188,7 @@ export function drop(
 
         if (splitKey.includes(CUSTOMER_EXTERNAL_DATA_KEY)) {
             widgetType = types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
-            appId = splitKey?.at(-1) || ''
+            appId = _last(splitKey) || ''
         }
 
         if (splitKey.includes(CUSTOMER_ECOMMERCE_DATA_KEY)) {
@@ -259,7 +262,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
 
         // clear widgets, remove those with empty template
         items = items.filter((item) => {
-            return Object.keys(item.template || {}).length > 0
+            return _size(item.template || {}) > 0
         })
 
         // if no widget, just put an empty one
@@ -278,7 +281,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
         items = items.map((item, i) => {
             const updatedItem = item
             updatedItem.order = i
-            return pick(updatedItem, [
+            return _pick(updatedItem, [
                 'id',
                 'order',
                 'template',

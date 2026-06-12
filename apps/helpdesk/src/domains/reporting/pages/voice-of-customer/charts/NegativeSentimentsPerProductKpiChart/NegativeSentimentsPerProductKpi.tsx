@@ -1,5 +1,7 @@
 import React from 'react'
-import { isNil } from '@gorgias/toolkit'
+
+import _isNil from 'lodash/isNil'
+
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { BigNumberMetric } from 'domains/reporting/pages/common/components/BigNumberMetric'
 import { MetricCard } from 'domains/reporting/pages/common/components/MetricCard'
@@ -84,7 +86,7 @@ export const NegativeSentimentsPerProductKpi = ({
             >
                 <DrillDownModalTrigger
                     metricData={metricData}
-                    enabled={!isNil(trend.data?.value)}
+                    enabled={!_isNil(trend.data?.value)}
                     highlighted
                 >
                     {formattedMetric}

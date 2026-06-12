@@ -3,7 +3,8 @@ import React, { Fragment } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { List as ImmutableList, Map as ImmutableMap } from 'immutable'
-import { debounce, Duration } from '@gorgias/toolkit'
+import _debounce from 'lodash/debounce'
+
 import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,
@@ -33,7 +34,7 @@ import type { StoreDispatch } from 'state/types'
 import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from './types'
 import { BigCommerceRefundActionType } from './types'
 
-export const onReset = debounce(
+export const onReset = _debounce(
     ({
         dispatchRefundOrderState,
     }: {
@@ -45,7 +46,7 @@ export const onReset = debounce(
 
         logEvent(SegmentEvent.BigCommerceRefundOrderResetModal)
     },
-    Duration.millis(250),
+    250,
 )
 
 /**

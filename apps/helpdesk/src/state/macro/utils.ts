@@ -1,3 +1,5 @@
+import _forEach from 'lodash/forEach'
+
 import type { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
 import { MacroActionName } from '../../models/macroAction/types'
@@ -19,40 +21,41 @@ export function generateDefaultAction(actionType: MacroActionName) {
         arguments: {},
     } as MacroAction
 
-    Object.entries(
+    _forEach(
         (actionTemplate.arguments as {
             [key: string]: { default: Maybe<any>; type: string }
         }) || {},
-    ).forEach(([key, arg]) => {
-        let defaultValue = arg.default
+        (arg, key) => {
+            let defaultValue = arg.default
 
-        if (typeof arg.default === 'undefined') {
-            switch (arg.type) {
-                case 'string':
-                    defaultValue = ''
-                    break
-                case 'integer':
-                    defaultValue = null
-                    break
-                case 'listDict':
-                    defaultValue = []
-                    break
-                case 'dict':
-                    defaultValue = {}
-                    break
-                default:
-                    break
+            if (typeof arg.default === 'undefined') {
+                switch (arg.type) {
+                    case 'string':
+                        defaultValue = ''
+                        break
+                    case 'integer':
+                        defaultValue = null
+                        break
+                    case 'listDict':
+                        defaultValue = []
+                        break
+                    case 'dict':
+                        defaultValue = {}
+                        break
+                    default:
+                        break
+                }
             }
-        }
 
-        ret = {
-            ...ret,
-            arguments: {
-                ...ret.arguments,
-                [key]: defaultValue,
-            },
-        }
-    })
+            ret = {
+                ...ret,
+                arguments: {
+                    ...ret.arguments,
+                    [key]: defaultValue,
+                },
+            }
+        },
+    )
 
     return ret
 }

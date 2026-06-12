@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { useMemo, useRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import _kebabCase from 'lodash/kebabCase'
 import { NavLink, useLocation } from 'react-router-dom'
-import { kebabCase } from '@gorgias/toolkit'
 
 import { DisplayType } from 'components/Navigation/components/NavigationSectionItem'
 import { Navigation } from 'components/Navigation/Navigation'
@@ -85,7 +85,7 @@ const Item = ({
             className={css.item}
             isSelected={isActive}
             displayType={DisplayType.Indent}
-            data-candu-id={`settings-link-${kebabCase(text)}`}
+            data-candu-id={`settings-link-${_kebabCase(text)}`}
             onClick={() => {
                 logEvent(SegmentEvent.SettingsNavigationClicked, {
                     title: text,

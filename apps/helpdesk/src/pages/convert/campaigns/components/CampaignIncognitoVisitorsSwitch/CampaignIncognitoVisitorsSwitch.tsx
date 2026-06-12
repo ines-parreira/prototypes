@@ -2,7 +2,7 @@ import type { FC } from 'react'
 import { createRef, useMemo, useState } from 'react'
 
 import cn from 'classnames'
-import { intersection } from '@gorgias/toolkit'
+import _intersection from 'lodash/intersection'
 import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
@@ -67,7 +67,9 @@ const CampaignIncognitoVisitorsSwitch: FC<Props> = ({ triggers, onChange }) => {
         const triggerTypes = Object.values(triggers).map((trigger) => {
             return trigger.type
         })
-        return intersection(CONVERT_SHOPIFY_TRIGGERS, triggerTypes).length !== 0
+        return (
+            _intersection(CONVERT_SHOPIFY_TRIGGERS, triggerTypes).length !== 0
+        )
     }, [triggers])
 
     const shouldBeDisabled = useMemo(() => {

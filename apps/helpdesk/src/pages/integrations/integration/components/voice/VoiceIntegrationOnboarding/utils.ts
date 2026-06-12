@@ -1,5 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep'
 import { v4 as uuidv4 } from 'uuid'
-import { cloneDeep } from '@gorgias/toolkit'
 
 import type {
     CallRoutingFlow,

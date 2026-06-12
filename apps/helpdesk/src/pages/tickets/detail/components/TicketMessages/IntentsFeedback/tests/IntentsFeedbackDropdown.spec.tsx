@@ -4,7 +4,8 @@ import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { noop } from '@gorgias/toolkit'
+import _noop from 'lodash/noop'
+
 import { IntentsFeedbackDropdown } from '../IntentsFeedbackDropdown'
 
 jest.mock('@repo/feature-flags', () => ({
@@ -19,7 +20,7 @@ const minProps: ComponentProps<typeof IntentsFeedbackDropdown> = {
     messageId: 1,
     availableIntentsNames: [],
     activeIntentsNames: [],
-    onToggle: noop,
+    onToggle: _noop,
     renderAvailableIntent: (intent: string) => {
         return <div key={intent}>{intent}</div>
     },
