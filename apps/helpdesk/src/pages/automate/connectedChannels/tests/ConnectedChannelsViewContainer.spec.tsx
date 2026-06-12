@@ -41,6 +41,7 @@ const defaultMockFlags = {
     isNonAiAgentChat2RevampEnabled: false,
     shouldShowNonAiAgentChatSettingsRevamp: false,
     shouldShowNonAiAgentRevamp: false,
+    shouldEnforceChatRedesignWithoutAiAgent: false,
     shouldShowLegacyChatCustomization: false,
     shouldShowChatSettingsRevamp: false,
     shouldShowFlowsScreensRevamp: false,
@@ -69,6 +70,7 @@ describe('ConnectedChannelsViewContainer', () => {
             ...defaultMockFlags,
             shouldShowFlowsScreensRevamp: true,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

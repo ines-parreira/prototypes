@@ -47,6 +47,7 @@ describe('ReturnOrderFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
     })
@@ -63,6 +64,7 @@ describe('ReturnOrderFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

@@ -175,6 +175,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
     })
@@ -195,6 +196,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -230,6 +232,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -262,6 +265,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -293,6 +297,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

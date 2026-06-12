@@ -43,11 +43,13 @@ export const ChatRedesignOptInBanner = ({
 }: Props) => {
     const { storeIntegration } = useStoreIntegration(integration)
 
-    const { shouldShowNonAiAgentChatSettingsRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
+    const {
+        shouldShowNonAiAgentChatSettingsRevamp,
+        shouldEnforceChatRedesignWithoutAiAgent,
+    } = useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
 
     const { isOptedIn } = useChatRedesignOptIn(integration.get('id'))
-    const cutoffDateLabel = useChatRedesignCutoffDate()
+    const { cutoffDateLabel } = useChatRedesignCutoffDate()
     const { isPreviewingNewChat, setIsPreviewingNewChat } =
         useChatPreviewPanelContext()
     const { setOptIn } = useSetChatRedesignOptIn(integration)
@@ -152,7 +154,10 @@ export const ChatRedesignOptInBanner = ({
         logPreviewModeSwitched({ from: 'new-chat', to: 'old-chat' })
     }, [onDiscardChanges, setIsPreviewingNewChat, logPreviewModeSwitched])
 
-    if (!shouldShowNonAiAgentChatSettingsRevamp) {
+    if (
+        !shouldShowNonAiAgentChatSettingsRevamp ||
+        shouldEnforceChatRedesignWithoutAiAgent
+    ) {
         return null
     }
 

@@ -191,6 +191,7 @@ describe('OrderManagementSettings', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
         mockUseChatPreviewPanel.mockReturnValue(buildChatPreviewPanelMock())
@@ -259,6 +260,7 @@ describe('OrderManagementSettings', () => {
                 isNonAiAgentChat2RevampEnabled: false,
                 shouldShowNonAiAgentChatSettingsRevamp: false,
                 shouldShowNonAiAgentRevamp: false,
+                shouldEnforceChatRedesignWithoutAiAgent: false,
                 shouldShowLegacyChatCustomization: false,
             })
         })

@@ -53,6 +53,7 @@ describe('ReportOrderIssueFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
     })
@@ -69,6 +70,7 @@ describe('ReportOrderIssueFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

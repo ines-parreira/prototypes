@@ -42,11 +42,13 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
     // chat must be eligible for the non-AI-agent chat revamp and not yet opted in.
     const { storeIntegration: connectedStoreIntegration } =
         useStoreIntegration(chat)
-    const { shouldShowNonAiAgentChatSettingsRevamp } =
-        useShouldShowChatSettingsRevamp(
-            connectedStoreIntegration,
-            chatIntegrationId,
-        )
+    const {
+        shouldShowNonAiAgentChatSettingsRevamp,
+        shouldEnforceChatRedesignWithoutAiAgent,
+    } = useShouldShowChatSettingsRevamp(
+        connectedStoreIntegration,
+        chatIntegrationId,
+    )
     const { isOptedIn } = useChatRedesignOptIn(chatIntegrationId)
     const { setOptIn, isSubmitting } = useSetChatRedesignOptIn(chat)
     const { logOptInConfirmed } = useLogMigrationEvent(chatIntegrationId)
@@ -125,7 +127,11 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
             )
         }
 
-        if (shouldShowNonAiAgentChatSettingsRevamp && !isOptedIn) {
+        if (
+            shouldShowNonAiAgentChatSettingsRevamp &&
+            !isOptedIn &&
+            !shouldEnforceChatRedesignWithoutAiAgent
+        ) {
             return (
                 <Text size="md" variant="medium" align="right">
                     <Link to={appearanceLink} onClick={openConfirm}>
@@ -160,6 +166,7 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
         getRedirectUri,
         shouldShowNonAiAgentChatSettingsRevamp,
         isOptedIn,
+        shouldEnforceChatRedesignWithoutAiAgent,
         appearanceLink,
         openConfirm,
     ])

@@ -60,6 +60,7 @@ describe('TrackOrderFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
     })
@@ -76,6 +77,7 @@ describe('TrackOrderFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

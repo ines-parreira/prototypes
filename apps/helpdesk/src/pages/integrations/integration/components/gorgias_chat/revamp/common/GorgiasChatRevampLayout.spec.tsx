@@ -80,6 +80,7 @@ const defaultShouldShowFlags = {
     isChatSettingsScreensRevampFlowsEnabled: false,
     isChatSettingsScreensRevampOrderManagementEnabled: false,
     isNonAiAgentChat2RevampEnabled: true,
+    shouldEnforceChatRedesignWithoutAiAgent: false,
     shouldShowChatSettingsRevamp: false,
     shouldShowNonAiAgentChatSettingsRevamp: true,
     shouldShowLegacyChatCustomization: true,
@@ -132,6 +133,23 @@ describe('<GorgiasChatRevampLayout />', () => {
 
         expect(
             screen.queryByRole('button', { name: 'Save' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('hides Switch to old chat once the chat redesign is enforced without an AI agent', () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            ...defaultShouldShowFlags,
+            shouldEnforceChatRedesignWithoutAiAgent: true,
+        })
+        mockUseChatRedesignOptIn.mockReturnValue({
+            isOptedIn: true,
+            optInDatetime: '2026-05-01T00:00:00Z',
+        })
+
+        renderLayout()
+
+        expect(
+            screen.queryByRole('button', { name: 'Switch to old chat' }),
         ).not.toBeInTheDocument()
     })
 

@@ -44,6 +44,7 @@ describe('OrderManagementViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
     })
@@ -60,6 +61,7 @@ describe('OrderManagementViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

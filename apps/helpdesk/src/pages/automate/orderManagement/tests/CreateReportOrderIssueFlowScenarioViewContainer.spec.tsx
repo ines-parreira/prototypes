@@ -48,6 +48,7 @@ const defaultRevampFlags = {
     shouldShowFlowsScreensRevamp: false,
     shouldShowOrderManagementScreensRevamp: false,
     shouldShowNonAiAgentRevamp: false,
+    shouldEnforceChatRedesignWithoutAiAgent: false,
     shouldShowLegacyChatCustomization: false,
     isLoading: false,
 }
@@ -64,6 +65,7 @@ describe('CreateReportOrderIssueFlowScenarioViewContainer', () => {
             ...defaultRevampFlags,
             shouldShowOrderManagementScreensRevamp: true,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

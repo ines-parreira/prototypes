@@ -38,7 +38,7 @@ export const ChatRedesignSwitchConfirmModal = ({
     onConfirm,
     onOpenChange,
 }: Props) => {
-    const cutoffDateLabel = useChatRedesignCutoffDate()
+    const { cutoffDateLabel } = useChatRedesignCutoffDate()
 
     return (
         <Modal

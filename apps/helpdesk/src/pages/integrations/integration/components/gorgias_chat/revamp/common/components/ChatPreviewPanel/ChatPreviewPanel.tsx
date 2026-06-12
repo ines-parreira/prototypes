@@ -29,6 +29,7 @@ import { ChatPreviewPanelHeader } from './components/ChatPreviewPanelHeader/Chat
 
 import { useGorgiasChatApi } from './hooks/useGorgiasChatApi'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import css from './ChatPreviewPanel.less'
 
 export type {
@@ -195,8 +196,8 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 if (gorgiasChatConfiguration && forceChatRedesign) {
                     gorgiasChatConfiguration.featureFlags = {
                         ...gorgiasChatConfiguration.featureFlags,
-                        'chat-client-ui-redesign-project': true,
-                        'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent': true,
+                        [FeatureFlagKey.ChatClientUiRedesignProject]: true,
+                        [FeatureFlagKey.EnforceChatRedesignWithoutAiAgent]: true,
                     }
                 }
 

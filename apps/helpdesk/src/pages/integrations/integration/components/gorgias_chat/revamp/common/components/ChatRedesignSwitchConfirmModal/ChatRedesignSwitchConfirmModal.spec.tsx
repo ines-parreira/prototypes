@@ -7,7 +7,10 @@ import { ChatRedesignSwitchConfirmModal } from './ChatRedesignSwitchConfirmModal
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignCutoffDate',
     () => ({
-        useChatRedesignCutoffDate: () => 'July 15th',
+        useChatRedesignCutoffDate: () => ({
+            cutoffDateLabel: 'July 15th',
+            isPastCutoff: false,
+        }),
     }),
 )
 

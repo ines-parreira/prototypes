@@ -3,6 +3,7 @@ import { renderHook } from '@repo/testing'
 
 import type { StoreIntegration } from 'models/integration/types'
 
+import { useChatRedesignCutoffDate } from './useChatRedesignCutoffDate'
 import { useChatRedesignOptIn } from './useChatRedesignOptIn'
 import { useIsAiAgentEnabled } from './useIsAiAgentEnabled'
 import { useShouldShowChatSettingsRevamp } from './useShouldShowChatSettingsRevamp'
@@ -10,6 +11,7 @@ import { useShouldShowChatSettingsRevamp } from './useShouldShowChatSettingsReva
 jest.mock('@repo/feature-flags')
 jest.mock('./useIsAiAgentEnabled')
 jest.mock('./useChatRedesignOptIn')
+jest.mock('./useChatRedesignCutoffDate')
 
 const mockUseFlagWithLoading = useFlagWithLoading as jest.MockedFunction<
     typeof useFlagWithLoading
@@ -20,6 +22,10 @@ const mockUseIsAiAgentEnabled = useIsAiAgentEnabled as jest.MockedFunction<
 const mockUseChatRedesignOptIn = useChatRedesignOptIn as jest.MockedFunction<
     typeof useChatRedesignOptIn
 >
+const mockUseChatRedesignCutoffDate =
+    useChatRedesignCutoffDate as jest.MockedFunction<
+        typeof useChatRedesignCutoffDate
+    >
 
 const mockStoreIntegration = {} as StoreIntegration
 
@@ -38,6 +44,10 @@ beforeEach(() => {
     mockUseChatRedesignOptIn.mockReturnValue({
         isOptedIn: false,
         optInDatetime: undefined,
+    })
+    mockUseChatRedesignCutoffDate.mockReturnValue({
+        cutoffDateLabel: 'August 1st',
+        isPastCutoff: false,
     })
 })
 
@@ -282,6 +292,40 @@ describe('useShouldShowChatSettingsRevamp', () => {
 
             expect(result.current.shouldShowLegacyChatCustomization).toBe(false)
         })
+
+        it('is false when the chat redesign cutoff date has passed', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseChatRedesignCutoffDate.mockReturnValue({
+                cutoffDateLabel: 'August 1st',
+                isPastCutoff: true,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowLegacyChatCustomization).toBe(false)
+        })
+
+        it('is false when the EnforceChatRedesignWithoutAiAgent flag is on', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.EnforceChatRedesignWithoutAiAgent,
+                isLoading: false,
+            }))
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowLegacyChatCustomization).toBe(false)
+        })
     })
 
     describe('isLoading', () => {
@@ -302,6 +346,20 @@ describe('useShouldShowChatSettingsRevamp', () => {
             mockUseFlagWithLoading.mockImplementation((key) => ({
                 value: false,
                 isLoading: key === FeatureFlagKey.NonAiAgentChat2Revamp,
+            }))
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('should be true when EnforceChat2WithoutAiAgent flag is loading', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: false,
+                isLoading:
+                    key === FeatureFlagKey.EnforceChatRedesignWithoutAiAgent,
             }))
 
             const { result } = renderHook(() =>

@@ -2,6 +2,7 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import type { StoreIntegration } from 'models/integration/types'
 
+import { useChatRedesignCutoffDate } from './useChatRedesignCutoffDate'
 import { useChatRedesignOptIn } from './useChatRedesignOptIn'
 import { useIsAiAgentEnabled } from './useIsAiAgentEnabled'
 
@@ -31,14 +32,27 @@ export const useShouldShowChatSettingsRevamp = (
         isLoading: isNonAiAgentChat2RevampLoading,
     } = useFlagWithLoading(FeatureFlagKey.NonAiAgentChat2Revamp)
 
+    const {
+        value: isEnforceChatRedesignWithoutAiAgentEnabled,
+        isLoading: isEnforceChatRedesignWithoutAiAgentLoading,
+    } = useFlagWithLoading(FeatureFlagKey.EnforceChatRedesignWithoutAiAgent)
+
     const { isAiAgentEnabled, isLoading: isAiAgentLoading } =
         useIsAiAgentEnabled(storeIntegration, chatId)
 
     const { isOptedIn } = useChatRedesignOptIn(chatId)
 
+    const { isPastCutoff } = useChatRedesignCutoffDate()
+
     const isAiAgentDisabled = !isAiAgentLoading && !isAiAgentEnabled
 
-    const shouldShowLegacyChatCustomization = isAiAgentDisabled && !isOptedIn
+    const shouldEnforceChatRedesignWithoutAiAgent =
+        isPastCutoff || isEnforceChatRedesignWithoutAiAgentEnabled
+
+    const shouldShowLegacyChatCustomization =
+        isAiAgentDisabled &&
+        !isOptedIn &&
+        !shouldEnforceChatRedesignWithoutAiAgent
 
     // Shows the chat settings revamp UI for non-AI-agent customers
     // gated behind the NonAiAgentChat2Revamp flag (Chat 2.0 migration).
@@ -69,6 +83,7 @@ export const useShouldShowChatSettingsRevamp = (
         isChatSettingsScreensRevampFlowsEnabled,
         isChatSettingsScreensRevampOrderManagementEnabled,
         isNonAiAgentChat2RevampEnabled,
+        shouldEnforceChatRedesignWithoutAiAgent,
         shouldShowChatSettingsRevamp,
         shouldShowNonAiAgentChatSettingsRevamp,
         shouldShowLegacyChatCustomization,
@@ -80,6 +95,7 @@ export const useShouldShowChatSettingsRevamp = (
             isChatSettingsScreensRevampFlowsLoading ||
             isChatSettingsScreensRevampOrderManagementLoading ||
             isNonAiAgentChat2RevampLoading ||
+            isEnforceChatRedesignWithoutAiAgentLoading ||
             isAiAgentLoading,
     }
 }

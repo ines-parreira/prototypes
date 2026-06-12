@@ -43,8 +43,10 @@ export const GorgiasChatRevampLayout = ({
 
     const chatId = integration.get('id') as number | undefined
     const { storeIntegration } = useStoreIntegration(integration)
-    const { shouldShowNonAiAgentChatSettingsRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration, chatId)
+    const {
+        shouldShowNonAiAgentChatSettingsRevamp,
+        shouldEnforceChatRedesignWithoutAiAgent,
+    } = useShouldShowChatSettingsRevamp(storeIntegration, chatId)
     const { isOptedIn, optInDatetime } = useChatRedesignOptIn(chatId)
     const { isPreviewingNewChat } = useChatPreviewPanelContext()
     const { setOptIn, isSubmitting: isSwitchingToOldChat } =
@@ -57,7 +59,9 @@ export const GorgiasChatRevampLayout = ({
     const shouldHideSave =
         shouldShowNonAiAgentChatSettingsRevamp && isPreviewing
     const shouldShowSwitchToOldChat =
-        shouldShowNonAiAgentChatSettingsRevamp && isOptedIn
+        shouldShowNonAiAgentChatSettingsRevamp &&
+        isOptedIn &&
+        !shouldEnforceChatRedesignWithoutAiAgent
 
     const [isSwitchBackModalOpen, setIsSwitchBackModalOpen] = useState(false)
 

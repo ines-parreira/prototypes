@@ -244,6 +244,20 @@ describe('ActionsCell', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('does not render once the chat redesign is enforced without an AI agent', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowNonAiAgentChatSettingsRevamp: true,
+                shouldEnforceChatRedesignWithoutAiAgent: true,
+            } as ReturnType<typeof useShouldShowChatSettingsRevamp>)
+
+            renderActionsCell(buildChat(), Map({}))
+
+            expect(
+                screen.queryByText('Update to new chat'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByTestId('forward-icon')).toBeInTheDocument()
+        })
+
         it('takes precedence over "Update permissions"', () => {
             mockUseFlag.mockReturnValue(true)
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({

@@ -82,6 +82,7 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
     })
@@ -98,6 +99,7 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -146,6 +148,7 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 

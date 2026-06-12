@@ -19,7 +19,9 @@ jest.mock('hooks/useAppDispatch')
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignCutoffDate',
     () => ({
-        useChatRedesignCutoffDate: () => 'July 15th',
+        useChatRedesignCutoffDate: () => ({
+            cutoffDateLabel: 'July 15th',
+        }),
     }),
 )
 jest.mock(
@@ -84,6 +86,7 @@ const defaultShouldShowFlags = {
     isChatSettingsScreensRevampFlowsEnabled: false,
     isChatSettingsScreensRevampOrderManagementEnabled: false,
     isNonAiAgentChat2RevampEnabled: true,
+    shouldEnforceChatRedesignWithoutAiAgent: false,
     shouldShowChatSettingsRevamp: false,
     shouldShowNonAiAgentChatSettingsRevamp: true,
     shouldShowLegacyChatCustomization: true,
@@ -114,6 +117,19 @@ describe('<ChatRedesignOptInBanner />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             ...defaultShouldShowFlags,
             shouldShowNonAiAgentChatSettingsRevamp: false,
+        })
+
+        const { container } = render(
+            <ChatRedesignOptInBanner integration={integration} />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('renders nothing once the chat redesign is enforced without an AI agent', () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            ...defaultShouldShowFlags,
+            shouldEnforceChatRedesignWithoutAiAgent: true,
         })
 
         const { container } = render(

@@ -97,6 +97,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -123,6 +124,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -154,6 +156,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -177,6 +180,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -202,6 +206,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
@@ -228,6 +233,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldEnforceChatRedesignWithoutAiAgent: false,
             shouldShowLegacyChatCustomization: false,
         })
 
