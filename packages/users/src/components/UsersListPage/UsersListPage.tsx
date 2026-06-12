@@ -4,10 +4,10 @@ import { UserRole } from '@repo/permissions'
 
 import {
     Button,
-    DataTable,
+    DataTableActions,
+    DataTablePanel,
+    DataTablePanelHeader,
     DataTableSearch,
-    Panel,
-    PanelHeader,
     toast,
 } from '@gorgias/axiom'
 import type { PaginationState } from '@gorgias/axiom'
@@ -42,38 +42,31 @@ export function UsersListPage() {
     }, [isError])
 
     return (
-        <Panel
-            flexDirection="column"
+        <DataTablePanel
             w="100%"
             h="100%"
             minHeight={0}
-            overflow="auto"
+            data={visibleUsers}
+            columns={usersListPageColumns}
+            isLoading={isLoading}
+            search={{ enable: true }}
+            sorting={{ enable: true }}
+            filters={{ enable: true }}
+            pagination={{ enable: true, defaultValue: DEFAULT_PAGINATION }}
+            getRowHref={(user) => `/app/settings/users/${user.id}`}
+            persistence={{
+                enable: true,
+                id: 'users-page',
+            }}
         >
-            <PanelHeader
-                title="Users"
-                trailingSlot={
-                    <Button as="a" href="/app/settings/users/add/">
-                        Create user
-                    </Button>
-                }
-            />
-            <DataTable
-                data={visibleUsers}
-                columns={usersListPageColumns}
-                isLoading={isLoading}
-                search={{ enable: true }}
-                sorting={{ enable: true }}
-                filters={{ enable: true }}
-                pagination={{ enable: true, defaultValue: DEFAULT_PAGINATION }}
-                getRowHref={(user) => `/app/settings/users/${user.id}`}
-                persistence={{
-                    enable: true,
-                    id: 'users-page',
-                }}
-            >
-                <DataTableSearch placeholder="Search users..." />
-            </DataTable>
-        </Panel>
+            <DataTablePanelHeader title="Users" />
+            <DataTableSearch placeholder="Search users..." />
+            <DataTableActions>
+                <Button as="a" href="/app/settings/users/add/">
+                    Create user
+                </Button>
+            </DataTableActions>
+        </DataTablePanel>
     )
 }
 

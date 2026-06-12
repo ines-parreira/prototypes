@@ -2,13 +2,11 @@ import { useMemo } from 'react'
 
 import {
     Box,
-    DataTable,
-    DataTablePagination,
+    DataTablePanel,
+    DataTablePanelHeader,
     DataTableSearch,
     Heading,
     Icon,
-    Panel,
-    PanelHeader,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
@@ -66,8 +64,38 @@ function LiveAgentsDataTable() {
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
             <LiveAgentMetricsProvider value={metrics}>
-                <Panel h="100%" w="100%" overflow="auto">
-                    <PanelHeader
+                <DataTablePanel
+                    h="100%"
+                    w="100%"
+                    data={rows}
+                    columns={columns}
+                    isLoading={isLoading}
+                    // Semi-controlled (onChange, no `value`) so persisted
+                    // sorting/search rehydrate from the URL on reload — a
+                    // controlled `value` would override the restored
+                    // default. The hook mirrors the value via onChange for
+                    // its manual sort / search.
+                    sorting={{
+                        enable: true,
+                        manual: true,
+                        defaultValue: LIVE_AGENTS_DEFAULT_SORTING,
+                        onChange: onSortingChange,
+                    }}
+                    search={{
+                        enable: true,
+                        manual: true,
+                        onChange: onSearchChange,
+                    }}
+                    pagination={{
+                        enable: true,
+                        defaultValue: DEFAULT_PAGINATION,
+                    }}
+                    persistence={{
+                        enable: true,
+                        id: 'live-agents-data-table',
+                    }}
+                >
+                    <DataTablePanelHeader
                         title={
                             <Box
                                 flexDirection="row"
@@ -92,39 +120,8 @@ function LiveAgentsDataTable() {
                             .filter(Boolean)
                             .join(' · ')}
                     />
-                    <DataTable
-                        data={rows}
-                        columns={columns}
-                        isLoading={isLoading}
-                        // Semi-controlled (onChange, no `value`) so persisted
-                        // sorting/search rehydrate from the URL on reload — a
-                        // controlled `value` would override the restored
-                        // default. The hook mirrors the value via onChange for
-                        // its manual sort / search.
-                        sorting={{
-                            enable: true,
-                            manual: true,
-                            defaultValue: LIVE_AGENTS_DEFAULT_SORTING,
-                            onChange: onSortingChange,
-                        }}
-                        search={{
-                            enable: true,
-                            manual: true,
-                            onChange: onSearchChange,
-                        }}
-                        pagination={{
-                            enable: true,
-                            defaultValue: DEFAULT_PAGINATION,
-                        }}
-                        persistence={{
-                            enable: true,
-                            id: 'live-agents-data-table',
-                        }}
-                    >
-                        <DataTableSearch placeholder="Search agents…" />
-                        <DataTablePagination />
-                    </DataTable>
-                </Panel>
+                    <DataTableSearch placeholder="Search agents…" />
+                </DataTablePanel>
             </LiveAgentMetricsProvider>
         </StatsFiltersContext.Provider>
     )
