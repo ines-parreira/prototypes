@@ -11,25 +11,32 @@ import { http, HttpResponse } from 'msw'
 import {
     mockGetCustomerHandler,
     mockGetTicketHandler,
+    mockGetTicketMessageHandler,
     mockGetUserAvailabilityHandler,
     mockTicket,
     mockTicketMessage,
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
-import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import type { TicketThreadSocialMediaFacebookMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
 import { render } from '../../tests/render.utils'
 import { server } from '../../tests/server'
-import { FacebookMessengerMessage } from './FacebookMessengerMessage'
 
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const actual = await importOriginal<typeof HelpdeskQueriesModule>()
-    return { ...actual, useGetTicketMessage: vi.fn() }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { FacebookMessengerMessage } from './FacebookMessengerMessage'
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
@@ -47,7 +54,6 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
-const mockUseGetTicketMessage = vi.mocked(useGetTicketMessage)
 const mockUseCurrentUserLanguagePreferences = vi.mocked(
     useCurrentUserLanguagePreferences,
 )
@@ -71,9 +77,6 @@ beforeEach(() => {
         mockGetCustomerHandler().handler,
         mockGetUserAvailabilityHandler().handler,
     )
-    mockUseGetTicketMessage.mockReturnValue({ data: undefined } as ReturnType<
-        typeof useGetTicketMessage
-    >)
     mockUseCurrentUserLanguagePreferences.mockReturnValue({
         shouldShowTranslatedContent: () => false,
     } as ReturnType<typeof useCurrentUserLanguagePreferences>)
@@ -188,26 +191,30 @@ describe('FacebookMessengerMessage', () => {
 
     describe('with replied_to', () => {
         beforeEach(() => {
-            mockUseGetTicketMessage.mockReturnValue({
-                data: {
-                    data: {
-                        sender: {
-                            id: 20,
-                            name: 'chrismizen_',
-                            firstname: 'Chris',
-                            lastname: 'Mizen',
-                            email: 'chris@example.com',
-                            meta: null,
-                        },
-                        body_text: "This doesn't look very athletic to me!",
-                        created_datetime: new Date().toISOString(),
-                        channel: 'facebook-comment',
-                        sent_datetime: null,
-                        opened_datetime: null,
-                        failed_datetime: null,
-                    },
-                },
-            } as ReturnType<typeof useGetTicketMessage>)
+            server.use(
+                mockGetTicketMessageHandler(async () =>
+                    HttpResponse.json(
+                        mockTicketMessage({
+                            id: 99,
+                            ticket_id: 50,
+                            sender: {
+                                id: 20,
+                                name: 'chrismizen_',
+                                firstname: 'Chris',
+                                lastname: 'Mizen',
+                                email: 'chris@example.com',
+                                meta: null,
+                            },
+                            body_text: "This doesn't look very athletic to me!",
+                            created_datetime: new Date().toISOString(),
+                            channel: 'facebook-comment',
+                            sent_datetime: null,
+                            opened_datetime: null,
+                            failed_datetime: null,
+                        }),
+                    ),
+                ).handler,
+            )
         })
 
         it('shows the original comment context card with "Original comment via Facebook" label', async () => {

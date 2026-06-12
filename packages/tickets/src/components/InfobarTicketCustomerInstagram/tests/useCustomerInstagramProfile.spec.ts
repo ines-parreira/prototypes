@@ -1,23 +1,34 @@
+import { HttpResponse } from 'msw'
 import { Duration } from '@gorgias/toolkit'
 import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 
-import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
+import {
+    mockListInstagramProfilesHandler,
+    mockListInstagramProfilesResponse,
+} from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
 
 import { renderHook } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 import { useCustomerInstagramProfile } from '../useCustomerInstagramProfile'
 
 vi.mock('@gorgias/toolkit-react', () => ({
     useExhaustEndpoint: vi.fn(),
 }))
-
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
-    return {
-        ...actual,
-        useListInstagramProfiles: vi.fn(),
-    }
-})
 
 const customer = {
     id: 1,
@@ -46,12 +57,19 @@ describe('useCustomerInstagramProfile', () => {
                 },
             ],
         } as ReturnType<typeof useExhaustEndpoint>)
-        vi.mocked(useListInstagramProfiles).mockReturnValue({
-            data: undefined,
-        } as ReturnType<typeof useListInstagramProfiles>)
     })
 
-    it('uses one-day freshness and retention for Instagram profile queries', () => {
+    it('uses one-day freshness and retention for Instagram profile queries', async () => {
+        const listInstagramProfilesMock = mockListInstagramProfilesHandler(
+            async () =>
+                HttpResponse.json(
+                    mockListInstagramProfilesResponse({ data: [] }),
+                ),
+        )
+        const waitForListInstagramProfilesRequest =
+            listInstagramProfilesMock.waitForRequest(server)
+        server.use(listInstagramProfilesMock.handler)
+
         renderHook(() => useCustomerInstagramProfile({ customer, messages }))
 
         expect(useExhaustEndpoint).toHaveBeenCalledWith(
@@ -63,27 +81,15 @@ describe('useCustomerInstagramProfile', () => {
                 refetchOnWindowFocus: false,
             },
         )
-        expect(useListInstagramProfiles).toHaveBeenCalledWith(
-            {
-                customer_id: customer.id,
-                owning_business_id: 'ig_business_123',
-                limit: 1,
-                order_by: 'updated_at:desc',
-            },
-            {
-                query: {
-                    enabled: true,
-                    queryKey: queryKeys.integrations.listInstagramProfiles({
-                        customer_id: customer.id,
-                        owning_business_id: 'ig_business_123',
-                        limit: 1,
-                        order_by: 'updated_at:desc',
-                    }),
-                    staleTime: Duration.days(1),
-                    cacheTime: Duration.days(1),
-                    select: expect.any(Function),
-                },
-            },
-        )
+        await waitForListInstagramProfilesRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.get('customer_id')).toBe(String(customer.id))
+            expect(searchParams.get('owning_business_id')).toBe(
+                'ig_business_123',
+            )
+            expect(searchParams.get('limit')).toBe('1')
+            expect(searchParams.get('order_by')).toBe('updated_at:desc')
+        })
     })
 })

@@ -1,32 +1,22 @@
-import { act, waitFor } from '@testing-library/react'
+import { act } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import {
-    useRequestTicketTranslation,
-    useUpdateTicket,
-} from '@gorgias/helpdesk-queries'
+    mockRequestTicketTranslationHandler,
+    mockUpdateTicketHandler,
+    mockUpdateTicketResponse,
+} from '@gorgias/helpdesk-mocks'
 import { Language } from '@gorgias/helpdesk-types'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { renderHook } from '../../tests/render.utils'
+import { server } from '../../tests/server'
 import { useCurrentUserLanguagePreferences } from '../hooks/useCurrentUserLanguagePreferences'
 import { useRetranslateTicket } from '../hooks/useRetranslateTicket'
 import { DisplayedContent, FetchingState } from '../store/constants'
 import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
 
 const mockRegenerateTicketMessageTranslations = vi.fn()
-
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useRequestTicketTranslation: vi.fn(),
-        useUpdateTicket: vi.fn(),
-    }
-})
 
 vi.mock('../hooks/useCurrentUserLanguagePreferences', () => ({
     useCurrentUserLanguagePreferences: vi.fn(() => ({
@@ -45,13 +35,15 @@ vi.mock('../hooks/useRegenerateTicketMessageTranslations', () => ({
     })),
 }))
 
-const mockedUseRequestTicketTranslation = vi.mocked(useRequestTicketTranslation)
-const mockedUseUpdateTicket = vi.mocked(useUpdateTicket)
 const mockedUseCurrentUserLanguagePreferences = vi.mocked(
     useCurrentUserLanguagePreferences,
 )
 
 const ticketId = 123
+let mockRequestTicketTranslation: ReturnType<
+    typeof mockRequestTicketTranslationHandler
+>
+let requestTicketTranslationCount = 0
 
 const translatableMessages = [
     {
@@ -70,9 +62,35 @@ const translatableMessages = [
     },
 ] as TicketMessage[]
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useRetranslateTicket', () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        requestTicketTranslationCount = 0
+        mockRequestTicketTranslation = mockRequestTicketTranslationHandler(
+            async () => {
+                requestTicketTranslationCount += 1
+
+                return new HttpResponse(null)
+            },
+        )
+        server.use(
+            mockUpdateTicketHandler(async () =>
+                HttpResponse.json(mockUpdateTicketResponse()),
+            ).handler,
+            mockRequestTicketTranslation.handler,
+        )
         mockedUseCurrentUserLanguagePreferences.mockReturnValue({
             isFetching: false,
             isEnabled: true,
@@ -96,20 +114,12 @@ describe('useRetranslateTicket', () => {
             allMessageDisplayState: DisplayedContent.Translated,
         })
 
-        mockedUseRequestTicketTranslation.mockReturnValue({
-            mutate: vi.fn(),
-        } as unknown as ReturnType<typeof useRequestTicketTranslation>)
-        mockedUseUpdateTicket.mockReturnValue({
-            mutateAsync: vi.fn().mockResolvedValue(undefined),
-        } as unknown as ReturnType<typeof useUpdateTicket>)
         mockRegenerateTicketMessageTranslations.mockResolvedValue(undefined)
     })
 
     it('preserves current translations while triggering subject and message retranslation', async () => {
-        const requestTicketTranslation = vi.fn()
-        mockedUseRequestTicketTranslation.mockReturnValue({
-            mutate: requestTicketTranslation,
-        } as unknown as ReturnType<typeof useRequestTicketTranslation>)
+        const waitForRequestTicketTranslationRequest =
+            mockRequestTicketTranslation.waitForRequest(server)
 
         const { result } = renderHook(() =>
             useRetranslateTicket({
@@ -122,12 +132,10 @@ describe('useRetranslateTicket', () => {
             await result.current.retranslateTicket(Language.De)
         })
 
-        await waitFor(() => {
-            expect(requestTicketTranslation).toHaveBeenCalledWith({
-                data: {
-                    ticket_id: ticketId,
-                    language: Language.Fr,
-                },
+        await waitForRequestTicketTranslationRequest(async (request) => {
+            await expect(request.json()).resolves.toEqual({
+                ticket_id: ticketId,
+                language: Language.Fr,
             })
         })
 
@@ -155,7 +163,12 @@ describe('useRetranslateTicket', () => {
     })
 
     it('does not request translations when the source language is already known by the user', async () => {
-        const requestTicketTranslation = vi.fn()
+        const updateTicketMock = mockUpdateTicketHandler(async () =>
+            HttpResponse.json(mockUpdateTicketResponse()),
+        )
+        const waitForUpdateTicketRequest =
+            updateTicketMock.waitForRequest(server)
+        server.use(updateTicketMock.handler)
         mockedUseCurrentUserLanguagePreferences.mockReturnValue({
             isFetching: false,
             isEnabled: true,
@@ -163,9 +176,6 @@ describe('useRetranslateTicket', () => {
             proficient: [Language.De],
             shouldShowTranslatedContent: vi.fn(),
         })
-        mockedUseRequestTicketTranslation.mockReturnValue({
-            mutate: requestTicketTranslation,
-        } as unknown as ReturnType<typeof useRequestTicketTranslation>)
 
         const { result } = renderHook(() =>
             useRetranslateTicket({
@@ -178,7 +188,9 @@ describe('useRetranslateTicket', () => {
             await result.current.retranslateTicket(Language.De)
         })
 
-        expect(requestTicketTranslation).not.toHaveBeenCalled()
+        await waitForUpdateTicketRequest()
+
+        expect(requestTicketTranslationCount).toBe(0)
         expect(mockRegenerateTicketMessageTranslations).not.toHaveBeenCalled()
 
         const displayState = useTicketMessageTranslationDisplay.getState()

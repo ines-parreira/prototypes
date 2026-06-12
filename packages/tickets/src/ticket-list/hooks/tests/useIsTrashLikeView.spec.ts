@@ -6,16 +6,12 @@ import {
     mockGetViewHandler,
     mockGetViewResponse,
 } from '@gorgias/helpdesk-mocks'
-import { useGetView } from '@gorgias/helpdesk-queries'
 
 import { renderHook } from '../../../tests/render.utils'
 import { useIsTrashLikeView } from '../useIsTrashLikeView'
 
-vi.mock('@gorgias/helpdesk-queries', { spy: true })
-
-const useGetViewMock = vi.mocked(useGetView)
-
 const viewId = 123
+let getViewRequestCount = 0
 
 const server = setupServer()
 
@@ -24,21 +20,23 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
+    getViewRequestCount = 0
     server.use(
-        mockGetViewHandler(async () =>
-            HttpResponse.json(
+        mockGetViewHandler(async () => {
+            getViewRequestCount += 1
+
+            return HttpResponse.json(
                 mockGetViewResponse({
                     id: viewId,
                     filters: '',
                 }),
-            ),
-        ).handler,
+            )
+        }).handler,
     )
 })
 
 afterEach(() => {
     server.resetHandlers()
-    useGetViewMock.mockRestore()
 })
 
 afterAll(() => {
@@ -46,18 +44,15 @@ afterAll(() => {
 })
 
 describe('useIsTrashLikeView', () => {
-    it('disables the view query for draft views', () => {
-        useGetViewMock.mockReturnValue({
-            data: undefined,
-        } as ReturnType<typeof useGetView>)
+    it('does not fetch persisted view metadata for draft views', async () => {
+        const { result } = renderHook(() =>
+            useIsTrashLikeView(viewId, { isDraftView: true }),
+        )
 
-        renderHook(() => useIsTrashLikeView(viewId, { isDraftView: true }))
+        await new Promise((resolve) => setTimeout(resolve, 0))
 
-        expect(useGetViewMock).toHaveBeenCalledWith(viewId, {
-            query: {
-                enabled: false,
-            },
-        })
+        expect(result.current).toBe(false)
+        expect(getViewRequestCount).toBe(0)
     })
 
     it('returns false when the current view does not include the trash filter', async () => {

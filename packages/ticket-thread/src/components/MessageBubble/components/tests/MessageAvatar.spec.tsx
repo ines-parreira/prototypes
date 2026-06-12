@@ -1,20 +1,26 @@
 import { useGetCustomer } from '@repo/customer/hooks'
 
-import { mockTicketMessageUserOrCustomer } from '@gorgias/helpdesk-mocks'
-import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
-import { useGetUserAvailability } from '@gorgias/helpdesk-queries'
+import {
+    mockGetUserAvailabilityHandler,
+    mockTicketMessageUserOrCustomer,
+} from '@gorgias/helpdesk-mocks'
+
+import { server } from '../../../../tests/server'
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 import { render } from '../../../../tests/render.utils'
 import { MessageAvatar } from '../MessageHeader/MessageAvatar'
-
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const actual = await importOriginal<typeof HelpdeskQueries>()
-
-    return {
-        ...actual,
-        useGetUserAvailability: vi.fn(),
-    }
-})
 
 vi.mock('@repo/customer/hooks', () => ({
     useGetCustomer: vi.fn(),
@@ -31,7 +37,6 @@ vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
 }))
 
 const mockUseGetCustomer = vi.mocked(useGetCustomer)
-const mockUseGetUserAvailability = vi.mocked(useGetUserAvailability)
 
 const sender = mockTicketMessageUserOrCustomer({
     id: 123,
@@ -43,9 +48,7 @@ beforeEach(() => {
     mockUseGetCustomer.mockReturnValue({ data: undefined } as ReturnType<
         typeof useGetCustomer
     >)
-    mockUseGetUserAvailability.mockReturnValue({
-        data: undefined,
-    } as ReturnType<typeof useGetUserAvailability>)
+    server.use(mockGetUserAvailabilityHandler().handler)
 })
 
 describe('MessageAvatar', () => {
@@ -77,7 +80,12 @@ describe('MessageAvatar', () => {
         )
     })
 
-    it('uses the agent availability endpoint for agent avatars', () => {
+    it('uses the agent availability endpoint for agent avatars', async () => {
+        const getUserAvailabilityMock = mockGetUserAvailabilityHandler()
+        const waitForGetUserAvailabilityRequest =
+            getUserAvailabilityMock.waitForRequest(server)
+        server.use(getUserAvailabilityMock.handler)
+
         render(<MessageAvatar sender={sender} fromAgent />)
 
         expect(mockUseGetCustomer).toHaveBeenCalledWith(
@@ -89,13 +97,8 @@ describe('MessageAvatar', () => {
                 }),
             }),
         )
-        expect(mockUseGetUserAvailability).toHaveBeenCalledWith(
-            sender.id,
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                }),
-            }),
-        )
+        await waitForGetUserAvailabilityRequest((request) => {
+            expect(new URL(request.url).pathname).toContain(`/${sender.id}`)
+        })
     })
 })

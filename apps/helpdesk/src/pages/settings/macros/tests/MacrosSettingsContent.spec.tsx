@@ -7,9 +7,14 @@ import { Provider } from 'react-redux'
 import { useLocation, useRouteMatch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { toast } from '@gorgias/axiom'
+import {
+    mockListMacrosHandler,
+    mockListMacrosResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { ListMacrosParams } from '@gorgias/helpdesk-queries'
-import { useListMacros } from '@gorgias/helpdesk-queries'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
 import { user } from 'fixtures/users'
@@ -107,18 +112,6 @@ jest.mock(
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 const mockUseLocation = useLocation as jest.Mock
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    __esModule: true,
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListMacros: jest.fn(),
-    queryKeys: {
-        macros: {
-            listMacros: () => ({ pop: () => null }),
-        },
-    },
-}))
-const mockUseListMacros = assumeMock(useListMacros)
-
 jest.mock('hooks/macros')
 const mockUseCreateMacro = assumeMock(useCreateMacro)
 const mockUseDeleteMacro = assumeMock(useDeleteMacro)
@@ -128,6 +121,34 @@ const useBulkUnarchiveMacrosMock = assumeMock(useBulkUnarchiveMacros)
 const mockMutateBulkArchive = jest.fn()
 const mockMutateBulkUnarchive = jest.fn()
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const waitForMacroList = () => screen.findByText(macrosFixtures[0].name!)
+
+const mockListMacrosResponseBody = (
+    data = macrosFixtures,
+    meta: { next_cursor: string | null; prev_cursor: string | null } = {
+        next_cursor: 'next_cursor',
+        prev_cursor: 'prev_cursor',
+    },
+) =>
+    mockListMacrosResponse({
+        data,
+        meta,
+    })
+
 describe('<MacrosSettingsContent/>', () => {
     afterEach(() => {
         toast.dismiss()
@@ -136,19 +157,16 @@ describe('<MacrosSettingsContent/>', () => {
     beforeEach(() => {
         mockListMacrosParams = { order_by: 'created_datetime:asc' }
         mockSetListMacrosParams.mockClear()
+        mockMutateCreate.mockClear()
+        mockMutateDelete.mockClear()
+        mockMutateBulkArchive.mockClear()
+        mockMutateBulkUnarchive.mockClear()
         useAppDispatchMock.mockReturnValue(jest.fn())
-        mockUseListMacros.mockReturnValue({
-            data: {
-                data: {
-                    data: macrosFixtures,
-                    meta: {
-                        next_cursor: 'next_cursor',
-                        prev_cursor: 'prev_cursor',
-                    },
-                },
-            },
-            isError: false,
-        } as ReturnType<typeof useListMacros>)
+        server.use(
+            mockListMacrosHandler(async () =>
+                HttpResponse.json(mockListMacrosResponseBody()),
+            ).handler,
+        )
         mockUseCreateMacro.mockReturnValue({
             mutate: mockMutateCreate,
         } as unknown as ReturnType<typeof useCreateMacro>)
@@ -170,7 +188,13 @@ describe('<MacrosSettingsContent/>', () => {
         })
     })
 
-    it('should display list of macros', () => {
+    it('should display list of macros', async () => {
+        const listMacrosMock = mockListMacrosHandler(async () =>
+            HttpResponse.json(mockListMacrosResponseBody()),
+        )
+        const waitForListMacrosRequest = listMacrosMock.waitForRequest(server)
+        server.use(listMacrosMock.handler)
+
         render(
             <Provider
                 store={mockStore({
@@ -181,16 +205,11 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        expect(useListMacros).toHaveBeenCalledWith(
-            {
-                order_by: 'created_datetime:asc',
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
-                },
-            },
-        )
+        await waitForListMacrosRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.get('order_by')).toBe('created_datetime:asc')
+        })
         expect(
             screen.getByText(
                 /Macros are pre-made responses to customer questions/,
@@ -199,18 +218,14 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should notify when fetching macros fails', async () => {
-        mockUseListMacros.mockReturnValue({
-            data: {
-                data: {
-                    data: [],
-                    meta: {
-                        next_cursor: 'next_cursor',
-                        prev_cursor: 'prev_cursor',
-                    },
-                },
-            },
-            isError: true,
-        } as ReturnType<typeof useListMacros>)
+        server.use(
+            mockListMacrosHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Failed to fetch macros' } } as any,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
         render(
             <Provider
                 store={mockStore({
@@ -239,12 +254,14 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
+        await waitForMacroList()
         await userEvent.click(screen.getByText('keyboard_arrow_right'))
         expect(mockSetListMacrosParams).toHaveBeenCalledWith({
             order_by: 'created_datetime:asc',
             cursor: 'next_cursor',
         })
 
+        await waitForMacroList()
         await userEvent.click(screen.getByText('keyboard_arrow_left'))
         expect(mockSetListMacrosParams).toHaveBeenCalledWith({
             order_by: 'created_datetime:asc',
@@ -271,18 +288,16 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should refetch macros at previous page if last page is empty', async () => {
-        mockUseListMacros.mockReturnValue({
-            data: {
-                data: {
-                    data: [macrosFixtures[0]],
-                    meta: {
+        server.use(
+            mockListMacrosHandler(async () =>
+                HttpResponse.json(
+                    mockListMacrosResponseBody([macrosFixtures[0]], {
                         next_cursor: 'next_cursor',
                         prev_cursor: 'prev_cursor',
-                    },
-                },
-            },
-            isError: false,
-        } as ReturnType<typeof useListMacros>)
+                    }),
+                ),
+            ).handler,
+        )
         render(
             <Provider
                 store={mockStore({
@@ -293,6 +308,7 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
+        await waitForMacroList()
         await userEvent.click(screen.getByText('more_vert'))
         await screen.findByText(/Delete/)
         await userEvent.click(screen.getByText(/Delete/))
@@ -313,31 +329,20 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should refetch macros once a macro has been deleted', async () => {
-        mockUseListMacros
-            .mockReturnValueOnce({
-                data: {
-                    data: {
-                        data: macrosFixtures,
-                        meta: {
-                            next_cursor: 'next_cursor',
-                            prev_cursor: 'prev_cursor',
-                        },
-                    },
-                },
-                isError: false,
-            } as ReturnType<typeof useListMacros>)
-            .mockReturnValueOnce({
-                data: {
-                    data: {
-                        data: [macrosFixtures[0]],
-                        meta: {
-                            next_cursor: null,
-                            prev_cursor: null,
-                        },
-                    },
-                },
-                isError: false,
-            } as ReturnType<typeof useListMacros>)
+        mockListMacrosParams = {
+            order_by: 'created_datetime:asc',
+            cursor: 'next_cursor',
+        }
+        server.use(
+            mockListMacrosHandler(async () =>
+                HttpResponse.json(
+                    mockListMacrosResponseBody([macrosFixtures[0]], {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    }),
+                ),
+            ).handler,
+        )
         render(
             <Provider
                 store={mockStore({
@@ -348,7 +353,6 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        await userEvent.click(screen.getByText('keyboard_arrow_right'))
         await screen.findByText('more_vert')
         await userEvent.click(screen.getByText('more_vert'))
         await screen.findByText(/Delete/)
@@ -378,6 +382,7 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
+        await waitForMacroList()
         await userEvent.click(screen.getAllByText('more_vert')[0])
         await userEvent.click(screen.getByText(/Make a copy/))
 
@@ -417,7 +422,7 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should not sort when searching', async () => {
-        render(
+        const { rerender } = render(
             <Provider
                 store={mockStore({
                     currentUser: fromJS(user),
@@ -432,19 +437,29 @@ describe('<MacrosSettingsContent/>', () => {
             target: { value: searchTerm },
         })
 
+        await waitFor(() =>
+            expect(mockSetListMacrosParams).toHaveBeenCalledWith({
+                order_by: `${mockProperty}:${mockOrder}`,
+                search: searchTerm,
+                cursor: undefined,
+            }),
+        )
+        mockSetListMacrosParams.mockClear()
+        rerender(
+            <Provider
+                store={mockStore({
+                    currentUser: fromJS(user),
+                })}
+            >
+                <MacrosSettingsContent />
+            </Provider>,
+        )
         await userEvent.click(screen.getByText('Macro'))
 
-        expect(mockUseListMacros).not.toHaveBeenNthCalledWith(
-            2,
-            {
+        expect(mockSetListMacrosParams).not.toHaveBeenCalledWith(
+            expect.objectContaining({
                 order_by: `name:${mockOrder}`,
-                search: searchTerm,
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
-                },
-            },
+            }),
         )
     })
 
@@ -459,9 +474,15 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
+        await waitForMacroList()
+
         const checkboxAll = screen.getByLabelText('Select all')
-        const checkboxFirstMacro = screen.getByLabelText(macrosFixtures[0].id!)
-        const checkboxSecondMacro = screen.getByLabelText(macrosFixtures[1].id!)
+        const checkboxFirstMacro = screen.getByLabelText(
+            String(macrosFixtures[0].id),
+        )
+        const checkboxSecondMacro = screen.getByLabelText(
+            String(macrosFixtures[1].id),
+        )
 
         await userEvent.click(checkboxAll)
         await userEvent.click(screen.getByText('Active'))
@@ -480,7 +501,12 @@ describe('<MacrosSettingsContent/>', () => {
         expect(checkboxFirstMacro).not.toBeChecked()
     })
 
-    it('should display list of archived macros', () => {
+    it('should display list of archived macros', async () => {
+        const listMacrosMock = mockListMacrosHandler(async () =>
+            HttpResponse.json(mockListMacrosResponseBody()),
+        )
+        const waitForListMacrosRequest = listMacrosMock.waitForRequest(server)
+        server.use(listMacrosMock.handler)
         mockUseRouteMatch.mockReturnValue({
             url: '/app/settings/macros/archived',
         })
@@ -494,34 +520,15 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        expect(useListMacros).toHaveBeenCalledWith(
-            {
-                archived: true,
-                order_by: 'created_datetime:asc',
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
-                },
-            },
-        )
+        await waitForListMacrosRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.get('archived')).toBe('true')
+            expect(searchParams.get('order_by')).toBe('created_datetime:asc')
+        })
     })
 
     it('should reset cursor when searching', async () => {
-        // Set initial state with a cursor
-        mockUseListMacros.mockReturnValue({
-            data: {
-                data: {
-                    data: macrosFixtures,
-                    meta: {
-                        next_cursor: 'next_cursor',
-                        prev_cursor: 'prev_cursor',
-                    },
-                },
-            },
-            isError: false,
-        } as ReturnType<typeof useListMacros>)
-
         render(
             <Provider
                 store={mockStore({
@@ -532,8 +539,7 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        // Navigate to next page to set a cursor
-        await userEvent.click(screen.getByText('keyboard_arrow_right'))
+        await userEvent.click(await screen.findByText('keyboard_arrow_right'))
 
         const searchTerm = 'foobar'
         act(() => {
@@ -553,20 +559,6 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should reset cursor when changing filters', async () => {
-        // Set initial state with a cursor
-        mockUseListMacros.mockReturnValue({
-            data: {
-                data: {
-                    data: macrosFixtures,
-                    meta: {
-                        next_cursor: 'next_cursor',
-                        prev_cursor: 'prev_cursor',
-                    },
-                },
-            },
-            isError: false,
-        } as ReturnType<typeof useListMacros>)
-
         render(
             <Provider
                 store={mockStore({
@@ -577,19 +569,15 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        // Navigate to next page to set a cursor
-        await userEvent.click(screen.getByText('keyboard_arrow_right'))
+        await userEvent.click(await screen.findByText('keyboard_arrow_right'))
 
-        // Simulate filter change
         const mockFilterParams = {
             languages: ['en'],
             tags: ['support'],
         }
 
-        // Trigger the filter change through the exposed onChange handler
         ;(global as any).mockMacroFiltersOnChange(mockFilterParams)
 
-        // Wait for and verify the call to setListMacrosParams
         await waitFor(() => {
             expect(mockSetListMacrosParams).toHaveBeenCalledWith(
                 expect.objectContaining({

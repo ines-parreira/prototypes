@@ -1,21 +1,27 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useMergeTickets as useMergeTicketsPrimitive } from '@gorgias/helpdesk-queries'
+import {
+    mockMergeTicketsHandler,
+    mockMergeTicketsResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../../tests/render.utils'
-import { useMergeTickets } from '../useMergeTickets'
+import { server } from '../../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useMergeTickets: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useMergeTickets } from '../useMergeTickets'
 
 vi.mock('../../../../../hooks/useTicketViewNavigation', () => ({
     useTicketViewNavigation: vi.fn(() => ({
@@ -24,18 +30,17 @@ vi.mock('../../../../../hooks/useTicketViewNavigation', () => ({
     })),
 }))
 
-const mockedUseMergeTicketsPrimitive = vi.mocked(useMergeTicketsPrimitive)
-
 describe('useMergeTickets', () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
 
     it('should show success toast when merge succeeds', async () => {
-        const mutateAsync = vi.fn().mockResolvedValue(undefined)
-        mockedUseMergeTicketsPrimitive.mockReturnValue({
-            mutateAsync,
-        } as any)
+        server.use(
+            mockMergeTicketsHandler(async () =>
+                HttpResponse.json(mockMergeTicketsResponse()),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useMergeTickets(123))
 
@@ -54,10 +59,13 @@ describe('useMergeTickets', () => {
     })
 
     it('should show error toast when merge fails', async () => {
-        const mutateAsync = vi.fn().mockRejectedValue(new Error('fail'))
-        mockedUseMergeTicketsPrimitive.mockReturnValue({
-            mutateAsync,
-        } as any)
+        server.use(
+            mockMergeTicketsHandler(async () =>
+                HttpResponse.json({ error: { msg: 'fail' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useMergeTickets(123))
 

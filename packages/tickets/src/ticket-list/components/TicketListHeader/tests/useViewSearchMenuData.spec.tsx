@@ -1,28 +1,19 @@
 import * as views from '@repo/views'
+import { HttpResponse } from 'msw'
 
-import { mockView } from '@gorgias/helpdesk-mocks'
-import { useGetView } from '@gorgias/helpdesk-queries'
-import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
+import { mockGetViewHandler, mockView } from '@gorgias/helpdesk-mocks'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
 import { renderHook } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import { getViewDisplayName } from '../../../../utils/views'
 import { useViewSearchMenuData } from '../useViewSearchMenuData'
 
 vi.mock('@repo/views')
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const actual = await importOriginal<typeof HelpdeskQueries>()
-
-    return {
-        ...actual,
-        useGetView: vi.fn(),
-    }
-})
 vi.mock('../../../../sidebar/hooks/useDefaultViews', () => ({
     useDefaultViews: vi.fn(),
 }))
 
-const mockUseGetView = vi.mocked(useGetView)
 const mockUseDefaultViews = vi.mocked(useDefaultViews)
 const mockUseAllViews = vi.mocked(views.useAllViews)
 const mockUsePublicViews = vi.mocked(views.usePublicViews)
@@ -123,11 +114,24 @@ const allViews = [
     sharedSecondSectionView,
 ]
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useViewSearchMenuData', () => {
     beforeEach(() => {
-        mockUseGetView.mockReturnValue({
-            data: { data: defaultView },
-        } as never)
+        server.use(
+            mockGetViewHandler(async () => HttpResponse.json(defaultView))
+                .handler,
+        )
         mockUseDefaultViews.mockReturnValue({
             defaultSystemViews: [defaultView, hiddenDefaultView],
             visibleSystemViews: [defaultView],
@@ -190,9 +194,9 @@ describe('useViewSearchMenuData', () => {
     })
 
     it('falls back to the all-views data when the active view query is not loaded', () => {
-        mockUseGetView.mockReturnValue({
-            data: undefined,
-        } as never)
+        server.use(
+            mockGetViewHandler(() => new Promise(() => undefined)).handler,
+        )
 
         const { result } = renderHook(() =>
             useViewSearchMenuData({ viewId: 2, searchValue: '' }),

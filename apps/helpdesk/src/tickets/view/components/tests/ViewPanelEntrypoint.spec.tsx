@@ -8,9 +8,15 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { compressToEncodedURIComponent } from 'lz-string'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { useGetView } from '@gorgias/helpdesk-queries'
+import {
+    mockGetViewHandler,
+    mockGetViewResponse,
+} from '@gorgias/helpdesk-mocks'
+import { ViewType } from '@gorgias/helpdesk-types'
 
 import { BASE_VIEW_ID } from 'constants/view'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -72,11 +78,6 @@ jest.mock('@repo/tickets/feature-flags', () => ({
     useHelpdeskV2MS4Dot5Flag: jest.fn(),
 }))
 const useHelpdeskV2MS4Dot5FlagMock = assumeMock(useHelpdeskV2MS4Dot5Flag)
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetView: jest.fn(),
-}))
-const useGetViewMock = assumeMock(useGetView)
 
 const replaceMock = jest.fn()
 const pushMock = jest.fn()
@@ -144,6 +145,28 @@ jest.mock('state/views/actions', () => ({
 const resetViewMock = assumeMock(resetView)
 const setViewActiveMock = assumeMock(setViewActive)
 const setViewEditModeMock = assumeMock(setViewEditMode)
+
+function expectViewActionCalledWith(
+    actionMock: Pick<jest.Mock, 'mock'>,
+    expectedView: Record<string, unknown>,
+) {
+    const matchingView = actionMock.mock.calls.find(
+        ([view]) => view?.get?.('id') === expectedView.id,
+    )?.[0]
+
+    expect(matchingView?.toJS()).toEqual(expect.objectContaining(expectedView))
+}
+
+function expectViewActionNotCalledWith(
+    actionMock: Pick<jest.Mock, 'mock'>,
+    expectedView: Record<string, unknown>,
+) {
+    expect(
+        actionMock.mock.calls.some(
+            ([view]) => view?.get?.('id') === expectedView.id,
+        ),
+    ).toBe(false)
+}
 
 type DirtyViewProps = {
     enabled: boolean
@@ -219,12 +242,6 @@ function getLastSetViewEditModeDraftView() {
     }
 
     return draftView
-}
-
-function mockUseGetViewResult(data?: unknown) {
-    return {
-        data,
-    } as unknown as ReturnType<typeof useGetView>
 }
 
 function mockSelectors({
@@ -336,6 +353,20 @@ jest.mock('split-ticket-view-toggle', () => ({
     useSplitTicketView: () => ({ setIsEnabled: setIsEnabledMock }),
 }))
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const mockViewPanelFiltersBridge = jest.fn(
     ({
         draftFields,
@@ -401,7 +432,7 @@ describe('ViewPanelEntrypoint', () => {
     }
     const persistedView = {
         id: 123456,
-        type: 'ticket-list',
+        type: ViewType.TicketList,
         name: 'Fresh name',
         search: 'test search',
         filters: 'status:open',
@@ -433,8 +464,10 @@ describe('ViewPanelEntrypoint', () => {
             pathname: '/app/views/123456',
             state: undefined,
         } as ReturnType<typeof useLocation>)
-        useGetViewMock.mockReturnValue(
-            mockUseGetViewResult({ data: persistedView }),
+        server.use(
+            mockGetViewHandler(async () =>
+                HttpResponse.json(mockGetViewResponse(persistedView)),
+            ).handler,
         )
         useAppSelectorMock.mockReset()
         getViewPlainJS.mockReset()
@@ -442,7 +475,7 @@ describe('ViewPanelEntrypoint', () => {
         getIsDirty.mockReset()
         getIsEditMode.mockReset()
         getAreFiltersValid.mockReset()
-        mockSelectors({ currentActiveView: activeView })
+        mockSelectors({ view: persistedView, currentActiveView: activeView })
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(false)
         resetViewMock.mockReturnValue(resetViewAction)
         setViewActiveMock.mockReturnValue(setViewActiveAction)
@@ -931,9 +964,7 @@ describe('ViewPanelEntrypoint', () => {
         )
 
         await waitFor(() => {
-            expect(setViewEditModeMock).toHaveBeenCalledWith(
-                fromJS(persistedView),
-            )
+            expectViewActionCalledWith(setViewEditModeMock, persistedView)
         })
         await waitFor(() => {
             expect(
@@ -1022,7 +1053,9 @@ describe('ViewPanelEntrypoint', () => {
     it('should register the active view when MS4.5 flag is enabled and clean', async () => {
         const view = { id: 123456, type: 'ticket-list', name: 'Open' }
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
-        useGetViewMock.mockReturnValue(mockUseGetViewResult(undefined))
+        server.use(
+            mockGetViewHandler(async () => HttpResponse.json(null)).handler,
+        )
         mockSelectors({ view, currentActiveView: activeView })
 
         render(
@@ -1067,7 +1100,7 @@ describe('ViewPanelEntrypoint', () => {
         mockViewId = 999999
         const nextPersistedView = {
             id: 999999,
-            type: 'ticket-list',
+            type: ViewType.TicketList,
             name: 'Another view',
             search: '',
             filters: 'status:closed',
@@ -1079,8 +1112,10 @@ describe('ViewPanelEntrypoint', () => {
         })
 
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
-        useGetViewMock.mockReturnValue(
-            mockUseGetViewResult({ data: nextPersistedView }),
+        server.use(
+            mockGetViewHandler(async () =>
+                HttpResponse.json(mockGetViewResponse(nextPersistedView)),
+            ).handler,
         )
         useLocationMock.mockReturnValue({
             pathname: '/app/views/999999',
@@ -1098,13 +1133,9 @@ describe('ViewPanelEntrypoint', () => {
         )
 
         await waitFor(() => {
-            expect(setViewActiveMock).toHaveBeenCalledWith(
-                fromJS(nextPersistedView),
-            )
+            expectViewActionCalledWith(setViewActiveMock, nextPersistedView)
         })
-        expect(setViewEditModeMock).not.toHaveBeenCalledWith(
-            fromJS(nextPersistedView),
-        )
+        expectViewActionNotCalledWith(setViewEditModeMock, nextPersistedView)
     })
 
     it('should initialize a new public draft view route in edit mode', async () => {
@@ -1137,9 +1168,6 @@ describe('ViewPanelEntrypoint', () => {
         expect(draftView.get('id')).toBe(BASE_VIEW_ID)
         expect(draftView.get('visibility')).toBe(ViewVisibility.Public)
         expect(draftView.get('name')).toBe('')
-        expect(useGetViewMock).toHaveBeenCalledWith(mockViewId, {
-            query: { enabled: false },
-        })
         expect(screen.getByText(`viewId: ${BASE_VIEW_ID}`)).toBeInTheDocument()
         expect(screen.getByText('titleOverride: New view')).toBeInTheDocument()
         expect(screen.getByText('hideCreateTicket: true')).toBeInTheDocument()

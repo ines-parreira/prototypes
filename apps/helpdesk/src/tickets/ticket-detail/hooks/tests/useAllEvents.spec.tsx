@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { listEvents } from '@gorgias/helpdesk-client'
+import { setupServer } from 'msw/node'
+import { mockListEventsHandler } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { Event } from '@gorgias/helpdesk-types'
 
@@ -10,26 +10,30 @@ import { TICKET_QUERIES_DEFAULT_CONFIG } from 'tickets/ticket-detail/constants'
 
 import { useAllEvents } from '../useAllEvents'
 
-jest.mock('@gorgias/helpdesk-client', () => ({
-    listEvents: jest.fn(),
-}))
-const listEventsMock = listEvents as jest.Mock
-
 jest.mock('hooks/useExhaustEndpoint', () => ({
     useExhaustEndpoint: jest.fn(),
 }))
 const useExhaustEndpointMock = useExhaustEndpoint as jest.Mock
 
-function createWrapper() {
-    const queryClient = new QueryClient()
-    return ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useAllEvents', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('calls useExhaustEndpoint with correct params and returns transformed result', async () => {
         const mockData = [{ id: 1 }, { id: 2 }] as Event[]
         useExhaustEndpointMock.mockReturnValue({
@@ -37,9 +41,7 @@ describe('useAllEvents', () => {
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useAllEvents(123), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(() => useAllEvents(123))
 
         expect(useExhaustEndpointMock).toHaveBeenCalledWith(
             queryKeys.events.listEvents({
@@ -53,28 +55,30 @@ describe('useAllEvents', () => {
         expect(result.current).toEqual({ events: mockData, isLoading: false })
     })
 
-    it('calls listEvents with the correct params', () => {
+    it('calls listEvents with the correct params', async () => {
+        const listEventsMock = mockListEventsHandler()
+        server.use(listEventsMock.handler)
+        const waitForListEventsRequest = listEventsMock.waitForRequest(server)
         useExhaustEndpointMock.mockReturnValue({ data: [], isLoading: true })
-        renderHook(() => useAllEvents(123), { wrapper: createWrapper() })
+        renderHook(() => useAllEvents(123))
 
         const [[, fetchData]] = useExhaustEndpointMock.mock.calls as [
-            [Event[], (cursor?: string) => void],
+            [Event[], (cursor?: string) => Promise<unknown>],
         ]
-        fetchData()
+        void fetchData()
 
-        expect(listEventsMock).toHaveBeenCalledWith({
-            cursor: undefined,
-            object_id: 123,
-            object_type: 'Ticket',
-            limit: 100,
+        await waitForListEventsRequest((request) => {
+            const url = new URL(request.url)
+            expect(url.searchParams.get('object_id')).toBe('123')
+            expect(url.searchParams.get('object_type')).toBe('Ticket')
+            expect(url.searchParams.get('limit')).toBe('100')
+            expect(url.searchParams.get('cursor')).toBeNull()
         })
     })
 
     it('returns loading state when endpoint hook is loading', async () => {
         useExhaustEndpointMock.mockReturnValue({ data: [], isLoading: true })
-        const { result } = renderHook(() => useAllEvents(123), {
-            wrapper: createWrapper(),
-        })
+        const { result } = renderHook(() => useAllEvents(123))
 
         expect(result.current).toEqual({ events: [], isLoading: true })
     })

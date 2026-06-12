@@ -1,21 +1,27 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useUpdateTicket } from '@gorgias/helpdesk-queries'
+import {
+    mockUpdateTicketHandler,
+    mockUpdateTicketResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../../tests/render.utils'
-import { useTrashTicket } from '../useTrashTicket'
+import { server } from '../../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useUpdateTicket: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useTrashTicket } from '../useTrashTicket'
 
 vi.mock('../../../../../hooks/useTicketViewNavigation', () => ({
     useTicketViewNavigation: vi.fn(() => ({
@@ -24,18 +30,17 @@ vi.mock('../../../../../hooks/useTicketViewNavigation', () => ({
     })),
 }))
 
-const mockedUseUpdateTicket = vi.mocked(useUpdateTicket)
-
 describe('useTrashTicket', () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
 
     it('should show success toast when trashing a ticket', async () => {
-        const mutateAsync = vi.fn().mockResolvedValue(undefined)
-        mockedUseUpdateTicket.mockReturnValue({
-            mutateAsync,
-        } as any)
+        server.use(
+            mockUpdateTicketHandler(async () =>
+                HttpResponse.json(mockUpdateTicketResponse()),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useTrashTicket(1))
 
@@ -53,10 +58,13 @@ describe('useTrashTicket', () => {
     })
 
     it('should show error toast when trashing fails', async () => {
-        const mutateAsync = vi.fn().mockRejectedValue(new Error('fail'))
-        mockedUseUpdateTicket.mockReturnValue({
-            mutateAsync,
-        } as any)
+        server.use(
+            mockUpdateTicketHandler(async () =>
+                HttpResponse.json({ error: { msg: 'fail' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useTrashTicket(1))
 

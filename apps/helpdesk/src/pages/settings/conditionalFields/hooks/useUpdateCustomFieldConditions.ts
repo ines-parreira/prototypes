@@ -29,8 +29,8 @@ export function useUpdateCustomFieldConditions() {
                     data.reduce((acc, row) => ({ ...acc, [row.id]: row }), {})
 
                 // Optimistically update each values with the partial new data
-                queryClient.setQueryData<ListCustomFieldConditionsResult>(
-                    queryKey,
+                queryClient.setQueriesData<ListCustomFieldConditionsResult>(
+                    { queryKey },
                     (oldData) => {
                         if (!oldData) return
 

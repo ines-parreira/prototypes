@@ -6,22 +6,32 @@ import {
     useTicketMessageTranslations,
 } from '@repo/tickets'
 
+import { HttpResponse } from 'msw'
 import {
+    mockGetTicketHandler,
+    mockTicket,
     mockTicketMessage,
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
-import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { renderHook } from '../../../tests/render.utils'
-import { useDisplayedTicketMessage } from './useDisplayedTicketMessage'
+import { server } from '../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const actual = await importOriginal<typeof HelpdeskQueriesModule>()
-    return { ...actual, useGetTicket: vi.fn() }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useDisplayedTicketMessage } from './useDisplayedTicketMessage'
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
@@ -33,7 +43,6 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
-const mockUseGetTicket = vi.mocked(useGetTicket)
 const mockUseCurrentUserLanguagePreferences = vi.mocked(
     useCurrentUserLanguagePreferences,
 )
@@ -57,9 +66,11 @@ function makeItem(): TicketThreadRegularMessageItem {
 describe('useDisplayedTicketMessage', () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        mockUseGetTicket.mockReturnValue({
-            data: { data: { language: 'fr' } },
-        } as ReturnType<typeof useGetTicket>)
+        server.use(
+            mockGetTicketHandler(async () =>
+                HttpResponse.json(mockTicket({ id: 99, language: 'fr' })),
+            ).handler,
+        )
         mockUseCurrentUserLanguagePreferences.mockReturnValue({
             shouldShowTranslatedContent: () => false,
         } as ReturnType<typeof useCurrentUserLanguagePreferences>)

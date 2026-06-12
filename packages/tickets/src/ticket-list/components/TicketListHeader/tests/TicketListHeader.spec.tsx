@@ -3,24 +3,16 @@ import * as React from 'react'
 import { history } from '@repo/routing'
 import * as views from '@repo/views'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { mockView } from '@gorgias/helpdesk-mocks'
-import { useGetView } from '@gorgias/helpdesk-queries'
-import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
+import { mockGetViewHandler, mockView } from '@gorgias/helpdesk-mocks'
 
 import { useDefaultViews } from '../../../../sidebar/hooks/useDefaultViews'
 import { render } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import { TicketListHeader } from '../TicketListHeader'
 
 vi.mock('@repo/views')
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const actual = await importOriginal<typeof HelpdeskQueries>()
-
-    return {
-        ...actual,
-        useGetView: vi.fn(),
-    }
-})
 vi.mock('@repo/routing', () => ({ history: { push: vi.fn() } }))
 vi.mock('../../../../sidebar/hooks/useDefaultViews', () => ({
     useDefaultViews: vi.fn(),
@@ -34,7 +26,6 @@ vi.mock('../SortOrderDropdown', () => ({
 }))
 
 const mockHistoryPush = vi.mocked(history.push)
-const mockUseGetView = vi.mocked(useGetView)
 const mockUseDefaultViews = vi.mocked(useDefaultViews)
 const mockUseAllViews = vi.mocked(views.useAllViews)
 const mockUsePublicViews = vi.mocked(views.usePublicViews)
@@ -109,12 +100,25 @@ function renderHeader() {
     return render(<TicketListHeader viewId={viewId} onCollapse={vi.fn()} />)
 }
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('TicketListHeader', () => {
     beforeEach(() => {
         mockHistoryPush.mockReset()
-        mockUseGetView.mockReturnValue({
-            data: { data: defaultView },
-        } as any)
+        server.use(
+            mockGetViewHandler(async () => HttpResponse.json(defaultView))
+                .handler,
+        )
         mockUseAllViews.mockReturnValue(allViews as any)
         mockUseDefaultViews.mockReturnValue({
             defaultSystemViews: [defaultView],
@@ -153,30 +157,33 @@ describe('TicketListHeader', () => {
         })
     })
 
-    it('renders the view name from the active view data', () => {
+    it('renders the view name from the active view data', async () => {
         renderHeader()
 
         expect(
-            screen.getByRole('button', { name: /assigned to me/i }),
+            await screen.findByRole('button', { name: /assigned to me/i }),
         ).toBeInTheDocument()
     })
 
-    it('renders custom view emojis in the trigger label', () => {
-        mockUseGetView.mockReturnValue({
-            data: { data: privateRootView },
-        } as any)
+    it('renders custom view emojis in the trigger label', async () => {
+        server.use(
+            mockGetViewHandler(async () => HttpResponse.json(privateRootView))
+                .handler,
+        )
 
         render(<TicketListHeader viewId={2} onCollapse={vi.fn()} />)
 
         expect(
-            screen.getByRole('button', { name: /✨ private backlog/i }),
+            await screen.findByRole('button', {
+                name: /✨ private backlog/i,
+            }),
         ).toBeInTheDocument()
     })
 
     it('renders no view trigger before the active view loads', () => {
-        mockUseGetView.mockReturnValue({
-            data: undefined,
-        } as any)
+        server.use(
+            mockGetViewHandler(() => new Promise(() => undefined)).handler,
+        )
         mockUseAllViews.mockReturnValue([] as any)
 
         renderHeader()
@@ -214,7 +221,7 @@ describe('TicketListHeader', () => {
                 <TicketListHeader viewId={1} onCollapse={vi.fn()} />,
             )
 
-            const trigger = screen.getByRole('button', {
+            const trigger = await screen.findByRole('button', {
                 name: /assigned to me/i,
             })
 
@@ -248,7 +255,7 @@ describe('TicketListHeader', () => {
             )
 
             await user.click(
-                screen.getByRole('button', { name: /assigned to me/i }),
+                await screen.findByRole('button', { name: /assigned to me/i }),
             )
             await user.click(
                 await screen.findByRole('menuitemradio', {

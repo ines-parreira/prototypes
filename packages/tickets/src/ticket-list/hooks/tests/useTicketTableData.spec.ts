@@ -1,18 +1,20 @@
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { useSearchTickets } from '@gorgias/helpdesk-queries'
+import {
+    mockSearchTicketsHandler,
+    mockSearchTicketsResponse,
+} from '@gorgias/helpdesk-mocks'
 import {
     ListViewItemsUpdatesOrderBy,
     SearchTicketsOrderBy,
 } from '@gorgias/helpdesk-types'
 
+import { renderHook } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { useSortOrder } from '../useSortOrder'
 import { useTicketsList } from '../useTicketsList'
 import { useTicketTableData } from '../useTicketTableData'
-
-vi.mock('@gorgias/helpdesk-queries', () => ({
-    useSearchTickets: vi.fn(),
-}))
 
 vi.mock('../useSortOrder', () => ({
     useSortOrder: vi.fn(),
@@ -22,14 +24,36 @@ vi.mock('../useTicketsList', () => ({
     useTicketsList: vi.fn(),
 }))
 
-const useSearchTicketsMock = vi.mocked(useSearchTickets)
 const useSortOrderMock = vi.mocked(useSortOrder)
 const useTicketsListMock = vi.mocked(useTicketsList)
 
 const persistedRefetchMock = vi.fn()
 const fetchNextPageMock = vi.fn()
-const searchRefetchMock = vi.fn()
 const setSortOrderMock = vi.fn()
+
+type SearchTicketsRequest = {
+    search: string
+    filters: string
+    cursor: string | null
+    limit: string | null
+    orderBy: string | null
+    withHighlights: string | null
+    trackTotalHits: string | null
+}
+
+type SearchTicketsMockResponse = {
+    data?: unknown[]
+    meta?: Record<string, unknown>
+    headers?: Record<string, string>
+}
+
+let searchTicketsRequests: SearchTicketsRequest[] = []
+let searchTicketsResolver: (
+    request: SearchTicketsRequest,
+) => SearchTicketsMockResponse | Promise<SearchTicketsMockResponse> = () => ({
+    data: [],
+    meta: {},
+})
 
 type CallProps = Omit<
     Parameters<typeof useTicketTableData>[0],
@@ -68,18 +92,59 @@ function renderTicketTableDataHook(
 }
 
 function expectDirtySearchQueryCalledWith(expected: Record<string, unknown>) {
-    expect(useSearchTicketsMock).toHaveBeenCalledWith(
-        {
-            search: 'vip',
-            filters: 'status:open',
-        },
-        expect.objectContaining(expected),
-        expect.objectContaining({
-            query: expect.objectContaining({
-                enabled: true,
+    expect(searchTicketsRequests).toEqual(
+        expect.arrayContaining([
+            expect.objectContaining({
+                search: 'vip',
+                filters: 'status:open',
+                ...expected,
             }),
-        }),
+        ]),
     )
+}
+
+function mockSearchTickets() {
+    return mockSearchTicketsHandler(async ({ request }) => {
+        const body = (await request.json()) as {
+            search?: string
+            filters?: string
+        }
+        const searchParams = new URL(request.url).searchParams
+        const searchRequest = {
+            search: body.search ?? '',
+            filters: body.filters ?? '',
+            cursor: searchParams.get('cursor'),
+            limit: searchParams.get('limit'),
+            orderBy: searchParams.get('order_by'),
+            withHighlights: searchParams.get('with_highlights'),
+            trackTotalHits: searchParams.get('track_total_hits'),
+        }
+        searchTicketsRequests.push(searchRequest)
+
+        const response = await searchTicketsResolver(searchRequest)
+
+        return HttpResponse.json(
+            mockSearchTicketsResponse({
+                data: response.data as never[],
+                meta: response.meta as never,
+            }),
+            { headers: response.headers },
+        )
+    }).handler
+}
+
+function setSearchTicketsResponse(response: SearchTicketsMockResponse) {
+    searchTicketsResolver = () => response
+}
+
+async function waitForSearchTicketsRequest(
+    expected: Partial<SearchTicketsRequest>,
+) {
+    await waitFor(() => {
+        expect(searchTicketsRequests).toEqual(
+            expect.arrayContaining([expect.objectContaining(expected)]),
+        )
+    })
 }
 
 function makePersistedResult(
@@ -99,48 +164,32 @@ function makePersistedResult(
     }
 }
 
-function makeDirtyQueryResult(
-    overrides: Partial<ReturnType<typeof useSearchTickets>> = {},
-): ReturnType<typeof useSearchTickets> {
-    return {
-        data: undefined,
-        isLoading: false,
-        isFetching: false,
-        error: null,
-        refetch: searchRefetchMock,
-        ...overrides,
-    } as ReturnType<typeof useSearchTickets>
-}
-
-function makeSearchQueryResult(
-    overrides: Partial<ReturnType<typeof useSearchTickets>> = {},
-): ReturnType<typeof useSearchTickets> {
-    return {
-        data: undefined,
-        isLoading: false,
-        isFetching: false,
-        error: null,
-        refetch: searchRefetchMock,
-        ...overrides,
-    } as ReturnType<typeof useSearchTickets>
-}
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
 beforeEach(() => {
     persistedRefetchMock.mockReset()
     fetchNextPageMock.mockReset()
-    searchRefetchMock.mockReset()
     setSortOrderMock.mockReset()
+    searchTicketsRequests = []
+    setSearchTicketsResponse({ data: [], meta: {} })
+    server.use(mockSearchTickets())
 
     useSortOrderMock.mockReturnValue([
         ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
         setSortOrderMock,
     ])
     useTicketsListMock.mockReturnValue(makePersistedResult())
-    useSearchTicketsMock.mockReturnValue(makeDirtyQueryResult())
 })
 
 afterEach(() => {
     vi.clearAllMocks()
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useTicketTableData', () => {
@@ -173,15 +222,11 @@ describe('useTicketTableData', () => {
         )
     })
 
-    it('uses the search query baseline instead of persisted view items for draft views', () => {
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: [{ id: 9001 }] as never[],
-                    meta: {},
-                },
-            }),
-        )
+    it('uses the search query baseline instead of persisted view items for draft views', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 9001 }],
+            meta: {},
+        })
 
         const { result } = renderTicketTableDataHook({
             viewId: 0,
@@ -202,35 +247,25 @@ describe('useTicketTableData', () => {
                 enabled: false,
             }),
         )
-        expect(useSearchTicketsMock).toHaveBeenCalledWith(
-            {
-                search: '',
-                filters: '',
-            },
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                }),
-            }),
-        )
-        expect(result.current.items).toEqual([{ id: 9001 }])
+        await waitForSearchTicketsRequest({
+            search: '',
+            filters: '',
+        })
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 9001 }])
+        })
     })
 
-    it('returns dirty search results when the dirty filters are valid', () => {
+    it('returns dirty search results when the dirty filters are valid', async () => {
         const dirtyItems = [{ id: 9001 }, { id: 9002 }]
 
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: dirtyItems as never[],
-                    meta: {
-                        next_cursor: 'next-cursor',
-                        prev_cursor: null,
-                    },
-                },
-            }),
-        )
+        setSearchTicketsResponse({
+            data: dirtyItems,
+            meta: {
+                next_cursor: 'next-cursor',
+                prev_cursor: null,
+            },
+        })
 
         const { result } = renderTicketTableDataHook({
             viewId: 123,
@@ -244,8 +279,10 @@ describe('useTicketTableData', () => {
             },
         })
 
-        expect(result.current.items).toEqual(dirtyItems)
-        expect(result.current.hasNextPage).toBe(true)
+        await waitFor(() => {
+            expect(result.current.items).toEqual(dirtyItems)
+            expect(result.current.hasNextPage).toBe(true)
+        })
         expect(useTicketsListMock).toHaveBeenCalledWith(
             123,
             expect.objectContaining({
@@ -254,8 +291,16 @@ describe('useTicketTableData', () => {
         )
     })
 
-    it('selects the dirty search response into ticket data and meta', () => {
-        renderTicketTableDataHook({
+    it('selects the dirty search response into ticket data and meta', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 9001 }],
+            meta: {
+                next_cursor: 'cursor-next',
+                prev_cursor: null,
+            },
+        })
+
+        const { result } = renderTicketTableDataHook({
             viewId: 123,
             enablePersistedUpdates: true,
             pauseUpdates: false,
@@ -267,46 +312,22 @@ describe('useTicketTableData', () => {
             },
         })
 
-        const dirtyQueryOptions = useSearchTicketsMock.mock.calls[0]?.[2]
-        const select = dirtyQueryOptions?.query?.select
-
-        expect(select).toEqual(expect.any(Function))
-        const response = {
-            data: {
-                data: [{ id: 9001 }] as never[],
-                meta: {
-                    next_cursor: 'cursor-next',
-                    prev_cursor: null,
-                },
-            },
-        } as unknown as Parameters<NonNullable<typeof select>>[0]
-
-        expect(select?.(response)).toEqual({
-            data: [{ id: 9001 }],
-            meta: {
-                next_cursor: 'cursor-next',
-                prev_cursor: null,
-            },
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 9001 }])
+            expect(result.current.hasNextPage).toBe(true)
+            expect(result.current.hasPreviousPage).toBe(false)
         })
     })
 
-    it('uses the dedicated search query in search mode', () => {
-        useSearchTicketsMock
-            .mockReturnValueOnce(makeDirtyQueryResult())
-            .mockReturnValueOnce(
-                makeSearchQueryResult({
-                    data: {
-                        data: {
-                            data: [{ id: 42 }] as never[],
-                            meta: {
-                                next_cursor: 'search-next',
-                                prev_cursor: null,
-                                total_resources: 99,
-                            },
-                        },
-                    },
-                }),
-            )
+    it('uses the dedicated search query in search mode', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 42 }],
+            meta: {
+                next_cursor: 'search-next',
+                prev_cursor: null,
+                total_resources: 99,
+            },
+        })
 
         const setCursor = vi.fn()
         const { result } = renderTicketTableDataHook({
@@ -322,68 +343,40 @@ describe('useTicketTableData', () => {
             },
         })
 
-        expect(result.current.items).toEqual([{ id: 42 }])
-        expect(result.current.hasNextPage).toBe(true)
-        expect(result.current.totalResources).toBe(99)
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 42 }])
+            expect(result.current.hasNextPage).toBe(true)
+            expect(result.current.totalResources).toBe(99)
+        })
         expect(useTicketsListMock).toHaveBeenCalledWith(
             123,
             expect.objectContaining({
                 enabled: false,
             }),
         )
-        expect(useSearchTicketsMock).toHaveBeenLastCalledWith(
-            {
-                search: 'hello',
-                filters: '',
-            },
-            expect.objectContaining({
-                order_by: SearchTicketsOrderBy.LastMessageDatetimeAsc,
-                with_highlights: true,
-                track_total_hits: true,
-            }),
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                }),
-            }),
-        )
+        await waitForSearchTicketsRequest({
+            search: 'hello',
+            filters: '',
+            orderBy: SearchTicketsOrderBy.LastMessageDatetimeAsc,
+            withHighlights: 'true',
+            trackTotalHits: 'true',
+        })
     })
 
-    it('tracks initial search requests and responses in search mode', () => {
-        vi.useFakeTimers()
+    it('tracks initial search requests and responses in search mode', async () => {
         const onRequest = vi.fn()
         const onResponse = vi.fn()
 
-        let searchRenderCount = 0
-        useSearchTicketsMock.mockImplementation((params) => {
-            if (params.search !== 'hello') {
-                return makeDirtyQueryResult()
-            }
-
-            searchRenderCount += 1
-
-            if (searchRenderCount === 1) {
-                return makeSearchQueryResult({
-                    isFetching: true,
-                })
-            }
-
-            return makeSearchQueryResult({
-                data: {
-                    data: {
-                        data: [{ id: 42 }] as never[],
-                        meta: {},
-                    },
-                    headers: {
-                        'x-gorgias-search-engine': 'PG',
-                    },
-                },
-                isFetching: false,
-            })
+        setSearchTicketsResponse({
+            data: [{ id: 42 }],
+            meta: {},
+            headers: {
+                'x-gorgias-search-engine': 'PG',
+            },
         })
 
         const setCursor = vi.fn()
-        const { rerender } = renderHook(
+        renderHook(
             ({ searchTracking }) =>
                 useTicketTableData({
                     viewId: 123,
@@ -411,39 +404,23 @@ describe('useTicketTableData', () => {
             },
         )
 
-        rerender({
-            searchTracking: {
-                onRequest,
-                onResponse,
-            },
+        await waitFor(() => {
+            expect(onRequest).toHaveBeenCalledWith({
+                query: 'hello',
+                requestTime: expect.any(Number),
+            })
         })
 
-        expect(onRequest).toHaveBeenCalledWith({
-            query: 'hello',
-            requestTime: expect.any(Number),
+        await waitFor(() => {
+            expect(onResponse).toHaveBeenCalledWith({
+                responseTime: expect.any(Number),
+                numberOfResults: 1,
+                searchEngine: 'PG',
+            })
         })
-
-        rerender({
-            searchTracking: {
-                onRequest,
-                onResponse,
-            },
-        })
-
-        expect(onResponse).toHaveBeenCalledWith({
-            responseTime: expect.any(Number),
-            numberOfResults: 1,
-            searchEngine: 'PG',
-        })
-
-        vi.useRealTimers()
     })
 
-    it('treats search mode as a search-query mode and disables persisted list loading', () => {
-        useSearchTicketsMock
-            .mockReturnValueOnce(makeDirtyQueryResult())
-            .mockReturnValueOnce(makeDirtyQueryResult())
-
+    it('treats search mode as a search-query mode and disables persisted list loading', async () => {
         renderTicketTableDataHook({
             viewId: 123,
             enablePersistedUpdates: true,
@@ -463,47 +440,29 @@ describe('useTicketTableData', () => {
                 enabled: false,
             }),
         )
-        expect(useSearchTicketsMock).toHaveBeenNthCalledWith(
-            2,
-            {
-                search: 'hello',
-                filters: 'status:open',
-            },
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: true,
-                }),
-            }),
-        )
+        await waitForSearchTicketsRequest({
+            search: 'hello',
+            filters: 'status:open',
+        })
     })
 
-    it('normalizes highlighted search rows from wrapped and flat search responses', () => {
-        useSearchTicketsMock
-            .mockReturnValueOnce(makeDirtyQueryResult())
-            .mockReturnValueOnce(
-                makeSearchQueryResult({
-                    data: {
-                        data: {
-                            data: [
-                                {
-                                    entity: {
-                                        id: 42,
-                                        subject: 'Wrapped ticket',
-                                    },
-                                    highlights: {
-                                        subject: ['<em>Wrapped</em> ticket'],
-                                    },
-                                },
-                                { foo: 'ignored' } as never,
-                                { id: 43, subject: 'Flat ticket' } as never,
-                            ] as never[],
-                            meta: {},
-                        },
-                        headers: {},
+    it('normalizes highlighted search rows from wrapped and flat search responses', async () => {
+        setSearchTicketsResponse({
+            data: [
+                {
+                    entity: {
+                        id: 42,
+                        subject: 'Wrapped ticket',
                     },
-                }),
-            )
+                    highlights: {
+                        subject: ['<em>Wrapped</em> ticket'],
+                    },
+                },
+                { foo: 'ignored' },
+                { id: 43, subject: 'Flat ticket' },
+            ],
+            meta: {},
+        })
 
         const { result } = renderTicketTableDataHook({
             viewId: 123,
@@ -518,40 +477,33 @@ describe('useTicketTableData', () => {
             },
         })
 
-        expect(result.current.items).toEqual([
-            {
-                id: 42,
-                subject: 'Wrapped ticket',
-                highlights: {
-                    subject: ['<em>Wrapped</em> ticket'],
+        await waitFor(() => {
+            expect(result.current.items).toEqual([
+                {
+                    id: 42,
+                    subject: 'Wrapped ticket',
+                    highlights: {
+                        subject: ['<em>Wrapped</em> ticket'],
+                    },
                 },
-            },
-            {
-                id: 43,
-                subject: 'Flat ticket',
-            },
-        ])
+                {
+                    id: 43,
+                    subject: 'Flat ticket',
+                },
+            ])
+        })
         expect(result.current.totalResources).toBeUndefined()
     })
 
-    it('treats null search total_resources as unavailable', () => {
-        useSearchTicketsMock
-            .mockReturnValueOnce(makeDirtyQueryResult())
-            .mockReturnValueOnce(
-                makeSearchQueryResult({
-                    data: {
-                        data: {
-                            data: [{ id: 42 }] as never[],
-                            meta: {
-                                next_cursor: null,
-                                prev_cursor: null,
-                                total_resources: null,
-                            } as never,
-                        },
-                        headers: {},
-                    },
-                }),
-            )
+    it('treats null search total_resources as unavailable', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 42 }],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+                total_resources: null,
+            },
+        })
 
         const { result } = renderTicketTableDataHook({
             viewId: 123,
@@ -566,6 +518,9 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 42 }])
+        })
         expect(result.current.totalResources).toBeUndefined()
     })
 
@@ -593,29 +548,14 @@ describe('useTicketTableData', () => {
         })
 
         expect(result.current.items).toEqual(persistedTickets)
-        expect(useSearchTicketsMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                search: 'vip',
-                filters: 'status:open',
-            }),
-            expect.anything(),
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: false,
-                }),
-            }),
-        )
+        expect(searchTicketsRequests).toHaveLength(0)
     })
 
-    it('refreshes the search query when dirty results are active', () => {
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: [{ id: 10 }] as never[],
-                    meta: {},
-                },
-            }),
-        )
+    it('refreshes the search query when dirty results are active', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 10 }],
+            meta: {},
+        })
 
         const { result } = renderTicketTableDataHook({
             viewId: 123,
@@ -629,9 +569,18 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 10 }])
+        })
+        const requestCountBeforeRefresh = searchTicketsRequests.length
+
         result.current.onRefresh()
 
-        expect(searchRefetchMock).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(searchTicketsRequests.length).toBeGreaterThan(
+                requestCountBeforeRefresh,
+            )
+        })
         expect(persistedRefetchMock).not.toHaveBeenCalled()
     })
 
@@ -650,7 +599,7 @@ describe('useTicketTableData', () => {
 
         result.current.onRefresh()
 
-        expect(searchRefetchMock).not.toHaveBeenCalled()
+        expect(searchTicketsRequests).toHaveLength(0)
         expect(persistedRefetchMock).toHaveBeenCalled()
     })
 
@@ -664,20 +613,14 @@ describe('useTicketTableData', () => {
         result.current.onRefresh()
 
         expect(persistedRefetchMock).toHaveBeenCalled()
-        expect(searchRefetchMock).not.toHaveBeenCalled()
+        expect(searchTicketsRequests).toHaveLength(0)
     })
 
-    it('refreshes the search query when search mode is active', () => {
-        useSearchTicketsMock
-            .mockReturnValueOnce(makeDirtyQueryResult())
-            .mockReturnValueOnce(
-                makeDirtyQueryResult({
-                    data: {
-                        data: [{ id: 42 }] as never[],
-                        meta: {},
-                    },
-                }),
-            )
+    it('refreshes the search query when search mode is active', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 42 }],
+            meta: {},
+        })
 
         const { result } = renderTicketTableDataHook({
             viewId: 123,
@@ -692,9 +635,18 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 42 }])
+        })
+        const requestCountBeforeRefresh = searchTicketsRequests.length
+
         result.current.onRefresh()
 
-        expect(searchRefetchMock).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(searchTicketsRequests.length).toBeGreaterThan(
+                requestCountBeforeRefresh,
+            )
+        })
         expect(persistedRefetchMock).not.toHaveBeenCalled()
     })
 
@@ -706,6 +658,11 @@ describe('useTicketTableData', () => {
                 >['tickets'],
             }),
         )
+
+        setSearchTicketsResponse({
+            data: [{ id: 77 }],
+            meta: {},
+        })
 
         const { result, rerender } = renderHook(
             ({
@@ -734,14 +691,6 @@ describe('useTicketTableData', () => {
             },
         )
 
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: [{ id: 77 }] as never[],
-                    meta: {},
-                },
-            }),
-        )
         rerender({
             dirtyView: {
                 enabled: true,
@@ -785,8 +734,8 @@ describe('useTicketTableData', () => {
 
         const onPaginationReset = vi.fn()
         const { result, rerender } = renderHook<
-            ReturnType<typeof useTicketTableData>,
-            HookProps
+            HookProps,
+            ReturnType<typeof useTicketTableData>
         >(
             ({ dirtyView }) =>
                 useTicketTableData({
@@ -811,14 +760,10 @@ describe('useTicketTableData', () => {
             result.current.onPageChange('next')
         })
 
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: [{ id: 9001 }, { id: 9002 }] as never[],
-                    meta: {},
-                },
-            }),
-        )
+        setSearchTicketsResponse({
+            data: [{ id: 9001 }, { id: 9002 }],
+            meta: {},
+        })
 
         const nextProps: HookProps = {
             dirtyView: {
@@ -837,20 +782,14 @@ describe('useTicketTableData', () => {
         expect(onPaginationReset).toHaveBeenCalled()
     })
 
-    it('uses dirty cursors for pagination in dirty mode', () => {
-        const dirtyResponse = {
-            data: [{ id: 50 }] as never[],
+    it('uses dirty cursors for pagination in dirty mode', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 50 }],
             meta: {
                 next_cursor: 'cursor-next',
                 prev_cursor: 'cursor-prev',
             },
-        }
-
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: dirtyResponse,
-            }),
-        )
+        })
 
         const { result, rerender } = renderTicketTableDataHook({
             viewId: 123,
@@ -864,44 +803,41 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 50 }])
+        })
+
         act(() => {
             result.current.onPageChange('next')
         })
-
         rerender()
 
-        expectDirtySearchQueryCalledWith({
-            cursor: 'cursor-next',
-        })
+        await waitFor(() =>
+            expectDirtySearchQueryCalledWith({
+                cursor: 'cursor-next',
+            }),
+        )
 
         act(() => {
             result.current.onPageChange('previous')
         })
-
         rerender()
 
-        expectDirtySearchQueryCalledWith({
-            cursor: 'cursor-prev',
-        })
+        await waitFor(() =>
+            expectDirtySearchQueryCalledWith({
+                cursor: 'cursor-prev',
+            }),
+        )
     })
 
-    it('uses URL cursors for pagination in search mode', () => {
-        useSearchTicketsMock.mockImplementation((params) =>
-            params.search === 'vip'
-                ? makeSearchQueryResult({
-                      data: {
-                          data: {
-                              data: [{ id: 50 }] as never[],
-                              meta: {
-                                  next_cursor: 'search-next',
-                                  prev_cursor: 'search-prev',
-                              },
-                          },
-                          headers: {},
-                      },
-                  })
-                : makeDirtyQueryResult(),
-        )
+    it('uses URL cursors for pagination in search mode', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 50 }],
+            meta: {
+                next_cursor: 'search-next',
+                prev_cursor: 'search-prev',
+            },
+        })
 
         const setCursor = vi.fn()
         const { result } = renderTicketTableDataHook({
@@ -915,6 +851,10 @@ describe('useTicketTableData', () => {
                 cursor: undefined,
                 setCursor,
             },
+        })
+
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 50 }])
         })
 
         act(() => {
@@ -930,23 +870,14 @@ describe('useTicketTableData', () => {
         expect(setCursor).toHaveBeenCalledWith('search-prev')
     })
 
-    it('does not advance search pagination when the next cursor is missing', () => {
-        useSearchTicketsMock.mockImplementation((params) =>
-            params.search === 'vip'
-                ? makeSearchQueryResult({
-                      data: {
-                          data: {
-                              data: [{ id: 50 }] as never[],
-                              meta: {
-                                  next_cursor: null,
-                                  prev_cursor: 'search-prev',
-                              },
-                          },
-                          headers: {},
-                      },
-                  })
-                : makeDirtyQueryResult(),
-        )
+    it('does not advance search pagination when the next cursor is missing', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 50 }],
+            meta: {
+                next_cursor: null,
+                prev_cursor: 'search-prev',
+            },
+        })
 
         const setCursor = vi.fn()
         const { result } = renderTicketTableDataHook({
@@ -962,6 +893,10 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 50 }])
+        })
+
         act(() => {
             result.current.onPageChange('next')
         })
@@ -970,44 +905,27 @@ describe('useTicketTableData', () => {
     })
 
     it('updates search rows when the cursor changes', async () => {
-        useSearchTicketsMock.mockImplementation((params, queryParams) => {
-            if (params.search !== 'vip') {
-                return makeDirtyQueryResult()
-            }
-
-            if (queryParams?.cursor === 'search-next') {
-                return makeSearchQueryResult({
-                    data: {
-                        data: {
-                            data: [{ id: 51 }] as never[],
-                            meta: {
-                                next_cursor: null,
-                                prev_cursor: 'search-prev',
-                            },
-                        },
-                        headers: {},
-                    },
-                })
-            }
-
-            return makeSearchQueryResult({
-                data: {
-                    data: {
-                        data: [{ id: 50 }] as never[],
-                        meta: {
-                            next_cursor: 'search-next',
-                            prev_cursor: null,
-                        },
-                    },
-                    headers: {},
-                },
-            })
-        })
+        searchTicketsResolver = (request) =>
+            request.cursor === 'search-next'
+                ? {
+                      data: [{ id: 51 }],
+                      meta: {
+                          next_cursor: null,
+                          prev_cursor: 'search-prev',
+                      },
+                  }
+                : {
+                      data: [{ id: 50 }],
+                      meta: {
+                          next_cursor: 'search-next',
+                          prev_cursor: null,
+                      },
+                  }
 
         const setCursor = vi.fn()
         const { result, rerender } = renderHook<
-            ReturnType<typeof useTicketTableData>,
-            { cursor?: string }
+            { cursor?: string },
+            ReturnType<typeof useTicketTableData>
         >(
             ({ cursor }) =>
                 useTicketTableData({
@@ -1032,7 +950,9 @@ describe('useTicketTableData', () => {
             },
         )
 
-        expect(result.current.items).toEqual([{ id: 50 }])
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 50 }])
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -1045,28 +965,19 @@ describe('useTicketTableData', () => {
         })
     })
 
-    it('resets the search cursor when the search query changes', () => {
-        useSearchTicketsMock.mockImplementation((params) =>
-            params.search === 'vip'
-                ? makeSearchQueryResult({
-                      data: {
-                          data: {
-                              data: [{ id: 50 }] as never[],
-                              meta: {
-                                  next_cursor: 'search-next',
-                              },
-                          },
-                          headers: {},
-                      },
-                  })
-                : makeDirtyQueryResult(),
-        )
+    it('resets the search cursor when the search query changes', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 50 }],
+            meta: {
+                next_cursor: 'search-next',
+            },
+        })
 
         const setCursor = vi.fn()
         const onPaginationReset = vi.fn()
         const { result, rerender } = renderHook<
-            ReturnType<typeof useTicketTableData>,
-            { query: string; cursor?: string }
+            { query: string; cursor?: string },
+            ReturnType<typeof useTicketTableData>
         >(
             ({ cursor, query }) =>
                 useTicketTableData({
@@ -1091,6 +1002,10 @@ describe('useTicketTableData', () => {
                 },
             },
         )
+
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 50 }])
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -1334,17 +1249,13 @@ describe('useTicketTableData', () => {
         expect(result.current.items).toEqual(persistedTickets.slice(0, 10))
     })
 
-    it('updates sort order and resets dirty cursor on sort change', () => {
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: [{ id: 10 }] as never[],
-                    meta: {
-                        next_cursor: 'cursor-next',
-                    },
-                },
-            }),
-        )
+    it('updates sort order and resets dirty cursor on sort change', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 10 }],
+            meta: {
+                next_cursor: 'cursor-next',
+            },
+        })
 
         const { result, rerender } = renderTicketTableDataHook({
             viewId: 123,
@@ -1358,10 +1269,20 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 10 }])
+        })
+
         act(() => {
             result.current.onPageChange('next')
         })
         rerender()
+        await waitFor(() =>
+            expectDirtySearchQueryCalledWith({
+                cursor: 'cursor-next',
+            }),
+        )
+        searchTicketsRequests = []
 
         act(() => {
             result.current.onSortChange([
@@ -1373,9 +1294,17 @@ describe('useTicketTableData', () => {
         expect(setSortOrderMock).toHaveBeenCalledWith(
             ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc,
         )
-        expectDirtySearchQueryCalledWith({
-            cursor: undefined,
-        })
+        useSortOrderMock.mockReturnValue([
+            ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc,
+            setSortOrderMock,
+        ])
+        rerender()
+
+        await waitFor(() =>
+            expectDirtySearchQueryCalledWith({
+                cursor: null,
+            }),
+        )
     })
 
     it('maps snooze column sorting to snooze datetime order', () => {
@@ -1394,17 +1323,13 @@ describe('useTicketTableData', () => {
         )
     })
 
-    it('resets the dirty cursor when the page size changes in dirty mode', () => {
-        useSearchTicketsMock.mockReturnValue(
-            makeDirtyQueryResult({
-                data: {
-                    data: [{ id: 10 }] as never[],
-                    meta: {
-                        next_cursor: 'cursor-next',
-                    },
-                },
-            }),
-        )
+    it('resets the dirty cursor when the page size changes in dirty mode', async () => {
+        setSearchTicketsResponse({
+            data: [{ id: 10 }],
+            meta: {
+                next_cursor: 'cursor-next',
+            },
+        })
 
         const { result, rerender } = renderTicketTableDataHook({
             viewId: 123,
@@ -1418,15 +1343,22 @@ describe('useTicketTableData', () => {
             },
         })
 
+        await waitFor(() => {
+            expect(result.current.items).toEqual([{ id: 10 }])
+        })
+
         act(() => {
             result.current.onPageChange('next')
         })
         rerender()
 
-        expectDirtySearchQueryCalledWith({
-            cursor: 'cursor-next',
-            limit: 20,
-        })
+        await waitFor(() =>
+            expectDirtySearchQueryCalledWith({
+                cursor: 'cursor-next',
+                limit: '20',
+            }),
+        )
+        searchTicketsRequests = []
 
         // Simulate the DataTable applying a new page size — it auto-resets
         // pageIndex to 0 and the parent mirror fires the same shape into the
@@ -1445,9 +1377,11 @@ describe('useTicketTableData', () => {
             },
         })
 
-        expectDirtySearchQueryCalledWith({
-            cursor: undefined,
-            limit: 50,
-        })
+        await waitFor(() =>
+            expectDirtySearchQueryCalledWith({
+                cursor: null,
+                limit: '50',
+            }),
+        )
     })
 })

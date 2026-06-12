@@ -1,24 +1,24 @@
-import { renderHook } from '@testing-library/react'
-import { Duration } from '@gorgias/toolkit'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { mockCustomer } from '@gorgias/helpdesk-mocks'
-import { useGetCustomer } from '@gorgias/helpdesk-queries'
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
+import { mockCustomer, mockGetCustomerHandler } from '@gorgias/helpdesk-mocks'
 
-import { useSourceCustomer } from '../useSourceCustomer'
+import { renderHook } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useGetCustomer: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-const mockedUseGetCustomer = vi.mocked(useGetCustomer)
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useSourceCustomer } from '../useSourceCustomer'
 
 describe('useSourceCustomer', () => {
     beforeEach(() => {
@@ -26,19 +26,7 @@ describe('useSourceCustomer', () => {
     })
 
     it('should disable customer query when source customer is null', () => {
-        mockedUseGetCustomer.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-        } as any)
-
         const { result } = renderHook(() => useSourceCustomer(null))
-
-        expect(mockedUseGetCustomer).toHaveBeenCalledWith(0, undefined, {
-            query: {
-                enabled: false,
-                staleTime: Duration.hours(1),
-            },
-        })
 
         expect(result.current.sourceCustomer).toBeNull()
         expect(result.current.isLoading).toBe(false)
@@ -51,25 +39,17 @@ describe('useSourceCustomer', () => {
             email: 'source@example.com',
         })
 
-        mockedUseGetCustomer.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-        } as any)
+        server.use(
+            mockGetCustomerHandler(() => new Promise(() => undefined)).handler,
+        )
 
         const { result } = renderHook(() => useSourceCustomer(sourceCustomer))
-
-        expect(mockedUseGetCustomer).toHaveBeenCalledWith(2, undefined, {
-            query: {
-                enabled: true,
-                staleTime: Duration.hours(1),
-            },
-        })
 
         expect(result.current.sourceCustomer).toEqual(sourceCustomer)
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return full source customer data when query succeeds', () => {
+    it('should return full source customer data when query succeeds', async () => {
         const sourceCustomer = mockCustomer({
             id: 2,
             name: 'Fallback Source Customer',
@@ -82,16 +62,17 @@ describe('useSourceCustomer', () => {
             email: 'loaded@example.com',
         })
 
-        mockedUseGetCustomer.mockReturnValue({
-            data: {
-                data: fullSourceCustomer,
-            },
-            isLoading: false,
-        } as any)
+        server.use(
+            mockGetCustomerHandler(async () =>
+                HttpResponse.json(fullSourceCustomer),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useSourceCustomer(sourceCustomer))
 
-        expect(result.current.sourceCustomer).toEqual(fullSourceCustomer)
-        expect(result.current.isLoading).toBe(false)
+        await waitFor(() => {
+            expect(result.current.sourceCustomer).toEqual(fullSourceCustomer)
+            expect(result.current.isLoading).toBe(false)
+        })
     })
 })

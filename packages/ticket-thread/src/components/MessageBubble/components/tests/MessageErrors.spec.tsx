@@ -1,24 +1,30 @@
 import { screen, within } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 import {
-    useDeleteTicketMessage,
-    useUpdateTicketMessage,
-} from '@gorgias/helpdesk-queries'
+    mockDeleteTicketMessageHandler,
+    mockTicketMessage,
+    mockUpdateTicketMessageHandler,
+    mockUpdateTicketMessageResponse,
+} from '@gorgias/helpdesk-mocks'
+
+import { server } from '../../../../tests/server'
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 import { render } from '../../../../tests/render.utils'
 import type { LegacyBridgeActions } from '../../../../utils/LegacyBridge'
 import { MessageErrors } from '../MessageErrors'
-
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
-
-    return {
-        ...actual,
-        useDeleteTicketMessage: vi.fn(),
-        useUpdateTicketMessage: vi.fn(),
-    }
-})
 
 function makeLegacyActions(): LegacyBridgeActions {
     return {
@@ -28,22 +34,15 @@ function makeLegacyActions(): LegacyBridgeActions {
     }
 }
 
-const mutateAsyncDeleteTicketMessage = vi.fn()
-const mutateAsyncUpdateTicketMessage = vi.fn()
-const mockUseDeleteTicketMessage = vi.mocked(useDeleteTicketMessage)
-const mockUseUpdateTicketMessage = vi.mocked(useUpdateTicketMessage)
-
 describe('MessageErrors', () => {
     beforeEach(() => {
-        mutateAsyncDeleteTicketMessage.mockReset()
-        mutateAsyncUpdateTicketMessage.mockReset()
-
-        mockUseDeleteTicketMessage.mockReturnValue({
-            mutateAsync: mutateAsyncDeleteTicketMessage,
-        } as unknown as ReturnType<typeof useDeleteTicketMessage>)
-        mockUseUpdateTicketMessage.mockReturnValue({
-            mutateAsync: mutateAsyncUpdateTicketMessage,
-        } as unknown as ReturnType<typeof useUpdateTicketMessage>)
+        server.use(
+            mockUpdateTicketMessageHandler(async () =>
+                HttpResponse.json(mockUpdateTicketMessageResponse()),
+            ).handler,
+            mockDeleteTicketMessageHandler(async () => new HttpResponse(null))
+                .handler,
+        )
     })
 
     it('renders the Yotpo duplicate comment message without mutating retry state', () => {
@@ -113,6 +112,12 @@ describe('MessageErrors', () => {
     })
 
     it('retries persisted messages through ticket-thread query hooks', async () => {
+        const updateTicketMessageMock = mockUpdateTicketMessageHandler(
+            async () => HttpResponse.json(mockUpdateTicketMessageResponse()),
+        )
+        const waitForUpdateTicketMessageRequest =
+            updateTicketMessageMock.waitForRequest(server)
+        server.use(updateTicketMessageMock.handler)
         const message = mockTicketMessage({
             actions: [
                 {
@@ -137,15 +142,21 @@ describe('MessageErrors', () => {
 
         await user.click(screen.getByRole('button', { name: 'Retry' }))
 
-        expect(mutateAsyncUpdateTicketMessage).toHaveBeenCalledWith({
-            ticketId: 123,
-            id: 456,
-            data: {},
-            params: { action: 'retry' },
+        await waitForUpdateTicketMessageRequest(async (request) => {
+            const url = new URL(request.url)
+            expect(url.pathname).toContain('/api/tickets/123/messages/456')
+            expect(url.searchParams.get('action')).toBe('retry')
+            expect(await request.json()).toEqual({})
         })
     })
 
     it('forces persisted messages through ticket-thread query hooks', async () => {
+        const updateTicketMessageMock = mockUpdateTicketMessageHandler(
+            async () => HttpResponse.json(mockUpdateTicketMessageResponse()),
+        )
+        const waitForUpdateTicketMessageRequest =
+            updateTicketMessageMock.waitForRequest(server)
+        server.use(updateTicketMessageMock.handler)
         const message = mockTicketMessage({
             actions: [
                 {
@@ -170,11 +181,11 @@ describe('MessageErrors', () => {
 
         await user.click(screen.getByRole('button', { name: 'Send Anyway' }))
 
-        expect(mutateAsyncUpdateTicketMessage).toHaveBeenCalledWith({
-            ticketId: 123,
-            id: 456,
-            data: {},
-            params: { action: 'force' },
+        await waitForUpdateTicketMessageRequest(async (request) => {
+            const url = new URL(request.url)
+            expect(url.pathname).toContain('/api/tickets/123/messages/456')
+            expect(url.searchParams.get('action')).toBe('force')
+            expect(await request.json()).toEqual({})
         })
     })
 
@@ -202,6 +213,12 @@ describe('MessageErrors', () => {
     })
 
     it('deletes persisted messages through ticket-thread query hooks', async () => {
+        const deleteTicketMessageMock = mockDeleteTicketMessageHandler(
+            async () => new HttpResponse(null),
+        )
+        const waitForDeleteTicketMessageRequest =
+            deleteTicketMessageMock.waitForRequest(server)
+        server.use(deleteTicketMessageMock.handler)
         const message = mockTicketMessage({
             failed_datetime: '2024-03-21T11:00:00Z',
             id: 456,
@@ -214,15 +231,20 @@ describe('MessageErrors', () => {
 
         await user.click(screen.getByRole('button', { name: 'Cancel Message' }))
 
-        expect(mutateAsyncDeleteTicketMessage).toHaveBeenCalledWith({
-            ticketId: 123,
-            id: 456,
+        await waitForDeleteTicketMessageRequest((request) => {
+            expect(new URL(request.url).pathname).toContain(
+                '/api/tickets/123/messages/456',
+            )
         })
     })
 
     it('notifies when retrying a persisted message fails', async () => {
-        mutateAsyncUpdateTicketMessage.mockRejectedValueOnce(
-            new Error('request failed'),
+        server.use(
+            mockUpdateTicketMessageHandler(async () =>
+                HttpResponse.json({ error: { msg: 'request failed' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
         )
         const message = mockTicketMessage({
             failed_datetime: '2024-03-21T11:00:00Z',
@@ -245,8 +267,12 @@ describe('MessageErrors', () => {
     })
 
     it('notifies when deleting a persisted message fails', async () => {
-        mutateAsyncDeleteTicketMessage.mockRejectedValueOnce(
-            new Error('request failed'),
+        server.use(
+            mockDeleteTicketMessageHandler(async () =>
+                HttpResponse.json({ error: { msg: 'request failed' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
         )
         const message = mockTicketMessage({
             failed_datetime: '2024-03-21T11:00:00Z',

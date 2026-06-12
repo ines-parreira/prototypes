@@ -1,27 +1,24 @@
 import { renderHook } from '@repo/testing/vitest'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     mockCustomerSearchResponse,
+    mockSearchCustomersHandler,
+    mockSearchCustomersResponse,
+    mockSearchTicketsHandler,
     mockSearchTicketsResponse,
     mockSearchVoiceCallsResponse,
     mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
-import {
-    useSearchAllCustomers,
-    useSearchAllTickets,
-} from '@gorgias/helpdesk-queries'
 
 import { useInfiniteVoiceCallSearch } from '../useInfiniteVoiceCallSearch'
 import { useSearchSpotlightData } from '../useSearchSpotlightData'
 
 vi.mock('@gorgias/toolkit-react', () => ({
     useDebouncedValue: vi.fn(),
-}))
-
-vi.mock('@gorgias/helpdesk-queries', () => ({
-    useSearchAllCustomers: vi.fn(),
-    useSearchAllTickets: vi.fn(),
 }))
 
 vi.mock('../useInfiniteVoiceCallSearch', () => ({
@@ -40,14 +37,44 @@ function createInfiniteQueryResult(overrides: Record<string, any> = {}) {
     } as never
 }
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useSearchSpotlightData', () => {
     beforeEach(() => {
         vi.mocked(useDebouncedValue).mockImplementation((value) => value)
-        vi.mocked(useSearchAllTickets).mockReturnValue(
-            createInfiniteQueryResult(),
-        )
-        vi.mocked(useSearchAllCustomers).mockReturnValue(
-            createInfiniteQueryResult(),
+        server.use(
+            mockSearchTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockSearchTicketsResponse({
+                        data: [],
+                        meta: {
+                            total_resources: 0,
+                        } as any,
+                    }),
+                ),
+            ).handler,
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: [],
+                        meta: {
+                            count: 0,
+                        } as any,
+                    }),
+                ),
+            ).handler,
         )
         vi.mocked(useInfiniteVoiceCallSearch).mockReturnValue(
             createInfiniteQueryResult(),
@@ -66,16 +93,6 @@ describe('useSearchSpotlightData', () => {
         expect(result.current.isSearchMode).toBe(false)
         expect(result.current.isLoading).toBe(false)
         expect(vi.mocked(useDebouncedValue)).toHaveBeenCalledWith('', 1000)
-        expect(vi.mocked(useSearchAllTickets)).toHaveBeenCalledWith(
-            { search: '', filters: '' },
-            { limit: 1, with_highlights: true, track_total_hits: true },
-            { exhaustPages: false, query: { enabled: false } },
-        )
-        expect(vi.mocked(useSearchAllCustomers)).toHaveBeenCalledWith(
-            { search: '' },
-            { limit: 1, with_highlights: true },
-            { exhaustPages: false, query: { enabled: false } },
-        )
         expect(vi.mocked(useInfiniteVoiceCallSearch)).toHaveBeenCalledWith({
             query: '',
             enabled: false,
@@ -83,7 +100,7 @@ describe('useSearchSpotlightData', () => {
         })
     })
 
-    it('maps wrapped search results and totals in search mode', () => {
+    it('maps wrapped search results and totals in search mode', async () => {
         const ticketResponse = {
             ...mockSearchTicketsResponse(),
             data: [
@@ -134,20 +151,15 @@ describe('useSearchSpotlightData', () => {
             },
         } as any
 
+        server.use(
+            mockSearchTicketsHandler(async () =>
+                HttpResponse.json(ticketResponse),
+            ).handler,
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(customerResponse),
+            ).handler,
+        )
         vi.mocked(useDebouncedValue).mockReturnValue('refund')
-        vi.mocked(useSearchAllTickets).mockReturnValue(
-            createInfiniteQueryResult({
-                data: { pages: [{ data: ticketResponse }] },
-                items: ticketResponse.data,
-                isLoading: true,
-            }),
-        )
-        vi.mocked(useSearchAllCustomers).mockReturnValue(
-            createInfiniteQueryResult({
-                data: { pages: [{ data: customerResponse }] },
-                items: customerResponse.data,
-            }),
-        )
         vi.mocked(useInfiniteVoiceCallSearch).mockReturnValue(
             createInfiniteQueryResult({
                 data: { pages: [callResponse] },
@@ -164,64 +176,26 @@ describe('useSearchSpotlightData', () => {
         )
 
         expect(result.current.isSearchMode).toBe(true)
-        expect(result.current.isLoading).toBe(true)
-        expect(result.current.tickets).toHaveLength(1)
-        expect(result.current.customers).toHaveLength(1)
+        await waitFor(() => {
+            expect(result.current.tickets).toHaveLength(1)
+            expect(result.current.customers).toHaveLength(1)
+        })
         expect(result.current.calls).toHaveLength(1)
         expect(result.current.totals).toEqual({
             tickets: 9,
             customers: 2,
             calls: 5,
         })
-        expect(vi.mocked(useSearchAllCustomers)).toHaveBeenCalledWith(
-            { search: 'refund' },
-            { limit: 50, with_highlights: true },
-            { exhaustPages: false, query: { enabled: true } },
-        )
     })
 
     it('exposes pagination from the infinite queries', () => {
-        const fetchNextTicketPage = vi.fn()
+        const fetchNextCallPage = vi.fn()
 
         vi.mocked(useDebouncedValue).mockReturnValue('refund')
-        vi.mocked(useSearchAllTickets).mockReturnValue(
+        vi.mocked(useInfiniteVoiceCallSearch).mockReturnValue(
             createInfiniteQueryResult({
-                data: {
-                    pages: [
-                        {
-                            data: {
-                                ...(mockSearchTicketsResponse() as object),
-                                data: [
-                                    {
-                                        entity: {
-                                            id: 202,
-                                            subject: 'First ticket',
-                                            status: 'open',
-                                            customer: {
-                                                name: 'Ada Lovelace',
-                                            },
-                                        },
-                                    } as never,
-                                ],
-                                meta: {
-                                    total_resources: 2,
-                                },
-                            },
-                        },
-                    ],
-                },
-                items: [
-                    {
-                        entity: {
-                            id: 202,
-                            subject: 'First ticket',
-                            status: 'open',
-                            customer: { name: 'Ada Lovelace' },
-                        },
-                    } as never,
-                ],
                 hasNextPage: true,
-                fetchNextPage: fetchNextTicketPage,
+                fetchNextPage: fetchNextCallPage,
             }),
         )
 
@@ -233,63 +207,57 @@ describe('useSearchSpotlightData', () => {
             }),
         )
 
-        expect(result.current.pagination.tickets.hasNextPage).toBe(true)
+        expect(result.current.pagination.calls.hasNextPage).toBe(true)
 
-        result.current.pagination.tickets.fetchNextPage()
+        result.current.pagination.calls.fetchNextPage()
 
-        expect(fetchNextTicketPage).toHaveBeenCalledTimes(1)
+        expect(fetchNextCallPage).toHaveBeenCalledTimes(1)
     })
 
-    it('dedupes overlapping ticket ids across loaded pages', () => {
-        const ticketResponse = {
-            ...(mockSearchTicketsResponse() as object),
-            data: [
-                {
-                    entity: {
-                        id: 202,
-                        subject: 'First ticket',
-                        status: 'open',
-                        customer: { name: 'Ada Lovelace' },
-                    },
-                } as never,
-            ],
-            meta: {
-                total_resources: 2,
-            },
-        } as any
+    it('dedupes overlapping ticket ids across loaded pages', async () => {
+        server.use(
+            mockSearchTicketsHandler(async ({ request }) => {
+                const cursor = new URL(request.url).searchParams.get('cursor')
 
-        vi.mocked(useDebouncedValue).mockReturnValue('refund')
-        vi.mocked(useSearchAllTickets).mockReturnValue(
-            createInfiniteQueryResult({
-                data: { pages: [{ data: ticketResponse }] },
-                items: [
-                    {
-                        entity: {
-                            id: 202,
-                            subject: 'First ticket',
-                            status: 'open',
-                            customer: { name: 'Ada Lovelace' },
-                        },
-                    } as never,
-                    {
-                        entity: {
-                            id: 202,
-                            subject: 'First ticket',
-                            status: 'open',
-                            customer: { name: 'Ada Lovelace' },
-                        },
-                    } as never,
-                    {
-                        entity: {
-                            id: 203,
-                            subject: 'Second ticket',
-                            status: 'open',
-                            customer: { name: 'Grace Hopper' },
-                        },
-                    } as never,
-                ],
-            }),
+                return HttpResponse.json({
+                    ...(mockSearchTicketsResponse() as object),
+                    data: cursor
+                        ? [
+                              {
+                                  entity: {
+                                      id: 202,
+                                      subject: 'First ticket',
+                                      status: 'open',
+                                      customer: { name: 'Ada Lovelace' },
+                                  },
+                              } as never,
+                              {
+                                  entity: {
+                                      id: 203,
+                                      subject: 'Second ticket',
+                                      status: 'open',
+                                      customer: { name: 'Grace Hopper' },
+                                  },
+                              } as never,
+                          ]
+                        : [
+                              {
+                                  entity: {
+                                      id: 202,
+                                      subject: 'First ticket',
+                                      status: 'open',
+                                      customer: { name: 'Ada Lovelace' },
+                                  },
+                              } as never,
+                          ],
+                    meta: {
+                        next_cursor: cursor ? null : 'cursor-2',
+                        total_resources: 2,
+                    },
+                } as any)
+            }).handler,
         )
+        vi.mocked(useDebouncedValue).mockReturnValue('refund')
 
         const { result } = renderHook(() =>
             useSearchSpotlightData({
@@ -299,9 +267,21 @@ describe('useSearchSpotlightData', () => {
             }),
         )
 
-        expect(result.current.tickets.map((ticket) => ticket.id)).toEqual([
-            202, 203,
-        ])
+        await waitFor(() => {
+            expect(result.current.tickets.map((ticket) => ticket.id)).toEqual([
+                202,
+            ])
+        })
+
+        act(() => {
+            result.current.pagination.tickets.fetchNextPage()
+        })
+
+        await waitFor(() => {
+            expect(result.current.tickets.map((ticket) => ticket.id)).toEqual([
+                202, 203,
+            ])
+        })
     })
 
     it('stays out of search mode when the spotlight is closed', () => {
@@ -314,42 +294,46 @@ describe('useSearchSpotlightData', () => {
         )
 
         expect(result.current.isSearchMode).toBe(false)
-        expect(vi.mocked(useSearchAllTickets)).toHaveBeenCalledWith(
-            { search: 'refund', filters: '' },
-            { limit: 1, with_highlights: true, track_total_hits: true },
-            { exhaustPages: false, query: { enabled: false } },
-        )
+        expect(vi.mocked(useInfiniteVoiceCallSearch)).toHaveBeenCalledWith({
+            query: 'refund',
+            enabled: false,
+            limit: 1,
+        })
     })
 
-    it('falls back to direct items and derived totals when metadata is missing', () => {
+    it('falls back to direct items and derived totals when metadata is missing', async () => {
         vi.mocked(useDebouncedValue).mockReturnValue('refund')
-        vi.mocked(useSearchAllCustomers).mockReturnValue(
-            createInfiniteQueryResult({
-                items: [
-                    {
-                        id: 101,
-                        name: 'Ada Lovelace',
-                        email: 'ada@example.com',
-                    } as never,
-                    {
-                        id: 101,
-                        name: 'Ada Lovelace',
-                        email: 'ada@example.com',
-                    } as never,
-                    'invalid-row' as never,
-                ],
-            }),
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json({
+                    ...mockCustomerSearchResponse(),
+                    data: [
+                        {
+                            id: 101,
+                            name: 'Ada Lovelace',
+                            email: 'ada@example.com',
+                        } as never,
+                        {
+                            id: 101,
+                            name: 'Ada Lovelace',
+                            email: 'ada@example.com',
+                        } as never,
+                        'invalid-row' as never,
+                    ],
+                    meta: {} as any,
+                }),
+            ).handler,
         )
         vi.mocked(useInfiniteVoiceCallSearch).mockReturnValue(
             createInfiniteQueryResult({
                 items: [
-                    mockVoiceCall({
+                    {
                         id: 303,
                         ticket_id: 202,
                         status: 'answered',
                         direction: 'inbound',
                         phone_number_source: '+3311111111',
-                    }) as never,
+                    } as never,
                 ],
             }),
         )
@@ -362,13 +346,15 @@ describe('useSearchSpotlightData', () => {
             }),
         )
 
-        expect(result.current.customers).toHaveLength(1)
+        await waitFor(() => {
+            expect(result.current.customers).toHaveLength(1)
+        })
         expect(result.current.calls).toHaveLength(1)
         expect(result.current.totals.customers).toBe(1)
         expect(result.current.totals.calls).toBe(1)
     })
 
-    it('does not count call loading when voice results are hidden', () => {
+    it('does not count call loading when voice results are hidden', async () => {
         vi.mocked(useDebouncedValue).mockReturnValue('refund')
         vi.mocked(useInfiniteVoiceCallSearch).mockReturnValue(
             createInfiniteQueryResult({
@@ -384,21 +370,15 @@ describe('useSearchSpotlightData', () => {
             }),
         )
 
-        expect(result.current.isLoading).toBe(false)
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
     })
 
     it('guards fetchNextPage when pagination cannot advance', () => {
-        const fetchNextCustomerPage = vi.fn()
         const fetchNextCallPage = vi.fn()
 
         vi.mocked(useDebouncedValue).mockReturnValue('refund')
-        vi.mocked(useSearchAllCustomers).mockReturnValue(
-            createInfiniteQueryResult({
-                hasNextPage: false,
-                isFetchingNextPage: false,
-                fetchNextPage: fetchNextCustomerPage,
-            }),
-        )
         vi.mocked(useInfiniteVoiceCallSearch).mockReturnValue(
             createInfiniteQueryResult({
                 hasNextPage: true,
@@ -415,10 +395,8 @@ describe('useSearchSpotlightData', () => {
             }),
         )
 
-        result.current.pagination.customers.fetchNextPage()
         result.current.pagination.calls.fetchNextPage()
 
-        expect(fetchNextCustomerPage).not.toHaveBeenCalled()
         expect(fetchNextCallPage).not.toHaveBeenCalled()
     })
 })

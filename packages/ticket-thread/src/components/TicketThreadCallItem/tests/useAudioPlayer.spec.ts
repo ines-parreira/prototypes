@@ -1,16 +1,25 @@
 import type { ChangeEvent } from 'react'
 
 import { act } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
 import { vi } from 'vitest'
 
-import { request } from '@gorgias/helpdesk-client'
-
 import { renderHook } from '../../../tests/render.utils'
-import { useAudioPlayer } from '../hooks/useAudioPlayer'
+import { server } from '../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-client', () => ({
-    request: vi.fn(),
-}))
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useAudioPlayer } from '../hooks/useAudioPlayer'
 
 beforeAll(() => {
     window.HTMLMediaElement.prototype.play = vi
@@ -202,12 +211,19 @@ describe('useAudioPlayer', () => {
     })
 
     it('handleDownload fetches the blob and triggers a download', async () => {
+        const fakeBlob = new Blob(['audio'], { type: 'audio/mpeg' })
+        server.use(
+            http.get(
+                'https://example.com/audio.mp3',
+                () =>
+                    new HttpResponse(fakeBlob, {
+                        headers: { 'Content-Type': 'audio/mpeg' },
+                    }),
+            ),
+        )
         const { result } = renderHook(() =>
             useAudioPlayer({ url: 'https://example.com/audio.mp3' }),
         )
-
-        const fakeBlob = new Blob(['audio'], { type: 'audio/mpeg' })
-        vi.mocked(request).mockResolvedValue({ data: fakeBlob } as never)
 
         const fakeBlobUrl = 'blob:fake-url'
         const createObjectURLSpy = vi
@@ -238,14 +254,7 @@ describe('useAudioPlayer', () => {
             await result.current.handleDownload()
         })
 
-        expect(request).toHaveBeenCalledWith(
-            expect.objectContaining({
-                method: 'GET',
-                url: 'https://example.com/audio.mp3',
-                responseType: 'blob',
-            }),
-        )
-        expect(createObjectURLSpy).toHaveBeenCalledWith(fakeBlob)
+        expect(createObjectURLSpy).toHaveBeenCalledWith(expect.any(Blob))
         expect(createElementSpy).toHaveBeenCalledWith('a')
         expect(mockAnchor.href).toBe(fakeBlobUrl)
         expect(mockAnchor.setAttribute).toHaveBeenCalledWith(
@@ -265,11 +274,17 @@ describe('useAudioPlayer', () => {
     })
 
     it('handleDownload does not throw when the request fails', async () => {
+        server.use(
+            http.get('https://example.com/audio.mp3', () =>
+                HttpResponse.json(
+                    { error: { msg: 'Network error' } },
+                    { status: 500 },
+                ),
+            ),
+        )
         const { result } = renderHook(() =>
             useAudioPlayer({ url: 'https://example.com/audio.mp3' }),
         )
-
-        vi.mocked(request).mockRejectedValue(new Error('Network error'))
 
         await expect(
             act(async () => {

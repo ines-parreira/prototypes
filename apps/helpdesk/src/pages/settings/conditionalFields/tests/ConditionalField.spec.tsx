@@ -1,10 +1,15 @@
 import React from 'react'
 
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
 
-import { useGetCustomFieldCondition } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockGetCustomFieldConditionHandler,
+    mockGetCustomFieldConditionResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { Loader } from 'pages/common/components/Loader/Loader'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
@@ -12,7 +17,6 @@ import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 import { EditConditionForm as ConditionForm } from '../components/ConditionForm'
 import { ConditionalField } from '../ConditionalField'
 
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock(
     'react-router-dom',
     () =>
@@ -27,24 +31,40 @@ jest.mock('../components/ConditionForm', () => ({
     EditConditionForm: jest.fn(() => <div>ConditionForm</div>),
 }))
 
-const useGetCustomFieldConditionMock = assumeMock(useGetCustomFieldCondition)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('ConditionalField', () => {
     const conditionData = { name: 'Condition 10' }
     beforeEach(() => {
+        jest.clearAllMocks()
         assumeMock(useParams).mockReturnValue({ id: '10' })
         assumeMock(Loader).mockReturnValue(<div>Loading...</div>)
-        useGetCustomFieldConditionMock.mockReturnValue({
-            data: conditionData,
-            isLoading: false,
-        } as ReturnType<typeof useGetCustomFieldCondition>)
+        server.use(
+            mockGetCustomFieldConditionHandler(async () =>
+                HttpResponse.json(
+                    mockGetCustomFieldConditionResponse(conditionData),
+                ),
+            ).handler,
+        )
     })
 
-    it('should set the appropriate page title', () => {
+    it('should set the appropriate page title', async () => {
         const { rerender } = render(<ConditionalField />)
 
+        expect(await screen.findByText(conditionData.name)).toBeInTheDocument()
         expect(document.title).toEqual(conditionData.name)
-        expect(screen.getByText(conditionData.name)).toBeInTheDocument()
 
         assumeMock(useParams).mockReturnValue({ id: 'add' })
 
@@ -54,35 +74,40 @@ describe('ConditionalField', () => {
         expect(screen.getByText('Create condition')).toBeInTheDocument()
     })
 
-    it('should render a link to Field Conditions', () => {
+    it('should render a link to Field Conditions', async () => {
         render(<ConditionalField />)
 
-        expect(Link).toHaveBeenCalledWith(
-            {
-                to: `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}/`,
-                children: 'Field Conditions',
-            },
-            {},
-        )
+        await waitFor(() => {
+            expect(Link).toHaveBeenCalledWith(
+                {
+                    to: `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}/`,
+                    children: 'Field Conditions',
+                },
+                {},
+            )
+        })
     })
 
     it('should show a loader when condition is loading', () => {
-        useGetCustomFieldConditionMock.mockReturnValue({
-            data: conditionData,
-            isLoading: true,
-        } as unknown as ReturnType<typeof useGetCustomFieldCondition>)
+        server.use(
+            mockGetCustomFieldConditionHandler(
+                async () => new Promise(() => undefined),
+            ).handler,
+        )
 
         render(<ConditionalField />)
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it("should call ConditionForm with condition's data", () => {
+    it("should call ConditionForm with condition's data", async () => {
         render(<ConditionalField />)
 
-        expect(ConditionForm).toHaveBeenCalledWith(
-            { condition: conditionData },
-            {},
-        )
+        await waitFor(() => {
+            expect(ConditionForm).toHaveBeenCalledWith(
+                { condition: expect.objectContaining(conditionData) },
+                {},
+            )
+        })
     })
 })

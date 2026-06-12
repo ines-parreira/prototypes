@@ -1,23 +1,24 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { useUpdateCustomer as useUpdateCustomerPrimitive } from '@gorgias/helpdesk-queries'
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
+import { mockUpdateCustomerHandler } from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../tests/render.utils'
-import { useUpdateCustomer } from '../useUpdateCustomer'
+import { server } from '../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useUpdateCustomer: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-const mockedUseUpdateCustomerPrimitive = vi.mocked(useUpdateCustomerPrimitive)
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useUpdateCustomer } from '../useUpdateCustomer'
 
 describe('useUpdateCustomer', () => {
     beforeEach(() => {
@@ -25,11 +26,13 @@ describe('useUpdateCustomer', () => {
     })
 
     it('should show error toast on failure', async () => {
-        const mutateAsync = vi.fn().mockRejectedValue(new Error('fail'))
-        mockedUseUpdateCustomerPrimitive.mockReturnValue({
-            mutateAsync,
-            isLoading: false,
-        } as any)
+        server.use(
+            mockUpdateCustomerHandler(async () =>
+                HttpResponse.json({ error: { msg: 'fail' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useUpdateCustomer(456, '123'))
 

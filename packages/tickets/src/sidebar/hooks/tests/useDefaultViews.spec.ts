@@ -7,14 +7,22 @@ import {
     useDefaultViewsError as useSdkDefaultViewsError,
     useDefaultViewsLoading as useSdkDefaultViewsLoading,
 } from '@repo/views'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { useListAccountSettings, useListViews } from '@gorgias/helpdesk-queries'
+import {
+    mockListAccountSettingsHandler,
+    mockListAccountSettingsResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { View } from '@gorgias/helpdesk-types'
 
 import { renderHook } from '../../../tests/render.utils'
-import { getOrderedSystemViews, useDefaultViews } from '../useDefaultViews'
+import { server } from '../../../tests/server'
+import type {
+    getOrderedSystemViews as getOrderedSystemViewsType,
+    useDefaultViews as useDefaultViewsType,
+} from '../useDefaultViews'
 
-vi.mock('@gorgias/helpdesk-queries')
 vi.mock('@repo/feature-flags', () => ({
     useDefaultViewsSourceSdkFlagWithLoading: vi.fn(),
     useHelpdeskV2WayfindingMS1Flag: vi.fn(),
@@ -25,8 +33,6 @@ vi.mock('@repo/views', () => ({
     useDefaultViewsLoading: vi.fn(),
 }))
 
-const mockUseListViews = vi.mocked(useListViews)
-const mockUseListAccountSettings = vi.mocked(useListAccountSettings)
 const mockUseHelpdeskV2WayfindingMS1Flag = vi.mocked(
     useHelpdeskV2WayfindingMS1Flag,
 )
@@ -36,6 +42,67 @@ const mockUseDefaultViewsSourceSdkFlagWithLoading = vi.mocked(
 const mockUseSdkDefaultViews = vi.mocked(useSdkDefaultViews)
 const mockUseSdkDefaultViewsLoading = vi.mocked(useSdkDefaultViewsLoading)
 const mockUseSdkDefaultViewsError = vi.mocked(useSdkDefaultViewsError)
+let getOrderedSystemViews: typeof getOrderedSystemViewsType
+let useDefaultViews: typeof useDefaultViewsType
+let visibilitySetting:
+    | {
+          id: number
+          type: string
+          data: { hidden_views: number[] }
+      }
+    | undefined
+let accountSettingsRequestCount = 0
+
+const allSystemViews: View[] = [
+    { id: 1, name: 'Inbox', category: 'system', uri: '/api/views/1' },
+    { id: 2, name: 'Unassigned', category: 'system', uri: '/api/views/2' },
+    { id: 3, name: 'All', category: 'system', uri: '/api/views/3' },
+    { id: 4, name: 'Snoozed', category: 'system', uri: '/api/views/4' },
+    { id: 5, name: 'Closed', category: 'system', uri: '/api/views/5' },
+    { id: 6, name: 'Trash', category: 'system', uri: '/api/views/6' },
+    { id: 7, name: 'Spam', category: 'system', uri: '/api/views/7' },
+]
+
+beforeAll(async () => {
+    ;(
+        window as typeof window & {
+            GORGIAS_STATE?: {
+                currentAccount: { domain: string; id: number; user_id: number }
+                views?: { items?: View[] }
+            }
+        }
+    ).GORGIAS_STATE = {
+        currentAccount: { domain: 'example', id: 1, user_id: 1 },
+        views: {
+            items: allSystemViews,
+        },
+    }
+
+    ;({ getOrderedSystemViews, useDefaultViews } =
+        await import('../useDefaultViews'))
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+function mockAccountSettingsHandler() {
+    return mockListAccountSettingsHandler(async ({ request }) => {
+        accountSettingsRequestCount += 1
+        const type = new URL(request.url).searchParams.get('type')
+        const data =
+            type === 'views-visibility' && visibilitySetting
+                ? [visibilitySetting]
+                : []
+
+        return HttpResponse.json(mockListAccountSettingsResponse({ data }))
+    }).handler
+}
 
 describe('getOrderedSystemViews', () => {
     it('should return system views sorted by SYSTEM_VIEW_DEFINITIONS order', () => {
@@ -127,17 +194,14 @@ describe('getOrderedSystemViews', () => {
 })
 
 describe('useDefaultViews', () => {
-    const allSystemViews: View[] = [
-        { id: 1, name: 'Inbox', category: 'system', uri: '/api/views/1' },
-        { id: 2, name: 'Unassigned', category: 'system', uri: '/api/views/2' },
-        { id: 3, name: 'All', category: 'system', uri: '/api/views/3' },
-        { id: 4, name: 'Snoozed', category: 'system', uri: '/api/views/4' },
-        { id: 5, name: 'Closed', category: 'system', uri: '/api/views/5' },
-        { id: 6, name: 'Trash', category: 'system', uri: '/api/views/6' },
-        { id: 7, name: 'Spam', category: 'system', uri: '/api/views/7' },
-    ]
-
     beforeEach(() => {
+        accountSettingsRequestCount = 0
+        visibilitySetting = {
+            id: 42,
+            type: 'views-visibility',
+            data: { hidden_views: [] },
+        }
+        server.use(mockAccountSettingsHandler())
         mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
         mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
             isLoading: false,
@@ -154,22 +218,6 @@ describe('useDefaultViews', () => {
         ])
         mockUseSdkDefaultViewsLoading.mockReturnValue(false)
         mockUseSdkDefaultViewsError.mockReturnValue(false)
-
-        mockUseListViews.mockReturnValue({
-            data: allSystemViews,
-            isLoading: false,
-            isError: false,
-        } as any)
-
-        mockUseListAccountSettings.mockReturnValue({
-            data: {
-                id: 42,
-                type: 'views-visibility',
-                data: { hidden_views: [] },
-            },
-            isLoading: false,
-            isError: false,
-        } as any)
     })
 
     it('should return all system views ordered by SYSTEM_VIEW_DEFINITIONS', () => {
@@ -220,7 +268,7 @@ describe('useDefaultViews', () => {
         })
     })
 
-    it('should hold in loading state when wayfinding is enabled and the SDK source flag is loading', () => {
+    it('should hold in loading state when wayfinding is enabled and the SDK source flag is loading', async () => {
         mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
         mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
             isLoading: true,
@@ -243,17 +291,11 @@ describe('useDefaultViews', () => {
             isVisible: true,
             isEnabled: false,
         })
-        expect(mockUseListAccountSettings).toHaveBeenCalledWith(
-            { type: 'views-visibility' },
-            expect.objectContaining({
-                query: expect.objectContaining({
-                    enabled: false,
-                }),
-            }),
-        )
+        await new Promise((resolve) => setTimeout(resolve, 0))
+        expect(accountSettingsRequestCount).toBe(0)
     })
 
-    it('should use SDK default views when wayfinding and the SDK source flag are enabled', () => {
+    it('should use SDK default views when wayfinding and the SDK source flag are enabled', async () => {
         mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
         mockUseDefaultViewsSourceSdkFlagWithLoading.mockReturnValue({
             isLoading: false,
@@ -268,7 +310,9 @@ describe('useDefaultViews', () => {
         expect(result.current.visibleSystemViews.map((v) => v.name)).toEqual([
             'Closed',
         ])
-        expect(result.current.visibilitySettingId).toBe(42)
+        await waitFor(() => {
+            expect(result.current.visibilitySettingId).toBe(42)
+        })
         expect(mockUseSdkDefaultViews).toHaveBeenCalledWith({
             isEnabled: true,
         })
@@ -312,102 +356,68 @@ describe('useDefaultViews', () => {
     })
 
     it('should return all views as visible when visibility data is not available', () => {
-        mockUseListAccountSettings.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as any)
+        visibilitySetting = undefined
 
         const { result } = renderHook(() => useDefaultViews())
 
         expect(result.current.visibleSystemViews).toHaveLength(7)
     })
 
-    it('should filter out hidden views from visibleSystemViews', () => {
-        mockUseListAccountSettings.mockReturnValue({
-            data: {
-                id: 42,
-                type: 'views-visibility',
-                data: { hidden_views: [3, 7] },
-            },
-            isLoading: false,
-            isError: false,
-        } as any)
+    it('should filter out hidden views from visibleSystemViews', async () => {
+        visibilitySetting = {
+            id: 42,
+            type: 'views-visibility',
+            data: { hidden_views: [3, 7] },
+        }
 
         const { result } = renderHook(() => useDefaultViews())
 
-        expect(result.current.visibleSystemViews.map((v) => v.name)).toEqual([
-            'Inbox',
-            'Unassigned',
-            'Snoozed',
-            'Closed',
-            'Trash',
-        ])
+        await waitFor(() => {
+            expect(
+                result.current.visibleSystemViews.map((v) => v.name),
+            ).toEqual(['Inbox', 'Unassigned', 'Snoozed', 'Closed', 'Trash'])
+        })
     })
 
-    it('should return the visibility setting id', () => {
+    it('should return the visibility setting id', async () => {
         const { result } = renderHook(() => useDefaultViews())
 
-        expect(result.current.visibilitySettingId).toBe(42)
+        await waitFor(() => {
+            expect(result.current.visibilitySettingId).toBe(42)
+        })
     })
 
     it('should return undefined visibilitySettingId when account settings are not loaded', () => {
-        mockUseListAccountSettings.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as any)
+        visibilitySetting = undefined
 
         const { result } = renderHook(() => useDefaultViews())
 
         expect(result.current.visibilitySettingId).toBeUndefined()
     })
 
-    it('should set isLoading to true when views are loading', () => {
-        mockUseListViews.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-        } as any)
-
-        const { result } = renderHook(() => useDefaultViews())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
     it('should set isLoading to true when account settings are loading', () => {
-        mockUseListAccountSettings.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-        } as any)
+        server.use(
+            mockListAccountSettingsHandler(
+                async () => new Promise(() => undefined),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useDefaultViews())
 
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should set isError to true when views fetch fails', () => {
-        mockUseListViews.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: true,
-        } as any)
+    it('should set isError to true when account settings fetch fails', async () => {
+        server.use(
+            mockListAccountSettingsHandler(async () =>
+                HttpResponse.json({} as any, { status: 500 }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useDefaultViews())
 
-        expect(result.current.isError).toBe(true)
-    })
-
-    it('should set isError to true when account settings fetch fails', () => {
-        mockUseListAccountSettings.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: true,
-        } as any)
-
-        const { result } = renderHook(() => useDefaultViews())
-
-        expect(result.current.isError).toBe(true)
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
     })
 })

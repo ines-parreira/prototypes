@@ -17,6 +17,6 @@ export function useSourceCustomer(sourceCustomer: Customer | null) {
 
     return {
         sourceCustomer: fullSourceData?.data || sourceCustomer,
-        isLoading,
+        isLoading: !!sourceCustomer?.id && isLoading,
     }
 }

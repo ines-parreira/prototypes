@@ -84,6 +84,7 @@
     "plugins": ["import", "jsx-a11y", "react", "react-hooks", "typescript"],
     "rules": {
         "custom-rules/no-generic-duration-wrapper": "error",
+        "custom-rules/no-sdk-mock": "error",
         "custom-rules/prefer-duration-for-timing": "error",
         "typescript/ban-ts-comment": "off",
         "typescript/no-explicit-any": "off",

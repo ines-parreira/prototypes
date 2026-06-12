@@ -11,8 +11,13 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { toast } from '@gorgias/axiom'
-import { getCustomer } from '@gorgias/helpdesk-client'
+import {
+    mockGetCustomerHandler,
+    mockGetCustomerResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -22,9 +27,6 @@ import { useNewTicketPageForm } from '../hooks/useNewTicketForm'
 
 jest.mock('../hooks/useNewTicketDraft')
 jest.mock('../hooks/useNewTicketSubmit')
-jest.mock('@gorgias/helpdesk-client', () => ({
-    getCustomer: jest.fn(),
-}))
 jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
@@ -41,6 +43,8 @@ const mockUseNewTicketSubmit = jest.mocked(
     ).useNewTicketSubmit,
 )
 const mockUseGetCustomer = jest.mocked(useGetCustomer)
+
+const server = setupServer()
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
@@ -91,6 +95,18 @@ const createWrapperWithStore = (
         </MemoryRouter>
     )) as unknown as ComponentType
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useNewTicketPageForm', () => {
     beforeEach(() => {
         mockUseNewTicketDraft.mockReturnValue({
@@ -106,6 +122,7 @@ describe('useNewTicketPageForm', () => {
         mockUseGetCustomer.mockReturnValue({
             data: undefined,
         } as any)
+        server.use(mockGetCustomerHandler().handler)
     })
 
     afterEach(() => {
@@ -246,9 +263,12 @@ describe('useNewTicketPageForm', () => {
     describe('handleRecipientsChange', () => {
         it('sets customer when a single "to" recipient with id is set', async () => {
             const customer = { id: 42, name: 'Jane Doe' }
-            jest.mocked(getCustomer).mockResolvedValue({
-                data: customer,
-            } as any)
+            const getCustomerMock = mockGetCustomerHandler(async () =>
+                HttpResponse.json(mockGetCustomerResponse(customer)),
+            )
+            server.use(getCustomerMock.handler)
+            const waitForGetCustomerRequest =
+                getCustomerMock.waitForRequest(server)
 
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
@@ -260,12 +280,22 @@ describe('useNewTicketPageForm', () => {
                 ] as any)
             })
 
-            expect(getCustomer).toHaveBeenCalledWith(42)
-            expect(result.current.ticketState.customer).toEqual(customer)
+            await waitForGetCustomerRequest((request) => {
+                expect(request.url).toContain('/api/customers/42')
+            })
+            expect(result.current.ticketState.customer).toEqual(
+                expect.objectContaining(customer),
+            )
         })
 
         it('shows an error toast when the recipient customer cannot be fetched', async () => {
-            jest.mocked(getCustomer).mockRejectedValue(new Error('Failed'))
+            server.use(
+                mockGetCustomerHandler(async () =>
+                    HttpResponse.json({ error: { msg: 'Failed' } } as any, {
+                        status: 500,
+                    }),
+                ).handler,
+            )
 
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
@@ -296,6 +326,13 @@ describe('useNewTicketPageForm', () => {
         })
 
         it('does not fetch customer when prop is not "to"', () => {
+            let requestCount = 0
+            server.use(
+                mockGetCustomerHandler(async () => {
+                    requestCount += 1
+                    return HttpResponse.json(mockGetCustomerResponse())
+                }).handler,
+            )
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
             })
@@ -306,10 +343,17 @@ describe('useNewTicketPageForm', () => {
                 ] as any)
             })
 
-            expect(getCustomer).not.toHaveBeenCalled()
+            expect(requestCount).toBe(0)
         })
 
         it('does not fetch customer when multiple "to" recipients are set', () => {
+            let requestCount = 0
+            server.use(
+                mockGetCustomerHandler(async () => {
+                    requestCount += 1
+                    return HttpResponse.json(mockGetCustomerResponse())
+                }).handler,
+            )
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
             })
@@ -321,7 +365,7 @@ describe('useNewTicketPageForm', () => {
                 ] as any)
             })
 
-            expect(getCustomer).not.toHaveBeenCalled()
+            expect(requestCount).toBe(0)
         })
     })
 
@@ -535,9 +579,12 @@ describe('useNewTicketPageForm', () => {
                     },
                 },
             }
-            jest.mocked(getCustomer).mockResolvedValue({
-                data: fullCustomer,
-            } as any)
+            const getCustomerMock = mockGetCustomerHandler(async () =>
+                HttpResponse.json(mockGetCustomerResponse(fullCustomer)),
+            )
+            server.use(getCustomerMock.handler)
+            const waitForGetCustomerRequest =
+                getCustomerMock.waitForRequest(server)
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapperWithStore(store),
             })
@@ -546,8 +593,12 @@ describe('useNewTicketPageForm', () => {
                 await result.current.handleCustomerChange(customer as any)
             })
 
-            expect(getCustomer).toHaveBeenCalledWith(42)
-            expect(result.current.ticketState.customer).toEqual(fullCustomer)
+            await waitForGetCustomerRequest((request) => {
+                expect(request.url).toContain('/api/customers/42')
+            })
+            expect(result.current.ticketState.customer).toEqual(
+                expect.objectContaining(fullCustomer),
+            )
             expect(store.getActions()).toEqual(
                 expect.arrayContaining([
                     expect.objectContaining({
@@ -581,9 +632,11 @@ describe('useNewTicketPageForm', () => {
                     },
                 ],
             }
-            jest.mocked(getCustomer).mockResolvedValue({
-                data: customer,
-            } as any)
+            server.use(
+                mockGetCustomerHandler(async () =>
+                    HttpResponse.json(mockGetCustomerResponse(customer)),
+                ).handler,
+            )
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapperWithStore(store),
             })
@@ -611,6 +664,13 @@ describe('useNewTicketPageForm', () => {
         })
 
         it('sets a selected customer without fetching when it has no id', async () => {
+            let requestCount = 0
+            server.use(
+                mockGetCustomerHandler(async () => {
+                    requestCount += 1
+                    return HttpResponse.json(mockGetCustomerResponse())
+                }).handler,
+            )
             const customer = {
                 name: 'Unsaved Customer',
                 email: 'unsaved@example.com',
@@ -624,7 +684,7 @@ describe('useNewTicketPageForm', () => {
                 await result.current.handleCustomerChange(customer as any)
             })
 
-            expect(getCustomer).not.toHaveBeenCalled()
+            expect(requestCount).toBe(0)
             expect(result.current.ticketState.customer).toEqual(customer)
         })
 
@@ -635,7 +695,13 @@ describe('useNewTicketPageForm', () => {
                 email: 'jane@example.com',
                 channels: [],
             }
-            jest.mocked(getCustomer).mockRejectedValue(new Error('Failed'))
+            server.use(
+                mockGetCustomerHandler(async () =>
+                    HttpResponse.json({ error: { msg: 'Failed' } } as any, {
+                        status: 500,
+                    }),
+                ).handler,
+            )
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapper(),
             })

@@ -1,7 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { searchVoiceCalls } from '@gorgias/helpdesk-client'
 import {
+    mockSearchVoiceCallsHandler,
     mockSearchVoiceCallsResponse,
     mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
@@ -18,19 +20,31 @@ vi.mock('@tanstack/react-query', () => ({
     })),
 }))
 
-vi.mock('@gorgias/helpdesk-client', () => ({
-    searchVoiceCalls: vi.fn(),
-}))
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useInfiniteVoiceCallSearch', () => {
     it('configures the infinite voice-call query and forwards the query fn', async () => {
         const response = mockSearchVoiceCallsResponse({
             data: [{ entity: mockVoiceCall({ id: 303 }) } as never],
         })
-
-        vi.mocked(searchVoiceCalls).mockResolvedValue({
-            data: response,
-        } as never)
+        const searchVoiceCallsMock = mockSearchVoiceCallsHandler(async () =>
+            HttpResponse.json(response),
+        )
+        const waitForSearchVoiceCallsRequest =
+            searchVoiceCallsMock.waitForRequest(server)
+        server.use(searchVoiceCallsMock.handler)
 
         useInfiniteVoiceCallSearch({
             query: 'refund',
@@ -64,16 +78,20 @@ describe('useInfiniteVoiceCallSearch', () => {
         )
         await expect(
             queryConfig?.queryFn?.({ pageParam: 'cursor-2' }),
-        ).resolves.toEqual({ data: response })
+        ).resolves.toEqual(expect.objectContaining({ data: response }))
+        await waitForSearchVoiceCallsRequest(async (request) => {
+            const body = (await request.json()) as { search?: string }
+            const searchParams = new URL(request.url).searchParams
+
+            expect(body.search).toBe('refund')
+            expect(searchParams.get('limit')).toBe('25')
+            expect(searchParams.get('cursor')).toBe('cursor-2')
+            expect(searchParams.get('with_highlights')).toBe('true')
+        })
         expect(
             queryConfig?.getNextPageParam?.({
                 data: { meta: { next_cursor: 'next' } },
             }),
         ).toBe('next')
-        expect(searchVoiceCalls).toHaveBeenCalledWith(
-            { search: 'refund' },
-            { limit: 25, cursor: 'cursor-2', with_highlights: true },
-            { signal: undefined },
-        )
     })
 })

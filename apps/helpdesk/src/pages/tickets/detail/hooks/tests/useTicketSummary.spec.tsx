@@ -1,9 +1,9 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
-import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
-
-import { isGorgiasApiError } from 'models/api/types'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { mockGenerateTicketSummaryHandler } from '@gorgias/helpdesk-mocks'
 
 import { useTicketSummary } from '../useTicketSummary'
 
@@ -13,17 +13,7 @@ jest.mock('@gorgias/toolkit-react', () => ({
     useTimeout: () => [mockSetTimeout],
 }))
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGenerateTicketSummary: jest.fn(),
-}))
-
-jest.mock('models/api/types', () => ({
-    isGorgiasApiError: jest.fn(),
-}))
-
-const useGenerateTicketSummaryMock = assumeMock(useGenerateTicketSummary)
-const isGorgiasApiErrorMock = assumeMock(isGorgiasApiError)
-const mutate = jest.fn()
+const server = setupServer()
 
 const mockSummary = {
     content: 'Sample summary',
@@ -32,12 +22,22 @@ const mockSummary = {
     triggered_by: 1,
 }
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useTicketSummary', () => {
     beforeEach(() => {
-        useGenerateTicketSummaryMock.mockReturnValue({
-            mutate,
-        } as unknown as ReturnType<typeof useGenerateTicketSummary>)
-        isGorgiasApiErrorMock.mockReturnValue(true)
+        jest.clearAllMocks()
+        server.use(mockGenerateTicketSummaryHandler().handler)
     })
 
     it('should initialize with initialSummary', () => {
@@ -56,6 +56,11 @@ describe('useTicketSummary', () => {
     })
 
     it('should call mutate when requestSummary is triggered manually', async () => {
+        const generateSummaryMock = mockGenerateTicketSummaryHandler()
+        server.use(generateSummaryMock.handler)
+        const waitForGenerateSummaryRequest =
+            generateSummaryMock.waitForRequest(server)
+
         const { result } = renderHook(() =>
             useTicketSummary({
                 ticketId: 1,
@@ -67,10 +72,10 @@ describe('useTicketSummary', () => {
             result.current.requestSummary()
         })
 
-        expect(mutate).toHaveBeenCalledWith(
-            { ticketId: 1, data: {} },
-            expect.objectContaining({ onError: expect.any(Function) }),
-        )
+        await waitForGenerateSummaryRequest(async (request) => {
+            expect(request.url).toContain('/api/tickets/1/summarize')
+            expect(await request.json()).toEqual({})
+        })
         expect(result.current.isLoading).toBe(true)
         expect(result.current.errorMessage).toBe('')
         expect(result.current.isRetriable).toBe(true)
@@ -78,6 +83,11 @@ describe('useTicketSummary', () => {
     })
 
     it('should automatically fetch if generateOnMountIfMissing is true and no summary is passed', async () => {
+        const generateSummaryMock = mockGenerateTicketSummaryHandler()
+        server.use(generateSummaryMock.handler)
+        const waitForGenerateSummaryRequest =
+            generateSummaryMock.waitForRequest(server)
+
         renderHook(() =>
             useTicketSummary({
                 ticketId: 1,
@@ -86,27 +96,19 @@ describe('useTicketSummary', () => {
             }),
         )
 
-        expect(mutate).toHaveBeenCalledWith(
-            { ticketId: 1, data: {} },
-            expect.objectContaining({ onError: expect.any(Function) }),
-        )
+        await waitForGenerateSummaryRequest((request) => {
+            expect(request.url).toContain('/api/tickets/1/summarize')
+        })
     })
 
     it('should set errorMessage if mutate fails with 400 error', async () => {
-        const error = {
-            status: 400,
-            response: {
-                data: {
-                    error: {
-                        msg: 'Custom error',
-                    },
-                },
-            },
-        }
-
-        mutate.mockImplementation((_: any, { onError }: any) => {
-            onError?.(error)
-        })
+        server.use(
+            mockGenerateTicketSummaryHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Custom error' } } as any, {
+                    status: 400,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useTicketSummary({
@@ -119,9 +121,11 @@ describe('useTicketSummary', () => {
             result.current.requestSummary()
         })
 
-        expect(result.current.errorMessage).toBe('Custom error')
-        expect(result.current.isRetriable).toBe(true)
-        expect(result.current.isLoading).toBe(false)
+        await waitFor(() => {
+            expect(result.current.errorMessage).toBe('Custom error')
+            expect(result.current.isRetriable).toBe(true)
+            expect(result.current.isLoading).toBe(false)
+        })
     })
 
     it('should update summary and reset loading/error when initialSummary changes externally', () => {
@@ -151,20 +155,14 @@ describe('useTicketSummary', () => {
     })
 
     it('should clear error message after timeout if summary has content', async () => {
-        const error = {
-            status: 400,
-            response: {
-                data: {
-                    error: {
-                        msg: 'Temporary error',
-                    },
-                },
-            },
-        }
-
-        mutate.mockImplementation((_: any, { onError }: any) => {
-            onError?.(error)
-        })
+        server.use(
+            mockGenerateTicketSummaryHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Temporary error' } } as any,
+                    { status: 400 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useTicketSummary({
@@ -177,7 +175,9 @@ describe('useTicketSummary', () => {
             result.current.requestSummary()
         })
 
-        expect(result.current.errorMessage).toBe('Temporary error')
+        await waitFor(() => {
+            expect(result.current.errorMessage).toBe('Temporary error')
+        })
 
         const timeoutCallback = mockSetTimeout.mock.calls[0][0]
         act(() => {
@@ -188,20 +188,13 @@ describe('useTicketSummary', () => {
     })
 
     it('should set isRetriable to false when error status is 403', async () => {
-        const error = {
-            status: 403,
-            response: {
-                data: {
-                    error: {
-                        msg: 'Forbidden',
-                    },
-                },
-            },
-        }
-
-        mutate.mockImplementation((_: any, { onError }: any) => {
-            onError?.(error)
-        })
+        server.use(
+            mockGenerateTicketSummaryHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Forbidden' } } as any, {
+                    status: 403,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useTicketSummary({
@@ -214,27 +207,21 @@ describe('useTicketSummary', () => {
             result.current.requestSummary()
         })
 
-        expect(result.current.errorMessage).toBe('Forbidden')
-        expect(result.current.isRetriable).toBe(false)
-        expect(result.current.isLoading).toBe(false)
+        await waitFor(() => {
+            expect(result.current.errorMessage).toBe('Forbidden')
+            expect(result.current.isRetriable).toBe(false)
+            expect(result.current.isLoading).toBe(false)
+        })
     })
 
     it('should set isRetriable to true when error status is not 403', async () => {
-        const error = {
-            status: 400,
-            response: {
-                status: 400,
-                data: {
-                    error: {
-                        msg: 'Bad request',
-                    },
-                },
-            },
-        }
-
-        mutate.mockImplementation((_: any, { onError }: any) => {
-            onError?.(error)
-        })
+        server.use(
+            mockGenerateTicketSummaryHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Bad request' } } as any, {
+                    status: 400,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() =>
             useTicketSummary({
@@ -247,8 +234,10 @@ describe('useTicketSummary', () => {
             result.current.requestSummary()
         })
 
-        expect(result.current.errorMessage).toBe('Bad request')
-        expect(result.current.isRetriable).toBe(true)
-        expect(result.current.isLoading).toBe(false)
+        await waitFor(() => {
+            expect(result.current.errorMessage).toBe('Bad request')
+            expect(result.current.isRetriable).toBe(true)
+            expect(result.current.isLoading).toBe(false)
+        })
     })
 })

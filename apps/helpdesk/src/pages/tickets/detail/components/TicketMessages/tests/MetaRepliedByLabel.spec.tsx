@@ -1,17 +1,31 @@
 import React from 'react'
 
-import { assumeMock, render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
-import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockGetTicketMessageHandler,
+    mockGetTicketMessageResponse,
+    mockTicketMessageUserOrCustomer,
+} from '@gorgias/helpdesk-mocks'
 
 import { MetaRepliedByLabel } from 'pages/tickets/detail/components/TicketMessages/MetaRepliedByLabel'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-const queryClient = mockQueryClient()
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-queries')
-const mockUseGetTicketMessage = assumeMock(useGetTicketMessage)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('MetaRepliedByLabel', () => {
     const reply = {
@@ -19,42 +33,42 @@ describe('MetaRepliedByLabel', () => {
         ticket_message_id: 2,
     }
 
-    it('should trigger a ticket message query and display a loading indicator', () => {
-        mockUseGetTicketMessage.mockReturnValue({
-            isLoading: true,
-            data: undefined,
-        } as ReturnType<typeof useGetTicketMessage>)
+    it('should trigger a ticket message query and display a loading indicator', async () => {
+        let requestUrl: string | undefined
+        server.use(
+            mockGetTicketMessageHandler(async ({ request }) => {
+                requestUrl = request.url
 
-        const { getByText } = render(
-            <QueryClientProvider client={queryClient}>
-                <MetaRepliedByLabel reply={reply} />
-            </QueryClientProvider>,
+                return new Promise(() => undefined)
+            }).handler,
         )
 
-        expect(mockUseGetTicketMessage).toHaveBeenCalledWith(1, 2, {
-            query: { refetchInterval: false, refetchOnWindowFocus: false },
-        })
+        const { getByText } = render(<MetaRepliedByLabel reply={reply} />)
 
+        await waitFor(() => {
+            expect(requestUrl).toContain('/api/tickets/1/messages/2')
+        })
         expect(getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('should display the reply details once the ticket message has been loaded', () => {
-        mockUseGetTicketMessage.mockReturnValue({
-            isLoading: false,
-            data: {
-                data: {
-                    sender: { name: 'John Doe' },
-                },
-            },
-        } as ReturnType<typeof useGetTicketMessage>)
-
-        const { queryByText } = render(
-            <QueryClientProvider client={queryClient}>
-                <MetaRepliedByLabel reply={reply} />
-            </QueryClientProvider>,
+    it('should display the reply details once the ticket message has been loaded', async () => {
+        server.use(
+            mockGetTicketMessageHandler(async () =>
+                HttpResponse.json(
+                    mockGetTicketMessageResponse({
+                        sender: mockTicketMessageUserOrCustomer({
+                            name: 'John Doe',
+                        }),
+                    }),
+                ),
+            ).handler,
         )
 
-        expect(queryByText('Loading...')).not.toBeInTheDocument()
+        const { queryByText } = render(<MetaRepliedByLabel reply={reply} />)
+
+        await waitFor(() => {
+            expect(queryByText('Loading...')).not.toBeInTheDocument()
+        })
         expect(queryByText('responded to via Messenger')).toBeInTheDocument()
         expect(queryByText('John Doe')).toBeInTheDocument()
         expect(queryByText('View ticket')).toBeInTheDocument()

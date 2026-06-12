@@ -1,40 +1,59 @@
 import { act } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { mockTicket } from '@gorgias/helpdesk-mocks'
-import { useSearchTickets } from '@gorgias/helpdesk-queries'
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
+import {
+    mockSearchTicketsHandler,
+    mockSearchTicketsResponse,
+    mockTicket,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../../tests/render.utils'
-import { useMergeTicketSearch } from '../useMergeTicketSearch'
+import { server } from '../../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useSearchTickets: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-const mockedUseSearchTickets = vi.mocked(useSearchTickets)
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useMergeTicketSearch } from '../useMergeTicketSearch'
 
 describe('useMergeTicketSearch', () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        mockedUseSearchTickets.mockReturnValue({
-            data: undefined,
-            isFetching: false,
-        } as any)
+        server.use(
+            mockSearchTicketsHandler(async () =>
+                HttpResponse.json(mockSearchTicketsResponse({ data: [] })),
+            ).handler,
+        )
     })
 
     afterEach(() => {
-        vi.useRealTimers()
+        if (vi.isFakeTimers()) {
+            vi.runOnlyPendingTimers()
+            vi.useRealTimers()
+        }
     })
 
-    it('should debounce search before querying tickets', () => {
+    it('should debounce search before querying tickets', async () => {
         vi.useFakeTimers()
+        const searches: string[] = []
+        server.use(
+            mockSearchTicketsHandler(async ({ request }) => {
+                const body = (await request.json()) as { search?: string }
+                searches.push(body.search ?? '')
+
+                return HttpResponse.json(
+                    mockSearchTicketsResponse({ data: [] }),
+                )
+            }).handler,
+        )
 
         const ticket = mockTicket({
             id: 123,
@@ -42,72 +61,49 @@ describe('useMergeTicketSearch', () => {
 
         const { result } = renderHook(() => useMergeTicketSearch(ticket))
 
-        expect(mockedUseSearchTickets).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                search: '',
-            }),
-            expect.any(Object),
-            expect.any(Object),
-        )
-
         act(() => {
             result.current.setSearchQuery('target')
         })
-
-        expect(mockedUseSearchTickets).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                search: '',
-            }),
-            expect.any(Object),
-            expect.any(Object),
-        )
 
         act(() => {
             vi.advanceTimersByTime(299)
         })
 
-        expect(mockedUseSearchTickets).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                search: '',
-            }),
-            expect.any(Object),
-            expect.any(Object),
-        )
+        expect(searches).not.toContain('target')
 
-        act(() => {
+        await act(async () => {
             vi.advanceTimersByTime(1)
         })
 
-        expect(mockedUseSearchTickets).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                search: 'target',
-            }),
-            expect.any(Object),
-            expect.any(Object),
-        )
+        await vi.waitFor(() => {
+            expect(searches).toContain('target')
+        })
     })
 
-    it('should call search query with expected options', () => {
+    it('should call search query with expected options', async () => {
+        const searchTicketsMock = mockSearchTicketsHandler(async () =>
+            HttpResponse.json(mockSearchTicketsResponse({ data: [] })),
+        )
+        const waitForSearchTicketsRequest =
+            searchTicketsMock.waitForRequest(server)
+        server.use(searchTicketsMock.handler)
         const ticket = mockTicket({
             id: 123,
         })
 
         renderHook(() => useMergeTicketSearch(ticket))
 
-        expect(mockedUseSearchTickets).toHaveBeenLastCalledWith(
-            expect.objectContaining({
-                filters: expect.any(String),
-                search: '',
-            }),
-            expect.objectContaining({
-                limit: 8,
-                order_by: expect.stringContaining(':'),
-            }),
-            {
-                query: {
-                    refetchOnWindowFocus: false,
-                },
-            },
-        )
+        await waitForSearchTicketsRequest(async (request) => {
+            const body = (await request.json()) as {
+                search?: string
+                filters?: string
+            }
+            const searchParams = new URL(request.url).searchParams
+
+            expect(body.filters).toEqual(expect.any(String))
+            expect(body.search).toBe('')
+            expect(searchParams.get('limit')).toBe('8')
+            expect(searchParams.get('order_by')).toContain(':')
+        })
     })
 })

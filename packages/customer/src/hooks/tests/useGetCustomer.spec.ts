@@ -1,61 +1,61 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing/vitest'
+import { waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
 import { Duration } from '@gorgias/toolkit'
 
-import { useGetCustomer as useGeneratedGetCustomer } from '@gorgias/helpdesk-queries'
+import { mockCustomer } from '@gorgias/helpdesk-mocks'
 
+import { server } from '../../tests/server'
 import { GET_CUSTOMER_STALE_TIME_MS, useGetCustomer } from '../useGetCustomer'
 
-vi.mock('@gorgias/helpdesk-queries', () => ({
-    useGetCustomer: vi.fn(() => ({
-        data: null,
-    })),
-}))
+let getCustomerRequest: Request | undefined
 
-const mockUseGeneratedGetCustomer = vi.mocked(useGeneratedGetCustomer)
+afterEach(() => {
+    getCustomerRequest = undefined
+})
 
 describe('useGetCustomer', () => {
-    beforeEach(() => {
-        mockUseGeneratedGetCustomer.mockClear()
+    it('uses a one hour stale time', () => {
+        expect(GET_CUSTOMER_STALE_TIME_MS).toBe(Duration.hours(1))
     })
 
-    it('uses a one hour stale time', () => {
-        renderHook(() =>
-            useGetCustomer(1, undefined, {
-                query: {
-                    enabled: true,
-                    staleTime: Duration.minutes(5),
-                },
+    it('preserves params and http options', async () => {
+        const params = { include: ['integrations'] } as any
+        const requestOptions = { headers: { 'X-Test': 'true' } } as any
+
+        server.use(
+            http.all('*', ({ request }) => {
+                const url = new URL(request.url)
+
+                if (
+                    request.method !== 'GET' ||
+                    !/^\/api\/customers\/\d+$/.test(url.pathname)
+                ) {
+                    return
+                }
+
+                getCustomerRequest = request
+
+                return HttpResponse.json(mockCustomer({ id: 2 }))
             }),
         )
 
-        expect(GET_CUSTOMER_STALE_TIME_MS).toBe(Duration.hours(1))
-        expect(mockUseGeneratedGetCustomer).toHaveBeenCalledWith(1, undefined, {
-            query: {
-                enabled: true,
-                staleTime: Duration.hours(1),
-            },
-        })
-    })
-
-    it('preserves params, http options, and query options', () => {
-        const params = { include: ['integrations'] } as any
-        const http = { headers: { 'X-Test': 'true' } } as any
-
         renderHook(() =>
             useGetCustomer(2, params, {
-                http,
+                http: requestOptions,
                 query: {
                     retry: false,
                 },
             }),
         )
 
-        expect(mockUseGeneratedGetCustomer).toHaveBeenCalledWith(2, params, {
-            http,
-            query: {
-                retry: false,
-                staleTime: Duration.hours(1),
-            },
+        await waitFor(() => {
+            expect(getCustomerRequest).toBeDefined()
         })
+
+        const url = new URL(getCustomerRequest!.url)
+
+        expect(url.searchParams.get('include')).toBe('integrations')
+        expect(getCustomerRequest!.headers.get('X-Test')).toBe('true')
     })
 })

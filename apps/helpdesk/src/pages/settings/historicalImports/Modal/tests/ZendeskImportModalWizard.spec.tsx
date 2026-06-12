@@ -1,17 +1,15 @@
 import { render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useCreateIntegration } from '@gorgias/helpdesk-queries'
-
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockCreateIntegrationHandler,
+    mockCreateIntegrationResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { ZendeskImportModalWizard } from '../ZendeskImportModalWizard'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useCreateIntegration: jest.fn(),
-}))
 
 jest.mock('utils', () => ({
     subdomain: jest.fn((value: string) => {
@@ -24,25 +22,45 @@ jest.mock('utils', () => ({
     }),
 }))
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('ZendeskImportModalWizard', () => {
     const mockOnClose = jest.fn()
-    const mockCreateIntegration = jest.fn()
 
     const renderComponent = () => {
-        const queryClient = mockQueryClient()
-        return render(
-            <QueryClientProvider client={queryClient}>
-                <ZendeskImportModalWizard onClose={mockOnClose} />
-            </QueryClientProvider>,
+        return render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+    }
+
+    const fillValidForm = async (user: ReturnType<typeof userEvent.setup>) => {
+        await user.type(
+            screen.getByRole('textbox', { name: /zendesk subdomain/i }),
+            'acme',
+        )
+        await user.type(
+            screen.getByRole('textbox', { name: /login email/i }),
+            'test@example.com',
+        )
+        await user.type(
+            screen.getByRole('textbox', { name: /api key/i }),
+            'test-api-key',
         )
     }
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useCreateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockCreateIntegration,
-            isLoading: false,
-        })
+        server.use(mockCreateIntegrationHandler().handler)
     })
 
     it('should render the modal with correct title', () => {
@@ -140,22 +158,19 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should show error banner when form submission fails', async () => {
-        let capturedOnError: (() => void) | undefined
-        ;(useCreateIntegration as jest.Mock).mockImplementation(
-            ({ mutation }) => {
-                capturedOnError = mutation.onError
-                return {
-                    mutate: mockCreateIntegration,
-                    isLoading: false,
-                }
-            },
+        const user = userEvent.setup()
+        server.use(
+            mockCreateIntegrationHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Failed' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
         )
 
         renderComponent()
+        await fillValidForm(user)
 
-        act(() => {
-            capturedOnError!()
-        })
+        await user.click(screen.getByRole('button', { name: /import/i }))
 
         await waitFor(() => {
             expect(
@@ -165,24 +180,25 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should hide error banner after successful submission', async () => {
-        let capturedOnError: (() => void) | undefined
-        let capturedOnSuccess: (() => void) | undefined
-        ;(useCreateIntegration as jest.Mock).mockImplementation(
-            ({ mutation }) => {
-                capturedOnError = mutation.onError
-                capturedOnSuccess = mutation.onSuccess
-                return {
-                    mutate: mockCreateIntegration,
-                    isLoading: false,
+        const user = userEvent.setup()
+        let requestCount = 0
+        server.use(
+            mockCreateIntegrationHandler(async () => {
+                requestCount += 1
+                if (requestCount === 1) {
+                    return HttpResponse.json(
+                        { error: { msg: 'Failed' } } as any,
+                        { status: 500 },
+                    )
                 }
-            },
+                return HttpResponse.json(mockCreateIntegrationResponse())
+            }).handler,
         )
 
         renderComponent()
+        await fillValidForm(user)
 
-        act(() => {
-            capturedOnError!()
-        })
+        await user.click(screen.getByRole('button', { name: /import/i }))
 
         await waitFor(() => {
             expect(
@@ -190,45 +206,48 @@ describe('ZendeskImportModalWizard', () => {
             ).toBeInTheDocument()
         })
 
-        act(() => {
-            capturedOnSuccess!()
-        })
+        await user.click(screen.getByRole('button', { name: /import/i }))
 
-        expect(mockOnClose).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockOnClose).toHaveBeenCalled()
+        })
     })
 
     it('should call onClose when form submission succeeds', async () => {
-        let capturedOnSuccess: (() => void) | undefined
-        ;(useCreateIntegration as jest.Mock).mockImplementation(
-            ({ mutation }) => {
-                capturedOnSuccess = mutation.onSuccess
-                return {
-                    mutate: mockCreateIntegration,
-                    isLoading: false,
-                }
-            },
+        const user = userEvent.setup()
+        server.use(
+            mockCreateIntegrationHandler(async () =>
+                HttpResponse.json(mockCreateIntegrationResponse()),
+            ).handler,
         )
 
         renderComponent()
+        await fillValidForm(user)
 
-        act(() => {
-            capturedOnSuccess!()
+        await user.click(screen.getByRole('button', { name: /import/i }))
+
+        await waitFor(() => {
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
         })
-
-        expect(mockOnClose).toHaveBeenCalledTimes(1)
     })
 
-    it('should show loading state on Import button when submitting', () => {
-        ;(useCreateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockCreateIntegration,
-            isLoading: true,
-        })
+    it('should show loading state on Import button when submitting', async () => {
+        const user = userEvent.setup()
+        server.use(
+            mockCreateIntegrationHandler(
+                async () => new Promise(() => undefined),
+            ).handler,
+        )
 
         renderComponent()
+        await fillValidForm(user)
 
         const importButton = screen.getByRole('button', { name: /import/i })
+        await user.click(importButton)
 
-        expect(importButton).toHaveAttribute('aria-disabled', 'true')
+        await waitFor(() => {
+            expect(importButton).toHaveAttribute('aria-disabled', 'true')
+        })
     })
 
     it('should display email validation error', async () => {
@@ -307,22 +326,14 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should call createIntegration when Import button is clicked with valid form data', async () => {
         const user = userEvent.setup()
+        const createIntegrationMock = mockCreateIntegrationHandler()
+        server.use(createIntegrationMock.handler)
+        const waitForCreateIntegrationRequest =
+            createIntegrationMock.waitForRequest(server)
+
         renderComponent()
 
-        await act(async () => {
-            await user.type(
-                screen.getByRole('textbox', { name: /zendesk subdomain/i }),
-                'acme',
-            )
-            await user.type(
-                screen.getByRole('textbox', { name: /login email/i }),
-                'test@example.com',
-            )
-            await user.type(
-                screen.getByRole('textbox', { name: /api key/i }),
-                'test-api-key',
-            )
-        })
+        await fillValidForm(user)
 
         const importButton = screen.getByRole('button', { name: /import/i })
 
@@ -330,94 +341,74 @@ describe('ZendeskImportModalWizard', () => {
             expect(importButton).not.toBeDisabled()
         })
 
-        await act(() => user.click(importButton))
+        await user.click(importButton)
 
-        expect(mockCreateIntegration).toHaveBeenCalledTimes(1)
-        expect(mockCreateIntegration).toHaveBeenCalledWith({
-            data: expect.objectContaining({
-                name: 'acme',
-                type: 'zendesk',
-                connections: [
-                    {
-                        type: 'zendesk_auth_data',
-                        data: {
-                            domain: 'acme',
-                            email: 'test@example.com',
-                            api_key: 'test-api-key',
+        await waitForCreateIntegrationRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual(
+                expect.objectContaining({
+                    name: 'acme',
+                    type: 'zendesk',
+                    connections: [
+                        {
+                            type: 'zendesk_auth_data',
+                            data: {
+                                domain: 'acme',
+                                email: 'test@example.com',
+                                api_key: 'test-api-key',
+                            },
                         },
-                    },
-                ],
-            }),
+                    ],
+                }),
+            )
         })
     })
 
     it('should keep Import button disabled when isLoading is true even with valid form data', async () => {
         const user = userEvent.setup()
-        ;(useCreateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockCreateIntegration,
-            isLoading: false,
-        })
-
-        const queryClient = mockQueryClient()
-        const { rerender } = render(
-            <QueryClientProvider client={queryClient}>
-                <ZendeskImportModalWizard onClose={mockOnClose} />
-            </QueryClientProvider>,
+        server.use(
+            mockCreateIntegrationHandler(
+                async () => new Promise(() => undefined),
+            ).handler,
         )
 
-        await act(async () => {
-            await user.type(
-                screen.getByRole('textbox', { name: /zendesk subdomain/i }),
-                'acme',
-            )
-            await user.type(
-                screen.getByRole('textbox', { name: /login email/i }),
-                'test@example.com',
-            )
-            await user.type(
-                screen.getByRole('textbox', { name: /api key/i }),
-                'test-api-key',
-            )
-        })
+        renderComponent()
+
+        await fillValidForm(user)
 
         const importButton = screen.getByRole('button', { name: /import/i })
 
         await waitFor(() => {
             expect(importButton).not.toBeDisabled()
         })
-        ;(useCreateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockCreateIntegration,
-            isLoading: true,
+
+        await user.click(importButton)
+
+        await waitFor(() => {
+            expect(importButton).toHaveAttribute('aria-disabled', 'true')
         })
-
-        rerender(
-            <QueryClientProvider client={queryClient}>
-                <ZendeskImportModalWizard onClose={mockOnClose} />
-            </QueryClientProvider>,
-        )
-
-        expect(importButton).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should remove error banner after successful submission following an error', async () => {
-        let capturedOnError: (() => void) | undefined
-        let capturedOnSuccess: (() => void) | undefined
-        ;(useCreateIntegration as jest.Mock).mockImplementation(
-            ({ mutation }) => {
-                capturedOnError = mutation.onError
-                capturedOnSuccess = mutation.onSuccess
-                return {
-                    mutate: mockCreateIntegration,
-                    isLoading: false,
+        const user = userEvent.setup()
+        let requestCount = 0
+        server.use(
+            mockCreateIntegrationHandler(async () => {
+                requestCount += 1
+                if (requestCount === 1) {
+                    return HttpResponse.json(
+                        { error: { msg: 'Failed' } } as any,
+                        { status: 500 },
+                    )
                 }
-            },
+                return HttpResponse.json(mockCreateIntegrationResponse())
+            }).handler,
         )
 
         renderComponent()
+        await fillValidForm(user)
 
-        act(() => {
-            capturedOnError!()
-        })
+        await user.click(screen.getByRole('button', { name: /import/i }))
 
         await waitFor(() => {
             expect(
@@ -425,9 +416,7 @@ describe('ZendeskImportModalWizard', () => {
             ).toBeInTheDocument()
         })
 
-        act(() => {
-            capturedOnSuccess!()
-        })
+        await user.click(screen.getByRole('button', { name: /import/i }))
 
         await waitFor(() => {
             expect(

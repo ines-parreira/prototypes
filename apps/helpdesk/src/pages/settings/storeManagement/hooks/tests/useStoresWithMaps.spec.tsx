@@ -1,6 +1,13 @@
 import { renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
-import { useGetStoreMappingsByAccountId } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockGetStoreMappingsByAccountIdHandler,
+    mockGetStoreMappingsByAccountIdResponse,
+    mockStoreMapping,
+} from '@gorgias/helpdesk-mocks'
 
 import { useAllIntegrations } from 'hooks/useAllIntegrations'
 import type { Integration } from 'models/integration/types'
@@ -8,19 +15,29 @@ import { IntegrationType } from 'models/integration/types'
 
 import { useStoresWithMaps } from '../useStoresWithMaps'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetStoreMappingsByAccountId: jest.fn(),
-}))
-
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
     useAllIntegrations: jest.fn(),
 }))
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useStoresWithMaps', () => {
     const mockStoreMappings = [
-        { store_id: 1, integration_id: 100 },
-        { store_id: 1, integration_id: 101 },
+        mockStoreMapping({ store_id: 1, integration_id: 100 }),
+        mockStoreMapping({ store_id: 1, integration_id: 101 }),
     ]
 
     const mockIntegrations = [
@@ -30,13 +47,16 @@ describe('useStoresWithMaps', () => {
         { id: 101, type: IntegrationType.GorgiasChat, name: 'Chat Channel' },
     ] as Integration[]
 
-    const mockRefetch = jest.fn()
-
     beforeEach(() => {
-        ;(useGetStoreMappingsByAccountId as jest.Mock).mockReturnValue({
-            data: { data: { data: mockStoreMappings } },
-            refetch: mockRefetch,
-        })
+        server.use(
+            mockGetStoreMappingsByAccountIdHandler(async () =>
+                HttpResponse.json(
+                    mockGetStoreMappingsByAccountIdResponse({
+                        data: mockStoreMappings,
+                    }),
+                ),
+            ).handler,
+        )
         ;(useAllIntegrations as jest.Mock).mockReturnValue({
             integrations: mockIntegrations,
         })
@@ -46,10 +66,14 @@ describe('useStoresWithMaps', () => {
         jest.clearAllMocks()
     })
 
-    it('should return enriched stores with assigned channels', () => {
+    it('should return enriched stores with assigned channels', async () => {
         const { result } = renderHook(() => useStoresWithMaps())
 
-        expect(result.current.enrichedStores).toHaveLength(2)
+        await waitFor(() => {
+            expect(
+                result.current.enrichedStores[0]?.assignedChannels,
+            ).toHaveLength(2)
+        })
         expect(result.current.enrichedStores[0]).toEqual(
             expect.objectContaining({
                 store: expect.objectContaining({
@@ -71,30 +95,58 @@ describe('useStoresWithMaps', () => {
         )
     })
 
-    it('should return unassigned channels', () => {
+    it('should return unassigned channels', async () => {
         const { result } = renderHook(() => useStoresWithMaps())
 
-        expect(result.current.unassignedChannels).toEqual([])
+        await waitFor(() => {
+            expect(result.current.unassignedChannels).toEqual([])
+        })
     })
 
-    it('should handle empty data', () => {
-        ;(useGetStoreMappingsByAccountId as jest.Mock).mockReturnValue({
-            data: undefined,
-            refetch: mockRefetch,
-        })
+    it('should handle empty data', async () => {
+        server.use(
+            mockGetStoreMappingsByAccountIdHandler(async () =>
+                HttpResponse.json(
+                    mockGetStoreMappingsByAccountIdResponse({ data: [] }),
+                ),
+            ).handler,
+        )
         ;(useAllIntegrations as jest.Mock).mockReturnValue({
             integrations: undefined,
         })
 
         const { result } = renderHook(() => useStoresWithMaps())
 
-        expect(result.current.enrichedStores).toEqual([])
-        expect(result.current.unassignedChannels).toEqual([])
+        await waitFor(() => {
+            expect(result.current.enrichedStores).toEqual([])
+            expect(result.current.unassignedChannels).toEqual([])
+        })
     })
 
-    it('should expose refetch function', () => {
+    it('should expose refetch function', async () => {
+        let requestCount = 0
+        server.use(
+            mockGetStoreMappingsByAccountIdHandler(async () => {
+                requestCount += 1
+                return HttpResponse.json(
+                    mockGetStoreMappingsByAccountIdResponse({
+                        data: mockStoreMappings,
+                    }),
+                )
+            }).handler,
+        )
         const { result } = renderHook(() => useStoresWithMaps())
 
-        expect(result.current.refetchMapping).toBe(mockRefetch)
+        expect(typeof result.current.refetchMapping).toBe('function')
+
+        await waitFor(() => {
+            expect(requestCount).toBe(1)
+        })
+
+        await result.current.refetchMapping()
+
+        await waitFor(() => {
+            expect(requestCount).toBeGreaterThan(1)
+        })
     })
 })

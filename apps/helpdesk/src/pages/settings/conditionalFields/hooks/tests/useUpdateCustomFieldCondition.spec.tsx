@@ -1,56 +1,78 @@
-import React from 'react'
+import { renderHook } from '@repo/testing'
+import { act, waitFor } from '@testing-library/react'
 
-import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import {
-    queryKeys,
-    useUpdateCustomFieldCondition as useUpdate,
-} from '@gorgias/helpdesk-queries'
+    mockListCustomFieldConditionsHandler,
+    mockListCustomFieldConditionsResponse,
+    mockUpdateCustomFieldConditionHandler,
+} from '@gorgias/helpdesk-mocks'
+import { useListCustomFieldConditions } from '@gorgias/helpdesk-queries'
 
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useUpdateCustomFieldCondition } from '../useUpdateCustomFieldCondition'
 
-const queryClient = mockQueryClient()
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-queries')
-const useUpdateCustomFieldConditionMock = assumeMock(useUpdate)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-const mockStore = configureMockStore([thunk])()
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useUpdateCustomFieldCondition', () => {
     beforeEach(() => {
-        mockStore.clearActions()
         jest.resetAllMocks()
     })
 
-    it('should invalidate proper query data on success', () => {
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-
-        renderHook(() => useUpdateCustomFieldCondition(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
-        })
-
-        useUpdateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-            .onSuccess!(
-            axiosSuccessResponse(customFieldCondition) as any,
-            { id: customFieldCondition.id, data: { name: 'New name' } },
-            undefined,
+    it('should invalidate proper query data on success', async () => {
+        let listRequestCount = 0
+        server.use(
+            mockListCustomFieldConditionsHandler(async () => {
+                listRequestCount += 1
+                return HttpResponse.json(
+                    mockListCustomFieldConditionsResponse({
+                        data: [customFieldCondition],
+                    }),
+                )
+            }).handler,
+            mockUpdateCustomFieldConditionHandler(async () =>
+                HttpResponse.json({
+                    ...customFieldCondition,
+                    name: 'New name',
+                }),
+            ).handler,
         )
 
-        expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey:
-                queryKeys.customFieldConditions.listCustomFieldConditions(),
+        const { result } = renderHook(() => ({
+            conditions: useListCustomFieldConditions({
+                object_type: OBJECT_TYPES.TICKET,
+            }),
+            updateCondition: useUpdateCustomFieldCondition(),
+        }))
+
+        await waitFor(() => {
+            expect(result.current.conditions.data?.data.data).toHaveLength(1)
+        })
+
+        await act(async () => {
+            await result.current.updateCondition.mutateAsync({
+                id: customFieldCondition.id,
+                data: { name: 'New name' },
+            })
+        })
+
+        await waitFor(() => {
+            expect(listRequestCount).toBeGreaterThan(1)
         })
     })
 })

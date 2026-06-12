@@ -1,50 +1,46 @@
 import { renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
-import { useCreateIntegration } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockCreateIntegrationHandler,
+    mockCreateIntegrationResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { IntegrationType } from 'models/integration/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useZendeskImportForm } from '../useZendeskImportForm'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useCreateIntegration: jest.fn(),
-    queryKeys: {
-        integrations: {
-            listIntegrations: jest.fn(() => ['integrations']),
-        },
-    },
-}))
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useZendeskImportForm', () => {
-    const mockCreateIntegration = jest.fn()
     const mockOnSuccess = jest.fn()
     const mockOnError = jest.fn()
 
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <QueryClientProvider client={mockQueryClient()}>
-            {children}
-        </QueryClientProvider>
-    )
-
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useCreateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockCreateIntegration,
-            isLoading: false,
-        })
+        server.use(mockCreateIntegrationHandler().handler)
     })
 
     it('should initialize with empty form state and isFormValid as false when form is empty', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         expect(result.current.formState.subdomain).toBe('')
@@ -54,13 +50,11 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should return isFormValid as true when all fields are filled', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -72,14 +66,17 @@ describe('useZendeskImportForm', () => {
         expect(result.current.isFormValid).toBe(true)
     })
 
-    it('should call createIntegration with correct data on submit', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+    it('should call createIntegration with correct data on submit', async () => {
+        const createIntegrationMock = mockCreateIntegrationHandler()
+        server.use(createIntegrationMock.handler)
+        const waitForCreateIntegrationRequest =
+            createIntegrationMock.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -92,32 +89,38 @@ describe('useZendeskImportForm', () => {
             result.current.handleSubmit()
         })
 
-        expect(mockCreateIntegration).toHaveBeenCalledWith({
-            data: expect.objectContaining({
-                name: 'acme',
-                type: IntegrationType.Zendesk,
-                connections: [
-                    {
-                        type: 'zendesk_auth_data',
-                        data: {
-                            domain: 'acme',
-                            email: 'test@example.com',
-                            api_key: 'test-key',
+        await waitForCreateIntegrationRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual(
+                expect.objectContaining({
+                    name: 'acme',
+                    type: IntegrationType.Zendesk,
+                    connections: [
+                        {
+                            type: 'zendesk_auth_data',
+                            data: {
+                                domain: 'acme',
+                                email: 'test@example.com',
+                                api_key: 'test-key',
+                            },
                         },
-                    },
-                ],
-            }),
+                    ],
+                }),
+            )
         })
     })
 
-    it('should extract subdomain from full domain format', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+    it('should extract subdomain from full domain format', async () => {
+        const createIntegrationMock = mockCreateIntegrationHandler()
+        server.use(createIntegrationMock.handler)
+        const waitForCreateIntegrationRequest =
+            createIntegrationMock.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -130,29 +133,35 @@ describe('useZendeskImportForm', () => {
             result.current.handleSubmit()
         })
 
-        expect(mockCreateIntegration).toHaveBeenCalledWith({
-            data: expect.objectContaining({
-                name: 'acme',
-                connections: [
-                    {
-                        type: 'zendesk_auth_data',
-                        data: expect.objectContaining({
-                            domain: 'acme',
-                        }),
-                    },
-                ],
-            }),
+        await waitForCreateIntegrationRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual(
+                expect.objectContaining({
+                    name: 'acme',
+                    connections: [
+                        {
+                            type: 'zendesk_auth_data',
+                            data: expect.objectContaining({
+                                domain: 'acme',
+                            }),
+                        },
+                    ],
+                }),
+            )
         })
     })
 
-    it('should extract subdomain from URL format', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+    it('should extract subdomain from URL format', async () => {
+        const createIntegrationMock = mockCreateIntegrationHandler()
+        server.use(createIntegrationMock.handler)
+        const waitForCreateIntegrationRequest =
+            createIntegrationMock.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -165,29 +174,35 @@ describe('useZendeskImportForm', () => {
             result.current.handleSubmit()
         })
 
-        expect(mockCreateIntegration).toHaveBeenCalledWith({
-            data: expect.objectContaining({
-                name: 'acme',
-                connections: [
-                    {
-                        type: 'zendesk_auth_data',
-                        data: expect.objectContaining({
-                            domain: 'acme',
-                        }),
-                    },
-                ],
-            }),
+        await waitForCreateIntegrationRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual(
+                expect.objectContaining({
+                    name: 'acme',
+                    connections: [
+                        {
+                            type: 'zendesk_auth_data',
+                            data: expect.objectContaining({
+                                domain: 'acme',
+                            }),
+                        },
+                    ],
+                }),
+            )
         })
     })
 
-    it('should include deactivated_datetime in integration data', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+    it('should include deactivated_datetime in integration data', async () => {
+        const createIntegrationMock = mockCreateIntegrationHandler()
+        server.use(createIntegrationMock.handler)
+        const waitForCreateIntegrationRequest =
+            createIntegrationMock.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -200,21 +215,22 @@ describe('useZendeskImportForm', () => {
             result.current.handleSubmit()
         })
 
-        expect(mockCreateIntegration).toHaveBeenCalledWith({
-            data: expect.objectContaining({
-                deactivated_datetime: expect.any(String),
-            }),
+        await waitForCreateIntegrationRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual(
+                expect.objectContaining({
+                    deactivated_datetime: expect.any(String),
+                }),
+            )
         })
     })
 
     it('should prevent default on form submit event', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         const mockEvent = {
@@ -229,91 +245,112 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should call onSuccess when integration is created successfully', async () => {
-        let capturedOnSuccess: (() => void) | undefined
-        ;(useCreateIntegration as jest.Mock).mockImplementation(
-            ({ mutation }) => {
-                capturedOnSuccess = mutation.onSuccess
-                return {
-                    mutate: mockCreateIntegration,
-                    isLoading: false,
-                }
-            },
+        server.use(
+            mockCreateIntegrationHandler(async () =>
+                HttpResponse.json(mockCreateIntegrationResponse()),
+            ).handler,
         )
 
-        renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
-
-        expect(capturedOnSuccess).toBeDefined()
 
         act(() => {
-            capturedOnSuccess!()
+            result.current.formActions.setSubdomain('acme')
+            result.current.formActions.setLoginEmail('test@example.com')
+            result.current.formActions.setApiKey('test-key')
         })
 
-        expect(mockOnSuccess).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(result.current.isFormValid).toBe(true)
+        })
+
+        act(() => {
+            result.current.handleSubmit()
+        })
+
+        await waitFor(() => {
+            expect(mockOnSuccess).toHaveBeenCalled()
+        })
     })
 
     it('should call onError when integration creation fails', async () => {
-        let capturedOnError: (() => void) | undefined
-        ;(useCreateIntegration as jest.Mock).mockImplementation(
-            ({ mutation }) => {
-                capturedOnError = mutation.onError
-                return {
-                    mutate: mockCreateIntegration,
-                    isLoading: false,
-                }
-            },
-        )
-
-        renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
+        server.use(
+            mockCreateIntegrationHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Failed' } } as any, {
+                    status: 500,
                 }),
-            { wrapper },
+            ).handler,
         )
 
-        expect(capturedOnError).toBeDefined()
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
+        )
 
         act(() => {
-            capturedOnError!()
+            result.current.formActions.setSubdomain('acme')
+            result.current.formActions.setLoginEmail('test@example.com')
+            result.current.formActions.setApiKey('test-key')
         })
 
-        expect(mockOnError).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(result.current.isFormValid).toBe(true)
+        })
+
+        act(() => {
+            result.current.handleSubmit()
+        })
+
+        await waitFor(() => {
+            expect(mockOnError).toHaveBeenCalled()
+        })
     })
 
-    it('should return isLoading state from useCreateIntegration', () => {
-        ;(useCreateIntegration as jest.Mock).mockReturnValue({
-            mutate: mockCreateIntegration,
-            isLoading: true,
-        })
-
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+    it('should return isLoading state from useCreateIntegration', async () => {
+        server.use(
+            mockCreateIntegrationHandler(
+                async () => new Promise(() => undefined),
+            ).handler,
         )
 
-        expect(result.current.isLoading).toBe(true)
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
+        )
+
+        act(() => {
+            result.current.formActions.setSubdomain('acme')
+            result.current.formActions.setLoginEmail('test@example.com')
+            result.current.formActions.setApiKey('test-key')
+        })
+
+        await waitFor(() => {
+            expect(result.current.isFormValid).toBe(true)
+        })
+
+        act(() => {
+            result.current.handleSubmit()
+        })
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(true)
+        })
     })
 
     it('should set email error when invalid email is entered', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -326,13 +363,11 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should clear email error when valid email is entered', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -351,13 +386,11 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should not set email error when email is empty', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -368,13 +401,11 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should return isFormValid as false when email has error', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -387,13 +418,18 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should not submit form when email is invalid', () => {
-        const { result } = renderHook(
-            () =>
-                useZendeskImportForm({
-                    onSuccess: mockOnSuccess,
-                    onError: mockOnError,
-                }),
-            { wrapper },
+        const createIntegration = jest.fn()
+        server.use(
+            mockCreateIntegrationHandler(async () => {
+                createIntegration()
+                return HttpResponse.json(mockCreateIntegrationResponse())
+            }).handler,
+        )
+        const { result } = renderHook(() =>
+            useZendeskImportForm({
+                onSuccess: mockOnSuccess,
+                onError: mockOnError,
+            }),
         )
 
         act(() => {
@@ -410,6 +446,6 @@ describe('useZendeskImportForm', () => {
             result.current.handleSubmit()
         })
 
-        expect(mockCreateIntegration).not.toHaveBeenCalled()
+        expect(createIntegration).not.toHaveBeenCalled()
     })
 })

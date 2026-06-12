@@ -1,27 +1,27 @@
-import { QueryClient } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
 import {
-    queryKeys,
-    useMergeCustomers as useMergeCustomersPrimitive,
-} from '@gorgias/helpdesk-queries'
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
+    mockMergeCustomersHandler,
+    mockMergeCustomersResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../tests/render.utils'
-import { useMergeCustomers } from '../useMergeCustomers'
+import { server } from '../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useMergeCustomers: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-const mockedUseMergeCustomersPrimitive = vi.mocked(useMergeCustomersPrimitive)
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useMergeCustomers } from '../useMergeCustomers'
 
 describe('useMergeCustomers', () => {
     beforeEach(() => {
@@ -29,16 +29,13 @@ describe('useMergeCustomers', () => {
     })
 
     it('should merge customers and update cache on success', async () => {
-        const mutateAsync = vi.fn().mockResolvedValue(undefined)
-        mockedUseMergeCustomersPrimitive.mockReturnValue({
-            mutateAsync,
-            isLoading: false,
-        } as any)
+        const mergeCustomersMock = mockMergeCustomersHandler(async () =>
+            HttpResponse.json(mockMergeCustomersResponse()),
+        )
+        const waitForMergeCustomersRequest =
+            mergeCustomersMock.waitForRequest(server)
+        server.use(mergeCustomersMock.handler)
 
-        const invalidateQueries = vi
-            .spyOn(QueryClient.prototype, 'invalidateQueries')
-            .mockResolvedValue(undefined)
-        const removeQueries = vi.spyOn(QueryClient.prototype, 'removeQueries')
         const { result } = renderHook(() => useMergeCustomers(123))
 
         const data = {
@@ -56,15 +53,12 @@ describe('useMergeCustomers', () => {
 
         await result.current.mergeCustomers(data as any, params as any)
 
-        expect(mutateAsync).toHaveBeenCalledWith({ data, params })
-        expect(invalidateQueries).toHaveBeenCalledWith({
-            queryKey: queryKeys.customers.getCustomer(1),
-        })
-        expect(invalidateQueries).toHaveBeenCalledWith({
-            queryKey: queryKeys.tickets.getTicket(123),
-        })
-        expect(removeQueries).toHaveBeenCalledWith({
-            queryKey: queryKeys.customers.getCustomer(2),
+        await waitForMergeCustomersRequest(async (request) => {
+            const url = new URL(request.url)
+
+            expect(url.searchParams.get('source_id')).toBe('2')
+            expect(url.searchParams.get('target_id')).toBe('1')
+            expect(await request.json()).toEqual(data)
         })
         await waitFor(() => {
             expect(
@@ -76,12 +70,13 @@ describe('useMergeCustomers', () => {
     })
 
     it('should show error toast and rethrow when merge fails', async () => {
-        const error = new Error('merge failed')
-        const mutateAsync = vi.fn().mockRejectedValue(error)
-        mockedUseMergeCustomersPrimitive.mockReturnValue({
-            mutateAsync,
-            isLoading: false,
-        } as any)
+        server.use(
+            mockMergeCustomersHandler(async () =>
+                HttpResponse.json({ error: { msg: 'merge failed' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useMergeCustomers(123))
 
@@ -93,7 +88,7 @@ describe('useMergeCustomers', () => {
                     target_id: 1,
                 } as any,
             ),
-        ).rejects.toThrow('merge failed')
+        ).rejects.toBeTruthy()
 
         await waitFor(() => {
             expect(

@@ -12,12 +12,24 @@ import { act, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { createBrowserHistory, createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import { Router, useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { mockGetStoreConfigurationHandler } from '@gorgias/convert-mocks'
+import { mockGetAgentAbilitiesHandler } from '@gorgias/help-center-mocks'
+import {
+    mockListIntegrationsHandler,
+    mockListIntegrationsResponse,
+} from '@gorgias/helpdesk-mocks'
 import { IntegrationType } from '@gorgias/helpdesk-types'
+import {
+    mockListStoreWfConfigurationHandler,
+    mockListWfConfigurationTemplateHandler,
+} from '@gorgias/workflows-mocks'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -35,6 +47,7 @@ import { useVoiceDevice } from 'hooks/integrations/phone/useVoiceDevice'
 import { useAllIntegrations } from 'hooks/useAllIntegrations'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { Routes } from 'routes/Routes'
@@ -301,21 +314,6 @@ jest.mock('hooks/useAllIntegrations', () => ({
     useAllIntegrations: jest.fn(),
 }))
 
-jest.mock('@gorgias/helpdesk-client', () => ({
-    listIntegrations: jest.fn().mockResolvedValue({
-        data: {
-            data: [
-                {
-                    id: 1,
-                    type: 'shopify',
-                    name: 'shopify-store',
-                },
-            ],
-            meta: {},
-        },
-    }),
-}))
-
 jest.mock('models/aiAgent/queries', () => ({
     ...jest.requireActual('models/aiAgent/queries'),
     useGetTrials: jest.fn(() => ({
@@ -389,6 +387,52 @@ jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
 
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
+
+const server = setupServer()
+
+const mockGetAiAgentStoreConfigurationsHandler = http.all(
+    'http://localhost:9402/api/config/accounts/:accountDomain/stores/configurations',
+    ({ request }) => {
+        if (request.method === 'OPTIONS') {
+            return new HttpResponse(null, { status: 204 })
+        }
+
+        return HttpResponse.json({
+            storeConfigurations: [
+                getStoreConfigurationFixture({
+                    storeName: 'shopify-store',
+                    shopType: 'shopify',
+                }),
+            ],
+        })
+    },
+)
+
+const mockGetPostStoreInstallationStepsHandler = http.all(
+    'http://localhost:9402/api/config/post-store-installation-steps',
+    ({ request }) => {
+        if (request.method === 'OPTIONS') {
+            return new HttpResponse(null, { status: 204 })
+        }
+
+        return HttpResponse.json({
+            postStoreInstallationSteps: [],
+        })
+    },
+)
+
+const mockWorkflowsOptionsHandler = http.options(
+    'http://localhost:3100/*',
+    () => new HttpResponse(null, { status: 204 }),
+)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const renderRoutes = (
     storeState: Partial<RootState> = {},
@@ -479,6 +523,33 @@ describe('<Routes/>', () => {
             isLoading: false,
         })
         mockUseIsAccountDeactivated.mockReturnValue(false)
+        server.use(
+            mockGetAiAgentStoreConfigurationsHandler,
+            mockGetPostStoreInstallationStepsHandler,
+            mockWorkflowsOptionsHandler,
+            mockListStoreWfConfigurationHandler().handler,
+            mockListWfConfigurationTemplateHandler().handler,
+            mockGetStoreConfigurationHandler().handler,
+            mockGetAgentAbilitiesHandler().handler,
+            mockListIntegrationsHandler(async () =>
+                HttpResponse.json(
+                    mockListIntegrationsResponse({
+                        data: [
+                            {
+                                id: 1,
+                                type: IntegrationType.Shopify,
+                                name: 'shopify-store',
+                                meta: { shop_name: 'shopify-store' },
+                            },
+                        ],
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                        },
+                    }),
+                ),
+            ).handler,
+        )
         useVoiceDeviceMock.mockReturnValue({
             call: null,
             device: null,
@@ -517,6 +588,7 @@ describe('<Routes/>', () => {
     })
 
     afterEach(() => {
+        server.resetHandlers()
         window.USER_IMPERSONATED = null
     })
 

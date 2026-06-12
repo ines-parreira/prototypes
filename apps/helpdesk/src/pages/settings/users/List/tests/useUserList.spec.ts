@@ -2,7 +2,9 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import { useListUsers } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { mockListUsersHandler } from '@gorgias/helpdesk-mocks'
 import {
     ListUsersOrderBy,
     ListUsersRelationshipsItem,
@@ -14,10 +16,7 @@ import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'
 import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 
-import { STALE_TIME_MS, USERS_PER_PAGE, useUserList } from '../useUserList'
-
-jest.mock('@gorgias/helpdesk-queries')
-const mockedUseListUsers = jest.mocked(useListUsers)
+import { USERS_PER_PAGE, useUserList } from '../useUserList'
 
 jest.mock('@repo/logging', () => {
     const segmentTracker: Record<string, unknown> =
@@ -29,17 +28,47 @@ jest.mock('@repo/logging', () => {
     }
 })
 
+const server = setupServer()
+
+const mockListUsersResponseBody = (
+    data = agents,
+    meta: { prev_cursor: string | null; next_cursor: string | null } = {
+        prev_cursor: null,
+        next_cursor: null,
+    },
+) =>
+    ({
+        data,
+        meta,
+    }) as any
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useUserList', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        server.use(
+            mockListUsersHandler(async () =>
+                HttpResponse.json(mockListUsersResponseBody()),
+            ).handler,
+        )
     })
 
     it('should initialize with default params', () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
+        server.use(
+            mockListUsersHandler(async () => new Promise(() => undefined))
+                .handler,
+        )
 
         const { result } = renderHook(() => useUserList())
 
@@ -54,42 +83,26 @@ describe('useUserList', () => {
     })
 
     it('should call useListUsers with correct parameters', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
+        const listUsersMock = mockListUsersHandler()
+        server.use(listUsersMock.handler)
+        const waitForListUsersRequest = listUsersMock.waitForRequest(server)
 
         renderHook(() => useUserList())
 
-        await waitFor(() => {
-            expect(mockedUseListUsers).toHaveBeenCalledWith(
-                {
-                    order_by: ListUsersOrderBy.NameAsc,
-                    relationships: [
-                        ListUsersRelationshipsItem.AvailabilityStatus,
-                    ],
-                    limit: USERS_PER_PAGE,
-                    cursor: undefined,
-                },
-                {
-                    query: {
-                        staleTime: STALE_TIME_MS,
-                        keepPreviousData: true,
-                        select: expect.any(Function),
-                    },
-                },
+        await waitForListUsersRequest((request) => {
+            const url = new URL(request.url)
+            expect(url.searchParams.get('order_by')).toBe(
+                ListUsersOrderBy.NameAsc,
+            )
+            expect(url.searchParams.get('limit')).toBe(String(USERS_PER_PAGE))
+            expect(url.searchParams.get('cursor')).toBeNull()
+            expect(request.url).toContain(
+                ListUsersRelationshipsItem.AvailabilityStatus,
             )
         })
     })
 
     it('should provide users property', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
-
         const { result } = renderHook(() => useUserList())
         await waitFor(() => {
             expect(result.current).toHaveProperty('users')
@@ -97,12 +110,6 @@ describe('useUserList', () => {
     })
 
     it('should provide pagination functions and state', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
-
         const { result } = renderHook(() => useUserList())
         await waitFor(() => {
             expect(result.current).toHaveProperty('hasPrevItems')
@@ -113,12 +120,6 @@ describe('useUserList', () => {
     })
 
     it('should provide ordering function', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
-
         const { result } = renderHook(() => useUserList())
         await waitFor(() => {
             expect(typeof result.current.setOrderBy).toBe('function')
@@ -126,12 +127,6 @@ describe('useUserList', () => {
     })
 
     it('should track ordering usage', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
-
         const { result } = renderHook(() => useUserList())
 
         act(() => {
@@ -152,12 +147,6 @@ describe('useUserList', () => {
     })
 
     it('should provide search function', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
-
         const { result } = renderHook(() => useUserList())
         await waitFor(() => {
             expect(typeof result.current.setSearch).toBe('function')
@@ -165,12 +154,6 @@ describe('useUserList', () => {
     })
 
     it('should track sorting usage', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
-
         const { result } = renderHook(() => useUserList())
 
         act(() => {
@@ -184,11 +167,13 @@ describe('useUserList', () => {
     })
 
     it('should handle error state', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: true,
-        } as unknown as ReturnType<typeof useListUsers>)
+        server.use(
+            mockListUsersHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Failed' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useUserList())
         await waitFor(() => {
@@ -209,31 +194,21 @@ describe('useUserList', () => {
         }
         const regularUser = agents[0]
 
-        // Mock the select function to test the filtering logic
-        let selectFunction: any
-        mockedUseListUsers.mockImplementation((params, options) => {
-            selectFunction = options?.query?.select
-            // Return data after applying the select function
-            const rawData = {
-                data: {
-                    data: [regularUser, botUser, aiAgentUser],
-                    meta: {
-                        prev_cursor: null,
-                        next_cursor: null,
-                    },
-                },
-            }
-            return {
-                data: selectFunction ? selectFunction(rawData) : rawData,
-                isLoading: false,
-                isError: false,
-            } as unknown as ReturnType<typeof useListUsers>
-        })
+        server.use(
+            mockListUsersHandler(async () =>
+                HttpResponse.json(
+                    mockListUsersResponseBody([
+                        regularUser,
+                        botUser,
+                        aiAgentUser,
+                    ]),
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useUserList())
 
         await waitFor(() => {
-            // Should filter out regular bot but keep AI agent and regular user
             expect(result.current.users).toHaveLength(2)
             expect(result.current.users).toContainEqual(regularUser)
             expect(result.current.users).toContainEqual(aiAgentUser)
@@ -243,30 +218,22 @@ describe('useUserList', () => {
 
     it('should update params when fetchNextItems is called', async () => {
         const nextCursor = 'next-cursor'
+        const requestedUrls: string[] = []
 
-        // Mock the select function behavior
-        let selectFunction: any
-        mockedUseListUsers.mockImplementation((params, options) => {
-            selectFunction = options?.query?.select
-            const rawData = {
-                data: {
-                    data: agents,
-                    meta: {
+        server.use(
+            mockListUsersHandler(async ({ request }) => {
+                requestedUrls.push(request.url)
+                return HttpResponse.json(
+                    mockListUsersResponseBody(agents, {
                         prev_cursor: null,
                         next_cursor: nextCursor,
-                    },
-                },
-            }
-            return {
-                data: selectFunction ? selectFunction(rawData) : rawData,
-                isLoading: false,
-                isError: false,
-            } as unknown as ReturnType<typeof useListUsers>
-        })
+                    }),
+                )
+            }).handler,
+        )
 
         const { result } = renderHook(() => useUserList())
 
-        // Wait for initial render
         await waitFor(() => {
             expect(result.current.hasNextItems).toBe(true)
         })
@@ -276,42 +243,33 @@ describe('useUserList', () => {
         })
 
         await waitFor(() => {
-            // Check that useListUsers was called with the next cursor
-            expect(mockedUseListUsers).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    cursor: nextCursor,
-                }),
-                expect.any(Object),
-            )
+            expect(
+                requestedUrls.some(
+                    (url) =>
+                        new URL(url).searchParams.get('cursor') === nextCursor,
+                ),
+            ).toBe(true)
         })
     })
 
     it('should update params when fetchPrevItems is called', async () => {
         const prevCursor = 'prev-cursor'
+        const requestedUrls: string[] = []
 
-        // Mock the select function behavior
-        let selectFunction: any
-        mockedUseListUsers.mockImplementation((params, options) => {
-            selectFunction = options?.query?.select
-            const rawData = {
-                data: {
-                    data: agents,
-                    meta: {
+        server.use(
+            mockListUsersHandler(async ({ request }) => {
+                requestedUrls.push(request.url)
+                return HttpResponse.json(
+                    mockListUsersResponseBody(agents, {
                         prev_cursor: prevCursor,
                         next_cursor: null,
-                    },
-                },
-            }
-            return {
-                data: selectFunction ? selectFunction(rawData) : rawData,
-                isLoading: false,
-                isError: false,
-            } as unknown as ReturnType<typeof useListUsers>
-        })
+                    }),
+                )
+            }).handler,
+        )
 
         const { result } = renderHook(() => useUserList())
 
-        // Wait for initial render
         await waitFor(() => {
             expect(result.current.hasPrevItems).toBe(true)
         })
@@ -321,32 +279,49 @@ describe('useUserList', () => {
         })
 
         await waitFor(() => {
-            // Check that useListUsers was called with the prev cursor
-            expect(mockedUseListUsers).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    cursor: prevCursor,
-                }),
-                expect.any(Object),
-            )
+            expect(
+                requestedUrls.some(
+                    (url) =>
+                        new URL(url).searchParams.get('cursor') === prevCursor,
+                ),
+            ).toBe(true)
         })
     })
 
     it('should reset cursor when setOrderBy is called', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: {
-                data: {
-                    data: agents,
-                    meta: {
-                        prev_cursor: 'prev',
-                        next_cursor: 'next',
-                    },
-                },
-            },
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
+        const nextCursor = 'next-cursor'
+        const requestedUrls: string[] = []
 
-        const { result, rerender } = renderHook(() => useUserList())
+        server.use(
+            mockListUsersHandler(async ({ request }) => {
+                requestedUrls.push(request.url)
+                return HttpResponse.json(
+                    mockListUsersResponseBody(agents, {
+                        prev_cursor: null,
+                        next_cursor: nextCursor,
+                    }),
+                )
+            }).handler,
+        )
+
+        const { result } = renderHook(() => useUserList())
+
+        await waitFor(() => {
+            expect(result.current.hasNextItems).toBe(true)
+        })
+
+        act(() => {
+            result.current.fetchNextItems()
+        })
+
+        await waitFor(() => {
+            expect(
+                requestedUrls.some(
+                    (url) =>
+                        new URL(url).searchParams.get('cursor') === nextCursor,
+                ),
+            ).toBe(true)
+        })
 
         act(() => {
             result.current.setOrderBy(
@@ -355,50 +330,69 @@ describe('useUserList', () => {
             )
         })
 
-        rerender()
-
         await waitFor(() => {
-            expect(mockedUseListUsers).toHaveBeenLastCalledWith(
-                expect.objectContaining({
-                    order_by: `${UserSortableProperties.Email}:${OrderDirection.Desc}`,
-                    cursor: undefined,
+            expect(
+                requestedUrls.some((url) => {
+                    const searchParams = new URL(url).searchParams
+                    return (
+                        searchParams.get('order_by') ===
+                            `${UserSortableProperties.Email}:${OrderDirection.Desc}` &&
+                        searchParams.get('cursor') === null
+                    )
                 }),
-                expect.any(Object),
-            )
+            ).toBe(true)
         })
     })
 
     it('should reset cursor when setSearch is called', async () => {
-        mockedUseListUsers.mockReturnValue({
-            data: {
-                data: {
-                    data: agents,
-                    meta: {
-                        prev_cursor: 'prev',
-                        next_cursor: 'next',
-                    },
-                },
-            },
-            isLoading: false,
-            isError: false,
-        } as unknown as ReturnType<typeof useListUsers>)
+        const nextCursor = 'next-cursor'
+        const requestedUrls: string[] = []
 
-        const { result, rerender } = renderHook(() => useUserList())
+        server.use(
+            mockListUsersHandler(async ({ request }) => {
+                requestedUrls.push(request.url)
+                return HttpResponse.json(
+                    mockListUsersResponseBody(agents, {
+                        prev_cursor: null,
+                        next_cursor: nextCursor,
+                    }),
+                )
+            }).handler,
+        )
+
+        const { result } = renderHook(() => useUserList())
+
+        await waitFor(() => {
+            expect(result.current.hasNextItems).toBe(true)
+        })
+
+        act(() => {
+            result.current.fetchNextItems()
+        })
+
+        await waitFor(() => {
+            expect(
+                requestedUrls.some(
+                    (url) =>
+                        new URL(url).searchParams.get('cursor') === nextCursor,
+                ),
+            ).toBe(true)
+        })
 
         act(() => {
             result.current.setSearch('test search')
         })
 
-        rerender()
-
         await waitFor(() => {
-            expect(mockedUseListUsers).toHaveBeenLastCalledWith(
-                expect.objectContaining({
-                    search: 'test search',
-                    cursor: undefined,
+            expect(
+                requestedUrls.some((url) => {
+                    const searchParams = new URL(url).searchParams
+                    return (
+                        searchParams.get('search') === 'test search' &&
+                        searchParams.get('cursor') === null
+                    )
                 }),
-                expect.any(Object),
-            )
+            ).toBe(true)
         })
     })
 })

@@ -11,13 +11,12 @@ import { http, HttpResponse } from 'msw'
 import {
     mockGetCustomerHandler,
     mockGetTicketHandler,
+    mockGetTicketMessageHandler,
     mockGetUserAvailabilityHandler,
     mockTicket,
     mockTicketMessage,
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
-import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import { TicketThreadWidthContext } from '../../contexts/TicketThreadWidth'
 import type { TicketThreadSocialMediaInstagramCommentItem } from '../../hooks/messages/types'
@@ -25,6 +24,19 @@ import { TicketThreadItemTag } from '../../hooks/types'
 import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
 import { render } from '../../tests/render.utils'
 import { server } from '../../tests/server'
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 import type { LegacyBridgeContextType } from '../../utils/LegacyBridge/types'
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge/useTicketThreadLegacyBridge'
 import { InstagramCommentMessageWrapper } from './InstagramCommentMessageWrapper'
@@ -32,11 +44,6 @@ import { InstagramCommentMessageWrapper } from './InstagramCommentMessageWrapper
 vi.mock('../../utils/LegacyBridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
-
-vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
-    const actual = await importOriginal<typeof HelpdeskQueriesModule>()
-    return { ...actual, useGetTicketMessage: vi.fn() }
-})
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
@@ -54,7 +61,6 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
-const mockUseGetTicketMessage = vi.mocked(useGetTicketMessage)
 const mockUseCurrentUserLanguagePreferences = vi.mocked(
     useCurrentUserLanguagePreferences,
 )
@@ -74,12 +80,11 @@ beforeEach(() => {
         mockGetTicketHandler(async ({ params }) =>
             HttpResponse.json(mockTicket({ id: Number(params?.id ?? 1) })),
         ).handler,
+        mockGetTicketMessageHandler(async () => HttpResponse.json(null))
+            .handler,
         mockGetCustomerHandler().handler,
         mockGetUserAvailabilityHandler().handler,
     )
-    mockUseGetTicketMessage.mockReturnValue({ data: undefined } as ReturnType<
-        typeof useGetTicketMessage
-    >)
     mockUseCurrentUserLanguagePreferences.mockReturnValue({
         shouldShowTranslatedContent: () => false,
     } as ReturnType<typeof useCurrentUserLanguagePreferences>)

@@ -1,8 +1,10 @@
 import { isTeamLead } from '@repo/permissions'
-import { renderHook } from '@testing-library/react'
+import { renderHook } from '@repo/testing/vitest'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
+import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
 
 import { useCanAccessAIFeedback } from '../useCanAccessAIFeedback'
 
@@ -10,19 +12,20 @@ vi.mock('@repo/permissions', () => ({
     isTeamLead: vi.fn(),
 }))
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
+const mockIsTeamLead = vi.mocked(isTeamLead)
+const server = setupServer()
 
-    return {
-        ...actual,
-        useGetCurrentUser: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-const mockUseGetCurrentUser = vi.mocked(useGetCurrentUser)
-const mockIsTeamLead = vi.mocked(isTeamLead)
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useCanAccessAIFeedback', () => {
     beforeEach(() => {
@@ -30,9 +33,10 @@ describe('useCanAccessAIFeedback', () => {
     })
 
     it('returns false when the current user is not loaded', () => {
-        mockUseGetCurrentUser.mockReturnValue({
-            data: undefined,
-        } as ReturnType<typeof useGetCurrentUser>)
+        server.use(
+            mockGetCurrentUserHandler(async () => new Promise(() => undefined))
+                .handler,
+        )
 
         const { result } = renderHook(() => useCanAccessAIFeedback())
 
@@ -41,9 +45,10 @@ describe('useCanAccessAIFeedback', () => {
     })
 
     it('returns false when the current user payload is missing', () => {
-        mockUseGetCurrentUser.mockReturnValue({
-            data: {},
-        } as ReturnType<typeof useGetCurrentUser>)
+        server.use(
+            mockGetCurrentUserHandler(async () => HttpResponse.json(null))
+                .handler,
+        )
 
         const { result } = renderHook(() => useCanAccessAIFeedback())
 
@@ -52,19 +57,22 @@ describe('useCanAccessAIFeedback', () => {
     })
 
     it('returns the team lead check result when the current user exists', () => {
-        const currentUser = {
+        const currentUser = mockUser({
             id: 123,
-            role: 'team_lead',
-        }
+        })
 
-        mockUseGetCurrentUser.mockReturnValue({
-            data: { data: currentUser },
-        } as ReturnType<typeof useGetCurrentUser>)
+        server.use(
+            mockGetCurrentUserHandler(async () =>
+                HttpResponse.json(currentUser),
+            ).handler,
+        )
         mockIsTeamLead.mockReturnValue(true)
 
         const { result } = renderHook(() => useCanAccessAIFeedback())
 
-        expect(result.current).toBe(true)
-        expect(mockIsTeamLead).toHaveBeenCalledWith(currentUser)
+        return waitFor(() => {
+            expect(result.current).toBe(true)
+            expect(mockIsTeamLead).toHaveBeenCalledWith(currentUser)
+        })
     })
 })

@@ -1,8 +1,13 @@
 import { screen, waitFor, within } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
+import {
+    mockGetViewHandler,
+    mockGetViewResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { render } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { TicketTable } from './TicketTable'
 
 const { saveForEveryoneSpy, columnVisibilityConfig } = vi.hoisted(() => ({
@@ -38,24 +43,6 @@ vi.mock('@repo/preferences', () => ({
         timezone: 'UTC',
     }),
 }))
-
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof HelpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useGetView: () => ({
-            data: {
-                data: {
-                    id: 123,
-                    visibility: columnVisibilityConfig.viewVisibility,
-                },
-            },
-        }),
-    }
-})
 
 vi.mock('../../../hooks/useCurrentUserId', () => ({
     useCurrentUserId: () => ({
@@ -197,6 +184,18 @@ async function findColumnEditingPanel() {
     return screen.findByRole('dialog')
 }
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('TicketTable column editing footer', () => {
     beforeEach(() => {
         window.localStorage.clear()
@@ -213,6 +212,17 @@ describe('TicketTable column editing footer', () => {
         columnVisibilityConfig.canSaveForEveryone = true
         columnVisibilityConfig.isSavingForEveryone = false
         columnVisibilityConfig.viewVisibility = 'public'
+        server.use(
+            mockGetViewHandler(async () =>
+                HttpResponse.json(
+                    mockGetViewResponse({
+                        id: 123,
+                        visibility:
+                            columnVisibilityConfig.viewVisibility as never,
+                    }),
+                ),
+            ).handler,
+        )
     })
 
     it('lists the configured columns in the column editing panel', async () => {

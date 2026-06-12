@@ -1,23 +1,24 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
-import { useUpdateTicket } from '@gorgias/helpdesk-queries'
+import { mockUpdateTicketHandler } from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../../tests/render.utils'
-import { useUpdateTicketCustomer } from '../useUpdateTicketCustomer'
+import { server } from '../../../../tests/server'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueriesModule>(
-        '@gorgias/helpdesk-queries',
-    )
-
-    return {
-        ...actual,
-        useUpdateTicket: vi.fn(),
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
-const mockedUseUpdateTicket = vi.mocked(useUpdateTicket)
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+import { useUpdateTicketCustomer } from '../useUpdateTicketCustomer'
 
 describe('useUpdateTicketCustomer', () => {
     beforeEach(() => {
@@ -25,11 +26,13 @@ describe('useUpdateTicketCustomer', () => {
     })
 
     it('should show error toast when update fails', async () => {
-        const mutateAsync = vi.fn().mockRejectedValue(new Error('fail'))
-        mockedUseUpdateTicket.mockReturnValue({
-            mutateAsync,
-            isLoading: false,
-        } as any)
+        server.use(
+            mockUpdateTicketHandler(async () =>
+                HttpResponse.json({ error: { msg: 'fail' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useUpdateTicketCustomer('123'))
 

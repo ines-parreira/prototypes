@@ -12,7 +12,7 @@
     ],
     "rules": {
         "custom-rules/no-axiom-mock": "error",
-        "custom-rules/no-sdk-mock": "warn",
+        "custom-rules/no-sdk-mock": "error",
         "custom-rules/no-generic-duration-wrapper": "error",
         "custom-rules/prefer-duration-for-timing": "error",
         "oxc/no-barrel-file": ["error", { "threshold": 300 }],

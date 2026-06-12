@@ -1,20 +1,31 @@
 import React from 'react'
 
-import { assumeMock, render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { render } from '@repo/testing'
 
-import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockGetTicketMessageHandler,
+    mockGetTicketMessageResponse,
+    mockTicketMessageUserOrCustomer,
+} from '@gorgias/helpdesk-mocks'
 
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import { ReplyDetailsCard } from 'pages/tickets/detail/components/TicketMessages/ReplyDetailsCard'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore()
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-queries')
-const mockUseGetTicketMessage = assumeMock(useGetTicketMessage)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('ReplyDetailsCard', () => {
     const reply = {
@@ -22,71 +33,71 @@ describe('ReplyDetailsCard', () => {
         ticket_message_id: 2,
     }
 
-    it('should trigger a ticket message query', () => {
-        mockUseGetTicketMessage.mockReturnValue({
-            isSuccess: false,
-            data: undefined,
-        } as ReturnType<typeof useGetTicketMessage>)
+    it('should trigger a ticket message query', async () => {
+        const ticketMessageMock = mockGetTicketMessageHandler()
+        server.use(ticketMessageMock.handler)
+        const waitForTicketMessageRequest =
+            ticketMessageMock.waitForRequest(server)
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <ReplyDetailsCard reply={reply} />
-            </QueryClientProvider>,
-        )
+        render(<ReplyDetailsCard reply={reply} />)
 
-        expect(mockUseGetTicketMessage).toHaveBeenCalledWith(1, 2, {
-            query: { refetchInterval: false, refetchOnWindowFocus: false },
+        await waitForTicketMessageRequest((request) => {
+            expect(request.url).toContain('/api/tickets/1/messages/2')
         })
     })
 
-    it('should not render if the details are not complete', () => {
-        mockUseGetTicketMessage.mockReturnValue({
-            isSuccess: true,
-            data: { data: { body_text: 'reply body text' } },
-        } as ReturnType<typeof useGetTicketMessage>)
-
-        const { queryByText } = render(
-            <QueryClientProvider client={queryClient}>
-                <ReplyDetailsCard reply={reply} />
-            </QueryClientProvider>,
+    it('should not render if the details are not complete', async () => {
+        server.use(
+            mockGetTicketMessageHandler(async () =>
+                HttpResponse.json(
+                    mockGetTicketMessageResponse({
+                        body_text: 'reply body text',
+                    }),
+                ),
+            ).handler,
         )
+
+        const { queryByText } = render(<ReplyDetailsCard reply={reply} />)
 
         expect(queryByText('reply body text')).not.toBeInTheDocument()
     })
 
-    it('should reder the details withing an embedded card if the message is fetched', () => {
-        mockUseGetTicketMessage.mockReturnValue({
-            isSuccess: true,
-            data: {
-                data: {
-                    integration_id: 1,
-                    body_text: 'reply body text',
-                    source: {
-                        type: 'email',
-                    },
-                    sender: {
-                        id: 123,
-                        name: 'John Doe',
+    it('should reder the details withing an embedded card if the message is fetched', async () => {
+        server.use(
+            mockGetTicketMessageHandler(async () =>
+                HttpResponse.json(
+                    mockGetTicketMessageResponse({
+                        integration_id: 1,
+                        body_text: 'reply body text',
+                        source: {
+                            type: 'email',
+                        },
+                        sender: mockTicketMessageUserOrCustomer({
+                            id: 123,
+                            name: 'John Doe',
+                            meta: {},
+                        }),
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { findByText, getByText } = render(
+            <ReplyDetailsCard reply={reply} />,
+            {
+                storeState: {
+                    entities: {
+                        rules: {},
+                        ruleRecipes: {
+                            [emptyRuleRecipeFixture.slug]:
+                                emptyRuleRecipeFixture,
+                        },
                     },
                 },
             },
-        } as ReturnType<typeof useGetTicketMessage>)
-
-        const { getByText } = render(
-            <Provider
-                store={mockStore({
-                    entities: {
-                        rules: {},
-                    },
-                })}
-            >
-                <QueryClientProvider client={queryClient}>
-                    <ReplyDetailsCard reply={reply} />
-                </QueryClientProvider>
-            </Provider>,
         )
 
-        expect(getByText('reply body text')).toBeInTheDocument()
+        expect(await findByText('reply body text')).toBeInTheDocument()
         expect(getByText('JD')).toBeInTheDocument()
     })
 })

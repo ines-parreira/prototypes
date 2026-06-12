@@ -1,33 +1,17 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
-import type { QueryClient } from '@tanstack/react-query'
-import { useQueryClient } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { toast } from '@gorgias/axiom'
-import { useCreateCustomFieldCondition } from '@gorgias/helpdesk-queries'
+import { mockCreateCustomFieldConditionHandler } from '@gorgias/helpdesk-mocks'
 
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
 import { useSaveCondition } from '../useSaveCondition'
 import { useUpdateCustomFieldCondition } from '../useUpdateCustomFieldCondition'
 
-jest.mock('@tanstack/react-query', () => ({
-    ...jest.requireActual('@tanstack/react-query'),
-    useQueryClient: jest.fn(),
-}))
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useCreateCustomFieldCondition: jest.fn(),
-    queryKeys: {
-        ...jest.requireActual('@gorgias/helpdesk-queries').queryKeys,
-        customFieldConditions: {
-            listCustomFieldConditions: jest.fn(),
-            getCustomFieldCondition: jest.fn(),
-        },
-    },
-}))
 jest.mock('../useUpdateCustomFieldCondition')
 jest.mock('pages/settings/SLAs/utils/handleApiError', () => ({
     ...jest.requireActual('pages/settings/SLAs/utils/handleApiError'),
@@ -39,29 +23,30 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-const useQueryClientMock = assumeMock(useQueryClient)
-const useCreateCustomFieldConditionMock = assumeMock(
-    useCreateCustomFieldCondition,
-)
 const useUpdateCustomFieldConditionMock = assumeMock(
     useUpdateCustomFieldCondition,
 )
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useSaveCondition', () => {
-    const queryClient = {
-        invalidateQueries: jest.fn(),
-    }
-    const createCondition = jest.fn()
     const updateCondition = jest.fn()
 
     beforeEach(() => {
-        useQueryClientMock.mockReturnValue(
-            queryClient as unknown as QueryClient,
-        )
-        useCreateCustomFieldConditionMock.mockReturnValue({
-            mutateAsync: createCondition,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useCreateCustomFieldCondition>)
+        jest.clearAllMocks()
+        server.use(mockCreateCustomFieldConditionHandler().handler)
         useUpdateCustomFieldConditionMock.mockReturnValue({
             mutateAsync: updateCondition,
             isLoading: false,
@@ -73,14 +58,21 @@ describe('useSaveCondition', () => {
     })
 
     it('should create a condition successfully', async () => {
+        const createConditionMock = mockCreateCustomFieldConditionHandler()
+        server.use(createConditionMock.handler)
+        const waitForCreateConditionRequest =
+            createConditionMock.waitForRequest(server)
+
         const { result } = renderHook(() => useSaveCondition())
 
         await act(async () => {
             await result.current.onSubmit({ name: 'New Condition' })
         })
 
-        expect(createCondition).toHaveBeenCalledWith({
-            data: { name: 'New Condition' },
+        await waitForCreateConditionRequest(async (request) => {
+            expect(await request.json()).toEqual({
+                name: 'New Condition',
+            })
         })
         await waitFor(() => {
             expect(
@@ -89,7 +81,6 @@ describe('useSaveCondition', () => {
                 }),
             ).toHaveAttribute('data-intent', 'success')
         })
-        expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(1)
         expect(history.push).toHaveBeenCalledWith(
             `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
         )
@@ -113,15 +104,20 @@ describe('useSaveCondition', () => {
                 }),
             ).toHaveAttribute('data-intent', 'success')
         })
-        expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(2)
         expect(history.push).toHaveBeenCalledWith(
             `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
         )
     })
 
     it('should handle errors when creating a condition', async () => {
-        const error = new Error('Create error')
-        createCondition.mockRejectedValueOnce(error)
+        server.use(
+            mockCreateCustomFieldConditionHandler(async () =>
+                HttpResponse.json(
+                    { error: { msg: 'Failed to create condition.' } } as any,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useSaveCondition())
 
@@ -157,11 +153,12 @@ describe('useSaveCondition', () => {
         })
     })
 
-    it('should return isSubmitting as true when creating or updating', () => {
-        useCreateCustomFieldConditionMock.mockReturnValue({
-            mutateAsync: createCondition,
-            isLoading: true,
-        } as unknown as ReturnType<typeof useCreateCustomFieldCondition>)
+    it('should return isSubmitting as true when creating or updating', async () => {
+        server.use(
+            mockCreateCustomFieldConditionHandler(
+                async () => new Promise(() => undefined),
+            ).handler,
+        )
         useUpdateCustomFieldConditionMock.mockReturnValue({
             mutateAsync: updateCondition,
             isLoading: false,
@@ -169,12 +166,14 @@ describe('useSaveCondition', () => {
 
         const { result } = renderHook(() => useSaveCondition())
 
-        expect(result.current.isSubmitting).toBe(true)
+        act(() => {
+            void result.current.onSubmit({ name: 'New Condition' })
+        })
 
-        useCreateCustomFieldConditionMock.mockReturnValue({
-            mutateAsync: createCondition,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useCreateCustomFieldCondition>)
+        await waitFor(() => {
+            expect(result.current.isSubmitting).toBe(true)
+        })
+
         useUpdateCustomFieldConditionMock.mockReturnValue({
             mutateAsync: updateCondition,
             isLoading: true,

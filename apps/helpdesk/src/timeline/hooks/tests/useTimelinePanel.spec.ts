@@ -4,10 +4,6 @@ import { useSearchParam } from 'hooks/useSearchParam'
 
 import { useTimelinePanel } from '../useTimelinePanel'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListTickets: jest.fn(),
-}))
 jest.mock('hooks/useSearchParam')
 
 const useSearchParamMock = assumeMock(useSearchParam)

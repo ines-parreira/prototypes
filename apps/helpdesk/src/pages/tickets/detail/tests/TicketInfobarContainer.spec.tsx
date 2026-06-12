@@ -10,7 +10,13 @@ import { fromJS, OrderedMap } from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockGetTicketHandler,
+    mockGetTicketResponse,
+    mockTicketCustomer,
+} from '@gorgias/helpdesk-mocks'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -55,9 +61,6 @@ jest.mock('@repo/tickets/feature-flags', () => ({
     useHelpdeskV2MS1Flag: jest.fn(),
 }))
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
-
-jest.mock('@gorgias/helpdesk-queries')
-const useGetTicketMock = assumeMock(useGetTicket)
 
 jest.mock('@repo/ai-agent', () => ({
     useCanAccessAIFeedback: jest.fn(),
@@ -264,6 +267,20 @@ jest.mock('state/ticket/actions', () => ({
 }))
 let store = mockStore(state)
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const renderWithStore = (
     ui: ReactElement,
     options?: Parameters<typeof render>[1],
@@ -343,14 +360,16 @@ describe('<TicketInfobarContainer />', () => {
             onSetEditingWidgetType: jest.fn(),
         })
 
-        useGetTicketMock.mockReturnValue({
-            data: {
-                data: {
-                    id: 1,
-                    customer: { id: 123 },
-                },
-            },
-        } as any)
+        server.use(
+            mockGetTicketHandler(async () =>
+                HttpResponse.json(
+                    mockGetTicketResponse({
+                        id: 1,
+                        customer: mockTicketCustomer({ id: 123 }),
+                    }),
+                ),
+            ).handler,
+        )
 
         mockedGetIntegrationsData.mockReturnValue(fromJS({}))
     })
@@ -647,9 +666,16 @@ describe('<TicketInfobarContainer />', () => {
                 activeTab: TicketInfobarTab.Timeline,
                 onChangeTab,
             })
-            useGetTicketMock.mockReturnValue({
-                data: { data: { id: 1, customer: { id: 456 } } },
-            } as any)
+            server.use(
+                mockGetTicketHandler(async () =>
+                    HttpResponse.json(
+                        mockGetTicketResponse({
+                            id: 1,
+                            customer: mockTicketCustomer({ id: 456 }),
+                        }),
+                    ),
+                ).handler,
+            )
 
             renderWithStore(<TicketInfobarContainer {...minProps} />, {
                 path: '/foo/:ticketId?',
@@ -666,9 +692,16 @@ describe('<TicketInfobarContainer />', () => {
                 activeTab: TicketInfobarTab.Customer,
                 onChangeTab,
             })
-            useGetTicketMock.mockReturnValue({
-                data: { data: { id: 1, customer: { id: 456 } } },
-            } as any)
+            server.use(
+                mockGetTicketHandler(async () =>
+                    HttpResponse.json(
+                        mockGetTicketResponse({
+                            id: 1,
+                            customer: mockTicketCustomer({ id: 456 }),
+                        }),
+                    ),
+                ).handler,
+            )
 
             renderWithStore(<TicketInfobarContainer {...minProps} />, {
                 path: '/foo/:ticketId?',
@@ -685,7 +718,16 @@ describe('<TicketInfobarContainer />', () => {
                 activeTab: TicketInfobarTab.Timeline,
                 onChangeTab,
             })
-            useGetTicketMock.mockReturnValue({ data: null } as any)
+            server.use(
+                mockGetTicketHandler(async () =>
+                    HttpResponse.json(
+                        mockGetTicketResponse({
+                            id: 1,
+                            customer: null,
+                        } as any),
+                    ),
+                ).handler,
+            )
 
             renderWithStore(<TicketInfobarContainer {...minProps} />, {
                 path: '/foo/:ticketId?',

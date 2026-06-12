@@ -1,18 +1,22 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { waitFor } from '@testing-library/react'
 
-import { useListTickets } from '@gorgias/helpdesk-queries'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    mockListTicketsHandler,
+    mockListTicketsResponse,
+    mockTicketCompact,
+} from '@gorgias/helpdesk-mocks'
 
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
+import { getActiveCustomer } from 'state/customers/selectors'
+import { getTicketCustomer } from 'state/ticket/selectors'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 import { useTimelineData } from 'timeline/hooks/useTimelineData'
 
-import { TICKET_FETCH_STALE_TIME, TICKET_FETCHED_LIMIT } from '../../constants'
-
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListTickets: jest.fn(),
-}))
+import { TICKET_FETCHED_LIMIT } from '../../constants'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('@repo/feature-flags', () => ({
@@ -20,17 +24,49 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-const useListTicketsMock = assumeMock(useListTickets)
 const useAppSelectorMock = assumeMock(useAppSelector)
+
+const server = setupServer()
+
+function mockSelectedCustomers(
+    ticketCustomer: Customer | Record<string, never> | null,
+    activeCustomer: Customer | Record<string, never> | null,
+) {
+    useAppSelectorMock.mockImplementation((selector) => {
+        if (selector === getTicketCustomer) {
+            return {
+                toJS: () => ticketCustomer,
+            }
+        }
+
+        if (selector === getActiveCustomer) {
+            return activeCustomer
+        }
+
+        return undefined
+    })
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useTimelineData', () => {
     const ticketList = [
-        {
+        mockTicketCompact({
             id: 1,
-        },
-        {
+        }),
+        mockTicketCompact({
             id: 2,
-        },
+        }),
     ]
 
     const mockTicketCustomer = {
@@ -93,79 +129,69 @@ describe('useTimelineData', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        useListTicketsMock.mockReturnValue({
-            data: {
-                data: { data: ticketList },
-            },
-            isLoading: true as boolean,
-            isError: false,
-        } as ReturnType<typeof useListTickets>)
+        server.use(
+            mockListTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockListTicketsResponse({
+                        data: ticketList,
+                    }),
+                ),
+            ).handler,
+        )
     })
 
-    it('should call useListTicket with correct params', () => {
-        // Mock useAppSelector for this test - first call returns ticket customer, second returns active customer
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({}), // Empty ticket customer
-            })
-            .mockReturnValueOnce({}) // Empty active customer
+    it('should call useListTicket with correct params', async () => {
+        let requestCount = 0
+        const listTicketsMock = mockListTicketsHandler(async () => {
+            requestCount += 1
+            return HttpResponse.json(
+                mockListTicketsResponse({
+                    data: ticketList,
+                }),
+            )
+        })
+        server.use(listTicketsMock.handler)
+        const waitForListTicketsRequest = listTicketsMock.waitForRequest(server)
+
+        mockSelectedCustomers({}, {})
 
         const { rerender } = renderHook((id?: number) => useTimelineData(id))
 
-        expect(useListTicketsMock).toHaveBeenCalledWith(
-            {
-                trashed: false,
-                limit: TICKET_FETCHED_LIMIT,
-                customer_id: undefined,
-            },
-            {
-                query: {
-                    enabled: false,
-                    staleTime: TICKET_FETCH_STALE_TIME,
-                },
-            },
-        )
-
-        // Mock again for the rerender
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({}),
-            })
-            .mockReturnValueOnce({})
+        expect(requestCount).toBe(0)
 
         rerender(123)
 
-        expect(useListTicketsMock).toHaveBeenLastCalledWith(
-            {
-                trashed: false,
-                limit: TICKET_FETCHED_LIMIT,
-                customer_id: 123,
-            },
-            {
-                query: {
-                    enabled: true,
-                    staleTime: TICKET_FETCH_STALE_TIME,
-                },
-            },
-        )
+        await waitForListTicketsRequest((request) => {
+            const url = new URL(request.url)
+            expect(url.searchParams.get('trashed')).toBe('false')
+            expect(url.searchParams.get('limit')).toBe(
+                String(TICKET_FETCHED_LIMIT),
+            )
+            expect(url.searchParams.get('customer_id')).toBe('123')
+        })
     })
 
-    it('should return mixed ticket and order list', () => {
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({
-                    integrations: {
-                        shopify: {
-                            orders: [{ id: 1 }, { id: 2 }],
-                            __integration_type__: 'shopify',
-                        },
+    it('should return mixed ticket and order list', async () => {
+        mockSelectedCustomers(
+            {
+                integrations: {
+                    shopify: {
+                        orders: [{ id: 1 }, { id: 2 }],
+                        __integration_type__: 'shopify',
                     },
-                }),
-            })
-            .mockReturnValueOnce(mockActiveCustomer) // activeCustomer for condition check
+                },
+            } as unknown as Customer,
+            mockActiveCustomer,
+        )
 
         const { result } = renderHook(() => useTimelineData(123))
+        await waitFor(() => {
+            expect(
+                result.current.items
+                    .filter(timelineItem.isTicket)
+                    .map(timelineItem.toTicket),
+            ).toEqual(ticketList)
+        })
         const items = result.current.items
         expect(
             items.filter(timelineItem.isTicket).map(timelineItem.toTicket),
@@ -175,28 +201,20 @@ describe('useTimelineData', () => {
         ).toEqual([{ id: 1 }, { id: 2 }])
     })
 
-    it('should return customer ticket list', () => {
-        // Mock useAppSelector for this test
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({}),
-            })
-            .mockReturnValueOnce({})
+    it('should return customer ticket list', async () => {
+        mockSelectedCustomers({}, {})
 
         const { result } = renderHook(() => useTimelineData(123))
 
-        expect(result.current.items.map(timelineItem.toTicket)).toEqual(
-            ticketList,
-        )
+        await waitFor(() => {
+            expect(result.current.items.map(timelineItem.toTicket)).toEqual(
+                ticketList,
+            )
+        })
     })
 
     it('should return empty array if customer id is not provided', () => {
-        // Mock useAppSelector for this test
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({}),
-            })
-            .mockReturnValueOnce({})
+        mockSelectedCustomers({}, {})
 
         const { result } = renderHook(() => useTimelineData())
 
@@ -204,46 +222,48 @@ describe('useTimelineData', () => {
     })
 
     it('should return loading state', () => {
-        // Mock useAppSelector for this test
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({}),
-            })
-            .mockReturnValueOnce({})
+        server.use(
+            mockListTicketsHandler(async () => new Promise(() => undefined))
+                .handler,
+        )
+        mockSelectedCustomers({}, {})
 
-        const { result } = renderHook(() => useTimelineData())
+        const { result } = renderHook(() => useTimelineData(123))
 
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return error state', () => {
-        // Mock useAppSelector for this test
-        useAppSelectorMock
-            .mockReturnValueOnce({
-                toJS: () => ({}),
-            })
-            .mockReturnValueOnce({})
+    it('should return error state', async () => {
+        server.use(
+            mockListTicketsHandler(async () =>
+                HttpResponse.json({ error: { msg: 'Failed' } } as any, {
+                    status: 500,
+                }),
+            ).handler,
+        )
+        mockSelectedCustomers({}, {})
 
-        const { result } = renderHook(() => useTimelineData())
-        expect(result.current.isError).toBe(false)
+        const { result } = renderHook(() => useTimelineData(123))
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
     })
 
     describe('Customer selection logic', () => {
-        it('should use ticket customer when available', () => {
-            // Mock useAppSelector to return different values for each call
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => mockTicketCustomer,
-                })
-                .mockReturnValueOnce(mockActiveCustomer)
+        it('should use ticket customer when available', async () => {
+            mockSelectedCustomers(mockTicketCustomer, mockActiveCustomer)
 
             const { result } = renderHook(() => useTimelineData(123))
 
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
+            await waitFor(() => {
+                expect(
+                    result.current.items
+                        .filter(timelineItem.isTicket)
+                        .map(timelineItem.toTicket),
+                ).toEqual(ticketList)
+            })
+            const orderItems = result.current.items.filter(timelineItem.isOrder)
 
-            // Should extract orders from ticket customer (customer variable)
-            // but only when activeCustomer is available (condition check)
             expect(orderItems).toHaveLength(2)
             expect(orderItems.map(timelineItem.toOrder)).toEqual([
                 { id: 1 },
@@ -251,20 +271,16 @@ describe('useTimelineData', () => {
             ])
         })
 
-        it('should fallback to active customer when ticket customer is empty', () => {
-            // Mock useAppSelector to return empty ticket customer and active customer
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => ({}), // Empty ticket customer
-                })
-                .mockReturnValueOnce(mockActiveCustomer)
+        it('should fallback to active customer when ticket customer is empty', async () => {
+            mockSelectedCustomers({}, mockActiveCustomer)
 
             const { result } = renderHook(() => useTimelineData(123))
 
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
+            await waitFor(() => {
+                expect(result.current.items.length).toBeGreaterThan(0)
+            })
+            const orderItems = result.current.items.filter(timelineItem.isOrder)
 
-            // Should extract orders from active customer (fallback customer)
             expect(orderItems).toHaveLength(2)
             expect(orderItems.map(timelineItem.toOrder)).toEqual([
                 { id: 3 },
@@ -272,20 +288,16 @@ describe('useTimelineData', () => {
             ])
         })
 
-        it('should fallback to active customer when ticket customer is null', () => {
-            // Mock useAppSelector to return null ticket customer and active customer
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => null, // Null ticket customer
-                })
-                .mockReturnValueOnce(mockActiveCustomer)
+        it('should fallback to active customer when ticket customer is null', async () => {
+            mockSelectedCustomers(null, mockActiveCustomer)
 
             const { result } = renderHook(() => useTimelineData(123))
 
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
+            await waitFor(() => {
+                expect(result.current.items.length).toBeGreaterThan(0)
+            })
+            const orderItems = result.current.items.filter(timelineItem.isOrder)
 
-            // Should extract orders from active customer (fallback customer)
             expect(orderItems).toHaveLength(2)
             expect(orderItems.map(timelineItem.toOrder)).toEqual([
                 { id: 3 },
@@ -293,38 +305,29 @@ describe('useTimelineData', () => {
             ])
         })
 
-        it('should not extract orders when activeCustomer is not available', () => {
-            // Mock useAppSelector to return ticket customer but no active customer
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => mockTicketCustomer,
-                })
-                .mockReturnValueOnce(null) // No active customer
+        it('should not extract orders when activeCustomer is not available', async () => {
+            mockSelectedCustomers(mockTicketCustomer, null)
 
             const { result } = renderHook(() => useTimelineData(123))
 
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
+            await waitFor(() => {
+                expect(result.current.items.length).toBeGreaterThan(0)
+            })
+            const orderItems = result.current.items.filter(timelineItem.isOrder)
 
-            // Should not extract orders because activeCustomer check fails
             expect(orderItems).toHaveLength(0)
         })
 
-        it('should extract orders from correct customer when both customers are available', () => {
-            // Both customers available, should use ticket customer for extraction but check activeCustomer for condition
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => mockTicketCustomer,
-                })
-                .mockReturnValueOnce(mockActiveCustomer)
+        it('should extract orders from correct customer when both customers are available', async () => {
+            mockSelectedCustomers(mockTicketCustomer, mockActiveCustomer)
 
             const { result } = renderHook(() => useTimelineData(123))
 
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
+            await waitFor(() => {
+                expect(result.current.items.length).toBeGreaterThan(0)
+            })
+            const orderItems = result.current.items.filter(timelineItem.isOrder)
 
-            // Should extract orders from ticket customer (the selected customer)
-            // but condition is checked against activeCustomer
             expect(orderItems).toHaveLength(2)
             expect(orderItems.map(timelineItem.toOrder)).toEqual([
                 { id: 1 },
@@ -332,19 +335,16 @@ describe('useTimelineData', () => {
             ])
         })
 
-        it('should handle empty activeCustomer gracefully', () => {
-            useAppSelectorMock
-                .mockReturnValueOnce({
-                    toJS: () => ({}), // Empty ticket customer
-                })
-                .mockReturnValueOnce({}) // Empty active customer (Record<string, never>)
+        it('should handle empty activeCustomer gracefully', async () => {
+            mockSelectedCustomers({}, {})
 
             const { result } = renderHook(() => useTimelineData(123))
 
-            const items = result.current.items
-            const orderItems = items.filter(timelineItem.isOrder)
+            await waitFor(() => {
+                expect(result.current.items.length).toBeGreaterThan(0)
+            })
+            const orderItems = result.current.items.filter(timelineItem.isOrder)
 
-            // Should not extract orders because activeCustomer is empty object
             expect(orderItems).toHaveLength(0)
         })
     })

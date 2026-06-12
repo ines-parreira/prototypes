@@ -5,29 +5,14 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
-import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 import type { User } from '@gorgias/helpdesk-types'
 
 import { useUserDateTimePreferences } from '../useUserDateTimePreferences'
-
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueries>(
-        '@gorgias/helpdesk-queries',
-    )
-    return {
-        ...actual,
-        useGetCurrentUser: vi.fn(),
-    }
-})
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    vi.clearAllMocks()
 })
 
 afterEach(() => {
@@ -37,15 +22,6 @@ afterEach(() => {
 afterAll(() => {
     server.close()
 })
-
-async function useRealUseGetCurrentUser() {
-    const actual = await vi.importActual<typeof helpdeskQueries>(
-        '@gorgias/helpdesk-queries',
-    )
-    vi.mocked(helpdeskQueries.useGetCurrentUser).mockImplementation(
-        actual.useGetCurrentUser,
-    )
-}
 
 function givenCurrentUser(user: User) {
     const handler = mockGetCurrentUserHandler(async () =>
@@ -75,10 +51,6 @@ const gb24hPrefs = {
 
 describe('useUserDateTimePreferences', () => {
     describe('integration', () => {
-        beforeEach(async () => {
-            await useRealUseGetCurrentUser()
-        })
-
         it.each([
             {
                 name: 'fetches and returns user date time preferences',
