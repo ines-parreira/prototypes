@@ -35,15 +35,6 @@ type ProductsByIntegration = {
     productIds: number[]
 }
 
-const parseProductIds = (value: unknown): number[] => {
-    const raw = String(value ?? '[]').replace(/'/g, '"')
-    try {
-        return (JSON.parse(raw) as (number | string)[]).map(Number)
-    } catch {
-        return []
-    }
-}
-
 const buildProductsFromRecommendations = (
     allData: Record<string, unknown>[],
 ): {
@@ -56,18 +47,18 @@ const buildProductsFromRecommendations = (
 
     allData.forEach((row) => {
         const integrationId = Number(row.storeIntegrationId)
-        const ids = parseProductIds(row.productRecommended)
+        const productId = Number(row.productId)
         const count = Number(row.timesRecommended ?? 0)
+
+        if (Number.isNaN(productId)) return
 
         integrationMap.set(integrationId, [
             ...(integrationMap.get(integrationId) ?? []),
-            ...ids,
+            productId,
         ])
 
-        ids.forEach((productId) => {
-            totalRecommendedById[productId] =
-                (totalRecommendedById[productId] ?? 0) + count
-        })
+        totalRecommendedById[productId] =
+            (totalRecommendedById[productId] ?? 0) + count
     })
 
     const productsByIntegration = Array.from(integrationMap.entries()).map(

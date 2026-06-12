@@ -57,7 +57,7 @@ export const aiSalesRecommendedProductCountPerProduct =
         )
         .defineQuery(() => ({
             measures: ['timesRecommended'],
-            dimensions: ['productRecommended', 'storeIntegrationId'] as const,
+            dimensions: ['productId', 'storeIntegrationId'] as const,
         }))
 
 export const aiSalesRecommendedProductCountPerProductQueryFactoryV2 = (

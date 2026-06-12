@@ -48,9 +48,9 @@ const emptyMetric = {
 
 const makeRecommendationsMetric = (
     rows: {
-        productRecommended: number[]
+        productId?: number
         storeIntegrationId: number
-        timesRecommended: number
+        timesRecommended?: number
     }[],
     overrides: Partial<{ isFetching: boolean; isError: boolean }> = {},
 ) => ({
@@ -59,7 +59,7 @@ const makeRecommendationsMetric = (
         decile: null,
         allValues: [],
         allData: rows.map((row) => ({
-            productRecommended: JSON.stringify(row.productRecommended),
+            productId: row.productId,
             storeIntegrationId: row.storeIntegrationId,
             timesRecommended: row.timesRecommended,
         })),
@@ -149,7 +149,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 50,
                 },
@@ -171,7 +171,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 100,
                 },
@@ -215,18 +215,76 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         expect(row[ProductTableKeys.BTR]).toBe(0.1)
     })
 
-    it('sums timesRecommended across bundles when the same product appears in multiple rows', () => {
+    it('renders a single row per product with the backend-provided count', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123, 456],
+                    productId: 123,
+                    storeIntegrationId: 42,
+                    timesRecommended: 15,
+                },
+                {
+                    productId: 456,
                     storeIntegrationId: 42,
                     timesRecommended: 10,
                 },
+            ]) as any,
+        )
+
+        const { result } = renderHook(
+            () => useShoppingAssistantTopProductsMetrics(),
+            { wrapper: createWrapper() },
+        )
+
+        expect(result.current.flatData.map((r) => r.entity)).toEqual([
+            '123',
+            '456',
+        ])
+        expect(
+            result.current.flatData.find((r) => r.entity === '123')?.[
+                ProductTableKeys.NumberOfRecommendations
+            ],
+        ).toBe(15)
+        expect(
+            result.current.flatData.find((r) => r.entity === '456')?.[
+                ProductTableKeys.NumberOfRecommendations
+            ],
+        ).toBe(10)
+    })
+
+    it('skips rows without a product id and defaults missing counts to 0', () => {
+        mockUseTimesRecommendedPerProduct.mockReturnValue(
+            makeRecommendationsMetric([
+                { storeIntegrationId: 42, timesRecommended: 5 },
+                { productId: 123, storeIntegrationId: 42 },
+            ]) as any,
+        )
+
+        const { result } = renderHook(
+            () => useShoppingAssistantTopProductsMetrics(),
+            { wrapper: createWrapper() },
+        )
+
+        expect(result.current.flatData.map((r) => r.entity)).toEqual(['123'])
+        expect(
+            result.current.flatData[0][
+                ProductTableKeys.NumberOfRecommendations
+            ],
+        ).toBe(0)
+    })
+
+    it('sums counts when the same product is recommended in multiple stores', () => {
+        mockUseTimesRecommendedPerProduct.mockReturnValue(
+            makeRecommendationsMetric([
                 {
-                    productRecommended: [123, 789],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 5,
+                },
+                {
+                    productId: 123,
+                    storeIntegrationId: 99,
+                    timesRecommended: 7,
                 },
             ]) as any,
         )
@@ -240,19 +298,14 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             result.current.flatData.find((r) => r.entity === '123')?.[
                 ProductTableKeys.NumberOfRecommendations
             ],
-        ).toBe(15)
-        expect(
-            result.current.flatData.find((r) => r.entity === '456')?.[
-                ProductTableKeys.NumberOfRecommendations
-            ],
-        ).toBe(10)
+        ).toBe(12)
     })
 
     it('defaults to 0 when a metric value is missing for a product', async () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [456],
+                    productId: 456,
                     storeIntegrationId: 42,
                     timesRecommended: 20,
                 },
@@ -291,7 +344,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 10,
                 },
@@ -333,7 +386,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 10,
                 },
@@ -370,12 +423,12 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [10],
+                    productId: 10,
                     storeIntegrationId: 42,
                     timesRecommended: 5,
                 },
                 {
-                    productRecommended: [20],
+                    productId: 20,
                     storeIntegrationId: 99,
                     timesRecommended: 3,
                 },
@@ -392,13 +445,18 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         })
     })
 
-    it('handles rows with multiple product IDs in productRecommended', async () => {
+    it('fetches all products of the same integration in a single call', async () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [10, 20],
+                    productId: 10,
                     storeIntegrationId: 42,
                     timesRecommended: 5,
+                },
+                {
+                    productId: 20,
+                    storeIntegrationId: 42,
+                    timesRecommended: 3,
                 },
             ]) as any,
         )
@@ -458,7 +516,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 5,
                 },
@@ -491,7 +549,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         mockUseTimesRecommendedPerProduct.mockReturnValue(
             makeRecommendationsMetric([
                 {
-                    productRecommended: [123],
+                    productId: 123,
                     storeIntegrationId: 42,
                     timesRecommended: 5,
                 },

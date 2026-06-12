@@ -217,13 +217,13 @@ describe('recommendedProductCount queries', () => {
                 )
             })
 
-            it('includes productRecommended and storeIntegrationId as dimensions', () => {
+            it('includes productId and storeIntegrationId as dimensions', () => {
                 const result =
                     aiSalesRecommendedProductCountPerProductQueryFactoryV2(
                         context,
                     )
 
-                expect(result.dimensions).toContain('productRecommended')
+                expect(result.dimensions).toContain('productId')
                 expect(result.dimensions).toContain('storeIntegrationId')
             })
         })
