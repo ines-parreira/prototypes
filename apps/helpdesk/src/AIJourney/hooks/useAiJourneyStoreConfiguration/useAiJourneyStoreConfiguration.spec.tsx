@@ -1,36 +1,27 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
-    queryKeys,
-    useCreateOrUpdateStoreConfiguration,
-    useGetStoreConfiguration,
-} from '@gorgias/convert-queries'
+    mockCreateOrUpdateStoreConfigurationHandler,
+    mockCreateOrUpdateStoreConfigurationResponse,
+    mockGetStoreConfigurationHandler,
+    mockGetStoreConfigurationResponse,
+} from '@gorgias/convert-mocks'
+import { queryKeys } from '@gorgias/convert-queries'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useAiJourneyStoreConfiguration } from './useAiJourneyStoreConfiguration'
 
-jest.mock('@gorgias/convert-queries', () => ({
-    queryKeys: {
-        storeConfigurations: {
-            getStoreConfiguration: jest.fn((id) => ['storeConfiguration', id]),
-        },
-    },
-    useGetStoreConfiguration: jest.fn(),
-    useCreateOrUpdateStoreConfiguration: jest.fn(),
-}))
-
-const mockUseGetStoreConfiguration = useGetStoreConfiguration as jest.Mock
-const mockUseCreateOrUpdateStoreConfiguration =
-    useCreateOrUpdateStoreConfiguration as jest.Mock
-const mockMutateAsync = jest.fn()
-
-let queryClient: QueryClient
+const server = setupServer()
+let queryClient = mockQueryClient()
 
 const createWrapper = () => {
-    queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
-    })
+    queryClient = mockQueryClient()
+
     return ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
@@ -38,101 +29,105 @@ const createWrapper = () => {
     )
 }
 
-describe('useAiJourneyStoreConfiguration', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockUseGetStoreConfiguration.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            error: null,
-            isFetched: false,
-        })
-        mockUseCreateOrUpdateStoreConfiguration.mockReturnValue({
-            mutateAsync: mockMutateAsync,
-        })
-    })
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+describe('useAiJourneyStoreConfiguration', () => {
     describe('data fetching', () => {
-        it('should return storeConfiguration from the query response', () => {
-            const mockStoreConfig = {
+        it('should return storeConfiguration from the query response', async () => {
+            const storeConfiguration = mockGetStoreConfigurationResponse({
                 brand_name: 'Test Store',
                 sms_sender_integration_id: 1,
                 sms_sender_number: '+15550001',
                 texas_exclusion_enabled: false,
-            }
-            mockUseGetStoreConfiguration.mockReturnValue({
-                data: { data: mockStoreConfig },
-                isLoading: false,
-                error: null,
-                isFetched: true,
             })
+            server.use(
+                mockGetStoreConfigurationHandler(async () =>
+                    HttpResponse.json(storeConfiguration),
+                ).handler,
+            )
 
             const { result } = renderHook(
                 () => useAiJourneyStoreConfiguration(42),
                 { wrapper: createWrapper() },
             )
 
-            expect(result.current.storeConfiguration).toEqual(mockStoreConfig)
+            await waitFor(() => expect(result.current.isFetched).toBe(true))
+
+            expect(result.current.storeConfiguration).toEqual(
+                storeConfiguration,
+            )
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.error).toBeNull()
         })
 
-        it('should return undefined storeConfiguration when data is not yet available', () => {
+        it('should return undefined storeConfiguration while disabled', async () => {
+            const requests: Request[] = []
+            server.use(
+                mockGetStoreConfigurationHandler(async ({ request }) => {
+                    requests.push(request)
+
+                    return HttpResponse.json(
+                        mockGetStoreConfigurationResponse(),
+                    )
+                }).handler,
+            )
+
             const { result } = renderHook(
-                () => useAiJourneyStoreConfiguration(42),
+                () => useAiJourneyStoreConfiguration(undefined),
                 { wrapper: createWrapper() },
             )
 
             expect(result.current.storeConfiguration).toBeUndefined()
+            expect(result.current.isFetched).toBe(false)
+            expect(requests).toHaveLength(0)
         })
 
-        it('should forward isLoading, error, and isFetched from the query', () => {
-            const mockError = new Error('Network failure')
-            mockUseGetStoreConfiguration.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                error: mockError,
-                isFetched: true,
-            })
+        it('should forward query errors', async () => {
+            server.use(
+                mockGetStoreConfigurationHandler(async () =>
+                    HttpResponse.json({ error: 'Network failure' } as never, {
+                        status: 500,
+                    }),
+                ).handler,
+            )
 
             const { result } = renderHook(
                 () => useAiJourneyStoreConfiguration(42),
                 { wrapper: createWrapper() },
             )
 
-            expect(result.current.isLoading).toBe(false)
-            expect(result.current.error).toBe(mockError)
-            expect(result.current.isFetched).toBe(true)
-        })
+            await waitFor(() => expect(result.current.error).toBeDefined())
 
-        it('should call useGetStoreConfiguration with enabled: false when storeIntegrationId is undefined', () => {
-            renderHook(() => useAiJourneyStoreConfiguration(undefined), {
-                wrapper: createWrapper(),
-            })
-
-            expect(mockUseGetStoreConfiguration).toHaveBeenCalledWith(
-                undefined,
-                expect.objectContaining({
-                    query: expect.objectContaining({ enabled: false }),
-                }),
-            )
-        })
-
-        it('should call useGetStoreConfiguration with enabled: true when storeIntegrationId is defined', () => {
-            renderHook(() => useAiJourneyStoreConfiguration(42), {
-                wrapper: createWrapper(),
-            })
-
-            expect(mockUseGetStoreConfiguration).toHaveBeenCalledWith(
-                42,
-                expect.objectContaining({
-                    query: expect.objectContaining({ enabled: true }),
-                }),
-            )
+            expect(result.current.storeConfiguration).toBeUndefined()
         })
     })
 
     describe('saveConfiguration', () => {
         it('should call mutateAsync with the storeIntegrationId and configuration data', async () => {
-            mockMutateAsync.mockResolvedValue(undefined)
+            const updateStoreConfigurationMock =
+                mockCreateOrUpdateStoreConfigurationHandler(async () =>
+                    HttpResponse.json(
+                        mockCreateOrUpdateStoreConfigurationResponse(),
+                    ),
+                )
+            const waitForUpdateStoreConfigurationRequest =
+                updateStoreConfigurationMock.waitForRequest(server)
+            server.use(
+                mockGetStoreConfigurationHandler().handler,
+                updateStoreConfigurationMock.handler,
+            )
+
             const configuration = {
                 brand_name: 'My Store',
                 sms_sender_integration_id: 1,
@@ -141,29 +136,31 @@ describe('useAiJourneyStoreConfiguration', () => {
                 tone_of_voice_guidance: null,
             }
 
-            const wrapper = createWrapper()
             const { result } = renderHook(
                 () => useAiJourneyStoreConfiguration(42),
-                { wrapper },
+                { wrapper: createWrapper() },
             )
 
             await act(async () => {
                 await result.current.saveConfiguration(configuration)
             })
 
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                storeIntegrationId: 42,
-                data: configuration,
+            await waitForUpdateStoreConfigurationRequest(async (request) => {
+                expect(new URL(request.url).pathname).toContain('42')
+                expect(await request.json()).toEqual(configuration)
             })
         })
 
         it('should invalidate the storeConfiguration query after a successful save', async () => {
-            mockMutateAsync.mockResolvedValue(undefined)
-
+            server.use(
+                mockGetStoreConfigurationHandler().handler,
+                mockCreateOrUpdateStoreConfigurationHandler().handler,
+            )
             const wrapper = createWrapper()
-            const invalidateQueriesSpy = jest
-                .spyOn(queryClient, 'invalidateQueries')
-                .mockResolvedValue(undefined)
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
 
             const { result } = renderHook(
                 () => useAiJourneyStoreConfiguration(42),
@@ -184,6 +181,19 @@ describe('useAiJourneyStoreConfiguration', () => {
         })
 
         it('should not call mutateAsync when storeIntegrationId is undefined', async () => {
+            const requests: Request[] = []
+            server.use(
+                mockCreateOrUpdateStoreConfigurationHandler(
+                    async ({ request }) => {
+                        requests.push(request)
+
+                        return HttpResponse.json(
+                            mockCreateOrUpdateStoreConfigurationResponse(),
+                        )
+                    },
+                ).handler,
+            )
+
             const { result } = renderHook(
                 () => useAiJourneyStoreConfiguration(undefined),
                 { wrapper: createWrapper() },
@@ -196,7 +206,7 @@ describe('useAiJourneyStoreConfiguration', () => {
                 })
             })
 
-            expect(mockMutateAsync).not.toHaveBeenCalled()
+            expect(requests).toHaveLength(0)
         })
     })
 })

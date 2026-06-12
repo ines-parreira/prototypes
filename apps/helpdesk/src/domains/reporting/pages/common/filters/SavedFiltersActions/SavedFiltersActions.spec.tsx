@@ -1,7 +1,13 @@
 import { assumeMock, render, userEvent } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListAnalyticsFilters } from '@gorgias/helpdesk-queries'
+import {
+    mockAnalyticsFilter,
+    mockListAnalyticsFiltersHandler,
+    mockListAnalyticsFiltersResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { APPLY_SAVED_FILTERS } from 'domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
 import { SavedFiltersActions } from 'domains/reporting/pages/common/filters/SavedFiltersActions/SavedFiltersActions'
@@ -14,8 +20,10 @@ import {
     filterKeysMock,
     filtersMock,
 } from 'domains/reporting/pages/common/filters/SavedFiltersActions/tests/helpers.spec'
+import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { initialiseSavedFilterDraftFromFilters } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { useAppSelector } from 'hooks/useAppSelector'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
 jest.mock('state/currentUser/selectors', () => ({
@@ -31,19 +39,53 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
 
-jest.mock('@gorgias/helpdesk-queries')
-const useListAnalyticsFiltersMock = assumeMock(useListAnalyticsFilters)
+const server = setupServer()
+
+const savedFilters = [
+    mockAnalyticsFilter({ id: 1, name: 'Temp Filter 1', filter_group: [] }),
+    mockAnalyticsFilter({ id: 2, name: 'Temp Filter 2', filter_group: [] }),
+]
+
+const mockSavedFiltersList = (
+    filters: Array<(typeof savedFilters)[number]> = [],
+) =>
+    mockListAnalyticsFiltersHandler(async () =>
+        HttpResponse.json(mockListAnalyticsFiltersResponse({ data: filters })),
+    ).handler
+
+const mockSelectors = (statsFilters: unknown) => {
+    useAppSelectorMock.mockImplementation((selector) => {
+        if (selector === getPageStatsFiltersWithLogicalOperators) {
+            return statsFilters
+        }
+        if (selector === getCurrentUser) {
+            return {}
+        }
+
+        return undefined
+    })
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(mockSavedFiltersList())
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('SavedFiltersActions for an Agent', () => {
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValueOnce({})
-        useAppSelectorMock.mockReturnValueOnce(emptyFiltersMock)
-        isTeamLeadMock.mockReturnValueOnce(false)
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: {
-                data: [],
-            },
-        } as any)
+        mockSelectors(emptyFiltersMock)
+        isTeamLeadMock.mockReturnValue(false)
     })
 
     it('should only render ApplySavedFilters', () => {
@@ -71,75 +113,48 @@ describe('SavedFiltersActions for an Agent', () => {
 
 describe('SavedFiltersActions for an Admin or Team Lead', () => {
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValueOnce({})
-        useAppSelectorMock.mockReturnValueOnce(filtersMock)
-        isTeamLeadMock.mockReturnValueOnce(true)
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: {
-                data: [],
-            },
-        } as any)
+        mockSelectors(filtersMock)
+        isTeamLeadMock.mockReturnValue(true)
     })
 
-    it('should render ApplySavedFilters and SaveFilters', () => {
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: {
-                data: [
-                    { id: 1, name: 'Temp Filter 1', filter_group: [] },
-                    { id: 2, name: 'Temp Filter 2', filter_group: [] },
-                ],
-            },
-        } as any)
+    it('should render ApplySavedFilters and SaveFilters', async () => {
+        server.use(mockSavedFiltersList(savedFilters))
 
         const { getByText } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
             { storeState: {} },
         )
 
-        expect(getByText(SAVE_FILTERS)).toBeTruthy()
+        expect(await screen.findByText(SAVE_FILTERS)).toBeTruthy()
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
     })
 
     it('should have a tooltip', async () => {
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: {
-                data: [
-                    { id: 1, name: 'Temp Filter 1', filter_group: [] },
-                    { id: 2, name: 'Temp Filter 2', filter_group: [] },
-                ],
-            },
-        } as any)
+        server.use(mockSavedFiltersList(savedFilters))
 
         const { getByText } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
             { storeState: {} },
         )
 
-        fireEvent.mouseEnter(getByText(SAVE_FILTERS))
+        fireEvent.mouseEnter(await screen.findByText(SAVE_FILTERS))
 
         await waitFor(() =>
             expect(getByText(SAVE_FILTERS_TOOLTIP)).toBeTruthy(),
         )
     })
 
-    it('should create SavedFilter draft from current filters', () => {
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: {
-                data: [
-                    { id: 1, name: 'Temp Filter 1', filter_group: [] },
-                    { id: 2, name: 'Temp Filter 2', filter_group: [] },
-                ],
-            },
-        } as any)
+    it('should create SavedFilter draft from current filters', async () => {
+        server.use(mockSavedFiltersList(savedFilters))
 
         const { getByText, store } = render(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
             { storeState: {} },
         )
 
-        expect(getByText(SAVE_FILTERS)).toBeTruthy()
-        userEvent.click(getByText(SAVE_FILTERS))
+        expect(await screen.findByText(SAVE_FILTERS)).toBeTruthy()
+        await userEvent.click(getByText(SAVE_FILTERS))
 
         expect(store.getActions()).toContainEqual(
             initialiseSavedFilterDraftFromFilters(filtersMock),

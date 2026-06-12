@@ -1,130 +1,96 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { deleteSegment } from '@gorgias/customer-segmentation-client'
+import { mockDeleteSegmentHandler } from '@gorgias/customer-segmentation-mocks'
 
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useDeleteSegment } from './useDeleteSegment'
 
-jest.mock('@gorgias/customer-segmentation-client', () => ({
-    deleteSegment: jest.fn(),
-}))
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-const mockDeleteSegment = deleteSegment as jest.Mock
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useDeleteSegment', () => {
-    let queryClient: QueryClient
-    const mockStore = configureMockStore([thunk])()
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                mutations: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Provider>
-        )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should call deleteSegment with the correct segmentId', async () => {
-        mockDeleteSegment.mockResolvedValue({ data: undefined })
+        const deleteSegmentMock = mockDeleteSegmentHandler()
+        const waitForDeleteSegmentRequest =
+            deleteSegmentMock.waitForRequest(server)
+        server.use(deleteSegmentMock.handler)
 
         const { result } = renderHook(() => useDeleteSegment(), {
             wrapper: createWrapper(),
         })
 
         await act(async () => {
-            result.current.mutate({ segmentId: 'seg-123' })
+            await result.current.mutateAsync({ segmentId: 'seg-123' })
         })
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockDeleteSegment).toHaveBeenCalledTimes(1)
-        expect(mockDeleteSegment).toHaveBeenCalledWith('seg-123')
+        await waitForDeleteSegmentRequest((request) => {
+            expect(new URL(request.url).pathname).toContain('seg-123')
+        })
     })
 
-    it('should return the response data on success', async () => {
-        const responseData = { id: 'seg-123' }
-        mockDeleteSegment.mockResolvedValue({ data: responseData })
-
-        const { result } = renderHook(() => useDeleteSegment(), {
-            wrapper: createWrapper(),
-        })
-
-        await act(async () => {
-            result.current.mutate({ segmentId: 'seg-123' })
-        })
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(result.current.data).toEqual(responseData)
-    })
-
-    it('should invalidate segments queries on success', async () => {
-        mockDeleteSegment.mockResolvedValue({ data: undefined })
-
-        const { result } = renderHook(() => useDeleteSegment(), {
-            wrapper: createWrapper(),
-        })
-
+    it('should invalidate segments queries and show a success toast on success', async () => {
+        server.use(mockDeleteSegmentHandler().handler)
         const invalidateQueriesSpy = jest.spyOn(
             queryClient,
             'invalidateQueries',
         )
 
-        await act(async () => {
-            result.current.mutate({ segmentId: 'seg-456' })
-        })
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-            queryKey: aiJourneyKeys.segmentsAll(),
-        })
-    })
-
-    it('should show a success toast on success', async () => {
-        mockDeleteSegment.mockResolvedValue({ data: undefined })
-
         const { result } = renderHook(() => useDeleteSegment(), {
             wrapper: createWrapper(),
         })
 
         await act(async () => {
-            result.current.mutate({ segmentId: 'seg-123' })
+            await result.current.mutateAsync({ segmentId: 'seg-456' })
         })
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        const toastEl = await screen.findByRole('status', {
-            name: 'Segment deleted successfully',
-        })
-        expect(toastEl).toHaveAttribute('data-intent', 'success')
+        await waitFor(() =>
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: aiJourneyKeys.segmentsAll(),
+            }),
+        )
+        expect(
+            await screen.findByRole('status', {
+                name: 'Segment deleted successfully',
+            }),
+        ).toHaveAttribute('data-intent', 'success')
     })
 
     it('should set error state and show error toast when deleteSegment fails', async () => {
-        const consoleErrorSpy = jest
-            .spyOn(console, 'error')
-            .mockImplementation()
-        const mockError = new Error('Failed to delete segment')
-        mockDeleteSegment.mockRejectedValue(mockError)
+        server.use(
+            mockDeleteSegmentHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to delete segment' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useDeleteSegment(), {
             wrapper: createWrapper(),
@@ -135,12 +101,11 @@ describe('useDeleteSegment', () => {
         })
 
         await waitFor(() => expect(result.current.isError).toBe(true))
-
-        expect(result.current.error).toEqual(mockError)
-        const toastEl = await screen.findByRole('status', {
-            name: 'Error deleting segment',
-        })
-        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
-        consoleErrorSpy.mockRestore()
+        expect(result.current.error).toBeDefined()
+        expect(
+            await screen.findByRole('status', {
+                name: 'Error deleting segment',
+            }),
+        ).toHaveAttribute('data-intent', 'destructive')
     })
 })

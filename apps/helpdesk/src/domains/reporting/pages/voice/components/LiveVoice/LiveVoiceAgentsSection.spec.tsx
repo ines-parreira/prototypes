@@ -1,40 +1,71 @@
-import { assumeMock, render } from '@repo/testing'
-import { cleanup, fireEvent, screen } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListLiveCallQueueAgents } from '@gorgias/helpdesk-queries'
+import {
+    mockListLiveCallQueueAgentsHandler,
+    mockListLiveCallQueueAgentsResponse,
+    mockLiveCallQueueAgent,
+} from '@gorgias/helpdesk-mocks'
 
 import { LiveVoiceAgentsSection } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsSection'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('hooks/useAppSelector', () => ({
     useAppSelector: (fn: () => void) => fn(),
 }))
-
-const useListLiveCallQueueAgentsMock = assumeMock(useListLiveCallQueueAgents)
 
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList',
     () => ({ LiveVoiceAgentsList: () => <div>LiveVoiceAgentsList</div> }),
 )
 
+const server = setupServer()
+let queryClient = mockQueryClient()
+
+const params = {
+    agent_ids: [1, 2],
+    integration_ids: [3, 4],
+    voice_queue_ids: [5, 6],
+}
+
+const renderComponent = (props = { params }) => {
+    queryClient = mockQueryClient()
+
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <LiveVoiceAgentsSection {...props} />
+        </QueryClientProvider>,
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    cleanup()
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('LiveVoiceAgentsSection', () => {
-    const renderComponent = (
-        props = {
-            params: {
-                agent_ids: [1, 2],
-                integration_ids: [3, 4],
-                voice_queue_ids: [5, 6],
-            },
-        },
-    ) => render(<LiveVoiceAgentsSection {...props} />)
-
-    afterEach(cleanup)
-
     it('should display loading state', () => {
-        useListLiveCallQueueAgentsMock.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-        } as any)
+        server.use(
+            mockListLiveCallQueueAgentsHandler(async () => {
+                await new Promise(() => undefined)
+
+                return HttpResponse.json(
+                    mockListLiveCallQueueAgentsResponse({ data: [] }),
+                )
+            }).handler,
+        )
 
         renderComponent()
 
@@ -44,41 +75,63 @@ describe('LiveVoiceAgentsSection', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should display agents list', () => {
-        useListLiveCallQueueAgentsMock.mockReturnValue({
-            data: { data: { data: [{ id: 1, name: 'Agent 1' }] } },
-            isLoading: false,
-        } as any)
-
-        renderComponent()
-
-        expect(screen.getByText('LiveVoiceAgentsList')).toBeInTheDocument()
-    })
-
-    it('should display no data available', () => {
-        const refetch = jest.fn()
-        useListLiveCallQueueAgentsMock.mockReturnValue({
-            data: { data: { data: [] } },
-            isLoading: false,
-            refetch,
-        } as any)
-
-        renderComponent()
-
-        expect(screen.getByText('No data available')).toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
-        expect(refetch).toHaveBeenCalled()
-    })
-
-    it('should pass correct filters to useListLiveCallQueueAgents', () => {
-        renderComponent()
-        expect(useListLiveCallQueueAgentsMock).toHaveBeenCalledWith(
-            {
-                agent_ids: [1, 2],
-                integration_ids: [3, 4],
-                voice_queue_ids: [5, 6],
-            },
-            expect.any(Object),
+    it('should display agents list', async () => {
+        server.use(
+            mockListLiveCallQueueAgentsHandler(async () =>
+                HttpResponse.json(
+                    mockListLiveCallQueueAgentsResponse({
+                        data: [
+                            mockLiveCallQueueAgent({ id: 1, name: 'Agent 1' }),
+                        ],
+                    }),
+                ),
+            ).handler,
         )
+
+        renderComponent()
+
+        expect(
+            await screen.findByText('LiveVoiceAgentsList'),
+        ).toBeInTheDocument()
+    })
+
+    it('should display no data available and refetch on retry', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockListLiveCallQueueAgentsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(
+                    mockListLiveCallQueueAgentsResponse({ data: [] }),
+                )
+            }).handler,
+        )
+
+        renderComponent()
+
+        expect(await screen.findByText('No data available')).toBeInTheDocument()
+        fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+
+        await waitFor(() => expect(requests.length).toBeGreaterThan(1))
+    })
+
+    it('should pass correct filters to useListLiveCallQueueAgents', async () => {
+        const listAgentsMock = mockListLiveCallQueueAgentsHandler(async () =>
+            HttpResponse.json(
+                mockListLiveCallQueueAgentsResponse({ data: [] }),
+            ),
+        )
+        const waitForListAgentsRequest = listAgentsMock.waitForRequest(server)
+        server.use(listAgentsMock.handler)
+
+        renderComponent()
+
+        await waitForListAgentsRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.getAll('agent_ids')).toEqual(['1', '2'])
+            expect(searchParams.getAll('integration_ids')).toEqual(['3', '4'])
+            expect(searchParams.getAll('voice_queue_ids')).toEqual(['5', '6'])
+        })
     })
 })

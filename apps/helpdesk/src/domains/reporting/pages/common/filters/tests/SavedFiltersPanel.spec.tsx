@@ -1,16 +1,25 @@
+import type { ReactNode } from 'react'
 import { assumeMock, render, userEvent } from '@repo/testing'
-import { QueryClient } from '@tanstack/react-query'
+
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
 import { within } from '@testing-library/dom'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import randomstring from 'randomstring'
 
 import {
-    useCreateAnalyticsFilter,
-    useDeleteAnalyticsFilter,
-    useListAnalyticsFilters,
-    useUpdateAnalyticsFilter,
-} from '@gorgias/helpdesk-queries'
+    mockAnalyticsFilter,
+    mockCreateAnalyticsFilterHandler,
+    mockCreateAnalyticsFilterResponse,
+    mockDeleteAnalyticsFilterHandler,
+    mockListAnalyticsFiltersHandler,
+    mockListAnalyticsFiltersResponse,
+    mockUpdateAnalyticsFilterHandler,
+    mockUpdateAnalyticsFilterResponse,
+} from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 import type {
@@ -62,11 +71,102 @@ import type { RootState } from 'state/types'
 jest.mock('domains/reporting/pages/common/filters/FiltersPanel')
 jest.mock('domains/reporting/pages/convert/providers/CampaignStatsFilters')
 const CampaignStatsFiltersMock = assumeMock(CampaignStatsFilters)
-jest.mock('@gorgias/helpdesk-queries')
-const useListAnalyticsFiltersMock = assumeMock(useListAnalyticsFilters)
-const useCreateAnalyticsFilterMock = assumeMock(useCreateAnalyticsFilter)
-const useUpdateAnalyticsFilterMock = assumeMock(useUpdateAnalyticsFilter)
-const useDeleteAnalyticsFilterMock = assumeMock(useDeleteAnalyticsFilter)
+
+const server = setupServer()
+
+const toAnalyticsFilterResponse = (filter: SavedFilter | SavedFilterDraft) =>
+    mockAnalyticsFilter({
+        ...filter,
+        id: 'id' in filter ? filter.id : 123,
+        filter_group: filter.filter_group as never,
+    })
+
+const mockSavedFiltersList = (filters: SavedFilter[] = []) =>
+    mockListAnalyticsFiltersHandler(async () =>
+        HttpResponse.json(
+            mockListAnalyticsFiltersResponse({
+                data: filters.map((filter) =>
+                    toAnalyticsFilterResponse(filter),
+                ),
+            }),
+        ),
+    )
+
+const mockSavedFiltersListWithRequestCount = (filters: SavedFilter[] = []) => {
+    let requestCount = 0
+    const listMock = mockListAnalyticsFiltersHandler(async () => {
+        requestCount += 1
+
+        return HttpResponse.json(
+            mockListAnalyticsFiltersResponse({
+                data: filters.map((filter) =>
+                    toAnalyticsFilterResponse(filter),
+                ),
+            }),
+        )
+    })
+
+    return {
+        handler: listMock.handler,
+        waitForRequestCount: (expectedCount: number) =>
+            waitFor(() => {
+                expect(requestCount).toBeGreaterThanOrEqual(expectedCount)
+            }),
+    }
+}
+
+const createSavedFiltersQueryWrapper =
+    (filters: SavedFilter[]) =>
+    ({ children }: { children: ReactNode }) => {
+        const queryClient = useQueryClient()
+        queryClient.setQueryData(
+            queryKeys.savedFilters.listAnalyticsFilters(),
+            {
+                data: {
+                    data: filters.map((filter) =>
+                        toAnalyticsFilterResponse(filter),
+                    ),
+                },
+            },
+        )
+
+        return <>{children}</>
+    }
+
+const mockCreateSavedFilter = (filter: SavedFilter | SavedFilterDraft) =>
+    mockCreateAnalyticsFilterHandler(async () =>
+        HttpResponse.json(
+            mockCreateAnalyticsFilterResponse(
+                toAnalyticsFilterResponse(filter),
+            ),
+        ),
+    )
+
+const mockUpdateSavedFilter = (filter: SavedFilter | SavedFilterDraft) =>
+    mockUpdateAnalyticsFilterHandler(async () =>
+        HttpResponse.json(
+            mockUpdateAnalyticsFilterResponse(
+                toAnalyticsFilterResponse(filter),
+            ),
+        ),
+    )
+
+const mockDeleteSavedFilter = () =>
+    mockDeleteAnalyticsFilterHandler(async () => HttpResponse.json(null))
+
+const mockFailedMutation = (
+    handler:
+        | typeof mockCreateAnalyticsFilterHandler
+        | typeof mockUpdateAnalyticsFilterHandler
+        | typeof mockDeleteAnalyticsFilterHandler,
+    body: unknown = {},
+) =>
+    (
+        handler as (
+            customHandler: unknown,
+        ) => ReturnType<typeof mockCreateAnalyticsFilterHandler>
+    )((async () => HttpResponse.json(body as never, { status: 400 })) as never)
+
 describe('SavedFiltersPanel', () => {
     const adminUser = {
         has_password: false,
@@ -136,24 +236,33 @@ describe('SavedFiltersPanel', () => {
             data: {},
         },
     }
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         CampaignStatsFiltersMock.mockImplementation(() => <div />)
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: undefined,
-            error: undefined,
-        } as any)
-        useCreateAnalyticsFilterMock.mockReturnValue({
-            data: undefined,
-            error: undefined,
-        } as any)
-        useUpdateAnalyticsFilterMock.mockReturnValue({
-            data: undefined,
-            error: undefined,
-        } as any)
-        useDeleteAnalyticsFilterMock.mockReturnValue({
-            data: undefined,
-            error: undefined,
-        } as any)
+        server.use(
+            mockSavedFiltersList().handler,
+            mockCreateSavedFilter({
+                name: 'Saved Filter',
+                filter_group: [],
+            }).handler,
+            mockUpdateSavedFilter({
+                id: 123,
+                name: 'Saved Filter',
+                filter_group: [],
+            }).handler,
+            mockDeleteSavedFilter().handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
     it('should not render when no saved filter draft', () => {
         const { container } = render(
@@ -221,7 +330,7 @@ describe('SavedFiltersPanel', () => {
         expect(screen.getByText(COLLAPSE_OPEN_ICON))
         expect(screen.getByDisplayValue(new RegExp(savedFilterName)))
     })
-    it('should create Saved Filter from Draft', () => {
+    it('should create Saved Filter from Draft', async () => {
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilterDraft = {
             name: savedFilterName,
@@ -250,25 +359,32 @@ describe('SavedFiltersPanel', () => {
             },
             currentUser: defaultState.currentUser,
         } as RootState
-        const mutateMock = jest.fn().mockResolvedValue({
-            data: { id: 123, ...savedFilterDraft },
+        const createSavedFilterMock = mockCreateSavedFilter({
+            id: 123,
+            ...savedFilterDraft,
         })
-        useCreateAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-            error: undefined,
-        } as any)
+        const listSavedFiltersMock = mockSavedFiltersListWithRequestCount()
+        const waitForCreateSavedFilterRequest =
+            createSavedFilterMock.waitForRequest(server)
+        server.use(listSavedFiltersMock.handler, createSavedFilterMock.handler)
+
         render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
+        await listSavedFiltersMock.waitForRequestCount(1)
         userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
-        expect(mutateMock).toHaveBeenCalled()
+
+        await waitForCreateSavedFilterRequest()
+        await listSavedFiltersMock.waitForRequestCount(2)
     })
     it('should notify about failed creation of a Saved Filter', async () => {
-        const mutateMock = jest.fn().mockRejectedValue({})
-        useCreateAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-            error: undefined,
-        } as any)
+        const createSavedFilterMock = mockFailedMutation(
+            mockCreateAnalyticsFilterHandler,
+        )
+        const waitForCreateSavedFilterRequest =
+            createSavedFilterMock.waitForRequest(server)
+        server.use(createSavedFilterMock.handler)
+
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilterDraft = {
             name: savedFilterName,
@@ -301,7 +417,7 @@ describe('SavedFiltersPanel', () => {
             storeState: state,
         })
         userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
-        expect(mutateMock).toHaveBeenCalled()
+        await waitForCreateSavedFilterRequest()
         const toastEl = await screen.findByRole('status', {
             name: FILTER_SAVED_ERROR_MESSAGE,
         })
@@ -338,15 +454,16 @@ describe('SavedFiltersPanel', () => {
             },
             currentUser: defaultState.currentUser,
         } as RootState
-        const mutateMock = jest.fn().mockResolvedValue({
-            data: savedFilterDraft,
-        })
-        useUpdateAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
+        const listSavedFiltersMock = mockSavedFiltersListWithRequestCount()
+        const updateSavedFilterMock = mockUpdateSavedFilter(savedFilterDraft)
+        const waitForUpdateSavedFilterRequest =
+            updateSavedFilterMock.waitForRequest(server)
+        server.use(listSavedFiltersMock.handler, updateSavedFilterMock.handler)
+
         render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
+        await listSavedFiltersMock.waitForRequestCount(1)
         userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
         await waitFor(() => {
             expect(
@@ -356,13 +473,17 @@ describe('SavedFiltersPanel', () => {
                 screen.getByRole('button', { name: SAVE_MODAL_BUTTON_LABEL }),
             )
         })
-        expect(mutateMock).toHaveBeenCalled()
+        await waitForUpdateSavedFilterRequest()
+        await listSavedFiltersMock.waitForRequestCount(2)
     })
     it('should fail update of a Saved Filter ', async () => {
-        const mutateMock = jest.fn().mockRejectedValue({})
-        useUpdateAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
+        const updateSavedFilterMock = mockFailedMutation(
+            mockUpdateAnalyticsFilterHandler,
+        )
+        const waitForUpdateSavedFilterRequest =
+            updateSavedFilterMock.waitForRequest(server)
+        server.use(updateSavedFilterMock.handler)
+
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -405,7 +526,7 @@ describe('SavedFiltersPanel', () => {
                 screen.getByRole('button', { name: SAVE_MODAL_BUTTON_LABEL }),
             )
         })
-        expect(mutateMock).toHaveBeenCalled()
+        await waitForUpdateSavedFilterRequest()
         const toastEl = await screen.findByRole('status', {
             name: FILTER_SAVED_ERROR_MESSAGE,
         })
@@ -455,11 +576,13 @@ describe('SavedFiltersPanel', () => {
             )
         })
     })
-    it('should delete Saved Filter after confirmation', () => {
-        const mutateMock = jest.fn().mockResolvedValue({})
-        useDeleteAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
+    it('should delete Saved Filter after confirmation', async () => {
+        const listSavedFiltersMock = mockSavedFiltersListWithRequestCount()
+        const deleteSavedFilterMock = mockDeleteSavedFilter()
+        const waitForDeleteSavedFilterRequest =
+            deleteSavedFilterMock.waitForRequest(server)
+        server.use(listSavedFiltersMock.handler, deleteSavedFilterMock.handler)
+
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -487,6 +610,7 @@ describe('SavedFiltersPanel', () => {
         render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
+        await listSavedFiltersMock.waitForRequestCount(1)
         userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
         userEvent.click(screen.getByText(SAVED_FILTER_ACTIONS_MENU_ICON))
         userEvent.click(
@@ -495,13 +619,18 @@ describe('SavedFiltersPanel', () => {
             }),
         )
         userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
-        expect(mutateMock).toHaveBeenCalled()
+        await waitForDeleteSavedFilterRequest()
+        await listSavedFiltersMock.waitForRequestCount(2)
     })
     it('should close confirmation modal on Canceled confirmation', async () => {
-        const mutateMock = jest.fn().mockResolvedValue({})
-        useDeleteAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
+        let deleteRequestCount = 0
+        server.use(
+            mockDeleteAnalyticsFilterHandler(async () => {
+                deleteRequestCount += 1
+
+                return HttpResponse.json(null)
+            }).handler,
+        )
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -550,14 +679,17 @@ describe('SavedFiltersPanel', () => {
             expect(
                 screen.queryByText(getDeleteConfirmationTitle(savedFilterName)),
             ).not.toBeInTheDocument()
-            expect(mutateMock).not.toHaveBeenCalled()
+            expect(deleteRequestCount).toBe(0)
         })
     })
     it('should notify about failed delete of the Saved Filter ', async () => {
-        const mutateMock = jest.fn().mockRejectedValue({})
-        useDeleteAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
+        const deleteSavedFilterMock = mockFailedMutation(
+            mockDeleteAnalyticsFilterHandler,
+        )
+        const waitForDeleteSavedFilterRequest =
+            deleteSavedFilterMock.waitForRequest(server)
+        server.use(deleteSavedFilterMock.handler)
+
         const savedFilterName = 'Some Name draft'
         const savedFilterDraft: SavedFilter = {
             id: 123,
@@ -593,17 +725,13 @@ describe('SavedFiltersPanel', () => {
             }),
         )
         userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
-        expect(mutateMock).toHaveBeenCalled()
+        await waitForDeleteSavedFilterRequest()
         const toastEl = await screen.findByRole('status', {
             name: FILTER_DELETED_ERROR_MESSAGE,
         })
         expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
     it('should duplicate Saved Filter ', () => {
-        const mutateMock = jest.fn().mockResolvedValue({})
-        useDeleteAnalyticsFilterMock.mockReturnValue({
-            mutateAsync: mutateMock,
-        } as any)
         const savedFilterName = 'Some Name draft'
         const savedFilter: SavedFilter = {
             id: 123,
@@ -712,7 +840,7 @@ describe('SavedFiltersPanel', () => {
         expect(store.getActions()).toContainEqual(clearSavedFilterDraft())
         expect(screen.getByText(COLLAPSE_OPEN_ICON)).toBeInTheDocument()
     })
-    it('should discard changes made to the Saved Filter and close the Collapse', () => {
+    it('should discard changes made to the Saved Filter and close the Collapse', async () => {
         const savedFilterName = 'Some Name draft'
         const savedFilter: SavedFilter = {
             id: 123,
@@ -743,22 +871,22 @@ describe('SavedFiltersPanel', () => {
             },
             currentUser: defaultState.currentUser,
         } as RootState
-        useListAnalyticsFiltersMock.mockReturnValue({
-            data: {
-                data: { data: [savedFilter] },
-            },
-        } as any)
         const { store } = render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
+            queryClientOptions: { queries: { staleTime: Infinity } },
+            wrapper: createSavedFiltersQueryWrapper([savedFilter]),
         })
+
         userEvent.click(
             screen.getByRole('button', { name: CANCEL_BUTTON_LABEL }),
         )
-        expect(store.getActions()).toContainEqual(
-            initialiseSavedFilterDraftFromSavedFilter(
-                fromApiFormatted(savedFilter as SavedFilterAPI),
-            ),
-        )
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(
+                initialiseSavedFilterDraftFromSavedFilter(
+                    fromApiFormatted(savedFilter as SavedFilterAPI),
+                ),
+            )
+        })
         expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
     })
     describe('error handling', () => {
@@ -808,18 +936,21 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
         it('should show error message when error response contains name on creation of saved filters', async () => {
-            const mutateMock = jest.fn().mockRejectedValue(gorgiasApiError)
-            useCreateAnalyticsFilterMock.mockReturnValue({
-                mutateAsync: mutateMock,
-                error: undefined,
-            } as any)
+            const createSavedFilterMock = mockFailedMutation(
+                mockCreateAnalyticsFilterHandler,
+                gorgiasApiError.response.data,
+            )
+            const waitForCreateSavedFilterRequest =
+                createSavedFilterMock.waitForRequest(server)
+            server.use(createSavedFilterMock.handler)
+
             render(<SavedFiltersPanel optionalFilters={[]} />, {
                 storeState: createState,
             })
             userEvent.click(
                 screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
-            expect(mutateMock).toHaveBeenCalled()
+            await waitForCreateSavedFilterRequest()
             const toastEl = await screen.findByRole('status', {
                 name: FILTER_SAVED_ERROR_MESSAGE,
             })
@@ -827,10 +958,14 @@ describe('SavedFiltersPanel', () => {
             expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
         })
         it('should show error message when error response contains name on update of saved filters', async () => {
-            const mutateMock = jest.fn().mockRejectedValue(gorgiasApiError)
-            useUpdateAnalyticsFilterMock.mockReturnValue({
-                mutateAsync: mutateMock,
-            } as any)
+            const updateSavedFilterMock = mockFailedMutation(
+                mockUpdateAnalyticsFilterHandler,
+                gorgiasApiError.response.data,
+            )
+            const waitForUpdateSavedFilterRequest =
+                updateSavedFilterMock.waitForRequest(server)
+            server.use(updateSavedFilterMock.handler)
+
             render(<SavedFiltersPanel optionalFilters={[]} />, {
                 storeState: updateState,
             })
@@ -849,7 +984,7 @@ describe('SavedFiltersPanel', () => {
                     }),
                 )
             })
-            expect(mutateMock).toHaveBeenCalled()
+            await waitForUpdateSavedFilterRequest()
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
             const toastEl = await screen.findByRole('status', {
                 name: FILTER_SAVED_ERROR_MESSAGE,
@@ -858,18 +993,21 @@ describe('SavedFiltersPanel', () => {
             expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
         })
         it('should not show error message when error response contains name', async () => {
-            const mutateMock = jest.fn().mockRejectedValue(notGorgiasApiError)
-            useCreateAnalyticsFilterMock.mockReturnValue({
-                mutateAsync: mutateMock,
-                error: undefined,
-            } as any)
+            const createSavedFilterMock = mockFailedMutation(
+                mockCreateAnalyticsFilterHandler,
+                notGorgiasApiError.response.data,
+            )
+            const waitForCreateSavedFilterRequest =
+                createSavedFilterMock.waitForRequest(server)
+            server.use(createSavedFilterMock.handler)
+
             render(<SavedFiltersPanel optionalFilters={[]} />, {
                 storeState: createState,
             })
             userEvent.click(
                 screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
-            expect(mutateMock).toHaveBeenCalled()
+            await waitForCreateSavedFilterRequest()
             const toastEl = await screen.findByRole('status', {
                 name: FILTER_SAVED_ERROR_MESSAGE,
             })
@@ -995,12 +1133,19 @@ describe('SavedFiltersPanel', () => {
                 },
                 currentUser: defaultState.currentUser,
             } as RootState
-            const mutateMock = jest.fn().mockResolvedValue({
-                data: savedFilterDraft,
-            })
-            useUpdateAnalyticsFilterMock.mockReturnValue({
-                mutateAsync: mutateMock,
-            } as any)
+            let updateRequestCount = 0
+            server.use(
+                mockUpdateAnalyticsFilterHandler(async () => {
+                    updateRequestCount += 1
+
+                    return HttpResponse.json(
+                        mockUpdateAnalyticsFilterResponse(
+                            toAnalyticsFilterResponse(savedFilterDraft),
+                        ),
+                    )
+                }).handler,
+            )
+
             render(<SavedFiltersPanel optionalFilters={[]} />, {
                 storeState: state,
             })
@@ -1022,10 +1167,10 @@ describe('SavedFiltersPanel', () => {
                         getSaveConfirmationTitle(savedFilterName),
                     ),
                 ).not.toBeInTheDocument()
-                expect(mutateMock).not.toHaveBeenCalled()
+                expect(updateRequestCount).toBe(0)
             })
         })
-        it('should close confirmation edit modal on Discard changes', () => {
+        it('should close confirmation edit modal on Discard changes', async () => {
             const savedFilterName = 'Some Name draft'
             const savedFilter: SavedFilter = {
                 id: 123,
@@ -1067,17 +1212,15 @@ describe('SavedFiltersPanel', () => {
                 },
                 currentUser: defaultState.currentUser,
             } as RootState
-            useListAnalyticsFiltersMock.mockReturnValue({
-                data: {
-                    data: {
-                        data: [otherSavedFilter],
-                    },
-                },
-            } as any)
             const { store } = render(
                 <SavedFiltersPanel optionalFilters={[]} />,
-                { storeState: state },
+                {
+                    storeState: state,
+                    queryClientOptions: { queries: { staleTime: Infinity } },
+                    wrapper: createSavedFiltersQueryWrapper([otherSavedFilter]),
+                },
             )
+
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
             userEvent.click(screen.getByText(SAVE_BUTTON_LABEL))
             const confirmationModal = screen.getByRole('dialog')
@@ -1090,11 +1233,13 @@ describe('SavedFiltersPanel', () => {
             userEvent.click(
                 within(confirmationModal).getByText(CANCEL_MODAL_BUTTON_LABEL),
             )
-            expect(store.getActions()).toContainEqual(
-                initialiseSavedFilterDraftFromSavedFilter(
-                    fromApiFormatted(otherSavedFilter as SavedFilterAPI),
-                ),
-            )
+            await waitFor(() => {
+                expect(store.getActions()).toContainEqual(
+                    initialiseSavedFilterDraftFromSavedFilter(
+                        fromApiFormatted(otherSavedFilter as SavedFilterAPI),
+                    ),
+                )
+            })
             expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
         })
         it('should show an error is you try to input a string length greater than 255', async () => {
@@ -1130,11 +1275,7 @@ describe('SavedFiltersPanel', () => {
                 },
                 currentUser: defaultState.currentUser,
             } as RootState
-            useListAnalyticsFiltersMock.mockReturnValue({
-                data: {
-                    data: { data: [savedFilter] },
-                },
-            } as any)
+            server.use(mockSavedFiltersList([savedFilter]).handler)
             render(<SavedFiltersPanel optionalFilters={[]} />, {
                 storeState: state,
             })
@@ -1160,7 +1301,7 @@ describe('SavedFiltersPanel', () => {
                 ).toBeInTheDocument()
             })
         })
-        it('should disable save button if not changes have been made', () => {
+        it('should disable save button if not changes have been made', async () => {
             const savedFilterName = 'Some Name draft'
             const savedFilter: SavedFilter = {
                 id: 123,
@@ -1191,17 +1332,18 @@ describe('SavedFiltersPanel', () => {
                 },
                 currentUser: defaultState.currentUser,
             } as RootState
-            useListAnalyticsFiltersMock.mockReturnValue({
-                data: {
-                    data: {
-                        data: [savedFilter],
-                    },
-                },
-            } as any)
             render(<SavedFiltersPanel optionalFilters={[]} />, {
                 storeState: state,
+                queryClientOptions: { queries: { staleTime: Infinity } },
+                wrapper: createSavedFiltersQueryWrapper([savedFilter]),
             })
+
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
+                ).toHaveAttribute('aria-disabled', 'true')
+            })
             userEvent.click(screen.getByText(SAVE_BUTTON_LABEL))
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
             expect(
@@ -1255,7 +1397,7 @@ describe('SavedFiltersPanel', () => {
             expect(screen.getByText(DEFAULT_BADGE_TEXT)).toBeInTheDocument()
         })
     })
-    it('should invalidate savedFilters queries on mutation success', () => {
+    it('should invalidate savedFilters queries on mutation success', async () => {
         const savedFilterDraft: SavedFilterDraft = {
             name: 'Some Name draft',
             filter_group: [
@@ -1277,11 +1419,11 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        let capturedConfig: any
-        useCreateAnalyticsFilterMock.mockImplementation((config: any) => {
-            capturedConfig = config
-            return { mutateAsync: jest.fn(), error: undefined } as any
-        })
+        const createSavedFilterMock = mockCreateSavedFilter(savedFilterDraft)
+        const listSavedFiltersMock = mockSavedFiltersListWithRequestCount()
+        const waitForCreateSavedFilterRequest =
+            createSavedFilterMock.waitForRequest(server)
+        server.use(listSavedFiltersMock.handler, createSavedFilterMock.handler)
 
         const invalidateQueriesSpy = jest.spyOn(
             QueryClient.prototype,
@@ -1290,11 +1432,16 @@ describe('SavedFiltersPanel', () => {
         render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
+        await listSavedFiltersMock.waitForRequestCount(1)
 
-        capturedConfig.mutation.onSuccess()
+        userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
+        await waitForCreateSavedFilterRequest()
+        await listSavedFiltersMock.waitForRequestCount(2)
 
-        expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-            queryKey: ['savedFilters'],
+        await waitFor(() => {
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: ['savedFilters'],
+            })
         })
         invalidateQueriesSpy.mockRestore()
     })

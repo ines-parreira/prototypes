@@ -7,14 +7,6 @@ jest.mock('@repo/utils', () => ({
     isStaging: jest.fn(),
 }))
 
-jest.mock('@gorgias/convert-client', () => ({
-    JourneyTypeEnum: {
-        CartAbandoned: 'cart_abandoned',
-        SessionAbandoned: 'session_abandoned',
-        Campaign: 'campaign',
-    },
-}))
-
 describe('AIJourney Utils', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -26,25 +18,25 @@ describe('AIJourney Utils', () => {
                 const integrationId = 123
                 const result = aiJourneyKeys.journeys(integrationId)
 
-                expect(result).toEqual(['journeys', 123, undefined])
+                expect(result).toEqual(['journeys', 123])
             })
 
             it('should return correct query key for journeys with undefined integration ID', () => {
                 const result = aiJourneyKeys.journeys(undefined)
 
-                expect(result).toEqual(['journeys', undefined, undefined])
+                expect(result).toEqual(['journeys', undefined])
             })
 
             it('should return correct query key for journeys with zero integration ID', () => {
                 const result = aiJourneyKeys.journeys(0)
 
-                expect(result).toEqual(['journeys', 0, undefined])
+                expect(result).toEqual(['journeys', 0])
             })
 
             it('should return correct query key for journeys with null integration ID', () => {
                 const result = aiJourneyKeys.journeys(null as any)
 
-                expect(result).toEqual(['journeys', null, undefined])
+                expect(result).toEqual(['journeys', null])
             })
 
             it('should return correct query key for journeys with types parameter', () => {

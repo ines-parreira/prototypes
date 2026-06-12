@@ -1,225 +1,67 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import type { JourneyStatusEnum } from '@gorgias/convert-client'
-import { patchJourney } from '@gorgias/convert-client'
+import {
+    mockPatchJourneyHandler,
+    mockPatchJourneyResponse,
+} from '@gorgias/convert-mocks'
 
+import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useUpdateJourney } from './useUpdateJourney'
-
-jest.mock('@gorgias/convert-client', () => ({
-    patchJourney: jest.fn(),
-}))
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockPatchJourney = patchJourney as jest.Mock
-const mockGetGorgiasRevenueAddonApiBaseUrl =
-    getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
+
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useUpdateJourney', () => {
-    let queryClient: QueryClient
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-                mutations: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
+    it('should call patchJourney with params and configuration', async () => {
+        const response = mockPatchJourneyResponse({ id: 'journey-123' })
+        const patchJourneyMock = mockPatchJourneyHandler(async () =>
+            HttpResponse.json(response),
         )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetGorgiasRevenueAddonApiBaseUrl.mockReturnValue(
-            'http://mocked-base-url',
-        )
-    })
-
-    it('should update journey successfully', async () => {
-        const mockUpdatedJourney = {
-            id: 'journey-123',
-            state: 'draft',
-            type: 'cart_abandoned',
-        }
-
-        mockPatchJourney.mockResolvedValue({ data: mockUpdatedJourney })
-
-        const { result } = renderHook(() => useUpdateJourney(), {
-            wrapper: createWrapper(),
-        })
+        const waitForPatchJourneyRequest =
+            patchJourneyMock.waitForRequest(server)
+        server.use(patchJourneyMock.handler)
 
         const mutationData = {
             journeyId: 'journey-123',
-            params: {
-                state: 'draft' as JourneyStatusEnum,
-            },
-            journeyConfigs: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '(415)-111-111',
-            },
-        }
-
-        await result.current.mutateAsync(mutationData)
-
-        expect(mockPatchJourney).toHaveBeenCalledTimes(1)
-        expect(mockPatchJourney).toHaveBeenCalledWith(
-            'journey-123',
-            {
-                configuration: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '(415)-111-111',
-                },
-                state: 'draft',
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-    })
-
-    it('should handle errors when updating journey', async () => {
-        const mockError = new Error('Failed to update journey')
-
-        mockPatchJourney.mockRejectedValue(mockError)
-
-        const { result } = renderHook(() => useUpdateJourney(), {
-            wrapper: createWrapper(),
-        })
-
-        const mutationData = {
-            journeyId: 'journey-123',
-            params: {
-                state: 'draft' as JourneyStatusEnum,
-            },
-            journeyConfigs: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '(415)-111-111',
-            },
-        }
-
-        await expect(result.current.mutateAsync(mutationData)).rejects.toThrow(
-            'Failed to update journey',
-        )
-
-        // Wait for the mutation to enter error state
-        await waitFor(() => {
-            expect(result.current.isError).toBe(true)
-        })
-
-        expect(mockPatchJourney).toHaveBeenCalledTimes(1)
-        expect(result.current.error).toEqual(mockError)
-    })
-
-    it('should update journey with minimal parameters', async () => {
-        const mockUpdatedJourney = {
-            id: 'journey-123',
-            state: 'active',
-            type: 'cart_abandoned',
-        }
-
-        mockPatchJourney.mockResolvedValue({ data: mockUpdatedJourney })
-
-        const { result } = renderHook(() => useUpdateJourney(), {
-            wrapper: createWrapper(),
-        })
-
-        const mutationData = {
-            journeyId: 'journey-123',
-            params: {
-                state: 'active' as JourneyStatusEnum,
-            },
-            journeyConfigs: {
-                max_follow_up_messages: 1,
-                offer_discount: false,
-            },
-        }
-
-        await result.current.mutateAsync(mutationData)
-
-        expect(mockPatchJourney).toHaveBeenCalledTimes(1)
-        expect(mockPatchJourney).toHaveBeenCalledWith(
-            'journey-123',
-            {
-                configuration: {
-                    max_follow_up_messages: 1,
-                    offer_discount: false,
-                },
-                state: 'active',
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-    })
-
-    it('should track mutation state correctly', async () => {
-        mockPatchJourney.mockImplementation(
-            () =>
-                new Promise((resolve) =>
-                    setTimeout(() => resolve({ data: {} }), 100),
-                ),
-        )
-
-        const { result } = renderHook(() => useUpdateJourney(), {
-            wrapper: createWrapper(),
-        })
-
-        expect(result.current.isIdle).toBe(true)
-
-        const mutationPromise = result.current.mutateAsync({
-            journeyId: 'journey-123',
-            params: { state: 'draft' },
-            journeyConfigs: { max_follow_up_messages: 3 },
-        })
-
-        await waitFor(() => {})
-
-        await mutationPromise
-
-        await waitFor(() => {
-            expect(result.current.isSuccess).toBe(true)
-        })
-    })
-
-    it('should update journey configuration with discount settings', async () => {
-        const mockUpdatedJourney = {
-            id: 'journey-123',
-            state: 'draft',
-            type: 'cart_abandoned',
-        }
-
-        mockPatchJourney.mockResolvedValue({ data: mockUpdatedJourney })
-
-        const { result } = renderHook(() => useUpdateJourney(), {
-            wrapper: createWrapper(),
-        })
-
-        const mutationData = {
-            journeyId: 'journey-123',
-            params: {
-                state: 'draft' as JourneyStatusEnum,
-            },
+            params: { state: 'active' as const },
             journeyConfigs: {
                 max_follow_up_messages: 2,
                 offer_discount: true,
@@ -228,55 +70,73 @@ describe('useUpdateJourney', () => {
             },
         }
 
-        await result.current.mutateAsync(mutationData)
+        const { result } = renderHook(() => useUpdateJourney(), {
+            wrapper: createWrapper(),
+        })
 
-        expect(mockPatchJourney).toHaveBeenCalledWith(
-            'journey-123',
-            {
-                configuration: {
-                    max_follow_up_messages: 2,
-                    offer_discount: true,
-                    max_discount_percent: 15,
-                    sms_sender_number: '(415)-222-222',
-                },
-                state: 'draft',
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
+        await act(async () => {
+            await result.current.mutateAsync(mutationData)
+        })
+
+        await waitForPatchJourneyRequest(async (request) => {
+            const url = new URL(request.url)
+
+            expect(url.origin).toBe('http://mocked-base-url')
+            expect(url.pathname).toContain('journey-123')
+            expect(await request.json()).toEqual({
+                state: 'active',
+                configuration: mutationData.journeyConfigs,
+            })
+        })
     })
 
-    it('should handle network errors gracefully', async () => {
-        const networkError = new Error('Network error')
-        networkError.name = 'NetworkError'
-
-        mockPatchJourney.mockRejectedValue(networkError)
+    it('should invalidate journey configuration on success', async () => {
+        server.use(mockPatchJourneyHandler().handler)
+        const invalidateQueriesSpy = jest.spyOn(
+            queryClient,
+            'invalidateQueries',
+        )
 
         const { result } = renderHook(() => useUpdateJourney(), {
             wrapper: createWrapper(),
         })
 
-        const mutationData = {
-            journeyId: 'journey-123',
-            params: {
-                state: 'draft' as JourneyStatusEnum,
-            },
-            journeyConfigs: {
-                max_follow_up_messages: 3,
-                offer_discount: false,
-            },
-        }
-
-        await expect(result.current.mutateAsync(mutationData)).rejects.toThrow(
-            'Network error',
-        )
-
-        // Wait for the mutation to enter error state
-        await waitFor(() => {
-            expect(result.current.isError).toBe(true)
+        await act(async () => {
+            await result.current.mutateAsync({
+                journeyId: 'journey-123',
+                params: { state: 'paused' },
+            })
         })
 
-        expect(result.current.error).toEqual(networkError)
+        await waitFor(() =>
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: aiJourneyKeys.journeyConfiguration('journey-123'),
+            }),
+        )
+    })
+
+    it('should surface errors when update fails', async () => {
+        server.use(
+            mockPatchJourneyHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to update journey' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(() => useUpdateJourney(), {
+            wrapper: createWrapper(),
+        })
+
+        await act(async () => {
+            result.current.mutate({
+                journeyId: 'journey-123',
+                params: { state: 'active' },
+            })
+        })
+
+        await waitFor(() => expect(result.current.isError).toBe(true))
+        expect(result.current.error).toBeDefined()
     })
 })

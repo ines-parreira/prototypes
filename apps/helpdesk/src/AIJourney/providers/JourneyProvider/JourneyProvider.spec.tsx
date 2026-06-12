@@ -20,12 +20,6 @@ jest.mock('react-router-dom', () => ({
 const useParamsMock = jest.mocked(useParams)
 const useLocationMock = jest.mocked(useLocation)
 
-jest.mock('@gorgias/convert-client', () => ({
-    ...jest.requireActual('@gorgias/convert-client'),
-    getAllJourneysPublic: jest.fn(),
-    getJourneyDetails: jest.fn(),
-}))
-
 jest.mock('AIJourney/queries/useJourneyData/useJourneyData', () => ({
     useJourneyData: jest.fn(),
 }))

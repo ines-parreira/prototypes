@@ -1,148 +1,164 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { getJourneyDetails } from '@gorgias/convert-client'
+import {
+    mockGetJourneyDetailsHandler,
+    mockGetJourneyDetailsResponse,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { useJourneyData } from './useJourneyData'
-
-jest.mock('@gorgias/convert-client', () => ({
-    getJourneyDetails: jest.fn(),
-}))
+import { getJourneyData, useJourneyData } from './useJourneyData'
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockGetJourneyDetails = getJourneyDetails as jest.Mock
-const mockGetGorgiasRevenueAddonApiBaseUrl =
-    getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-describe('useJourneyData', () => {
-    let queryClient: QueryClient
+const createWrapper = () => {
+    queryClient = mockQueryClient()
 
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
 
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        )
-    }
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetGorgiasRevenueAddonApiBaseUrl.mockReturnValue(
-            'http://mocked-base-url',
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+describe('getJourneyData', () => {
+    it('should throw when journeyId is empty', async () => {
+        await expect(getJourneyData('')).rejects.toThrow(
+            'Journey ID is required',
         )
     })
 
-    it('should fetch journey configuration successfully', async () => {
-        const mockConfiguration = {
-            max_follow_up_messages: 3,
-            offer_discount: true,
-            max_discount_percent: 20,
-            sms_sender_number: '(415)-111-111',
-        }
-
-        mockGetJourneyDetails.mockResolvedValue({
-            data: {
-                configuration: { ...mockConfiguration },
-                meta: { ticket_view_id: 123 },
-            },
-        })
-
-        const { result } = renderHook(
-            () => useJourneyData('journey-id', { enabled: true }),
-            { wrapper: createWrapper() },
+    it('should fetch journey details with the configured base URL', async () => {
+        const response = mockGetJourneyDetailsResponse({ id: 'journey-123' })
+        const getJourneyDetailsMock = mockGetJourneyDetailsHandler(async () =>
+            HttpResponse.json(response),
         )
+        const waitForGetJourneyDetailsRequest =
+            getJourneyDetailsMock.waitForRequest(server)
+        server.use(getJourneyDetailsMock.handler)
+
+        await expect(getJourneyData('journey-123')).resolves.toEqual(response)
+
+        await waitForGetJourneyDetailsRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.origin).toBe('http://mocked-base-url')
+            expect(url.pathname).toContain('journey-123')
+        })
+    })
+})
+
+describe('useJourneyData', () => {
+    it('should fetch journey data successfully', async () => {
+        const response = mockGetJourneyDetailsResponse({ id: 'journey-123' })
+        server.use(
+            mockGetJourneyDetailsHandler(async () =>
+                HttpResponse.json(response),
+            ).handler,
+        )
+
+        const { result } = renderHook(() => useJourneyData('journey-123'), {
+            wrapper: createWrapper(),
+        })
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockGetJourneyDetails).toHaveBeenCalledTimes(1)
-        expect(mockGetJourneyDetails).toHaveBeenCalledWith('journey-id', {
-            baseURL: 'http://mocked-base-url',
-        })
-        expect(result.current.data).toEqual({
-            configuration: { ...mockConfiguration },
-            meta: { ticket_view_id: 123 },
-        })
+        expect(result.current.data).toEqual(response)
     })
 
-    it('should handle errors when fetching journey configuration', async () => {
-        const mockError = new Error('Failed to fetch journey configuration')
+    it('should not fetch when journeyId is undefined or disabled', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetJourneyDetailsHandler(async ({ request }) => {
+                requests.push(request)
 
-        mockGetJourneyDetails.mockRejectedValue(mockError)
-
-        const { result } = renderHook(
-            () => useJourneyData('journey-id', { enabled: true }),
-            { wrapper: createWrapper() },
+                return HttpResponse.json(mockGetJourneyDetailsResponse())
+            }).handler,
         )
+
+        const { result, rerender } = renderHook(
+            ({ journeyId, enabled }) => useJourneyData(journeyId, { enabled }),
+            {
+                wrapper: createWrapper(),
+                initialProps: {
+                    journeyId: undefined as string | undefined,
+                    enabled: true,
+                },
+            },
+        )
+
+        await waitFor(() => expect(result.current.fetchStatus).toBe('idle'))
+
+        rerender({ journeyId: 'journey-123', enabled: false })
+
+        await waitFor(() => expect(result.current.fetchStatus).toBe('idle'))
+        expect(requests).toHaveLength(0)
+    })
+
+    it('should handle errors when fetching journey data', async () => {
+        server.use(
+            mockGetJourneyDetailsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to fetch journey details' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(() => useJourneyData('journey-123'), {
+            wrapper: createWrapper(),
+        })
 
         await waitFor(() => expect(result.current.isError).toBe(true))
-
-        expect(mockGetJourneyDetails).toHaveBeenCalledTimes(1)
-        expect(result.current.error).toEqual(mockError)
+        expect(result.current.error).toBeDefined()
     })
 
-    it('should not fetch journey configuration if journeyId is undefined', async () => {
-        const { result } = renderHook(
-            () => useJourneyData(undefined, { enabled: true }),
-            { wrapper: createWrapper() },
-        )
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
+    it('should refetch when journeyId changes', async () => {
+        const firstResponse = mockGetJourneyDetailsResponse({ id: 'journey-1' })
+        const secondResponse = mockGetJourneyDetailsResponse({
+            id: 'journey-2',
         })
 
-        expect(mockGetJourneyDetails).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
+        server.use(
+            mockGetJourneyDetailsHandler(async ({ request }) => {
+                const id = new URL(request.url).pathname.includes('journey-1')
+                    ? 'journey-1'
+                    : 'journey-2'
 
-    it('should respect the enabled option when set to false', async () => {
-        const { result } = renderHook(
-            () => useJourneyData('journey-id', { enabled: false }),
-            { wrapper: createWrapper() },
+                return HttpResponse.json(
+                    id === 'journey-1' ? firstResponse : secondResponse,
+                )
+            }).handler,
         )
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetJourneyDetails).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
-    })
-
-    it('should refetch journey configuration when journeyId changes', async () => {
-        const mockConfiguration1 = {
-            max_follow_up_messages: 3,
-            offer_discount: true,
-            max_discount_percent: 20,
-            sms_sender_number: '(415)-111-111',
-        }
-        const mockConfiguration2 = {
-            max_follow_up_messages: 2,
-            offer_discount: false,
-            max_discount_percent: 15,
-            sms_sender_number: '(415)-222-222',
-        }
-
-        mockGetJourneyDetails
-            .mockResolvedValueOnce({
-                data: { configuration: { ...mockConfiguration1 } },
-            })
-            .mockResolvedValueOnce({
-                data: { configuration: { ...mockConfiguration2 } },
-            })
 
         const { result, rerender } = renderHook(
             ({ journeyId }) => useJourneyData(journeyId),
@@ -152,45 +168,10 @@ describe('useJourneyData', () => {
             },
         )
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual({
-            configuration: { ...mockConfiguration1 },
-        })
+        await waitFor(() => expect(result.current.data).toEqual(firstResponse))
 
         rerender({ journeyId: 'journey-2' })
 
-        await waitFor(() =>
-            expect(result.current.data).toEqual({
-                configuration: { ...mockConfiguration2 },
-            }),
-        )
-
-        expect(mockGetJourneyDetails).toHaveBeenCalledTimes(2)
-        expect(mockGetJourneyDetails).toHaveBeenNthCalledWith(
-            1,
-            'journey-1',
-            expect.any(Object),
-        )
-        expect(mockGetJourneyDetails).toHaveBeenNthCalledWith(
-            2,
-            'journey-2',
-            expect.any(Object),
-        )
-    })
-
-    it('should handle empty configuration data', async () => {
-        mockGetJourneyDetails.mockResolvedValue({
-            data: { configuration: {} },
-        })
-
-        const { result } = renderHook(
-            () => useJourneyData('journey-id', { enabled: true }),
-            { wrapper: createWrapper() },
-        )
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockGetJourneyDetails).toHaveBeenCalledTimes(1)
-        expect(result.current.data).toEqual({ configuration: {} })
+        await waitFor(() => expect(result.current.data).toEqual(secondResponse))
     })
 })

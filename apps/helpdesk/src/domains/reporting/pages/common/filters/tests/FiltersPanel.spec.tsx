@@ -4,9 +4,14 @@ import { assumeMock, render, userEvent } from '@repo/testing'
 import { within } from '@testing-library/dom'
 import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import {
+    mockListSlaPoliciesHandler,
+    mockListSlaPoliciesResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { Tag } from '@gorgias/helpdesk-queries'
-import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useTagSearch } from 'domains/reporting/hooks/common/useTagSearch'
@@ -77,8 +82,6 @@ const mockedLocales = [
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: () => mockedLocales,
 }))
-jest.mock('@gorgias/helpdesk-queries')
-const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 jest.mock('domains/reporting/hooks/common/useTagSearch')
@@ -96,6 +99,27 @@ jest.mock(
             ),
         }) as Record<string, unknown>,
 )
+const server = setupServer()
+const emptySlaPoliciesHandler = mockListSlaPoliciesHandler(async () =>
+    HttpResponse.json(mockListSlaPoliciesResponse({ data: [] })),
+)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(emptySlaPoliciesHandler.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const defaultState = {
     [statsSlice.name]: {
         ...initialState,
@@ -148,11 +172,6 @@ describe('FiltersPanel without data', () => {
         useCustomFieldDefinitionsMock.mockReturnValue(
             apiListCursorPaginationResponse([]) as any,
         )
-        useListSlaPoliciesMock.mockReturnValue({
-            data: { data: { data: [] } },
-            isError: false,
-            isLoading: false,
-        } as any)
         useAiAgentAccessMock.mockReturnValue({
             hasAccess: true,
             isLoading: false,

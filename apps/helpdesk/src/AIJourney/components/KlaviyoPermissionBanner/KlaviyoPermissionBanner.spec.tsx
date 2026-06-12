@@ -1,20 +1,20 @@
 import { render } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
-    getAudiencesLists,
-    getAudiencesSegments,
-} from '@gorgias/convert-client'
+    mockGetAudiencesListsHandler,
+    mockGetAudiencesListsResponse,
+    mockGetAudiencesSegmentsHandler,
+    mockGetAudiencesSegmentsResponse,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { KlaviyoPermissionBanner } from './KlaviyoPermissionBanner'
-
-jest.mock('@gorgias/convert-client', () => ({
-    ...jest.requireActual('@gorgias/convert-client'),
-    getAudiencesLists: jest.fn(),
-    getAudiencesSegments: jest.fn(),
-}))
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
@@ -26,53 +26,101 @@ jest.mock('react-router-dom', () => ({
     useHistory: () => ({ push: mockHistoryPush }),
 }))
 
-const mockGetAudiencesLists = getAudiencesLists as jest.Mock
-const mockGetAudiencesSegments = getAudiencesSegments as jest.Mock
-const mockGetGorgiasRevenueAddonApiBaseUrl =
-    getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-const okResponse = (audiences: { id: string; name: string }[] = []) => ({
-    data: { data: audiences, links: null, permission_error: null },
-})
-
-const permissionErrorResponse = (scope: string | null) => ({
-    data: {
+const okListsResponse = () =>
+    mockGetAudiencesListsResponse({
         data: [],
         links: null,
-        permission_error: {
-            scope,
-            message: scope
-                ? `Your API key is missing required scopes: ${scope}`
-                : 'Your API key is missing required scopes',
-        },
+        permission_error: null,
+    })
+
+const okSegmentsResponse = () =>
+    mockGetAudiencesSegmentsResponse({
+        data: [],
+        links: null,
+        permission_error: null,
+    })
+
+const permissionErrorResponse = (scope: string | null) => ({
+    data: [],
+    links: null,
+    permission_error: {
+        scope,
+        message: scope
+            ? `Your API key is missing required scopes: ${scope}`
+            : 'Your API key is missing required scopes',
     },
 })
 
-describe('<KlaviyoPermissionBanner />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetGorgiasRevenueAddonApiBaseUrl.mockReturnValue(
-            'http://mocked-base-url',
-        )
-    })
+const renderComponent = (integrationId: number | undefined = 123) => {
+    queryClient = mockQueryClient()
 
-    it('does not render when both queries succeed without permission errors', async () => {
-        mockGetAudiencesLists.mockResolvedValue(okResponse())
-        mockGetAudiencesSegments.mockResolvedValue(okResponse())
-
-        render(
+    return render(
+        <QueryClientProvider client={queryClient}>
             <KlaviyoPermissionBanner
-                integrationId={123}
+                integrationId={integrationId}
                 settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
-        )
+            />
+        </QueryClientProvider>,
+    )
+}
 
-        await waitFor(() =>
-            expect(mockGetAudiencesLists).toHaveBeenCalledTimes(1),
-        )
-        await waitFor(() =>
-            expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(1),
-        )
+const useAudienceHandlers = ({
+    lists = okListsResponse(),
+    segments = okSegmentsResponse(),
+}: {
+    lists?: ReturnType<typeof okListsResponse>
+    segments?: ReturnType<typeof okSegmentsResponse>
+} = {}) => {
+    const getAudiencesListsMock = mockGetAudiencesListsHandler(async () =>
+        HttpResponse.json(lists),
+    )
+    const getAudiencesSegmentsMock = mockGetAudiencesSegmentsHandler(async () =>
+        HttpResponse.json(segments),
+    )
+
+    server.use(getAudiencesListsMock.handler, getAudiencesSegmentsMock.handler)
+
+    return {
+        waitForGetAudiencesListsRequest:
+            getAudiencesListsMock.waitForRequest(server),
+        waitForGetAudiencesSegmentsRequest:
+            getAudiencesSegmentsMock.waitForRequest(server),
+    }
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+describe('<KlaviyoPermissionBanner />', () => {
+    it('does not render when both queries succeed without permission errors', async () => {
+        const {
+            waitForGetAudiencesListsRequest,
+            waitForGetAudiencesSegmentsRequest,
+        } = useAudienceHandlers()
+
+        renderComponent()
+
+        await waitForGetAudiencesListsRequest()
+        await waitForGetAudiencesSegmentsRequest()
 
         expect(screen.queryByRole('alert')).not.toBeInTheDocument()
         expect(
@@ -80,31 +128,33 @@ describe('<KlaviyoPermissionBanner />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('does not render when integrationId is undefined (queries are idle)', async () => {
-        render(
-            <KlaviyoPermissionBanner
-                integrationId={undefined}
-                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
+    it('does not render when integrationId is undefined because queries are idle', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetAudiencesListsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(okListsResponse())
+            }).handler,
+            mockGetAudiencesSegmentsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(okSegmentsResponse())
+            }).handler,
         )
 
-        expect(mockGetAudiencesLists).not.toHaveBeenCalled()
-        expect(mockGetAudiencesSegments).not.toHaveBeenCalled()
+        renderComponent(undefined)
+
+        expect(requests).toHaveLength(0)
         expect(screen.queryByRole('alert')).not.toBeInTheDocument()
     })
 
     it('renders the lists-only banner when only the lists scope is missing', async () => {
-        mockGetAudiencesLists.mockResolvedValue(
-            permissionErrorResponse('lists:read'),
-        )
-        mockGetAudiencesSegments.mockResolvedValue(okResponse())
+        useAudienceHandlers({
+            lists: permissionErrorResponse('lists:read'),
+        })
 
-        render(
-            <KlaviyoPermissionBanner
-                integrationId={123}
-                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
-        )
+        renderComponent()
 
         expect(
             await screen.findByText('Klaviyo lists are unavailable'),
@@ -117,17 +167,11 @@ describe('<KlaviyoPermissionBanner />', () => {
     })
 
     it('renders the segments-only banner when only the segments scope is missing', async () => {
-        mockGetAudiencesLists.mockResolvedValue(okResponse())
-        mockGetAudiencesSegments.mockResolvedValue(
-            permissionErrorResponse('segments:read'),
-        )
+        useAudienceHandlers({
+            segments: permissionErrorResponse('segments:read'),
+        })
 
-        render(
-            <KlaviyoPermissionBanner
-                integrationId={123}
-                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
-        )
+        renderComponent()
 
         expect(
             await screen.findByText('Klaviyo segments are unavailable'),
@@ -140,19 +184,12 @@ describe('<KlaviyoPermissionBanner />', () => {
     })
 
     it('renders the combined banner when both scopes are missing', async () => {
-        mockGetAudiencesLists.mockResolvedValue(
-            permissionErrorResponse('lists:read'),
-        )
-        mockGetAudiencesSegments.mockResolvedValue(
-            permissionErrorResponse('segments:read'),
-        )
+        useAudienceHandlers({
+            lists: permissionErrorResponse('lists:read'),
+            segments: permissionErrorResponse('segments:read'),
+        })
 
-        render(
-            <KlaviyoPermissionBanner
-                integrationId={123}
-                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
-        )
+        renderComponent()
 
         expect(
             await screen.findByText('Klaviyo audiences are unavailable'),
@@ -165,15 +202,11 @@ describe('<KlaviyoPermissionBanner />', () => {
     })
 
     it('falls back to a generic scope phrasing when the API does not return a scope name', async () => {
-        mockGetAudiencesLists.mockResolvedValue(permissionErrorResponse(null))
-        mockGetAudiencesSegments.mockResolvedValue(okResponse())
+        useAudienceHandlers({
+            lists: permissionErrorResponse(null),
+        })
 
-        render(
-            <KlaviyoPermissionBanner
-                integrationId={123}
-                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
-        )
+        renderComponent()
 
         expect(
             await screen.findByText('Klaviyo lists are unavailable'),
@@ -186,17 +219,11 @@ describe('<KlaviyoPermissionBanner />', () => {
     })
 
     it('navigates to the Klaviyo settings list page when the CTA is clicked', async () => {
-        mockGetAudiencesLists.mockResolvedValue(
-            permissionErrorResponse('lists:read'),
-        )
-        mockGetAudiencesSegments.mockResolvedValue(okResponse())
+        useAudienceHandlers({
+            lists: permissionErrorResponse('lists:read'),
+        })
 
-        const { user } = render(
-            <KlaviyoPermissionBanner
-                integrationId={123}
-                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
-            />,
-        )
+        const { user } = renderComponent()
 
         const cta = await screen.findByRole('link', {
             name: /open klaviyo settings/i,

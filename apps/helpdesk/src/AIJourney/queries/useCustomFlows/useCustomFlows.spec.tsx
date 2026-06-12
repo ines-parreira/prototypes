@@ -1,59 +1,75 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { getAllJourneysPublic } from '@gorgias/convert-client'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+import {
+    mockGetAllJourneysPublicHandler,
+    mockJourneyApiDTO,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { flowsListKeys, useFlowsList } from './useCustomFlows'
-
-jest.mock('@gorgias/convert-client', () => ({
-    ...jest.requireActual('@gorgias/convert-client'),
-    getAllJourneysPublic: jest.fn(),
-}))
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockGetAllJourneysPublic = getAllJourneysPublic as jest.Mock
 const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
+
+const createWrapper = () => {
+    queryClient = mockQueryClient()
+
+    return ({ children }: { children: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+const cartJourney = mockJourneyApiDTO({
+    id: 'j1',
+    type: JourneyTypeEnum.CartAbandoned,
+})
+const sessionJourney = mockJourneyApiDTO({
+    id: 'j2',
+    type: JourneyTypeEnum.SessionAbandoned,
+})
+const customJourney = mockJourneyApiDTO({
+    id: 'c1',
+    type: JourneyTypeEnum.Custom,
+    name: 'My Flow',
+})
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useCustomFlows', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
-    })
-
-    let queryClient: QueryClient
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        )
-    }
-
     describe('flowsListKeys', () => {
-        it('should return base key for all', () => {
+        it('should return base and list keys', () => {
             expect(flowsListKeys.all()).toEqual(['flowsList'])
-        })
-
-        it('should return list key with integrationId', () => {
             expect(flowsListKeys.list(42)).toEqual(['flowsList', 42])
-        })
-
-        it('should return list key with undefined integrationId', () => {
             expect(flowsListKeys.list(undefined)).toEqual([
                 'flowsList',
                 undefined,
@@ -63,13 +79,40 @@ describe('useCustomFlows', () => {
 
     describe('useFlowsList', () => {
         it('should partition flat array response by type', async () => {
-            const journeys = [
-                { id: 'j1', type: 'cart_abandoned' },
-                { id: 'j2', type: 'session_abandoned' },
-                { id: 'c1', type: 'custom', name: 'My Flow' },
-            ]
+            const getJourneysMock = mockGetAllJourneysPublicHandler(async () =>
+                HttpResponse.json([cartJourney, sessionJourney, customJourney]),
+            )
+            const waitForGetJourneysRequest =
+                getJourneysMock.waitForRequest(server)
+            server.use(getJourneysMock.handler)
 
-            mockGetAllJourneysPublic.mockResolvedValue({ data: journeys })
+            const { result } = renderHook(() => useFlowsList(123), {
+                wrapper: createWrapper(),
+            })
+
+            await waitForGetJourneysRequest((request) => {
+                const url = new URL(request.url)
+
+                expect(url.origin).toBe('http://mocked-base-url')
+                expect(url.searchParams.get('integration_id')).toBe('123')
+            })
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toEqual({
+                built_in: [cartJourney, sessionJourney],
+                custom: [customJourney],
+            })
+        })
+
+        it('should partition the new built_in/custom response shape', async () => {
+            server.use(
+                mockGetAllJourneysPublicHandler(async () =>
+                    HttpResponse.json({
+                        built_in: [cartJourney],
+                        custom: { items: [customJourney] },
+                    } as never),
+                ).handler,
+            )
 
             const { result } = renderHook(() => useFlowsList(123), {
                 wrapper: createWrapper(),
@@ -78,20 +121,17 @@ describe('useCustomFlows', () => {
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
             expect(result.current.data).toEqual({
-                built_in: [
-                    { id: 'j1', type: 'cart_abandoned' },
-                    { id: 'j2', type: 'session_abandoned' },
-                ],
-                custom: [{ id: 'c1', type: 'custom', name: 'My Flow' }],
+                built_in: [cartJourney],
+                custom: [customJourney],
             })
-            expect(mockGetAllJourneysPublic).toHaveBeenCalledWith(
-                { integration_id: 123 },
-                { baseURL: 'http://mocked-base-url' },
-            )
         })
 
         it('should return empty arrays when response data is null', async () => {
-            mockGetAllJourneysPublic.mockResolvedValue({ data: null })
+            server.use(
+                mockGetAllJourneysPublicHandler(async () =>
+                    HttpResponse.json(null),
+                ).handler,
+            )
 
             const { result } = renderHook(() => useFlowsList(123), {
                 wrapper: createWrapper(),
@@ -99,35 +139,56 @@ describe('useCustomFlows', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-            expect(result.current.data).toEqual({
-                built_in: [],
-                custom: [],
-            })
+            expect(result.current.data).toEqual({ built_in: [], custom: [] })
         })
 
-        it('should not fetch when integrationId is undefined', async () => {
-            const { result } = renderHook(() => useFlowsList(undefined), {
+        it('should be idle when integrationId is undefined or disabled', async () => {
+            const requests: Request[] = []
+            server.use(
+                mockGetAllJourneysPublicHandler(async ({ request }) => {
+                    requests.push(request)
+
+                    return HttpResponse.json([])
+                }).handler,
+            )
+
+            const { result, rerender } = renderHook(
+                ({ integrationId, enabled }) =>
+                    useFlowsList(integrationId, { enabled }),
+                {
+                    wrapper: createWrapper(),
+                    initialProps: {
+                        integrationId: undefined as number | undefined,
+                        enabled: true,
+                    },
+                },
+            )
+
+            await waitFor(() => expect(result.current.fetchStatus).toBe('idle'))
+
+            rerender({ integrationId: 123, enabled: false })
+
+            await waitFor(() => expect(result.current.fetchStatus).toBe('idle'))
+            expect(requests).toHaveLength(0)
+        })
+
+        it('should handle errors from the client', async () => {
+            server.use(
+                mockGetAllJourneysPublicHandler(async () =>
+                    HttpResponse.json(
+                        { error: 'Failed to fetch flows' } as never,
+                        { status: 500 },
+                    ),
+                ).handler,
+            )
+
+            const { result } = renderHook(() => useFlowsList(123), {
                 wrapper: createWrapper(),
             })
 
-            await waitFor(() => {
-                expect(result.current.fetchStatus).toBe('idle')
-            })
+            await waitFor(() => expect(result.current.isError).toBe(true))
 
-            expect(mockGetAllJourneysPublic).not.toHaveBeenCalled()
-        })
-
-        it('should not fetch when enabled option is false', async () => {
-            const { result } = renderHook(
-                () => useFlowsList(123, { enabled: false }),
-                { wrapper: createWrapper() },
-            )
-
-            await waitFor(() => {
-                expect(result.current.fetchStatus).toBe('idle')
-            })
-
-            expect(mockGetAllJourneysPublic).not.toHaveBeenCalled()
+            expect(result.current.error).toBeDefined()
         })
     })
 })

@@ -1,29 +1,31 @@
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    useListMetafieldDefinitions,
-    useListShopifyOrderMetafields,
-} from '@gorgias/helpdesk-queries'
+    mockListMetafieldDefinitionsHandler,
+    mockListMetafieldDefinitionsResponse,
+    mockListShopifyOrderMetafieldsHandler,
+    mockListShopifyOrderMetafieldsResponse,
+    mockMetafieldDefinition,
+} from '@gorgias/helpdesk-mocks'
 import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { OrderMetafields, WrappedOrderMetafields } from '../OrderMetafields'
 
-jest.mock('@gorgias/helpdesk-queries')
-
-const mockUseListShopifyOrderMetafields =
-    useListShopifyOrderMetafields as jest.Mock
-const mockUseListMetafieldDefinitions = useListMetafieldDefinitions as jest.Mock
-
+const server = setupServer()
 const mockStore = configureMockStore([thunk])()
+let queryClient = mockQueryClient()
 
 const integrationContext: IntegrationContextType = {
     integration: Map<string, unknown>(
@@ -34,9 +36,39 @@ const integrationContext: IntegrationContextType = {
     integrationId: 1,
 }
 
-let queryClient: QueryClient
+const textMetafield = {
+    type: 'single_line_text_field',
+    namespace: 'test_namespace',
+    key: 'test_key',
+    value: 'test_value',
+} as ShopifyMetafield
+
+const definition = {
+    id: 'definition-id',
+    namespace: 'test_namespace',
+    key: 'source_key',
+    name: 'Source Key',
+    ownerType: 'ORDER',
+    type: 'single_line_text_field',
+}
+
+const useDefinitionsHandler = (definitions: (typeof definition)[] = []) => {
+    server.use(
+        mockListMetafieldDefinitionsHandler(async () =>
+            HttpResponse.json(
+                mockListMetafieldDefinitionsResponse({
+                    data: definitions.map((item) =>
+                        mockMetafieldDefinition(item as never),
+                    ),
+                }),
+            ),
+        ).handler,
+    )
+}
 
 const renderWithProviders = (ui: React.ReactElement) => {
+    queryClient = mockQueryClient()
+
     return render(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore}>
@@ -48,113 +80,94 @@ const renderWithProviders = (ui: React.ReactElement) => {
     )
 }
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    useDefinitionsHandler()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('<OrderMetafields/>', () => {
-    beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-            logger: {
-                log: jest.fn(),
-                warn: console.warn,
-                error: () => {},
-            },
-        })
-        mockUseListMetafieldDefinitions.mockReturnValue({
-            data: { data: { data: [] } },
-        })
-    })
-
-    afterEach(() => {
-        queryClient.clear()
-    })
-
     it('should return loading state', () => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            isLoading: true,
-            data: null,
-        })
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(
+                () => new Promise(() => undefined),
+            ).handler,
+        )
 
         const { container } = renderWithProviders(
             <OrderMetafields integrationId={1} orderId={1} />,
         )
 
-        const elementsByClassName = container.getElementsByClassName('loader')
-
-        expect(elementsByClassName[0]).toBeInTheDocument()
-        expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
-    })
-
-    it('should return error state', () => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            isError: true,
-            data: null,
-        })
-
-        renderWithProviders(<OrderMetafields integrationId={1} orderId={1} />)
-
-        expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Temporarily unavailable, try again later.'),
+            container.getElementsByClassName('loader')[0],
         ).toBeInTheDocument()
     })
 
-    it('should return empty state', () => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            data: {
-                data: {
-                    data: [],
-                },
-            },
-        })
+    it('should return error state', async () => {
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Temporarily unavailable' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         renderWithProviders(<OrderMetafields integrationId={1} orderId={1} />)
 
-        expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Order has no metafields populated.'),
+            await screen.findByText(
+                'Temporarily unavailable, try again later.',
+            ),
         ).toBeInTheDocument()
     })
 
-    it('should return metafields', () => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            type: 'single_line_text_field',
-                            namespace: 'test_namespace',
-                            key: 'test_key',
-                            value: 'test_value',
-                        },
-                    ],
-                },
-            },
-        })
+    it('should return empty state', async () => {
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListShopifyOrderMetafieldsResponse({ data: [] }),
+                ),
+            ).handler,
+        )
 
         renderWithProviders(<OrderMetafields integrationId={1} orderId={1} />)
 
-        expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
-        expect(screen.getByText('Test Key:')).toBeInTheDocument()
+        expect(
+            await screen.findByText('Order has no metafields populated.'),
+        ).toBeInTheDocument()
+    })
+
+    it('should return metafields', async () => {
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListShopifyOrderMetafieldsResponse({
+                        data: [textMetafield],
+                    }),
+                ),
+            ).handler,
+        )
+
+        renderWithProviders(<OrderMetafields integrationId={1} orderId={1} />)
+
+        expect(await screen.findByText('Test Key:')).toBeInTheDocument()
         expect(screen.getByText('test_value')).toBeInTheDocument()
     })
 
-    it('should render source metafields when useSourceMetafields is true', () => {
-        mockUseListMetafieldDefinitions.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            namespace: 'test_namespace',
-                            key: 'source_key',
-                            name: 'Source Key',
-                        },
-                    ],
-                },
-            },
-        })
+    it('should render source metafields when useSourceMetafields is true', async () => {
+        useDefinitionsHandler([definition])
         const sourceMetafields = [
             {
                 type: 'single_line_text_field',
@@ -173,28 +186,26 @@ describe('<OrderMetafields/>', () => {
             />,
         )
 
-        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        expect(await screen.findByText('Source Key:')).toBeInTheDocument()
         expect(screen.getByText('source_value')).toBeInTheDocument()
     })
 
-    it('should return empty state when API returns undefined data', () => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            data: {
-                data: {},
-            },
-        })
+    it('should return empty state when API returns undefined data', async () => {
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(async () =>
+                HttpResponse.json({} as never),
+            ).handler,
+        )
 
         renderWithProviders(<OrderMetafields integrationId={1} orderId={1} />)
 
         expect(
-            screen.getByText('Order has no metafields populated.'),
+            await screen.findByText('Order has no metafields populated.'),
         ).toBeInTheDocument()
     })
 
-    it('should return empty state when useSourceMetafields is true but metafields is empty', () => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            data: null,
-        })
+    it('should return empty state when useSourceMetafields is true but metafields is empty', async () => {
+        useDefinitionsHandler([definition])
 
         renderWithProviders(
             <OrderMetafields
@@ -206,34 +217,14 @@ describe('<OrderMetafields/>', () => {
         )
 
         expect(
-            screen.getByText('Order has no metafields populated.'),
+            await screen.findByText('Order has no metafields populated.'),
         ).toBeInTheDocument()
     })
 })
 
 describe('<WrappedOrderMetafields/>', () => {
-    beforeEach(() => {
-        mockUseListShopifyOrderMetafields.mockReturnValue({
-            data: null,
-            isLoading: false,
-            isError: false,
-        })
-    })
-
-    it('should render expanded by default when useSourceMetafields is true', () => {
-        mockUseListMetafieldDefinitions.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            namespace: 'test_namespace',
-                            key: 'source_key',
-                            name: 'Source Key',
-                        },
-                    ],
-                },
-            },
-        })
+    it('should render expanded by default when useSourceMetafields is true', async () => {
+        useDefinitionsHandler([definition])
         const sourceMetafields = [
             {
                 type: 'single_line_text_field',
@@ -253,11 +244,19 @@ describe('<WrappedOrderMetafields/>', () => {
         )
 
         expect(screen.getByTitle('Fold this card')).toBeInTheDocument()
-        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        expect(await screen.findByText('Source Key:')).toBeInTheDocument()
         expect(screen.getByText('source_value')).toBeInTheDocument()
     })
 
     it('should render collapsed by default when useSourceMetafields is false', () => {
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListShopifyOrderMetafieldsResponse({ data: [] }),
+                ),
+            ).handler,
+        )
+
         renderWithProviders(
             <WrappedOrderMetafields
                 integrationId={1}
@@ -273,6 +272,14 @@ describe('<WrappedOrderMetafields/>', () => {
     })
 
     it('should render collapsed by default when useSourceMetafields is undefined', () => {
+        server.use(
+            mockListShopifyOrderMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListShopifyOrderMetafieldsResponse({ data: [] }),
+                ),
+            ).handler,
+        )
+
         renderWithProviders(
             <WrappedOrderMetafields integrationId={1} orderId={1} />,
         )

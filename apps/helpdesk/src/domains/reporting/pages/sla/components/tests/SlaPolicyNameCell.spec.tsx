@@ -1,8 +1,13 @@
 import { NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
+import {
+    mockListSlaPoliciesHandler,
+    mockListSlaPoliciesResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     TicketSLADimension,
@@ -10,8 +15,7 @@ import {
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { SlaPolicyNameCell } from 'domains/reporting/pages/sla/components/SlaPolicyNameCell'
 
-jest.mock('@gorgias/helpdesk-queries')
-const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
+const server = setupServer()
 
 const basePolicy = {
     archived_datetime: null,
@@ -28,6 +32,11 @@ const basePolicy = {
 const policyA = { ...basePolicy, uuid: 'uuid-a', name: 'Policy Alpha' }
 const policyB = { ...basePolicy, uuid: 'uuid-b', name: 'Policy Beta' }
 
+const mockSlaPolicies = (policies: Array<typeof policyA>) =>
+    mockListSlaPoliciesHandler(async () =>
+        HttpResponse.json(mockListSlaPoliciesResponse({ data: policies })),
+    ).handler
+
 const makeSlaItem = (uuid: string) => ({
     [TicketSLADimension.SlaPolicyUuid]: uuid,
     [TicketSLADimension.SlaPolicyMetricName]: 'First Response Time',
@@ -36,20 +45,30 @@ const makeSlaItem = (uuid: string) => ({
     [TicketSLADimension.SlaStatus]: TicketSLAStatus.Satisfied,
 })
 
-describe('SlaPolicyNameCell', () => {
-    beforeEach(() => {
-        useListSlaPoliciesMock.mockReturnValue({
-            data: { data: { data: [policyA, policyB] } },
-        } as any)
-    })
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-    it('renders the policy name when the UUID matches a known policy', () => {
+beforeEach(() => {
+    server.use(mockSlaPolicies([policyA, policyB]))
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+describe('SlaPolicyNameCell', () => {
+    it('renders the policy name when the UUID matches a known policy', async () => {
         render(<SlaPolicyNameCell item={{ sla1: makeSlaItem('uuid-a') }} />)
 
-        expect(screen.getByText('Policy Alpha')).toBeInTheDocument()
+        expect(await screen.findByText('Policy Alpha')).toBeInTheDocument()
     })
 
-    it('renders multiple policy names comma-separated when items have different UUIDs', () => {
+    it('renders multiple policy names comma-separated when items have different UUIDs', async () => {
         render(
             <SlaPolicyNameCell
                 item={{
@@ -60,11 +79,11 @@ describe('SlaPolicyNameCell', () => {
         )
 
         expect(
-            screen.getByText('Policy Alpha, Policy Beta'),
+            await screen.findByText('Policy Alpha, Policy Beta'),
         ).toBeInTheDocument()
     })
 
-    it('deduplicates UUIDs and shows each policy name only once', () => {
+    it('deduplicates UUIDs and shows each policy name only once', async () => {
         render(
             <SlaPolicyNameCell
                 item={{
@@ -74,29 +93,31 @@ describe('SlaPolicyNameCell', () => {
             />,
         )
 
-        expect(screen.getByText('Policy Alpha')).toBeInTheDocument()
+        expect(await screen.findByText('Policy Alpha')).toBeInTheDocument()
         expect(screen.queryAllByText('Policy Alpha').length).toBe(1)
     })
 
-    it('renders N/A placeholder when no policies are returned', () => {
-        useListSlaPoliciesMock.mockReturnValue({
-            data: { data: { data: [] } },
-        } as any)
+    it('renders N/A placeholder when no policies are returned', async () => {
+        server.use(mockSlaPolicies([]))
 
         render(<SlaPolicyNameCell item={{ sla1: makeSlaItem('uuid-a') }} />)
 
-        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
+        expect(
+            await screen.findByText(NOT_AVAILABLE_PLACEHOLDER),
+        ).toBeInTheDocument()
     })
 
-    it('renders N/A placeholder when no UUID matches a known policy', () => {
+    it('renders N/A placeholder when no UUID matches a known policy', async () => {
         render(
             <SlaPolicyNameCell item={{ sla1: makeSlaItem('uuid-unknown') }} />,
         )
 
-        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
+        expect(
+            await screen.findByText(NOT_AVAILABLE_PLACEHOLDER),
+        ).toBeInTheDocument()
     })
 
-    it('renders only matched names when some UUIDs have no matching policy', () => {
+    it('renders only matched names when some UUIDs have no matching policy', async () => {
         render(
             <SlaPolicyNameCell
                 item={{
@@ -106,14 +127,20 @@ describe('SlaPolicyNameCell', () => {
             />,
         )
 
-        expect(screen.getByText('Policy Alpha')).toBeInTheDocument()
+        expect(await screen.findByText('Policy Alpha')).toBeInTheDocument()
         expect(screen.queryByText('uuid-unknown')).not.toBeInTheDocument()
     })
 
     it('renders N/A placeholder when policies data is unavailable', () => {
-        useListSlaPoliciesMock.mockReturnValue({
-            data: undefined,
-        } as any)
+        server.use(
+            mockListSlaPoliciesHandler(async () => {
+                await new Promise(() => undefined)
+
+                return HttpResponse.json(
+                    mockListSlaPoliciesResponse({ data: [] }),
+                )
+            }).handler,
+        )
 
         render(<SlaPolicyNameCell item={{ sla1: makeSlaItem('uuid-a') }} />)
 

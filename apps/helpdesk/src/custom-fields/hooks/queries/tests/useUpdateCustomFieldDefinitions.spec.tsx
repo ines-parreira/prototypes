@@ -1,12 +1,18 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import {
+    mockUpdateCustomFieldsHandler,
+    mockUpdateCustomFieldsResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { UpdateCustomFieldItem } from '@gorgias/helpdesk-queries'
-import { queryKeys, useUpdateCustomFields } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import {
     apiListCursorPaginationResponse,
@@ -18,45 +24,53 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useUpdateCustomFieldDefinitions } from '../useUpdateCustomFieldDefinitions'
 
-const queryClient = mockQueryClient()
-
-jest.mock('@gorgias/helpdesk-queries')
-const useUpdateCustomFieldsMock = assumeMock(useUpdateCustomFields)
-
-const updateMutateMock = jest.fn()
-
+const server = setupServer()
 const mockStore = configureMockStore([thunk])()
+let queryClient = mockQueryClient()
+const listParams = { archived: false, object_type: 'Ticket' } as const
+const queryKey = queryKeys.customFields.listCustomFields(listParams)
+
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore}>{children}</Provider>
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockStore.clearActions()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useUpdateCustomFieldDefinitions', () => {
-    beforeEach(() => {
-        mockStore.clearActions()
-        jest.resetAllMocks()
-        useUpdateCustomFieldsMock.mockImplementation(() => {
-            return {
-                mutate: updateMutateMock,
-            } as unknown as ReturnType<typeof useUpdateCustomFields>
-        })
-    })
-
-    const listParams = { archived: false, object_type: 'Ticket' } as const
-
-    it('should cancel previous query on update', () => {
+    it('should cancel previous query on update', async () => {
+        server.use(mockUpdateCustomFieldsHandler().handler)
         const cancelQueryMock = jest.spyOn(queryClient, 'cancelQueries')
-        renderHook(() => useUpdateCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
+        const { result } = renderHook(
+            () => useUpdateCustomFieldDefinitions(listParams),
+            { wrapper: createWrapper() },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync({
+                data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem],
+            })
         })
 
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onMutate!({
-            data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem],
-        })
-
-        expect(cancelQueryMock).toHaveBeenLastCalledWith({
-            queryKey: queryKeys.customFields.listCustomFields(listParams),
-        })
+        expect(cancelQueryMock).toHaveBeenLastCalledWith({ queryKey })
     })
 
     it('should optimistically update query on update and sort fields if priority changed', async () => {
@@ -65,35 +79,34 @@ describe('useUpdateCustomFieldDefinitions', () => {
             { ...ticketDropdownFieldDefinition, id: 421, priority: 2 },
             { ...ticketDropdownFieldDefinition, id: 422, priority: 3 },
         ])
-        const setQueryDataMock = jest.spyOn(queryClient, 'setQueryData')
-        setQueryDataMock.mockImplementation((queryKey, spiedCallback) => {
-            if (typeof spiedCallback === 'function') {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                return spiedCallback(
-                    axiosSuccessResponse(ticketDropdownFieldDefinitions),
-                )
-            }
+        server.use(
+            mockUpdateCustomFieldsHandler(async () =>
+                HttpResponse.json(mockUpdateCustomFieldsResponse()),
+            ).handler,
+        )
+
+        const { result } = renderHook(
+            () => useUpdateCustomFieldDefinitions(listParams),
+            { wrapper: createWrapper() },
+        )
+        queryClient.setQueryData(
+            queryKey,
+            axiosSuccessResponse(ticketDropdownFieldDefinitions),
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync({
+                data: [
+                    { id: 422, priority: 1 },
+                    { id: 420, priority: 2 },
+                    { id: 421, priority: 3 },
+                ],
+            })
         })
 
-        renderHook(() => useUpdateCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
-        })
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onMutate!({
-            data: [
-                { id: 422, priority: 1 },
-                { id: 420, priority: 2 },
-                { id: 421, priority: 3 },
-            ],
-        })
-        await waitFor(() => expect(setQueryDataMock).toHaveBeenCalledTimes(1))
-        expect(setQueryDataMock.mock.calls[0][0]).toEqual(
-            queryKeys.customFields.listCustomFields(listParams),
-        )
-        const results = setQueryDataMock.mock.results[0].value
+        const results = queryClient.getQueryData(queryKey) as ReturnType<
+            typeof axiosSuccessResponse<typeof ticketDropdownFieldDefinitions>
+        >
         const data = results.data.data
 
         expect([
@@ -107,48 +120,59 @@ describe('useUpdateCustomFieldDefinitions', () => {
         ])
     })
 
-    it('should invalidate proper query on settled', () => {
+    it('should invalidate proper query on settled', async () => {
+        server.use(mockUpdateCustomFieldsHandler().handler)
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useUpdateCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
+        const { result } = renderHook(
+            () => useUpdateCustomFieldDefinitions(listParams),
+            { wrapper: createWrapper() },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync({
+                data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem],
+            })
         })
 
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onSettled!(
-            undefined,
-            {},
-            { data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem] },
-            undefined,
+        await waitFor(() =>
+            expect(invalidateQueryMock).toHaveBeenLastCalledWith({
+                queryKey: queryKeys.customFields.all(),
+            }),
         )
-        expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey: queryKeys.customFields.all(),
-        })
     })
 
-    it('should dispatch failure notification on error', () => {
-        renderHook(() => useUpdateCustomFieldDefinitions(listParams), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
-                </QueryClientProvider>
-            ),
-        })
-
-        useUpdateCustomFieldsMock.mock.calls[0][0]?.mutation?.onError!(
-            {},
-            { data: [ticketDropdownFieldDefinition as UpdateCustomFieldItem] },
-            undefined,
+    it('should dispatch failure notification on error', async () => {
+        server.use(
+            mockUpdateCustomFieldsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to update custom fields' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
+        const { result } = renderHook(
+            () => useUpdateCustomFieldDefinitions(listParams),
+            { wrapper: createWrapper() },
         )
 
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
+        await act(async () => {
+            await expect(
+                result.current.mutateAsync({
+                    data: [
+                        ticketDropdownFieldDefinition as UpdateCustomFieldItem,
+                    ],
+                }),
+            ).rejects.toBeDefined()
+        })
+
+        await waitFor(() =>
+            expect(mockStore.getActions()).toMatchObject([
+                {
+                    payload: {
+                        status: NotificationStatus.Error,
+                    },
                 },
-            },
-        ])
+            ]),
+        )
     })
 })

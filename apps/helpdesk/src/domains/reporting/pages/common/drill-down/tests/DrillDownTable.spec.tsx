@@ -4,11 +4,17 @@ import React from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
+import {
+    mockListSlaPoliciesHandler,
+    mockListSlaPoliciesResponse,
+    mockSLAPolicy,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     AIJourneyMetric,
@@ -95,11 +101,15 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('@gorgias/helpdesk-queries')
-const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
-
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
+
+const server = setupServer()
+
+const mockSlaPoliciesList = (policies: ReturnType<typeof mockSLAPolicy>[]) =>
+    mockListSlaPoliciesHandler(async () =>
+        HttpResponse.json(mockListSlaPoliciesResponse({ data: policies })),
+    ).handler
 
 describe('<DrillDownTable />', () => {
     const defaultState = {
@@ -110,14 +120,26 @@ describe('<DrillDownTable />', () => {
         },
     } as unknown as RootState
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
+        server.use(mockSlaPoliciesList([]))
         getDrillDownMetricColumnMock.mockReturnValue({
             showMetric: false,
             metricTitle: '',
             metricValueFormat: 'decimal',
         })
-        useListSlaPoliciesMock.mockReturnValue({ data: undefined } as any)
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     const renderTable = (
@@ -366,7 +388,7 @@ describe('<DrillDownTable />', () => {
             expect(screen.getByText('SLA Policy')).toBeInTheDocument()
         })
 
-        it('should render SlaPolicyNameCell with resolved policy name for SLA metrics', () => {
+        it('should render SlaPolicyNameCell with resolved policy name for SLA metrics', async () => {
             const policyUuid = 'policy-uuid-1'
             const policyName = 'My SLA Policy'
             const metricName = 'someMetric'
@@ -393,22 +415,15 @@ describe('<DrillDownTable />', () => {
                 data: [dataWithSlas],
                 isFetching: false,
             } as any)
-            useListSlaPoliciesMock.mockReturnValue({
-                data: {
-                    data: {
-                        data: [
-                            {
-                                uuid: policyUuid,
-                                name: policyName,
-                            },
-                        ],
-                    },
-                },
-            } as any)
+            server.use(
+                mockSlaPoliciesList([
+                    mockSLAPolicy({ uuid: policyUuid, name: policyName }),
+                ]),
+            )
 
             renderTableForTicket(metricData)
 
-            expect(screen.getByText(policyName)).toBeInTheDocument()
+            expect(await screen.findByText(policyName)).toBeInTheDocument()
         })
 
         it('should render N/A placeholder in SLA Policy column when slas is not set', () => {

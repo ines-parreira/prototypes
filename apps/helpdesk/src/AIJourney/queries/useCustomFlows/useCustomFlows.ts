@@ -54,12 +54,14 @@ export const useFlowsList = (
     integrationId: number | undefined,
     options: UseQueryOptions<FlowsListResponse> = {},
 ) => {
+    const { enabled = true, ...queryOptions } = options
+
     return useQuery({
         queryKey: flowsListKeys.list(integrationId),
         queryFn: () => fetchFlowsList(integrationId!),
-        enabled: !!integrationId && options.enabled !== false,
         refetchOnWindowFocus: false,
         staleTime: Duration.minutes(1),
-        ...options,
+        ...queryOptions,
+        enabled: !!integrationId && enabled,
     })
 }

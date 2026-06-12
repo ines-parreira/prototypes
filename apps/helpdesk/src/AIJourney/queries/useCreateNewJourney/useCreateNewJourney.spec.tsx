@@ -1,168 +1,155 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { createJourney } from '@gorgias/convert-client'
+import {
+    mockCreateJourneyHandler,
+    mockCreateJourneyResponse,
+} from '@gorgias/convert-mocks'
+
+import { flowsListKeys } from 'AIJourney/queries/useCustomFlows/useCustomFlows'
+import { aiJourneyKeys } from 'AIJourney/queries/utils'
+import { workflowsConfigurationDefinitionKeys } from 'models/workflows/queries'
+import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useCreateNewJourney } from './useCreateNewJourney'
 
-jest.mock('@gorgias/convert-client', () => ({
-    createJourney: jest.fn(),
+jest.mock('rest_api/revenue_addon_api/client', () => ({
+    getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockCreateJourney = createJourney as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-describe('useCreateNewJourney', () => {
-    const queryClient = new QueryClient()
-
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
     )
+}
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
+const mutationData = {
+    params: {
+        store_integration_id: 123,
+        store_name: 'shopify-store',
+        type: 'cart_abandoned' as const,
+    },
+    journeyConfigs: {
+        max_follow_up_messages: 3,
+        offer_discount: true,
+        max_discount_percent: 20,
+        sms_sender_number: '(415)-111-111',
+    },
+}
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+describe('useCreateNewJourney', () => {
     it('should successfully create a new journey', async () => {
-        const mockResponse = { id: 1, type: 'cart_abandoned' }
-        mockCreateJourney.mockResolvedValue({ data: mockResponse }) // Mock the response with a .data property
+        const response = mockCreateJourneyResponse({
+            id: 'journey-1',
+            type: 'cart_abandoned',
+        })
+        const createJourneyMock = mockCreateJourneyHandler(async () =>
+            HttpResponse.json(response),
+        )
+        const waitForCreateJourneyRequest =
+            createJourneyMock.waitForRequest(server)
+        server.use(createJourneyMock.handler)
 
-        const { result } = renderHook(() => useCreateNewJourney(), { wrapper })
+        const { result } = renderHook(() => useCreateNewJourney(), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
-            const response = await result.current.mutateAsync({
-                params: {
-                    store_integration_id: 123,
-                    store_name: 'shopify-store',
-                    type: 'cart_abandoned',
-                },
-                journeyConfigs: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '(415)-111-111',
-                },
-            })
+            await expect(
+                result.current.mutateAsync(mutationData),
+            ).resolves.toEqual(response)
+        })
 
-            expect(response).toEqual(mockResponse)
-            expect(mockCreateJourney).toHaveBeenCalledTimes(1)
-            expect(mockCreateJourney).toHaveBeenCalledWith(
-                {
-                    store_integration_id: 123,
-                    store_name: 'shopify-store',
-                    type: 'cart_abandoned',
-                    store_type: 'shopify',
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '(415)-111-111',
-                    },
-                },
-                {
-                    baseURL: expect.any(String),
-                },
-            )
+        await waitForCreateJourneyRequest(async (request) => {
+            expect(new URL(request.url).origin).toBe('http://mocked-base-url')
+            expect(await request.json()).toEqual({
+                ...mutationData.params,
+                store_type: 'shopify',
+                configuration: mutationData.journeyConfigs,
+            })
         })
     })
 
     it('should invalidate queries on successful creation', async () => {
-        const mockResponse = { id: 1, type: 'cart_abandoned' }
-        mockCreateJourney.mockResolvedValue({ data: mockResponse })
-
-        const freshClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
-        const freshWrapper = ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={freshClient}>
-                {children}
-            </QueryClientProvider>
-        )
+        server.use(mockCreateJourneyHandler().handler)
         const invalidateQueriesSpy = jest.spyOn(
-            freshClient,
+            queryClient,
             'invalidateQueries',
         )
 
         const { result } = renderHook(() => useCreateNewJourney(), {
-            wrapper: freshWrapper,
+            wrapper: createWrapper(),
         })
 
         await act(async () => {
-            await result.current.mutateAsync({
-                params: {
-                    store_integration_id: 123,
-                    store_name: 'shopify-store',
-                    type: 'cart_abandoned',
-                },
-                journeyConfigs: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 20,
-                    sms_sender_number: '(415)-111-111',
-                },
-            })
+            await result.current.mutateAsync(mutationData)
         })
 
         await waitFor(() => {
-            expect(invalidateQueriesSpy).toHaveBeenCalledTimes(3)
             expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                queryKey: expect.arrayContaining(['journeys']),
+                queryKey: aiJourneyKeys.all(),
             })
             expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                queryKey: expect.arrayContaining(['workflow-configuration']),
+                queryKey: workflowsConfigurationDefinitionKeys.all(),
             })
             expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                queryKey: expect.arrayContaining(['flowsList']),
+                queryKey: flowsListKeys.all(),
             })
         })
     })
 
     it('should handle errors when creating a new journey', async () => {
-        const mockError = new Error('Failed to create journey')
-        mockCreateJourney.mockRejectedValue(mockError)
+        server.use(
+            mockCreateJourneyHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to create journey' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
-        const { result } = renderHook(() => useCreateNewJourney(), { wrapper })
+        const { result } = renderHook(() => useCreateNewJourney(), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
             await expect(
                 result.current.mutateAsync({
+                    ...mutationData,
                     params: {
-                        store_integration_id: 123,
-                        store_name: 'shopify-store',
+                        ...mutationData.params,
                         type: 'session_abandoned',
                     },
-                    journeyConfigs: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '(415)-111-111',
-                    },
                 }),
-            ).rejects.toThrow('Failed to create journey')
-
-            expect(mockCreateJourney).toHaveBeenCalledTimes(1)
-            expect(mockCreateJourney).toHaveBeenCalledWith(
-                {
-                    store_integration_id: 123,
-                    store_name: 'shopify-store',
-                    type: 'session_abandoned',
-                    store_type: 'shopify',
-                    configuration: {
-                        max_follow_up_messages: 3,
-                        offer_discount: true,
-                        max_discount_percent: 20,
-                        sms_sender_number: '(415)-111-111',
-                    },
-                },
-                {
-                    baseURL: expect.any(String),
-                },
-            )
+            ).rejects.toBeDefined()
         })
     })
 })

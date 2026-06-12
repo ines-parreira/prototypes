@@ -1,129 +1,159 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { act } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    useDeleteCustomerCustomFieldValue,
-    useUpdateCustomerCustomFieldValue,
-} from '@gorgias/helpdesk-queries'
+    mockDeleteCustomerCustomFieldValueHandler,
+    mockUpdateCustomerCustomFieldValueHandler,
+    mockUpdateCustomerCustomFieldValueResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useUpdateOrDeleteCustomerFieldValue } from '../useUpdateOrDeleteCustomerFieldValue'
 
-const queryClient = mockQueryClient()
-
-jest.mock('@gorgias/helpdesk-queries')
-const useUpdateCustomerCustomFieldValueMock = assumeMock(
-    useUpdateCustomerCustomFieldValue,
-)
-const useDeleteCustomerCustomFieldValueMock = assumeMock(
-    useDeleteCustomerCustomFieldValue,
-)
-
-const updateMutateMock = jest.fn()
-const deleteMutateMock = jest.fn()
-
+const server = setupServer()
 const mockStore = configureMockStore([thunk])()
+let queryClient = mockQueryClient()
+
+const dataToMutate = {
+    customerId: 1,
+    fieldId: 1,
+}
+
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore}>{children}</Provider>
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    mockStore.clearActions()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useUpdateOrDeleteCustomerFieldValue', () => {
-    beforeEach(() => {
-        jest.resetAllMocks()
-        useUpdateCustomerCustomFieldValueMock.mockImplementation(() => {
-            return {
-                mutate: updateMutateMock,
-            } as unknown as ReturnType<typeof useUpdateCustomerCustomFieldValue>
-        })
-
-        useDeleteCustomerCustomFieldValueMock.mockImplementation(() => {
-            return {
-                mutate: deleteMutateMock,
-            } as unknown as ReturnType<typeof useDeleteCustomerCustomFieldValue>
-        })
-    })
-
-    const dataToMutate = {
-        customerId: 1,
-        fieldId: 1,
-    }
-
     it('should not do any mutation if disabled', () => {
+        const requests: Request[] = []
+        server.use(
+            mockUpdateCustomerCustomFieldValueHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(
+                    mockUpdateCustomerCustomFieldValueResponse(),
+                )
+            }).handler,
+            mockDeleteCustomerCustomFieldValueHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(undefined)
+            }).handler,
+        )
+
         const { result } = renderHook(
             () =>
                 useUpdateOrDeleteCustomerFieldValue({
                     isDisabled: true,
                 }),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            },
+            { wrapper: createWrapper() },
         )
 
         result.current.mutate(dataToMutate)
 
-        expect(updateMutateMock).not.toHaveBeenCalled()
-        expect(deleteMutateMock).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
     })
 
-    it('should call the correct mutation with passed params according to the existence of a value', () => {
-        const { result } = renderHook(
-            () => useUpdateOrDeleteCustomerFieldValue(),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            },
+    it('should call delete mutation when no value is provided', async () => {
+        const deleteMock = mockDeleteCustomerCustomFieldValueHandler()
+        const waitForDeleteRequest = deleteMock.waitForRequest(server)
+        server.use(
+            deleteMock.handler,
+            mockUpdateCustomerCustomFieldValueHandler().handler,
         )
 
-        result.current.mutate(dataToMutate)
-        expect(updateMutateMock).not.toHaveBeenCalled()
-        expect(deleteMutateMock).toHaveBeenNthCalledWith(1, {
-            customerId: dataToMutate.customerId,
-            id: dataToMutate.fieldId,
+        const { result } = renderHook(
+            () => useUpdateOrDeleteCustomerFieldValue(),
+            { wrapper: createWrapper() },
+        )
+
+        act(() => {
+            result.current.mutate(dataToMutate)
         })
 
-        updateMutateMock.mockClear()
-        deleteMutateMock.mockClear()
+        await waitForDeleteRequest((request) => {
+            const pathname = new URL(request.url).pathname
 
-        const dataToMutateWithValue = { ...dataToMutate, value: 'foo' }
-        result.current.mutate(dataToMutateWithValue)
-        expect(updateMutateMock).toHaveBeenNthCalledWith(1, {
-            id: dataToMutateWithValue.fieldId,
-            customerId: dataToMutateWithValue.customerId,
-            data: JSON.stringify(dataToMutateWithValue.value),
+            expect(pathname).toContain(String(dataToMutate.customerId))
+            expect(pathname).toContain(String(dataToMutate.fieldId))
         })
-        expect(deleteMutateMock).not.toHaveBeenCalled()
     })
 
-    it('should wrap strings with "" before calling mutation to ensure a string is not casted into number', () => {
-        const { result } = renderHook(
-            () => useUpdateOrDeleteCustomerFieldValue(),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            },
+    it('should call update mutation with passed params when a value exists', async () => {
+        const updateMock = mockUpdateCustomerCustomFieldValueHandler(async () =>
+            HttpResponse.json(mockUpdateCustomerCustomFieldValueResponse()),
+        )
+        const waitForUpdateRequest = updateMock.waitForRequest(server)
+        server.use(
+            updateMock.handler,
+            mockDeleteCustomerCustomFieldValueHandler().handler,
         )
 
-        const value = '1'
-        result.current.mutate({
-            fieldId: 1,
-            customerId: 1,
-            value,
+        const { result } = renderHook(
+            () => useUpdateOrDeleteCustomerFieldValue(),
+            { wrapper: createWrapper() },
+        )
+
+        act(() => {
+            result.current.mutate({ ...dataToMutate, value: 'foo' })
         })
-        expect(updateMutateMock).toHaveBeenNthCalledWith(1, {
-            id: 1,
-            customerId: 1,
-            data: JSON.stringify(value),
+
+        await waitForUpdateRequest(async (request) => {
+            const pathname = new URL(request.url).pathname
+
+            expect(pathname).toContain(String(dataToMutate.customerId))
+            expect(pathname).toContain(String(dataToMutate.fieldId))
+            expect(await request.json()).toBe('foo')
+        })
+    })
+
+    it('should wrap strings before calling mutation to ensure a string is not casted into number', async () => {
+        const updateMock = mockUpdateCustomerCustomFieldValueHandler(async () =>
+            HttpResponse.json(mockUpdateCustomerCustomFieldValueResponse()),
+        )
+        const waitForUpdateRequest = updateMock.waitForRequest(server)
+        server.use(updateMock.handler)
+
+        const { result } = renderHook(
+            () => useUpdateOrDeleteCustomerFieldValue(),
+            { wrapper: createWrapper() },
+        )
+
+        act(() => {
+            result.current.mutate({
+                fieldId: 1,
+                customerId: 1,
+                value: '1',
+            })
+        })
+
+        await waitForUpdateRequest(async (request) => {
+            expect(await request.json()).toBe('1')
         })
     })
 })

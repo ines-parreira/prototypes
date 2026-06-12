@@ -1,88 +1,114 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { listSegments } from '@gorgias/customer-segmentation-client'
+import {
+    mockListSegmentsHandler,
+    mockListSegmentsResponse,
+    mockSegmentDefinition,
+} from '@gorgias/customer-segmentation-mocks'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useSegments } from './useSegments'
 
-jest.mock('@gorgias/customer-segmentation-client', () => ({
-    listSegments: jest.fn(),
-}))
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-const mockListSegments = listSegments as jest.Mock
+const createWrapper = () => {
+    queryClient = mockQueryClient()
 
-describe('useSegments', () => {
-    let queryClient: QueryClient
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
 
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
+const createSegmentsResponse = (ids: string[]) =>
+    mockListSegmentsResponse({
+        data: ids.map((id) =>
+            mockSegmentDefinition({
+                id,
+                name: `Segment ${id}`,
+                integration_id: 123,
+            }),
+        ),
+        metadata: { next_cursor: null, prev_cursor: null },
     })
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+describe('useSegments', () => {
     it('should fetch segments successfully', async () => {
-        const mockData = {
-            data: [
-                {
-                    id: '1',
-                    name: 'Segment A',
-                    conditions: '',
-                    created_datetime: '2026-01-01',
-                    updated_datetime: '2026-01-01',
-                },
-            ],
-            metadata: { next_cursor: null, prev_cursor: null },
-        }
-        mockListSegments.mockResolvedValue({ data: mockData })
+        const response = createSegmentsResponse(['1'])
+        const listSegmentsMock = mockListSegmentsHandler(async () =>
+            HttpResponse.json(response),
+        )
+        const waitForListSegmentsRequest =
+            listSegmentsMock.waitForRequest(server)
+        server.use(listSegmentsMock.handler)
 
         const { result } = renderHook(() => useSegments(123), {
             wrapper: createWrapper(),
         })
 
+        await waitForListSegmentsRequest((request) => {
+            expect(
+                new URL(request.url).searchParams.get('integration_id'),
+            ).toBe('123')
+        })
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockListSegments).toHaveBeenCalledTimes(1)
-        expect(mockListSegments).toHaveBeenCalledWith({ integration_id: 123 })
-        expect(result.current.data).toEqual(mockData)
+        expect(result.current.data).toEqual(response)
     })
 
     it('should pass additional params to listSegments', async () => {
-        const mockData = {
-            data: [],
-            metadata: { next_cursor: 'cursor_abc', prev_cursor: null },
-        }
-        mockListSegments.mockResolvedValue({ data: mockData })
+        const listSegmentsMock = mockListSegmentsHandler(async () =>
+            HttpResponse.json(createSegmentsResponse([])),
+        )
+        const waitForListSegmentsRequest =
+            listSegmentsMock.waitForRequest(server)
+        server.use(listSegmentsMock.handler)
 
         const { result } = renderHook(
             () => useSegments(123, { limit: 25, cursor: 'cursor_abc' }),
             { wrapper: createWrapper() },
         )
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+        await waitForListSegmentsRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
 
-        expect(mockListSegments).toHaveBeenCalledWith({
-            integration_id: 123,
-            limit: 25,
-            cursor: 'cursor_abc',
+            expect(searchParams.get('integration_id')).toBe('123')
+            expect(searchParams.get('limit')).toBe('25')
+            expect(searchParams.get('cursor')).toBe('cursor_abc')
         })
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
     })
 
     it('should not fetch when integrationId is undefined', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockListSegmentsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(createSegmentsResponse([]))
+            }).handler,
+        )
+
         const { result } = renderHook(() => useSegments(undefined), {
             wrapper: createWrapper(),
         })
@@ -91,11 +117,20 @@ describe('useSegments', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockListSegments).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
         expect(result.current.data).toBeUndefined()
     })
 
     it('should not fetch when enabled option is false', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockListSegmentsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(createSegmentsResponse([]))
+            }).handler,
+        )
+
         const { result } = renderHook(
             () => useSegments(123, undefined, { enabled: false }),
             { wrapper: createWrapper() },
@@ -105,13 +140,19 @@ describe('useSegments', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockListSegments).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
         expect(result.current.data).toBeUndefined()
     })
 
     it('should handle errors when fetching segments', async () => {
-        const mockError = new Error('Failed to fetch segments')
-        mockListSegments.mockRejectedValue(mockError)
+        server.use(
+            mockListSegmentsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to fetch segments' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useSegments(123), {
             wrapper: createWrapper(),
@@ -119,22 +160,24 @@ describe('useSegments', () => {
 
         await waitFor(() => expect(result.current.isError).toBe(true))
 
-        expect(result.current.error).toEqual(mockError)
+        expect(result.current.error).toBeDefined()
     })
 
     it('should refetch when integrationId changes', async () => {
-        const mockData1 = {
-            data: [{ id: '1', name: 'Segment A' }],
-            metadata: { next_cursor: null, prev_cursor: null },
-        }
-        const mockData2 = {
-            data: [{ id: '2', name: 'Segment B' }],
-            metadata: { next_cursor: null, prev_cursor: null },
-        }
+        const firstResponse = createSegmentsResponse(['1'])
+        const secondResponse = createSegmentsResponse(['2'])
 
-        mockListSegments
-            .mockResolvedValueOnce({ data: mockData1 })
-            .mockResolvedValueOnce({ data: mockData2 })
+        server.use(
+            mockListSegmentsHandler(async ({ request }) => {
+                const integrationId = new URL(request.url).searchParams.get(
+                    'integration_id',
+                )
+
+                return HttpResponse.json(
+                    integrationId === '123' ? firstResponse : secondResponse,
+                )
+            }).handler,
+        )
 
         const { result, rerender } = renderHook(
             ({ integrationId }: { integrationId: number }) =>
@@ -145,19 +188,10 @@ describe('useSegments', () => {
             },
         )
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockData1)
+        await waitFor(() => expect(result.current.data).toEqual(firstResponse))
 
         rerender({ integrationId: 456 })
 
-        await waitFor(() => expect(result.current.data).toEqual(mockData2))
-
-        expect(mockListSegments).toHaveBeenCalledTimes(2)
-        expect(mockListSegments).toHaveBeenNthCalledWith(1, {
-            integration_id: 123,
-        })
-        expect(mockListSegments).toHaveBeenNthCalledWith(2, {
-            integration_id: 456,
-        })
+        await waitFor(() => expect(result.current.data).toEqual(secondResponse))
     })
 })

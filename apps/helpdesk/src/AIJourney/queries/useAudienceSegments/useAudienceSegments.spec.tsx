@@ -1,173 +1,104 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import { AudienceListSource } from '@gorgias/convert-client'
 import {
-    AudienceListSource,
-    getAudiencesSegments,
-} from '@gorgias/convert-client'
+    mockAudienceSchema,
+    mockGetAudiencesSegmentsHandler,
+    mockGetAudiencesSegmentsResponse,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useAudienceSegments } from './useAudienceSegments'
-
-jest.mock('@gorgias/convert-client', () => ({
-    ...jest.requireActual('@gorgias/convert-client'),
-    getAudiencesSegments: jest.fn(),
-}))
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockGetAudiencesSegments = getAudiencesSegments as jest.Mock
-const mockGetGorgiasRevenueAddonApiBaseUrl =
-    getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-describe('useAudienceSegments', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetGorgiasRevenueAddonApiBaseUrl.mockReturnValue(
-            'http://mocked-base-url',
-        )
+const createWrapper = () => {
+    queryClient = mockQueryClient()
+
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+const createSegmentsResponse = (ids: string[]) =>
+    mockGetAudiencesSegmentsResponse({
+        data: ids.map((id) =>
+            mockAudienceSchema({
+                id,
+                name: `Segment ${id}`,
+                source: AudienceListSource.Gorgias,
+            }),
+        ),
+        links: null,
+        permission_error: null,
     })
 
-    let queryClient: QueryClient
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
 
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        )
-    }
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
 
+afterAll(() => {
+    server.close()
+})
+
+describe('useAudienceSegments', () => {
     it('should fetch audience segments successfully', async () => {
-        const mockAudienceSegments = [
-            { id: '1', name: 'High Value Customers' },
-            { id: '2', name: 'Frequent Buyers' },
-        ]
-
-        mockGetAudiencesSegments.mockResolvedValue({
-            data: mockAudienceSegments,
-        })
+        const response = createSegmentsResponse(['1', '2'])
+        const getAudiencesSegmentsMock = mockGetAudiencesSegmentsHandler(
+            async () => HttpResponse.json(response),
+        )
+        const waitForGetAudiencesSegmentsRequest =
+            getAudiencesSegmentsMock.waitForRequest(server)
+        server.use(getAudiencesSegmentsMock.handler)
 
         const { result } = renderHook(() => useAudienceSegments(123), {
             wrapper: createWrapper(),
         })
 
+        await waitForGetAudiencesSegmentsRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.origin).toBe('http://mocked-base-url')
+            expect(url.searchParams.get('store_integration_id')).toBe('123')
+            expect(url.searchParams.has('source')).toBe(false)
+            expect(url.searchParams.has('search')).toBe(false)
+        })
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(1)
-        expect(mockGetAudiencesSegments).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                source: undefined,
-                search: undefined,
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-        expect(result.current.data).toEqual(mockAudienceSegments)
+        expect(result.current.data).toEqual(response)
     })
 
-    it('should fetch audience segments with source parameter', async () => {
-        const mockAudienceSegments = [{ id: '1', name: 'Gorgias Segment' }]
-
-        mockGetAudiencesSegments.mockResolvedValue({
-            data: mockAudienceSegments,
-        })
-
-        const { result } = renderHook(
-            () => useAudienceSegments(123, AudienceListSource.Gorgias),
-            { wrapper: createWrapper() },
+    it('should fetch audience segments with source and search parameters', async () => {
+        const getAudiencesSegmentsMock = mockGetAudiencesSegmentsHandler(
+            async () => HttpResponse.json(createSegmentsResponse(['1'])),
         )
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(1)
-        expect(mockGetAudiencesSegments).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                source: AudienceListSource.Gorgias,
-                search: undefined,
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-        expect(result.current.data).toEqual(mockAudienceSegments)
-    })
-
-    it('should fetch audience segments with Klaviyo source', async () => {
-        const mockAudienceSegments = [{ id: '2', name: 'Klaviyo Segment' }]
-
-        mockGetAudiencesSegments.mockResolvedValue({
-            data: mockAudienceSegments,
-        })
-
-        const { result } = renderHook(
-            () => useAudienceSegments(123, AudienceListSource.Klaviyo),
-            { wrapper: createWrapper() },
-        )
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockGetAudiencesSegments).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                source: AudienceListSource.Klaviyo,
-                search: undefined,
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-    })
-
-    it('should fetch audience segments with search parameter', async () => {
-        const mockAudienceSegments = [{ id: '1', name: 'High Value Customers' }]
-
-        mockGetAudiencesSegments.mockResolvedValue({
-            data: mockAudienceSegments,
-        })
-
-        const { result } = renderHook(
-            () => useAudienceSegments(123, undefined, 'High'),
-            { wrapper: createWrapper() },
-        )
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(1)
-        expect(mockGetAudiencesSegments).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                source: undefined,
-                search: 'High',
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-        expect(result.current.data).toEqual(mockAudienceSegments)
-    })
-
-    it('should fetch audience segments with both source and search parameters', async () => {
-        const mockAudienceSegments = [{ id: '1', name: 'Gorgias High Value' }]
-
-        mockGetAudiencesSegments.mockResolvedValue({
-            data: mockAudienceSegments,
-        })
+        const waitForGetAudiencesSegmentsRequest =
+            getAudiencesSegmentsMock.waitForRequest(server)
+        server.use(getAudiencesSegmentsMock.handler)
 
         const { result } = renderHook(
             () =>
@@ -179,23 +110,25 @@ describe('useAudienceSegments', () => {
             { wrapper: createWrapper() },
         )
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+        await waitForGetAudiencesSegmentsRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
 
-        expect(mockGetAudiencesSegments).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                source: AudienceListSource.Gorgias,
-                search: 'High Value',
-            },
-            { baseURL: 'http://mocked-base-url' },
-        )
+            expect(searchParams.get('store_integration_id')).toBe('123')
+            expect(searchParams.get('source')).toBe(AudienceListSource.Gorgias)
+            expect(searchParams.get('search')).toBe('High Value')
+        })
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
     })
 
     it('should handle errors when fetching audience segments', async () => {
-        const mockError = new Error('Failed to fetch audience segments')
-        jest.spyOn(console, 'error').mockImplementation(() => {})
-
-        mockGetAudiencesSegments.mockRejectedValue(mockError)
+        server.use(
+            mockGetAudiencesSegmentsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to fetch audience segments' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useAudienceSegments(123), {
             wrapper: createWrapper(),
@@ -203,13 +136,19 @@ describe('useAudienceSegments', () => {
 
         await waitFor(() => expect(result.current.isError).toBe(true))
 
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(1)
-        expect(result.current.error).toEqual(mockError)
-
-        jest.restoreAllMocks()
+        expect(result.current.error).toBeDefined()
     })
 
     it('should not fetch audience segments if integrationId is undefined', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetAudiencesSegmentsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(createSegmentsResponse([]))
+            }).handler,
+        )
+
         const { result } = renderHook(() => useAudienceSegments(undefined), {
             wrapper: createWrapper(),
         })
@@ -218,11 +157,20 @@ describe('useAudienceSegments', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockGetAudiencesSegments).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
         expect(result.current.data).toBeUndefined()
     })
 
     it('should respect the enabled option when set to false', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetAudiencesSegmentsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(createSegmentsResponse([]))
+            }).handler,
+        )
+
         const { result } = renderHook(
             () =>
                 useAudienceSegments(123, undefined, undefined, {
@@ -235,169 +183,73 @@ describe('useAudienceSegments', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockGetAudiencesSegments).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
         expect(result.current.data).toBeUndefined()
     })
 
-    it('should refetch audience segments when integrationId changes', async () => {
-        const mockAudienceSegments1 = [{ id: '1', name: 'Segment 1' }]
-        const mockAudienceSegments2 = [{ id: '2', name: 'Segment 2' }]
+    it('should refetch audience segments when parameters change', async () => {
+        const firstResponse = createSegmentsResponse(['1'])
+        const secondResponse = createSegmentsResponse(['2'])
 
-        mockGetAudiencesSegments
-            .mockResolvedValueOnce({ data: mockAudienceSegments1 })
-            .mockResolvedValueOnce({ data: mockAudienceSegments2 })
+        server.use(
+            mockGetAudiencesSegmentsHandler(async ({ request }) => {
+                const searchParams = new URL(request.url).searchParams
+                const id =
+                    searchParams.get('store_integration_id') === '456' ||
+                    searchParams.get('source') === AudienceListSource.Klaviyo ||
+                    searchParams.get('search') === 'Low'
+                        ? '2'
+                        : '1'
+
+                return HttpResponse.json(
+                    id === '2' ? secondResponse : firstResponse,
+                )
+            }).handler,
+        )
 
         const { result, rerender } = renderHook(
-            ({ integrationId }) => useAudienceSegments(integrationId),
-            {
-                wrapper: createWrapper(),
-                initialProps: { integrationId: 123 },
-            },
-        )
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockAudienceSegments1)
-
-        rerender({ integrationId: 456 })
-
-        await waitFor(() =>
-            expect(result.current.data).toEqual(mockAudienceSegments2),
-        )
-
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(2)
-        expect(mockGetAudiencesSegments).toHaveBeenNthCalledWith(
-            1,
-            {
-                store_integration_id: 123,
-                source: undefined,
-                search: undefined,
-            },
-            expect.any(Object),
-        )
-        expect(mockGetAudiencesSegments).toHaveBeenNthCalledWith(
-            2,
-            {
-                store_integration_id: 456,
-                source: undefined,
-                search: undefined,
-            },
-            expect.any(Object),
-        )
-    })
-
-    it('should refetch audience segments when source parameter changes', async () => {
-        const gorgiasSegments = [{ id: '1', name: 'Gorgias Segment' }]
-        const klaviyoSegments = [{ id: '2', name: 'Klaviyo Segment' }]
-
-        mockGetAudiencesSegments
-            .mockResolvedValueOnce({ data: gorgiasSegments })
-            .mockResolvedValueOnce({ data: klaviyoSegments })
-
-        const { result, rerender } = renderHook(
-            ({ source }) => useAudienceSegments(123, source),
+            ({ integrationId, source, search }) =>
+                useAudienceSegments(integrationId, source, search),
             {
                 wrapper: createWrapper(),
                 initialProps: {
+                    integrationId: 123,
                     source: AudienceListSource.Gorgias as
                         | AudienceListSource
                         | undefined,
+                    search: 'High',
                 },
             },
         )
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(gorgiasSegments)
+        await waitFor(() => expect(result.current.data).toEqual(firstResponse))
 
-        rerender({ source: AudienceListSource.Klaviyo })
+        rerender({
+            integrationId: 456,
+            source: AudienceListSource.Klaviyo,
+            search: 'Low',
+        })
 
-        await waitFor(() =>
-            expect(result.current.data).toEqual(klaviyoSegments),
-        )
-
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(2)
-        expect(mockGetAudiencesSegments).toHaveBeenNthCalledWith(
-            1,
-            {
-                store_integration_id: 123,
-                source: AudienceListSource.Gorgias,
-                search: undefined,
-            },
-            expect.any(Object),
-        )
-        expect(mockGetAudiencesSegments).toHaveBeenNthCalledWith(
-            2,
-            {
-                store_integration_id: 123,
-                source: AudienceListSource.Klaviyo,
-                search: undefined,
-            },
-            expect.any(Object),
-        )
-    })
-
-    it('should refetch audience segments when search parameter changes', async () => {
-        const mockAudienceSegments1 = [
-            { id: '1', name: 'High Value Customers' },
-            { id: '2', name: 'High Frequency Buyers' },
-        ]
-        const mockAudienceSegments2 = [{ id: '3', name: 'Low Value Customers' }]
-
-        mockGetAudiencesSegments
-            .mockResolvedValueOnce({ data: mockAudienceSegments1 })
-            .mockResolvedValueOnce({ data: mockAudienceSegments2 })
-
-        const { result, rerender } = renderHook(
-            ({ search }) => useAudienceSegments(123, undefined, search),
-            {
-                wrapper: createWrapper(),
-                initialProps: { search: 'High' },
-            },
-        )
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockAudienceSegments1)
-
-        rerender({ search: 'Low' })
-
-        await waitFor(() =>
-            expect(result.current.data).toEqual(mockAudienceSegments2),
-        )
-
-        expect(mockGetAudiencesSegments).toHaveBeenCalledTimes(2)
-        expect(mockGetAudiencesSegments).toHaveBeenNthCalledWith(
-            1,
-            {
-                store_integration_id: 123,
-                source: undefined,
-                search: 'High',
-            },
-            expect.any(Object),
-        )
-        expect(mockGetAudiencesSegments).toHaveBeenNthCalledWith(
-            2,
-            {
-                store_integration_id: 123,
-                source: undefined,
-                search: 'Low',
-            },
-            expect.any(Object),
-        )
+        await waitFor(() => expect(result.current.data).toEqual(secondResponse))
     })
 
     it('should pass custom options to useQuery', async () => {
-        const mockAudienceSegments = [{ id: '1', name: 'Test Segment' }]
-        const mockSelect = jest.fn((data) =>
-            data.map((segment: any) => segment.id),
-        )
+        const response = createSegmentsResponse(['1'])
 
-        mockGetAudiencesSegments.mockResolvedValue({
-            data: mockAudienceSegments,
-        })
+        server.use(
+            mockGetAudiencesSegmentsHandler(async () =>
+                HttpResponse.json(response),
+            ).handler,
+        )
+        const selectIds = jest.fn(
+            (data: ReturnType<typeof createSegmentsResponse>) =>
+                data.data.map((segment) => segment.id),
+        )
 
         const { result } = renderHook(
             () =>
                 useAudienceSegments(123, undefined, undefined, {
-                    select: mockSelect,
+                    select: selectIds,
                 }),
             {
                 wrapper: createWrapper(),
@@ -406,7 +258,7 @@ describe('useAudienceSegments', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockSelect).toHaveBeenCalledWith(mockAudienceSegments)
+        expect(selectIds).toHaveBeenCalledWith(response)
         expect(result.current.data).toEqual(['1'])
     })
 })

@@ -2,33 +2,59 @@ import { useContext } from 'react'
 
 import { render } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListVoiceQueues } from '@gorgias/helpdesk-queries'
+import {
+    mockListVoiceQueuesHandler,
+    mockListVoiceQueuesResponse,
+    mockVoiceQueue,
+} from '@gorgias/helpdesk-mocks'
 
 import { VoiceQueueContext } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueContext'
 import { VoiceQueueProvider } from 'domains/reporting/pages/voice/components/VoiceQueue/VoiceQueueProvider'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useListVoiceQueues: jest.fn(),
-}))
+const server = setupServer()
+
+const getRequestedQueueIds = (request: Request) =>
+    Array.from(new URL(request.url).searchParams.entries())
+        .filter(([key]) => key === 'id' || key.startsWith('id['))
+        .flatMap(([, value]) => value.split(','))
+        .filter(Boolean)
+        .map(Number)
 
 describe('VoiceQueueProvider', () => {
-    const useListVoiceQueuesMock = useListVoiceQueues as jest.Mock
-
     const mockVoiceQueues = [
-        { id: 1, name: 'Queue 1' },
-        { id: 2, name: 'Queue 2' },
+        mockVoiceQueue({ id: 1, name: 'Queue 1' }),
+        mockVoiceQueue({ id: 2, name: 'Queue 2' }),
     ]
 
-    beforeEach(() => {
-        jest.clearAllMocks()
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should fetch and provide voice queues', async () => {
-        useListVoiceQueuesMock.mockReturnValue({
-            data: { data: { data: mockVoiceQueues } },
-            isFetching: false,
-        })
+        const listVoiceQueuesMock = mockListVoiceQueuesHandler(
+            async ({ request }) =>
+                HttpResponse.json(
+                    mockListVoiceQueuesResponse({
+                        data: mockVoiceQueues.filter((queue) =>
+                            getRequestedQueueIds(request).includes(queue.id),
+                        ),
+                    }),
+                ),
+        )
+        const waitForListVoiceQueuesRequest =
+            listVoiceQueuesMock.waitForRequest(server)
+        server.use(listVoiceQueuesMock.handler)
 
         let contextValue: any
         const TestComponent = () => {
@@ -45,24 +71,22 @@ describe('VoiceQueueProvider', () => {
         await waitFor(() => {
             expect(contextValue.getQueueFromId(1)).toEqual(mockVoiceQueues[0])
             expect(contextValue.getQueueFromId(2)).toEqual(mockVoiceQueues[1])
-            expect(useListVoiceQueuesMock).toHaveBeenCalledWith(
-                {
-                    id: [1, 2],
-                },
-                {
-                    query: {
-                        enabled: true,
-                    },
-                },
-            )
+        })
+        await waitForListVoiceQueuesRequest((request) => {
+            expect(getRequestedQueueIds(request)).toEqual([1, 2])
         })
     })
 
     it('should return undefined for a queue ID if not ready', () => {
-        useListVoiceQueuesMock.mockReturnValue({
-            data: null,
-            isFetching: true,
-        })
+        server.use(
+            mockListVoiceQueuesHandler(async () => {
+                await new Promise(() => undefined)
+
+                return HttpResponse.json(
+                    mockListVoiceQueuesResponse({ data: [] }),
+                )
+            }).handler,
+        )
 
         let contextValue: any
         const TestComponent = () => {
@@ -77,23 +101,15 @@ describe('VoiceQueueProvider', () => {
         )
 
         expect(contextValue.getQueueFromId(1)).toBeUndefined()
-        expect(useListVoiceQueuesMock).toHaveBeenCalledWith(
-            {
-                id: [1],
-            },
-            {
-                query: {
-                    enabled: true,
-                },
-            },
-        )
     })
 
     it('should return null for a queue ID if ready but queue not found', async () => {
-        useListVoiceQueuesMock.mockReturnValue({
-            data: { data: { data: [] } },
-            isFetching: false,
-        })
+        const listVoiceQueuesMock = mockListVoiceQueuesHandler(async () =>
+            HttpResponse.json(mockListVoiceQueuesResponse({ data: [] })),
+        )
+        const waitForListVoiceQueuesRequest =
+            listVoiceQueuesMock.waitForRequest(server)
+        server.use(listVoiceQueuesMock.handler)
 
         let contextValue: any
         const TestComponent = () => {
@@ -109,24 +125,28 @@ describe('VoiceQueueProvider', () => {
 
         await waitFor(() => {
             expect(contextValue.getQueueFromId(3)).toBeNull()
-            expect(useListVoiceQueuesMock).toHaveBeenCalledWith(
-                {
-                    id: [3],
-                },
-                {
-                    query: {
-                        enabled: true,
-                    },
-                },
-            )
+        })
+        await waitForListVoiceQueuesRequest((request) => {
+            expect(getRequestedQueueIds(request)).toEqual([3])
         })
     })
 
     it('should fetch and provide only voice queues for which we do not yet have data', async () => {
-        useListVoiceQueuesMock.mockReturnValue({
-            data: { data: { data: [mockVoiceQueues[0]] } },
-            isFetching: false,
-        })
+        const requestedQueueIds: number[][] = []
+        server.use(
+            mockListVoiceQueuesHandler(async ({ request }) => {
+                const queueIds = getRequestedQueueIds(request)
+                requestedQueueIds.push(queueIds)
+
+                return HttpResponse.json(
+                    mockListVoiceQueuesResponse({
+                        data: mockVoiceQueues.filter((queue) =>
+                            queueIds.includes(queue.id),
+                        ),
+                    }),
+                )
+            }).handler,
+        )
 
         let contextValue: any
         const TestComponent = () => {
@@ -143,22 +163,8 @@ describe('VoiceQueueProvider', () => {
         await waitFor(() => {
             expect(contextValue.getQueueFromId(1)).toEqual(mockVoiceQueues[0])
             expect(contextValue.getQueueFromId(2)).toEqual(null)
-            expect(useListVoiceQueuesMock).toHaveBeenCalledWith(
-                {
-                    id: [1],
-                },
-                {
-                    query: {
-                        enabled: true,
-                    },
-                },
-            )
         })
-
-        useListVoiceQueuesMock.mockReturnValue({
-            data: { data: { data: [mockVoiceQueues[1]] } },
-            isFetching: false,
-        })
+        expect(requestedQueueIds).toEqual([[1]])
 
         rerender(
             <VoiceQueueProvider queueIds={[1, 2]}>
@@ -168,22 +174,8 @@ describe('VoiceQueueProvider', () => {
 
         await waitFor(() => {
             expect(contextValue.getQueueFromId(2)).toEqual(mockVoiceQueues[1])
-            expect(useListVoiceQueuesMock).toHaveBeenCalledWith(
-                {
-                    id: [2],
-                },
-                {
-                    query: {
-                        enabled: true,
-                    },
-                },
-            )
         })
-
-        useListVoiceQueuesMock.mockReturnValue({
-            data: { data: { data: [] } },
-            isFetching: false,
-        })
+        expect(requestedQueueIds).toEqual([[1], [2]])
 
         rerender(
             <VoiceQueueProvider queueIds={[1, 2]}>
@@ -192,16 +184,7 @@ describe('VoiceQueueProvider', () => {
         )
 
         await waitFor(() => {
-            expect(useListVoiceQueuesMock).toHaveBeenCalledWith(
-                {
-                    id: [],
-                },
-                {
-                    query: {
-                        enabled: false,
-                    },
-                },
-            )
+            expect(requestedQueueIds).toEqual([[1], [2]])
         })
     })
 })

@@ -1,8 +1,13 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { listVoiceQueues } from '@gorgias/helpdesk-client'
+import {
+    mockListVoiceQueuesHandler,
+    mockListVoiceQueuesResponse,
+} from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
@@ -12,15 +17,41 @@ jest.mock('@tanstack/react-query', () => ({
     useInfiniteQuery: jest.fn(),
 }))
 const useInfiniteQueryMock = assumeMock(useInfiniteQuery)
+const server = setupServer()
 
-jest.mock('@gorgias/helpdesk-client')
-const listVoiceQueuesMock = assumeMock(listVoiceQueues)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useInfiniteListVoiceQueues', () => {
     it('should call useInfiniteQuery with correct parameters', async () => {
         const returnValue = {
             data: { pages: [], pageParams: [] },
         } as unknown as InfiniteQueryObserverSuccessResult<unknown, unknown>
+        const listVoiceQueuesMock = mockListVoiceQueuesHandler(async () =>
+            HttpResponse.json(
+                mockListVoiceQueuesResponse({
+                    data: [],
+                    meta: {
+                        next_cursor: '==cursor==',
+                        prev_cursor: null,
+                        total_resources: 0,
+                    },
+                }),
+            ),
+        )
+        const waitForListVoiceQueuesRequest =
+            listVoiceQueuesMock.waitForRequest(server)
+        server.use(listVoiceQueuesMock.handler)
 
         useInfiniteQueryMock.mockReturnValue(returnValue)
 
@@ -44,10 +75,12 @@ describe('useInfiniteListVoiceQueues', () => {
         const useInfiniteQueryParams = useInfiniteQueryMock.mock
             .calls[0][0] as any
         await useInfiniteQueryParams.queryFn({ pageParam: '==cursor==' })
-        expect(listVoiceQueuesMock).toHaveBeenCalledWith(
-            { search: 'test', cursor: '==cursor==' },
-            { signal: undefined },
-        )
+        await waitForListVoiceQueuesRequest((request) => {
+            const searchParams = new URL(request.url).searchParams
+
+            expect(searchParams.get('search')).toBe('test')
+            expect(searchParams.get('cursor')).toBe('==cursor==')
+        })
         expect(
             useInfiniteQueryParams.getNextPageParam({
                 data: { meta: { next_cursor: '==cursor==' } },

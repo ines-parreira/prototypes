@@ -1,74 +1,104 @@
-import { assumeMock, renderHook } from '@repo/testing'
-
-import type {
-    CustomerCustomFieldWithValue,
-    HttpResponse,
-    ListCustomerCustomFieldsValues200,
-} from '@gorgias/helpdesk-queries'
-import { useListCustomerCustomFieldsValues } from '@gorgias/helpdesk-queries'
+import { renderHook } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
-    apiListCursorPaginationResponse,
-    axiosSuccessResponse,
-} from 'fixtures/axiosResponse'
+    mockListCustomerCustomFieldsValuesHandler,
+    mockListCustomerCustomFieldsValuesResponse,
+} from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {
     STALE_TIME_MS,
     useCustomerFieldValues,
 } from '../useCustomerFieldValues'
 
-jest.mock('@gorgias/helpdesk-queries')
-const useGetCustomFieldValuesMock = assumeMock(
-    useListCustomerCustomFieldsValues,
-)
+const server = setupServer()
+let queryClient = mockQueryClient()
+const customerId = 420
 
-describe('useCustomFieldValues', () => {
-    beforeEach(() => {
-        jest.resetAllMocks()
-    })
+const createWrapper = () => {
+    queryClient = mockQueryClient()
 
-    const customerId = 420
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
 
-    it('should call useGetCustomFieldValues with proper id', () => {
-        renderHook(() => useCustomerFieldValues(customerId))
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
-        expect(useGetCustomFieldValuesMock.mock.calls[0][0]).toBe(customerId)
-    })
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
 
-    it('should provide a stale time param', () => {
-        renderHook(() => useCustomerFieldValues(customerId))
+afterAll(() => {
+    server.close()
+})
 
-        expect(
-            useGetCustomFieldValuesMock.mock.calls[0][1]?.query?.staleTime,
-        ).toBe(STALE_TIME_MS)
-    })
+describe('useCustomerFieldValues', () => {
+    it('should request customer field values with the provided id and select response data', async () => {
+        const response = mockListCustomerCustomFieldsValuesResponse({
+            data: [
+                {
+                    field: {
+                        ...ticketDropdownFieldDefinition,
+                        deactivated_datetime: null,
+                        description: null,
+                    } as never,
+                    value: 'value',
+                },
+            ],
+        })
+        const listCustomerFieldValuesMock =
+            mockListCustomerCustomFieldsValuesHandler(async () =>
+                HttpResponse.json(response),
+            )
+        const waitForListCustomerFieldValuesRequest =
+            listCustomerFieldValuesMock.waitForRequest(server)
+        server.use(listCustomerFieldValuesMock.handler)
 
-    it('should provide a select param that picks the correct subset of data', () => {
-        renderHook(() => useCustomerFieldValues(customerId))
-
-        const data = [
+        const { result } = renderHook(
+            () => useCustomerFieldValues(customerId),
             {
-                field: ticketDropdownFieldDefinition,
-                value: 'value',
-            } as CustomerCustomFieldWithValue,
-        ]
+                wrapper: createWrapper(),
+            },
+        )
 
-        expect(
-            useGetCustomFieldValuesMock.mock.calls[0][1]?.query?.select!(
-                axiosSuccessResponse(
-                    apiListCursorPaginationResponse(data),
-                ) as HttpResponse<ListCustomerCustomFieldsValues200>,
-            ),
-        ).toStrictEqual(apiListCursorPaginationResponse(data))
+        await waitForListCustomerFieldValuesRequest((request) => {
+            expect(new URL(request.url).pathname).toContain(String(customerId))
+        })
+        await waitFor(() => expect(result.current.data).toEqual(response))
     })
 
-    it('should provide a meta param with an error message', () => {
-        renderHook(() => useCustomerFieldValues(customerId))
+    it('should provide staleTime and meta options', () => {
+        server.use(mockListCustomerCustomFieldsValuesHandler().handler)
 
-        expect(
-            useGetCustomFieldValuesMock.mock.calls[0][1]?.query?.meta
-                ?.errorMessage,
-        ).toBe('Failed to fetch custom field values')
+        renderHook(() => useCustomerFieldValues(customerId), {
+            wrapper: createWrapper(),
+        })
+
+        const query = queryClient
+            .getQueryCache()
+            .find(
+                queryKeys.customers.listCustomerCustomFieldsValues(customerId),
+            )
+        const queryOptions = query?.options as
+            | { staleTime?: number }
+            | undefined
+
+        expect(queryOptions?.staleTime).toBe(STALE_TIME_MS)
+        expect(query?.options.meta?.errorMessage).toBe(
+            'Failed to fetch custom field values',
+        )
     })
 })

@@ -40,7 +40,6 @@ jest.mock('@repo/tickets', () => ({
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
-jest.mock('@gorgias/helpdesk-queries')
 jest.mock('state/notifications/actions')
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),

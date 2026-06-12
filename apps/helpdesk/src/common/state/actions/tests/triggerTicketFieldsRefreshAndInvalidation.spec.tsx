@@ -3,15 +3,19 @@ import { assumeMock, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    listCustomFieldConditions,
-    listCustomFields,
-} from '@gorgias/helpdesk-client'
+    mockListCustomFieldConditionsHandler,
+    mockListCustomFieldConditionsResponse,
+    mockListCustomFieldsHandler,
+    mockListCustomFieldsResponse,
+} from '@gorgias/helpdesk-mocks'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
@@ -40,15 +44,13 @@ type MockedRootState = {
     views?: Map<any, any>
 }
 
-jest.mock('@gorgias/helpdesk-client')
 jest.mock('@repo/feature-flags')
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
 
-const mockedListCustomFields = assumeMock(listCustomFields)
-const mockedListCustomFieldConditions = assumeMock(listCustomFieldConditions)
 const mockUseStandaloneAiAccess = assumeMock(useStandaloneAiAccess)
+const server = setupServer()
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
@@ -73,6 +75,29 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
         id: 123,
         required: true,
     }
+    const requiredWhenOpenCondition = {
+        ...customFieldCondition,
+        name: 'Required when open',
+        id: 1,
+        expression: [
+            {
+                field: 'status',
+                operator: ExpressionOperator.Is,
+                values: ['open'],
+                field_source: ExpressionFieldSource.Ticket,
+            },
+        ],
+        requirements: [
+            {
+                field_id: conditionalTicketField.id,
+                type: ExpressionFieldType.Required,
+            },
+        ],
+    }
+
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
 
     beforeEach(() => {
         store = mockStore({
@@ -82,14 +107,31 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
         mockUseStandaloneAiAccess.mockReturnValue(
             createMockStandaloneAiAccess(),
         )
-        mockedListCustomFields.mockResolvedValue({
-            data: { data: [visibleTicketField] },
-        } as any)
-        mockedListCustomFieldConditions.mockResolvedValue({
-            data: {
-                data: [],
-            },
-        } as any)
+        server.use(
+            mockListCustomFieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomFieldsResponse({
+                        data: [visibleTicketField],
+                    }),
+                ),
+            ).handler,
+            mockListCustomFieldConditionsHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomFieldConditionsResponse({
+                        data: [],
+                    }),
+                ),
+            ).handler,
+        )
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+        appQueryClient.clear()
+    })
+
+    afterAll(() => {
+        server.close()
     })
 
     it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields', async () => {
@@ -108,41 +150,26 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
         })
 
         // Mock the data for invalidation and re-fetch
-        mockedListCustomFields.mockResolvedValue({
-            data: {
-                data: [
-                    conditionalTicketField,
-                    visibleTicketField,
-                    requiredTicketField,
-                ],
-            },
-        } as any)
-
-        mockedListCustomFieldConditions.mockResolvedValue({
-            data: {
-                data: [
-                    {
-                        ...customFieldCondition,
-                        name: 'Required when open',
-                        id: 1,
-                        expression: [
-                            {
-                                field: 'status',
-                                operator: ExpressionOperator.Is,
-                                values: ['open'],
-                                field_source: ExpressionFieldSource.Ticket,
-                            },
+        server.use(
+            mockListCustomFieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomFieldsResponse({
+                        data: [
+                            conditionalTicketField,
+                            visibleTicketField,
+                            requiredTicketField,
                         ],
-                        requirements: [
-                            {
-                                field_id: conditionalTicketField.id,
-                                type: ExpressionFieldType.Required,
-                            },
-                        ],
-                    },
-                ],
-            },
-        } as any)
+                    }),
+                ),
+            ).handler,
+            mockListCustomFieldConditionsHandler(async () =>
+                HttpResponse.json(
+                    mockListCustomFieldConditionsResponse({
+                        data: [requiredWhenOpenCondition],
+                    }),
+                ),
+            ).handler,
+        )
 
         // Trigger refresh and invalidation
         await store.dispatch(triggerTicketFieldsRefreshAndInvalidation())

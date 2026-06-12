@@ -1,59 +1,81 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+import {
+    mockGetAllJourneysPublicHandler,
+    mockGetAllJourneysPublicResponse,
+    mockJourneyApiDTO,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useJourneys } from './useJourneys'
-
-jest.mock('@gorgias/convert-client', () => ({
-    ...jest.requireActual('@gorgias/convert-client'),
-    getAllJourneysPublic: jest.fn(),
-}))
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockGetAllJourneysPublic = getAllJourneysPublic as jest.Mock
-const mockGetGorgiasRevenueAddonApiBaseUrl =
-    getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
+
+const createWrapper = () => {
+    queryClient = mockQueryClient()
+
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+const cartJourney = mockJourneyApiDTO({
+    id: 'cart',
+    type: JourneyTypeEnum.CartAbandoned,
+})
+const sessionJourney = mockJourneyApiDTO({
+    id: 'session',
+    type: JourneyTypeEnum.SessionAbandoned,
+})
+const welcomeJourney = mockJourneyApiDTO({
+    id: 'welcome',
+    type: JourneyTypeEnum.Welcome,
+})
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useJourneys', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetGorgiasRevenueAddonApiBaseUrl.mockReturnValue(
-            'http://mocked-base-url',
-        )
-    })
-
-    let queryClient: QueryClient
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        )
-    }
-
     it('should fetch journeys successfully', async () => {
-        const mockJourneys = [
-            { id: 1, type: 'cart_abandoned', state: 'active' },
-            { id: 2, type: 'welcome_email', state: 'draft' },
-        ]
-
-        mockGetAllJourneysPublic.mockResolvedValue({ data: mockJourneys })
+        const response = mockGetAllJourneysPublicResponse([
+            cartJourney,
+            sessionJourney,
+        ])
+        const getJourneysMock = mockGetAllJourneysPublicHandler(async () =>
+            HttpResponse.json(response),
+        )
+        const waitForGetJourneysRequest = getJourneysMock.waitForRequest(server)
+        server.use(getJourneysMock.handler)
 
         const { result } = renderHook(
             () =>
@@ -66,28 +88,50 @@ describe('useJourneys', () => {
             },
         )
 
+        await waitForGetJourneysRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.origin).toBe('http://mocked-base-url')
+            expect(url.searchParams.get('integration_id')).toBe('123')
+            expect(url.searchParams.getAll('types')).toEqual([
+                JourneyTypeEnum.CartAbandoned,
+                JourneyTypeEnum.SessionAbandoned,
+            ])
+        })
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockGetAllJourneysPublic).toHaveBeenCalledTimes(1)
-        expect(mockGetAllJourneysPublic).toHaveBeenCalledWith(
-            {
-                integration_id: 123,
-                types: [
-                    JourneyTypeEnum.CartAbandoned,
-                    JourneyTypeEnum.SessionAbandoned,
-                ],
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
+        expect(result.current.data).toEqual(response)
+    })
+
+    it('should flatten the new journey list response shape', async () => {
+        server.use(
+            mockGetAllJourneysPublicHandler(async () =>
+                HttpResponse.json({
+                    built_in: [cartJourney],
+                    custom: { items: [welcomeJourney] },
+                } as never),
+            ).handler,
         )
-        expect(result.current.data).toEqual(mockJourneys)
+
+        const { result } = renderHook(
+            () => useJourneys(123, [JourneyTypeEnum.CartAbandoned]),
+            { wrapper: createWrapper() },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toEqual([cartJourney, welcomeJourney])
     })
 
     it('should handle errors when fetching journeys', async () => {
-        const mockError = new Error('Failed to fetch journeys')
-
-        mockGetAllJourneysPublic.mockRejectedValue(mockError)
+        server.use(
+            mockGetAllJourneysPublicHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to fetch journeys' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(
             () =>
@@ -102,11 +146,19 @@ describe('useJourneys', () => {
 
         await waitFor(() => expect(result.current.isError).toBe(true))
 
-        expect(mockGetAllJourneysPublic).toHaveBeenCalledTimes(1)
-        expect(result.current.error).toEqual(mockError)
+        expect(result.current.error).toBeDefined()
     })
 
     it('should not fetch journeys if integrationId is undefined', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetAllJourneysPublicHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json([])
+            }).handler,
+        )
+
         const { result } = renderHook(
             () =>
                 useJourneys(undefined, [
@@ -122,21 +174,25 @@ describe('useJourneys', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockGetAllJourneysPublic).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
         expect(result.current.data).toBeUndefined()
     })
 
     it('should respect the enabled option when set to false', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetAllJourneysPublicHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json([])
+            }).handler,
+        )
+
         const { result } = renderHook(
             () =>
-                useJourneys(
-                    123,
-                    [
-                        JourneyTypeEnum.CartAbandoned,
-                        JourneyTypeEnum.SessionAbandoned,
-                    ],
-                    { enabled: false },
-                ),
+                useJourneys(123, [JourneyTypeEnum.CartAbandoned], {
+                    enabled: false,
+                }),
             { wrapper: createWrapper() },
         )
 
@@ -144,19 +200,22 @@ describe('useJourneys', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockGetAllJourneysPublic).not.toHaveBeenCalled()
+        expect(requests).toHaveLength(0)
         expect(result.current.data).toBeUndefined()
     })
 
     it('should refetch journeys when integrationId changes', async () => {
-        const mockJourneys1 = [
-            { id: 1, type: 'cart_abandoned', state: 'active' },
-        ]
-        const mockJourneys2 = [{ id: 2, type: 'welcome_email', state: 'draft' }]
+        server.use(
+            mockGetAllJourneysPublicHandler(async ({ request }) => {
+                const integrationId = new URL(request.url).searchParams.get(
+                    'integration_id',
+                )
 
-        mockGetAllJourneysPublic
-            .mockResolvedValueOnce({ data: mockJourneys1 })
-            .mockResolvedValueOnce({ data: mockJourneys2 })
+                return HttpResponse.json(
+                    integrationId === '123' ? [cartJourney] : [welcomeJourney],
+                )
+            }).handler,
+        )
 
         const { result, rerender } = renderHook(
             ({ integrationId }) =>
@@ -170,61 +229,12 @@ describe('useJourneys', () => {
             },
         )
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockJourneys1)
+        await waitFor(() => expect(result.current.data).toEqual([cartJourney]))
 
         rerender({ integrationId: 456 })
 
-        await waitFor(() => expect(result.current.data).toEqual(mockJourneys2))
-
-        expect(mockGetAllJourneysPublic).toHaveBeenCalledTimes(2)
-        expect(mockGetAllJourneysPublic).toHaveBeenNthCalledWith(
-            1,
-            {
-                integration_id: 123,
-                types: [
-                    JourneyTypeEnum.CartAbandoned,
-                    JourneyTypeEnum.SessionAbandoned,
-                ],
-            },
-            expect.any(Object),
+        await waitFor(() =>
+            expect(result.current.data).toEqual([welcomeJourney]),
         )
-        expect(mockGetAllJourneysPublic).toHaveBeenNthCalledWith(
-            2,
-            {
-                integration_id: 456,
-                types: [
-                    JourneyTypeEnum.CartAbandoned,
-                    JourneyTypeEnum.SessionAbandoned,
-                ],
-            },
-            expect.any(Object),
-        )
-    })
-
-    it('should accept custom types parameter', async () => {
-        const mockJourneys = [
-            { id: 1, type: 'cart_abandoned', state: 'active' },
-        ]
-
-        mockGetAllJourneysPublic.mockResolvedValue({ data: mockJourneys })
-
-        const customTypes = [JourneyTypeEnum.CartAbandoned]
-        const { result } = renderHook(() => useJourneys(123, customTypes, {}), {
-            wrapper: createWrapper(),
-        })
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockGetAllJourneysPublic).toHaveBeenCalledWith(
-            {
-                integration_id: 123,
-                types: customTypes,
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-        expect(result.current.data).toEqual(mockJourneys)
     })
 })

@@ -1,9 +1,14 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, render, userEvent } from '@repo/testing'
-import { screen, within } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor, within } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import {
+    mockListSlaPoliciesHandler,
+    mockListSlaPoliciesResponse,
+} from '@gorgias/helpdesk-mocks'
 import type { SLAPolicy } from '@gorgias/helpdesk-queries'
-import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -32,13 +37,17 @@ import {
 } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
 
-jest.mock('@gorgias/helpdesk-queries')
-const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
-
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
+
+const server = setupServer()
+
+const mockSlaPoliciesList = (policies: SLAPolicy[]) =>
+    mockListSlaPoliciesHandler(async () =>
+        HttpResponse.json(mockListSlaPoliciesResponse({ data: policies })),
+    ).handler
 
 describe('SLAPolicyFilter', () => {
     const policy = {
@@ -107,20 +116,25 @@ describe('SLAPolicyFilter', () => {
     const dispatchStatFiltersDirty = jest.fn()
     const dispatchStatFiltersClean = jest.fn()
 
-    beforeEach(() => {
-        useListSlaPoliciesMock.mockReturnValue({
-            data: { data: { data: policies } },
-            isError: false,
-            isLoading: false,
-        } as any)
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
     })
 
-    it('should render available policies', () => {
-        useListSlaPoliciesMock.mockReturnValue({
-            data: { data: { data: [...policies, phonePolicy] } },
-            isError: false,
-            isLoading: false,
-        } as any)
+    beforeEach(() => {
+        server.use(mockSlaPoliciesList(policies))
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should render available policies', async () => {
+        server.use(mockSlaPoliciesList([...policies, phonePolicy]))
 
         render(
             <SLAPolicyFilter
@@ -134,43 +148,59 @@ describe('SLAPolicyFilter', () => {
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
 
-        policies.forEach((policy) => {
-            expect(screen.getByText(policy.name)).toBeInTheDocument()
-        })
+        for (const policy of policies) {
+            expect(await screen.findByText(policy.name)).toBeInTheDocument()
+        }
         expect(screen.queryByText(phonePolicy.name)).not.toBeInTheDocument()
     })
 
-    it.each([undefined, { data: { data: undefined } }])(
-        'should render when no policies',
-        (data) => {
-            useListSlaPoliciesMock.mockReturnValue({
-                data: data,
-                isError: false,
-                isLoading: false,
-            } as any)
+    it.each([
+        {
+            setup: () => {
+                server.use(
+                    mockListSlaPoliciesHandler(async () => {
+                        await new Promise(() => undefined)
 
-            render(
-                <SLAPolicyFilter
-                    value={undefined}
-                    dispatchUpdate={dispatchUpdate}
-                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-                    dispatchStatFiltersClean={dispatchStatFiltersClean}
-                />,
-                { storeState: defaultState },
-            )
-
-            userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-
-            expect(
-                screen.getByRole('option', {
-                    name: new RegExp(FILTER_SELECT_ALL_LABEL),
-                }),
-            ).toBeInTheDocument()
-            expect(screen.queryAllByRole('option').length).toEqual(1)
+                        return HttpResponse.json(
+                            mockListSlaPoliciesResponse({ data: [] }),
+                        )
+                    }).handler,
+                )
+            },
         },
-    )
+        {
+            setup: () => {
+                server.use(
+                    mockListSlaPoliciesHandler(async () =>
+                        HttpResponse.json({} as any),
+                    ).handler,
+                )
+            },
+        },
+    ])('should render when no policies', ({ setup }) => {
+        setup()
 
-    it('should render selected options', () => {
+        render(
+            <SLAPolicyFilter
+                value={undefined}
+                dispatchUpdate={dispatchUpdate}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
+            { storeState: defaultState },
+        )
+
+        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+
+        expect(
+            screen.getByRole('option', {
+                name: new RegExp(FILTER_SELECT_ALL_LABEL),
+            }),
+        ).toBeInTheDocument()
+        expect(screen.queryAllByRole('option').length).toEqual(1)
+    })
+
+    it('should render selected options', async () => {
         const selectedPolicies = withDefaultLogicalOperator([aPolicy.uuid])
         render(
             <SLAPolicyFilter
@@ -183,13 +213,15 @@ describe('SLAPolicyFilter', () => {
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-        const option = screen.getByRole('option', { name: aPolicy.name })
+        const option = await screen.findByRole('option', {
+            name: aPolicy.name,
+        })
 
         expect(option).toBeInTheDocument()
         expect(within(option).getByRole('checkbox')).toBeChecked()
     })
 
-    it('should dispatch selected policy', () => {
+    it('should dispatch selected policy', async () => {
         render(
             <SLAPolicyFilter
                 value={undefined}
@@ -201,7 +233,7 @@ describe('SLAPolicyFilter', () => {
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-        userEvent.click(screen.getByText(aPolicy.name))
+        userEvent.click(await screen.findByText(aPolicy.name))
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
@@ -210,7 +242,7 @@ describe('SLAPolicyFilter', () => {
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
     })
 
-    it('should deselect policy', () => {
+    it('should deselect policy', async () => {
         const selectedPolicies = withDefaultLogicalOperator([
             aPolicy.uuid,
             anotherPolicy.uuid,
@@ -226,14 +258,14 @@ describe('SLAPolicyFilter', () => {
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-        userEvent.click(screen.getByText(aPolicy.name))
+        userEvent.click(await screen.findByText(aPolicy.name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator([anotherPolicy.uuid]),
         )
     })
 
-    it('should add selected policy to already selected', () => {
+    it('should add selected policy to already selected', async () => {
         const alreadySelectedPolicies = [aPolicy.uuid]
         render(
             <SLAPolicyFilter
@@ -246,14 +278,14 @@ describe('SLAPolicyFilter', () => {
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-        userEvent.click(screen.getByText(anotherPolicy.name))
+        userEvent.click(await screen.findByText(anotherPolicy.name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator([aPolicy.uuid, anotherPolicy.uuid]),
         )
     })
 
-    it('should dispatch all selected policies on selectAll', () => {
+    it('should dispatch all selected policies on selectAll', async () => {
         render(
             <SLAPolicyFilter
                 value={undefined}
@@ -265,14 +297,19 @@ describe('SLAPolicyFilter', () => {
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+        for (const policy of policies) {
+            expect(await screen.findByText(policy.name)).toBeInTheDocument()
+        }
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator(policies.map((p) => p.uuid)),
-        )
+        await waitFor(() => {
+            expect(dispatchUpdate).toHaveBeenCalledWith(
+                withDefaultLogicalOperator(policies.map((p) => p.uuid)),
+            )
+        })
     })
 
-    it('should dispatch all selected policies on deselectAll', () => {
+    it('should dispatch all selected policies on deselectAll', async () => {
         const selected = withDefaultLogicalOperator(policies.map((p) => p.uuid))
         render(
             <SLAPolicyFilter
@@ -285,14 +322,14 @@ describe('SLAPolicyFilter', () => {
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-        userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+        userEvent.click(await screen.findByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator([]),
         )
     })
 
-    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
+    it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', async () => {
         const selectedPolicy = policies[0]
         const anotherSelectedPolicy = policies[1]
         const { rerender } = render(
@@ -305,8 +342,8 @@ describe('SLAPolicyFilter', () => {
             { storeState: defaultState },
         )
 
-        userEvent.click(screen.getByText(selectedPolicy.name))
-        userEvent.click(screen.getByText(anotherSelectedPolicy.name))
+        userEvent.click(await screen.findByText(selectedPolicy.name))
+        userEvent.click(await screen.findByText(anotherSelectedPolicy.name))
         userEvent.click(screen.getAllByText(selectedPolicy.name)[0])
 
         rerender(
@@ -329,7 +366,7 @@ describe('SLAPolicyFilter', () => {
     })
 
     describe('SLAPolicyFilterWithState', () => {
-        it('should render SLAPolicyFilterWithState component', () => {
+        it('should render SLAPolicyFilterWithState component', async () => {
             const spy = jest.spyOn(
                 statsSlice,
                 'mergeStatsFiltersWithLogicalOperator',
@@ -337,7 +374,7 @@ describe('SLAPolicyFilter', () => {
 
             render(<SLAPolicyFilterWithState />, { storeState: defaultState })
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-            userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+            userEvent.click(await screen.findByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
                 screen.getByText(FilterLabels[FilterKey.SlaPolicies]),

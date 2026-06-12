@@ -1,29 +1,31 @@
 import { render } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    useListMetafieldDefinitions,
-    useListShopifyCustomerMetafields,
-} from '@gorgias/helpdesk-queries'
+    mockListMetafieldDefinitionsHandler,
+    mockListMetafieldDefinitionsResponse,
+    mockListShopifyCustomerMetafieldsHandler,
+    mockListShopifyCustomerMetafieldsResponse,
+    mockMetafieldDefinition,
+} from '@gorgias/helpdesk-mocks'
 import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { CustomerMetafields } from '../CustomerMetafields'
 
-jest.mock('@gorgias/helpdesk-queries')
-
-const mockUseListShopifyCustomerMetafields =
-    useListShopifyCustomerMetafields as jest.Mock
-const mockUseListMetafieldDefinitions = useListMetafieldDefinitions as jest.Mock
-
+const server = setupServer()
 const mockStore = configureMockStore([thunk])()
+let queryClient = mockQueryClient()
 
 const integrationContext: IntegrationContextType = {
     integration: Map<string, unknown>(
@@ -34,9 +36,39 @@ const integrationContext: IntegrationContextType = {
     integrationId: 1,
 }
 
-let queryClient: QueryClient
+const textMetafield = {
+    type: 'single_line_text_field',
+    namespace: 'test_namespace',
+    key: 'test_key',
+    value: 'test_value',
+} as ShopifyMetafield
+
+const definition = {
+    id: 'definition-id',
+    namespace: 'test_namespace',
+    key: 'source_key',
+    name: 'Source Key',
+    ownerType: 'CUSTOMER',
+    type: 'single_line_text_field',
+}
+
+const useDefinitionsHandler = (definitions: (typeof definition)[] = []) => {
+    server.use(
+        mockListMetafieldDefinitionsHandler(async () =>
+            HttpResponse.json(
+                mockListMetafieldDefinitionsResponse({
+                    data: definitions.map((item) =>
+                        mockMetafieldDefinition(item as never),
+                    ),
+                }),
+            ),
+        ).handler,
+    )
+}
 
 const renderWithProviders = (ui: React.ReactElement) => {
+    queryClient = mockQueryClient()
+
     return render(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore}>
@@ -48,119 +80,100 @@ const renderWithProviders = (ui: React.ReactElement) => {
     )
 }
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    useDefinitionsHandler()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('<CustomerMetafields/>', () => {
-    beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-            logger: {
-                log: jest.fn(),
-                warn: console.warn,
-                error: () => {},
-            },
-        })
-        mockUseListMetafieldDefinitions.mockReturnValue({
-            data: { data: { data: [] } },
-        })
-    })
-
-    afterEach(() => {
-        queryClient.clear()
-    })
-
     it('should return loading state', () => {
-        mockUseListShopifyCustomerMetafields.mockReturnValue({
-            isLoading: true,
-            data: null,
-        })
+        server.use(
+            mockListShopifyCustomerMetafieldsHandler(
+                () => new Promise(() => undefined),
+            ).handler,
+        )
 
         const { container } = renderWithProviders(
             <CustomerMetafields integrationId={1} customerId={1} />,
         )
 
-        const elementsByClassName = container.getElementsByClassName('loader')
-
-        expect(elementsByClassName[0]).toBeInTheDocument()
-        expect(mockUseListShopifyCustomerMetafields).toHaveBeenCalled()
-    })
-
-    it('should return error state', () => {
-        mockUseListShopifyCustomerMetafields.mockReturnValue({
-            isError: true,
-            data: null,
-        })
-
-        renderWithProviders(
-            <CustomerMetafields integrationId={1} customerId={1} />,
-        )
-
-        expect(mockUseListShopifyCustomerMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Temporarily unavailable, try again later.'),
+            container.getElementsByClassName('loader')[0],
         ).toBeInTheDocument()
     })
 
-    it('should return empty state', () => {
-        mockUseListShopifyCustomerMetafields.mockReturnValue({
-            data: {
-                data: {
-                    data: [],
-                },
-            },
-        })
+    it('should return error state', async () => {
+        server.use(
+            mockListShopifyCustomerMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Temporarily unavailable' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         renderWithProviders(
             <CustomerMetafields integrationId={1} customerId={1} />,
         )
 
-        expect(mockUseListShopifyCustomerMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Customer has no metafields populated.'),
+            await screen.findByText(
+                'Temporarily unavailable, try again later.',
+            ),
         ).toBeInTheDocument()
     })
 
-    it('should return metafields', () => {
-        mockUseListShopifyCustomerMetafields.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            type: 'single_line_text_field',
-                            namespace: 'test_namespace',
-                            key: 'test_key',
-                            value: 'test_value',
-                        },
-                    ],
-                },
-            },
-        })
+    it('should return empty state', async () => {
+        server.use(
+            mockListShopifyCustomerMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListShopifyCustomerMetafieldsResponse({ data: [] }),
+                ),
+            ).handler,
+        )
 
         renderWithProviders(
             <CustomerMetafields integrationId={1} customerId={1} />,
         )
 
-        expect(mockUseListShopifyCustomerMetafields).toHaveBeenCalled()
-        expect(screen.getByText('Test Key:')).toBeInTheDocument()
+        expect(
+            await screen.findByText('Customer has no metafields populated.'),
+        ).toBeInTheDocument()
+    })
+
+    it('should return metafields', async () => {
+        server.use(
+            mockListShopifyCustomerMetafieldsHandler(async () =>
+                HttpResponse.json(
+                    mockListShopifyCustomerMetafieldsResponse({
+                        data: [textMetafield],
+                    }),
+                ),
+            ).handler,
+        )
+
+        renderWithProviders(
+            <CustomerMetafields integrationId={1} customerId={1} />,
+        )
+
+        expect(await screen.findByText('Test Key:')).toBeInTheDocument()
         expect(screen.getByText('test_value')).toBeInTheDocument()
     })
 
-    it('should render source metafields when useSourceMetafields is true', () => {
-        mockUseListMetafieldDefinitions.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            namespace: 'test_namespace',
-                            key: 'source_key',
-                            name: 'Source Key',
-                        },
-                    ],
-                },
-            },
-        })
+    it('should render source metafields when useSourceMetafields is true', async () => {
+        useDefinitionsHandler([definition])
         const sourceMetafields = [
             {
                 type: 'single_line_text_field',
@@ -179,30 +192,28 @@ describe('<CustomerMetafields/>', () => {
             />,
         )
 
-        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        expect(await screen.findByText('Source Key:')).toBeInTheDocument()
         expect(screen.getByText('source_value')).toBeInTheDocument()
     })
 
-    it('should return empty state when API returns undefined data', () => {
-        mockUseListShopifyCustomerMetafields.mockReturnValue({
-            data: {
-                data: {},
-            },
-        })
+    it('should return empty state when API returns undefined data', async () => {
+        server.use(
+            mockListShopifyCustomerMetafieldsHandler(async () =>
+                HttpResponse.json({} as never),
+            ).handler,
+        )
 
         renderWithProviders(
             <CustomerMetafields integrationId={1} customerId={1} />,
         )
 
         expect(
-            screen.getByText('Customer has no metafields populated.'),
+            await screen.findByText('Customer has no metafields populated.'),
         ).toBeInTheDocument()
     })
 
-    it('should return empty state when useSourceMetafields is true but metafields is empty', () => {
-        mockUseListShopifyCustomerMetafields.mockReturnValue({
-            data: null,
-        })
+    it('should return empty state when useSourceMetafields is true but metafields is empty', async () => {
+        useDefinitionsHandler([definition])
 
         renderWithProviders(
             <CustomerMetafields
@@ -214,7 +225,7 @@ describe('<CustomerMetafields/>', () => {
         )
 
         expect(
-            screen.getByText('Customer has no metafields populated.'),
+            await screen.findByText('Customer has no metafields populated.'),
         ).toBeInTheDocument()
     })
 })

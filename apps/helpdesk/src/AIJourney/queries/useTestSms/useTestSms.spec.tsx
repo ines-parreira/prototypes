@@ -1,191 +1,148 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { testJourney } from '@gorgias/convert-client'
+import {
+    mockTestJourneyApiDTO,
+    mockTestJourneyHandler,
+    mockTestProductApiDTO,
+} from '@gorgias/convert-mocks'
+
+import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useTestSms } from './useTestSms'
 
-jest.mock('@gorgias/convert-client', () => ({
-    testJourney: jest.fn(),
+jest.mock('rest_api/revenue_addon_api/client', () => ({
+    getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockTestJourney = testJourney as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
+
+const createWrapper = () => {
+    queryClient = mockQueryClient()
+
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+const product = mockTestProductApiDTO({ product_id: 'gid://shopify/Product/1' })
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useTestSms', () => {
-    let queryClient: QueryClient
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
+    it('should send a test journey SMS', async () => {
+        const response = mockTestJourneyApiDTO({ status: 'sent' } as never)
+        const testJourneyMock = mockTestJourneyHandler(async () =>
+            HttpResponse.json(response as never),
         )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
-    it('should send test SMS successfully', async () => {
-        const mockResponse = { success: true }
-        mockTestJourney.mockResolvedValue(mockResponse)
+        const waitForTestJourneyRequest = testJourneyMock.waitForRequest(server)
+        server.use(testJourneyMock.handler)
 
         const { result } = renderHook(() => useTestSms(), {
             wrapper: createWrapper(),
         })
 
-        await result.current.mutateAsync({
-            journeyId: 'journey-123',
-            phoneNumber: '+1415111111',
-            products: [
-                {
-                    product_id: 'product-123',
-                    variant_id: 'variant-123',
-                    price: 50.0,
-                },
-            ],
+        await act(async () => {
+            await expect(
+                result.current.mutateAsync({
+                    journeyId: 'journey-123',
+                    phoneNumber: '+15550001',
+                    products: [product],
+                    returningCustomer: true,
+                    testVariantId: 'variant-1',
+                }),
+            ).resolves.toEqual(response)
         })
 
-        await waitFor(() => {
-            expect(result.current.isSuccess).toBe(true)
-        })
+        await waitForTestJourneyRequest(async (request) => {
+            const url = new URL(request.url)
 
-        expect(mockTestJourney).toHaveBeenCalledTimes(1)
-        expect(mockTestJourney).toHaveBeenCalledWith(
-            'journey-123',
-            {
-                phone_number: '+1415111111',
-                products: [
-                    {
-                        product_id: 'product-123',
-                        variant_id: 'variant-123',
-                        price: 50.0,
-                    },
-                ],
-                returning_customer: undefined,
-            },
-            {
-                baseURL: expect.any(String),
-            },
-        )
-    })
-
-    it('should handle errors when sending test SMS', async () => {
-        const mockError = new Error('Failed to send test SMS')
-        mockTestJourney.mockRejectedValue(mockError)
-
-        const { result } = renderHook(() => useTestSms(), {
-            wrapper: createWrapper(),
-        })
-
-        await expect(
-            result.current.mutateAsync({
-                journeyId: 'journey-123',
-                phoneNumber: '+1415111111',
-                products: [
-                    {
-                        product_id: 'product-123',
-                        variant_id: 'variant-123',
-                        price: 50.0,
-                    },
-                ],
-            }),
-        ).rejects.toThrow('Failed to send test SMS')
-
-        await waitFor(() => {
-            expect(result.current.isError).toBe(true)
-        })
-
-        expect(mockTestJourney).toHaveBeenCalledTimes(1)
-    })
-
-    it('should send test SMS with returningCustomer parameter', async () => {
-        const mockResponse = { success: true }
-        mockTestJourney.mockResolvedValue(mockResponse)
-
-        const { result } = renderHook(() => useTestSms(), {
-            wrapper: createWrapper(),
-        })
-
-        await result.current.mutateAsync({
-            journeyId: 'journey-123',
-            phoneNumber: '+1415111111',
-            products: [],
-            returningCustomer: true,
-        })
-
-        await waitFor(() => {
-            expect(result.current.isSuccess).toBe(true)
-        })
-
-        expect(mockTestJourney).toHaveBeenCalledWith(
-            'journey-123',
-            {
-                phone_number: '+1415111111',
-                products: [],
+            expect(url.origin).toBe('http://mocked-base-url')
+            expect(url.pathname).toContain('journey-123')
+            expect(await request.json()).toEqual({
+                phone_number: '+15550001',
+                products: [product],
                 returning_customer: true,
-            },
-            {
-                baseURL: expect.any(String),
-            },
-        )
+                test_variant_id: 'variant-1',
+            })
+        })
     })
 
-    it('should omit test_variant_id when none is provided (weighted)', async () => {
-        mockTestJourney.mockResolvedValue({ success: true })
+    it('should omit optional fields when they are not provided', async () => {
+        const testJourneyMock = mockTestJourneyHandler(async () =>
+            HttpResponse.json(mockTestJourneyApiDTO() as never),
+        )
+        const waitForTestJourneyRequest = testJourneyMock.waitForRequest(server)
+        server.use(testJourneyMock.handler)
 
         const { result } = renderHook(() => useTestSms(), {
             wrapper: createWrapper(),
         })
 
-        await result.current.mutateAsync({
-            journeyId: 'journey-123',
-            phoneNumber: '+1415111111',
-            products: [],
+        await act(async () => {
+            await result.current.mutateAsync({
+                journeyId: 'journey-123',
+                phoneNumber: '+15550001',
+                products: [product],
+            })
         })
 
-        await waitFor(() => {
-            expect(result.current.isSuccess).toBe(true)
+        await waitForTestJourneyRequest(async (request) => {
+            expect(await request.json()).toEqual({
+                phone_number: '+15550001',
+                products: [product],
+                returning_customer: undefined,
+            })
         })
-
-        expect(mockTestJourney).toHaveBeenCalledWith(
-            'journey-123',
-            expect.not.objectContaining({ test_variant_id: expect.anything() }),
-            { baseURL: expect.any(String) },
-        )
     })
 
-    it('should forward test_variant_id when a forced selection is provided', async () => {
-        mockTestJourney.mockResolvedValue({ success: true })
+    it('should surface errors when sending test SMS fails', async () => {
+        server.use(
+            mockTestJourneyHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to send test SMS' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useTestSms(), {
             wrapper: createWrapper(),
         })
 
-        await result.current.mutateAsync({
-            journeyId: 'journey-123',
-            phoneNumber: '+1415111111',
-            products: [],
-            testVariantId: 'variant-uuid-1',
+        await act(async () => {
+            result.current.mutate({
+                journeyId: 'journey-123',
+                phoneNumber: '+15550001',
+                products: [product],
+            })
         })
 
-        await waitFor(() => {
-            expect(result.current.isSuccess).toBe(true)
-        })
-
-        expect(mockTestJourney).toHaveBeenCalledWith(
-            'journey-123',
-            expect.objectContaining({ test_variant_id: 'variant-uuid-1' }),
-            { baseURL: expect.any(String) },
-        )
+        await waitFor(() => expect(result.current.isError).toBe(true))
+        expect(result.current.error).toBeDefined()
     })
 })

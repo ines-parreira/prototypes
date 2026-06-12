@@ -1,9 +1,15 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListStores } from '@gorgias/helpdesk-queries'
+import {
+    mockListStoresHandler,
+    mockListStoresResponse,
+} from '@gorgias/helpdesk-mocks'
+import type { StoreIntegration } from '@gorgias/helpdesk-queries'
 
 import {
     withDefaultLogicalOperator,
@@ -48,10 +54,9 @@ const dispatchRemove = jest.fn()
 const dispatchStatFiltersDirty = jest.fn()
 const dispatchStatFiltersClean = jest.fn()
 
-jest.mock('@gorgias/helpdesk-queries')
-const useListStoresMock = assumeMock(useListStores)
+const server = setupServer()
 
-export const tempMultiStoreMock = [
+export const tempMultiStoreMock: StoreIntegration[] = [
     {
         store_integration_id: 1,
         name: 'Store name 1',
@@ -63,6 +68,13 @@ export const tempMultiStoreMock = [
         created_datetime: '2025-07-02T08:08:25-04:00',
     },
 ]
+
+const mockStoresList = (
+    stores: Array<(typeof tempMultiStoreMock)[number]> = tempMultiStoreMock,
+) =>
+    mockListStoresHandler(async () =>
+        HttpResponse.json(mockListStoresResponse({ data: stores })),
+    ).handler
 
 const renderComponent = (props = {}) =>
     render(
@@ -83,13 +95,22 @@ describe('MultiStoreFilter', () => {
         'i',
     )
 
-    useListStoresMock.mockReturnValue({
-        data: {
-            data: {
-                data: tempMultiStoreMock,
-            },
-        },
-    } as any)
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    beforeEach(() => {
+        server.use(mockStoresList())
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
 
     it('should render MultiStoreFilter component', () => {
         renderComponent()
@@ -107,12 +128,14 @@ describe('MultiStoreFilter', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render with filter', () => {
+    it('should render with filter', async () => {
         renderComponent({
             value: { values: [1], operator: LogicalOperatorEnum.ONE_OF },
         })
 
-        expect(screen.getByText(tempMultiStoreMock[0].name)).toBeInTheDocument()
+        expect(
+            await screen.findByText(tempMultiStoreMock[0].name),
+        ).toBeInTheDocument()
         expect(
             screen.queryByText(tempMultiStoreMock[1].name),
         ).not.toBeInTheDocument()
@@ -123,16 +146,24 @@ describe('MultiStoreFilter', () => {
 
         await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
-        expect(screen.getByText(tempMultiStoreMock[0].name)).toBeInTheDocument()
-        expect(screen.getByText(tempMultiStoreMock[1].name)).toBeInTheDocument()
+        expect(
+            await screen.findByText(tempMultiStoreMock[0].name),
+        ).toBeInTheDocument()
+        expect(
+            await screen.findByText(tempMultiStoreMock[1].name),
+        ).toBeInTheDocument()
     })
 
     it('should dispatch mergeStatsFilters action on selecting a multi store', async () => {
         renderComponent()
 
         await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-        await userEvent.click(screen.getByText(tempMultiStoreMock[0].name))
-        await userEvent.click(screen.getByText(tempMultiStoreMock[1].name))
+        await userEvent.click(
+            await screen.findByText(tempMultiStoreMock[0].name),
+        )
+        await userEvent.click(
+            await screen.findByText(tempMultiStoreMock[1].name),
+        )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator([
@@ -158,7 +189,7 @@ describe('MultiStoreFilter', () => {
             screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         await userEvent.click(
-            screen.getByRole('option', {
+            await screen.findByRole('option', {
                 name: new RegExp(tempMultiStoreMock[0].name),
             }),
         )
@@ -172,6 +203,7 @@ describe('MultiStoreFilter', () => {
         const { unmount } = renderComponent()
 
         await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        await screen.findByText(tempMultiStoreMock[0].name)
         await userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         const allAvailableIds = tempMultiStoreMock.map(
@@ -195,6 +227,7 @@ describe('MultiStoreFilter', () => {
             { storeState: defaultState },
         )
         await userEvent.click(screen.getByTestId('logical-operator'))
+        await screen.findByText(tempMultiStoreMock[0].name)
         await userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
@@ -206,7 +239,9 @@ describe('MultiStoreFilter', () => {
         const { rerender } = renderComponent()
 
         await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-        await userEvent.click(screen.getByText(tempMultiStoreMock[0].name))
+        await userEvent.click(
+            await screen.findByText(tempMultiStoreMock[0].name),
+        )
         await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         rerender(
@@ -257,11 +292,10 @@ describe('MultiStoreFilter', () => {
     })
 
     it('should render an empty list of stores when useListStores returns undefined', async () => {
-        useListStoresMock.mockReturnValue({
-            data: {
-                data: undefined,
-            },
-        } as any)
+        server.use(
+            mockListStoresHandler(async () => HttpResponse.json({} as any))
+                .handler,
+        )
 
         renderComponent()
 
@@ -296,6 +330,7 @@ describe('MultiStoreFilter', () => {
 
             render(<MultiStoreFilterWithState />, { storeState: defaultState })
             await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            await screen.findByText(tempMultiStoreMock[0].name)
             await userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
@@ -325,6 +360,7 @@ describe('MultiStoreFilter', () => {
                 storeState: defaultState,
             })
             await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+            await screen.findByText(tempMultiStoreMock[0].name)
             await userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(

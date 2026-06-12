@@ -1,9 +1,13 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
 import moment from 'moment'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 
-import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { mockGetTicketHandler } from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
@@ -47,9 +51,6 @@ import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetTicket: jest.fn(),
-}))
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
     () => ({
@@ -70,9 +71,12 @@ const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
             retry: false,
+            staleTime: Infinity,
         },
     },
 })
+
+const server = setupServer()
 
 const mockStore = {
     getState: () => ({
@@ -93,6 +97,35 @@ const wrapper = ({ children }: any) => (
         </QueryClientProvider>
     </Provider>
 )
+
+const seedTicket = (ticket: Record<string, unknown>) => {
+    queryClient.setQueryData(queryKeys.tickets.getTicket(ticket.id as number), {
+        data: ticket,
+    })
+}
+
+const mockPendingGetTicket = () =>
+    mockGetTicketHandler(async () => {
+        await new Promise(() => undefined)
+
+        return HttpResponse.json({} as never)
+    })
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(mockGetTicketHandler().handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const testDateRange = {
     start_datetime: moment().subtract(28, 'days').toISOString(),
@@ -3613,11 +3646,6 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        })
 
         const { result } = renderHook(
             () =>
@@ -3641,11 +3669,6 @@ describe('useRecentTickets', () => {
         ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
             data: undefined,
             isFetching: true,
-            isError: false,
-        })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
             isError: false,
         })
 
@@ -3676,11 +3699,7 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
-        })
+        server.use(mockPendingGetTicket().handler)
 
         const { result } = renderHook(
             () =>
@@ -3704,11 +3723,6 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: true,
         })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        })
 
         const { result } = renderHook(
             () =>
@@ -3726,7 +3740,7 @@ describe('useRecentTickets', () => {
         expect(result.current.isError).toBe(true)
     })
 
-    it('should return error state when ticket fetch fails', () => {
+    it('should return error state when ticket fetch fails', async () => {
         ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
             data: {
                 allData: [{ 'TicketEnriched.ticketId': '1' }],
@@ -3734,11 +3748,11 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: true,
-        })
+        server.use(
+            mockGetTicketHandler(async () =>
+                HttpResponse.json({} as never, { status: 500 }),
+            ).handler,
+        )
 
         const { result } = renderHook(
             () =>
@@ -3753,7 +3767,9 @@ describe('useRecentTickets', () => {
             { wrapper },
         )
 
-        expect(result.current.isError).toBe(true)
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
     })
 
     it('should transform tickets with handover outcome', () => {
@@ -3767,42 +3783,24 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock)
-            .mockReturnValueOnce({
-                data: {
-                    data: {
-                        id: 1,
-                        subject: 'Test Ticket 1',
-                        created_datetime: '2024-01-01T00:00:00Z',
-                        messages: [{ id: 1 }, { id: 2 }],
-                        custom_fields: {
-                            123: { value: 'Handover::With message' },
-                        },
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            })
-            .mockReturnValueOnce({
-                data: {
-                    data: {
-                        id: 2,
-                        subject: 'Test Ticket 2',
-                        created_datetime: '2024-01-02T00:00:00Z',
-                        messages: [{ id: 1 }],
-                        custom_fields: {
-                            123: { value: 'Automated::Success' },
-                        },
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            })
-            .mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: false,
-            })
+        seedTicket({
+            id: 1,
+            subject: 'Test Ticket 1',
+            created_datetime: '2024-01-01T00:00:00Z',
+            messages: [{ id: 1 }, { id: 2 }],
+            custom_fields: {
+                123: { value: 'Handover::With message' },
+            },
+        })
+        seedTicket({
+            id: 2,
+            subject: 'Test Ticket 2',
+            created_datetime: '2024-01-02T00:00:00Z',
+            messages: [{ id: 1 }],
+            custom_fields: {
+                123: { value: 'Automated::Success' },
+            },
+        })
 
         const { result } = renderHook(
             () =>
@@ -3840,25 +3838,13 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock)
-            .mockReturnValueOnce({
-                data: {
-                    data: {
-                        id: 123,
-                        subject: '',
-                        created_datetime: '2024-01-01T00:00:00Z',
-                        messages: [],
-                        custom_fields: {},
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            })
-            .mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: false,
-            })
+        seedTicket({
+            id: 123,
+            subject: '',
+            created_datetime: '2024-01-01T00:00:00Z',
+            messages: [],
+            custom_fields: {},
+        })
 
         const { result } = renderHook(
             () =>
@@ -3890,19 +3876,15 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockImplementation((id) => ({
-            data: {
-                data: {
-                    id,
-                    subject: `Ticket ${id}`,
-                    created_datetime: '2024-01-01T00:00:00Z',
-                    messages: [],
-                    custom_fields: {},
-                },
-            },
-            isLoading: false,
-            isError: false,
-        }))
+        ;[1, 2, 3].forEach((id) => {
+            seedTicket({
+                id,
+                subject: `Ticket ${id}`,
+                created_datetime: '2024-01-01T00:00:00Z',
+                messages: [],
+                custom_fields: {},
+            })
+        })
 
         const { result } = renderHook(
             () =>
@@ -3931,27 +3913,13 @@ describe('useRecentTickets', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockImplementation((id) =>
-            id === 1
-                ? {
-                      data: {
-                          data: {
-                              id: 1,
-                              subject: 'Valid Ticket',
-                              created_datetime: '2024-01-01T00:00:00Z',
-                              messages: [],
-                              custom_fields: {},
-                          },
-                      },
-                      isLoading: false,
-                      isError: false,
-                  }
-                : {
-                      data: undefined,
-                      isLoading: false,
-                      isError: false,
-                  },
-        )
+        seedTicket({
+            id: 1,
+            subject: 'Valid Ticket',
+            created_datetime: '2024-01-01T00:00:00Z',
+            messages: [],
+            custom_fields: {},
+        })
 
         const { result } = renderHook(
             () =>
@@ -3973,11 +3941,6 @@ describe('useRecentTickets', () => {
         ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
             data: undefined,
             isFetching: false,
-            isError: false,
-        })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
             isError: false,
         })
 
@@ -4018,11 +3981,6 @@ describe('useRecentTicketsWithDrilldown', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        })
 
         const { result } = renderHook(
             () =>
@@ -4046,11 +4004,6 @@ describe('useRecentTicketsWithDrilldown', () => {
         ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
             data: undefined,
             isFetching: true,
-            isError: false,
-        })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
             isError: false,
         })
 
@@ -4087,11 +4040,6 @@ describe('useRecentTicketsWithDrilldown', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        })
 
         const { result } = renderHook(
             () =>
@@ -4119,27 +4067,15 @@ describe('useRecentTicketsWithDrilldown', () => {
             isFetching: false,
             isError: false,
         })
-        ;(useGetTicket as jest.Mock)
-            .mockReturnValueOnce({
-                data: {
-                    data: {
-                        id: 1,
-                        subject: 'Test Ticket',
-                        created_datetime: '2024-01-01T00:00:00Z',
-                        messages: [{ id: 1 }],
-                        custom_fields: {
-                            123: { value: 'Automated::Success' },
-                        },
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            })
-            .mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: false,
-            })
+        seedTicket({
+            id: 1,
+            subject: 'Test Ticket',
+            created_datetime: '2024-01-01T00:00:00Z',
+            messages: [{ id: 1 }],
+            custom_fields: {
+                123: { value: 'Automated::Success' },
+            },
+        })
 
         const { result } = renderHook(
             () =>
@@ -4181,11 +4117,6 @@ describe('useRecentTicketsWithDrilldown', () => {
         ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
             data: { allData: [] },
             isFetching: false,
-            isError: false,
-        })
-        ;(useGetTicket as jest.Mock).mockReturnValue({
-            data: undefined,
-            isLoading: false,
             isError: false,
         })
 

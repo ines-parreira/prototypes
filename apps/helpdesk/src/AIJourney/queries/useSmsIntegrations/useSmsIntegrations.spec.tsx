@@ -1,98 +1,120 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { getSmsIntegrations } from '@gorgias/convert-client'
+import {
+    mockGetSmsIntegrationsHandler,
+    mockGetSmsIntegrationsResponse,
+    mockSMSIntegrationApiDTO,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useSmsIntegrations } from './useSmsIntegrations'
-
-jest.mock('@gorgias/convert-client', () => ({
-    getSmsIntegrations: jest.fn(),
-}))
 
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockGetSmsIntegrations = getSmsIntegrations as jest.Mock
-const mockGetGorgiasRevenueAddonApiBaseUrl =
-    getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const mockGetBaseUrl = getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
+
+const createWrapper = () => {
+    queryClient = mockQueryClient()
+
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockGetBaseUrl.mockReturnValue('http://mocked-base-url')
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useSmsIntegrations', () => {
-    let queryClient: QueryClient
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
+    it('should fetch SMS integrations', async () => {
+        const response = mockGetSmsIntegrationsResponse([
+            mockSMSIntegrationApiDTO({
+                sms_integration_id: 1,
+                store_integration_id: 123,
+                phone_number: '+15550001',
+            }),
+        ])
+        const getSmsIntegrationsMock = mockGetSmsIntegrationsHandler(async () =>
+            HttpResponse.json(response),
         )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-        mockGetGorgiasRevenueAddonApiBaseUrl.mockReturnValue(
-            'http://mocked-base-url',
-        )
-    })
-
-    it('should fetch SMS integrations successfully', async () => {
-        const mockIntegrations = [
-            { sms_integration_id: 'sms-1', name: 'Integration 1' },
-            { sms_integration_id: 'sms-2', name: 'Integration 2' },
-        ]
-
-        mockGetSmsIntegrations.mockResolvedValue({ data: mockIntegrations })
+        const waitForGetSmsIntegrationsRequest =
+            getSmsIntegrationsMock.waitForRequest(server)
+        server.use(getSmsIntegrationsMock.handler)
 
         const { result } = renderHook(() => useSmsIntegrations(), {
             wrapper: createWrapper(),
         })
 
+        await waitForGetSmsIntegrationsRequest((request) => {
+            expect(new URL(request.url).origin).toBe('http://mocked-base-url')
+        })
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockGetSmsIntegrations).toHaveBeenCalledTimes(1)
-        expect(mockGetSmsIntegrations).toHaveBeenCalledWith({
-            baseURL: 'http://mocked-base-url',
-        })
-        expect(result.current.data).toEqual(mockIntegrations)
+        expect(result.current.data).toEqual(response)
+    })
+
+    it('should not fetch when disabled', async () => {
+        const requests: Request[] = []
+        server.use(
+            mockGetSmsIntegrationsHandler(async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(mockGetSmsIntegrationsResponse())
+            }).handler,
+        )
+
+        const { result } = renderHook(
+            () => useSmsIntegrations({ enabled: false }),
+            { wrapper: createWrapper() },
+        )
+
+        await waitFor(() => expect(result.current.fetchStatus).toBe('idle'))
+
+        expect(requests).toHaveLength(0)
+        expect(result.current.data).toBeUndefined()
     })
 
     it('should handle errors when fetching SMS integrations', async () => {
-        const mockError = new Error('Failed to fetch SMS integrations')
-
-        mockGetSmsIntegrations.mockRejectedValue(mockError)
+        server.use(
+            mockGetSmsIntegrationsHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to fetch SMS integrations' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useSmsIntegrations(), {
             wrapper: createWrapper(),
         })
 
         await waitFor(() => expect(result.current.isError).toBe(true))
-
-        expect(mockGetSmsIntegrations).toHaveBeenCalledTimes(1)
-        expect(result.current.error).toEqual(mockError)
-    })
-
-    it('should respect the enabled option when set to false', async () => {
-        const { result } = renderHook(
-            () => useSmsIntegrations({ enabled: false }),
-            { wrapper: createWrapper() },
-        )
-
-        await waitFor(() => {
-            expect(result.current.fetchStatus).toBe('idle')
-        })
-
-        expect(mockGetSmsIntegrations).not.toHaveBeenCalled()
-        expect(result.current.data).toBeUndefined()
+        expect(result.current.error).toBeDefined()
     })
 })

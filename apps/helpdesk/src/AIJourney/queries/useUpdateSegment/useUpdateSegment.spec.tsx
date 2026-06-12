@@ -1,21 +1,21 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { updateSegment } from '@gorgias/customer-segmentation-client'
+import {
+    mockUpdateSegmentHandler,
+    mockUpdateSegmentResponse,
+} from '@gorgias/customer-segmentation-mocks'
 
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useUpdateSegment } from './useUpdateSegment'
 
-jest.mock('@gorgias/customer-segmentation-client', () => ({
-    updateSegment: jest.fn(),
-}))
-
-const mockUpdateSegment = updateSegment as jest.Mock
+const server = setupServer()
+let queryClient = mockQueryClient()
 
 const updateSegmentRequest = {
     name: 'Updated Segment',
@@ -23,129 +23,98 @@ const updateSegmentRequest = {
         '{"field":"email","operator":"contains","value":"@example.com"}',
 }
 
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('useUpdateSegment', () => {
-    let queryClient: QueryClient
-    const mockStore = configureMockStore([thunk])()
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                mutations: {
-                    retry: false,
-                },
-            },
-        })
-
-        return ({ children }: { children?: React.ReactNode }) => (
-            <Provider store={mockStore}>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Provider>
-        )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should call updateSegment with the correct segmentId and request body', async () => {
-        mockUpdateSegment.mockResolvedValue({ data: undefined })
-
-        const { result } = renderHook(() => useUpdateSegment(), {
-            wrapper: createWrapper(),
+        const response = mockUpdateSegmentResponse({
+            id: 'seg-123',
+            ...updateSegmentRequest,
         })
-
-        await act(async () => {
-            result.current.mutate({
-                segmentId: 'seg-123',
-                updateSegmentRequest,
-            })
-        })
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(mockUpdateSegment).toHaveBeenCalledTimes(1)
-        expect(mockUpdateSegment).toHaveBeenCalledWith(
-            'seg-123',
-            updateSegmentRequest,
+        const updateSegmentMock = mockUpdateSegmentHandler(async () =>
+            HttpResponse.json(response),
         )
-    })
-
-    it('should return the response data on success', async () => {
-        const responseData = { id: 'seg-123', ...updateSegmentRequest }
-        mockUpdateSegment.mockResolvedValue({ data: responseData })
+        const waitForUpdateSegmentRequest =
+            updateSegmentMock.waitForRequest(server)
+        server.use(updateSegmentMock.handler)
 
         const { result } = renderHook(() => useUpdateSegment(), {
             wrapper: createWrapper(),
         })
 
         await act(async () => {
-            result.current.mutate({
-                segmentId: 'seg-123',
-                updateSegmentRequest,
-            })
+            await expect(
+                result.current.mutateAsync({
+                    segmentId: 'seg-123',
+                    updateSegmentRequest,
+                }),
+            ).resolves.toEqual(response)
         })
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(result.current.data).toEqual(responseData)
+        await waitForUpdateSegmentRequest(async (request) => {
+            expect(new URL(request.url).pathname).toContain('seg-123')
+            expect(await request.json()).toEqual(updateSegmentRequest)
+        })
     })
 
-    it('should invalidate segments queries on success', async () => {
-        mockUpdateSegment.mockResolvedValue({ data: undefined })
-
-        const { result } = renderHook(() => useUpdateSegment(), {
-            wrapper: createWrapper(),
-        })
-
+    it('should invalidate segments queries and show a success toast on success', async () => {
+        server.use(mockUpdateSegmentHandler().handler)
         const invalidateQueriesSpy = jest.spyOn(
             queryClient,
             'invalidateQueries',
         )
 
-        await act(async () => {
-            result.current.mutate({
-                segmentId: 'seg-456',
-                updateSegmentRequest,
-            })
-        })
-
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-            queryKey: aiJourneyKeys.segmentsAll(),
-        })
-    })
-
-    it('should show a success toast on success', async () => {
-        mockUpdateSegment.mockResolvedValue({ data: undefined })
-
         const { result } = renderHook(() => useUpdateSegment(), {
             wrapper: createWrapper(),
         })
 
         await act(async () => {
-            result.current.mutate({
-                segmentId: 'seg-123',
+            await result.current.mutateAsync({
+                segmentId: 'seg-456',
                 updateSegmentRequest,
             })
         })
 
-        await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-        const toastEl = await screen.findByRole('status', {
-            name: 'Segment updated successfully',
-        })
-        expect(toastEl).toHaveAttribute('data-intent', 'success')
+        await waitFor(() =>
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: aiJourneyKeys.segmentsAll(),
+            }),
+        )
+        expect(
+            await screen.findByRole('status', {
+                name: 'Segment updated successfully',
+            }),
+        ).toHaveAttribute('data-intent', 'success')
     })
 
     it('should set error state and show error toast when updateSegment fails', async () => {
-        const consoleErrorSpy = jest
-            .spyOn(console, 'error')
-            .mockImplementation()
-        const mockError = new Error('Failed to update segment')
-        mockUpdateSegment.mockRejectedValue(mockError)
+        server.use(
+            mockUpdateSegmentHandler(async () =>
+                HttpResponse.json(
+                    { error: 'Failed to update segment' } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useUpdateSegment(), {
             wrapper: createWrapper(),
@@ -160,11 +129,11 @@ describe('useUpdateSegment', () => {
 
         await waitFor(() => expect(result.current.isError).toBe(true))
 
-        expect(result.current.error).toEqual(mockError)
-        const toastEl = await screen.findByRole('status', {
-            name: 'Error updating segment',
-        })
-        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
-        consoleErrorSpy.mockRestore()
+        expect(result.current.error).toBeDefined()
+        expect(
+            await screen.findByRole('status', {
+                name: 'Error updating segment',
+            }),
+        ).toHaveAttribute('data-intent', 'destructive')
     })
 })

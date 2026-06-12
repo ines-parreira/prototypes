@@ -1,20 +1,23 @@
-import { screen } from '@testing-library/react'
-import { useGetTicket } from '@gorgias/helpdesk-queries'
-import type { Ticket } from '@gorgias/helpdesk-types'
-
 import { render } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetTicketHandler,
+    mockGetTicketResponse,
+    mockTicket,
+} from '@gorgias/helpdesk-mocks'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { TicketReferenceCard } from './TicketReferenceCard'
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    useGetTicket: jest.fn(),
-}))
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-const mockUseGetTicket = useGetTicket as jest.MockedFunction<
-    typeof useGetTicket
->
-
-const baseTicket = {
+const baseTicket = mockTicket({
     id: 42,
     subject: 'Where is my order?',
     status: 'open',
@@ -34,113 +37,132 @@ const baseTicket = {
     },
     created_datetime: '2025-05-15T15:00:00Z',
     updated_datetime: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
-} as unknown as Ticket
+})
 
-function setTicketResult(
-    result: Partial<ReturnType<typeof useGetTicket>> & {
-        data?: { data: Ticket } | undefined
-    },
-) {
-    mockUseGetTicket.mockReturnValue({
-        data: undefined,
-        isLoading: false,
-        isError: false,
-        error: null,
-        ...result,
-    } as ReturnType<typeof useGetTicket>)
+function renderComponent(isOpen = true) {
+    queryClient = mockQueryClient()
+
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <TicketReferenceCard ticketId={42} isOpen={isOpen} />
+        </QueryClientProvider>,
+    )
 }
 
+function useTicketHandler(ticket = baseTicket) {
+    server.use(
+        mockGetTicketHandler(async () =>
+            HttpResponse.json(mockGetTicketResponse(ticket)),
+        ).handler,
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('TicketReferenceCard', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('does not fetch the ticket while the popover is closed', () => {
-        setTicketResult({})
+        const requests: Request[] = []
+        server.use(
+            mockGetTicketHandler(async ({ request }) => {
+                requests.push(request)
 
-        render(<TicketReferenceCard ticketId={42} isOpen={false} />)
-
-        expect(mockUseGetTicket).toHaveBeenCalledWith(
-            42,
-            undefined,
-            expect.objectContaining({
-                query: expect.objectContaining({ enabled: false }),
-            }),
+                return HttpResponse.json(mockGetTicketResponse(baseTicket))
+            }).handler,
         )
+
+        renderComponent(false)
+
+        expect(requests).toHaveLength(0)
     })
 
-    it('renders the subject, ticket id, status, and customer name', () => {
-        setTicketResult({
-            data: { data: baseTicket },
-        })
+    it('renders the subject, ticket id, status, and customer name', async () => {
+        useTicketHandler()
 
-        render(<TicketReferenceCard ticketId={42} isOpen={true} />)
+        renderComponent()
 
-        expect(screen.getByText('Where is my order?')).toBeInTheDocument()
+        expect(
+            await screen.findByText('Where is my order?'),
+        ).toBeInTheDocument()
         expect(screen.getByText('#42')).toBeInTheDocument()
         expect(screen.getByText('Open')).toBeInTheDocument()
         expect(screen.getByText('Ada Lovelace')).toBeInTheDocument()
     })
 
-    it('falls back to "Untitled ticket" when the subject is missing', () => {
-        setTicketResult({
-            data: { data: { ...baseTicket, subject: null } as Ticket },
-        })
+    it('falls back to "Untitled ticket" when the subject is missing', async () => {
+        useTicketHandler(mockTicket({ ...baseTicket, subject: null }))
 
-        render(<TicketReferenceCard ticketId={42} isOpen={true} />)
+        renderComponent()
 
-        expect(screen.getByText('Untitled ticket')).toBeInTheDocument()
+        expect(await screen.findByText('Untitled ticket')).toBeInTheDocument()
     })
 
-    it('renders the closed status tag', () => {
-        setTicketResult({
-            data: { data: { ...baseTicket, status: 'closed' } as Ticket },
-        })
+    it('renders the closed status tag', async () => {
+        useTicketHandler(mockTicket({ ...baseTicket, status: 'closed' }))
 
-        render(<TicketReferenceCard ticketId={42} isOpen={true} />)
+        renderComponent()
 
-        expect(screen.getByText('Closed')).toBeInTheDocument()
+        expect(await screen.findByText('Closed')).toBeInTheDocument()
     })
 
-    it('falls back to the customer email when no name is set', () => {
-        setTicketResult({
-            data: {
-                data: {
-                    ...baseTicket,
-                    customer: {
-                        ...baseTicket.customer,
-                        firstname: '',
-                        lastname: '',
-                        name: null,
-                        email: 'ada@example.com',
-                    },
-                } as Ticket,
-            },
-        })
+    it('falls back to the customer email when no name is set', async () => {
+        useTicketHandler(
+            mockTicket({
+                ...baseTicket,
+                customer: {
+                    ...baseTicket.customer,
+                    firstname: '',
+                    lastname: '',
+                    name: null,
+                    email: 'ada@example.com',
+                },
+            }),
+        )
 
-        render(<TicketReferenceCard ticketId={42} isOpen={true} />)
+        renderComponent()
 
-        expect(screen.getByText('ada@example.com')).toBeInTheDocument()
+        expect(await screen.findByText('ada@example.com')).toBeInTheDocument()
     })
 
     it('renders a skeleton while loading', () => {
-        setTicketResult({ isLoading: true })
+        server.use(
+            mockGetTicketHandler(async () => {
+                await new Promise(() => undefined)
 
-        const { container } = render(
-            <TicketReferenceCard ticketId={42} isOpen={true} />,
+                return HttpResponse.json(mockGetTicketResponse(baseTicket))
+            }).handler,
         )
+
+        const { container } = renderComponent()
 
         expect(screen.queryByText(/where is my order/i)).not.toBeInTheDocument()
         expect(container.textContent).toMatch(/ticket/i)
     })
 
-    it('renders an error fallback when the fetch fails', () => {
-        setTicketResult({ isError: true })
+    it('renders an error fallback when the fetch fails', async () => {
+        server.use(
+            mockGetTicketHandler(async () =>
+                HttpResponse.json(
+                    { error: "Couldn't load this ticket." } as never,
+                    { status: 500 },
+                ),
+            ).handler,
+        )
 
-        render(<TicketReferenceCard ticketId={42} isOpen={true} />)
+        renderComponent()
 
         expect(
-            screen.getByText("Couldn't load this ticket."),
+            await screen.findByText("Couldn't load this ticket."),
         ).toBeInTheDocument()
     })
 })

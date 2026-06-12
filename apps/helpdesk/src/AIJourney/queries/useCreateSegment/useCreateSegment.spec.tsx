@@ -1,82 +1,88 @@
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { createSegment } from '@gorgias/customer-segmentation-client'
+import {
+    mockCreateSegmentHandler,
+    mockCreateSegmentResponse,
+} from '@gorgias/customer-segmentation-mocks'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useCreateSegment } from './useCreateSegment'
 
-jest.mock('@gorgias/customer-segmentation-client', () => ({
-    createSegment: jest.fn(),
-}))
+const server = setupServer()
+let queryClient = mockQueryClient()
 
-const mockCreateSegment = createSegment as jest.Mock
+const createWrapper = () => {
+    return ({ children }: { children?: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useCreateSegment', () => {
-    let queryClient: QueryClient
-
-    const createWrapper = () => {
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-            logger: { log: () => {}, warn: () => {}, error: () => {} },
-        })
-        return ({ children }: { children?: React.ReactNode }) => (
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        )
-    }
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     it('should call createSegment with the provided params and return res.data', async () => {
-        const mockData = {
+        const response = mockCreateSegmentResponse({
             id: '1',
             name: 'My Segment',
             conditions: 'gt(shopper.lifetime_value, 100)',
             integration_id: 123,
-            created_datetime: '2026-01-01T00:00:00',
-            updated_datetime: '2026-01-01T00:00:00',
-        }
-        mockCreateSegment.mockResolvedValue({ data: mockData })
+        })
+        const createSegmentMock = mockCreateSegmentHandler(async () =>
+            HttpResponse.json(response),
+        )
+        const waitForCreateSegmentRequest =
+            createSegmentMock.waitForRequest(server)
+        server.use(createSegmentMock.handler)
 
         const { result } = renderHook(() => useCreateSegment(), {
             wrapper: createWrapper(),
         })
 
-        await act(async () => {
-            const response = await result.current.mutateAsync({
-                name: 'My Segment',
-                conditions: 'gt(shopper.lifetime_value, 100)',
-                integration_id: 123,
-            })
-
-            expect(response).toEqual(mockData)
-        })
-
-        expect(mockCreateSegment).toHaveBeenCalledTimes(1)
-        expect(mockCreateSegment).toHaveBeenCalledWith({
+        const requestBody = {
             name: 'My Segment',
             conditions: 'gt(shopper.lifetime_value, 100)',
             integration_id: 123,
+        }
+
+        await act(async () => {
+            await expect(
+                result.current.mutateAsync(requestBody),
+            ).resolves.toEqual(response)
+        })
+
+        await waitForCreateSegmentRequest(async (request) => {
+            expect(await request.json()).toEqual(requestBody)
         })
     })
 
-    it('should invalidate segments queries for the integration on success', async () => {
-        mockCreateSegment.mockResolvedValue({ data: {} })
-
-        const wrapper = createWrapper()
+    it('should invalidate segments queries and show a success toast on success', async () => {
+        server.use(mockCreateSegmentHandler().handler)
         const invalidateQueriesSpy = jest.spyOn(
             queryClient,
             'invalidateQueries',
         )
 
-        const { result } = renderHook(() => useCreateSegment(), { wrapper })
+        const { result } = renderHook(() => useCreateSegment(), {
+            wrapper: createWrapper(),
+        })
 
         await act(async () => {
             await result.current.mutateAsync({
@@ -89,31 +95,22 @@ describe('useCreateSegment', () => {
         expect(invalidateQueriesSpy).toHaveBeenCalledWith({
             queryKey: ['journeys', 'segments', 123],
         })
-    })
-
-    it('should show a success toast on success', async () => {
-        mockCreateSegment.mockResolvedValue({ data: {} })
-
-        const { result } = renderHook(() => useCreateSegment(), {
-            wrapper: createWrapper(),
+        expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+            queryKey: ['audience-segments', 123],
         })
-
-        await act(async () => {
-            await result.current.mutateAsync({
-                name: 'My Segment',
-                conditions: '',
-                integration_id: 123,
-            })
-        })
-
-        const toastEl = await screen.findByRole('status', {
-            name: 'Segment created',
-        })
-        expect(toastEl).toHaveAttribute('data-intent', 'success')
+        expect(
+            await screen.findByRole('status', { name: 'Segment created' }),
+        ).toHaveAttribute('data-intent', 'success')
     })
 
     it('should show an error toast on failure', async () => {
-        mockCreateSegment.mockRejectedValue(new Error('Network error'))
+        server.use(
+            mockCreateSegmentHandler(async () =>
+                HttpResponse.json({ error: 'Network error' } as never, {
+                    status: 500,
+                }),
+            ).handler,
+        )
 
         const { result } = renderHook(() => useCreateSegment(), {
             wrapper: createWrapper(),
@@ -126,12 +123,13 @@ describe('useCreateSegment', () => {
                     conditions: '',
                     integration_id: 123,
                 }),
-            ).rejects.toThrow('Network error')
+            ).rejects.toBeDefined()
         })
 
-        const toastEl = await screen.findByRole('status', {
-            name: 'Error creating segment',
-        })
-        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        expect(
+            await screen.findByRole('status', {
+                name: 'Error creating segment',
+            }),
+        ).toHaveAttribute('data-intent', 'destructive')
     })
 })
