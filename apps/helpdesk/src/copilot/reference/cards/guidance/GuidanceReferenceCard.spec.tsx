@@ -232,6 +232,9 @@ describe('GuidanceReferenceCard', () => {
         expect(screen.getByText('Refund policy guidance')).toBeInTheDocument()
         expect(screen.getByText('Enabled')).toBeInTheDocument()
         expect(
+            screen.getByText('Guidance').closest('[data-color]'),
+        ).toHaveAttribute('data-color', 'purple')
+        expect(
             screen.getByText(/refund window is 30 days/i),
         ).toBeInTheDocument()
     })

@@ -2,12 +2,10 @@ import { Box, Card, Skeleton } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
 import { ArticleTypeBadge } from './ArticleTypeBadge'
-import type { ArticleTypeBadgeColor } from './ArticleTypeBadge'
 
 type Props = {
     icon: IconName
     typeLabel: string
-    typeColor: ArticleTypeBadgeColor
     /** Reserve space for the content body preview (Guidance only). */
     hasBody?: boolean
 }
@@ -20,7 +18,6 @@ type Props = {
 export function ArticleReferenceCardSkeleton({
     icon,
     typeLabel,
-    typeColor,
     hasBody = false,
 }: Props) {
     return (
@@ -37,11 +34,7 @@ export function ArticleReferenceCardSkeleton({
                 justifyContent="space-between"
                 gap="xs"
             >
-                <ArticleTypeBadge
-                    icon={icon}
-                    label={typeLabel}
-                    color={typeColor}
-                />
+                <ArticleTypeBadge icon={icon} label={typeLabel} />
                 <Skeleton height={24} width={88} />
             </Box>
 

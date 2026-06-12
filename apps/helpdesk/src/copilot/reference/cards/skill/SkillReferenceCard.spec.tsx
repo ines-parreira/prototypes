@@ -96,6 +96,9 @@ describe('SkillReferenceCard', () => {
 
         expect(screen.getByText('Refund handler')).toBeInTheDocument()
         expect(screen.getByText('Enabled')).toBeInTheDocument()
+        expect(
+            screen.getByText('Skill').closest('[data-color]'),
+        ).toHaveAttribute('data-color', 'purple')
         expect(screen.getByText('Return / Request')).toBeInTheDocument()
         expect(screen.getByText('Return / Status')).toBeInTheDocument()
     })

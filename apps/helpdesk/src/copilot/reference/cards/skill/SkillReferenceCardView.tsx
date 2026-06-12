@@ -15,7 +15,6 @@ export function SkillReferenceCardView({
             article={article}
             icon={VISUAL.icon}
             typeLabel={VISUAL.label}
-            typeColor="accent"
         />
     )
 }

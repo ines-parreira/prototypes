@@ -8,7 +8,6 @@ export function SkillReferenceCardSkeleton() {
         <ArticleReferenceCardSkeleton
             icon={VISUAL.icon}
             typeLabel={VISUAL.label}
-            typeColor="accent"
         />
     )
 }

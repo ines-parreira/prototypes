@@ -8,7 +8,6 @@ import type { GuidanceArticle } from 'pages/aiAgent/types'
 import { RelativeTime } from 'pages/common/components/RelativeTime'
 
 import { ArticleTypeBadge } from './ArticleTypeBadge'
-import type { ArticleTypeBadgeColor } from './ArticleTypeBadge'
 import { getStatusTag } from './status'
 
 import css from './ArticleReferenceCard.less'
@@ -19,7 +18,6 @@ type Props = {
     article: GuidanceArticle
     icon: IconName
     typeLabel: string
-    typeColor: ArticleTypeBadgeColor
     /**
      * Optional rendered content preview (Guidance only) — a mix of plain text
      * and inline action/variable pills produced by `renderGuidanceContent`.
@@ -29,14 +27,13 @@ type Props = {
 
 /**
  * Shared reference card for the two `GuidanceArticle`-backed reference types
- * (Skill, Guidance). They differ only by their type badge (icon/label/color)
- * and whether they show a content body preview.
+ * (Skill, Guidance). They differ only by their type badge icon/label and
+ * whether they show a content body preview.
  */
 export function ArticleReferenceCard({
     article,
     icon,
     typeLabel,
-    typeColor,
     body,
 }: Props) {
     const status = getStatusTag(article)
@@ -58,11 +55,7 @@ export function ArticleReferenceCard({
                 justifyContent="space-between"
                 gap="xs"
             >
-                <ArticleTypeBadge
-                    icon={icon}
-                    label={typeLabel}
-                    color={typeColor}
-                />
+                <ArticleTypeBadge icon={icon} label={typeLabel} />
                 <Tag
                     leadingSlot={
                         status.dotColor ? (

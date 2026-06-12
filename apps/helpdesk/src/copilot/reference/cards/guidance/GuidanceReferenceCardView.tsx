@@ -23,7 +23,6 @@ export function GuidanceReferenceCardView({ article, body }: Props) {
             article={article}
             icon={VISUAL.icon}
             typeLabel={VISUAL.label}
-            typeColor="blue"
             body={body}
         />
     )

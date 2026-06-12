@@ -8,7 +8,6 @@ export function GuidanceReferenceCardSkeleton() {
         <ArticleReferenceCardSkeleton
             icon={VISUAL.icon}
             typeLabel={VISUAL.label}
-            typeColor="blue"
             hasBody
         />
     )
