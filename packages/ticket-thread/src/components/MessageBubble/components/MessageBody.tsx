@@ -5,6 +5,8 @@ import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import { ReviewedProductCard } from './ReviewedProductCard'
+import { SimilarProductsSearch } from './SimilarProductsSearch'
+import { useSimilarProductsSearch } from './useSimilarProductSearch'
 import { getMessageContent } from './utils/getMessageContent'
 import { getReviewedProductData } from './utils/product'
 import { useDarkModeReadableEmailHtml } from './utils/useDarkModeReadableEmailHtml'
@@ -39,6 +41,14 @@ export function MessageBody({ className, item }: MessageBodyProps) {
     )
     const content = isHtml ? readableContent : displayedContent
     const reviewedProduct = getReviewedProductData(item.data.meta)
+    const {
+        shouldRender: shouldRenderSimilarProductsSearch,
+        productReference,
+    } = useSimilarProductsSearch(item.data.meta)
+
+    if (shouldRenderSimilarProductsSearch && productReference) {
+        return <SimilarProductsSearch {...productReference} />
+    }
 
     if (!displayedContent && !isStripped && !reviewedProduct) {
         return null

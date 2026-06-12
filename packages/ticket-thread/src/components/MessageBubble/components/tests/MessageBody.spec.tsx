@@ -168,6 +168,41 @@ describe('MessageBody', () => {
         )
     })
 
+    it('renders only the similar products component without the message text', () => {
+        renderMessageBody(
+            mockTicketMessage({
+                body_html: null,
+                body_text: 'Find me products similar to this one',
+                stripped_html: null,
+                stripped_text: 'Find me products similar to this one',
+                meta: {
+                    similar_products_search: {
+                        productId: '123',
+                        variantId: '456',
+                    },
+                    product_reference: {
+                        id: 123,
+                        title: 'Bum Bum Cream',
+                        url: 'https://soldejaneiro.com/products/bum-bum-cream',
+                        featureImageUrl:
+                            'https://cdn.example.com/bum-bum-cream.png',
+                        variantId: 456,
+                    },
+                },
+            }) as TicketThreadRegularMessageItem['data'],
+        )
+
+        expect(
+            screen.getByRole('link', { name: /Bum Bum Cream/i }),
+        ).toHaveAttribute(
+            'href',
+            'https://soldejaneiro.com/products/bum-bum-cream',
+        )
+        expect(
+            screen.queryByText('Find me products similar to this one'),
+        ).not.toBeInTheDocument()
+    })
+
     it('renders nothing when there is no content', () => {
         const { container } = renderMessageBody(
             mockTicketMessage({
