@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getBreakdownQuery } from 'domains/reporting/models/scopes/utils'
 
 export const aiSalesAgentBuyThroughRateScope = defineScope({
     scope: MetricScope.AiSalesAgentBuyThroughRate,
@@ -39,15 +40,11 @@ export const buyThroughRateQueryV2Factory = (
     ctx: AiSalesAgentBuyThroughRateContext,
 ) => buyThroughRate.build(ctx)
 
-export const aiSalesBuyThroughRatePerProduct = aiSalesAgentBuyThroughRateScope
-    .defineMetricName(
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE_PER_PRODUCT,
-    )
-    .defineQuery(() => ({
-        measures: ['productBuyThroughRate'],
-        dimensions: ['productRecommended'],
-    }))
-
-export const aiSalesAgentBuyThroughRatePerProductQueryFactoryV2 = (
-    ctx: AiSalesAgentBuyThroughRateContext,
-) => aiSalesBuyThroughRatePerProduct.build(ctx)
+export const {
+    breakdownQuery: aiSalesBuyThroughRatePerProduct,
+    breakdownQueryFactory: aiSalesAgentBuyThroughRatePerProductQueryFactoryV2,
+} = getBreakdownQuery(
+    aiSalesAgentBuyThroughRateScope,
+    () => ({ measures: ['productBuyThroughRate'] as const }),
+    METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE_PER_PRODUCT,
+)

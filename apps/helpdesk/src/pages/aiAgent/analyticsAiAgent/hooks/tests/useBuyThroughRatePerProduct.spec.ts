@@ -62,6 +62,7 @@ describe('useBuyThroughRatePerProduct', () => {
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
+            dimensions: ['productId'],
         })
     })
 
@@ -129,6 +130,7 @@ describe('fetchBuyThroughRatePerProduct', () => {
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
+            dimensions: ['productId'],
         })
     })
 

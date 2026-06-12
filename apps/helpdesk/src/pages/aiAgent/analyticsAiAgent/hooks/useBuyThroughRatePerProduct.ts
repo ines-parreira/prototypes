@@ -12,6 +12,7 @@ export const useBuyThroughRatePerProduct = (
     const query = aiSalesAgentBuyThroughRatePerProductQueryFactoryV2({
         filters,
         timezone,
+        dimensions: ['productId'],
     })
     return useStatsMetricPerDimension(query)
 }
@@ -23,6 +24,7 @@ export const fetchBuyThroughRatePerProduct = (
     const query = aiSalesAgentBuyThroughRatePerProductQueryFactoryV2({
         filters,
         timezone,
+        dimensions: ['productId'],
     })
     return fetchStatsMetricPerDimension(query)
 }

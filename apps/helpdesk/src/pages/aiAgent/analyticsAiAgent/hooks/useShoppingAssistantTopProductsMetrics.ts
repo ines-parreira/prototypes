@@ -99,9 +99,8 @@ const getBuyThroughRate = (
     productId: number,
 ): number =>
     Number(
-        allData.find((v) =>
-            parseProductIds(v.productRecommended).includes(productId),
-        )?.productBuyThroughRate,
+        allData.find((v) => String(v.productId) === String(productId))
+            ?.productBuyThroughRate,
     ) || 0
 
 const buildProductUrl = (

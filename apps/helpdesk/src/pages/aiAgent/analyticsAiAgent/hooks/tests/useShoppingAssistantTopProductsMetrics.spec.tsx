@@ -88,7 +88,7 @@ const makeClicksMetric = (
 })
 
 const makeBtrMetric = (
-    rows: { productRecommended: number[]; productBuyThroughRate: number }[],
+    rows: { productId: number; productBuyThroughRate: number }[],
     overrides: Partial<{ isFetching: boolean; isError: boolean }> = {},
 ) => ({
     data: {
@@ -96,7 +96,7 @@ const makeBtrMetric = (
         decile: null,
         allValues: [],
         allData: rows.map((row) => ({
-            productRecommended: JSON.stringify(row.productRecommended),
+            productId: row.productId,
             productBuyThroughRate: row.productBuyThroughRate,
         })),
     },
@@ -182,7 +182,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         )
         mockUseBuyThroughRatePerProduct.mockReturnValue(
             makeBtrMetric([
-                { productRecommended: [123], productBuyThroughRate: 0.1 },
+                { productId: 123, productBuyThroughRate: 0.1 },
             ]) as any,
         )
         mockFetchIntegrationProducts.mockResolvedValue([

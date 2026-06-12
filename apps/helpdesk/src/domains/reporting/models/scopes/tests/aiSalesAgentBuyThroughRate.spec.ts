@@ -143,20 +143,29 @@ describe('aiSalesAgentBuyThroughRateScope', () => {
         })
 
         describe('aiSalesAgentBuyThroughRatePerProductQueryFactoryV2', () => {
+            const perProductContext = {
+                ...context,
+                dimensions: ['productId'],
+            } as const
+
             it('returns the same result as calling build directly', () => {
                 const factoryResult =
-                    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2(context)
+                    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2(
+                        perProductContext,
+                    )
                 const buildResult =
-                    aiSalesBuyThroughRatePerProduct.build(context)
+                    aiSalesBuyThroughRatePerProduct.build(perProductContext)
 
                 expect(factoryResult).toEqual(buildResult)
             })
 
-            it('uses productRecommended as the dimension', () => {
+            it('uses productId as the dimension', () => {
                 const result =
-                    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2(context)
+                    aiSalesAgentBuyThroughRatePerProductQueryFactoryV2(
+                        perProductContext,
+                    )
 
-                expect(result.dimensions).toContain('productRecommended')
+                expect(result.dimensions).toContain('productId')
             })
         })
     })
