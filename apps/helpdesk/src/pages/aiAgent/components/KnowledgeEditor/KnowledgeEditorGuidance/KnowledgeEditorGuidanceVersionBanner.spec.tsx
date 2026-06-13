@@ -47,6 +47,12 @@ jest.mock('./context', () => ({
     }),
 }))
 
+const mockUseDiffUrlSync = jest.fn()
+
+jest.mock('../shared/hooks/useDiffUrlSync', () => ({
+    useDiffUrlSync: (params: unknown) => mockUseDiffUrlSync(params),
+}))
+
 jest.mock('hooks/useAppSelector', () => ({
     useAppSelector: (fn: () => unknown) => fn(),
 }))
@@ -1063,6 +1069,41 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
+        })
+    })
+
+    describe('URL sync', () => {
+        it('syncs diff mode with the URL when the toggle is available', () => {
+            renderComponent()
+
+            expect(mockUseDiffUrlSync).toHaveBeenCalledWith({
+                isDiffMode: false,
+                canEnableDiff: true,
+                toggleDiff: expect.any(Function),
+            })
+        })
+
+        it('reflects diff mode as enabled in the URL sync when in diff mode', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                state: {
+                    mode: 'diff',
+                    historicalVersion: null,
+                    guidance: { id: 1 },
+                },
+                dispatch: mockDispatch,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
+            })
+
+            renderComponent()
+
+            expect(mockUseDiffUrlSync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isDiffMode: true,
+                    canEnableDiff: true,
+                }),
+            )
         })
     })
 })

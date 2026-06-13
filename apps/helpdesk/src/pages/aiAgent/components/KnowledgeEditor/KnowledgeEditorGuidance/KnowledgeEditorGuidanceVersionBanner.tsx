@@ -6,6 +6,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
+import { useDiffUrlSync } from '../shared/hooks/useDiffUrlSync'
 import { VersionBanner } from '../shared/VersionBanner'
 import { fromArticleTranslation, useGuidanceStore } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
@@ -100,6 +101,12 @@ export function KnowledgeEditorGuidanceVersionBanner() {
 
     const shouldShowDiffToggle =
         isViewingHistoricalVersion || (isViewingDraft && hasPublishedVersion)
+
+    useDiffUrlSync({
+        isDiffMode,
+        canEnableDiff: shouldShowDiffToggle,
+        toggleDiff: onToggleDiff,
+    })
 
     return (
         <VersionBanner

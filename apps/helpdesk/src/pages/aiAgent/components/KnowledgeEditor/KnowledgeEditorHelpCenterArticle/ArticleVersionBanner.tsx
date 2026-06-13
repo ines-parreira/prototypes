@@ -6,6 +6,7 @@ import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import type { GetHelpCenterArticleQueryOptions } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
+import { useDiffUrlSync } from '../shared/hooks/useDiffUrlSync'
 import { VersionBanner } from '../shared/VersionBanner'
 import { useArticleContext } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
@@ -93,6 +94,12 @@ export function ArticleVersionBanner() {
 
     const shouldShowDiffToggle =
         isViewingHistoricalVersion || (isViewingDraft && hasPublishedVersion)
+
+    useDiffUrlSync({
+        isDiffMode,
+        canEnableDiff: shouldShowDiffToggle,
+        toggleDiff: onToggleDiff,
+    })
 
     return (
         <VersionBanner

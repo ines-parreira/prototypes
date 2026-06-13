@@ -50,6 +50,12 @@ jest.mock('models/helpCenter/resources', () => ({
     getHelpCenterArticle: jest.fn(),
 }))
 
+const mockUseDiffUrlSync = jest.fn()
+
+jest.mock('../shared/hooks/useDiffUrlSync', () => ({
+    useDiffUrlSync: (params: unknown) => mockUseDiffUrlSync(params),
+}))
+
 const mockUseVersionBanner = useVersionBanner as jest.Mock
 const mockUseVersionHistory = useVersionHistory as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
@@ -818,6 +824,65 @@ describe('ArticleVersionBanner', () => {
                 screen.queryByText('Compare to current'),
             ).not.toBeInTheDocument()
             expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('URL sync', () => {
+        it('syncs diff mode with the URL, marking diff disabled when the toggle is unavailable', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    mode: 'read',
+                    historicalVersion: null,
+                    currentLocale: 'en',
+                    article: { id: 123 } as any,
+                },
+                dispatch: jest.fn(),
+                config: {
+                    helpCenter: { id: 1 },
+                } as any,
+            })
+
+            renderComponent()
+
+            expect(mockUseDiffUrlSync).toHaveBeenCalledWith({
+                isDiffMode: false,
+                canEnableDiff: false,
+                toggleDiff: expect.any(Function),
+            })
+        })
+
+        it('reflects diff mode as enabled in the URL sync when diffing a historical version', () => {
+            mockUseVersionHistory.mockReturnValue({
+                isViewingHistoricalVersion: true,
+                onGoToLatest: jest.fn(),
+            })
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    mode: 'diff',
+                    historicalVersion: {
+                        versionId: 42,
+                        version: 3,
+                        title: 'Old title',
+                        content: 'Old content',
+                        publishedDatetime: '2025-03-15T14:30:00Z',
+                    },
+                    currentLocale: 'en',
+                    article: { id: 123 } as any,
+                },
+                dispatch: jest.fn(),
+                config: {
+                    helpCenter: { id: 1 },
+                } as any,
+            })
+
+            renderComponent()
+
+            expect(mockUseDiffUrlSync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isDiffMode: true,
+                    canEnableDiff: true,
+                }),
+            )
         })
     })
 })

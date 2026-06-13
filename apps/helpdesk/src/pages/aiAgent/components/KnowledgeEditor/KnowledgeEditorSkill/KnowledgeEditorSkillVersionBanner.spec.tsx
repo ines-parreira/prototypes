@@ -9,9 +9,14 @@ const mockSwitchVersion = jest.fn()
 const mockOnGoToLatest = jest.fn()
 const mockFetchQuery = jest.fn()
 const mockRemoveVersionIdParam = jest.fn()
+const mockUseDiffUrlSync = jest.fn()
 
 jest.mock('./hooks/useRemoveVersionIdParam', () => ({
     useRemoveVersionIdParam: () => mockRemoveVersionIdParam,
+}))
+
+jest.mock('../shared/hooks/useDiffUrlSync', () => ({
+    useDiffUrlSync: (params: unknown) => mockUseDiffUrlSync(params),
 }))
 
 jest.mock('@repo/api-resources', () => ({
@@ -222,5 +227,24 @@ describe('KnowledgeEditorSkillVersionBanner', () => {
         await user.click(screen.getByRole('button', { name: /go to latest/i }))
 
         expect(mockOnGoToLatest).toHaveBeenCalled()
+    })
+
+    it('syncs diff mode with the URL', () => {
+        render(<KnowledgeEditorSkillVersionBanner />)
+
+        expect(mockUseDiffUrlSync).toHaveBeenCalledWith({
+            isDiffMode: false,
+            canEnableDiff: true,
+            toggleDiff: expect.any(Function),
+        })
+    })
+
+    it('reflects diff mode as enabled in the URL sync when in diff mode', () => {
+        setupStore({ mode: 'diff' })
+        render(<KnowledgeEditorSkillVersionBanner />)
+
+        expect(mockUseDiffUrlSync).toHaveBeenCalledWith(
+            expect.objectContaining({ isDiffMode: true, canEnableDiff: true }),
+        )
     })
 })

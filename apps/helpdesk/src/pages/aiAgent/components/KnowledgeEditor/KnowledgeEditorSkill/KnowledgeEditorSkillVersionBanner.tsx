@@ -9,6 +9,7 @@ import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { fromArticleTranslation } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/utils'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
+import { useDiffUrlSync } from '../shared/hooks/useDiffUrlSync'
 import { VersionBanner } from '../shared/VersionBanner'
 import { useSkillEditorStore } from './context'
 import { useSkillVersionBanner } from './hooks/useSkillVersionBanner'
@@ -137,6 +138,12 @@ export function KnowledgeEditorSkillVersionBanner() {
 
     const shouldShowDiffToggle =
         isViewingHistoricalVersion || (isViewingDraft && hasPublishedVersion)
+
+    useDiffUrlSync({
+        isDiffMode,
+        canEnableDiff: shouldShowDiffToggle,
+        toggleDiff: onToggleDiff,
+    })
 
     return (
         <VersionBanner
