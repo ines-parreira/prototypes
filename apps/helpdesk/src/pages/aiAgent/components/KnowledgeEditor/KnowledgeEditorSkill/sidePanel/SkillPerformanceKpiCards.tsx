@@ -4,6 +4,7 @@ import { TrendBadge } from '@repo/reporting'
 import { Box, Card, Heading, Skeleton, Text } from '@gorgias/axiom'
 
 import { useSkillPerformanceDataContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
+import { useSkillSuccessRateMetric } from 'pages/aiAgent/skills/hooks/useSkillSuccessRateMetric'
 import { formatCsat } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 import css from './SkillPerformanceKpiCards.less'
@@ -49,9 +50,27 @@ const KpiCard = ({
     </Card>
 )
 
+const formatSuccessRate = (value: number | null): string =>
+    value !== null ? `${Math.round(value * 100)}%` : KPI_VALUE_PLACEHOLDER
+
 export const SkillPerformanceKpiCards = () => {
     const { skillMetrics } = useSkillPerformanceDataContext()
-    const { metrics, isLoading } = skillMetrics
+    const {
+        metrics,
+        isLoading,
+        resourceSourceId,
+        resourceSourceSetId,
+        shopIntegrationId,
+        dateRange,
+    } = skillMetrics
+
+    const successRate = useSkillSuccessRateMetric({
+        skillId: resourceSourceId,
+        resourceSourceSetId,
+        shopIntegrationId,
+        dateRange,
+        enabled: !!resourceSourceSetId,
+    })
 
     const tickets = metrics?.tickets ?? null
     const prevTickets = metrics?.prevTickets ?? null
@@ -72,10 +91,11 @@ export const SkillPerformanceKpiCards = () => {
         <Box gap="xs" width="100%">
             <KpiCard
                 label="Success rate"
-                displayValue={KPI_VALUE_PLACEHOLDER}
-                value={null}
-                prevValue={null}
+                displayValue={formatSuccessRate(successRate.value)}
+                value={successRate.value}
+                prevValue={successRate.prevValue}
                 metricFormat="decimal-to-percent"
+                isLoading={successRate.isLoading}
             />
             <KpiCard
                 label="Tickets"

@@ -25,6 +25,7 @@ type Props = {
     metrics?: SkillMetrics | null
     isLoading?: boolean
     resourceSourceId: number
+    resourceSourceSetId: number
     shopIntegrationId: number
     dateRange?: DateRange
     totalAiAgentTickets: number
@@ -148,12 +149,24 @@ const PlainTrendCard = ({
 
 type SuccessRateCardProps = {
     skillId: number
+    resourceSourceSetId: number
+    shopIntegrationId: number
     dateRange?: DateRange
 }
 
-const SuccessRateCard = ({ skillId, dateRange }: SuccessRateCardProps) => {
+const SuccessRateCard = ({
+    skillId,
+    resourceSourceSetId,
+    shopIntegrationId,
+    dateRange,
+}: SuccessRateCardProps) => {
     const { value, prevValue, sparklineData, isLoading } =
-        useSkillSuccessRateMetric({ skillId, dateRange })
+        useSkillSuccessRateMetric({
+            skillId,
+            resourceSourceSetId,
+            shopIntegrationId,
+            dateRange,
+        })
 
     const trend = useMemo(
         () => toTrend('Success rate', value, prevValue, isLoading),
@@ -199,12 +212,12 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
     metrics,
     isLoading,
     resourceSourceId,
+    resourceSourceSetId,
     shopIntegrationId,
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
 }: Props) => {
-    const resourceSourceSetId = metrics?.resourceSourceSetId ?? 0
     const isSuccessRateEnabled = useFlag(
         FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
     )
@@ -252,6 +265,8 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
             {isSuccessRateEnabled && (
                 <SuccessRateCard
                     skillId={resourceSourceId}
+                    resourceSourceSetId={resourceSourceSetId}
+                    shopIntegrationId={shopIntegrationId}
                     dateRange={dateRange}
                 />
             )}

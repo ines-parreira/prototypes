@@ -3,7 +3,7 @@ import type {
     ComposedMetricTimeSeriesMarker,
 } from '@repo/reporting'
 
-export const USE_MOCK_SKILL_PERFORMANCE_CHART_DATA: boolean = true
+export const USE_MOCK_SKILL_PERFORMANCE_CHART_DATA: boolean = false
 
 export const mockSkillPerformanceChartData: ComposedMetricTimeSeriesDataItem[] =
     [

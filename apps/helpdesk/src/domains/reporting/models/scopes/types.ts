@@ -239,6 +239,7 @@ export type MeasureName =
     | 'totalSalesAmount'
     | 'totalSalesAmountUsd'
     | 'successRate'
+    | 'aiAgentTicketVolume'
     | 'averageDecreaseInFirstResponseTime'
     | 'medianDecreaseInFirstResponseTime'
     | 'averageDecreaseInResolutionTime'

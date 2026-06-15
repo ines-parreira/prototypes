@@ -4,11 +4,11 @@ import { createContext, createElement, useContext, useMemo } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import type { ResourceMetricsByDay } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import type { ImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { useSkillsMetrics } from 'pages/aiAgent/skills/hooks/useSkillsMetrics'
-import { useSkillsMetricsByDay } from 'pages/aiAgent/skills/hooks/useSkillsMetricsByDay'
+import { useSkillMetrics } from 'pages/aiAgent/skills/hooks/useSkillMetrics'
+import type { SkillMetricsByDayPoint } from 'pages/aiAgent/skills/hooks/useSkillMetricsByDay'
+import { useSkillMetricsByDay } from 'pages/aiAgent/skills/hooks/useSkillMetricsByDay'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
 import type { SkillMetrics } from 'pages/aiAgent/skills/types'
 
@@ -18,10 +18,11 @@ import { useSkillEditorStore } from '../context'
 
 export type SkillMetricsData = {
     metrics: SkillMetrics | null
-    metricsByDay: ResourceMetricsByDay[] | null
+    metricsByDay: SkillMetricsByDayPoint[] | null
     isLoading: boolean
     isMetricsByDayLoading: boolean
     resourceSourceId: number
+    resourceSourceSetId: number
     shopIntegrationId: number
     dateRange: { start_datetime: string; end_datetime: string }
     totalAiAgentTickets: number
@@ -103,41 +104,38 @@ export const useSkillPerformanceFromContext = ({
         [dateRangeOverride, historicalVersionDateRange],
     )
 
-    const { data: metricsData, isLoading } = useSkillsMetrics(
+    const { data: metricsData, isLoading } = useSkillMetrics({
         shopIntegrationId,
-        !!skillArticleId && !!shopIntegrationId,
+        resourceSourceId: skillArticleId ?? 0,
+        resourceSourceSetId: helpCenterId,
+        enabled: !!skillArticleId && !!shopIntegrationId && !!helpCenterId,
         dateRange,
-    )
+    })
 
     const { data: metricsByDayData, isLoading: isMetricsByDayLoading } =
-        useSkillsMetricsByDay(
+        useSkillMetricsByDay({
             shopIntegrationId,
-            skillArticleId ?? 0,
-            helpCenterId,
-            !!skillArticleId && !!shopIntegrationId && !!helpCenterId,
+            resourceSourceId: skillArticleId ?? 0,
+            resourceSourceSetId: helpCenterId,
+            enabled: !!skillArticleId && !!shopIntegrationId && !!helpCenterId,
             dateRange,
-        )
+        })
 
     const metrics = useMemo<SkillMetrics | null>(() => {
         if (!metricsData || !skillArticleId) return null
 
-        const entry = metricsData.find(
-            (m) => m.resourceSourceId === skillArticleId,
-        )
-        if (!entry) return null
-
         return {
-            tickets: entry.tickets,
-            prevTickets: entry.prevTickets,
-            handoverTickets: entry.handoverTickets,
-            prevHandoverTickets: entry.prevHandoverTickets,
-            csat: entry.csat,
-            prevCsat: entry.prevCsat,
-            resourceSourceSetId: entry.resourceSourceSetId,
+            tickets: metricsData.tickets,
+            prevTickets: metricsData.prevTickets,
+            handoverTickets: metricsData.handoverTickets,
+            prevHandoverTickets: metricsData.prevHandoverTickets,
+            csat: metricsData.csat,
+            prevCsat: metricsData.prevCsat,
+            resourceSourceSetId: helpCenterId,
         }
-    }, [metricsData, skillArticleId])
+    }, [metricsData, skillArticleId, helpCenterId])
 
-    const metricsByDay = useMemo<ResourceMetricsByDay[] | null>(() => {
+    const metricsByDay = useMemo<SkillMetricsByDayPoint[] | null>(() => {
         if (!metricsByDayData || !skillArticleId) return null
         return metricsByDayData
     }, [metricsByDayData, skillArticleId])
@@ -162,6 +160,7 @@ export const useSkillPerformanceFromContext = ({
             isLoading,
             isMetricsByDayLoading,
             resourceSourceId: skillArticleId ?? 0,
+            resourceSourceSetId: helpCenterId,
             shopIntegrationId,
             dateRange,
             totalAiAgentTickets,
@@ -174,6 +173,7 @@ export const useSkillPerformanceFromContext = ({
             isLoading,
             isMetricsByDayLoading,
             skillArticleId,
+            helpCenterId,
             shopIntegrationId,
             dateRange,
             totalAiAgentTickets,

@@ -33,6 +33,7 @@ const mockSkillPerformanceData: SkillPerformanceData = {
         isLoading: false,
         isMetricsByDayLoading: false,
         resourceSourceId: 42,
+        resourceSourceSetId: 100,
         shopIntegrationId: 999,
         dateRange: mockDateRange,
         totalAiAgentTickets: 200,

@@ -15,6 +15,8 @@ export const aiAgentCsatScope = defineScope({
         'storeIntegrationId',
         'surveyScore',
         'ticketId',
+        'resourceSourceId',
+        'resourceSourceSetId',
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
@@ -24,6 +26,8 @@ export const aiAgentCsatScope = defineScope({
         'periodEnd',
         'periodStart',
         'storeIntegrationId',
+        'resourceSourceId',
+        'resourceSourceSetId',
     ],
     order: [
         'averageCSAT',
@@ -63,3 +67,43 @@ export const averageAiAgentCsatSupportAgent = aiAgentCsatScope
 export const averageAiAgentCsatSupportAgentQueryV2Factory = (
     ctx: AiAgentCsatContext,
 ) => averageAiAgentCsatSupportAgent.build(ctx)
+
+/**
+ * Per-skill average CSAT. Skill identity is the pair
+ * (resourceSourceSetId, resourceSourceId) carried in ctx.filters and resolved
+ * by the backend through the TicketInsightsSkillParticipation helper cube.
+ *
+ * Single-measure by design — combining CSAT with handover/volume measures in
+ * one query through the helper drops handover tickets from every metric.
+ *
+ * The AIAgentCSAT cube applies `HAVING last_outcome != 'handover'` based on
+ * the account's outcome custom-field id; the monolith's AiAgentCsatQuery
+ * `_customize_query` looks that id up from the account context and injects
+ * the `AIAgentCSAT.aiAgentOutcomeCustomFieldId` cube filter automatically,
+ * so we don't pass it from the frontend.
+ */
+export const averageAiAgentCsatBySkill = aiAgentCsatScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_CSAT_BY_SKILL)
+    .defineQuery(() => ({
+        measures: ['averageCSAT'] as const,
+    }))
+
+export const averageAiAgentCsatBySkillQueryFactory = (
+    ctx: AiAgentCsatContext,
+) => averageAiAgentCsatBySkill.build(ctx)
+
+/**
+ * Average CSAT grouped by skill identity. Returns one row per
+ * (resourceSourceSetId, resourceSourceId) pair joined through the
+ * TicketInsightsSkillParticipation helper cube. Powers the Skills page table.
+ */
+export const averageAiAgentCsatPerSkill = aiAgentCsatScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_CSAT_PER_SKILL)
+    .defineQuery(() => ({
+        measures: ['averageCSAT'] as const,
+        dimensions: ['resourceSourceSetId', 'resourceSourceId'] as const,
+    }))
+
+export const averageAiAgentCsatPerSkillQueryFactory = (
+    ctx: AiAgentCsatContext,
+) => averageAiAgentCsatPerSkill.build(ctx)

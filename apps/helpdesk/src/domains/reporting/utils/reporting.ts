@@ -459,6 +459,52 @@ export const getPreviousPeriod = (
     }
 }
 
+type CubeResponseRow = Record<string, unknown>
+
+/**
+ * Parse a numeric measure from a Cube.js response row. Returns null when the
+ * value is missing or doesn't parse to a finite number — covers Cube.js'
+ * habit of emitting numbers as strings as well as the genuine NULL case.
+ */
+export const readCubeNumber = (
+    row: CubeResponseRow | undefined,
+    key: string,
+): number | null => {
+    const raw = row?.[key]
+    if (raw == null) return null
+    const value = Number(raw)
+    return Number.isFinite(value) ? value : null
+}
+
+/**
+ * Round a possibly-null number to one decimal place. Used for CSAT-style
+ * scores that we want to render consistently as `4.5` rather than `4.456`.
+ */
+export const roundToOneDecimal = (value: number | null): number | null =>
+    value == null ? null : Number(value.toFixed(1))
+
+const CUBE_DATE_BUCKET_KEYS = [
+    'eventDatetime.day',
+    'eventDatetime',
+    'periodStart.day',
+    'periodStart',
+] as const
+
+/**
+ * Parse the date bucket out of a Cube.js timeseries response row. Cube.js
+ * emits the bucket under different keys depending on the cube + granularity
+ * (raw vs `.day` suffix), so we try the candidates in priority order.
+ */
+export const readCubeDateBucket = (row: CubeResponseRow): string | null => {
+    for (const key of CUBE_DATE_BUCKET_KEYS) {
+        const value = row[key]
+        if (value != null) {
+            return moment(value as string | number | Date).format('YYYY-MM-DD')
+        }
+    }
+    return null
+}
+
 export const withFilter = <T extends ReportingQuery>(
     query: T,
     filter: ReportingFilter,

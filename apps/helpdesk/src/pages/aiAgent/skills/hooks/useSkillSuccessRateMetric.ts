@@ -1,22 +1,39 @@
 /**
  * Per-skill success rate metric.
  *
- * M2 ships the new performance side-panel layout that surfaces a Success rate
- * card with a small sparkline. The real cube/measure isn't available yet
- * (planned for M4 — see COACH-2779), so this hook returns deterministic mock
- * data shaped exactly like the future query response: a current value, a
- * prior-period value for trend computation, and a per-day series for the
- * sparkline.
+ * Fires three single-measure queries against the `SuccessRate.successRate`
+ * cube, filtered through the `TicketInsightsSkillParticipation` helper by the
+ * skill identity (resourceSourceSetId, resourceSourceId):
+ *   1) current-period value
+ *   2) prior-period value (same window, shifted backward by its length)
+ *   3) per-day series for the sparkline (granularity: 'day')
  *
- * Values are ratios in 0–1 range to match the codebase's `decimal-to-percent`
- * formatter convention. Swap the internals for a real `usePostReportingV2`
- * call once the cube is live; the call sites consume the same
- * `SkillSuccessRateMetricData` shape.
+ * Each metric goes in its own Cube.js query — combining measures from
+ * multiple Family B cubes through the helper makes Cube.js intersect to
+ * tickets present in all cubes, which silently drops handover tickets via
+ * CSAT's HAVING clause.
  */
 
-import moment from 'moment'
+import { useMemo } from 'react'
 
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { aiAgentSuccessRateBySkillQueryFactory } from 'domains/reporting/models/scopes/aiAgentSuccessRate'
+import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    APIOnlyFilterKey,
+    FilterKey,
+} from 'domains/reporting/models/stat/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    getPreviousPeriod,
+    readCubeDateBucket,
+    readCubeNumber,
+} from 'domains/reporting/utils/reporting'
+import { useAppSelector } from 'hooks/useAppSelector'
 import type { DateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/types'
+import { getTimezone } from 'state/currentUser/selectors'
 
 export type SkillSuccessRateSparklinePoint = {
     date: string
@@ -38,47 +55,182 @@ export type SkillSuccessRateMetricData = {
 
 type UseSkillSuccessRateMetricParams = {
     skillId: number | undefined
+    /** Help center ID — the resourceSourceSetId half of the skill identity. */
+    resourceSourceSetId: number | undefined
+    /**
+     * Shop integration ID. Required so the query is scoped to a single store —
+     * on multi-store accounts an unset value would blend metrics across stores.
+     */
+    shopIntegrationId: number | undefined
     dateRange?: DateRange
     enabled?: boolean
 }
 
-const MOCK_SPARKLINE_VALUES = [
-    0.78, 0.8, 0.79, 0.82, 0.81, 0.84, 0.83, 0.82, 0.85, 0.86, 0.84, 0.83, 0.85,
-    0.86, 0.88, 0.87, 0.86, 0.88, 0.89, 0.87, 0.86, 0.85, 0.86, 0.88, 0.87,
-    0.89, 0.9, 0.85,
-] as const
+type SuccessRateRow = Record<string, unknown>
 
-const buildMockSparkline = (
-    dateRange: DateRange | undefined,
-): SkillSuccessRateSparklinePoint[] => {
-    if (!dateRange) {
-        return MOCK_SPARKLINE_VALUES.map((value, index) => ({
-            date: String(index + 1),
-            value,
-        }))
-    }
-
-    const start = moment.utc(dateRange.start_datetime).startOf('day')
-    const end = moment.utc(dateRange.end_datetime).startOf('day')
-    if (!start.isValid() || !end.isValid() || end.isBefore(start)) return []
-
-    const days = Math.max(1, end.diff(start, 'days') + 1)
-
-    return Array.from({ length: days }, (_, index) => {
-        const isoDate = start.clone().add(index, 'days').format('YYYY-MM-DD')
-        const value =
-            MOCK_SPARKLINE_VALUES[index % MOCK_SPARKLINE_VALUES.length]
-
-        return { date: isoDate, value }
-    })
-}
+const buildFilters = (
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+    shopIntegrationId: number,
+    period: { start_datetime: string; end_datetime: string },
+): ApiStatsFilters => ({
+    [FilterKey.Period]: period,
+    [FilterKey.Stores]: {
+        operator: LogicalOperatorEnum.ONE_OF,
+        values: [shopIntegrationId],
+    },
+    [APIOnlyFilterKey.ResourceSourceId]: withLogicalOperator([
+        String(resourceSourceId),
+    ]),
+    [APIOnlyFilterKey.ResourceSourceSetId]: withLogicalOperator([
+        String(resourceSourceSetId),
+    ]),
+})
 
 export const useSkillSuccessRateMetric = ({
     skillId,
+    resourceSourceSetId,
+    shopIntegrationId,
     dateRange,
     enabled = true,
 }: UseSkillSuccessRateMetricParams): SkillSuccessRateMetricData => {
-    const isAvailable = enabled && !!skillId
+    const timezone = useAppSelector(getTimezone) ?? 'UTC'
+
+    const isAvailable =
+        enabled &&
+        !!skillId &&
+        !!resourceSourceSetId &&
+        !!shopIntegrationId &&
+        !!dateRange
+
+    const period = useMemo(
+        () =>
+            dateRange
+                ? {
+                      start_datetime: dateRange.start_datetime,
+                      end_datetime: dateRange.end_datetime,
+                  }
+                : undefined,
+        [dateRange],
+    )
+
+    const prevPeriod = useMemo(
+        () => (period ? getPreviousPeriod(period) : undefined),
+        [period],
+    )
+
+    const currentFilters = useMemo(
+        () =>
+            isAvailable && period
+                ? buildFilters(
+                      skillId,
+                      resourceSourceSetId,
+                      shopIntegrationId,
+                      period,
+                  )
+                : undefined,
+        [isAvailable, skillId, resourceSourceSetId, shopIntegrationId, period],
+    )
+
+    const prevFilters = useMemo(
+        () =>
+            isAvailable && prevPeriod
+                ? buildFilters(
+                      skillId,
+                      resourceSourceSetId,
+                      shopIntegrationId,
+                      prevPeriod,
+                  )
+                : undefined,
+        [
+            isAvailable,
+            skillId,
+            resourceSourceSetId,
+            shopIntegrationId,
+            prevPeriod,
+        ],
+    )
+
+    const currentQuery = useMemo(
+        () =>
+            currentFilters
+                ? aiAgentSuccessRateBySkillQueryFactory({
+                      timezone,
+                      filters: currentFilters,
+                  })
+                : undefined,
+        [timezone, currentFilters],
+    )
+
+    const sparklineQuery = useMemo(
+        () =>
+            currentFilters
+                ? aiAgentSuccessRateBySkillQueryFactory({
+                      timezone,
+                      filters: currentFilters,
+                      granularity: ReportingGranularity.Day,
+                  })
+                : undefined,
+        [timezone, currentFilters],
+    )
+
+    const prevQuery = useMemo(
+        () =>
+            prevFilters
+                ? aiAgentSuccessRateBySkillQueryFactory({
+                      timezone,
+                      filters: prevFilters,
+                  })
+                : undefined,
+        [timezone, prevFilters],
+    )
+
+    const { data: currentValue, isFetching: isCurrentFetching } =
+        usePostReportingV2<SuccessRateRow[], number | null>(
+            undefined,
+            currentQuery,
+            {
+                enabled: isAvailable,
+                select: (response) =>
+                    readCubeNumber(
+                        (response.data.data as SuccessRateRow[])[0],
+                        'successRate',
+                    ),
+            },
+        )
+
+    const { data: prevValue, isFetching: isPrevFetching } = usePostReportingV2<
+        SuccessRateRow[],
+        number | null
+    >(undefined, prevQuery, {
+        enabled: isAvailable,
+        select: (response) =>
+            readCubeNumber(
+                (response.data.data as SuccessRateRow[])[0],
+                'successRate',
+            ),
+    })
+
+    const { data: sparklineData, isFetching: isSparklineFetching } =
+        usePostReportingV2<SuccessRateRow[], SkillSuccessRateSparklinePoint[]>(
+            undefined,
+            sparklineQuery,
+            {
+                enabled: isAvailable,
+                select: (response) =>
+                    (response.data.data as SuccessRateRow[])
+                        .map((row) => {
+                            const date = readCubeDateBucket(row)
+                            const value = readCubeNumber(row, 'successRate')
+                            if (!date || value == null) return null
+                            return { date, value }
+                        })
+                        .filter(
+                            (point): point is SkillSuccessRateSparklinePoint =>
+                                !!point,
+                        ),
+            },
+        )
 
     if (!isAvailable) {
         return {
@@ -90,9 +242,9 @@ export const useSkillSuccessRateMetric = ({
     }
 
     return {
-        value: 0.85,
-        prevValue: 0.83,
-        sparklineData: buildMockSparkline(dateRange),
-        isLoading: false,
+        value: currentValue ?? null,
+        prevValue: prevValue ?? null,
+        sparklineData: sparklineData ?? [],
+        isLoading: isCurrentFetching || isPrevFetching || isSparklineFetching,
     }
 }

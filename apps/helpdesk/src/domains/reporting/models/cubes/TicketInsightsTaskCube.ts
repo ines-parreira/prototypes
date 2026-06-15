@@ -18,6 +18,7 @@ export enum TicketInsightsTaskDimension {
     ResourceSourceId = 'TicketInsightsTask.resourceSourceId',
     ResourceSourceSetId = 'TicketInsightsTask.resourceSourceSetId',
     ResourceLocale = 'TicketInsightsTask.resourceLocale',
+    ResourceIsSkill = 'TicketInsightsTask.resourceIsSkill',
 }
 
 export enum TicketInsightsTaskMeasureV2 {

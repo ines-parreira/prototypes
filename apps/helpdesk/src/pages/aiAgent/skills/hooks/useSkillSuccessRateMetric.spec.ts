@@ -1,11 +1,44 @@
 import { renderHook } from '@repo/testing'
 
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+
 import { useSkillSuccessRateMetric } from './useSkillSuccessRateMetric'
 
+jest.mock('domains/reporting/models/queries')
+
+const mockUsePostReportingV2 = usePostReportingV2 as jest.Mock
+
+const PARAMS = {
+    skillId: 44202,
+    resourceSourceSetId: 1585,
+    shopIntegrationId: 2954,
+    dateRange: {
+        start_datetime: '2026-06-01T00:00:00Z',
+        end_datetime: '2026-06-08T00:00:00Z',
+    },
+}
+
 describe('useSkillSuccessRateMetric', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUsePostReportingV2.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        })
+    })
+
     it('returns empty data when skillId is undefined', () => {
         const { result } = renderHook(() =>
-            useSkillSuccessRateMetric({ skillId: undefined }),
+            useSkillSuccessRateMetric({
+                skillId: undefined,
+                resourceSourceSetId: 1585,
+                shopIntegrationId: 2954,
+                dateRange: {
+                    start_datetime: '2026-06-01T00:00:00Z',
+                    end_datetime: '2026-06-08T00:00:00Z',
+                },
+            }),
         )
 
         expect(result.current).toEqual({
@@ -16,9 +49,17 @@ describe('useSkillSuccessRateMetric', () => {
         })
     })
 
-    it('returns empty data when enabled is false even with a skillId', () => {
+    it('returns empty data when resourceSourceSetId is missing', () => {
         const { result } = renderHook(() =>
-            useSkillSuccessRateMetric({ skillId: 1, enabled: false }),
+            useSkillSuccessRateMetric({
+                skillId: 44202,
+                resourceSourceSetId: undefined,
+                shopIntegrationId: 2954,
+                dateRange: {
+                    start_datetime: '2026-06-01T00:00:00Z',
+                    end_datetime: '2026-06-08T00:00:00Z',
+                },
+            }),
         )
 
         expect(result.current.value).toBeNull()
@@ -26,117 +67,149 @@ describe('useSkillSuccessRateMetric', () => {
         expect(result.current.sparklineData).toEqual([])
     })
 
-    describe('when enabled with a skillId', () => {
-        it('returns the deterministic current and previous values', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({ skillId: 1 }),
-            )
+    it('returns empty data when shopIntegrationId is missing', () => {
+        const { result } = renderHook(() =>
+            useSkillSuccessRateMetric({
+                skillId: 44202,
+                resourceSourceSetId: 1585,
+                shopIntegrationId: undefined,
+                dateRange: {
+                    start_datetime: '2026-06-01T00:00:00Z',
+                    end_datetime: '2026-06-08T00:00:00Z',
+                },
+            }),
+        )
 
-            expect(result.current.value).toBe(0.85)
-            expect(result.current.prevValue).toBe(0.83)
-            expect(result.current.isLoading).toBe(false)
-        })
+        expect(result.current.value).toBeNull()
+        expect(result.current.prevValue).toBeNull()
+        expect(result.current.sparklineData).toEqual([])
+    })
 
-        it('returns a fallback sparkline indexed 1..28 when no dateRange is provided', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({ skillId: 1 }),
-            )
+    it('returns empty data when enabled is false', () => {
+        const { result } = renderHook(() =>
+            useSkillSuccessRateMetric({
+                skillId: 44202,
+                resourceSourceSetId: 1585,
+                shopIntegrationId: 2954,
+                enabled: false,
+                dateRange: {
+                    start_datetime: '2026-06-01T00:00:00Z',
+                    end_datetime: '2026-06-08T00:00:00Z',
+                },
+            }),
+        )
 
-            expect(result.current.sparklineData).toHaveLength(28)
-            expect(result.current.sparklineData[0]).toEqual({
-                date: '1',
-                value: 0.78,
+        expect(result.current.value).toBeNull()
+        expect(result.current.prevValue).toBeNull()
+        expect(result.current.sparklineData).toEqual([])
+    })
+
+    it('exposes current/previous values and the sparkline series', () => {
+        mockUsePostReportingV2
+            .mockReturnValueOnce({
+                data: 0.86,
+                isFetching: false,
+                isError: false,
             })
-            expect(result.current.sparklineData[27]).toEqual({
-                date: '28',
-                value: 0.85,
+            .mockReturnValueOnce({
+                data: 0.81,
+                isFetching: false,
+                isError: false,
             })
-            result.current.sparklineData.forEach((point) => {
-                expect(point.value).toBeGreaterThanOrEqual(0)
-                expect(point.value).toBeLessThanOrEqual(1)
+            .mockReturnValueOnce({
+                data: [
+                    { date: '2026-06-01', value: 0.82 },
+                    { date: '2026-06-02', value: 0.85 },
+                ],
+                isFetching: false,
+                isError: false,
             })
+
+        const { result } = renderHook(() => useSkillSuccessRateMetric(PARAMS))
+
+        expect(result.current.value).toBe(0.86)
+        expect(result.current.prevValue).toBe(0.81)
+        expect(result.current.sparklineData).toEqual([
+            { date: '2026-06-01', value: 0.82 },
+            { date: '2026-06-02', value: 0.85 },
+        ])
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('returns isLoading=true while any underlying query is fetching', () => {
+        mockUsePostReportingV2
+            .mockReturnValueOnce({
+                data: undefined,
+                isFetching: true,
+                isError: false,
+            })
+            .mockReturnValue({
+                data: undefined,
+                isFetching: false,
+                isError: false,
+            })
+
+        const { result } = renderHook(() => useSkillSuccessRateMetric(PARAMS))
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('parses the success-rate value from the cube row via select', () => {
+        renderHook(() => useSkillSuccessRateMetric(PARAMS))
+
+        const summaryCall = mockUsePostReportingV2.mock.calls.find((call) => {
+            const builtQuery = call[1]
+            return (
+                builtQuery?.metricName === 'ai-agent-success-rate-by-skill' &&
+                !builtQuery?.time_dimensions?.[0]?.granularity
+            )
         })
 
-        it('returns one ISO-dated point per day in the dateRange, oldest to newest', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({
-                    skillId: 1,
-                    dateRange: {
-                        start_datetime: '2026-01-01T00:00:00.000Z',
-                        end_datetime: '2026-01-05T00:00:00.000Z',
+        expect(summaryCall).toBeDefined()
+        const selectFn = summaryCall?.[2]?.select
+        expect(selectFn?.({ data: { data: [{ successRate: '0.873' }] } })).toBe(
+            0.873,
+        )
+        expect(selectFn?.({ data: { data: [] } })).toBeNull()
+        expect(
+            selectFn?.({ data: { data: [{ successRate: null }] } }),
+        ).toBeNull()
+    })
+
+    it('builds sparkline points from per-day rows via select', () => {
+        renderHook(() => useSkillSuccessRateMetric(PARAMS))
+
+        const sparklineCall = mockUsePostReportingV2.mock.calls.find((call) => {
+            const builtQuery = call[1]
+            return (
+                builtQuery?.metricName === 'ai-agent-success-rate-by-skill' &&
+                builtQuery?.time_dimensions?.[0]?.granularity === 'day'
+            )
+        })
+
+        expect(sparklineCall).toBeDefined()
+        const selectFn = sparklineCall?.[2]?.select
+        const result = selectFn?.({
+            data: {
+                data: [
+                    {
+                        'eventDatetime.day': '2026-06-01T00:00:00.000Z',
+                        successRate: '0.82',
                     },
-                }),
-            )
-
-            expect(result.current.sparklineData).toHaveLength(5)
-            expect(result.current.sparklineData.map((p) => p.date)).toEqual([
-                '2026-01-01',
-                '2026-01-02',
-                '2026-01-03',
-                '2026-01-04',
-                '2026-01-05',
-            ])
-        })
-
-        it('returns a single point when start and end are the same day', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({
-                    skillId: 1,
-                    dateRange: {
-                        start_datetime: '2026-01-01T00:00:00.000Z',
-                        end_datetime: '2026-01-01T00:00:00.000Z',
+                    {
+                        eventDatetime: '2026-06-02T00:00:00.000Z',
+                        successRate: '0.85',
                     },
-                }),
-            )
-
-            expect(result.current.sparklineData).toEqual([
-                { date: '2026-01-01', value: 0.78 },
-            ])
-        })
-
-        it('cycles through the mock values when the range exceeds the mock length', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({
-                    skillId: 1,
-                    dateRange: {
-                        start_datetime: '2026-01-01T00:00:00.000Z',
-                        end_datetime: '2026-02-15T00:00:00.000Z',
+                    {
+                        'eventDatetime.day': '2026-06-03T00:00:00.000Z',
+                        successRate: null,
                     },
-                }),
-            )
-
-            expect(result.current.sparklineData).toHaveLength(46)
-            expect(result.current.sparklineData[0].value).toBe(
-                result.current.sparklineData[28].value,
-            )
+                ],
+            },
         })
-
-        it('returns an empty sparkline when the dateRange has invalid dates', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({
-                    skillId: 1,
-                    dateRange: {
-                        start_datetime: 'not-a-date',
-                        end_datetime: '2026-01-05T00:00:00.000Z',
-                    },
-                }),
-            )
-
-            expect(result.current.sparklineData).toEqual([])
-        })
-
-        it('returns an empty sparkline when end is before start', () => {
-            const { result } = renderHook(() =>
-                useSkillSuccessRateMetric({
-                    skillId: 1,
-                    dateRange: {
-                        start_datetime: '2026-01-10T00:00:00.000Z',
-                        end_datetime: '2026-01-05T00:00:00.000Z',
-                    },
-                }),
-            )
-
-            expect(result.current.sparklineData).toEqual([])
-        })
+        expect(result).toEqual([
+            { date: '2026-06-01', value: 0.82 },
+            { date: '2026-06-02', value: 0.85 },
+        ])
     })
 })

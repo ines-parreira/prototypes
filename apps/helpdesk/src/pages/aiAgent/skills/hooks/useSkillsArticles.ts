@@ -5,12 +5,17 @@ import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 
 import type { SkillMetrics, TransformedArticle } from '../types'
 import { transformArticleListToSkillsView } from '../utils/transformArticleListToSkillsView'
-import { useSkillsMetrics } from './useSkillsMetrics'
+import {
+    skillKey,
+    useSkillsAggregateMetrics,
+} from './useSkillsAggregateMetrics'
 
 export const useSkillsArticles = (
     helpCenterId: number,
     shopIntegrationId: number,
 ) => {
+    const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
+
     const { data, isLoading, isError } = useGetHelpCenterArticleList(
         helpCenterId,
         {
@@ -24,42 +29,42 @@ export const useSkillsArticles = (
     )
 
     const {
-        data: metricsData,
+        data: metricsMap,
         isLoading: isMetricsLoading,
         isError: isMetricsError,
-    } = useSkillsMetrics(shopIntegrationId, !!shopIntegrationId)
+    } = useSkillsAggregateMetrics({
+        shopIntegrationId,
+        dateRange: metricsDateRange,
+        enabled: !!shopIntegrationId,
+    })
 
     const articles = useMemo<TransformedArticle[]>(() => {
         if (!data?.data) return []
         return transformArticleListToSkillsView(data.data)
     }, [data])
 
-    const metricsMap = useMemo(() => {
-        if (!metricsData) return new Map<string, SkillMetrics>()
-
-        const map = new Map<string, SkillMetrics>()
-        metricsData.forEach((metric) => {
-            map.set(String(metric.resourceSourceId), {
-                tickets: metric.tickets,
-                prevTickets: null,
-                handoverTickets: metric.handoverTickets,
-                prevHandoverTickets: null,
-                csat: metric.csat,
-                prevCsat: null,
-                resourceSourceSetId: metric.resourceSourceSetId,
-            })
-        })
-        return map
-    }, [metricsData])
-
     const enrichedArticles = useMemo(() => {
-        return articles.map((article) => ({
-            ...article,
-            metrics: metricsMap.get(String(article.id)),
-        }))
-    }, [articles, metricsMap])
+        if (!metricsMap) return articles
+        return articles.map((article) => {
+            // Skill identity in the helper cube is the pair
+            // (resourceSourceSetId, resourceSourceId), which here corresponds
+            // to (helpCenterId, articleId) by construction.
+            const key = skillKey(helpCenterId, article.id)
+            const aggregate = metricsMap.get(key)
+            if (!aggregate) return article
 
-    const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
+            const metrics: SkillMetrics = {
+                tickets: aggregate.tickets,
+                prevTickets: null,
+                handoverTickets: aggregate.handoverTickets,
+                prevHandoverTickets: null,
+                csat: aggregate.csat,
+                prevCsat: null,
+                resourceSourceSetId: helpCenterId,
+            }
+            return { ...article, metrics }
+        })
+    }, [articles, metricsMap, helpCenterId])
 
     return {
         articles: enrichedArticles,

@@ -24,6 +24,8 @@ const handoverInteractionsScope = defineScope({
         'flowId',
         'storeIntegrationId',
         'orderManagementType',
+        'resourceSourceId',
+        'resourceSourceSetId',
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
@@ -36,6 +38,8 @@ const handoverInteractionsScope = defineScope({
         'periodEnd',
         'periodStart',
         'storeIntegrationId',
+        'resourceSourceId',
+        'resourceSourceSetId',
     ],
     order: ['eventDatetime', 'handoverInteractionsCount'],
 })
@@ -273,3 +277,52 @@ export const aiSalesAgentHandoverInteractionsPerEngagementType =
 export const aiSalesAgentHandoverInteractionsPerEngagementTypeQueryFactoryV2 = (
     ctx: HandoverInteractionsContext,
 ) => aiSalesAgentHandoverInteractionsPerEngagementType.build(ctx)
+
+/**
+ * Per-skill handover interactions count. Skill identity is the pair
+ * (resourceSourceSetId, resourceSourceId) carried in ctx.filters and resolved
+ * by the backend through the TicketInsightsSkillParticipation helper cube.
+ * Single-measure by design — joining additional measures through the helper
+ * cube drops handover tickets from every measure.
+ */
+export const handoverInteractionsBySkill = handoverInteractionsScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_BY_SKILL)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['handoverInteractionsCount'] as const,
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'automationFeatureType',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationFeatureType.AiAgent],
+            },
+        ] as any,
+    }))
+
+export const handoverInteractionsBySkillQueryFactory = (
+    ctx: HandoverInteractionsContext,
+) => handoverInteractionsBySkill.build(ctx)
+
+/**
+ * Handover interactions grouped by skill identity. Returns one row per
+ * (resourceSourceSetId, resourceSourceId) pair joined through the
+ * TicketInsightsSkillParticipation helper cube. Powers the Skills page table.
+ */
+export const handoverInteractionsPerSkill = handoverInteractionsScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_PER_SKILL)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['handoverInteractionsCount'] as const,
+        dimensions: ['resourceSourceSetId', 'resourceSourceId'] as const,
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'automationFeatureType',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationFeatureType.AiAgent],
+            },
+        ] as any,
+    }))
+
+export const handoverInteractionsPerSkillQueryFactory = (
+    ctx: HandoverInteractionsContext,
+) => handoverInteractionsPerSkill.build(ctx)

@@ -7,7 +7,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 
 export const aiAgentSuccessRateScope = defineScope({
     scope: MetricScope.AiAgentSuccessRate,
-    measures: ['successRate'],
+    measures: ['successRate', 'aiAgentTicketVolume'],
     dimensions: [
         'aiAgentRole',
         'aiIntentCustomField',
@@ -16,6 +16,8 @@ export const aiAgentSuccessRateScope = defineScope({
         'engagementType',
         'storeIntegrationId',
         'ticketId',
+        'resourceSourceId',
+        'resourceSourceSetId',
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
@@ -26,6 +28,8 @@ export const aiAgentSuccessRateScope = defineScope({
         'periodEnd',
         'periodStart',
         'storeIntegrationId',
+        'resourceSourceId',
+        'resourceSourceSetId',
     ],
     order: ['eventDatetime', 'successRate', 'ticketId'],
 })
@@ -120,3 +124,52 @@ export const aiSupportAgentSuccessRatePerIntent = aiAgentSuccessRateScope
 export const aiSupportAgentSuccessRatePerIntentQueryFactoryV2 = (
     ctx: AiAgentSuccessRateContext,
 ) => aiSupportAgentSuccessRatePerIntent.build(ctx)
+
+/**
+ * Per-skill success rate. Skill identity is the pair
+ * (resourceSourceSetId, resourceSourceId) carried in ctx.filters and resolved
+ * by the backend through the TicketInsightsSkillParticipation helper cube.
+ * Single-measure by design — joining additional measures through the helper
+ * intersects the result to tickets present in every joined cube.
+ */
+export const aiAgentSuccessRateBySkill = aiAgentSuccessRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SUCCESS_RATE_BY_SKILL)
+    .defineQuery(() => ({
+        measures: ['successRate'] as const,
+    }))
+
+export const aiAgentSuccessRateBySkillQueryFactory = (
+    ctx: AiAgentSuccessRateContext,
+) => aiAgentSuccessRateBySkill.build(ctx)
+
+/**
+ * Per-skill AI Agent ticket volume. Backed by `SuccessRate.aiAgentTicketVolume`
+ * — the count of AI Agent tickets attributed to the skill.
+ */
+export const aiAgentTicketVolumeBySkill = aiAgentSuccessRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_TICKET_VOLUME_BY_SKILL)
+    .defineQuery(() => ({
+        measures: ['aiAgentTicketVolume'] as const,
+    }))
+
+export const aiAgentTicketVolumeBySkillQueryFactory = (
+    ctx: AiAgentSuccessRateContext,
+) => aiAgentTicketVolumeBySkill.build(ctx)
+
+/**
+ * AI Agent ticket volume grouped by skill identity. Returns one row per
+ * (resourceSourceSetId, resourceSourceId) pair joined through the
+ * TicketInsightsSkillParticipation helper cube. Powers the Skills page table,
+ * which needs the count per row in a single query (calling
+ * `aiAgentTicketVolumeBySkill` once per skill would be N requests).
+ */
+export const aiAgentTicketVolumePerSkill = aiAgentSuccessRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_TICKET_VOLUME_PER_SKILL)
+    .defineQuery(() => ({
+        measures: ['aiAgentTicketVolume'] as const,
+        dimensions: ['resourceSourceSetId', 'resourceSourceId'] as const,
+    }))
+
+export const aiAgentTicketVolumePerSkillQueryFactory = (
+    ctx: AiAgentSuccessRateContext,
+) => aiAgentTicketVolumePerSkill.build(ctx)

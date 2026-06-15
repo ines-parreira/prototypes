@@ -2,8 +2,8 @@ import { renderHook } from '@repo/testing'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import { useSkillsMetrics } from 'pages/aiAgent/skills/hooks/useSkillsMetrics'
-import { useSkillsMetricsByDay } from 'pages/aiAgent/skills/hooks/useSkillsMetricsByDay'
+import { useSkillMetrics } from 'pages/aiAgent/skills/hooks/useSkillMetrics'
+import { useSkillMetricsByDay } from 'pages/aiAgent/skills/hooks/useSkillMetricsByDay'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
 
 import { useKnowledgeRecentTickets } from '../../shared/hooks/useKnowledgeRecentTickets'
@@ -11,11 +11,11 @@ import { useSkillEditorStore } from '../context'
 import { useSkillPerformanceFromContext } from './useSkillPerformanceFromContext'
 
 jest.mock('../context', () => ({ useSkillEditorStore: jest.fn() }))
-jest.mock('pages/aiAgent/skills/hooks/useSkillsMetrics', () => ({
-    useSkillsMetrics: jest.fn(),
+jest.mock('pages/aiAgent/skills/hooks/useSkillMetrics', () => ({
+    useSkillMetrics: jest.fn(),
 }))
-jest.mock('pages/aiAgent/skills/hooks/useSkillsMetricsByDay', () => ({
-    useSkillsMetricsByDay: jest.fn(),
+jest.mock('pages/aiAgent/skills/hooks/useSkillMetricsByDay', () => ({
+    useSkillMetricsByDay: jest.fn(),
 }))
 jest.mock('pages/aiAgent/skills/hooks/useTotalAiAgentTickets', () => ({
     useTotalAiAgentTickets: jest.fn(),
@@ -37,8 +37,8 @@ jest.mock('../../shared/hooks/useKnowledgeRecentTickets', () => ({
 }))
 
 const mockUseSkillEditorStore = useSkillEditorStore as jest.Mock
-const mockUseSkillsMetrics = useSkillsMetrics as jest.Mock
-const mockUseSkillsMetricsByDay = useSkillsMetricsByDay as jest.Mock
+const mockUseSkillMetrics = useSkillMetrics as jest.Mock
+const mockUseSkillMetricsByDay = useSkillMetricsByDay as jest.Mock
 const mockUseTotalAiAgentTickets = useTotalAiAgentTickets as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
@@ -50,22 +50,14 @@ const mockDateRange = {
     end_datetime: '2024-01-28T23:59:59Z',
 }
 
-const mockMetricsData = [
-    {
-        resourceSourceId: 42,
-        tickets: 10,
-        handoverTickets: 3,
-        csat: 4.5,
-        resourceSourceSetId: 100,
-    },
-    {
-        resourceSourceId: 99,
-        tickets: 20,
-        handoverTickets: 5,
-        csat: 3.8,
-        resourceSourceSetId: 200,
-    },
-]
+const mockMetricsData = {
+    tickets: 10,
+    prevTickets: 7,
+    handoverTickets: 3,
+    prevHandoverTickets: 2,
+    csat: 4.5,
+    prevCsat: 4.2,
+}
 
 const mockRecentTicketsData = {
     ticketCount: 5,
@@ -94,12 +86,12 @@ describe('useSkillPerformanceFromContext', () => {
             }),
         )
 
-        mockUseSkillsMetrics.mockReturnValue({
+        mockUseSkillMetrics.mockReturnValue({
             data: mockMetricsData,
             isLoading: false,
         })
 
-        mockUseSkillsMetricsByDay.mockReturnValue({
+        mockUseSkillMetricsByDay.mockReturnValue({
             data: [],
             isLoading: false,
         })
@@ -136,7 +128,7 @@ describe('useSkillPerformanceFromContext', () => {
         })
 
         it('returns null metrics when metricsData is undefined (loading)', () => {
-            mockUseSkillsMetrics.mockReturnValue({
+            mockUseSkillMetrics.mockReturnValue({
                 data: undefined,
                 isLoading: true,
             })
@@ -148,26 +140,9 @@ describe('useSkillPerformanceFromContext', () => {
             expect(result.current.skillMetrics.metrics).toBeNull()
         })
 
-        it('returns null metrics when no entry matches skillArticleId', () => {
-            mockUseSkillEditorStore.mockImplementation((selector) =>
-                selector({
-                    state: { skill: { id: 999 }, historicalVersion: null },
-                    config: {
-                        helpCenter: { id: 10, shop_integration_id: 999 },
-                    },
-                }),
-            )
-
-            mockUseSkillsMetrics.mockReturnValue({
-                data: [
-                    {
-                        resourceSourceId: 1,
-                        tickets: 5,
-                        handoverTickets: 1,
-                        csat: 4.0,
-                        resourceSourceSetId: 50,
-                    },
-                ],
+        it('returns null metrics when data is undefined', () => {
+            mockUseSkillMetrics.mockReturnValue({
+                data: undefined,
                 isLoading: false,
             })
 
@@ -178,16 +153,19 @@ describe('useSkillPerformanceFromContext', () => {
             expect(result.current.skillMetrics.metrics).toBeNull()
         })
 
-        it('returns correct metrics when entry matches skillArticleId', () => {
+        it('returns correct metrics with resourceSourceSetId from helpCenterId', () => {
             const { result } = renderHook(() =>
                 useSkillPerformanceFromContext(),
             )
 
             expect(result.current.skillMetrics.metrics).toEqual({
                 tickets: 10,
+                prevTickets: 7,
                 handoverTickets: 3,
+                prevHandoverTickets: 2,
                 csat: 4.5,
-                resourceSourceSetId: 100,
+                prevCsat: 4.2,
+                resourceSourceSetId: 10,
             })
         })
 
@@ -224,8 +202,21 @@ describe('useSkillPerformanceFromContext', () => {
             expect(result.current.skillMetrics.shopIntegrationId).toBe(999)
         })
 
-        it('returns isLoading from useSkillsMetrics', () => {
-            mockUseSkillsMetrics.mockReturnValue({
+        it('exposes resourceSourceSetId from helpCenterId before metrics load', () => {
+            mockUseSkillMetrics.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            })
+
+            const { result } = renderHook(() =>
+                useSkillPerformanceFromContext(),
+            )
+
+            expect(result.current.skillMetrics.resourceSourceSetId).toBe(10)
+        })
+
+        it('returns isLoading from useSkillMetrics', () => {
+            mockUseSkillMetrics.mockReturnValue({
                 data: undefined,
                 isLoading: true,
             })
@@ -352,11 +343,13 @@ describe('useSkillPerformanceFromContext', () => {
                 }),
             )
 
-            expect(mockUseSkillsMetrics).toHaveBeenCalledWith(
-                999,
-                true,
-                overrideRange,
-            )
+            expect(mockUseSkillMetrics).toHaveBeenCalledWith({
+                shopIntegrationId: 999,
+                resourceSourceId: 42,
+                resourceSourceSetId: 10,
+                enabled: true,
+                dateRange: overrideRange,
+            })
         })
 
         it('uses dateRangeOverride for the per-day metrics query when supplied', () => {
@@ -366,13 +359,13 @@ describe('useSkillPerformanceFromContext', () => {
                 }),
             )
 
-            expect(mockUseSkillsMetricsByDay).toHaveBeenCalledWith(
-                999,
-                42,
-                10,
-                true,
-                overrideRange,
-            )
+            expect(mockUseSkillMetricsByDay).toHaveBeenCalledWith({
+                shopIntegrationId: 999,
+                resourceSourceId: 42,
+                resourceSourceSetId: 10,
+                enabled: true,
+                dateRange: overrideRange,
+            })
         })
 
         it('exposes the override on skillMetrics.dateRange so KPI cards see it', () => {

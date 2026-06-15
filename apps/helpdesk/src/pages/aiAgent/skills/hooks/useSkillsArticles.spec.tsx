@@ -6,14 +6,41 @@ import { waitFor } from '@testing-library/react'
 
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 
+import type { SkillAggregateMetrics } from './useSkillsAggregateMetrics'
+import {
+    skillKey,
+    useSkillsAggregateMetrics,
+} from './useSkillsAggregateMetrics'
 import { useSkillsArticles } from './useSkillsArticles'
-import { useSkillsMetrics } from './useSkillsMetrics'
 
 jest.mock('models/helpCenter/queries')
-jest.mock('./useSkillsMetrics')
+jest.mock('./useSkillsAggregateMetrics', () => {
+    const actual = jest.requireActual('./useSkillsAggregateMetrics')
+    return {
+        ...actual,
+        useSkillsAggregateMetrics: jest.fn(),
+    }
+})
 
 const mockUseGetHelpCenterArticleList = useGetHelpCenterArticleList as jest.Mock
-const mockUseSkillsMetrics = useSkillsMetrics as jest.Mock
+const mockUseSkillsAggregateMetrics = useSkillsAggregateMetrics as jest.Mock
+
+const HELP_CENTER_ID = 123
+
+const buildMetricsMap = (): Map<string, SkillAggregateMetrics> => {
+    const map = new Map<string, SkillAggregateMetrics>()
+    map.set(skillKey(HELP_CENTER_ID, 1), {
+        tickets: 100,
+        handoverTickets: 20,
+        csat: 4.5,
+    })
+    map.set(skillKey(HELP_CENTER_ID, 2), {
+        tickets: 50,
+        handoverTickets: 10,
+        csat: 4.0,
+    })
+    return map
+}
 
 describe('useSkillsArticles', () => {
     const queryClient = new QueryClient({
@@ -44,7 +71,7 @@ describe('useSkillsArticles', () => {
                 created_datetime: '2024-01-01T00:00:00Z',
                 updated_datetime: '2024-01-01T00:00:00Z',
                 category_id: null,
-                help_center_id: 123,
+                help_center_id: HELP_CENTER_ID,
                 origin: 'skill',
                 ingested_resource_id: null,
                 available_locales: ['en-US'],
@@ -80,7 +107,7 @@ describe('useSkillsArticles', () => {
                 created_datetime: '2024-01-01T00:00:00Z',
                 updated_datetime: '2024-01-01T00:00:00Z',
                 category_id: null,
-                help_center_id: 123,
+                help_center_id: HELP_CENTER_ID,
                 origin: 'skill',
                 ingested_resource_id: null,
                 available_locales: ['en-US'],
@@ -113,23 +140,6 @@ describe('useSkillsArticles', () => {
         ],
     }
 
-    const mockMetricsData = [
-        {
-            resourceSourceId: 1,
-            tickets: 100,
-            handoverTickets: 20,
-            csat: 4.5,
-            resourceSourceSetId: 123,
-        },
-        {
-            resourceSourceId: 2,
-            tickets: 50,
-            handoverTickets: 10,
-            csat: 4.0,
-            resourceSourceSetId: 124,
-        },
-    ]
-
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
@@ -142,15 +152,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: mockMetricsData,
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: buildMetricsMap(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.articles).toHaveLength(2)
@@ -173,7 +186,7 @@ describe('useSkillsArticles', () => {
             prevHandoverTickets: null,
             csat: 4.5,
             prevCsat: null,
-            resourceSourceSetId: 123,
+            resourceSourceSetId: HELP_CENTER_ID,
         })
     })
 
@@ -184,15 +197,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: new Map(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.articles).toHaveLength(2)
@@ -209,15 +225,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: new Map(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.articles).toEqual([])
@@ -231,15 +250,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: new Map(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.articles).toEqual([])
@@ -253,15 +275,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: new Map(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current.isLoading).toBe(true)
         expect(result.current.articles).toEqual([])
@@ -274,15 +299,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: null,
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: undefined,
             isLoading: true,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current.isMetricsLoading).toBe(true)
     })
@@ -294,15 +322,18 @@ describe('useSkillsArticles', () => {
             isError: true,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: new Map(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current.isError).toBe(true)
     })
@@ -314,35 +345,41 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: null,
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: undefined,
             isLoading: false,
             isError: true,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current.isMetricsError).toBe(true)
     })
 
-    it('should enrich articles with undefined metrics when no matching metrics data', async () => {
+    it('should leave article.metrics unset when no matching metrics entry', async () => {
         mockUseGetHelpCenterArticleList.mockReturnValue({
             data: mockArticlesData,
             isLoading: false,
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: new Map(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         await waitFor(() => {
             expect(result.current.articles).toHaveLength(2)
@@ -359,15 +396,18 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: mockMetricsData,
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: buildMetricsMap(),
             isLoading: false,
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillsArticles(123, 456), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useSkillsArticles(HELP_CENTER_ID, 456),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current.metricsDateRange).toHaveProperty('start_datetime')
         expect(result.current.metricsDateRange).toHaveProperty('end_datetime')
@@ -380,8 +420,8 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: mockMetricsData,
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: buildMetricsMap(),
             isLoading: false,
             isError: false,
         })
@@ -399,22 +439,49 @@ describe('useSkillsArticles', () => {
         )
     })
 
-    it('should pass shop integration ID to useSkillsMetrics', () => {
+    it('should pass shop integration ID and date range to useSkillsAggregateMetrics', () => {
         mockUseGetHelpCenterArticleList.mockReturnValue({
             data: mockArticlesData,
             isLoading: false,
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: mockMetricsData,
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: buildMetricsMap(),
             isLoading: false,
             isError: false,
         })
 
-        renderHook(() => useSkillsArticles(123, 888), { wrapper })
+        renderHook(() => useSkillsArticles(HELP_CENTER_ID, 888), { wrapper })
 
-        expect(mockUseSkillsMetrics).toHaveBeenCalledWith(888, true)
+        expect(mockUseSkillsAggregateMetrics).toHaveBeenCalledWith({
+            shopIntegrationId: 888,
+            dateRange: expect.objectContaining({
+                start_datetime: expect.any(String),
+                end_datetime: expect.any(String),
+            }),
+            enabled: true,
+        })
+    })
+
+    it('should disable the metrics query when shop integration ID is falsy', () => {
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: null,
+            isLoading: false,
+            isError: false,
+        })
+
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        renderHook(() => useSkillsArticles(HELP_CENTER_ID, 0), { wrapper })
+
+        expect(mockUseSkillsAggregateMetrics).toHaveBeenCalledWith(
+            expect.objectContaining({ enabled: false }),
+        )
     })
 
     it('should not fetch articles when help center ID is falsy', () => {
@@ -424,8 +491,8 @@ describe('useSkillsArticles', () => {
             isError: false,
         })
 
-        mockUseSkillsMetrics.mockReturnValue({
-            data: [],
+        mockUseSkillsAggregateMetrics.mockReturnValue({
+            data: undefined,
             isLoading: false,
             isError: false,
         })

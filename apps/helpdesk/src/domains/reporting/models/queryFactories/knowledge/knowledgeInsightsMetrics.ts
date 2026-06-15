@@ -181,6 +181,16 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
             operator: ReportingFilterOperator.Equals,
             values: [String(resourceSourceId)],
         })
+        // Skill-scoped queries (resourceSourceId pinned to a single value) must
+        // narrow to skill participation only. Without this, the V1 drilldown
+        // returns every ticket that used the resource — articles, macros,
+        // snippets included — instead of just the skill rows that match the
+        // helper-cube path used by the side-panel and table KPIs.
+        baseFilters.push({
+            member: TicketInsightsTaskDimension.ResourceIsSkill,
+            operator: ReportingFilterOperator.Equals,
+            values: ['true'],
+        })
     } else if (
         resourceSourceIdFilter &&
         resourceSourceIdFilter.values.length > 0

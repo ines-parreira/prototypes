@@ -91,6 +91,7 @@ const baseProps = {
     metrics: null,
     isLoading: false,
     resourceSourceId: 1,
+    resourceSourceSetId: 7,
     shopIntegrationId: 999,
     dateRange: { start_datetime: '2024-01-01', end_datetime: '2024-01-28' },
     totalAiAgentTickets: 100,
@@ -266,6 +267,7 @@ describe('SkillEditorSidePanelPerformanceMetricCards', () => {
             <SkillEditorSidePanelPerformanceMetricCards
                 {...baseProps}
                 resourceSourceId={42}
+                resourceSourceSetId={7}
                 dateRange={{
                     start_datetime: '2026-04-01T00:00:00.000Z',
                     end_datetime: '2026-04-28T23:59:59.999Z',
@@ -276,11 +278,32 @@ describe('SkillEditorSidePanelPerformanceMetricCards', () => {
 
         expect(mockUseSkillSuccessRateMetric).toHaveBeenCalledWith({
             skillId: 42,
+            resourceSourceSetId: 7,
+            shopIntegrationId: 999,
             dateRange: {
                 start_datetime: '2026-04-01T00:00:00.000Z',
                 end_datetime: '2026-04-28T23:59:59.999Z',
             },
         })
+    })
+
+    it('passes resourceSourceSetId to useSkillSuccessRateMetric even when metrics is still loading', () => {
+        render(
+            <SkillEditorSidePanelPerformanceMetricCards
+                {...baseProps}
+                resourceSourceId={42}
+                resourceSourceSetId={7}
+                metrics={null}
+                isLoading={true}
+            />,
+        )
+
+        expect(mockUseSkillSuccessRateMetric).toHaveBeenCalledWith(
+            expect.objectContaining({
+                skillId: 42,
+                resourceSourceSetId: 7,
+            }),
+        )
     })
 
     it('flips the underlying trend isFetching flag while metrics are loading', () => {

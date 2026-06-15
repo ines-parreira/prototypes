@@ -220,6 +220,18 @@ export const METRIC_NAMES = {
         'ai-agent-all-agents-decrease-in-resolution-time',
     AI_AGENT_ALL_AGENTS_AUTOMATION_RATE: 'ai-agent-all-agents-automation-rate',
 
+    // AI Agent Skill Participation (per-skill metrics joined via TicketInsightsSkillParticipation helper cube)
+    AI_AGENT_SUCCESS_RATE_BY_SKILL: 'ai-agent-success-rate-by-skill',
+    AI_AGENT_SUCCESS_RATE_PER_SKILL: 'ai-agent-success-rate-per-skill',
+    AI_AGENT_TICKET_VOLUME_BY_SKILL: 'ai-agent-ticket-volume-by-skill',
+    AI_AGENT_TICKET_VOLUME_PER_SKILL: 'ai-agent-ticket-volume-per-skill',
+    AI_AGENT_HANDOVER_INTERACTIONS_BY_SKILL:
+        'ai-agent-handover-interactions-by-skill',
+    AI_AGENT_HANDOVER_INTERACTIONS_PER_SKILL:
+        'ai-agent-handover-interactions-per-skill',
+    AI_AGENT_CSAT_BY_SKILL: 'ai-agent-csat-by-skill',
+    AI_AGENT_CSAT_PER_SKILL: 'ai-agent-csat-per-skill',
+
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
     AI_JOURNEY_GMV_INFLUENCED_TIME_SERIES:
@@ -1466,6 +1478,8 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_INTENT,
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_HANDOVER_INTERACTIONS_PER_ENGAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_BY_SKILL,
+        METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_PER_SKILL,
     ],
 
     // P5
@@ -1501,6 +1515,10 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_INTENT,
         METRIC_NAMES.AI_AGENT_SUPPORT_SUCCESS_RATE_PER_INTENT,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_SUCCESS_RATE,
+        METRIC_NAMES.AI_AGENT_SUCCESS_RATE_BY_SKILL,
+        METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_SKILL,
+        METRIC_NAMES.AI_AGENT_TICKET_VOLUME_BY_SKILL,
+        METRIC_NAMES.AI_AGENT_TICKET_VOLUME_PER_SKILL,
     ],
     [MetricScope.AiSalesAgentConversionRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE,
@@ -1605,6 +1623,8 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AiAgentCsat]: [
         METRIC_NAMES.AI_AGENT_CSAT_AVERAGE_SCORE,
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AVERAGE_CSAT,
+        METRIC_NAMES.AI_AGENT_CSAT_BY_SKILL,
+        METRIC_NAMES.AI_AGENT_CSAT_PER_SKILL,
     ],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
