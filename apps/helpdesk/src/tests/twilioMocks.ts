@@ -16,6 +16,10 @@ const mockCall = (): Partial<Call> => {
         emitter.on(event, handler)
         return mock as Call
     })
+    mock.once = jest.fn((event: string, handler: any) => {
+        emitter.once(event, handler)
+        return mock as Call
+    })
     mock.off = jest.fn((event: string, handler: any) => {
         emitter.off(event, handler)
         return mock as Call

@@ -106,7 +106,7 @@ describe('<IncomingPhoneCall />', () => {
         cleanup()
     })
 
-    it('should accept call and open ticket', () => {
+    it('should accept call and open ticket once connected', () => {
         useFlagMock.mockReturnValue(true)
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
@@ -114,6 +114,9 @@ describe('<IncomingPhoneCall />', () => {
 
         fireEvent.click(screen.getByText(/Accept/))
         expect(call.accept).toHaveBeenCalled()
+        expect(history.push).not.toHaveBeenCalled()
+
+        call.emit('accept', call)
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
 

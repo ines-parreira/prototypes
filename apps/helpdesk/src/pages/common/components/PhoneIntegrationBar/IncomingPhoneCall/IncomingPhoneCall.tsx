@@ -119,8 +119,8 @@ export function IncomingPhoneCall({ call }: Props): JSX.Element {
                             <Button
                                 aria-label="Accept phone call"
                                 onClick={() => {
+                                    call.once('accept', openTicket)
                                     call.accept()
-                                    openTicket()
                                 }}
                                 leadingSlot="phone-incoming"
                             >
