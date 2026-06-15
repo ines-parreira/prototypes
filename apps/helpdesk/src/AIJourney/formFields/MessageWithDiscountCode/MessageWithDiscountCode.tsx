@@ -12,6 +12,7 @@ import {
 import { getOrdinalSuffix } from 'AIJourney/utils'
 
 const LABEL = 'Message that includes the discount code'
+const V3_LABEL = 'Start offering the discount from'
 
 const handleSelectionChange =
     (onChange: (value: number) => void) => (key: React.Key) => {
@@ -68,7 +69,7 @@ export const MessageWithDiscountCode = ({
                 defaultValue={1}
                 render={({ field }) => (
                     <SelectField
-                        label={LABEL}
+                        label={V3_LABEL}
                         items={options}
                         value={
                             options.find((o) => o.id === (field.value ?? 1)) ??

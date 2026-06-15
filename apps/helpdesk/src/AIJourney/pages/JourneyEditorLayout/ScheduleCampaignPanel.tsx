@@ -24,7 +24,7 @@ type Props = {
 
 export const ScheduleCampaignPanel = ({ isOpen, onClose }: Props) => {
     const { journeyData, currentIntegration } = useJourneyContext()
-    const { control, getValues } = useFormContext<SetupFormValues>()
+    const { control, getValues, reset } = useFormContext<SetupFormValues>()
 
     const scheduleType = useWatch({ control, name: 'scheduleType' })
     const scheduledDate = useWatch({ control, name: 'scheduledDate' })
@@ -49,6 +49,7 @@ export const ScheduleCampaignPanel = ({ isOpen, onClose }: Props) => {
                 scheduledDatetime: null,
             })
         }
+        reset(getValues())
         onClose()
     }
 

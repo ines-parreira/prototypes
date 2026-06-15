@@ -705,6 +705,25 @@ describe('<AudienceSelect />', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('does not show CreateNewSegmentButton in the campaign workflow', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: { id: 123 },
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+            const user = userEvent.setup()
+            await renderComponent('include')
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+
+            expect(
+                screen.queryByText('Create new segment'),
+            ).not.toBeInTheDocument()
+        })
+
         it('shows CreateNewSegmentButton in footer when feature flag is enabled', async () => {
             const user = userEvent.setup()
             await renderComponent('include')

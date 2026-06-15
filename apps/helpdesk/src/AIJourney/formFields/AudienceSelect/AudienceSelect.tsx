@@ -213,7 +213,9 @@ export const AudienceSelect = ({
                         isOpen={isMultiSelectOpen}
                         onOpenChange={setIsMultiSelectOpen}
                         footer={
-                            isAiJourneySegmentsEnabled && canWrite ? (
+                            isAiJourneySegmentsEnabled &&
+                            canWrite &&
+                            !isCampaign ? (
                                 <CreateNewSegmentButton
                                     onClick={() => {
                                         setIsMultiSelectOpen(false)

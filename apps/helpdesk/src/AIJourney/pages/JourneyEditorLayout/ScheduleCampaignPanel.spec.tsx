@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, useFormState } from 'react-hook-form'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -280,6 +280,53 @@ describe('<ScheduleCampaignPanel />', () => {
 
         await waitFor(() => {
             expect(mockOnClose).toHaveBeenCalled()
+        })
+    })
+
+    it('should reset the form dirty state after scheduling so the unsaved-changes prompt does not re-fire', async () => {
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+
+        const DirtyProbe = () => {
+            const { isDirty } = useFormState()
+            return <span>{isDirty ? 'dirty' : 'clean'}</span>
+        }
+
+        const DirtyWrapper = ({ children }: { children: React.ReactNode }) => {
+            const methods = useForm({
+                defaultValues: {
+                    scheduleType: 'later' as const,
+                    scheduledDate: null,
+                    scheduledTime: null,
+                },
+            })
+            return (
+                <Provider store={mockStore}>
+                    <FormProvider {...methods}>
+                        {children}
+                        <DirtyProbe />
+                    </FormProvider>
+                </Provider>
+            )
+        }
+
+        const user = userEvent.setup()
+        render(<ScheduleCampaignPanel isOpen={true} onClose={jest.fn()} />, {
+            wrapper: DirtyWrapper,
+        })
+
+        await user.click(screen.getByText('Send now'))
+        expect(screen.getByText('dirty')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /send campaign/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('clean')).toBeInTheDocument()
         })
     })
 

@@ -94,6 +94,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
     const methods = useForm<SetupFormValues>({
         defaultValues: {
             max_follow_up_messages: 0,
+            follow_up_wait_minutes: 24 * 60,
             include_image: false,
             include_custom_image: false,
             offer_discount: false,

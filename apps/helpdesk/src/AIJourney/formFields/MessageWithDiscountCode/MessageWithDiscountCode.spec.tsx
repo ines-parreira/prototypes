@@ -76,14 +76,17 @@ describe('<MessageWithDiscountCode />', () => {
     })
 
     describe('V3 architecture', () => {
-        it('renders a SelectField with the discount-code label', () => {
+        it('renders a SelectField with the V3 availability label', () => {
             renderComponent({ isV3Architecture: true })
 
             expect(
                 screen.getByRole('button', {
-                    name: /message that includes the discount code/i,
+                    name: /start offering the discount from/i,
                 }),
             ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Message that includes the discount code'),
+            ).not.toBeInTheDocument()
         })
 
         it('displays the selected option label from the form value', () => {
@@ -102,7 +105,7 @@ describe('<MessageWithDiscountCode />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: /message that includes the discount code/i,
+                    name: /start offering the discount from/i,
                 }),
             )
 

@@ -187,6 +187,33 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         )
     })
 
+    it('should default the follow-up delay to 24 hours when creating a campaign', async () => {
+        const mockHandleCreate = jest.fn().mockResolvedValue({ id: 'new-123' })
+        const mockUseJourneyCreateHandler = require('AIJourney/hooks')
+            .useJourneyCreateHandler as jest.Mock
+        mockUseJourneyCreateHandler.mockReturnValue({
+            handleCreate: mockHandleCreate,
+            isLoading: false,
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.type(
+            screen.getByRole('textbox', { name: /campaign title/i }),
+            'New Campaign',
+        )
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Test instructions',
+        )
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        expect(mockHandleCreate).toHaveBeenCalledWith(
+            expect.objectContaining({ followUpWaitMinutes: 24 * 60 }),
+        )
+    })
+
     it('should call handleUpdate when clicking "Save changes" with journeyData.id', async () => {
         const mockHandleUpdate = jest.fn().mockResolvedValue({})
         const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
