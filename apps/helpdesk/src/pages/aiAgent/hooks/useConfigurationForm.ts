@@ -27,7 +27,6 @@ import { useAiAgentNavigation } from './useAiAgentNavigation'
 import { useHasUninstalledChatIntegration } from './useHasUninstalledChatIntegration'
 import { useStoreConfigurationMutation } from './useStoreConfigurationMutation'
 import { useStoresDomainIngestionLogs } from './useStoresDomainIngestionLogs'
-import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 
 export const useConfigurationForm = ({
     initValues,
@@ -93,37 +92,21 @@ export const useConfigurationForm = ({
     // This is used to prevent the form from being updated when the store configuration is updated
     const isInitializedRef = useRef(false)
 
-    // This is used to reset the form values when the props change
+    // This is used to reset the form values when the props change.
+    // chatChannelIds is included because the available chat channels load
+    // asynchronously from Redux: without re-initializing once they arrive, the
+    // frozen formValues keep a stale chat-integration filter while defaultValues
+    // recomputes against the loaded channels, marking the form dirty with no edit.
     useEffect(() => {
         isInitializedRef.current = false
-    }, [shopName, initValues])
+    }, [shopName, initValues, chatChannelIds])
 
     useEffect(() => {
         if (!isInitializedRef.current && !isStoreConfigurationLoading) {
-            if (storeConfiguration) {
-                const monitoredChatIntegrations =
-                    storeConfiguration.monitoredChatIntegrations.filter(
-                        (chat) => chatChannelIds.has(chat),
-                    )
-
-                setFormValues(
-                    getFormValuesFromStoreConfiguration({
-                        ...storeConfiguration,
-                        monitoredChatIntegrations,
-                    }),
-                )
-            } else {
-                setFormValues(defaultValues)
-            }
-
+            setFormValues(defaultValues)
             isInitializedRef.current = true
         }
-    }, [
-        defaultValues,
-        storeConfiguration,
-        isStoreConfigurationLoading,
-        chatChannelIds,
-    ])
+    }, [defaultValues, isStoreConfigurationLoading])
 
     const resetForm = useCallback(() => {
         isInitializedRef.current = false

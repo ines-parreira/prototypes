@@ -618,6 +618,43 @@ describe('useConfigurationForm', () => {
         expect(result.current.isFormDirty).toBe(false)
     })
 
+    it('should not mark form dirty when chat channels load after initialization', () => {
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            ...defaultStoreConfigurationContextMock,
+            storeConfiguration: getStoreConfigurationFixture({
+                monitoredChatIntegrations: [1],
+            }),
+        })
+
+        // Chat channels are not yet available on the first render (Redux
+        // integrations load asynchronously).
+        mockUseSelfServiceChatChannels.mockReturnValue([])
+
+        const initValues = getFormValuesFromStoreConfiguration(
+            getStoreConfigurationFixture({
+                monitoredChatIntegrations: [1],
+            }),
+        )
+
+        const { result, rerender } = renderHook(
+            (props) => useConfigurationForm(props),
+            {
+                initialProps: { shopName, shopType, initValues },
+            },
+        )
+
+        // Chat channels arrive on a later render with a stable initValues
+        // reference, exactly as in production.
+        mockUseSelfServiceChatChannels.mockReturnValue([
+            { value: { id: 1 } },
+        ] as any)
+
+        rerender({ shopName, shopType, initValues })
+
+        expect(result.current.formValues.monitoredChatIntegrations).toEqual([1])
+        expect(result.current.isFormDirty).toBe(false)
+    })
+
     it('should filter out unavailable chat channels', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             ...defaultStoreConfigurationContextMock,
