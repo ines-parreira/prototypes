@@ -53,6 +53,25 @@ describe('useCheckOnboardingCompleted', () => {
         expect(result.current).toBeNull()
     })
 
+    it('should not redirect or toast when skipped, even if onboarding is completed', () => {
+        mockUseParams.mockReturnValue({ shopName: 'completed-store' })
+        mockUseGetOnboardingData.mockReturnValue({
+            data: {
+                completedDatetime: '2024-02-21T12:00:00Z',
+                shopType: 'shopify',
+            },
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() => useCheckOnboardingCompleted(true))
+
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
+        expect(result.current).toBeNull()
+    })
+
     it('should redirect to the SKILLSET step when onboarding is completed', async () => {
         mockUseParams.mockReturnValue({ shopName: 'completed-store' })
         mockUseGetOnboardingData.mockReturnValue({

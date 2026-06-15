@@ -304,6 +304,29 @@ describe('SalesPaywallMiddleware', () => {
             } as StoreIntegration,
         ])
     })
+    it('shows a loader while store activations are still loading', () => {
+        useStoreActivationsMock.mockReturnValue({
+            storeActivations: {},
+            isFetchLoading: true,
+        } as any)
+        renderMiddleware()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('mock-child-component'),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
+    })
+    it('shows a loader while trial access is still loading', () => {
+        mockUseTrialAccess.mockReturnValue(
+            createMockTrialAccess({ isLoading: true }),
+        )
+        renderMiddleware()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('mock-child-component'),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
+    })
     it('should render AI Agent paywall when it doesnt has AI Agent', () => {
         setupUseAppSelectorMock({ hasAutomate: false })
         renderMiddleware()

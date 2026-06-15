@@ -432,8 +432,13 @@ export const useGetOnboardingNotificationState = (
             ),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        enabled: !!params.accountDomain && !!params.storeName,
         ...overrides,
+        // Keep the store guard after the spread so a caller-supplied `enabled`
+        // can't re-enable the query with an empty store and fire `/stores//…`.
+        enabled:
+            !!params.accountDomain &&
+            !!params.storeName &&
+            (overrides?.enabled ?? true),
     })
 }
 
@@ -487,8 +492,10 @@ export const useGetOrCreateOnboardingNotificationState = (
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
-        enabled: !!accountDomain && !!storeName && (overrides?.enabled ?? true),
         ...overrides,
+        // Keep the store guard after the spread so a caller-supplied `enabled`
+        // can't re-enable the query with an empty store and fire `/stores//…`.
+        enabled: !!accountDomain && !!storeName && (overrides?.enabled ?? true),
     })
 }
 

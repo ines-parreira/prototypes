@@ -38,6 +38,7 @@ import {
 } from 'pages/aiAgent/TopOpportunities/constants'
 import { TopOpportunitiesSection } from 'pages/aiAgent/TopOpportunities/TopOpportunitiesSection'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
+import { TrialActivationModal } from 'pages/aiAgent/trial/components/TrialActivationModal'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -192,6 +193,7 @@ export const AiAgentOverview = () => {
     })
 
     const {
+        startTrial,
         startTrialDeprecated,
         isLoading: isTrialRevampLoading,
         isTrialModalOpen: isTrialUpgradeModalOpen,
@@ -204,6 +206,12 @@ export const AiAgentOverview = () => {
         accountDomain,
         storeActivations,
         trialType,
+        // The trial opt-in modal is owned here (see render below) but only when
+        // `needsOptIn` (V3-gated). Scope the source to that case so confirming uses
+        // the post-setup flow — a ShoppingAssistant trial start then skips the
+        // finish-setup modal, which V3 Overview does not render — while leaving the
+        // V2 path (which uses startTrialDeprecated, ignoring source) untouched.
+        source: needsOptIn ? 'overview_post_setup' : undefined,
     })
 
     /* TODO: [COACH-718] remove this when the trial improvement is enabled */
@@ -280,16 +288,38 @@ export const AiAgentOverview = () => {
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>
-            {needsOptIn &&
-                (isAiAgentConfigured ? (
-                    <TrialOptInBanner
-                        shopName={shopName}
-                        storeActivations={storeActivations}
-                        isStoreActivationsLoading={isFetchLoading}
+            {needsOptIn && (
+                <>
+                    {isAiAgentConfigured ? (
+                        <TrialOptInBanner
+                            shopName={shopName}
+                            storeActivations={storeActivations}
+                        />
+                    ) : (
+                        <SetupModeBanner />
+                    )}
+                    {/*
+                     * Single render site for the trial opt-in modal. It's opened
+                     * from multiple triggers — the TrialOptInBanner button (post
+                     * Train + Test) and the DeploySection deploy toggles (setup
+                     * mode) — which all flip the same shared useModalManager state
+                     * keyed by trialType. Mounting it here, at the level that owns
+                     * the whole opt-in flow, keeps exactly one instance available
+                     * for both phases.
+                     */}
+                    <TrialActivationModal
+                        isOpen={isTrialUpgradeModalOpen}
+                        onClose={closeTrialUpgradeModal}
+                        onConfirm={startTrial}
+                        trialType={trialType}
+                        newPlan={
+                            trialModalProps.newTrialUpgradePlanModal.newPlan
+                        }
+                        isLoading={isTrialRevampLoading}
+                        isConfirmDisabled={isFetchLoading}
                     />
-                ) : (
-                    <SetupModeBanner />
-                ))}
+                </>
+            )}
             {hasSkillsAccess && (
                 <GoToSkillsBanner
                     shopName={shopName}

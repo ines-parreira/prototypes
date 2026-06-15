@@ -4,13 +4,15 @@ import { toast } from '@gorgias/axiom'
 
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 
-const useCheckOnboardingCompleted = (): null => {
+const useCheckOnboardingCompleted = (skip = false): null => {
     const { shopName } = useParams<{ shopName: string }>()
     const { data, isLoading } = useGetOnboardingData(shopName)
     const history = useHistory()
 
-    // Return early if still loading
-    if (isLoading) {
+    // Skip while the user is actively completing setup: finishing the wizard
+    // sets `completedDatetime`, which would otherwise trip this revisit guard
+    // and redirect away with an error toast mid-completion.
+    if (skip || isLoading) {
         return null
     }
 

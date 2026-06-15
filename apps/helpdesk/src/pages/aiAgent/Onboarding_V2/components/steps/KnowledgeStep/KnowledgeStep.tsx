@@ -68,8 +68,10 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
     const { data } = useGetOnboardingData(shopName)
 
+    const [isCompletingSetup, setIsCompletingSetup] = useState(false)
+
     useCheckStoreIntegration()
-    useCheckOnboardingCompleted()
+    useCheckOnboardingCompleted(isCompletingSetup)
     useCheckStoreAlreadyConfigured()
 
     const {
@@ -77,7 +79,6 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         isLoading: isUpdatingOnboarding,
     } = useUpdateOnboarding()
     const queryClient = useQueryClient()
-    const [isCompletingSetup, setIsCompletingSetup] = useState(false)
 
     const { routes } = useAiAgentNavigation({ shopName })
 

@@ -3,10 +3,8 @@ import { Banner, Button } from '@gorgias/axiom'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { TrialActivationModal } from 'pages/aiAgent/trial/components/TrialActivationModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 const BANNER_DESCRIPTION_BY_TRIAL_TYPE: Record<TrialType, string> = {
@@ -19,64 +17,39 @@ const BANNER_DESCRIPTION_BY_TRIAL_TYPE: Record<TrialType, string> = {
 type Props = {
     shopName: string | undefined
     storeActivations: Record<string, StoreActivation>
-    isStoreActivationsLoading: boolean
 }
 
-export const TrialOptInBanner = ({
-    shopName,
-    storeActivations,
-    isStoreActivationsLoading,
-}: Props) => {
+export const TrialOptInBanner = ({ shopName, storeActivations }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
     const trialAccess = useTrialAccess(shopName)
 
-    const {
-        startTrial,
-        isLoading,
-        isTrialModalOpen,
-        closeTrialUpgradeModal,
-        openTrialUpgradeModal,
-    } = useShoppingAssistantTrialFlow({
+    const { openTrialUpgradeModal } = useShoppingAssistantTrialFlow({
         accountDomain,
         storeActivations,
         trialType: trialAccess.trialType,
         source: 'overview_post_setup',
     })
 
-    const trialModalProps = useTrialModalProps({ storeName: shopName })
-
     return (
-        <>
-            <Banner
+        <Banner
+            intent="ai"
+            icon="ai-agent-feedback"
+            title="AI Agent is ready"
+            description={
+                BANNER_DESCRIPTION_BY_TRIAL_TYPE[trialAccess.trialType]
+            }
+            isClosable={false}
+        >
+            <Button
+                variant="secondary"
+                size="sm"
+                onClick={openTrialUpgradeModal}
                 intent="ai"
-                icon="ai-agent-feedback"
-                title="AI Agent is ready"
-                description={
-                    BANNER_DESCRIPTION_BY_TRIAL_TYPE[trialAccess.trialType]
-                }
-                isClosable={false}
             >
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={openTrialUpgradeModal}
-                    intent="ai"
-                >
-                    Start trial
-                </Button>
-            </Banner>
-
-            <TrialActivationModal
-                isOpen={isTrialModalOpen}
-                onClose={closeTrialUpgradeModal}
-                onConfirm={startTrial}
-                trialType={trialAccess.trialType}
-                newPlan={trialModalProps.newTrialUpgradePlanModal.newPlan}
-                isLoading={isLoading}
-                isConfirmDisabled={isStoreActivationsLoading}
-            />
-        </>
+                Start trial
+            </Button>
+        </Banner>
     )
 }

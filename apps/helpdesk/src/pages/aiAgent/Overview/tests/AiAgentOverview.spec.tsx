@@ -75,6 +75,38 @@ jest.mock(
         SetupModeBanner: () => <div>Setup Mode Banner</div>,
     }),
 )
+let mockTrialActivationModalProps:
+    | {
+          isOpen: boolean
+          onConfirm: unknown
+          onClose: unknown
+          trialType: unknown
+          isConfirmDisabled?: boolean
+          isLoading?: boolean
+      }
+    | undefined
+jest.mock('pages/aiAgent/trial/components/TrialActivationModal', () => ({
+    TrialActivationModal: (props: {
+        isOpen: boolean
+        onConfirm: () => void
+        onClose: () => void
+        trialType: unknown
+        isConfirmDisabled?: boolean
+        isLoading?: boolean
+    }) => {
+        mockTrialActivationModalProps = props
+        return (
+            <div>
+                <span>Trial Activation Modal mounted</span>
+                {props.isOpen ? (
+                    <div role="dialog" aria-label="Trial activation">
+                        <span>{String(props.trialType)}</span>
+                    </div>
+                ) : null}
+            </div>
+        )
+    },
+}))
 jest.mock('pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn', () => ({
     useNeedsAiAgentTrialOptIn: jest.fn(() => ({ needsOptIn: false })),
 }))
@@ -291,6 +323,7 @@ describe('AiAgentOverview', () => {
 
     describe('Overview banner state (V3)', () => {
         beforeEach(() => {
+            mockTrialActivationModalProps = undefined
             useParamsMock.mockReturnValue({
                 shopName: 'test-shop',
                 shopType: 'shopify',
@@ -335,6 +368,56 @@ describe('AiAgentOverview', () => {
 
             expect(queryByText('Setup Mode Banner')).not.toBeInTheDocument()
             expect(queryByText('Trial Opt In Banner')).not.toBeInTheDocument()
+        })
+
+        it('mounts the trial activation modal during setup mode so deploy toggles have a render site', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: true })
+            mockIsStepCompleted([])
+
+            const { getByText } = renderComponent()
+
+            expect(
+                getByText('Trial Activation Modal mounted'),
+            ).toBeInTheDocument()
+        })
+
+        it('keeps a single trial activation modal mounted once configured (shared with the banner)', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: true })
+            mockIsStepCompleted([StepName.TRAIN, StepName.TEST])
+
+            const { getByText } = renderComponent()
+
+            expect(
+                getByText('Trial Activation Modal mounted'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not mount the trial activation modal when no opt-in is needed', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: false })
+            mockIsStepCompleted([StepName.TRAIN, StepName.TEST])
+
+            const { queryByText } = renderComponent()
+
+            expect(
+                queryByText('Trial Activation Modal mounted'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('wires the trial activation modal to the overview trial flow (confirm, close, trialType)', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: true })
+            mockIsStepCompleted([StepName.TRAIN, StepName.TEST])
+
+            renderComponent()
+
+            expect(mockTrialActivationModalProps).toBeDefined()
+            expect(typeof mockTrialActivationModalProps?.onConfirm).toBe(
+                'function',
+            )
+            expect(typeof mockTrialActivationModalProps?.onClose).toBe(
+                'function',
+            )
+            expect(mockTrialActivationModalProps?.trialType).toBeDefined()
+            expect(mockTrialActivationModalProps?.isConfirmDisabled).toBeFalsy()
         })
     })
 

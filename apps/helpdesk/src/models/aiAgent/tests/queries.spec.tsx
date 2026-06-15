@@ -540,6 +540,22 @@ describe('queries', () => {
             expect(getOnboardingNotificationState).not.toHaveBeenCalled()
             expect(createOnboardingNotificationState).not.toHaveBeenCalled()
         })
+
+        it('should not fetch with an empty store even when overrides.enabled is true', () => {
+            renderHook(
+                () =>
+                    useGetOnboardingNotificationState(
+                        { accountDomain, storeName: '' },
+                        { enabled: true },
+                    ),
+                { wrapper },
+            )
+
+            expect(useQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({ enabled: false }),
+            )
+            expect(getOnboardingNotificationState).not.toHaveBeenCalled()
+        })
     })
 
     describe('useCreateOnboardingNotificationState', () => {

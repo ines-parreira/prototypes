@@ -1,12 +1,15 @@
 /**
  * Visual-only stories for the §5 TrialOptInBanner UI.
  *
- * The real banner reads from `useTrialAccess` + `useShoppingAssistantTrialFlow`
- * + `useTrialModalProps`, which would require seeding most of the trial data
- * graph (billing, trials, store activations) just to render. To avoid that,
- * these stories render the banner shell directly with state-controlled modal
- * mount — visually identical to production, plus the modal stack is wired to
- * the real `TrialActivationModal` so the post-click experience is real.
+ * In production the banner only opens the shared trial modal; the
+ * `TrialActivationModal` itself is rendered once at the AiAgentOverview level
+ * (so the deploy toggles and the banner share a single instance). The real
+ * banner reads from `useTrialAccess` + `useShoppingAssistantTrialFlow`, which
+ * would require seeding most of the trial data graph (billing, trials, store
+ * activations) just to render. To avoid that, these stories render the banner
+ * shell directly with state-controlled modal mount — visually identical to
+ * production, plus the modal is wired to the real `TrialActivationModal` so the
+ * post-click experience is real.
  */
 
 import { useState } from 'react'

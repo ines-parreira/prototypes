@@ -5,7 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Box, LegacyButton as Button, Loader } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
@@ -76,10 +76,11 @@ export const SalesPaywallMiddleware =
     (ChildComponent: React.ComponentType<any>) =>
     (__props: Props): React.ReactElement => {
         const hasAutomate = useAppSelector(getHasAutomate)
-        const { storeActivations } = useStoreActivations({
-            withChatIntegrationsStatus: true,
-            withStoresKnowledgeStatus: true,
-        })
+        const { storeActivations, isFetchLoading: isStoreActivationsLoading } =
+            useStoreActivations({
+                withChatIntegrationsStatus: true,
+                withStoresKnowledgeStatus: true,
+            })
 
         const trialMilestone = useSalesTrialRevampMilestone()
         const { shopName } = useParams<{ shopName?: string }>()
@@ -340,6 +341,26 @@ export const SalesPaywallMiddleware =
             } else {
                 showEarlyAccessModal()
             }
+        }
+
+        // Hold a loader until both trial access and store activations settle.
+        // `currentStoreName` shifts from `shopName` to the real store name once
+        // activations load, which re-evaluates trial state — rendering the
+        // paywall branch before that settles flashes the paywall on the way to
+        // the Overview (e.g. right after finishing the onboarding wizard).
+        if (isTrialAccessLoading || isStoreActivationsLoading) {
+            return (
+                <PaywallWrapper>
+                    <Box
+                        alignItems="center"
+                        justifyContent="center"
+                        width="100%"
+                        height="100%"
+                    >
+                        <Loader size="sm" aria-label="Loading" />
+                    </Box>
+                </PaywallWrapper>
+            )
         }
 
         if (
