@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import {
     ObjectType,
     queryKeys,
@@ -76,6 +77,9 @@ export function useUpdateShopifyOrderTags() {
 
                 return { previousQueries }
             },
+            onSuccess: () => {
+                toast.success('Tags saved')
+            },
             onError: (_error, _variables, context) => {
                 if (context?.previousQueries) {
                     context.previousQueries.forEach(([queryKey, data]) => {
@@ -87,6 +91,7 @@ export function useUpdateShopifyOrderTags() {
                         )
                     })
                 }
+                toast.error('Failed to save tags')
             },
         },
     })

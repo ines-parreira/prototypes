@@ -207,6 +207,9 @@ export function OrderTags({
                                         leadingSlot={<Icon name="add-plus" />}
                                         variant="secondary"
                                         size="sm"
+                                        onClick={() =>
+                                            handleOpenChange(!isOpen)
+                                        }
                                     >
                                         Add tags
                                     </Button>
@@ -216,6 +219,9 @@ export function OrderTags({
                                         icon="add-plus"
                                         variant="secondary"
                                         size="sm"
+                                        onClick={() =>
+                                            handleOpenChange(!isOpen)
+                                        }
                                     />
                                 )
                             }
