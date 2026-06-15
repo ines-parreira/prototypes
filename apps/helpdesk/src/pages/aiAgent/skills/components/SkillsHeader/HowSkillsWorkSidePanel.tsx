@@ -18,7 +18,7 @@ import { SkillsVideo } from '../SkillsVideo/SkillsVideo'
 
 import css from './HowSkillsWorkSidePanel.less'
 
-const LEARNING_RESOURCES_URL = 'https://link.gorgias.com/bdb652'
+const LEARNING_RESOURCES_URL = 'https://link.gorgias.com/9a19f9'
 
 const SECTIONS = [
     {
