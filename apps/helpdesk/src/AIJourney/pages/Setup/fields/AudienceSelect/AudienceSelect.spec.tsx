@@ -22,7 +22,6 @@ const mockUseAudienceSegments = useAudienceSegments as jest.Mock
 
 const defaultProps = {
     integrationId: 123,
-    isCampaign: false,
 }
 
 describe('AudienceSelect', () => {
@@ -222,33 +221,6 @@ describe('AudienceSelect', () => {
         expect(selectButton).toBeDisabled()
     })
 
-    it('should not be disabled on campaigns even when the disabled segments query reports isLoading', () => {
-        mockUseAudienceLists.mockReturnValue({
-            data: { data: [] },
-            isFetching: false,
-        })
-        // react-query v4 reports isLoading=true and isFetching=false
-        // when a query is disabled and has never run
-        mockUseAudienceSegments.mockReturnValue({
-            data: null,
-            isLoading: true,
-            isFetching: false,
-        })
-
-        render(
-            <AudienceSelect
-                {...defaultProps}
-                isCampaign={true}
-                name="Segments to include"
-                value={[]}
-                onChange={() => {}}
-            />,
-        )
-
-        const selectButton = screen.getByRole('button')
-        expect(selectButton).not.toBeDisabled()
-    })
-
     it('should handle empty data gracefully', () => {
         mockUseAudienceLists.mockReturnValue({
             data: { data: [] },
@@ -295,12 +267,7 @@ describe('AudienceSelect', () => {
 
         expect(screen.getByText('Segments to include')).toBeInTheDocument()
         expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
-        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
-            undefined,
-            undefined,
-            undefined,
-            { enabled: true },
-        )
+        expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
     })
 
     it('should render without name prop and not display FieldPresentation', () => {
@@ -503,67 +470,6 @@ describe('AudienceSelect', () => {
         ).toBeInTheDocument()
     })
 
-    it('should hide the segments section when isCampaign is true', async () => {
-        mockUseAudienceLists.mockReturnValue({
-            data: {
-                data: [{ id: 'list1', name: 'VIP Customers' }],
-            },
-            isLoading: false,
-        })
-        mockUseAudienceSegments.mockReturnValue({
-            data: {
-                data: [{ id: 'seg1', name: 'High Value' }],
-            },
-            isLoading: false,
-        })
-
-        const user = userEvent.setup()
-        render(
-            <AudienceSelect
-                {...defaultProps}
-                isCampaign={true}
-                value={[]}
-                onChange={() => {}}
-            />,
-        )
-
-        await user.click(
-            screen.getByRole('button', { name: /Select audience/i }),
-        )
-
-        await waitFor(() => {
-            expect(screen.getByText('Lists')).toBeInTheDocument()
-        })
-        expect(screen.queryByText('Segments')).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('option', { name: /High Value/i }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should disable the segments query when isCampaign is true', () => {
-        mockUseAudienceLists.mockReturnValue({ data: null, isLoading: false })
-        mockUseAudienceSegments.mockReturnValue({
-            data: null,
-            isLoading: false,
-        })
-
-        render(
-            <AudienceSelect
-                {...defaultProps}
-                isCampaign={true}
-                value={[]}
-                onChange={() => {}}
-            />,
-        )
-
-        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
-            123,
-            undefined,
-            undefined,
-            { enabled: false },
-        )
-    })
-
     it('should pass integrationId through to the queries', () => {
         mockUseAudienceLists.mockReturnValue({ data: null, isLoading: false })
         mockUseAudienceSegments.mockReturnValue({
@@ -581,11 +487,6 @@ describe('AudienceSelect', () => {
         )
 
         expect(mockUseAudienceLists).toHaveBeenCalledWith(456)
-        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
-            456,
-            undefined,
-            undefined,
-            { enabled: true },
-        )
+        expect(mockUseAudienceSegments).toHaveBeenCalledWith(456)
     })
 })

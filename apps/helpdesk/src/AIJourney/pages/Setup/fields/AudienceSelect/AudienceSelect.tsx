@@ -26,7 +26,6 @@ type AudienceSelectFieldProps = {
     onValidationChange?: (isValid: boolean) => void
     showError?: boolean
     integrationId: number | undefined
-    isCampaign: boolean
 }
 
 export const AudienceSelect = ({
@@ -40,7 +39,6 @@ export const AudienceSelect = ({
     onValidationChange = () => {},
     showError = false,
     integrationId,
-    isCampaign,
 }: AudienceSelectFieldProps) => {
     const [hasInteracted, setHasInteracted] = useState(false)
 
@@ -48,9 +46,7 @@ export const AudienceSelect = ({
         useAudienceLists(integrationId)
 
     const { data: audienceSegments, isFetching: isFetchingAudienceSegments } =
-        useAudienceSegments(integrationId, undefined, undefined, {
-            enabled: !isCampaign,
-        })
+        useAudienceSegments(integrationId)
 
     const sections: Section[] = useMemo(() => {
         const currentSections = []
@@ -68,11 +64,7 @@ export const AudienceSelect = ({
             })
         }
 
-        if (
-            !isCampaign &&
-            audienceSegments &&
-            audienceSegments.data.length > 0
-        ) {
+        if (audienceSegments && audienceSegments.data.length > 0) {
             currentSections.push({
                 id: 'segment',
                 name: 'Segments',
@@ -86,7 +78,7 @@ export const AudienceSelect = ({
         }
 
         return currentSections
-    }, [audienceLists, audienceSegments, exclude, isCampaign])
+    }, [audienceLists, audienceSegments, exclude])
 
     const handleChange = useCallback(
         (

@@ -1368,7 +1368,7 @@ describe('AIJourneySettings', () => {
             ).toBeInTheDocument()
         })
 
-        it('should pass integrationId and isCampaign=true to AudienceSelect for a campaign journey', () => {
+        it('should pass integrationId to AudienceSelect for a campaign journey', () => {
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
                     currentJourney: mockCampaigns[0],
@@ -1383,19 +1383,17 @@ describe('AIJourneySettings', () => {
                 expect.objectContaining({
                     label: 'Audience to include',
                     integrationId: 123,
-                    isCampaign: true,
                 }),
             )
             expect(mockAudienceSelect).toHaveBeenCalledWith(
                 expect.objectContaining({
                     label: 'Audience to exclude',
                     integrationId: 123,
-                    isCampaign: true,
                 }),
             )
         })
 
-        it('should pass integrationId and isCampaign=false to AudienceSelect for a non-campaign journey', () => {
+        it('should pass integrationId to AudienceSelect for a non-campaign journey', () => {
             mockUseFlag.mockReturnValue(true)
             const cartAbandonedFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.CartAbandoned,
@@ -1414,14 +1412,12 @@ describe('AIJourneySettings', () => {
                 expect.objectContaining({
                     label: 'Audience to include',
                     integrationId: 123,
-                    isCampaign: false,
                 }),
             )
             expect(mockAudienceSelect).toHaveBeenCalledWith(
                 expect.objectContaining({
                     label: 'Audience to exclude',
                     integrationId: 123,
-                    isCampaign: false,
                 }),
             )
         })

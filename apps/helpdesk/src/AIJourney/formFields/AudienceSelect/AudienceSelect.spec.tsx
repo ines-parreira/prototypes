@@ -482,26 +482,39 @@ describe('<AudienceSelect />', () => {
             ).not.toBeDisabled()
         })
 
-        it('is not disabled on campaigns even when the disabled Gorgias query reports isLoading', async () => {
+        it('shows Gorgias segments on campaigns', async () => {
             mockUseJourneyContext.mockReturnValue({
                 currentIntegration: { id: 456 },
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
             })
             mockUseAudienceSegments.mockImplementation(
-                (integrationId, source) => ({
-                    data: null,
-                    // react-query v4 reports isLoading=true and isFetching=false
-                    // when a query is disabled and has never run
-                    isLoading: source === AudienceListSource.Gorgias,
-                    isFetching: false,
-                }),
+                (integrationId, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [{ id: 'seg1', name: 'Gorgias Segment' }],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                },
             )
 
+            const user = userEvent.setup()
             await renderComponent('include')
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
 
-            expect(
-                screen.getByRole('button', { name: /Select audience/i }),
-            ).not.toBeDisabled()
+            await waitFor(() => {
+                expect(screen.getByText('Gorgias segments')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('option', { name: /Gorgias Segment/i }),
+                ).toBeInTheDocument()
+            })
         })
     })
 
@@ -621,8 +634,6 @@ describe('<AudienceSelect />', () => {
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 456,
                 AudienceListSource.Gorgias,
-                undefined,
-                { enabled: true },
             )
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 456,
@@ -641,8 +652,6 @@ describe('<AudienceSelect />', () => {
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 undefined,
                 AudienceListSource.Gorgias,
-                undefined,
-                { enabled: true },
             )
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(
                 undefined,

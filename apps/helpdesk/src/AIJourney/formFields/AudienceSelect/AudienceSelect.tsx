@@ -9,7 +9,6 @@ import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
 
 import { CreateNewSegmentButton } from 'AIJourney/components/CreateNewSegmentButton/CreateNewSegmentButton'
 import { SegmentsSidePanel } from 'AIJourney/components/SegmentsSidePanel/SegmentsSidePanel'
-import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
@@ -45,9 +44,7 @@ export const AudienceSelect = ({
     isRequired?: boolean
 }) => {
     const { control, getValues, setValue } = useFormContext()
-    const { currentIntegration, journeyType } = useJourneyContext()
-
-    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const { currentIntegration } = useJourneyContext()
 
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
@@ -76,12 +73,7 @@ export const AudienceSelect = ({
     const {
         data: gorgiasAudienceSegments,
         isFetching: isFetchingGorgiasAudienceSegments,
-    } = useAudienceSegments(
-        currentIntegration?.id,
-        AudienceListSource.Gorgias,
-        undefined,
-        { enabled: !isCampaign },
-    )
+    } = useAudienceSegments(currentIntegration?.id, AudienceListSource.Gorgias)
 
     const {
         data: klaviyoAudienceSegments,
@@ -176,7 +168,7 @@ export const AudienceSelect = ({
             ),
         ].filter((e) => !excluded.includes(e.id))
 
-        if (!isCampaign && mergedGorgiasItems.length > 0) {
+        if (mergedGorgiasItems.length > 0) {
             currentSections.push({
                 id: 'gorgias-segment',
                 name: 'Gorgias segments',
@@ -204,7 +196,6 @@ export const AudienceSelect = ({
     }, [
         audienceLists,
         gorgiasAudienceSegments,
-        isCampaign,
         klaviyoAudienceSegments,
         localSegments,
     ])
