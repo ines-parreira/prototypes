@@ -29,7 +29,7 @@ import {
     usePrevious,
 } from '@gorgias/toolkit-react'
 
-import { Button, Text, toast } from '@gorgias/axiom'
+import { toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import type { Macro } from '@gorgias/helpdesk-types'
 import { useAgentActivity } from '@gorgias/realtime'
@@ -304,10 +304,6 @@ export const TicketDetailContainer = ({
     const isTicketThreadLoadingStateEnabled = useFlag(
         FeatureFlagKey.TicketThreadLoadingState,
     )
-    const isDebugMenuFlagEnabled = useFlag(FeatureFlagKey.DebugMenu, false)
-    const isTicketIdentityDebugMenuEnabled =
-        isDebugMenuFlagEnabled || !!window.USER_IMPERSONATED
-
     const { goToTicket: goToPrevious, isEnabled: isPrevEnabled } =
         useGoToPreviousTicket(ticketIdParam)
 
@@ -907,14 +903,6 @@ export const TicketDetailContainer = ({
     }, [ticketIdParam, joinTicket, leaveTicket])
 
     const isMobileResolution = useIsMobileResolution()
-    const ticketIdentityDebugMenu = isTicketIdentityDebugMenuEnabled ? (
-        <TicketIdentityDebugMenu
-            reduxTicketId={ticket.get('id') as Maybe<number>}
-            ticket={ticket}
-            urlTicketId={ticketIdParam}
-            newMessage={newMessage}
-        />
-    ) : null
 
     const shouldRenderTicketThreadLoadingState =
         hasUIVisionMS3 && isTicketThreadLoadingStateEnabled
@@ -923,12 +911,7 @@ export const TicketDetailContainer = ({
         !shouldRenderTicketThreadLoadingState &&
         (isLoading || isLoadingPhoneTicketData)
     ) {
-        return (
-            <>
-                <Loader className={css.loader} message="Loading ticket..." />
-                {ticketIdentityDebugMenu}
-            </>
-        )
+        return <Loader className={css.loader} message="Loading ticket..." />
     }
 
     const ticketView = (
@@ -941,7 +924,6 @@ export const TicketDetailContainer = ({
                 onGoToNextTicket={onGoToNextTicket}
                 onToggleUnread={onToggleUnread}
             />
-            {ticketIdentityDebugMenu}
         </>
     )
 
@@ -966,7 +948,6 @@ export const TicketDetailContainer = ({
                         }
                     />
                 </TicketThreadLegacyBridge>
-                {ticketIdentityDebugMenu}
                 <DrillDownModal isLegacy={false} />
             </>
         )
@@ -1018,239 +999,6 @@ function MobileViewWithSidebar({
             <DrillDownModal isLegacy={false} />
         </>
     )
-}
-
-type TicketIdentityDebugMenuProps = {
-    reduxTicketId: Maybe<number | string>
-    ticket: Map<any, any>
-    urlTicketId: Maybe<string>
-    newMessage: Map<any, any>
-}
-
-function TicketIdentityDebugMenu({
-    reduxTicketId,
-    ticket,
-    urlTicketId,
-    newMessage,
-}: TicketIdentityDebugMenuProps) {
-    const [isOpen, setIsOpen] = useState(false)
-    const debugState = useMemo(
-        () => ({
-            ticket_id_redux: reduxTicketId,
-            ticket_id_url: urlTicketId,
-            ticket_fetch: getTicketFetchDebugState(ticket, urlTicketId),
-            composer: getComposerDebugState(newMessage),
-        }),
-        [newMessage, reduxTicketId, ticket, urlTicketId],
-    )
-    const debugStateJson = useMemo(
-        () => JSON.stringify(debugState, null, 2),
-        [debugState],
-    )
-
-    const copyDebugState = useCallback(() => {
-        console.warn('Ticket identity debug state', debugState)
-        const clipboard = window.navigator.clipboard
-
-        if (!clipboard) {
-            return
-        }
-
-        void clipboard.writeText(debugStateJson).then(() => {
-            toast.success('Ticket debug state copied')
-        })
-    }, [debugState, debugStateJson])
-
-    return (
-        <div className={css.ticketIdentityDebugMenu}>
-            <Button
-                aria-controls="ticket-identity-debug-panel"
-                aria-expanded={isOpen}
-                aria-label="Toggle ticket identity debug menu"
-                icon="system-window-terminal"
-                onClick={() => setIsOpen((current) => !current)}
-                size="sm"
-                variant={isOpen ? 'secondary' : 'tertiary'}
-            />
-            {isOpen && (
-                <div
-                    aria-label="Ticket identity debug details"
-                    className={css.ticketIdentityDebugPanel}
-                    id="ticket-identity-debug-panel"
-                    role="dialog"
-                >
-                    <div className={css.ticketIdentityDebugHeader}>
-                        <Text size="sm" variant="bold">
-                            Ticket identity debug
-                        </Text>
-                        <Button
-                            aria-label="Copy ticket identity debug state"
-                            icon="copy"
-                            onClick={copyDebugState}
-                            size="sm"
-                            variant="tertiary"
-                        />
-                    </div>
-                    <dl className={css.ticketIdentityDebugRows}>
-                        <div>
-                            <dt>Redux ticket id</dt>
-                            <dd>{String(reduxTicketId ?? 'empty')}</dd>
-                        </div>
-                        <div>
-                            <dt>URL ticket id</dt>
-                            <dd>{String(urlTicketId ?? 'empty')}</dd>
-                        </div>
-                        <div>
-                            <dt>Fetch loading</dt>
-                            <dd>
-                                {String(debugState.ticket_fetch.is_loading)}
-                            </dd>
-                        </div>
-                        <div>
-                            <dt>Latest fetch id</dt>
-                            <dd>
-                                {String(
-                                    debugState.ticket_fetch
-                                        .latest_requested_ticket_id ?? 'empty',
-                                )}
-                            </dd>
-                        </div>
-                        <div>
-                            <dt>Fetch guard cleared</dt>
-                            <dd>
-                                {String(
-                                    debugState.ticket_fetch
-                                        .is_latest_fetch_guard_cleared,
-                                )}
-                            </dd>
-                        </div>
-                        <div>
-                            <dt>Fetch matches URL</dt>
-                            <dd>
-                                {String(
-                                    debugState.ticket_fetch
-                                        .does_latest_fetch_match_url_ticket,
-                                )}
-                            </dd>
-                        </div>
-                    </dl>
-                    <pre className={css.ticketIdentityDebugJson}>
-                        {debugStateJson}
-                    </pre>
-                </div>
-            )}
-        </div>
-    )
-}
-
-const toDebugValue = (value: unknown) => {
-    if (
-        value &&
-        typeof value === 'object' &&
-        typeof (value as { toJS?: () => unknown }).toJS === 'function'
-    ) {
-        return (value as { toJS: () => unknown }).toJS()
-    }
-
-    return value
-}
-
-const getContentStateTextLength = (contentState: unknown) => {
-    if (
-        !contentState ||
-        typeof (contentState as { getPlainText?: () => string })
-            .getPlainText !== 'function'
-    ) {
-        return null
-    }
-
-    return (contentState as { getPlainText: () => string }).getPlainText()
-        .length
-}
-
-const isComparableDebugTicketId = (ticketId: unknown) =>
-    ticketId !== undefined &&
-    ticketId !== null &&
-    ticketId !== '' &&
-    ticketId !== 'new' &&
-    !Number.isNaN(Number(ticketId))
-
-const doDebugTicketIdsMatch = (
-    firstTicketId: unknown,
-    secondTicketId: unknown,
-) =>
-    isComparableDebugTicketId(firstTicketId) &&
-    isComparableDebugTicketId(secondTicketId) &&
-    Number(firstTicketId) === Number(secondTicketId)
-
-const getTicketFetchDebugState = (
-    ticket: Map<any, any>,
-    urlTicketId: Maybe<string>,
-) => {
-    const latestRequestedTicketId = ticket.getIn([
-        '_internal',
-        'latestFetchTicketRequestedId',
-    ])
-    const reduxTicketId = ticket.get('id')
-
-    return {
-        is_loading: !!ticket.getIn(['_internal', 'loading', 'fetchTicket']),
-        latest_requested_ticket_id: latestRequestedTicketId ?? null,
-        is_latest_fetch_guard_cleared: latestRequestedTicketId == null,
-        does_latest_fetch_match_url_ticket: doDebugTicketIdsMatch(
-            latestRequestedTicketId,
-            urlTicketId,
-        ),
-        does_redux_ticket_match_url_ticket: doDebugTicketIdsMatch(
-            reduxTicketId,
-            urlTicketId,
-        ),
-        is_latest_fetch_stale_for_url_ticket:
-            isComparableDebugTicketId(latestRequestedTicketId) &&
-            isComparableDebugTicketId(urlTicketId) &&
-            !doDebugTicketIdsMatch(latestRequestedTicketId, urlTicketId),
-    }
-}
-
-const getComposerDebugState = (newMessage: Map<any, any>) => {
-    const replyAreaState = newMessage.get('state') as Maybe<Map<any, any>>
-    const message = newMessage.get('newMessage') as Maybe<Map<any, any>>
-
-    return {
-        internal: toDebugValue(newMessage.get('_internal')),
-        reply_area_state: {
-            dirty: replyAreaState?.get('dirty'),
-            email_extra_added: replyAreaState?.get('emailExtraAdded'),
-            cache_added: replyAreaState?.get('cacheAdded'),
-            force_update: replyAreaState?.get('forceUpdate'),
-            force_focus: replyAreaState?.get('forceFocus'),
-            first_new_message: replyAreaState?.get('firstNewMessage'),
-            has_selection_state: !!replyAreaState?.get('selectionState'),
-            content_text_length: getContentStateTextLength(
-                replyAreaState?.get('contentState'),
-            ),
-            original_content_text_length: getContentStateTextLength(
-                replyAreaState?.get('originalContentState'),
-            ),
-            applied_macro: toDebugValue(replyAreaState?.get('appliedMacro')),
-            inserted_discounts: toDebugValue(
-                replyAreaState?.get('inserted_discounts'),
-            ),
-        },
-        new_message: {
-            ticket_id: message?.get('ticket_id'),
-            source_type: message?.getIn(['source', 'type']),
-            channel: message?.get('channel'),
-            public: message?.get('public'),
-            from_agent: message?.get('from_agent'),
-            subject: message?.get('subject'),
-            body_text_length: String(message?.get('body_text') ?? '').length,
-            body_html_length: String(message?.get('body_html') ?? '').length,
-            attachments_count: message?.get('attachments')?.size ?? 0,
-            actions_count: message?.get('actions')?.size ?? 0,
-            source: toDebugValue(message?.get('source')),
-        },
-    }
 }
 
 const DefaultExportTicketDetailContainer = connector(TicketDetailContainer)
