@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import type { UseFormReturn } from 'react-hook-form'
@@ -7,6 +7,7 @@ import type { UseFormReturn } from 'react-hook-form'
 import { useAiJourneyPhoneList } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
+import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 
 import { SenderPhoneNumber } from './SenderPhoneNumber'
 
@@ -21,8 +22,13 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/phoneNumbers/utils', () => ({
+    getCountryFromPhoneNumber: jest.fn(),
+}))
+
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseAiJourneyPhoneList = useAiJourneyPhoneList as jest.Mock
+const mockGetCountryFromPhoneNumber = getCountryFromPhoneNumber as jest.Mock
 
 const makePhoneNumber = (
     id: number,
@@ -66,6 +72,7 @@ const renderComponent = (defaultValues: Record<string, unknown> = {}) => {
 describe('<SenderPhoneNumber />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockGetCountryFromPhoneNumber.mockReturnValue(undefined)
 
         mockUseJourneyContext.mockReturnValue({
             storeConfiguration: {
@@ -101,7 +108,7 @@ describe('<SenderPhoneNumber />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render all phone number options', async () => {
+        it('should render each option with the integration name and friendly number as caption', async () => {
             const user = userEvent.setup()
             renderComponent()
 
@@ -113,16 +120,15 @@ describe('<SenderPhoneNumber />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('option', {
-                        name: /\+1 \(555\) 000-0001/i,
-                    }),
+                    screen.getByRole('option', { name: /\[MKT\] Phone 1/i }),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByRole('option', {
-                        name: /\+1 \(555\) 000-0002/i,
-                    }),
+                    screen.getByRole('option', { name: /\[MKT\] Phone 2/i }),
                 ).toBeInTheDocument()
             })
+
+            expect(screen.getByText('+1 (555) 000-0001')).toBeInTheDocument()
+            expect(screen.getByText('+1 (555) 000-0002')).toBeInTheDocument()
         })
 
         it('should render with empty options when no phone numbers are available', async () => {
@@ -141,41 +147,62 @@ describe('<SenderPhoneNumber />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByRole('option', {
-                        name: /\+1 \(555\) 000-0001/i,
-                    }),
+                    screen.queryByRole('option', { name: /\[MKT\] Phone/i }),
                 ).not.toBeInTheDocument()
             })
         })
     })
 
     describe('value display', () => {
-        it('should display the selected phone number matching the sms integration id', () => {
-            renderComponent({ sms_sender_integration_id: 101 })
-
-            expect(screen.getByText('+1 (555) 000-0001')).toBeInTheDocument()
-        })
-
-        it('should display a different phone number when a different id is selected', () => {
-            renderComponent({ sms_sender_integration_id: 102 })
-
-            expect(screen.getByText('+1 (555) 000-0002')).toBeInTheDocument()
-        })
-
-        it('should not show a phone number as selected when no matching integration is found', () => {
-            renderComponent({ sms_sender_integration_id: 999 })
+        it('should display the integration name matching the sms integration id', () => {
+            renderComponent({
+                sms_sender_integration_id: { id: 101, label: '+15550001' },
+            })
 
             const trigger = screen.getByRole('button', { name: /send from/i })
-            expect(trigger).not.toHaveTextContent('+1 (555) 000-0001')
-            expect(trigger).not.toHaveTextContent('+1 (555) 000-0002')
+            expect(
+                within(trigger).getByDisplayValue(/\[MKT\] Phone 1/),
+            ).toBeInTheDocument()
+        })
+
+        it('should display a different integration name when a different id is selected', () => {
+            renderComponent({
+                sms_sender_integration_id: { id: 102, label: '+15550002' },
+            })
+
+            const trigger = screen.getByRole('button', { name: /send from/i })
+            expect(
+                within(trigger).getByDisplayValue(/\[MKT\] Phone 2/),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show an integration as selected when no matching integration is found', () => {
+            renderComponent({
+                sms_sender_integration_id: { id: 999, label: null },
+            })
+
+            const trigger = screen.getByRole('button', { name: /send from/i })
+            expect(
+                within(trigger).queryByDisplayValue(/\[MKT\] Phone/),
+            ).not.toBeInTheDocument()
         })
     })
 
     describe('user interaction', () => {
-        it('should call onChange with the selected phone number option when an item is picked', async () => {
-            const user = userEvent.setup()
-            renderComponent()
+        it('should display the integration name and write the selected option when an item is picked', async () => {
+            let methodsRef: UseFormReturn | undefined
+            const Wrapper = () => {
+                const methods = useForm()
+                methodsRef = methods
+                return (
+                    <FormProvider {...methods}>
+                        <SenderPhoneNumber />
+                    </FormProvider>
+                )
+            }
+            render(<Wrapper />)
 
+            const user = userEvent.setup()
             await act(async () => {
                 await user.click(
                     screen.getByRole('button', { name: /send from/i }),
@@ -184,24 +211,26 @@ describe('<SenderPhoneNumber />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('option', {
-                        name: /\+1 \(555\) 000-0001/i,
-                    }),
+                    screen.getByRole('option', { name: /\[MKT\] Phone 1/i }),
                 ).toBeInTheDocument()
             })
 
             await act(async () => {
                 await user.click(
-                    screen.getByRole('option', {
-                        name: /\+1 \(555\) 000-0001/i,
-                    }),
+                    screen.getByRole('option', { name: /\[MKT\] Phone 1/i }),
                 )
             })
 
+            const trigger = screen.getByRole('button', { name: /send from/i })
             await waitFor(() => {
                 expect(
-                    screen.getByText('+1 (555) 000-0001'),
+                    within(trigger).getByDisplayValue(/\[MKT\] Phone 1/),
                 ).toBeInTheDocument()
+            })
+
+            expect(methodsRef!.getValues('sms_sender_integration_id')).toEqual({
+                id: 101,
+                label: '+15550001',
             })
         })
     })
@@ -259,33 +288,36 @@ describe('<SenderPhoneNumber />', () => {
             await waitFor(() => {
                 expect(
                     screen.getByRole('option', {
-                        name: /\+61 489 273 833/i,
+                        name: /\[MKT\] AI Journey/i,
                     }),
                 ).toBeInTheDocument()
             })
             await act(async () => {
                 await user.click(
                     screen.getByRole('option', {
-                        name: /\+61 489 273 833/i,
+                        name: /\[MKT\] AI Journey/i,
                     }),
                 )
             })
 
             await waitFor(() => {
                 const value = methodsRef!.getValues('sms_sender_integration_id')
-                const id =
-                    typeof value === 'object' && value !== null && 'id' in value
-                        ? (value as { id: number }).id
-                        : value
-                expect(id).toBe(72476)
-                expect(id).not.toBe(61722)
+                expect(value).toEqual({
+                    id: 72476,
+                    label: '+61489273833',
+                })
             })
         })
 
-        it('displays the friendly phone number when the form is preloaded with the SMS integration id of a multi-integration phone', () => {
-            renderComponent({ sms_sender_integration_id: 72476 })
+        it('displays the integration name when the form is preloaded with the SMS integration id of a multi-integration phone', () => {
+            renderComponent({
+                sms_sender_integration_id: { id: 72476, label: '+61489273833' },
+            })
 
-            expect(screen.getByText('+61 489 273 833')).toBeInTheDocument()
+            const trigger = screen.getByRole('button', { name: /send from/i })
+            expect(
+                within(trigger).getByDisplayValue(/\[MKT\] AI Journey/),
+            ).toBeInTheDocument()
         })
     })
 

@@ -1,77 +1,28 @@
-import { Controller, useFormContext } from 'react-hook-form'
+import { Box } from '@gorgias/axiom'
 
-import { Box, ListItem, SelectField } from '@gorgias/axiom'
-
-import { useAiJourneyPhoneList } from 'AIJourney/hooks'
+import { SmsSenderSelect } from 'AIJourney/formFields/SmsSenderSelect/SmsSenderSelect'
 import { useJourneyContext } from 'AIJourney/providers'
 
-type optionType = {
-    id: number | undefined
-    label: string | undefined
-}
-
 export const SenderPhoneNumber = () => {
-    const { control } = useFormContext()
     const { storeConfiguration } = useJourneyContext()
-
-    const { marketingCapabilityPhoneNumbers } = useAiJourneyPhoneList(
-        storeConfiguration?.monitoredSmsIntegrations ?? [],
-    )
-
-    const phoneNumberOptions: optionType[] =
-        marketingCapabilityPhoneNumbers.map((phone) => {
-            const smsIntegration = phone.integrations.find(
-                (integration) => integration.type === 'sms',
-            )
-            return {
-                id: smsIntegration!.id,
-                label: phone.phone_number_friendly,
-            }
-        })
 
     return (
         <Box flexDirection="column" gap="xxs" width="100%">
-            <Controller
+            <SmsSenderSelect
+                isRequired
                 name="sms_sender_integration_id"
-                control={control}
-                render={({ field }) => {
-                    const currentPhoneNumber =
-                        marketingCapabilityPhoneNumbers.find(
-                            (phoneNumber) =>
-                                phoneNumber.integrations.find(
-                                    (integration) => integration.type === 'sms',
-                                )?.id === field.value,
-                        )
-
-                    const currentSmsIntegration =
-                        currentPhoneNumber?.integrations.find(
-                            (integration) => integration.type === 'sms',
-                        )
-
-                    const currentPhoneNumberOtion = {
-                        id: currentSmsIntegration?.id,
-                        label: currentPhoneNumber?.phone_number_friendly,
-                    }
-
-                    return (
-                        <SelectField
-                            isRequired
-                            label="Send from"
-                            caption="Shoppers will see this as the sender"
-                            placeholder="Select phone number"
-                            items={phoneNumberOptions}
-                            value={field.value ?? currentPhoneNumberOtion}
-                            onChange={field.onChange}
-                        >
-                            {(option: optionType) => (
-                                <ListItem
-                                    key={`phone-number-option-${option.id}`}
-                                    label={option.label}
-                                />
-                            )}
-                        </SelectField>
-                    )
-                }}
+                label="Send from"
+                caption="Shoppers will see this as the sender"
+                monitoredSmsIntegrations={
+                    storeConfiguration?.monitoredSmsIntegrations ?? []
+                }
+                getSelectedIntegrationId={(fieldValue) =>
+                    (fieldValue as { id?: number | null } | null)?.id
+                }
+                mapOptionToFieldValue={(option) => ({
+                    id: option.id,
+                    label: option.phoneNumber,
+                })}
             />
         </Box>
     )

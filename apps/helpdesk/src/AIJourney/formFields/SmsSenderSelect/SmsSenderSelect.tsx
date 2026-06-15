@@ -6,10 +6,6 @@ import { FlagIcon, ListItem, SelectField } from '@gorgias/axiom'
 import { useAiJourneyPhoneList } from 'AIJourney/hooks'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 
-type Props = {
-    monitoredSmsIntegrations: number[]
-}
-
 type PhoneOption = {
     id: number
     label: string
@@ -18,7 +14,42 @@ type PhoneOption = {
     countryCode: CountryCode | undefined
 }
 
-export const SmsSenderSelect = ({ monitoredSmsIntegrations }: Props) => {
+type GetSelectedIntegrationId = (
+    fieldValue: unknown,
+) => number | null | undefined
+
+type MapOptionToFieldValue = (option: PhoneOption) => unknown
+
+type Props = {
+    monitoredSmsIntegrations: number[]
+    name?: string
+    label?: string
+    caption?: string
+    isRequired?: boolean
+    getSelectedIntegrationId?: GetSelectedIntegrationId
+    mapOptionToFieldValue?: MapOptionToFieldValue
+}
+
+const defaultGetSelectedIntegrationId: GetSelectedIntegrationId = (
+    fieldValue,
+) =>
+    (fieldValue as { sms_sender_integration_id?: number | null } | null)
+        ?.sms_sender_integration_id
+
+const defaultMapOptionToFieldValue: MapOptionToFieldValue = (option) => ({
+    sms_sender_integration_id: option.id,
+    sms_sender_number: option.phoneNumber,
+})
+
+export const SmsSenderSelect = ({
+    monitoredSmsIntegrations,
+    name = 'sms_sender',
+    label = 'Send SMS from',
+    caption = 'Shoppers will see this as the sender.',
+    isRequired = false,
+    getSelectedIntegrationId = defaultGetSelectedIntegrationId,
+    mapOptionToFieldValue = defaultMapOptionToFieldValue,
+}: Props) => {
     const { control } = useFormContext()
     const { marketingCapabilityPhoneNumbers } = useAiJourneyPhoneList(
         monitoredSmsIntegrations,
@@ -41,20 +72,23 @@ export const SmsSenderSelect = ({ monitoredSmsIntegrations }: Props) => {
 
     return (
         <Controller
-            name="sms_sender"
+            name={name}
             control={control}
             render={({ field }) => {
+                const selectedIntegrationId = getSelectedIntegrationId(
+                    field.value,
+                )
                 const currentOption: PhoneOption | null =
                     phoneOptions.find(
                         (phoneOption) =>
-                            phoneOption.id ===
-                            field.value?.sms_sender_integration_id,
+                            phoneOption.id === selectedIntegrationId,
                     ) ?? null
 
                 return (
                     <SelectField
-                        label="Send SMS from"
-                        caption="Shoppers will see this as the sender."
+                        isRequired={isRequired}
+                        label={label}
+                        caption={caption}
                         placeholder="Select phone number"
                         items={phoneOptions}
                         // Pass null (not undefined) so the underlying field stays
@@ -66,10 +100,7 @@ export const SmsSenderSelect = ({ monitoredSmsIntegrations }: Props) => {
                             ) : undefined
                         }
                         onChange={(option: PhoneOption) => {
-                            field.onChange({
-                                sms_sender_integration_id: option.id,
-                                sms_sender_number: option.phoneNumber,
-                            })
+                            field.onChange(mapOptionToFieldValue(option))
                         }}
                     >
                         {(option: PhoneOption) => (
