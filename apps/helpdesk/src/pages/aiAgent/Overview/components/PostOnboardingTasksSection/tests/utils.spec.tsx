@@ -231,7 +231,7 @@ describe('PostOnboardingTasksSection utils', () => {
 
             expect(
                 await screen.findByRole('status', {
-                    name: 'Email address or chat channel already used by AI Agent on a different store.',
+                    name: 'One or more selected integrations are already used in another AI Agent. To continue, unselect the duplicated integrations and try again.',
                 }),
             ).toBeInTheDocument()
         })

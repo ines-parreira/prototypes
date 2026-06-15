@@ -124,7 +124,7 @@ export const decideChatWarning = (
 export const handleAiAgentConfigurationError = (error: unknown): void => {
     if (isAxiosError(error) && _get(error, 'response.status') === 409) {
         toast.error(
-            'Email address or chat channel already used by AI Agent on a different store.',
+            'One or more selected integrations are already used in another AI Agent. To continue, unselect the duplicated integrations and try again.',
         )
     } else {
         toast.error('Failed to save AI Agent configuration')

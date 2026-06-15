@@ -12,6 +12,9 @@ import { SocialsIntegrationListSelection } from '../SocialsIntegrationListSelect
 const socialsItems: SocialsIntegration[] = [
     { id: 1, pageName: 'Brand IG', instagramUsername: 'brand_ig' },
     { id: 2, pageName: 'Other Brand', instagramUsername: 'other_brand' },
+    { id: 3, pageName: '', instagramUsername: 'username_only' },
+    { id: 4, pageName: 'Page Only', instagramUsername: '' },
+    { id: 5, pageName: '', instagramUsername: '' },
 ]
 
 const LABEL_ID = 'socials-integrations-label'
@@ -55,23 +58,52 @@ describe('SocialsIntegrationListSelection', () => {
 
         expect(await screen.findByText('Instagram DM')).toBeInTheDocument()
         expect(
-            screen.getByRole('option', { name: /Brand IG/i }),
+            screen.getByRole('option', { name: 'brand_ig #1' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('option', { name: /Other Brand/i }),
+            screen.getByRole('option', { name: 'other_brand #2' }),
         ).toBeInTheDocument()
     })
 
-    it('shows the Instagram username caption next to each integration', async () => {
+    it('renders the integration username followed by its id, without the @ prefix', async () => {
         const user = userEvent.setup()
         renderComponent()
 
         await user.click(screen.getByText('Select socials integrations'))
 
         const brandOption = await screen.findByRole('option', {
-            name: /Brand IG/i,
+            name: 'brand_ig #1',
         })
-        expect(within(brandOption).getByText('@brand_ig')).toBeInTheDocument()
+        expect(within(brandOption).getByText('brand_ig #1')).toBeInTheDocument()
+        expect(within(brandOption).queryByText(/^@/)).not.toBeInTheDocument()
+    })
+
+    it('falls back to the page name when the Instagram username is missing', async () => {
+        const user = userEvent.setup()
+        renderComponent({ selectedIds: [4] })
+
+        const trigger = screen.getByRole('button', { expanded: false })
+        expect(within(trigger).getByText('Page Only #4')).toBeInTheDocument()
+
+        await user.click(trigger)
+
+        expect(
+            await screen.findByRole('option', { name: 'Page Only #4' }),
+        ).toBeInTheDocument()
+    })
+
+    it('falls back to just the integration id when page name and username are missing', async () => {
+        const user = userEvent.setup()
+        renderComponent({ selectedIds: [5] })
+
+        const trigger = screen.getByRole('button', { expanded: false })
+        expect(within(trigger).getByText('#5')).toBeInTheDocument()
+
+        await user.click(trigger)
+
+        expect(
+            await screen.findByRole('option', { name: '#5' }),
+        ).toBeInTheDocument()
     })
 
     it('calls onSelectionChange with the selected id when an option is clicked', async () => {
@@ -80,20 +112,19 @@ describe('SocialsIntegrationListSelection', () => {
 
         await user.click(screen.getByText('Select socials integrations'))
         await user.click(
-            await screen.findByRole('option', { name: /Brand IG/i }),
+            await screen.findByRole('option', { name: 'brand_ig #1' }),
         )
 
         expect(onSelectionChange).toHaveBeenCalledWith([1])
     })
 
-    it('renders selected integrations as "ig - @username" in the closed trigger', () => {
+    it('renders selected integrations with username and id in the closed trigger', () => {
         renderComponent({ selectedIds: [1, 2] })
 
         const trigger = screen.getByRole('button', { expanded: false })
-        expect(within(trigger).getByText('ig - @brand_ig')).toBeInTheDocument()
-        expect(
-            within(trigger).getByText('ig - @other_brand'),
-        ).toBeInTheDocument()
+        expect(within(trigger).getByText('brand_ig #1')).toBeInTheDocument()
+        expect(within(trigger).getByText('other_brand #2')).toBeInTheDocument()
+        expect(within(trigger).queryByText(/^@/)).not.toBeInTheDocument()
     })
 
     it('removes an id from the selection when its option is clicked again', async () => {
@@ -102,7 +133,7 @@ describe('SocialsIntegrationListSelection', () => {
 
         await user.click(screen.getByRole('button', { expanded: false }))
         await user.click(
-            await screen.findByRole('option', { name: /Brand IG/i }),
+            await screen.findByRole('option', { name: 'brand_ig #1' }),
         )
 
         expect(onSelectionChange).toHaveBeenCalledWith([2])

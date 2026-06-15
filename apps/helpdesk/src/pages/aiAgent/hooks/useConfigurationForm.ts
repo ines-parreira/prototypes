@@ -267,7 +267,7 @@ export const useConfigurationForm = ({
         } catch (error) {
             if (isAxiosError(error) && _get(error, 'response.status') === 409) {
                 toast.error(
-                    'Email address or chat channel already used by AI Agent on a different store.',
+                    'One or more selected integrations are already used in another AI Agent. To continue, unselect the duplicated integrations and try again.',
                 )
             } else {
                 const backendMessage = isGorgiasApiError(error)
