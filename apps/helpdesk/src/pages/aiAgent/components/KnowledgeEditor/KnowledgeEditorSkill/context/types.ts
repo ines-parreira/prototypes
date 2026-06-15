@@ -102,6 +102,7 @@ export type SkillReducerAction =
               mode: SkillModeType
           }
       }
+    | { type: 'SYNC_SKILL_METADATA'; payload: GuidanceArticle }
     | {
           type: 'VIEW_HISTORICAL_VERSION'
           payload: ArticleTranslationVersion & {

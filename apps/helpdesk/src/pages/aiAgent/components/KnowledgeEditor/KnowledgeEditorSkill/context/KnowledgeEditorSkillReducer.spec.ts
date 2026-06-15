@@ -49,6 +49,33 @@ describe('skillReducer', () => {
         expect(result.skill?.visibility).toBe(VisibilityStatusEnum.PUBLIC)
     })
 
+    it('SYNC_SKILL_METADATA refreshes skill and visibility without touching the body', () => {
+        const state = createDefaultState({
+            title: 'User-edited title',
+            content: 'User-edited content',
+            visibility: true,
+            skill: { ...mockArticle, visibility: VisibilityStatusEnum.PUBLIC },
+        })
+
+        const result = skillReducer(state, {
+            type: 'SYNC_SKILL_METADATA',
+            payload: {
+                ...mockArticle,
+                visibility: VisibilityStatusEnum.UNLISTED,
+                isCurrent: false,
+                draftVersionId: 3,
+                publishedVersionId: 2,
+            },
+        })
+
+        expect(result.visibility).toBe(false)
+        expect(result.skill?.visibility).toBe(VisibilityStatusEnum.UNLISTED)
+        expect(result.skill?.isCurrent).toBe(false)
+        expect(result.skill?.publishedVersionId).toBe(2)
+        expect(result.title).toBe('User-edited title')
+        expect(result.content).toBe('User-edited content')
+    })
+
     it('SET_VISIBILITY sets skill to undefined when no skill exists', () => {
         const state = createDefaultState({
             visibility: true,

@@ -81,15 +81,36 @@ const useSyncEffects = (
         }
 
         const editorSkill = currentState.skill
-        const hasLiveDelta =
+        const hasContentDelta =
             editorSkill !== undefined &&
             (config.skill.title !== editorSkill.title ||
                 config.skill.content !== editorSkill.content)
 
-        if (hasLiveDelta && !hasPendingChanges(currentState)) {
+        if (hasContentDelta && !hasPendingChanges(currentState)) {
             store.getState().dispatch({
                 type: 'SWITCH_SKILL',
                 payload: { article: config.skill, mode: currentState.mode },
+            })
+            return
+        }
+
+        // Status and publish-state metadata aren't editable in the editor body,
+        // so keep them in sync from the server even when the body is unchanged
+        // or has pending edits (e.g. Copilot enables/disables or publishes the
+        // skill). Without this the status tag and version banner stay stale
+        // until a full reload.
+        const hasMetadataDelta =
+            editorSkill !== undefined &&
+            (config.skill.visibility !== editorSkill.visibility ||
+                config.skill.isCurrent !== editorSkill.isCurrent ||
+                config.skill.publishedVersionId !==
+                    editorSkill.publishedVersionId ||
+                config.skill.draftVersionId !== editorSkill.draftVersionId)
+
+        if (hasMetadataDelta) {
+            store.getState().dispatch({
+                type: 'SYNC_SKILL_METADATA',
+                payload: config.skill,
             })
         }
     }, [store, config.skill])

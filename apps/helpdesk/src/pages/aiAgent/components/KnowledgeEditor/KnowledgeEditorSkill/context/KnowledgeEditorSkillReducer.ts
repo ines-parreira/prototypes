@@ -155,6 +155,14 @@ export function skillReducer(
                 action.payload.mode,
             )
 
+        case 'SYNC_SKILL_METADATA':
+            return {
+                ...state,
+                skill: action.payload,
+                visibility:
+                    action.payload.visibility === VisibilityStatusEnum.PUBLIC,
+            }
+
         case 'VIEW_HISTORICAL_VERSION': {
             const updates = viewHistoricalVersionUpdates(action.payload)
             return {
