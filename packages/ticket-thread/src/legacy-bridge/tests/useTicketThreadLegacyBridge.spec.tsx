@@ -1,0 +1,160 @@
+import { render as renderPrimitive, screen } from '@testing-library/react'
+
+import { render, renderHook } from '../../tests/render.utils'
+import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgeProvider'
+import type {
+    CurrentTicketShoppingAssistantData,
+    LegacyBridgeActions,
+    LegacyBridgeContextType,
+} from '../types'
+import { useTicketThreadLegacyBridge } from '../useTicketThreadLegacyBridge'
+
+const currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData = {
+    influencedOrders: [
+        {
+            id: 1001,
+            integrationId: 42,
+            ticketId: 777,
+            createdDatetime: '2024-01-01T11:00:00Z',
+            source: 'shopping-assistant',
+        },
+        {
+            id: 1002,
+            integrationId: 42,
+            ticketId: 777,
+            createdDatetime: '2024-01-02T11:00:00Z',
+            source: null,
+        },
+    ],
+    shopifyOrders: [
+        {
+            id: 1001,
+            order_number: 2001,
+        },
+        {
+            id: 1002,
+            order_number: 2002,
+            created_at: '2024-01-02T11:00:00Z',
+            updated_at: '2024-01-03T11:00:00Z',
+        },
+    ],
+    shopifyIntegrations: [
+        {
+            id: 42,
+            name: 'Primary shop',
+        },
+    ],
+}
+
+const legacyActions: LegacyBridgeActions = {
+    deleteTicketPendingMessage: vi.fn(),
+    retrySubmitTicketMessage: vi.fn(),
+}
+
+const legacyState = {
+    newMessage: {
+        isSubmittingMessage: true,
+    },
+}
+
+const renderAiAgentReasoning: LegacyBridgeContextType['renderAiAgentReasoning'] =
+    vi.fn(() => <span>reasoning slot</span>)
+const renderAiAgentDraftMessage: LegacyBridgeContextType['renderAiAgentDraftMessage'] =
+    vi.fn(() => <span>draft slot</span>)
+const renderAiAgentTrialMessage: LegacyBridgeContextType['renderAiAgentTrialMessage'] =
+    vi.fn(() => <span>trial slot</span>)
+
+describe('useTicketThreadLegacyBridge', () => {
+    it('throws when used outside of TicketThreadLegacyBridgeProvider', () => {
+        const TestComponent = () => {
+            useTicketThreadLegacyBridge()
+            return null
+        }
+        const preventExpectedWindowError = (event: ErrorEvent) => {
+            if (
+                event.error instanceof Error &&
+                event.error.message ===
+                    'useTicketThreadLegacyBridge must be used within TicketThreadLegacyBridgeProvider'
+            ) {
+                event.preventDefault()
+            }
+        }
+        const consoleErrorSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => {})
+        window.addEventListener('error', preventExpectedWindowError)
+
+        try {
+            expect(() => {
+                renderPrimitive(<TestComponent />)
+            }).toThrow(
+                'useTicketThreadLegacyBridge must be used within TicketThreadLegacyBridgeProvider',
+            )
+        } finally {
+            window.removeEventListener('error', preventExpectedWindowError)
+            consoleErrorSpy.mockRestore()
+        }
+    })
+
+    it('returns legacy bridge data from the provider', () => {
+        const { result } = renderHook(() => useTicketThreadLegacyBridge(), {
+            currentTicketShoppingAssistantData,
+            currentTicketRuleSuggestionData: {
+                shouldDisplayDemoSuggestion: false,
+            },
+            legacyActions,
+            legacyState,
+            renderAiAgentDraftMessage,
+            renderAiAgentTrialMessage,
+            renderAiAgentReasoning,
+        })
+
+        expect(result.current.currentTicketShoppingAssistantData).toEqual(
+            currentTicketShoppingAssistantData,
+        )
+        expect(
+            result.current.currentTicketRuleSuggestionData
+                .shouldDisplayDemoSuggestion,
+        ).toBe(false)
+        expect(result.current.legacyActions).toBe(legacyActions)
+        expect(result.current.legacyState).toBe(legacyState)
+        expect(result.current.renderAiAgentDraftMessage).toBe(
+            renderAiAgentDraftMessage,
+        )
+        expect(result.current.renderAiAgentTrialMessage).toBe(
+            renderAiAgentTrialMessage,
+        )
+        expect(result.current.renderAiAgentReasoning).toBe(
+            renderAiAgentReasoning,
+        )
+    })
+})
+
+describe('TicketThreadLegacyBridgeProvider', () => {
+    it('renders its children', () => {
+        render(
+            <TicketThreadLegacyBridgeProvider
+                currentTicketShoppingAssistantData={
+                    currentTicketShoppingAssistantData
+                }
+                currentTicketRuleSuggestionData={{
+                    shouldDisplayDemoSuggestion: false,
+                }}
+                legacyActions={legacyActions}
+                legacyState={legacyState}
+                renderAiAgentDraftMessage={renderAiAgentDraftMessage}
+                renderAiAgentTrialMessage={renderAiAgentTrialMessage}
+                renderAiAgentReasoning={renderAiAgentReasoning}
+                onInstagramCommentPrivateReply={() => undefined}
+                onInstagramCommentHideComment={() => undefined}
+                onFacebookCommentPrivateReply={() => undefined}
+                onFacebookCommentHideComment={() => undefined}
+                onFacebookCommentLike={() => undefined}
+            >
+                <span>legacy child</span>
+            </TicketThreadLegacyBridgeProvider>,
+        )
+
+        expect(screen.getByText('legacy child')).toBeInTheDocument()
+    })
+})

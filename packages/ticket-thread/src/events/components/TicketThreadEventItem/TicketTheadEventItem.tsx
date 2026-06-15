@@ -1,0 +1,37 @@
+import { Box } from '@gorgias/axiom'
+
+import { assertNever } from '../../../shared/assertNever'
+import { TicketThreadItemTag } from '../../../thread/itemTags'
+import type {
+    TicketThreadEventItem,
+    TicketThreadGroupedEventsItem,
+    TicketThreadSingleEventItem,
+} from '../../types'
+import { TicketThreadActionExecutedEventItem } from './components/TicketThreadActionExecutedEvents/TicketThreadActionExecutedEventItem'
+import { TicketThreadAuditLogEventItem } from './components/TicketThreadAuditLogEvents/TicketThreadAuditLogEventItem'
+import { TicketThreadPhoneEventItem } from './components/TicketThreadPhoneEvents/TicketThreadPhoneEventItem'
+
+type TicketThreadSingleEventItemProps = {
+    item: Exclude<TicketThreadEventItem, TicketThreadGroupedEventsItem>
+}
+
+export function TicketThreadSingleEventItem({
+    item,
+}: TicketThreadSingleEventItemProps) {
+    switch (item._tag) {
+        case TicketThreadItemTag.Events.TicketEvent:
+            return <Box padding="md">{JSON.stringify(item.data)}</Box>
+        case TicketThreadItemTag.Events.PhoneEvent:
+            return <TicketThreadPhoneEventItem item={item} />
+        case TicketThreadItemTag.Events.AuditLogEvent:
+            return <TicketThreadAuditLogEventItem item={item} />
+        case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
+            return <Box padding="md">{JSON.stringify(item.data)}</Box>
+        case TicketThreadItemTag.Events.PrivateReplyEvent:
+            return <Box padding="md">{JSON.stringify(item.data)}</Box>
+        case TicketThreadItemTag.Events.ActionExecutedEvent:
+            return <TicketThreadActionExecutedEventItem item={item} />
+        default:
+            return assertNever(item)
+    }
+}

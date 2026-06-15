@@ -5,7 +5,7 @@
     "private": true,
     "exports": {
         ".": "./src/index.ts",
-        "./legacy-bridge": "./src/utils/LegacyBridge/index.ts"
+        "./legacy-bridge": "./src/legacy-bridge/index.ts"
     },
     "scripts": {
         "format:check": "oxfmt --check .",
