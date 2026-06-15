@@ -1,6 +1,13 @@
-import { aiAgentDecreaseInResolutionTimeScope } from 'domains/reporting/models/scopes/aiAgentDecreaseInResolutionTime'
+import {
+    aiAgentDecreaseInResolutionTimeScope,
+    dynamicAiAgentDecreaseInResolutionTime,
+    dynamicAiAgentDecreaseInResolutionTimeQueryFactoryV2,
+} from 'domains/reporting/models/scopes/aiAgentDecreaseInResolutionTime'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    ApiStatsFilters,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('aiAgentDecreaseInResolutionTimeScope', () => {
@@ -186,5 +193,78 @@ describe('aiAgentDecreaseInResolutionTimeScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+})
+
+describe('dynamicAiAgentDecreaseInResolutionTime', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query without dimensions when no dimension provided', () => {
+        expect(
+            dynamicAiAgentDecreaseInResolutionTime.build({
+                ...context,
+                dimensions: [],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-decrease-in-resolution-time-breakdown-per-store',
+            scope: 'ai-agent-decrease-in-resolution-time',
+            measures: ['medianDecreaseInResolutionTime'],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+            limit: 10000,
+        })
+    })
+
+    it('creates query with the provided dimension', () => {
+        expect(
+            dynamicAiAgentDecreaseInResolutionTime.build({
+                ...context,
+                dimensions: ['storeIntegrationId'],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-decrease-in-resolution-time-breakdown-per-store',
+            scope: 'ai-agent-decrease-in-resolution-time',
+            measures: ['medianDecreaseInResolutionTime'],
+            dimensions: ['storeIntegrationId'],
+            timezone: 'utc',
+            filters: periodFilters,
+            limit: 10000,
+        })
+    })
+
+    describe('dynamicAiAgentDecreaseInResolutionTimeQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const ctx = {
+                ...context,
+                dimensions: ['storeIntegrationId'] as const,
+            }
+
+            expect(
+                dynamicAiAgentDecreaseInResolutionTimeQueryFactoryV2(ctx),
+            ).toEqual(dynamicAiAgentDecreaseInResolutionTime.build(ctx))
+        })
     })
 })

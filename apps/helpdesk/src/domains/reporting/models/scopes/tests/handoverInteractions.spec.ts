@@ -15,6 +15,8 @@ import {
     aiSupportHandoverInteractionsPerIntent,
     aiSupportHandoverInteractionsPerIntentQueryFactoryV2,
     aiSupportHandoverInteractionsV2QueryFactory,
+    dynamicHandoverInteractions,
+    dynamicHandoverInteractionsQueryFactoryV2,
     handoverInteractions,
     handoverInteractionsPerChannel,
     handoverInteractionsPerChannelQueryFactoryV2,
@@ -374,6 +376,59 @@ describe('handoverInteractionsScope', () => {
                 ],
                 time_dimensions: timeDimensions,
             })
+        })
+    })
+
+    describe('dynamicHandoverInteractions', () => {
+        it('creates query without dimensions when no dimension provided', () => {
+            expect(
+                dynamicHandoverInteractions.build({
+                    filters,
+                    timezone,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-handover-interactions-breakdown-per-store',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: periodFilters,
+                limit: 10000,
+            })
+        })
+
+        it('creates query with the provided dimension', () => {
+            expect(
+                dynamicHandoverInteractions.build({
+                    ...context,
+                    dimensions: ['storeIntegrationId'],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-handover-interactions-breakdown-per-store',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['storeIntegrationId'],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: timeDimensions,
+                limit: 10000,
+            })
+        })
+    })
+
+    describe('dynamicHandoverInteractionsQueryFactoryV2', () => {
+        it('returns the same result as calling build directly with the dimension', () => {
+            const ctx = {
+                ...context,
+                dimensions: ['storeIntegrationId'] as const,
+            }
+
+            expect(dynamicHandoverInteractionsQueryFactoryV2(ctx)).toEqual(
+                dynamicHandoverInteractions.build(ctx),
+            )
         })
     })
 })

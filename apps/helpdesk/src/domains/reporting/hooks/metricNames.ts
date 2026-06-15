@@ -865,6 +865,12 @@ export const METRIC_NAMES = {
     HANDOVER_INTERACTIONS_PER_FEATURE: 'handover-interactions-per-feature',
     HANDOVER_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE:
         'handover-interactions-per-order-management-type',
+    AI_AGENT_HANDOVER_INTERACTIONS_BREAKDOWN_PER_STORE:
+        'ai-agent-handover-interactions-breakdown-per-store',
+    AI_AGENT_DECREASE_IN_RESOLUTION_TIME_BREAKDOWN_PER_STORE:
+        'ai-agent-decrease-in-resolution-time-breakdown-per-store',
+    AI_AGENT_DECREASE_IN_FRT_BREAKDOWN_PER_STORE:
+        'ai-agent-decrease-in-first-response-time-breakdown-per-store',
     FLOW_DATASET_HANDOVER_INTERACTIONS: 'flow-dataset-handover-interactions',
     AI_AGENT_HANDOVER_INTERACTIONS: 'ai-agent-handover-interactions',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS:

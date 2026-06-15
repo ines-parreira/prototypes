@@ -2,7 +2,10 @@ import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { AutomationSkillType } from 'domains/reporting/models/scopes/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
-import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import {
+    createScopeFilters,
+    getBreakdownQuery,
+} from 'domains/reporting/models/scopes/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export const aiAgentDecreaseInResolutionTimeScope = defineScope({
@@ -74,3 +77,12 @@ export const aiAgentAllAgentsDecreaseInResolutionTime =
 export const aiAgentAllAgentsDecreaseInResolutionTimeQueryV2Factory = (
     ctx: AiAgentDecreaseInResolutionTimeContext,
 ) => aiAgentAllAgentsDecreaseInResolutionTime.build(ctx)
+
+export const {
+    breakdownQuery: dynamicAiAgentDecreaseInResolutionTime,
+    breakdownQueryFactory: dynamicAiAgentDecreaseInResolutionTimeQueryFactoryV2,
+} = getBreakdownQuery(
+    aiAgentDecreaseInResolutionTimeScope,
+    () => ({ measures: ['medianDecreaseInResolutionTime'] as const }),
+    METRIC_NAMES.AI_AGENT_DECREASE_IN_RESOLUTION_TIME_BREAKDOWN_PER_STORE,
+)

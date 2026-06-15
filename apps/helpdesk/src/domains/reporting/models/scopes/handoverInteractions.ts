@@ -5,7 +5,10 @@ import {
 } from 'domains/reporting/models/scopes/constants'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import type { Context } from 'domains/reporting/models/scopes/scope'
-import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import {
+    createScopeFilters,
+    getBreakdownQuery,
+} from 'domains/reporting/models/scopes/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 const handoverInteractionsScope = defineScope({
@@ -83,6 +86,15 @@ export const handoverInteractionsPerOrderManagementType =
 export const handoverInteractionsPerOrderManagementTypeQueryFactoryV2 = (
     ctx: HandoverInteractionsContext,
 ) => handoverInteractionsPerOrderManagementType.build(ctx)
+
+export const {
+    breakdownQuery: dynamicHandoverInteractions,
+    breakdownQueryFactory: dynamicHandoverInteractionsQueryFactoryV2,
+} = getBreakdownQuery(
+    handoverInteractionsScope,
+    () => ({ measures: ['handoverInteractionsCount'] as const }),
+    METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_BREAKDOWN_PER_STORE,
+)
 
 export const aiAgentHandoverInteractions = handoverInteractionsScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS)

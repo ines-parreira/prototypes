@@ -3,7 +3,10 @@ import { withLogicalOperator } from 'domains/reporting/models/queryFactories/uti
 import { AutomationSkillType } from 'domains/reporting/models/scopes/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
-import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import {
+    createScopeFilters,
+    getBreakdownQuery,
+} from 'domains/reporting/models/scopes/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export const aiAgentDecreaseInFirstResponseTimeScope = defineScope({
@@ -171,3 +174,12 @@ export const aiAgentAllAgentsDecreaseInFRT =
 export const aiAgentAllAgentsDecreaseInFRTQueryV2Factory = (
     ctx: AiAgentDecreaseInFirstResponseTimeContext,
 ) => aiAgentAllAgentsDecreaseInFRT.build(ctx)
+
+export const {
+    breakdownQuery: dynamicAiAgentDecreaseInFRT,
+    breakdownQueryFactory: dynamicAiAgentDecreaseInFRTQueryFactoryV2,
+} = getBreakdownQuery(
+    aiAgentDecreaseInFirstResponseTimeScope,
+    () => ({ measures: ['medianDecreaseInFirstResponseTime'] as const }),
+    METRIC_NAMES.AI_AGENT_DECREASE_IN_FRT_BREAKDOWN_PER_STORE,
+)

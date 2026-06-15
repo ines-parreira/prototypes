@@ -91,6 +91,18 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<AnalyticsO
                         gridSize: 12,
                         visibility: false,
                     },
+                    {
+                        chartId: AnalyticsOverviewChart.StoreIntegrationTable,
+                        gridSize: 12,
+                        visibility: false,
+                        visibleColumns: [
+                            'automationRate',
+                            'automatedInteractions',
+                            'handoverInteractions',
+                            'costSaved',
+                            'timeSaved',
+                        ],
+                    },
                 ],
             },
         ],

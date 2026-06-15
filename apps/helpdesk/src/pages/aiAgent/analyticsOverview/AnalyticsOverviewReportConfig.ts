@@ -31,6 +31,8 @@ import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/componen
 import { OrderManagementTable } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable'
 import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
+import { STORE_INTEGRATION_TABLE } from 'pages/aiAgent/analyticsOverview/components/StoreIntegrationTable/columns'
+import { StoreIntegrationTable } from 'pages/aiAgent/analyticsOverview/components/StoreIntegrationTable/StoreIntegrationTable'
 import { fetchAiAgentOverviewDecreaseInFRTTrend } from 'pages/aiAgent/analyticsOverview/hooks/useAiAgentOverviewDecreaseInFRTTrend'
 import { fetchAiAgentOverviewDecreaseInResolutionTimeTrend } from 'pages/aiAgent/analyticsOverview/hooks/useAiAgentOverviewDecreaseInResolutionTimeTrend'
 import { fetchArticleRecommendationAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
@@ -40,6 +42,7 @@ import { fetchOverallAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsO
 import { fetchOverallAutomationRateTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomationRateTrend'
 import { fetchOverallTimeSavedByAgentsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallTimeSavedByAgentsTrend'
 import { fetchPerformanceMetricsPerFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+import { fetchStoreIntegrationAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useStoreIntegrationMetrics'
 import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import {
     fetchConfigurableBarChartDownloadData,
@@ -61,6 +64,7 @@ export const AnalyticsOverviewChart = {
     ArticleRecommendationTable: `${AI_AGENT_CHART_ID_PREFIX}overview-article_recommendation_table`,
     HandoverInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}overview-handover_interactions_card`,
     DecreaseInFRTCard: `${AI_AGENT_CHART_ID_PREFIX}overview-decrease_in_frt_card`,
+    StoreIntegrationTable: `${AI_AGENT_CHART_ID_PREFIX}overview-store_integration_table`,
 } as const
 
 export type AnalyticsOverviewChart =
@@ -256,6 +260,18 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     },
                 ],
                 description: ARTICLE_RECOMMENDATION_TABLE.description,
+                chartType: ChartType.Table,
+            },
+            [AnalyticsOverviewChart.StoreIntegrationTable]: {
+                chartComponent: StoreIntegrationTable,
+                label: STORE_INTEGRATION_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchStoreIntegrationAsConfigurableTable,
+                    },
+                ],
+                description: STORE_INTEGRATION_TABLE.description,
                 chartType: ChartType.Table,
             },
         },

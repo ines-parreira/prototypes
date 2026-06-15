@@ -6,6 +6,12 @@ import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
+export const STORE_INTEGRATION_TYPES = [
+    IntegrationType.Shopify,
+    IntegrationType.BigCommerce,
+    IntegrationType.Magento2,
+]
+
 const useStoreIntegrations = (types?: IntegrationType[]) => {
     const { hasAccess } = useAiAgentAccess()
 
@@ -15,11 +21,7 @@ const useStoreIntegrations = (types?: IntegrationType[]) => {
                 types
                     ? types
                     : hasAccess
-                      ? [
-                            IntegrationType.Shopify,
-                            IntegrationType.BigCommerce,
-                            IntegrationType.Magento2,
-                        ]
+                      ? STORE_INTEGRATION_TYPES
                       : [IntegrationType.Shopify],
             ),
         [types, hasAccess],

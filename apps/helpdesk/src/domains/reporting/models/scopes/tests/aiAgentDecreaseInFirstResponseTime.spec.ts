@@ -6,6 +6,8 @@ import {
     aiAgentSupportAgentDecreaseInFRTPerIntent,
     aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2,
     aiAgentSupportAgentDecreaseInFRTQueryV2Factory,
+    dynamicAiAgentDecreaseInFRT,
+    dynamicAiAgentDecreaseInFRTQueryFactoryV2,
     dynamicSupportAgentDecreaseInFRT,
     dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
     dynamicSupportAgentDecreaseInFRTTimeseries,
@@ -529,6 +531,79 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
             expect(
                 dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2(ctx),
             ).toEqual(dynamicSupportAgentDecreaseInFRTTimeseries.build(ctx))
+        })
+    })
+})
+
+describe('dynamicAiAgentDecreaseInFRT', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query without dimensions when no dimension provided', () => {
+        expect(
+            dynamicAiAgentDecreaseInFRT.build({
+                ...context,
+                dimensions: [],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-decrease-in-first-response-time-breakdown-per-store',
+            scope: 'ai-agent-decrease-in-first-response-time',
+            measures: ['medianDecreaseInFirstResponseTime'],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+            limit: 10000,
+        })
+    })
+
+    it('creates query with the provided dimension', () => {
+        expect(
+            dynamicAiAgentDecreaseInFRT.build({
+                ...context,
+                dimensions: ['storeIntegrationId'],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-decrease-in-first-response-time-breakdown-per-store',
+            scope: 'ai-agent-decrease-in-first-response-time',
+            measures: ['medianDecreaseInFirstResponseTime'],
+            dimensions: ['storeIntegrationId'],
+            timezone: 'utc',
+            filters: periodFilters,
+            limit: 10000,
+        })
+    })
+
+    describe('dynamicAiAgentDecreaseInFRTQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const ctx = {
+                ...context,
+                dimensions: ['storeIntegrationId'] as const,
+            }
+
+            expect(dynamicAiAgentDecreaseInFRTQueryFactoryV2(ctx)).toEqual(
+                dynamicAiAgentDecreaseInFRT.build(ctx),
+            )
         })
     })
 })
