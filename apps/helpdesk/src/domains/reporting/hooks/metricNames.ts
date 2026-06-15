@@ -7,6 +7,8 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-overall-automated-interactions',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES:
         'ai-agent-dynamic-overall-automated-interactions-timeseries',
+    AI_AGENT_DYNAMIC_ALL_AGENTS_INTENT_BREAKDOWN_PER_ROLE_AND_OUTCOME:
+        'ai-agent-dynamic-all-agents-intent-breakdown-per-role-and-outcome',
     AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_VALUE:
         'ai-agent-shopping-assistant-automated-interactions-value',
     AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN:
@@ -1175,6 +1177,7 @@ export enum MetricScope {
     AiSalesAgentDiscounts = 'ai-sales-agent-discounts',
     AiSalesAgentOrdersPerformance = 'ai-sales-agent-orders-performance',
     AiAgentAutomatedInteractions = 'ai-agent-automated-interactions',
+    AiAgentTicketFields = 'ai-agent-ticket-fields',
     AiAgentTimeSaved = 'ai-agent-time-saved',
     AiAgentDecreaseInFirstResponseTime = 'ai-agent-decrease-in-first-response-time',
     AiAgentDecreaseInResolutionTime = 'ai-agent-decrease-in-resolution-time',
@@ -1559,6 +1562,8 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE,
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_INTENT,
     ],
+    // V2-only scope (getGenericQueries-style dynamic factory); no V1→V2 migration to route.
+    [MetricScope.AiAgentTicketFields]: [],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT,

@@ -103,32 +103,37 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })
 
-        it('should have breakdown section with channel and intent performance tables', () => {
+        it('should have breakdown section with channel, intent and outcome tables', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
             expect(breakdownSection.type).toBe(ChartType.Table)
             expect(breakdownSection.tableTitle).toBe('Performance breakdown')
-            expect(breakdownSection.items).toHaveLength(2)
+            expect(breakdownSection.items).toHaveLength(3)
             expect(breakdownSection.items[0].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
             )
             expect(breakdownSection.items[1].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
             )
+            expect(breakdownSection.items[2].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.AiAgentOutcomeTable,
+            )
             expect(breakdownSection.items[0].gridSize).toBe(12)
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[2].gridSize).toBe(12)
             expect(breakdownSection.items[0].visibility).toBe(true)
             expect(breakdownSection.items[1].visibility).toBe(false)
+            expect(breakdownSection.items[2].visibility).toBe(true)
         })
 
-        it('should have total of 20 charts across all sections', () => {
+        it('should have total of 21 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(20)
+            expect(totalCharts).toBe(21)
         })
 
         it('should have all required chart types defined', () => {

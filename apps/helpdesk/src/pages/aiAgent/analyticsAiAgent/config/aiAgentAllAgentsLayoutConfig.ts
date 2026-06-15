@@ -136,6 +136,12 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         gridSize: 12,
                         visibility: false,
                     },
+                    {
+                        chartId:
+                            AnalyticsAiAgentAllAgentsChart.AiAgentOutcomeTable,
+                        gridSize: 12,
+                        visibility: true,
+                    },
                 ],
             },
         ],

@@ -32,6 +32,8 @@ import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/ch
 import { AnalyticsAiAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
+import { AiAgentOutcomeTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentOutcomeTable/AiAgentOutcomeTable'
+import { AI_AGENT_OUTCOME_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentOutcomeTable/constants'
 import { AllAgentsPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/AllAgentsPerformanceByChannelTable'
 import { AllAgentsPerformanceByIntentTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByIntentTable/AllAgentsPerformanceByIntentTable'
 import { fetchAiAgentAllAgentsAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomatedInteractionsTrend'
@@ -43,6 +45,7 @@ import { fetchAiAgentAllAgentsFRTTrend } from 'pages/aiAgent/analyticsAiAgent/ho
 import { fetchAiAgentAllAgentsResolutionTimeTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsResolutionTimeTrend'
 import { fetchAiAgentAllAgentsSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsSuccessRateTrend'
 import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
+import { fetchAiAgentOutcomeAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentOutcomeMetrics'
 import { fetchAiAgentAllAgentsTimeSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTimeSavedMetric'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
@@ -79,6 +82,7 @@ export const AnalyticsAiAgentAllAgentsChart = {
     ConfigurableLineGraph: `${AI_AGENT_CHART_ID_PREFIX}all_agents-configurable_line_graph`,
     ChannelPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}all_agents-channel_performance_table`,
     IntentPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}all_agents-intent_performance_table`,
+    AiAgentOutcomeTable: `${AI_AGENT_CHART_ID_PREFIX}all_agents-ai_agent_outcome_table`,
 } as const
 
 export type AnalyticsAiAgentAllAgentsChart =
@@ -388,6 +392,18 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     },
                 ],
                 description: 'Performance breakdown by intent',
+                chartType: ChartType.Table,
+            },
+            [AnalyticsAiAgentAllAgentsChart.AiAgentOutcomeTable]: {
+                chartComponent: AiAgentOutcomeTable,
+                label: AI_AGENT_OUTCOME_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchAiAgentOutcomeAsConfigurableTable,
+                    },
+                ],
+                description: AI_AGENT_OUTCOME_TABLE.description,
                 chartType: ChartType.Table,
             },
         },
