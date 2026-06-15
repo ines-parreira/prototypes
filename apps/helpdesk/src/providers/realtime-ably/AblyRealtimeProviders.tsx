@@ -34,9 +34,6 @@ const AblyRealtimeProviders = ({ children }: Props) => {
     const isAblyFailedStateReportingEnabled = useFlag(
         FeatureFlagKey.AblyFailedStateReporting,
     )
-    const isEmailIntegrationMigrationToAblyEnabled = useFlag(
-        FeatureFlagKey.EmailIntegrationMigrationToAbly,
-    )
     const isErrorReportingEnabled = useRef(isAblyRealtimeErrorReportingEnabled)
     const isFailedStateReportingEnabled = useRef(
         isAblyFailedStateReportingEnabled,
@@ -94,9 +91,7 @@ const AblyRealtimeProviders = ({ children }: Props) => {
         >
             <RealtimeSubscriptionsInitializer />
             <AgentActivityProvider>
-                {isEmailIntegrationMigrationToAblyEnabled && (
-                    <EmailIntegrationMigrationRealtimeHandler />
-                )}
+                <EmailIntegrationMigrationRealtimeHandler />
                 <UserChannelRealtimeHandler />
                 {children}
             </AgentActivityProvider>

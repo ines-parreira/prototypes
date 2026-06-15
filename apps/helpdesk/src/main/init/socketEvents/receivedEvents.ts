@@ -81,7 +81,6 @@ import {
 } from 'state/entities/views/actions'
 import * as infobarActions from 'state/infobar/actions'
 import * as integrationsActions from 'state/integrations/actions'
-import { getEmailMigrations } from 'state/integrations/selectors'
 import { MACRO_PARAMS_UPDATED } from 'state/macro/constants'
 import * as notificationsActions from 'state/notifications/actions'
 import { getTeams } from 'state/teams/selectors'
@@ -95,18 +94,6 @@ import { isCurrentlyOnTicket } from 'utils'
 async function isWhatsAppOnboardingToAblyEnabled() {
     const { flag } = await fetchFlag(
         FeatureFlagKey.WhatsAppOnboardingToAbly,
-        false,
-    )
-
-    return flag
-}
-
-/**
- * Events that can be received from server via socket
- */
-async function isEmailIntegrationMigrationToAblyEnabled() {
-    const { flag } = await fetchFlag(
-        FeatureFlagKey.EmailIntegrationMigrationToAbly,
         false,
     )
 
@@ -604,46 +591,6 @@ const receivedEvents: ReceivedEvent[] = [
             integrationsActions.onVerify(
                 reduxStore.dispatch,
                 (json as EmailIntegrationVerifiedEvent).integration_id,
-            )
-        },
-    },
-    {
-        name: SocketEventType.MigrationIntegrationInboundVerified,
-        onReceive: async function (json) {
-            if (await isEmailIntegrationMigrationToAblyEnabled()) return
-
-            const integrationId = (json as EmailIntegrationVerifiedEvent)
-                .integration_id
-            const migration = getEmailMigrations(reduxStore.getState()).find(
-                (migration) => migration.integration.id === integrationId,
-            )
-
-            if (!migration) return
-
-            integrationsActions.onVerifyMigrationForwarding(
-                reduxStore.dispatch,
-                integrationId,
-                migration.integration.meta.address,
-            )
-        },
-    },
-    {
-        name: SocketEventType.MigrationIntegrationInboundFailed,
-        onReceive: async function (json) {
-            if (await isEmailIntegrationMigrationToAblyEnabled()) return
-
-            const integrationId = (json as EmailIntegrationVerifiedEvent)
-                .integration_id
-            const migration = getEmailMigrations(reduxStore.getState()).find(
-                (migration) => migration.integration.id === integrationId,
-            )
-
-            if (!migration) return
-
-            integrationsActions.onVerifyMigrationForwardingFailure(
-                reduxStore.dispatch,
-                integrationId,
-                migration?.integration.meta.address,
             )
         },
     },

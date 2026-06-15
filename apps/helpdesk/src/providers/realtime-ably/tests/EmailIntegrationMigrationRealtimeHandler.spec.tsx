@@ -119,6 +119,40 @@ describe('EmailIntegrationMigrationRealtimeHandler', () => {
         expect(mockOnVerifyMigrationForwardingFailure).not.toHaveBeenCalled()
     })
 
+    it('does not subscribe when accountId is not yet available', () => {
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAccountId) return undefined
+            if (selector === getCurrentUserId) return 456
+            if (selector === getEmailMigrations) return [migration]
+
+            return undefined
+        })
+
+        render(<EmailIntegrationMigrationRealtimeHandler />)
+
+        expect(mockUseChannel).toHaveBeenCalledWith({
+            channel: undefined,
+            onMessage: expect.any(Function),
+        })
+    })
+
+    it('does not subscribe when userId is not yet available', () => {
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector === getCurrentAccountId) return 123
+            if (selector === getCurrentUserId) return undefined
+            if (selector === getEmailMigrations) return [migration]
+
+            return undefined
+        })
+
+        render(<EmailIntegrationMigrationRealtimeHandler />)
+
+        expect(mockUseChannel).toHaveBeenCalledWith({
+            channel: undefined,
+            onMessage: expect.any(Function),
+        })
+    })
+
     it('ignores migration events without a matching migration', () => {
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getCurrentAccountId) return 123

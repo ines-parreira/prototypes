@@ -67,8 +67,6 @@ export enum SocketEventType {
     TicketChatUpdated = 'ticket-chat-updated',
     EmailIntegrationVerified = 'email.integration-verified',
     EmailForwardingActivated = 'email.forwarding-activated',
-    MigrationIntegrationInboundVerified = 'email.integration-migration-verified',
-    MigrationIntegrationInboundFailed = 'email.integration-migration-failed',
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
     OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
     MacroParamsUpdated = 'macro-params-updated',

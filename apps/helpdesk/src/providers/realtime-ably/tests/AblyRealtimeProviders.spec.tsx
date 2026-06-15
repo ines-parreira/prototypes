@@ -118,11 +118,7 @@ describe('AblyRealtimeProviders', () => {
         expect(getByTestId('user-channel-realtime-handler')).toBeInTheDocument()
     })
 
-    it('should render the email migration realtime handler when the migration feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            return flag === FeatureFlagKey.EmailIntegrationMigrationToAbly
-        })
-
+    it('should always render the email migration realtime handler', () => {
         const { getByTestId } = render(
             <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
         )
@@ -130,16 +126,6 @@ describe('AblyRealtimeProviders', () => {
         expect(
             getByTestId('email-migration-realtime-handler'),
         ).toBeInTheDocument()
-    })
-
-    it('should not render the email migration realtime handler when the migration feature flag is disabled', () => {
-        const { queryByTestId } = render(
-            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
-        )
-
-        expect(
-            queryByTestId('email-migration-realtime-handler'),
-        ).not.toBeInTheDocument()
     })
 
     it('should enable logging if feature flag is enabled', () => {
