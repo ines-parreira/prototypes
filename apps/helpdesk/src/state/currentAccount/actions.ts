@@ -3,7 +3,7 @@ import type { SelectedPlans } from '@repo/billing'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
-
+import { toast } from '@gorgias/axiom'
 import { AgentAvailabilityTableViews } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { AgentsTableViews } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { ChannelsTableViews } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
@@ -30,7 +30,6 @@ import {
 } from 'state/currentAccount/selectors'
 import type { Account, AccountSetting } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
 import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -71,12 +70,7 @@ export const updateAccount =
                         type: constants.UPDATE_ACCOUNT_SUCCESS,
                         resp,
                     })
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Account settings successfully updated!',
-                        }),
-                    )
+                    toast.success('Account settings successfully updated!')
                 },
                 (error) => {
                     return dispatch({
@@ -121,13 +115,9 @@ export function submitSetting(
             .then((json) => json?.data)
             .then(
                 (setting) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message:
-                                notification ??
-                                `${_capitalize(setting.type)} settings saved`,
-                        }),
+                    toast.success(
+                        notification ??
+                            `${_capitalize(setting.type)} settings saved`,
                     )
 
                     return dispatch(
@@ -294,12 +284,7 @@ export function updateSubscription(subscription: Subscription) {
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Your subscription was updated.',
-                        }),
-                    )
+                    toast.success('Your subscription was updated.')
 
                     return dispatch({
                         type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
@@ -347,7 +332,15 @@ export function updateSubscriptionsForPlans({
         })
 
         notifications.forEach((notification) => {
-            void dispatch(notify(notification))
+            const text = String(
+                ('message' in notification ? notification.message : '') || '',
+            )
+            const status =
+                'status' in notification ? notification.status : undefined
+            if (status === NotificationStatus.Error) toast.error(text)
+            else if (status === NotificationStatus.Warning) toast.warning(text)
+            else if (status === NotificationStatus.Success) toast.success(text)
+            else toast.info(text)
         })
 
         return response.data
@@ -372,12 +365,7 @@ export const updateAccountOwner =
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.put('/api/account/owner/', { id: userId }).then(
             () => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'The account owner was successfully​ changed.',
-                    }),
-                )
+                toast.success('The account owner was successfully changed.')
                 return dispatch({
                     type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
                     userId,
@@ -412,29 +400,19 @@ export const fetchAccountSettings =
         }
     }
 
-export const resendVerificationEmail =
-    () =>
-    async (dispatch: StoreDispatch): Promise<void> => {
-        const gorgiasApi = new GorgiasApi()
+export const resendVerificationEmail = () => async (): Promise<void> => {
+    const gorgiasApi = new GorgiasApi()
 
-        try {
-            await gorgiasApi.resendAccountVerificationEmail()
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'The verification email has been resent!',
-                }),
-            )
-        } catch (exc) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: (exc as AxiosError<{ error: { msg: string } }>)
-                        .response?.data.error.msg,
-                }),
-            )
-        }
+    try {
+        await gorgiasApi.resendAccountVerificationEmail()
+        toast.success('The verification email has been resent!')
+    } catch (exc) {
+        toast.error(
+            (exc as AxiosError<{ error: { msg: string } }>).response?.data.error
+                .msg ?? '',
+        )
     }
+}
 
 export type cancelHelpdeskAutoRenewalResponse = {
     scheduled_to_cancel_at: string
@@ -459,12 +437,8 @@ export function cancelHelpdeskAutoRenewal(
                             scheduled_to_cancel_at: resp.scheduled_to_cancel_at,
                         },
                     })
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message:
-                                'Your Helpdesk auto-renewal has been cancelled.',
-                        }),
+                    toast.success(
+                        'Your Helpdesk auto-renewal has been cancelled.',
                     )
 
                     return true
@@ -472,17 +446,9 @@ export function cancelHelpdeskAutoRenewal(
                 (error: GorgiasApiError) => {
                     const message = isGorgiasApiError(error)
                         ? error.response.data.error.msg
-                        : `Failed to cancel Helpdesk auto-renewal. If the problem persists,
-                           please contact our billing team via chat or at
-                           <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.`
+                        : 'Failed to cancel Helpdesk auto-renewal. If the problem persists, please contact our billing team via chat or at support@gorgias.com to make this change.'
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: message,
-                            allowHTML: true,
-                        }),
-                    )
+                    toast.error(message)
                     return false
                 },
             )

@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { assumeMock, renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { assumeMock, renderHook, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
-import { notify as updateNotification } from 'reapop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockCreateJobHandler,
     mockCreateJobResponse,
@@ -17,29 +17,20 @@ import {
 import { JobType, ViewType } from '@gorgias/helpdesk-types'
 
 import { view } from 'fixtures/views'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { useBulkAction } from '../useBulkAction'
 import { useCancelJob } from '../useCancelJob'
 import { useNotificationPayload } from '../useNotificationPayload'
 
-jest.mock('reapop')
-const updateNotificationMock = assumeMock(updateNotification)
+Element.prototype.setPointerCapture = jest.fn()
+Element.prototype.releasePointerCapture = jest.fn()
 
 jest.mock('../useCancelJob')
 const useCancelJobMock = assumeMock(useCancelJob)
 
 jest.mock('../useNotificationPayload')
 const useNotificationPayloadMock = assumeMock(useNotificationPayload)
-
-jest.mock('state/notifications/actions')
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    useAppDispatch: () => mockedDispatch,
-}))
 
 const mutateCancelJobMock = jest.fn()
 
@@ -62,6 +53,7 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
+    toast.dismiss()
     jest.clearAllMocks()
 })
 
@@ -86,10 +78,9 @@ function mockCreateJob(responseId = 123) {
 }
 
 describe('useBulkAction', () => {
-    const statusMock = 'jobStatus'
     const getNotificationParamsMock = jest.fn()
     const getNotificationPayloadMock = jest.fn().mockReturnValue({
-        status: statusMock,
+        id: 'test-notification-id',
         message: 'Job is launched',
     })
 
@@ -201,23 +192,7 @@ describe('useBulkAction', () => {
         })
     })
 
-    it('should display a notification when creating a job', () => {
-        mockCreateJob()
-        const { result } = renderHook(() => useBulkAction('view'), {
-            wrapper: createWrapper(),
-        })
-
-        result.current.createJob(JobType.DeleteTicket)
-
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: expect.stringMatching(/^(?!\s*$).+/),
-                status: statusMock,
-            }),
-        )
-    })
-
-    it('should update the notification when job is successfully created', async () => {
+    it('should display a toast notification when creating a job', async () => {
         mockCreateJob()
         const { result } = renderHook(() => useBulkAction('view'), {
             wrapper: createWrapper(),
@@ -226,13 +201,23 @@ describe('useBulkAction', () => {
         result.current.createJob(JobType.DeleteTicket)
 
         await waitFor(() => {
-            expect(updateNotification).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: expect.stringMatching(/^(?!\s*$).+/),
-                    status: NotificationStatus.Success,
-                    buttons: expect.any(Array),
-                }),
-            )
+            const toastEl = screen.getByRole('status')
+            expect(toastEl).toHaveTextContent('Job is launched')
+        })
+    })
+
+    it('should display a success toast when job is successfully created', async () => {
+        mockCreateJob()
+        const { result } = renderHook(() => useBulkAction('view'), {
+            wrapper: createWrapper(),
+        })
+
+        result.current.createJob(JobType.DeleteTicket)
+
+        await waitFor(() => {
+            const toastEl = screen.getByRole('status')
+            expect(toastEl).toHaveTextContent('Job is launched')
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -244,18 +229,9 @@ describe('useBulkAction', () => {
 
         result.current.createJob(JobType.DeleteTicket)
 
-        await waitFor(() => {
-            expect(updateNotification).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    buttons: [expect.objectContaining({ name: 'Cancel' })],
-                }),
-            )
-        })
-        ;(
-            updateNotificationMock.mock.calls[0][0] as unknown as {
-                buttons: { onClick: () => void }[]
-            }
-        ).buttons[0].onClick()
+        const button = await screen.findByRole('button', { name: 'Cancel' })
+        const user = userEvent.setup()
+        await user.click(button)
 
         expect(mutateCancelJobMock).toHaveBeenCalledWith({ id: 123 })
     })
@@ -269,39 +245,16 @@ describe('useBulkAction', () => {
         result.current.createJob(JobType.DeleteTicket)
 
         await waitFor(() => {
-            expect(updateNotification).toHaveBeenCalledWith(
-                expect.not.objectContaining({
-                    buttons: expect.anything(),
-                }),
-            )
+            const toastEl = screen.getByRole('status')
+            expect(toastEl).toHaveTextContent('Job is launched')
         })
+
+        expect(
+            screen.queryByRole('button', { name: 'Cancel' }),
+        ).not.toBeInTheDocument()
     })
 
-    it('should cancel job', async () => {
-        mockCreateJob()
-        const { result } = renderHook(() => useBulkAction('view'), {
-            wrapper: createWrapper(),
-        })
-
-        result.current.createJob(JobType.DeleteTicket)
-
-        await waitFor(() => {
-            expect(updateNotification).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    buttons: [expect.objectContaining({ name: 'Cancel' })],
-                }),
-            )
-        })
-        ;(
-            updateNotificationMock.mock.calls[0][0] as unknown as {
-                buttons: { onClick: () => void }[]
-            }
-        ).buttons[0].onClick()
-
-        expect(mutateCancelJobMock).toHaveBeenCalledWith({ id: 123 })
-    })
-
-    it('should update the notification when job is unsuccessfully created with an unauthorized error', async () => {
+    it('should display an error toast with unauthorized message on 403', async () => {
         server.use(
             mockCreateJobHandler(async () =>
                 HttpResponse.json({ error: { msg: 'Unauthorized' } } as never, {
@@ -316,16 +269,13 @@ describe('useBulkAction', () => {
         result.current.createJob(JobType.DeleteTicket)
 
         await waitFor(() => {
-            expect(updateNotification).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Unauthorized',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = screen.getByRole('status')
+            expect(toastEl).toHaveTextContent('Unauthorized')
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
-    it('should update the notification when job is unsuccessfully created', async () => {
+    it('should display a generic error toast when job creation fails', async () => {
         server.use(
             mockCreateJobHandler(async () =>
                 HttpResponse.json({ error: { msg: 'foo' } } as never, {
@@ -340,13 +290,11 @@ describe('useBulkAction', () => {
         result.current.createJob(JobType.DeleteTicket)
 
         await waitFor(() => {
-            expect(updateNotification).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message:
-                        'Failed to apply action on tickets view. Please try again.',
-                    status: NotificationStatus.Error,
-                }),
+            const toastEl = screen.getByRole('status')
+            expect(toastEl).toHaveTextContent(
+                'Failed to apply action on tickets view. Please try again.',
             )
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

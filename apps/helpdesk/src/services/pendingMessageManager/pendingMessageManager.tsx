@@ -2,8 +2,9 @@ import type { EnhancedStore } from '@reduxjs/toolkit'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
-import { dismissNotification } from 'reapop'
 import { Duration } from '@gorgias/toolkit'
+
+import { Button, toast } from '@gorgias/axiom'
 
 import { store as reduxStore } from 'common/store'
 import {
@@ -21,8 +22,6 @@ import type {
     TicketMessageSubmissionDiagnosticsStage,
 } from 'state/newMessage/ticketSubmissionDiagnostics'
 import type { NewMessage, ReplyAreaState } from 'state/newMessage/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { applyMacro, messageDeleted } from 'state/ticket/actions'
 
 //$TsFixMe remove once init.js is migrated
@@ -101,22 +100,14 @@ export class PendingMessageManager {
             'pending_send_scheduled',
             sendMessageArgs,
         )
-        typeSafeReduxStore.dispatch(
-            notify({
-                id: String(messageId),
-                status: NotificationStatus.Success,
-                message: 'Message sent',
-                dismissAfter: pendingMessageDelay,
-                buttons: [
-                    {
-                        name: 'Undo',
-                        onClick: this.undoMessage,
-                        primary: true,
-                    },
-                ],
-                //$TsFixMe remove casting on init.js migration
-            }) as any,
-        )
+        toast.success('Message sent', {
+            id: String(messageId),
+            inlineActions: (
+                <Button size="sm" variant="tertiary" onClick={this.undoMessage}>
+                    Undo
+                </Button>
+            ),
+        })
         this.pendingSendMessagesArgs = sendMessageArgs
         this.listenUnloadEvent()
         this.timeoutId = window.setTimeout(() => {
@@ -156,7 +147,7 @@ export class PendingMessageManager {
             logEvent(SegmentEvent.UndoSentMessage, {
                 bodyText: messageToSend.body_text,
             })
-            typeSafeReduxStore.dispatch(dismissNotification(String(messageId)))
+            toast.dismiss(String(messageId))
             typeSafeReduxStore.dispatch(messageDeleted(messageId as any))
             history.push(`/app/ticket/${ticketId || ''}`)
             setTimeout(() => {
@@ -196,7 +187,7 @@ export class PendingMessageManager {
                 'pending_send_flushed',
                 this.pendingSendMessagesArgs,
             )
-            typeSafeReduxStore.dispatch(dismissNotification(String(messageId)))
+            toast.dismiss(String(messageId))
             //$TsFixMe remove casting on init.js migration
             typeSafeReduxStore.dispatch(
                 sendTicketMessage(

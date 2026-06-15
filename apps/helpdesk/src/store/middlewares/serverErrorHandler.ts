@@ -1,6 +1,9 @@
+import { createElement } from 'react'
+
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import type { Middleware } from 'redux'
+import { Button, toast } from '@gorgias/axiom'
 import { Duration } from '@gorgias/toolkit'
 
 import type {
@@ -8,11 +11,8 @@ import type {
     GorgiasApiResponseDataError,
 } from '../../models/api/types'
 import { isIntegrationLimitReachedError } from '../../models/api/types'
-import { notify } from '../../state/notifications/actions'
-import type { Notification } from '../../state/notifications/types'
-import { NotificationStatus } from '../../state/notifications/types'
 import type { RootState, StoreDispatch } from '../../state/types'
-import { errorToChildren, stripErrorMessage } from '../../utils'
+import { stripErrorMessage } from '../../utils'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
 
@@ -30,7 +30,7 @@ const serverErrorHandler: Middleware<
     Record<string, unknown>,
     RootState,
     StoreDispatch
-> = (store) => (next) => (action: ServerErrorAction) => {
+> = () => (next) => (action: ServerErrorAction) => {
     const status = _get(action, 'error.response.status', '')
     const error = _get(action, 'error.response.data.error', '') as
         | GorgiasApiResponseDataError
@@ -44,12 +44,7 @@ const serverErrorHandler: Middleware<
                 msg +=
                     ' You will be redirected to the login page in a few seconds.'
             }
-            void store.dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    title: msg,
-                }),
-            )
+            toast.error(msg)
         }
 
         setTimeout(() => {
@@ -70,24 +65,19 @@ const serverErrorHandler: Middleware<
     // (`upgradable: false`) to CSM contact instead of the self-serve upgrade path.
     if (isIntegrationLimitReachedError(action.error)) {
         const { limit, upgradable } = action.error.response.data.error.data
-        void store.dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                title: `You've reached your plan's limit of ${limit} channels.`,
-                message: upgradable
-                    ? 'Upgrade your plan to add more channels.'
-                    : 'Reach out to your Customer Success Manager to raise your limit.',
-                buttons: [
-                    {
-                        name: upgradable ? 'Upgrade plan' : 'Contact us',
-                        primary: true,
-                        onClick: () => {
-                            window.location.assign(BILLING_SETTINGS_PATH)
-                        },
-                    },
-                ],
+        toast.error(`You've reached your plan's limit of ${limit} channels.`, {
+            caption: upgradable
+                ? 'Upgrade your plan to add more channels.'
+                : 'Reach out to your Customer Success Manager to raise your limit.',
+            inlineActions: createElement(Button, {
+                children: upgradable ? 'Upgrade plan' : 'Contact us',
+                size: 'sm',
+                variant: 'tertiary',
+                onClick: () => {
+                    window.location.assign(BILLING_SETTINGS_PATH)
+                },
             }),
-        )
+        })
         return next(action)
     }
 
@@ -106,21 +96,7 @@ const serverErrorHandler: Middleware<
 
         title = stripErrorMessage(title)
 
-        const notification: Notification = {
-            status: NotificationStatus.Error,
-            allowHTML: true,
-            title,
-        }
-
-        if (action.verbose) {
-            action.children = errorToChildren(action.error!)
-        }
-
-        if (action.children) {
-            notification.message = action.children
-        }
-
-        void store.dispatch(notify(notification))
+        toast.error(title)
     }
 
     return next(action)

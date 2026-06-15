@@ -1,19 +1,14 @@
 import { useCallback, useMemo } from 'react'
 
 import type { AxiosError } from 'axios'
-import type { Notification } from 'reapop'
-import { notify as updateNotification } from 'reapop'
-import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
+import { Button, toast } from '@gorgias/axiom'
 import type { JobType } from '@gorgias/helpdesk-queries'
 import { useCreateJob } from '@gorgias/helpdesk-queries'
 
 import { getConfigByType } from 'config/views'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getActiveView } from 'state/views/selectors'
 import { getMoment } from 'utils/date'
 
@@ -22,7 +17,6 @@ import { useCancelJob } from './useCancelJob'
 import { useNotificationPayload } from './useNotificationPayload'
 
 const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
-    const dispatch = useAppDispatch()
     const activeViewImmutable = useAppSelector(getActiveView)
     const activeView = useMemo(
         () =>
@@ -55,40 +49,37 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
     const { mutate, isLoading } = useCreateJob({
         mutation: {
             onSuccess: (response) => {
-                dispatch(
-                    updateNotification({
-                        ...(getNotificationPayload() as Notification),
-                        status: NotificationStatus.Success,
-                        ...(level === 'view'
-                            ? {
-                                  buttons: [
-                                      {
-                                          name: 'Cancel',
-                                          primary: true,
-                                          onClick: () => {
-                                              cancelJob({
-                                                  id: response.data.id!,
-                                              })
-                                          },
-                                      },
-                                  ],
-                              }
-                            : {}),
-                    }),
-                )
+                const payload = getNotificationPayload()
+                toast.success(payload.message ?? '', {
+                    id: payload.id,
+                    ...(level === 'view'
+                        ? {
+                              inlineActions: (
+                                  <Button
+                                      size="sm"
+                                      variant="tertiary"
+                                      onClick={() =>
+                                          cancelJob({
+                                              id: response.data.id!,
+                                          })
+                                      }
+                                  >
+                                      Cancel
+                                  </Button>
+                              ),
+                          }
+                        : {}),
+                })
             },
             onError: (error: AxiosError<{ error: { msg: string } }>) => {
-                dispatch(
-                    updateNotification({
-                        ...(getNotificationPayload() as Notification),
-                        status: NotificationStatus.Error,
-                        message:
-                            error.response?.status === 403
-                                ? error.response?.data.error.msg
-                                : `Failed to apply action on ${
-                                      viewConfig.get('plural') as string
-                                  } view. Please try again.`,
-                    }),
+                const payload = getNotificationPayload()
+                toast.error(
+                    error.response?.status === 403
+                        ? error.response?.data.error.msg
+                        : `Failed to apply action on ${
+                              viewConfig.get('plural') as string
+                          } view. Please try again.`,
+                    { id: payload.id },
                 )
             },
         },
@@ -101,15 +92,12 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                 updates: XOR<Update>
             },
         ) => {
-            dispatch(
-                notify(
-                    getNotificationPayload(
-                        getNotificationParams(jobType, params),
-                    ),
-                ),
-            ) as unknown as UpsertNotificationAction
+            const payload = getNotificationPayload(
+                getNotificationParams(jobType, params),
+            )
+            toast(payload.message ?? '', { id: payload.id })
         },
-        [dispatch, getNotificationParams, getNotificationPayload],
+        [getNotificationParams, getNotificationPayload],
     )
 
     if (level === 'view') {

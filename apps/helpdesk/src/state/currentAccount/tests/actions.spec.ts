@@ -7,6 +7,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     AgentsTableColumn,
     ChannelsTableColumns,
@@ -19,6 +21,7 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/plans'
+import { GorgiasApi } from 'services/gorgiasApi'
 import {
     submitAgentAvailabilityTableConfigView,
     submitAgentTableConfigView,
@@ -30,7 +33,6 @@ import * as constants from 'state/currentAccount/constants'
 import { initialState } from 'state/currentAccount/reducers'
 import type { AccountSetting } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
 
@@ -59,12 +61,26 @@ jest.mock('init', () => {
     }
 })
 
-jest.mock('../../notifications/actions', () => {
-    return {
-        notify: jest.fn(() => (args: Record<string, unknown>) => args),
-    }
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+        warning: jest.fn(),
+        info: jest.fn(),
+    },
+}))
+const toastSuccessMock = assumeMock(toast.success)
+const toastErrorMock = assumeMock(toast.error)
+const toastWarningMock = assumeMock(toast.warning)
+const toastInfoMock = assumeMock(toast.info)
+
+beforeEach(() => {
+    toastSuccessMock.mockReset()
+    toastErrorMock.mockReset()
+    toastWarningMock.mockReset()
+    toastInfoMock.mockReset()
 })
-const notifyMock = assumeMock(notify)
 
 describe('current account actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -88,6 +104,18 @@ describe('current account actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('shows a success toast when updating account', () => {
+        const data = { id: 2 }
+
+        mockServer.onPut('/api/account/').reply(200, data)
+
+        return store.dispatch(actions.updateAccount(data as any)).then(() => {
+            expect(toastSuccessMock).toHaveBeenCalledWith(
+                'Account settings successfully updated!',
+            )
+        })
+    })
+
     describe('submit setting', () => {
         it('creation', () => {
             const data = { hello: 'world' }
@@ -99,6 +127,23 @@ describe('current account actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
+        it('shows a success toast when creating a setting', () => {
+            const data = {
+                type: AccountSettingType.DefaultIntegration,
+                data: {},
+            }
+
+            mockServer.onPost('/api/account/settings/').reply(200, data)
+
+            return store
+                .dispatch(actions.submitSetting(data as any))
+                .then(() => {
+                    expect(toastSuccessMock).toHaveBeenCalledWith(
+                        'Default-integration settings saved',
+                    )
+                })
+        })
+
         it('update', () => {
             const data = { id: 1, hello: 'world' }
 
@@ -107,6 +152,24 @@ describe('current account actions', () => {
             return store
                 .dispatch(actions.submitSetting(data as any))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('uses the provided success toast message when updating a setting', () => {
+            const data = {
+                id: 1,
+                type: AccountSettingType.DefaultIntegration,
+                data: {},
+            }
+
+            mockServer.onPut('/api/account/settings/1/').reply(200, data)
+
+            return store
+                .dispatch(actions.submitSetting(data as any, 'Setting saved'))
+                .then(() => {
+                    expect(toastSuccessMock).toHaveBeenCalledWith(
+                        'Setting saved',
+                    )
+                })
         })
     })
 
@@ -120,6 +183,20 @@ describe('current account actions', () => {
                 .dispatch(actions.updateAccountOwner(userId))
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
+                })
+        })
+
+        it('shows a success toast when updating the account owner', () => {
+            const userId = 1
+
+            mockServer.onPut('/api/account/owner/', { id: userId }).reply(202)
+
+            return store
+                .dispatch(actions.updateAccountOwner(userId))
+                .then(() => {
+                    expect(toastSuccessMock).toHaveBeenCalledWith(
+                        'The account owner was successfully changed.',
+                    )
                 })
         })
     })
@@ -155,10 +232,9 @@ describe('current account actions', () => {
                     }),
                 )
                 .then(() =>
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Success,
-                        message: 'Your subscription was updated.',
-                    }),
+                    expect(toastSuccessMock).toHaveBeenCalledWith(
+                        'Your subscription was updated.',
+                    ),
                 )
         })
 
@@ -265,6 +341,49 @@ describe('current account actions', () => {
 
             expect(result).toEqual(responseBody)
         })
+
+        it('shows toast notifications for subscription update notifications', async () => {
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, { products: {} })
+
+            await store.dispatch(
+                actions.updateSubscriptionsForPlans({
+                    products: { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
+                    notifications: [
+                        {
+                            status: NotificationStatus.Error,
+                            message: 'Error notification',
+                        },
+                        {
+                            status: NotificationStatus.Warning,
+                            message: 'Warning notification',
+                        },
+                        {
+                            status: NotificationStatus.Success,
+                            message: 'Success notification',
+                        },
+                        {
+                            message: 'Info notification',
+                        },
+                        {} as any,
+                    ],
+                }),
+            )
+
+            expect(toastErrorMock).toHaveBeenCalledWith('Error notification')
+            expect(toastWarningMock).toHaveBeenCalledWith(
+                'Warning notification',
+            )
+            expect(toastSuccessMock).toHaveBeenCalledWith(
+                'Success notification',
+            )
+            expect(toastInfoMock).toHaveBeenNthCalledWith(
+                1,
+                'Info notification',
+            )
+            expect(toastInfoMock).toHaveBeenNthCalledWith(2, '')
+        })
     })
 
     describe('setCurrentSubscription()', () => {
@@ -318,6 +437,53 @@ describe('current account actions', () => {
         })
     })
 
+    describe('resendVerificationEmail()', () => {
+        const resendAccountVerificationEmailMock = jest.spyOn(
+            GorgiasApi.prototype,
+            'resendAccountVerificationEmail',
+        )
+
+        afterEach(() => {
+            resendAccountVerificationEmailMock.mockReset()
+        })
+
+        it('shows a success toast when the verification email is resent', async () => {
+            resendAccountVerificationEmailMock.mockResolvedValue(undefined)
+
+            await store.dispatch(actions.resendVerificationEmail())
+
+            expect(toastSuccessMock).toHaveBeenCalledWith(
+                'The verification email has been resent!',
+            )
+        })
+
+        it('shows an error toast when the verification email cannot be resent', async () => {
+            resendAccountVerificationEmailMock.mockRejectedValue({
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Unable to resend verification email',
+                        },
+                    },
+                },
+            })
+
+            await store.dispatch(actions.resendVerificationEmail())
+
+            expect(toastErrorMock).toHaveBeenCalledWith(
+                'Unable to resend verification email',
+            )
+        })
+
+        it('falls back to an empty error toast when the error has no message', async () => {
+            resendAccountVerificationEmailMock.mockRejectedValue({})
+
+            await store.dispatch(actions.resendVerificationEmail())
+
+            expect(toastErrorMock).toHaveBeenCalledWith('')
+        })
+    })
+
     describe('submitSettingSuccess', () => {
         it('should dispatch the next setting', () => {
             store = mockStore({
@@ -364,11 +530,9 @@ describe('current account actions', () => {
                             type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
                         },
                     ])
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Success,
-                        message:
-                            'Your Helpdesk auto-renewal has been cancelled.',
-                    })
+                    expect(toastSuccessMock).toHaveBeenCalledWith(
+                        'Your Helpdesk auto-renewal has been cancelled.',
+                    )
                     expect(res).toEqual(true)
                 })
         })
@@ -382,11 +546,7 @@ describe('current account actions', () => {
                 .dispatch(actions.cancelHelpdeskAutoRenewal())
                 .then((res) => {
                     expect(store.getActions()).toEqual([])
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Error,
-                        message: 'error',
-                        allowHTML: true,
-                    })
+                    expect(toastErrorMock).toHaveBeenCalledWith('error')
                     expect(res).toEqual(false)
                 })
         })
@@ -400,13 +560,9 @@ describe('current account actions', () => {
                 .dispatch(actions.cancelHelpdeskAutoRenewal())
                 .then((res) => {
                     expect(store.getActions()).toEqual([])
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Error,
-                        message: `Failed to cancel Helpdesk auto-renewal. If the problem persists,
-                           please contact our billing team via chat or at
-                           <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.`,
-                        allowHTML: true,
-                    })
+                    expect(toastErrorMock).toHaveBeenCalledWith(
+                        'Failed to cancel Helpdesk auto-renewal. If the problem persists, please contact our billing team via chat or at support@gorgias.com to make this change.',
+                    )
                     expect(res).toEqual(false)
                 })
         })

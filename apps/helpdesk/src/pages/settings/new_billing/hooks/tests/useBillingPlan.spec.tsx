@@ -46,11 +46,6 @@ import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import { useGetConvertStatus } from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 import type { Components } from 'rest_api/revenue_addon_api/client.generated'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 import type { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -104,11 +99,6 @@ jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     useConvertApi: jest.fn(),
 }))
 const useConvertApiMock = assumeMock(useConvertApi)
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => (args: Record<string, unknown>) => args),
-}))
-const notifyMock = assumeMock(notify)
 
 const store: DeepPartial<StoreState> = {
     billing: fromJS(billingState),
@@ -248,7 +238,7 @@ describe('useBillingPlans', () => {
             await act(async () => result.current.updateSubscription())
 
             // N.B. because the plan is undefined we don't do anything
-            expect(notifyMock).toHaveBeenCalledTimes(0)
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
 
         it.each(Object.values(Cadence))(
@@ -312,12 +302,12 @@ describe('useBillingPlans', () => {
 
                 await act(async () => result.current.updateSubscription())
 
-                expect(notifyMock).toHaveBeenCalledWith({
-                    message: `Your billing frequency has been updated to ${getCadenceName(cadence)}`,
-                    status: NotificationStatus.Success,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    dismissAfter: 5000,
+                await waitFor(() => {
+                    expect(
+                        screen.getByRole('status', {
+                            name: `Your billing frequency has been updated to ${getCadenceName(cadence)}`,
+                        }),
+                    ).toBeInTheDocument()
                 })
             },
         )
@@ -367,10 +357,12 @@ describe('useBillingPlans', () => {
 
             await act(async () => result.current.updateSubscription())
 
-            expect(notifyMock).toHaveBeenCalledWith({
-                message: 'You have removed AI Agent from your subscription',
-                status: NotificationStatus.Success,
-                style: NotificationStyle.Alert,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'You have removed AI Agent from your subscription',
+                    }),
+                ).toBeInTheDocument()
             })
         })
 
@@ -420,11 +412,11 @@ describe('useBillingPlans', () => {
 
             await act(async () => result.current.updateSubscription())
 
-            expect(notifyMock).not.toHaveBeenCalledWith({
-                message: 'You have removed AI Agent from your subscription',
-                status: NotificationStatus.Success,
-                style: NotificationStyle.Alert,
-            })
+            expect(
+                screen.queryByRole('status', {
+                    name: 'You have removed AI Agent from your subscription',
+                }),
+            ).not.toBeInTheDocument()
         })
 
         it.each([
@@ -577,26 +569,10 @@ describe('useBillingPlans', () => {
                             'Woohoo! You now have access to <strong>Convert!</strong>',
                     }[productType]
 
-                    const buttonLabel = {
-                        [ProductType.Helpdesk]: '', // Should be impossible to not have helpdesk
-                        [ProductType.Automation]: 'Set Up AI Agent',
-                        [ProductType.Convert]: 'Set Up Convert',
-                    }[productType]
-
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Success,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        noAutoDismiss: true,
-                        allowHTML: true,
-                        message: message,
-                        buttons: [
-                            expect.objectContaining({
-                                name: buttonLabel,
-                                primary: false,
-                                // N.B. can't compare onClick
-                            }),
-                        ],
+                    await waitFor(() => {
+                        expect(
+                            screen.getByRole('status', { name: message }),
+                        ).toBeInTheDocument()
                     })
                 } else if (!newPlan) {
                     // Currently no valid path in code - this branch reduces code complexity by removing newPlan==undefined
@@ -614,14 +590,10 @@ describe('useBillingPlans', () => {
                         [ProductType.Convert]: `Your Convert subscription will change to <strong>${newPlan.num_quota_tickets} ${getProductInfo(ProductType.Convert, newPlan as ConvertPlan).counter}/${newPlan.cadence}</strong> on <strong>${periodEnd}</strong>.`,
                     }[productType]
 
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Success,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        noAutoDismiss: true,
-                        allowHTML: true,
-                        message: message,
-                        buttons: [],
+                    await waitFor(() => {
+                        expect(
+                            screen.getByRole('status', { name: message }),
+                        ).toBeInTheDocument()
                     })
                 } else {
                     const message = {
@@ -630,26 +602,10 @@ describe('useBillingPlans', () => {
                         [ProductType.Convert]: `Success! You now have <strong>${newPlan.num_quota_tickets} ${getProductInfo(ProductType.Convert, newPlan as ConvertPlan).counter} per ${newPlan.cadence}</strong>`,
                     }[productType]
 
-                    const buttonLabel = {
-                        [ProductType.Helpdesk]: 'Helpdesk Settings',
-                        [ProductType.Automation]: 'AI Agent Settings',
-                        [ProductType.Convert]: 'Convert Settings',
-                    }[productType]
-
-                    expect(notifyMock).toHaveBeenCalledWith({
-                        status: NotificationStatus.Success,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        noAutoDismiss: true,
-                        allowHTML: true,
-                        message: message,
-                        buttons: [
-                            expect.objectContaining({
-                                name: buttonLabel,
-                                primary: false,
-                                // N.B. can't compare onClick
-                            }),
-                        ],
+                    await waitFor(() => {
+                        expect(
+                            screen.getByRole('status', { name: message }),
+                        ).toBeInTheDocument()
                     })
                 }
             },
@@ -719,7 +675,7 @@ describe('useBillingPlans', () => {
 
                 await act(async () => result.current.updateSubscription())
 
-                expect(notifyMock).toHaveBeenCalledTimes(0)
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             },
         )
 

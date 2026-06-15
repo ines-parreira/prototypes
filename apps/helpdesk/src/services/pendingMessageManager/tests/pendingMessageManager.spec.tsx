@@ -1,6 +1,7 @@
 import { history } from '@repo/routing'
+import { act, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { dismissNotification } from 'reapop'
 
 import {
     newMessageResetFromMessage,
@@ -14,12 +15,19 @@ import {
     PendingMessageManager,
 } from '../pendingMessageManager'
 
+Element.prototype.setPointerCapture = jest.fn()
+Element.prototype.releasePointerCapture = jest.fn()
+
 type fromJSType = typeof fromJS
 
 jest.spyOn(window, 'addEventListener')
 jest.spyOn(window, 'removeEventListener')
-jest.mock('react-router-dom')
-jest.mock('reapop')
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('common/store', () => {
     const { fromJS } = jest.requireActual('immutable')
     return {
@@ -32,7 +40,6 @@ jest.mock('common/store', () => {
     }
 })
 jest.mock('state/newMessage/actions.ts')
-jest.mock('state/notifications/actions.ts')
 jest.mock('state/ticket/actions')
 jest.useFakeTimers()
 
@@ -80,7 +87,9 @@ describe('services', () => {
 
         it('should send deferred message', () => {
             pendingMessageManager.sendMessage(sendMessageArgs)
-            jest.runAllTimers()
+            act(() => {
+                jest.runAllTimers()
+            })
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
                 ...getSendTicketMessageCallArgs(sendMessageArgs),
@@ -99,7 +108,9 @@ describe('services', () => {
                 1,
                 ...getSendTicketMessageCallArgs(sendMessageArgs),
             )
-            jest.runAllTimers()
+            act(() => {
+                jest.runAllTimers()
+            })
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 2,
                 ...getSendTicketMessageCallArgs(secondSendMessageArgs),
@@ -110,30 +121,71 @@ describe('services', () => {
             pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.clearMessage()
 
-            jest.runAllTimers()
+            act(() => {
+                jest.runAllTimers()
+            })
             expect(sendTicketMessage).not.toHaveBeenCalled()
         })
 
-        it('should remove the pending message and redirect to the ticket when undoing the message', () => {
-            const { messageToSend, replyAreaState } = sendMessageArgs
+        it('should display a toast with undo button when sending a message', async () => {
+            render(<div />)
             pendingMessageManager.sendMessage(sendMessageArgs)
-            pendingMessageManager.undoMessage()
 
-            expect(dismissNotification).toHaveBeenNthCalledWith(1, '1')
+            await waitFor(() => {
+                const toastEl = screen.getByRole('status')
+                expect(toastEl).toHaveTextContent('Message sent')
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('button', { name: 'Undo' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should remove the pending message and redirect to the ticket when undoing the message', async () => {
+            const { messageToSend, replyAreaState } = sendMessageArgs
+            render(<div />)
+            pendingMessageManager.sendMessage(sendMessageArgs)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'Undo' }),
+                ).toBeInTheDocument()
+            })
+
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            await user.click(screen.getByRole('button', { name: 'Undo' }))
+
             expect(messageDeleted).toHaveBeenNthCalledWith(1, 1)
             expect(history.push).toHaveBeenNthCalledWith(1, '/app/ticket/1')
-            jest.runAllTimers()
+            act(() => {
+                jest.runAllTimers()
+            })
             expect(newMessageResetFromMessage).toHaveBeenNthCalledWith(1, {
                 replyAreaState,
                 newMessage: messageToSend,
             })
         })
 
-        it('should apply macro when undoing a message using macro', () => {
+        it('should apply macro when undoing a message using macro', async () => {
+            render(<div />)
             pendingMessageManager.sendMessage(sendMessageArgs)
-            pendingMessageManager.undoMessage()
 
-            jest.runAllTimers()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'Undo' }),
+                ).toBeInTheDocument()
+            })
+
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            await user.click(screen.getByRole('button', { name: 'Undo' }))
+
+            act(() => {
+                jest.runAllTimers()
+            })
             expect(applyMacro).toHaveBeenNthCalledWith(
                 1,
                 fromJS({ actions }),

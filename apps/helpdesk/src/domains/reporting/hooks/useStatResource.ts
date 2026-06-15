@@ -5,6 +5,8 @@ import { isCancel } from 'axios'
 import _isEqual from 'lodash/isEqual'
 import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
+import { toast } from '@gorgias/axiom'
+
 import { fetchStat } from 'domains/reporting/models/stat/resources'
 import type {
     LegacyStatsFilters,
@@ -20,10 +22,6 @@ import { useAppSelector } from 'hooks/useAppSelector'
 import { useCancellableRequest } from 'hooks/useCancellableRequest'
 import { statFetched } from 'state/entities/stats/actions'
 import type { StatsState } from 'state/entities/stats/types'
-import { notify } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
-import { errorToChildren } from 'utils'
 
 export const DEFAULT_ERROR_MESSAGE =
     'Failed to retrieve statistic. Please retry in a few seconds.'
@@ -79,23 +77,13 @@ export function useStatResource<T>({
                     if (isCancel(error)) {
                         return
                     }
-                    const notification: Notification = {
-                        status: NotificationStatus.Error,
-                        title:
-                            (
-                                error as AxiosError<{
-                                    error?: { msg: string }
-                                }>
-                            ).response?.data?.error?.msg ||
-                            DEFAULT_ERROR_MESSAGE,
-                    }
-                    const errorDetails = errorToChildren(error)
-                    if (errorDetails) {
-                        notification.allowHTML = true
-                        notification.message = errorDetails
-                    }
-
-                    void dispatch(notify(notification))
+                    const errorMessage =
+                        (
+                            error as AxiosError<{
+                                error?: { msg: string }
+                            }>
+                        ).response?.data?.error?.msg || DEFAULT_ERROR_MESSAGE
+                    toast.error(errorMessage)
                     dispatch(fetchStatEnded({ statName, resourceName }))
                 }
             }

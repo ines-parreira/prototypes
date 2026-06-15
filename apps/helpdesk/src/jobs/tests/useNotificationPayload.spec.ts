@@ -1,17 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { buildJobMessage } from '@repo/utils'
-import { POSITIONS } from 'reapop'
 
 import { JobType } from '@gorgias/helpdesk-types'
 
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
-
 import { useNotificationPayload } from '../useNotificationPayload'
-
-jest.mock('reapop')
 
 jest.mock('@repo/utils')
 const buildJobMessageMock = assumeMock(buildJobMessage)
@@ -46,15 +38,7 @@ describe('useBulkAction', () => {
         expect(result.current.getNotificationPayload()).toMatchObject(
             expect.objectContaining({
                 id: expect.stringContaining('notification-'),
-                buttons: [],
-                allowHTML: false,
-                closeOnNext: true,
-                dismissAfter: 10000,
-                dismissible: true,
                 message: expect.any(String),
-                position: POSITIONS.topCenter,
-                status: NotificationStatus.Loading,
-                style: NotificationStyle.Alert,
             }),
         )
     })

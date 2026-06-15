@@ -33,6 +33,8 @@ import {
     isStaging,
 } from '@repo/utils'
 
+import { toast } from '@gorgias/axiom'
+
 import { store } from 'common/store'
 import type { EditableUserProfile } from 'config/types/user'
 import { GreyArea } from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
@@ -41,7 +43,6 @@ import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 import { transformSystemMessagesToNotifications } from 'utils'
 import { initGaia } from 'utils/gaia'
@@ -123,7 +124,12 @@ export function initApp() {
     transformSystemMessagesToNotifications(
         window.SYSTEM_MESSAGES || [],
     ).forEach((notification) => {
-        store.dispatch(notify(notification) as any)
+        const text = notification.message ?? ''
+        const status = String(notification.status ?? '')
+        if (status === 'error') toast.error(text)
+        else if (status === 'warning') toast.warning(text)
+        else if (status === 'success') toast.success(text)
+        else toast.info(text)
     })
     const currentHelpdeskPlan = hasBillingInitialized
         ? getCurrentHelpdeskPlan(state)

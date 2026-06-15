@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -25,12 +25,7 @@ import {
 } from 'domains/reporting/state/ui/stats/fetchingMapSlice'
 import { firstResponseTime } from 'fixtures/stats'
 import { statFetched } from 'state/entities/stats/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
-
-jest.mock('state/notifications/actions')
-const notifyMock = notify as jest.Mock
 
 jest.mock('domains/reporting/models/stat/resources')
 const fetchStatMock = assumeMock(fetchStat)
@@ -57,10 +52,6 @@ describe('useStatResource', () => {
             stats: {},
         },
     } as RootState
-    const notificationMock = {
-        type: 'mocked-notification',
-        message: 'error message',
-    }
 
     const createStoreWrapper = (store: ReturnType<typeof mockStore>) => {
         return ({ children }: { children?: ReactNode }) => (
@@ -71,7 +62,6 @@ describe('useStatResource', () => {
     beforeEach(() => {
         jest.useFakeTimers()
         fetchStatMock.mockResolvedValue(firstResponseTime)
-        notifyMock.mockReturnValue(notificationMock)
     })
 
     afterEach(() => {
@@ -190,13 +180,11 @@ describe('useStatResource', () => {
             },
         )
 
-        await waitFor(() =>
-            expect(notifyMock).toHaveBeenLastCalledWith({
-                status: NotificationStatus.Error,
-                title: DEFAULT_ERROR_MESSAGE,
-            }),
-        )
-        expect(store.getActions()[1]).toEqual(notificationMock)
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: DEFAULT_ERROR_MESSAGE }),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should return null stat when stat is not found in the store', () => {

@@ -1,17 +1,8 @@
 import { useCallback, useRef } from 'react'
-import { Duration } from '@gorgias/toolkit'
-
 import { buildJobMessage } from '@repo/utils'
 import _uniqueId from 'lodash/uniqueId'
-import { POSITIONS } from 'reapop'
 
 import type { JobType } from '@gorgias/helpdesk-queries'
-
-import type { AlertNotification } from 'state/notifications/types'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 import type { Update } from './types'
 
@@ -51,21 +42,13 @@ const useNotificationPayload = ({ level, objectType, ticketIds }: Props) => {
     )
 
     const getNotificationPayload = useCallback(
-        ({
-            id,
-            message,
-        }: { id?: string; message?: string } = {}): AlertNotification => {
+        ({ id, message }: { id?: string; message?: string } = {}): {
+            id?: string
+            message?: string
+        } => {
             return {
                 id: id ?? notification.current?.id,
-                buttons: [],
-                allowHTML: false,
-                closeOnNext: true,
-                dismissAfter: Duration.seconds(10),
-                dismissible: true,
                 message: message ?? notification.current?.message,
-                position: POSITIONS.topCenter,
-                status: NotificationStatus.Loading,
-                style: NotificationStyle.Alert,
             }
         },
         [],

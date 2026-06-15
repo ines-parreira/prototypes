@@ -4,12 +4,11 @@ import * as envUtils from '@repo/utils'
 import type { fromJS } from 'immutable'
 import { initApp } from 'init'
 
-import { store } from 'common/store'
+import { toast } from '@gorgias/axiom'
+
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import * as clarityInit from 'main/init/initClarity'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { initSDKs } from 'utils/sdk'
 
@@ -61,7 +60,15 @@ jest.mock('@repo/feature-flags', () => ({
 jest.mock('main/init/initClarity', () => ({
     initClarity: jest.fn(),
 }))
-jest.mock('state/notifications/actions')
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+        warning: jest.fn(),
+        info: jest.fn(),
+    },
+}))
 
 jest.mock('@repo/utils')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
@@ -73,6 +80,10 @@ const isProductionMock = assumeMock(envUtils.isProduction)
 const initClarityMock = assumeMock(clarityInit.initClarity)
 
 const logEventMock = assumeMock(logging.logEvent)
+const toastSuccessMock = assumeMock(toast.success)
+const toastErrorMock = assumeMock(toast.error)
+const toastWarningMock = assumeMock(toast.warning)
+const toastInfoMock = assumeMock(toast.info)
 
 describe('init', () => {
     beforeEach(() => {
@@ -82,6 +93,11 @@ describe('init', () => {
         isStagingMock.mockReturnValue(false)
         isProductionMock.mockReturnValue(false)
         initClarityMock.mockResolvedValue(undefined)
+        window.SYSTEM_MESSAGES = []
+        toastSuccessMock.mockReset()
+        toastErrorMock.mockReset()
+        toastWarningMock.mockReset()
+        toastInfoMock.mockReset()
     })
 
     describe('initApp()', () => {
@@ -308,19 +324,26 @@ describe('init', () => {
         })
 
         describe('dispatches window.SYSTEM_MESSAGES', () => {
-            it('should dispatch system messages', () => {
-                window.SYSTEM_MESSAGES = [
-                    [NotificationStatus.Info, 'test-message'],
-                ]
+            it.each([
+                ['success', 'success-message', toastSuccessMock],
+                ['error', 'error-message', toastErrorMock],
+                ['warning', 'warning-message', toastWarningMock],
+                ['info', 'info-message', toastInfoMock],
+            ])(
+                'should show %s system messages as toasts',
+                (status, message, toastMock) => {
+                    window.SYSTEM_MESSAGES = [
+                        [
+                            status as (typeof window.SYSTEM_MESSAGES)[number][0],
+                            message,
+                        ],
+                    ]
 
-                initApp()
+                    initApp()
 
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Info,
-                    message: 'test-message',
-                })
-                expect(store.dispatch).toHaveBeenCalledTimes(1)
-            })
+                    expect(toastMock).toHaveBeenCalledWith(message)
+                },
+            )
         })
     })
 })
