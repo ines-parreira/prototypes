@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -13,9 +14,15 @@ jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => true),
 }))
 
+jest.mock('@repo/logging', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: { CopilotOpened: 'copilot-opened' },
+}))
+
 const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
 const mockUseCopilotPanel = assumeMock(useCopilotPanel)
 const mockUseRunLifecycle = assumeMock(useRunLifecycle)
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 const buildCopilotPanelMockReturn = (
     overrides: Partial<ReturnType<typeof useCopilotPanel>> = {},
@@ -32,6 +39,7 @@ describe('AskGaiaButton', () => {
         mockUseCopilotEnabled.mockReturnValue(true)
         mockUseCopilotPanel.mockReturnValue(buildCopilotPanelMockReturn())
         mockUseRunLifecycle.mockReturnValue({ isRunning: false })
+        mockLogEvent.mockClear()
     })
 
     it('renders nothing when copilot is disabled', () => {
@@ -73,6 +81,10 @@ describe('AskGaiaButton', () => {
         await user.click(screen.getByRole('button', { name: /ask gaia/i }))
 
         expect(setIsOpen).toHaveBeenCalledWith(true)
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.CopilotOpened,
+            expect.objectContaining({ trigger: 'icon', product: 'inbox' }),
+        )
     })
 
     it('closes copilot when the trigger is clicked while open', async () => {
@@ -87,6 +99,7 @@ describe('AskGaiaButton', () => {
         await user.click(screen.getByRole('button', { name: /ask gaia/i }))
 
         expect(setIsOpen).toHaveBeenCalledWith(false)
+        expect(mockLogEvent).not.toHaveBeenCalled()
     })
 })
 

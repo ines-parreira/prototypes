@@ -1,9 +1,12 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
+import { shortcutManager } from '@repo/utils'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
+import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { Product, productConfig } from 'routes/layout/productConfig'
 
@@ -66,6 +69,13 @@ jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => false),
 }))
 
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+}))
+
+const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 const mockToggleChat = jest.requireMock('utils').toggleChat as jest.Mock
 const mockToggleCollapse = jest.fn()
 
@@ -376,5 +386,51 @@ describe('NavigationSidebar', () => {
         expect(
             container.querySelector('[data-name="sidebar-content"]'),
         ).toBeEmptyDOMElement()
+    })
+
+    describe('copilot shortcut tracking', () => {
+        beforeEach(() => {
+            mockUseCopilotEnabled.mockReturnValue(true)
+            useCurrentRouteProductMock.mockReturnValue(
+                productConfig[Product.Inbox],
+            )
+        })
+
+        afterEach(() => {
+            mockUseCopilotEnabled.mockReturnValue(false)
+        })
+
+        it('emits CopilotOpened with the shortcut trigger when the ⌘G shortcut fires', () => {
+            const bindSpy = jest.spyOn(shortcutManager, 'bind')
+
+            render(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
+
+            const copilotBinding = bindSpy.mock.calls.find(
+                ([component]) => component === 'Copilot',
+            )
+            const toggleAction = (
+                copilotBinding?.[1] as {
+                    TOGGLE_COPILOT?: { action: (event: KeyboardEvent) => void }
+                }
+            )?.TOGGLE_COPILOT?.action
+            expect(toggleAction).toBeDefined()
+
+            act(() =>
+                toggleAction?.({
+                    preventDefault: jest.fn(),
+                } as unknown as KeyboardEvent),
+            )
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.CopilotOpened,
+                expect.objectContaining({ trigger: 'shortcut' }),
+            )
+
+            bindSpy.mockRestore()
+        })
     })
 })

@@ -1,3 +1,5 @@
+import 'tests/mockGorgiasAppsAuth'
+
 import React from 'react'
 
 import type { FeatureFlagKey } from '@repo/feature-flags'

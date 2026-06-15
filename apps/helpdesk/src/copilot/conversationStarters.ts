@@ -39,7 +39,7 @@ const ACTIONS_DISCOVER_STARTER: ConversationStarter = {
 
 const AI_AGENT_PATH_REGEX = /^\/app\/ai-agent\/[^/]+\/[^/]+(?:\/(.*))?$/
 
-function parseAiAgentSubPath(pathname: string): string | null {
+export function parseAiAgentSubPath(pathname: string): string | null {
     const cleanPath = pathname.split('?')[0].split('#')[0]
     const match = AI_AGENT_PATH_REGEX.exec(cleanPath)
     if (!match) return null

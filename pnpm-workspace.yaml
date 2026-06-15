@@ -54,10 +54,10 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
   toolkit:
-    '@gorgias/toolkit': '0.3.0'
-    '@gorgias/toolkit-react': '0.3.0'
+    '@gorgias/toolkit': '0.6.2'
+    '@gorgias/toolkit-react': '0.4.2'
   copilot:
-    '@gorgias/copilot': '0.72.1'
+    '@gorgias/copilot': '0.76.1'
   rest-api-sdk:
     '@gorgias/copilot-client': '^0.1.1'
     '@gorgias/copilot-queries': '^0.1.1'

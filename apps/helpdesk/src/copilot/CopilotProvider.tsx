@@ -25,6 +25,8 @@ import { CopilotContextAttachmentProvider } from './contextAttachments/CopilotCo
 import { useCopilotContextAttachmentSync } from './contextAttachments/useCopilotContextAttachmentSync'
 import { CopilotConversationStarters } from './CopilotConversationStarters'
 import { ReferenceLink } from './reference/ReferenceLink'
+import { CopilotTracking } from './tracking/CopilotTracking'
+import { useTrackCopilotOpen } from './tracking/useTrackCopilotOpen'
 import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
 
 type Props = {
@@ -51,6 +53,7 @@ export function CopilotProvider({ children }: Props) {
                 <CopilotContextAttachmentSynchronizer />
                 <ForcedCopilotConversationSynchronizer />
                 <CopilotConversationStarters />
+                <CopilotTracking />
                 {children}
             </CopilotContextAttachmentProvider>
         </BaseCopilotProvider>
@@ -72,7 +75,8 @@ function ForcedCopilotConversationSynchronizer() {
         useSearchParam(COPILOT_CONVERSATION_ID_QUERY_PARAM)
     const forcedConversationId = forcedConversationIdParam?.trim() || undefined
     const { threadId, switchThread } = useCopilot()
-    const { setIsOpen } = useCopilotPanel()
+    const { isOpen, setIsOpen } = useCopilotPanel()
+    const trackOpen = useTrackCopilotOpen()
 
     useEffect(() => {
         if (!forcedConversationId) return
@@ -81,15 +85,21 @@ function ForcedCopilotConversationSynchronizer() {
             switchThread(forcedConversationId)
         }
 
+        // A deep link opens the panel without going through the icon/shortcut
+        // controls, so emit CopilotOpened here too — otherwise this open is
+        // untracked while the eventual close still fires.
+        trackOpen('deep-link', isOpen)
         setIsOpen(true)
 
         setForcedConversationIdParam(null)
     }, [
         forcedConversationId,
+        isOpen,
         setForcedConversationIdParam,
         setIsOpen,
         switchThread,
         threadId,
+        trackOpen,
     ])
 
     return null

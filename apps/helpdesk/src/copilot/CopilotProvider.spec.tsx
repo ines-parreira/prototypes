@@ -2,6 +2,7 @@ import { isValidElement } from 'react'
 import type { ReactElement } from 'react'
 import { screen, waitFor } from '@testing-library/react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 
 import { useLocation } from 'react-router-dom'
@@ -25,6 +26,13 @@ jest.mock('utils/sdk', () => ({
     fetchCopilotShops: jest.fn(async () => []),
 }))
 
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+}))
+
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+
 describe('CopilotProvider', () => {
     const baseCopilotProviderMock = assumeMock(BaseCopilotProvider)
     const createCopilotAgentMock = assumeMock(createCopilotAgent)
@@ -34,6 +42,7 @@ describe('CopilotProvider', () => {
     beforeEach(() => {
         baseCopilotProviderMock.mockClear()
         createCopilotAgentMock.mockClear()
+        mockLogEvent.mockClear()
         useCopilotMock.mockReturnValue(buildCopilotMockReturn())
         useCopilotPanelMock.mockReturnValue(buildCopilotPanelMockReturn())
         window.GORGIAS_STATE = {
@@ -229,6 +238,29 @@ describe('CopilotProvider', () => {
 
         expect(switchThread).not.toHaveBeenCalled()
         expect(setIsOpen).toHaveBeenCalledWith(true)
+    })
+
+    it('tracks a deep-link open so it is not an untracked open paired with a tracked close', () => {
+        const setIsOpen = jest.fn()
+        useCopilotPanelMock.mockReturnValue(
+            buildCopilotPanelMockReturn({ setIsOpen }),
+        )
+
+        render(
+            <CopilotProvider>
+                <div>Helpdesk</div>
+            </CopilotProvider>,
+            {
+                initialEntries: [
+                    `/app/ticket/42?${COPILOT_CONVERSATION_ID_QUERY_PARAM}=forced-conversation-123`,
+                ],
+            },
+        )
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.CopilotOpened,
+            expect.objectContaining({ trigger: 'deep-link', product: 'inbox' }),
+        )
     })
 
     it('ignores missing and blank forced conversation params', () => {

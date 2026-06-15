@@ -8,6 +8,7 @@ import { useCopilot, useCopilotPanel, useRunLifecycle } from '@gorgias/copilot'
 
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
+import { useTrackCopilotOpen } from './tracking/useTrackCopilotOpen'
 import css from './AskGaiaButton.less'
 
 // Orbiting light on the AskGaia button's border.
@@ -18,6 +19,7 @@ export const AskGaiaButton = () => {
         useCopilotPanel()
     const { threadId } = useCopilot()
     const { isRunning } = useRunLifecycle({}, threadId)
+    const trackOpen = useTrackCopilotOpen()
 
     const glowShapeClass = isCollapsed ? css.glowShapeCircle : css.glowShapePill
 
@@ -60,7 +62,10 @@ export const AskGaiaButton = () => {
 
     if (!isCopilotEnabled) return null
 
-    const handleClick = () => setCopilotOpen(!isCopilotOpen)
+    const handleClick = () => {
+        trackOpen('icon', isCopilotOpen)
+        setCopilotOpen(!isCopilotOpen)
+    }
 
     return (
         <div

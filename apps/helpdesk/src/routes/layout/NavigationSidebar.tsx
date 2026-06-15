@@ -17,7 +17,7 @@ import { useIsMobileResolution } from '@gorgias/toolkit-react'
 import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
 import { useCopilotPanel } from '@gorgias/copilot'
 
-import { AskGaiaButton } from 'copilot'
+import { AskGaiaButton, useTrackCopilotOpen } from 'copilot'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
@@ -43,6 +43,7 @@ export function NavigationSidebar() {
     const isCopilotEnabled = useCopilotEnabled()
     const { isOpen: isCopilotOpen, setIsOpen: setCopilotOpen } =
         useCopilotPanel()
+    const trackOpen = useTrackCopilotOpen()
 
     useSidebarShortcuts()
 
@@ -52,6 +53,7 @@ export function NavigationSidebar() {
             TOGGLE_COPILOT: {
                 action: (e) => {
                     e.preventDefault()
+                    trackOpen('shortcut', isCopilotOpen)
                     setCopilotOpen(!isCopilotOpen)
                 },
             },
@@ -59,7 +61,7 @@ export function NavigationSidebar() {
         return () => {
             shortcutManager.unbind('Copilot')
         }
-    }, [isCopilotEnabled, isCopilotOpen, setCopilotOpen])
+    }, [isCopilotEnabled, isCopilotOpen, setCopilotOpen, trackOpen])
 
     const CurrentContent = currentProduct.sidebar
     const isSticky =
