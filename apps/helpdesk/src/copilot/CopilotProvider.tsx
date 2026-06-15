@@ -27,6 +27,7 @@ import { CopilotConversationStarters } from './CopilotConversationStarters'
 import { ReferenceLink } from './reference/ReferenceLink'
 import { CopilotTracking } from './tracking/CopilotTracking'
 import { useTrackCopilotOpen } from './tracking/useTrackCopilotOpen'
+import { CopilotUiActionsProvider } from './uiActions/CopilotUiActionsProvider'
 import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
 
 type Props = {
@@ -50,6 +51,7 @@ export function CopilotProvider({ children }: Props) {
         >
             <CopilotContextAttachmentProvider>
                 <CopilotCacheInvalidator />
+                <CopilotUiActionsProvider />
                 <CopilotContextAttachmentSynchronizer />
                 <ForcedCopilotConversationSynchronizer />
                 <CopilotConversationStarters />

@@ -218,6 +218,8 @@ export enum SegmentEvent {
     ContactFormRedirectToAutomate = 'contact-form/redirect-to-automate',
     ContactFormRedirectToContactFormPreferences = 'contact-form/redirect-to-contact-form-preferences',
     ContactFormRedirectToFlows = 'contact-form/redirect-to-flows',
+    CopilotFollowModeToggled = 'copilot-follow-mode-toggled',
+    CopilotFollowNavigationPerformed = 'copilot-follow-navigation-performed',
     ConvertApplySuggestionClicked = 'convert/apply-suggestion-clicked',
     ConvertBillingProductRemoved = 'convert/billing-product-removed',
     ConvertBillingProductScheduledDowngrade = 'convert/billing-product-scheduled-downgrade',
