@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { ConfigurableGraph, ConfigurableGraphType } from '@repo/reporting'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 
+import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -13,6 +14,7 @@ export const ChannelsVoiceConfigurableGraph = ({
     chartId,
     dashboard,
     chartConfig,
+    customDashboardChartSchema,
 }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
@@ -42,6 +44,11 @@ export const ChannelsVoiceConfigurableGraph = ({
         [cleanStatsFilters, userTimezone],
     )
 
+    const { savePreferences } = useSaveCustomDashboardPreference({
+        dashboard,
+        configId: customDashboardChartSchema?.config_id ?? '',
+    })
+
     const actionMenu =
         chartId && chartConfig ? (
             <ChartsActionMenu
@@ -56,6 +63,8 @@ export const ChannelsVoiceConfigurableGraph = ({
             metrics={metrics}
             analyticsChartId={chartId ?? ''}
             actionMenu={actionMenu}
+            customDashboardChartSchema={customDashboardChartSchema}
+            onSelect={savePreferences}
         />
     )
 }

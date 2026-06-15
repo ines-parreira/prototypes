@@ -3,6 +3,10 @@ import { screen } from '@testing-library/react'
 
 import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import {
+    useStatsMetricTimeSeries,
+    useStatsMetricTimeSeriesPerDimension,
+} from 'domains/reporting/hooks/useStatsMetricTimeSeries'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type {
     ChartConfig,
@@ -13,14 +17,11 @@ import {
     ChartType,
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
-import { ChannelsVoiceConfigurableGraph } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/ChannelsVoiceConfigurableGraph'
-import { useChannelsVoiceCallOutcomeSankeyData } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/useChannelsVoiceCallOutcomeSankeyData'
+import { ChannelsVoiceConfigurableLineGraph } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableLineGraph/ChannelsVoiceConfigurableLineGraph'
 
 jest.mock('domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock(
-    'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/useChannelsVoiceCallOutcomeSankeyData',
-)
+jest.mock('domains/reporting/hooks/useStatsMetricTimeSeries')
 jest.mock('@repo/reporting', () => {
     const actual = jest.requireActual('@repo/reporting')
     return {
@@ -39,8 +40,9 @@ const useSaveCustomDashboardPreferenceMock = assumeMock(
     useSaveCustomDashboardPreference,
 )
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-const useChannelsVoiceCallOutcomeSankeyDataMock = assumeMock(
-    useChannelsVoiceCallOutcomeSankeyData,
+const useStatsMetricTimeSeriesMock = assumeMock(useStatsMetricTimeSeries)
+const useStatsMetricTimeSeriesPerDimensionMock = assumeMock(
+    useStatsMetricTimeSeriesPerDimension,
 )
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
@@ -51,7 +53,7 @@ const userTimezone = 'UTC'
 
 const chartConfig: ChartConfig = {
     chartComponent: () => <div />,
-    label: 'Call outcome',
+    label: 'Voice metrics over time',
     csvProducer: null,
     chartType: ChartType.Graph,
 }
@@ -66,10 +68,10 @@ const dashboard: DashboardSchema = {
 
 const schema: DashboardChartSchema = {
     type: DashboardChildType.Chart,
-    config_id: 'performance-channels-voice-configurable-graph',
+    config_id: 'performance-channels-voice-configurable-line-graph',
 }
 
-describe('ChannelsVoiceConfigurableGraph', () => {
+describe('ChannelsVoiceConfigurableLineGraph', () => {
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
             observe() {}
@@ -92,18 +94,14 @@ describe('ChannelsVoiceConfigurableGraph', () => {
             granularity: 'day',
         } as any)
 
-        useChannelsVoiceCallOutcomeSankeyDataMock.mockReturnValue({
-            data: {
-                nodes: [
-                    { name: 'Total calls', color: '#7E55F6' },
-                    { name: 'Inbound', color: '#9B7BFF' },
-                ],
-                links: [
-                    { source: 'Total calls', target: 'Inbound', value: 10 },
-                ],
-            },
-            isLoading: false,
-        })
+        useStatsMetricTimeSeriesMock.mockReturnValue({
+            data: [[{ dateTime: '2024-01-01', value: 10 }]],
+            isFetching: false,
+        } as any)
+        useStatsMetricTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {},
+            isFetching: false,
+        } as any)
 
         ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)
     })
@@ -112,38 +110,27 @@ describe('ChannelsVoiceConfigurableGraph', () => {
         jest.clearAllMocks()
     })
 
-    it('renders the chart title', () => {
+    it('renders the selected measure title', () => {
         render(
-            <ChannelsVoiceConfigurableGraph chartId="performance-channels-voice-configurable-graph" />,
+            <ChannelsVoiceConfigurableLineGraph chartId="performance-channels-voice-configurable-line-graph" />,
         )
 
-        expect(screen.getAllByText('Call outcome').length).toBeGreaterThan(0)
+        expect(screen.getAllByText('Total calls').length).toBeGreaterThan(0)
     })
 
-    it('renders the chart instead of the empty state when call-outcome data is available', () => {
+    it('renders the chart instead of the empty state when timeseries data is available', () => {
         render(
-            <ChannelsVoiceConfigurableGraph chartId="performance-channels-voice-configurable-graph" />,
+            <ChannelsVoiceConfigurableLineGraph chartId="performance-channels-voice-configurable-line-graph" />,
         )
 
         expect(screen.queryByText('No data found')).not.toBeInTheDocument()
     })
 
-    it('feeds the current stats filters and timezone to the data hook', () => {
-        render(
-            <ChannelsVoiceConfigurableGraph chartId="performance-channels-voice-configurable-graph" />,
-        )
-
-        expect(useChannelsVoiceCallOutcomeSankeyDataMock).toHaveBeenCalledWith(
-            cleanStatsFilters,
-            userTimezone,
-        )
-    })
-
     describe('action menu', () => {
         it('renders the action menu when both chartId and chartConfig are provided', () => {
             render(
-                <ChannelsVoiceConfigurableGraph
-                    chartId="performance-channels-voice-configurable-graph"
+                <ChannelsVoiceConfigurableLineGraph
+                    chartId="performance-channels-voice-configurable-line-graph"
                     dashboard={dashboard}
                     chartConfig={chartConfig}
                 />,
@@ -152,7 +139,8 @@ describe('ChannelsVoiceConfigurableGraph', () => {
             expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()
             expect(ChartsActionMenuMock.mock.calls[0][0]).toEqual(
                 expect.objectContaining({
-                    chartId: 'performance-channels-voice-configurable-graph',
+                    chartId:
+                        'performance-channels-voice-configurable-line-graph',
                     dashboard,
                     chartName: chartConfig.label,
                 }),
@@ -161,8 +149,8 @@ describe('ChannelsVoiceConfigurableGraph', () => {
 
         it('does not render the action menu when chartConfig is missing', () => {
             render(
-                <ChannelsVoiceConfigurableGraph
-                    chartId="performance-channels-voice-configurable-graph"
+                <ChannelsVoiceConfigurableLineGraph
+                    chartId="performance-channels-voice-configurable-line-graph"
                     dashboard={dashboard}
                 />,
             )
@@ -174,7 +162,11 @@ describe('ChannelsVoiceConfigurableGraph', () => {
         })
 
         it('does not render the action menu when chartId is missing', () => {
-            render(<ChannelsVoiceConfigurableGraph chartConfig={chartConfig} />)
+            render(
+                <ChannelsVoiceConfigurableLineGraph
+                    chartConfig={chartConfig}
+                />,
+            )
 
             expect(
                 screen.queryByText('ChartsActionMenu'),
@@ -191,7 +183,7 @@ describe('ChannelsVoiceConfigurableGraph', () => {
             })
 
             render(
-                <ChannelsVoiceConfigurableGraph chartId="performance-channels-voice-configurable-graph" />,
+                <ChannelsVoiceConfigurableLineGraph chartId="performance-channels-voice-configurable-line-graph" />,
             )
 
             expect(ConfigurableGraphMock).toHaveBeenCalledWith(
@@ -204,8 +196,8 @@ describe('ChannelsVoiceConfigurableGraph', () => {
 
         it('passes customDashboardChartSchema to ConfigurableGraph when provided', () => {
             render(
-                <ChannelsVoiceConfigurableGraph
-                    chartId="performance-channels-voice-configurable-graph"
+                <ChannelsVoiceConfigurableLineGraph
+                    chartId="performance-channels-voice-configurable-line-graph"
                     customDashboardChartSchema={schema}
                 />,
             )

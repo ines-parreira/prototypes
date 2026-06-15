@@ -712,3 +712,20 @@ export const {
     METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_AVERAGE_WAIT_TIME_TIMESERIES,
     'createdDatetime',
 )
+
+const channelsVoiceTotalCallsBaseQuery = () => ({
+    measures: ['voiceCallsCount'] as const,
+})
+
+export const {
+    timeseriesQueryFactory: channelsVoiceTotalCallsTimeseriesQueryFactoryV2,
+} = getTimeseriesQuery(
+    voiceCallsScope,
+    channelsVoiceTotalCallsBaseQuery,
+    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_TIMESERIES,
+    'createdDatetime',
+    {
+        callDirection:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_TIMESERIES_PER_CALL_DIRECTION,
+    },
+)

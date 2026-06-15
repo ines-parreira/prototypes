@@ -67,6 +67,12 @@ export const DEFAULT_PERFORMANCE_CHANNELS_VOICE_LAYOUT: DashboardLayoutConfig<Pe
                         gridSize: 6,
                         visibility: true,
                     },
+                    {
+                        chartId:
+                            PerformanceChannelsVoiceChart.ConfigurableLineGraph,
+                        gridSize: 6,
+                        visibility: true,
+                    },
                 ],
             },
             {

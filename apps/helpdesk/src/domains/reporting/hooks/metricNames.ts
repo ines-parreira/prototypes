@@ -797,6 +797,10 @@ export const METRIC_NAMES = {
         'performance-channels-voice-declined-inbound-breakdown',
     PERFORMANCE_CHANNELS_VOICE_DECLINED_INBOUND_BREAKDOWN_PER_AGENT:
         'performance-channels-voice-declined-inbound-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_TIMESERIES:
+        'performance-channels-voice-total-calls-timeseries',
+    PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_TIMESERIES_PER_CALL_DIRECTION:
+        'performance-channels-voice-total-calls-timeseries-per-call-direction',
     PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_VALUE:
         'performance-channels-voice-average-talk-time-value',
     PERFORMANCE_CHANNELS_VOICE_AVERAGE_TALK_TIME_BREAKDOWN:

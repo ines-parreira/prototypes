@@ -23,6 +23,10 @@ import {
     fetchChannelsVoiceAgentAsConfigurableTable,
 } from 'domains/reporting/pages/performance/channels/voice/charts/breakdownTables/ChannelsVoiceAgentTable'
 import { ChannelsVoiceConfigurableGraph } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/ChannelsVoiceConfigurableGraph'
+import {
+    CHANNELS_VOICE_LINE_METRICS,
+    ChannelsVoiceConfigurableLineGraph,
+} from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableLineGraph/ChannelsVoiceConfigurableLineGraph'
 import { ChannelsVoiceAverageTalkTimeCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceAverageTalkTimeCard'
 import { ChannelsVoiceAverageWaitTimeCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceAverageWaitTimeCard'
 import { ChannelsVoiceInboundCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceInboundCallsCard'
@@ -31,6 +35,7 @@ import { ChannelsVoiceOutboundCallsCard } from 'domains/reporting/pages/performa
 import { ChannelsVoiceTicketsCreatedCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTicketsCreatedCard'
 import { ChannelsVoiceTotalCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTotalCallsCard'
 import { ChannelsVoiceUnansweredCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceUnansweredCallsCard'
+import { createChannelsVoiceLineChartFetch } from 'domains/reporting/pages/performance/channels/voice/utils/getChannelsVoiceConfigurableLineGraphConfig'
 import { STATS_ROUTES } from 'routes/constants'
 
 export const CHANNELS_VOICE_OPTIONAL_FILTERS: OptionalFilter[] = [
@@ -47,6 +52,7 @@ export enum PerformanceChannelsVoiceChart {
     TicketsCreatedCard = 'performance-channels-voice-tickets-created-card',
     TotalCallsCard = 'performance-channels-voice-total-calls-card',
     ConfigurableGraph = 'performance-channels-voice-configurable-graph',
+    ConfigurableLineGraph = 'performance-channels-voice-configurable-line-graph',
     OutboundCallsCard = 'performance-channels-voice-outbound-calls-card',
     InboundCallsCard = 'performance-channels-voice-inbound-calls-card',
     UnansweredCallsCard = 'performance-channels-voice-unanswered-calls-card',
@@ -209,6 +215,21 @@ export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceCha
                 csvProducer: null,
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal',
+            },
+            [PerformanceChannelsVoiceChart.ConfigurableLineGraph]: {
+                chartComponent: ChannelsVoiceConfigurableLineGraph,
+                label: 'Voice metrics over time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: createChannelsVoiceLineChartFetch(
+                            CHANNELS_VOICE_LINE_METRICS,
+                        ),
+                    },
+                ],
+                chartType: ChartType.Graph,
+                description:
+                    'Voice metrics over time: total calls, average talk time.',
             },
             [PerformanceChannelsVoiceChart.AgentTable]: {
                 chartComponent: ChannelsVoiceAgentTable,

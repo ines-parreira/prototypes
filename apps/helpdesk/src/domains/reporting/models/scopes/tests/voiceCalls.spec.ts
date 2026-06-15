@@ -19,6 +19,7 @@ import {
     channelsVoiceInboundUnansweredPerFilteringAgentQueryFactoryV2,
     channelsVoiceOutboundPerFilteringAgentQueryFactoryV2,
     channelsVoiceTotalCallsPerFilteringAgentQueryFactoryV2,
+    channelsVoiceTotalCallsTimeseriesQueryFactoryV2,
     mapVoiceCallDirectionToScopeOrder,
     voiceCallsAchievedExposures,
     voiceCallsAchievedExposuresQueryFactoryV2,
@@ -503,6 +504,38 @@ describe('voiceCallsScope', () => {
                 filters: periodFilters,
                 limit: 10000,
             })
+        })
+
+        it('builds the total calls timeseries with the voice calls count measure', () => {
+            expect(
+                channelsVoiceTotalCallsTimeseriesQueryFactoryV2({
+                    ...granularContext,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_TIMESERIES,
+                scope: MetricScope.VoiceCalls,
+                measures: ['voiceCallsCount'],
+                dimensions: [],
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
+                timezone: 'utc',
+                filters: periodFilters,
+                limit: 10000,
+            })
+        })
+
+        it('routes total calls timeseries to the callDirection override', () => {
+            expect(
+                channelsVoiceTotalCallsTimeseriesQueryFactoryV2({
+                    ...granularContext,
+                    dimensions: ['callDirection'],
+                }).metricName,
+            ).toBe(
+                METRIC_NAMES.PERFORMANCE_CHANNELS_VOICE_TOTAL_CALLS_TIMESERIES_PER_CALL_DIRECTION,
+            )
         })
 
         it('builds the call outcome value query with every outcome measure', () => {

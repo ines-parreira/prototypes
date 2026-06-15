@@ -27,6 +27,10 @@ import {
     DashboardChildType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import {
+    ChannelsVoiceReportConfig,
+    PerformanceChannelsVoiceChart,
+} from 'domains/reporting/pages/performance/channels/voice/ChannelsVoiceReportConfig'
 import { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import {
     OverviewChartConfig,
@@ -224,6 +228,35 @@ describe('useDownloadDashboardData', () => {
             ),
             isLoading: false,
         })
+    })
+
+    it('resolves Channels > Voice configurable graphs from the global lookup table when no chartConfigs are provided', () => {
+        const lineGraphId = PerformanceChannelsVoiceChart.ConfigurableLineGraph
+        const sankeyId = PerformanceChannelsVoiceChart.ConfigurableGraph
+        const voiceDashboard: DashboardSchema = {
+            ...exampleDashboard,
+            children: [
+                { type: DashboardChildType.Chart, config_id: lineGraphId },
+                { type: DashboardChildType.Chart, config_id: sankeyId },
+            ],
+        }
+
+        renderHook(() => useDashboardData(voiceDashboard))
+
+        expect(useConfigurableGraphsMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            granularity,
+            expect.arrayContaining([
+                expect.objectContaining({
+                    fetch: ChannelsVoiceReportConfig.charts[lineGraphId]
+                        .csvProducer![0].fetch,
+                    chartId: lineGraphId,
+                }),
+            ]),
+            statsFilters,
+            expect.anything(),
+        )
     })
 
     it('should use provided chartConfigs instead of the global lookup table', () => {
