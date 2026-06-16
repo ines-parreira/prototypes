@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query'
 import type { SearchBody } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 
 async function postSearch<T>(params: SearchBody) {
@@ -21,8 +20,6 @@ export function useSearch<T>(
     body: SearchBody,
     overrides?: UseQueryOptions<Awaited<ReturnType<typeof postSearch>>>,
 ) {
-    const dispatch = useAppDispatch()
-
     const response = useQuery({
         queryKey: ['search', body.type, body.query],
         queryFn: () => postSearch<T>(body),
@@ -34,10 +31,9 @@ export function useSearch<T>(
             handleError(
                 response.error,
                 `Failed to fetch ${body.type || 'item'}s`,
-                dispatch,
             )
         }
-    }, [body, dispatch, response])
+    }, [body, response])
 
     return response
 }

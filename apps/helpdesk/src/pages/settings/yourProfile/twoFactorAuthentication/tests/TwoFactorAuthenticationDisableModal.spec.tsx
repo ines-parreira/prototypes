@@ -17,6 +17,55 @@ const deleteTwoFASecretMock = deleteTwoFASecret as jest.MockedFunction<
     typeof deleteTwoFASecret
 >
 
+const REACT_ARIA_REFERENCE_ATTRIBUTES = [
+    'aria-controls',
+    'aria-describedby',
+    'aria-labelledby',
+    'aria-owns',
+]
+
+function normalizeReactAriaIds(baseElement: HTMLElement) {
+    const stableIds = new Map<string, string>()
+    const getStableId = (id: string) => {
+        if (!stableIds.has(id)) {
+            stableIds.set(id, `react-aria-${stableIds.size}`)
+        }
+        return stableIds.get(id)!
+    }
+    const elements = Array.from(baseElement.querySelectorAll<HTMLElement>('*'))
+
+    elements.forEach((element) => {
+        const id = element.getAttribute('id')
+        if (id?.startsWith('react-aria-')) {
+            element.setAttribute('id', getStableId(id))
+        }
+    })
+
+    elements.forEach((element) => {
+        REACT_ARIA_REFERENCE_ATTRIBUTES.forEach((attribute) => {
+            const value = element.getAttribute(attribute)
+            if (!value?.includes('react-aria-')) {
+                return
+            }
+
+            element.setAttribute(
+                attribute,
+                value
+                    .split(/\s+/)
+                    .map((id) =>
+                        id.startsWith('react-aria-') ? getStableId(id) : id,
+                    )
+                    .join(' '),
+            )
+        })
+    })
+}
+
+function expectStableSnapshot(baseElement: HTMLElement) {
+    normalizeReactAriaIds(baseElement)
+    expect(baseElement).toMatchSnapshot()
+}
+
 describe('<TwoFactorAuthenticationDisableModal />', () => {
     const minProps: Omit<
         ComponentProps<typeof TwoFactorAuthenticationDisableModal>,
@@ -52,7 +101,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             ).toBe(1),
         )
 
-        expect(baseElement).toMatchSnapshot()
+        expectStableSnapshot(baseElement)
     })
 
     it('should not render the modal when not open', () => {
@@ -66,7 +115,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 </TwoFactorAuthenticationDisableModal>
             </Provider>,
         )
-        expect(baseElement).toMatchSnapshot()
+        expectStableSnapshot(baseElement)
     })
 
     it.each([undefined, 1])(
@@ -127,7 +176,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 )
             }
 
-            expect(baseElement).toMatchSnapshot()
+            expectStableSnapshot(baseElement)
         },
     )
 
@@ -185,7 +234,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 expect(deleteTwoFASecretMock).toHaveBeenCalled()
             }
 
-            expect(baseElement).toMatchSnapshot()
+            expectStableSnapshot(baseElement)
         },
     )
 })

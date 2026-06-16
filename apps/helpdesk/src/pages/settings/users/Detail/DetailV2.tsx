@@ -13,7 +13,6 @@ import type { CreateUserBody } from '@gorgias/helpdesk-queries'
 import { normalizeUserName } from 'common/utils'
 import type { UserDraft } from 'config/types/user'
 import { UserRole } from 'config/types/user'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { Loader } from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
@@ -49,7 +48,6 @@ function toApiRoleName(role: UserRole): CreateUserBody['role']['name'] | null {
 }
 
 export const DetailV2 = () => {
-    const dispatch = useAppDispatch()
     const { id: unsafeAgentId } = useParams<{
         id: string
     }>()
@@ -70,7 +68,6 @@ export const DetailV2 = () => {
         isEdit,
         setAgentState,
         set2FA,
-        dispatch,
     })
 
     const { mutateAsync: createUser, isLoading: isCreating } = useCreateUser()

@@ -1,7 +1,6 @@
-import React from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 
 import { agents } from 'fixtures/agents'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -10,14 +9,9 @@ import {
     useUpdateAgent as usePureUpdateAgent,
 } from 'models/agents/queries'
 import { UPDATE_AGENT_SUCCESS } from 'state/agents/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { handleError } from '../errorHandler'
 import { useUpdateAgent } from '../useUpdateAgent'
-
-const queryClient = mockQueryClient()
 
 jest.mock('models/agents/queries')
 const usePureUpdateAgentMock = assumeMock(usePureUpdateAgent)
@@ -28,7 +22,6 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => ({
     useAppDispatch: () => mockedDispatch,
 }))
-jest.mock('state/notifications/actions')
 
 describe('useUpdateAgent', () => {
     const id = 1
@@ -37,15 +30,12 @@ describe('useUpdateAgent', () => {
         usePureUpdateAgentMock.mockClear()
     })
 
-    it('should dispatch success notification on success and invalidate lists queries', () => {
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useUpdateAgent(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+    it('shows success toast on success and invalidates list queries', async () => {
+        const invalidateQueryMock = jest.spyOn(
+            QueryClient.prototype,
+            'invalidateQueries',
+        )
+        renderHook(() => useUpdateAgent())
         usePureUpdateAgentMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(agents[0]),
             [{ id, agent: agents[0] }],
@@ -61,22 +51,16 @@ describe('useUpdateAgent', () => {
             resp: agents[0],
         })
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Team member updated',
-            status: NotificationStatus.Success,
+        const toastEl = await screen.findByRole('status', {
+            name: 'Team member updated',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
 
-        expect(mockedDispatch).toHaveBeenCalledTimes(2)
+        invalidateQueryMock.mockRestore()
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useUpdateAgent(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        renderHook(() => useUpdateAgent())
         const myError = {}
         usePureUpdateAgentMock.mock.calls[0][0]?.onError!(
             myError,
@@ -88,7 +72,6 @@ describe('useUpdateAgent', () => {
             1,
             null,
             null,
-            mockedDispatch,
             'Error while updating user',
         )
     })

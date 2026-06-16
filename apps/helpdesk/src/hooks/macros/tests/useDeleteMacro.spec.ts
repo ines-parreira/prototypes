@@ -1,20 +1,11 @@
 import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockDeleteMacroHandler } from '@gorgias/helpdesk-mocks'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-
 import { useDeleteMacro } from '../useDeleteMacro'
-
-jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = jest.mocked(useAppDispatch)
-
-jest.mock('state/notifications/actions')
 
 const server = setupServer()
 
@@ -36,10 +27,6 @@ function renderUseDeleteMacro() {
 }
 
 describe('useDeleteMacro', () => {
-    beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(jest.fn())
-    })
-
     it('should delete a macro and notify on success', async () => {
         const deleteMacroMock = mockDeleteMacroHandler()
         const waitForDeleteMacroRequest = deleteMacroMock.waitForRequest(server)
@@ -51,10 +38,10 @@ describe('useDeleteMacro', () => {
         await waitForDeleteMacroRequest((request) => {
             expect(new URL(request.url).pathname).toContain('/macros/111')
         })
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Successfully deleted macro',
-            status: NotificationStatus.Success,
+        const toastEl = await screen.findByRole('status', {
+            name: 'Successfully deleted macro',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle failed request', async () => {
@@ -70,13 +57,9 @@ describe('useDeleteMacro', () => {
             result.current.mutateAsync({ id: 111 }),
         ).rejects.toBeDefined()
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                title: msg,
-                allowHTML: true,
-                message: null,
-                status: NotificationStatus.Error,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: msg,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

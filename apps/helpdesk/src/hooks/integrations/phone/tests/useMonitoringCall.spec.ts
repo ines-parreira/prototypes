@@ -10,7 +10,6 @@ import { setupServer } from 'msw/node'
 import { mockPrepareCallMonitoringHandler } from '@gorgias/helpdesk-mocks'
 
 import { TwilioSocketEventType } from 'business/twilio'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     MONITORING_GENERIC_ERROR,
     MONITORING_SWITCH_ERROR,
@@ -28,16 +27,13 @@ import { useVoiceDevice } from '../useVoiceDevice'
 
 const server = setupServer()
 
-jest.mock('hooks/useAppDispatch')
 jest.mock('../twilioCall.utils')
 jest.mock('../useVoiceDevice')
 
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 const handleCallEventsMock = assumeMock(handleCallEvents)
 
 describe('useMonitoringCall', () => {
-    const dispatchMock = jest.fn()
     const deviceMock = {
         connect: jest.fn().mockResolvedValue({}),
     }
@@ -65,7 +61,6 @@ describe('useMonitoringCall', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useAppDispatchMock.mockReturnValue(dispatchMock)
         useVoiceDeviceMock.mockReturnValue({
             device: deviceMock as any,
             actions: actionsMock as any,
@@ -273,7 +268,6 @@ describe('useMonitoringCall', () => {
 
             expect(handleCallEventsMock).toHaveBeenCalledWith(
                 {},
-                dispatchMock,
                 actionsMock,
                 expect.any(Function),
             )
@@ -329,7 +323,7 @@ describe('useMonitoringCall', () => {
                 )
             })
 
-            const messageCallback = handleCallEventsMock.mock.calls[0][3]
+            const messageCallback = handleCallEventsMock.mock.calls[0][2]
 
             await act(async () => {
                 messageCallback?.({

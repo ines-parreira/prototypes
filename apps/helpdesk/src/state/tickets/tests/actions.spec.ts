@@ -5,6 +5,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import { JobType } from '../../../models/job/types'
 import type { RootState, StoreDispatch } from '../../types'
 import * as actions from '../actions'
@@ -18,6 +20,7 @@ describe('tickets actions', () => {
 
     beforeEach(() => {
         mockServer.reset()
+        jest.clearAllMocks()
     })
 
     beforeEach(() => {
@@ -46,6 +49,21 @@ describe('tickets actions', () => {
                 ),
             )
             expect(mockServer.history).toMatchSnapshot()
+        })
+
+        it('should show an error toast when the jobs api fails', async () => {
+            const toastErrorSpy = jest.spyOn(toast, 'error')
+            mockServer.onPost('/api/jobs/').reply(500)
+
+            await expect(
+                store.dispatch(
+                    actions.createJob(fromJS([1]), JobType.ApplyMacro, {}),
+                ),
+            ).rejects.toEqual(new Error('Request failed with status code 500'))
+
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'Failed to apply action on tickets. Please try again.',
+            )
         })
     })
 })

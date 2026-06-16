@@ -1,9 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useInviteAgent as usePureInviteAgent } from 'models/agents/queries'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { handleError } from '../errorHandler'
 import { useInviteAgent } from '../useInviteAgent'
@@ -13,12 +12,6 @@ const usePureInviteAgentMock = assumeMock(usePureInviteAgent)
 
 jest.mock('../errorHandler')
 
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    useAppDispatch: () => mockedDispatch,
-}))
-jest.mock('state/notifications/actions')
-
 describe('useInviteAgent', () => {
     const email = 'mr@love.com'
 
@@ -26,7 +19,7 @@ describe('useInviteAgent', () => {
         usePureInviteAgentMock.mockClear()
     })
 
-    it('should accept an email param and dispatch success notification on success with this email', () => {
+    it('shows success toast on success with this email', async () => {
         renderHook(() => useInviteAgent(email))
 
         usePureInviteAgentMock.mock.calls[0][0]?.onSuccess!(
@@ -35,11 +28,10 @@ describe('useInviteAgent', () => {
             undefined,
         )
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: `Invite has been sent to ${email}`,
-            status: NotificationStatus.Success,
+        const toastEl = await screen.findByRole('status', {
+            name: `Invite has been sent to ${email}`,
         })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should call handleError on error', () => {
@@ -55,7 +47,6 @@ describe('useInviteAgent', () => {
             1,
             myError,
             'Failed to send invite',
-            mockedDispatch,
         )
     })
 })

@@ -7,7 +7,6 @@ import {
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 
 import { useVoiceDevice } from './useVoiceDevice'
 
@@ -21,7 +20,6 @@ type Options = {
 }
 
 export function useOutboundCall(): (options: Options) => void {
-    const dispatch = useAppDispatch()
     const { device, actions } = useVoiceDevice()
 
     return useCallback(
@@ -62,12 +60,12 @@ export function useOutboundCall(): (options: Options) => void {
                 data: gatherCallContext(call),
             })
 
-            handleCallEvents(call, dispatch, actions)
+            handleCallEvents(call, actions)
 
             actions.setIsDialing(true)
             actions.setCall(call)
             await connectCall()
         },
-        [device, dispatch, actions],
+        [device, actions],
     )
 }

@@ -1,5 +1,15 @@
-import { renderHook } from '@repo/testing'
+import { history } from '@repo/routing'
+import { assumeMock, renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 
+import { toast } from '@gorgias/axiom'
+
+import {
+    registerNumber,
+    requestVerificationCode,
+    startMigration,
+    validateVerificationCode,
+} from 'models/integration/resources/whatsapp'
 import {
     WhatsAppCodeVerificationMethod,
     WhatsAppPhoneNumberStatus,
@@ -11,7 +21,91 @@ import {
     WhatsAppMigrationStatus as Status,
     WhatsAppMigrationStep as Step,
     useWhatsAppMigration,
+    WhatsAppMigrationContextProvider,
 } from '../useWhatsAppMigration'
+
+jest.mock('@repo/routing', () => ({
+    history: {
+        push: jest.fn(),
+    },
+}))
+
+jest.mock('models/integration/resources/whatsapp', () => ({
+    getMigrationProgress: jest.fn(),
+    registerNumber: jest.fn(),
+    requestVerificationCode: jest.fn(),
+    startMigration: jest.fn(),
+    validateVerificationCode: jest.fn(),
+}))
+
+const requestVerificationCodeMock = assumeMock(requestVerificationCode)
+const validateVerificationCodeMock = assumeMock(validateVerificationCode)
+const registerNumberMock = assumeMock(registerNumber)
+const startMigrationMock = assumeMock(startMigration)
+const historyPushMock = assumeMock(history.push)
+const toastErrorSpy = jest.spyOn(toast, 'error')
+const toastSuccessSpy = jest.spyOn(toast, 'success')
+
+const target = {
+    waba_id: 'waba-id',
+    phone_number: '+12132131234',
+}
+
+const progress: {
+    waba_phone_number_id: string
+    status: WhatsAppPhoneNumberStatus
+    verification_status: WhatsAppPhoneNumberVerificationStatus
+} = {
+    waba_phone_number_id: 'phone-number-id',
+    status: WhatsAppPhoneNumberStatus.Pending,
+    verification_status: WhatsAppPhoneNumberVerificationStatus.Unverified,
+}
+
+function seedMigrationStorage(
+    options: {
+        storedTarget?: typeof target
+        storedProgress?: typeof progress | undefined
+        codeRequested?: boolean
+    } = {},
+) {
+    const storedTarget = options.storedTarget ?? target
+    const storedProgress = Object.prototype.hasOwnProperty.call(
+        options,
+        'storedProgress',
+    )
+        ? options.storedProgress
+        : progress
+    const codeRequested = options.codeRequested ?? false
+
+    localStorage.setItem(
+        'whatsapp_migration_target',
+        JSON.stringify(storedTarget),
+    )
+    if (storedProgress) {
+        localStorage.setItem(
+            'whatsapp_migration_progress',
+            JSON.stringify(storedProgress),
+        )
+    }
+    localStorage.setItem(
+        'whatsapp_migration_verification',
+        JSON.stringify({
+            codeRequested,
+            codeVerificationMethod: WhatsAppCodeVerificationMethod.Voice,
+        }),
+    )
+}
+
+function renderProviderBackedHook() {
+    return renderHook(() => useWhatsAppMigration(), {
+        wrapper: WhatsAppMigrationContextProvider,
+    })
+}
+
+beforeEach(() => {
+    jest.clearAllMocks()
+    localStorage.clear()
+})
 
 describe('useWhatsAppMigration()', () => {
     it('should have an initial state', () => {
@@ -28,6 +122,173 @@ describe('useWhatsAppMigration()', () => {
         expect(migration.isVerified).toEqual(false)
         expect(migration.isCompleted).toEqual(false)
         expect(migration.isTargetValid).toEqual(false)
+    })
+
+    it('should request a new verification code and show a success toast', async () => {
+        seedMigrationStorage()
+        requestVerificationCodeMock.mockResolvedValue(undefined)
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.requestNewCode(
+                WhatsAppCodeVerificationMethod.Sms,
+            )
+        })
+
+        expect(requestVerificationCodeMock).toHaveBeenCalledWith({
+            waba_phone_number_id: progress.waba_phone_number_id,
+            code_method: WhatsAppCodeVerificationMethod.Sms,
+        })
+        expect(toastSuccessSpy).toHaveBeenCalledWith(
+            `We texted ${target.phone_number} with a one-time code`,
+        )
+    })
+
+    it('should show an API error when starting the migration fails', async () => {
+        const errorMessage = 'Could not start migration'
+        seedMigrationStorage({ storedProgress: undefined })
+        startMigrationMock.mockRejectedValue({
+            response: {
+                data: {
+                    error: {
+                        msg: errorMessage,
+                    },
+                },
+            },
+        })
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.startOrResume()
+        })
+
+        expect(startMigrationMock).toHaveBeenCalledWith(target)
+        expect(requestVerificationCodeMock).not.toHaveBeenCalled()
+        expect(toastErrorSpy).toHaveBeenCalledWith(errorMessage)
+    })
+
+    it('should show the fallback error when requesting a code fails', async () => {
+        const error = new Error('Request failed')
+        seedMigrationStorage()
+        requestVerificationCodeMock.mockRejectedValue(error)
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await expect(hook.result.current.requestNewCode()).rejects.toBe(
+                error,
+            )
+        })
+
+        expect(toastErrorSpy).toHaveBeenCalledWith(
+            'Failed to request verification code.',
+        )
+    })
+
+    it('should show an error toast when requesting a code without progress', async () => {
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.requestNewCode()
+        })
+
+        expect(toastErrorSpy).toHaveBeenCalledWith('Failed to request code.')
+        expect(requestVerificationCodeMock).not.toHaveBeenCalled()
+    })
+
+    it('should register a verified number and show a success toast', async () => {
+        seedMigrationStorage({
+            storedProgress: {
+                ...progress,
+                verification_status:
+                    WhatsAppPhoneNumberVerificationStatus.Verified,
+            },
+        })
+        registerNumberMock.mockResolvedValue(undefined)
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.verifyAndFinish()
+        })
+
+        expect(registerNumberMock).toHaveBeenCalledWith({
+            waba_id: target.waba_id,
+            waba_phone_number_id: progress.waba_phone_number_id,
+        })
+        expect(toastSuccessSpy).toHaveBeenCalledWith(
+            'The phone number has been successfully migrated.',
+        )
+        expect(historyPushMock).toHaveBeenCalledWith(
+            '/app/settings/integrations/whatsapp/integrations',
+        )
+    })
+
+    it('should show the API error when verification fails', async () => {
+        const errorMessage = 'Invalid verification code'
+        seedMigrationStorage({ codeRequested: true })
+        validateVerificationCodeMock.mockRejectedValue({
+            response: {
+                data: {
+                    error: {
+                        msg: errorMessage,
+                    },
+                },
+            },
+        })
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.verifyAndFinish('123456')
+        })
+
+        expect(validateVerificationCodeMock).toHaveBeenCalledWith({
+            waba_phone_number_id: progress.waba_phone_number_id,
+            code: '123456',
+        })
+        expect(toastErrorSpy).toHaveBeenCalledWith(errorMessage)
+        expect(registerNumberMock).not.toHaveBeenCalled()
+        expect(toastSuccessSpy).not.toHaveBeenCalled()
+    })
+
+    it('should show an error toast when verifying without a phone number ID', async () => {
+        seedMigrationStorage({
+            storedProgress: {
+                ...progress,
+                waba_phone_number_id: '',
+            },
+            codeRequested: true,
+        })
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.verifyAndFinish('123456')
+        })
+
+        expect(toastErrorSpy).toHaveBeenCalledWith('Failed to verify code.')
+        expect(validateVerificationCodeMock).not.toHaveBeenCalled()
+        expect(registerNumberMock).not.toHaveBeenCalled()
+    })
+
+    it('should show an error toast when registering without a WABA ID', async () => {
+        seedMigrationStorage({
+            storedTarget: {
+                ...target,
+                waba_id: '',
+            },
+            storedProgress: {
+                ...progress,
+                verification_status:
+                    WhatsAppPhoneNumberVerificationStatus.Verified,
+            },
+        })
+        const hook = renderProviderBackedHook()
+
+        await act(async () => {
+            await hook.result.current.verifyAndFinish()
+        })
+
+        expect(toastErrorSpy).toHaveBeenCalledWith('Failed to register number.')
+        expect(registerNumberMock).not.toHaveBeenCalled()
+        expect(toastSuccessSpy).not.toHaveBeenCalled()
     })
 })
 

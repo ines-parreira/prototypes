@@ -92,7 +92,6 @@ describe('useListTags', () => {
                 response: errorMsgMock,
             }),
             expect.any(String),
-            dispatchMock,
         )
         expect(result.current.isLoading).toBe(false)
     })

@@ -164,7 +164,6 @@ describe('Detail', () => {
             isEdit: true,
             setAgentState: expect.any(Function),
             set2FA: expect.any(Function),
-            dispatch: mockedDispatch,
         })
         act(() => {
             useGetAgentWithEffectsMock.mock.calls[0][0].setAgentState({

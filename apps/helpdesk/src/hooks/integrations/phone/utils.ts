@@ -19,7 +19,6 @@ import {
 import { declineCall, getToken } from 'hooks/integrations/phone/api'
 import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
-import type { StoreDispatch } from 'state/types'
 
 import {
     gatherCallContext,
@@ -41,7 +40,6 @@ export async function refreshToken(device: Device) {
 }
 
 export async function connectDevice(
-    dispatch: StoreDispatch,
     reconnectAttempts: number,
     actions: VoiceDeviceActions,
 ) {
@@ -83,7 +81,7 @@ export async function connectDevice(
         }
 
         const device = utils.createDevice(token)
-        await utils.registerDevice(device, dispatch, actions)
+        await utils.registerDevice(device, actions)
         actions.setDevice(device)
         actions.resetReconnectAttempts()
         actions.setIsConnecting(false)
@@ -119,18 +117,16 @@ export async function setAudioConstraints(device: Device) {
 
 export async function registerDevice(
     device: Device,
-    dispatch: StoreDispatch,
     actions: VoiceDeviceActions,
 ) {
     await device.register()
     await setAudioConstraints(device)
 
-    utils.handleDeviceEvents(device, dispatch, actions)
+    utils.handleDeviceEvents(device, actions)
 }
 
 export function handleDeviceEvents(
     device: Device,
-    dispatch: StoreDispatch,
     actions: VoiceDeviceActions,
 ) {
     device.on(Device.EventName.Registered, () => {
@@ -204,7 +200,7 @@ export function handleDeviceEvents(
         actions.setIsRinging(true)
         actions.setCall(call)
 
-        handleCallEvents(call, dispatch, actions)
+        handleCallEvents(call, actions)
 
         const { flag: hasDesktopNotifications } = await fetchFlag(
             FeatureFlagKey.DesktopNotifications,

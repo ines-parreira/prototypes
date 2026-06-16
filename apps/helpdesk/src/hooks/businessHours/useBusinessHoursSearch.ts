@@ -4,10 +4,9 @@ import { Duration } from '@gorgias/toolkit'
 import { debounce } from 'lodash'
 import _flatten from 'lodash/flatten'
 
+import { toast } from '@gorgias/axiom'
+
 import { useInfiniteListBusinessHours } from 'hooks/businessHours/useInfiniteListBusinessHours'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const BUSINESS_HOURS_LIMIT = 20
 export const BUSINESS_HOURS_SEARCH_DEBOUNCE_TIME = Duration.millis(300)
@@ -15,8 +14,6 @@ export const BUSINESS_HOURS_FETCH_ERROR_MESSAGE =
     'Failed to fetch business hours'
 
 export const useBusinessHoursSearch = () => {
-    const dispatch = useAppDispatch()
-
     const [query, setQuery] = useState('')
 
     const queryResult = useInfiniteListBusinessHours(
@@ -46,14 +43,9 @@ export const useBusinessHoursSearch = () => {
 
     useEffect(() => {
         if (isError) {
-            void dispatch(
-                notify({
-                    message: BUSINESS_HOURS_FETCH_ERROR_MESSAGE,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(BUSINESS_HOURS_FETCH_ERROR_MESSAGE)
         }
-    }, [isError, dispatch])
+    }, [isError])
 
     return {
         ...queryResult,

@@ -1,13 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     agentsKeys,
     useUpdateAgent as usePureUpdateAgent,
 } from 'models/agents/queries'
 import { UPDATE_AGENT_SUCCESS } from 'state/agents/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { errorToChildren } from '../../utils'
 import { handleError } from './errorHandler'
@@ -25,12 +25,7 @@ export const useUpdateAgent = () => {
                 type: UPDATE_AGENT_SUCCESS,
                 resp: data.data,
             })
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Team member updated',
-                }),
-            )
+            toast.success('Team member updated')
         },
         onError: (error) => {
             const mappedError = errorToChildren(error)
@@ -38,7 +33,6 @@ export const useUpdateAgent = () => {
             handleError(
                 null,
                 mappedError as string,
-                dispatch,
                 'Error while updating user',
             )
         },

@@ -6,7 +6,8 @@ import { isValidPhoneNumber } from 'libphonenumber-js'
 import { get, isEmpty, isString, noop } from 'lodash'
 import { useDebouncedEffect, useLocalStorage } from '@gorgias/toolkit-react'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import {
     getMigrationProgress,
     registerNumber,
@@ -20,8 +21,6 @@ import {
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useSearch } from './useSearch'
 
@@ -161,7 +160,6 @@ export function useWhatsAppMigration(): Migration {
 }
 
 function useMigration(): Migration {
-    const dispatch = useAppDispatch()
     const { step } = useSearch<{ step: string | undefined }>()
     const currentStep = toStep(step)
 
@@ -289,12 +287,7 @@ function useMigration(): Migration {
             }
         }
 
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'The phone number has been successfully migrated.',
-            }),
-        )
+        toast.success('The phone number has been successfully migrated.')
 
         reset()
         history.push('/app/settings/integrations/whatsapp/integrations')
@@ -304,12 +297,7 @@ function useMigration(): Migration {
         method: CodeVerificationMethod = verificationMethod,
     ) => {
         if (!progress?.waba_phone_number_id) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to request code.',
-                }),
-            )
+            toast.error('Failed to request code.')
             return
         }
 
@@ -356,13 +344,9 @@ function useMigration(): Migration {
             const { phone_number, waba_id } = target
             return await startMigration({ phone_number, waba_id })
         } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        getErrorMessage(error) ||
-                        'The WABA ID or phone number you entered are invalid. Try again.',
-                }),
+            toast.error(
+                getErrorMessage(error) ||
+                    'The WABA ID or phone number you entered are invalid. Try again.',
             )
             throw error
         } finally {
@@ -386,25 +370,16 @@ function useMigration(): Migration {
             const action =
                 method === CodeVerificationMethod.Sms ? 'texted' : 'called'
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: `We ${action} ${number} with a one-time code`,
-                }),
-            )
+            toast.success(`We ${action} ${number} with a one-time code`)
 
             setVerification({
                 codeVerificationMethod: method,
                 codeRequested: true,
             })
         } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        getErrorMessage(error) ||
-                        'Failed to request verification code.',
-                }),
+            toast.error(
+                getErrorMessage(error) ||
+                    'Failed to request verification code.',
             )
             throw error
         } finally {
@@ -414,12 +389,7 @@ function useMigration(): Migration {
 
     const verifyCode = async (code: string) => {
         if (!progress?.waba_phone_number_id) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to verify code.',
-                }),
-            )
+            toast.error('Failed to verify code.')
             throw new Error('Missing phone number ID, cannot request code.')
         }
 
@@ -430,12 +400,7 @@ function useMigration(): Migration {
                 code: code,
             })
         } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: getErrorMessage(error) || 'Failed to verify code.',
-                }),
-            )
+            toast.error(getErrorMessage(error) || 'Failed to verify code.')
             throw error
         } finally {
             setIsLoading(false)
@@ -446,22 +411,12 @@ function useMigration(): Migration {
 
     const register = async () => {
         if (!target?.waba_id) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to register number.',
-                }),
-            )
+            toast.error('Failed to register number.')
             throw new Error('Missing waba_id.')
         }
 
         if (!progress?.waba_phone_number_id) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to register number.',
-                }),
-            )
+            toast.error('Failed to register number.')
             throw new Error('Missing waba_phone_number_id.')
         }
 
@@ -472,13 +427,7 @@ function useMigration(): Migration {
                 waba_phone_number_id: progress.waba_phone_number_id,
             })
         } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        getErrorMessage(error) || 'Failed to register number.',
-                }),
-            )
+            toast.error(getErrorMessage(error) || 'Failed to register number.')
             throw error
         } finally {
             setIsLoading(false)

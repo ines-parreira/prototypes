@@ -13,7 +13,7 @@ import type { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import { Drawer } from 'components/Drawer/Drawer'
-import type { GorgiasApiError } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 
 import { BusinessHoursDisplay } from './BusinessHoursDisplay'
 import { DefaultBusinessHoursDrawer } from './DefaultBusinessHoursDrawer'
@@ -48,8 +48,9 @@ const DefaultBusinessHours = () => {
                 },
                 onError: (error) => {
                     toast.error(
-                        (error as GorgiasApiError).response?.data?.error?.msg ??
-                            'Something went wrong, please try again',
+                        isGorgiasApiError(error)
+                            ? error.response.data.error.msg
+                            : 'Something went wrong, please try again',
                     )
                 },
                 onSuccess: () => {

@@ -4,23 +4,22 @@ import { isCancel } from 'axios'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
 import { fetchMacros as fetchMacrosRequest } from 'models/macro/resources'
 import { GorgiasApi } from 'services/gorgiasApi'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
 
 import * as constants from './constants'
-import type { MacroApiError } from './types'
+import { isMacroApiError } from './types'
 import { getErrorReason } from './utils'
 
 export function fetchMacros(
     options: ListMacrosParams,
     cancelToken: CancelToken,
 ) {
-    return async (dispatch: StoreDispatch) => {
+    return async (__dispatch: StoreDispatch) => {
         try {
             const { data } = await fetchMacrosRequest(options, { cancelToken })
 
@@ -34,12 +33,7 @@ export function fetchMacros(
             if (isCancel(error)) {
                 return Promise.resolve()
             }
-            await dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to fetch macros',
-                }),
-            )
+            toast.error('Failed to fetch macros')
         }
     }
 }
@@ -75,12 +69,7 @@ export function fetchAllMacros(
             if (isCancel(error)) {
                 return Promise.resolve()
             }
-            await dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to fetch macros',
-                }),
-            )
+            toast.error('Failed to fetch macros')
         }
     }
 }
@@ -102,12 +91,7 @@ export const getMacro =
             return macro
         } catch (error) {
             if (!isCancel(error)) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to fetch macro',
-                    }),
-                )
+                toast.error('Failed to fetch macro')
             }
         }
     }
@@ -120,12 +104,7 @@ export const createMacro =
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Macro created',
-                        }),
-                    )
+                    toast.success('Macro created')
 
                     dispatch({
                         type: constants.UPSERT_MACRO,
@@ -135,15 +114,14 @@ export const createMacro =
                     return Promise.resolve(resp)
                 },
                 (error) => {
-                    const gorgiasError = error as MacroApiError
-                    const message = gorgiasError.response.data.error.msg
-                    const reason = getErrorReason(gorgiasError)
-                    return dispatch(
-                        notify({
-                            message: `${message} ${reason}`,
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    if (isMacroApiError(error)) {
+                        const message = error.response.data.error.msg
+                        const reason = getErrorReason(error)
+                        toast.error(`${message} ${reason}`)
+                        return
+                    }
+
+                    toast.error('Failed to create macro')
                 },
             ) as Promise<Macro>
     }
@@ -159,12 +137,7 @@ export const updateMacro =
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Macro updated',
-                        }),
-                    )
+                    toast.success('Macro updated')
 
                     dispatch({
                         type: constants.UPSERT_MACRO,
@@ -174,15 +147,14 @@ export const updateMacro =
                     return Promise.resolve(resp)
                 },
                 (error) => {
-                    const gorgiasError = error as MacroApiError
-                    const message = gorgiasError.response.data.error.msg
-                    const reason = getErrorReason(gorgiasError)
-                    return dispatch(
-                        notify({
-                            message: `${message} ${reason}`,
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    if (isMacroApiError(error)) {
+                        const message = error.response.data.error.msg
+                        const reason = getErrorReason(error)
+                        toast.error(`${message} ${reason}`)
+                        return
+                    }
+
+                    toast.error('Failed to update macro')
                 },
             ) as Promise<Macro>
     }
@@ -192,12 +164,7 @@ export const deleteMacro =
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.delete<undefined>(`/api/macros/${macroId}/`).then(
             () => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Macro deleted',
-                    }),
-                )
+                toast.success('Macro deleted')
 
                 dispatch({
                     type: constants.DELETE_MACRO,

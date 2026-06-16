@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { mocked } from 'jest-mock'
 
 import type {
@@ -8,10 +8,6 @@ import type {
     ListBusinessHours200,
 } from '@gorgias/helpdesk-client'
 import type { BusinessHoursList } from '@gorgias/helpdesk-types'
-
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     BUSINESS_HOURS_FETCH_ERROR_MESSAGE,
@@ -22,12 +18,8 @@ import {
 import { useInfiniteListBusinessHours } from '../useInfiniteListBusinessHours'
 
 jest.mock('../useInfiniteListBusinessHours')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 
 const useInfiniteListBusinessHoursMock = mocked(useInfiniteListBusinessHours)
-const useAppDispatchMock = mocked(useAppDispatch)
-const notifyMock = mocked(notify)
 
 const fakeBusinessHours = [
     { id: 1, name: 'Business Hours 1' },
@@ -159,9 +151,7 @@ describe('useBusinessHoursSearch', () => {
         },
     )
 
-    it('dispatches an error notification when error is returned', () => {
-        const dispatchMock = jest.fn()
-        useAppDispatchMock.mockReturnValue(dispatchMock)
+    it('shows an error toast when error is returned', async () => {
         useInfiniteListBusinessHoursMock.mockReturnValue({
             ...useInfiniteListBusinessHoursParams,
             data: {
@@ -175,11 +165,10 @@ describe('useBusinessHoursSearch', () => {
 
         renderHook(() => useBusinessHoursSearch())
 
-        expect(notifyMock).toHaveBeenCalledWith({
-            message: BUSINESS_HOURS_FETCH_ERROR_MESSAGE,
-            status: NotificationStatus.Error,
+        const toastEl = await screen.findByRole('status', {
+            name: BUSINESS_HOURS_FETCH_ERROR_MESSAGE,
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('fetches next page when onLoad is called', () => {

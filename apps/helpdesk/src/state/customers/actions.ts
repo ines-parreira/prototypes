@@ -3,16 +3,13 @@ import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 import type { List } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
-import { notify as updateNotification } from 'reapop'
-import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
+import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import * as viewsConfig from 'config/views'
 import type { Customer, CustomerDraft } from 'models/customer/types'
 import { ViewType } from 'models/view/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 import { isCurrentlyOnCustomerPage } from 'utils'
@@ -98,13 +95,8 @@ export function submitCustomer(data: CustomerDraft, customerId?: number) {
                         resp,
                     })
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: `Customer successfully ${
-                                isUpdate ? 'updated' : 'created'
-                            }`,
-                        }),
+                    toast.success(
+                        `Customer successfully ${isUpdate ? 'updated' : 'created'}`,
                     )
 
                     return resp
@@ -136,12 +128,7 @@ export function deleteCustomer(customerId: number) {
                     customerId,
                 })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Customer successfully deleted',
-                    }),
-                )
+                toast.success('Customer successfully deleted')
             },
             (error: AxiosError) => {
                 return dispatch({
@@ -162,14 +149,11 @@ export function bulkDeleteCustomer(ids: List<any>) {
 
         const activeViewType = ViewType.CustomerList
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
+        const plural = viewConfig.get('plural') as string
 
-        const notification = dispatch(
-            notify({
-                status: NotificationStatus.Info,
-                dismissAfter: 0,
-                message: `Deleting ${viewConfig.get('plural') as string}...`,
-            }),
-        ) as unknown as UpsertNotificationAction
+        const toastId = toast.info(`Deleting ${plural}...`, {
+            duration: Infinity,
+        })
 
         return client
             .delete(`/api/${viewConfig.get('api') as string}/`, {
@@ -177,24 +161,18 @@ export function bulkDeleteCustomer(ids: List<any>) {
             })
             .then(
                 () => {
-                    notification.payload.status = NotificationStatus.Success
-                    notification.payload.message = `${ids.size} ${
-                        viewConfig.get('plural') as string
-                    } successfully deleted!`
                     dispatch({
                         type: types.BULK_DELETE_SUCCESS,
                         viewType: activeViewType,
                         ids,
                     })
-                    void dispatch(updateNotification(notification.payload))
+                    toast.dismiss(toastId)
+                    toast.success(`${ids.size} ${plural} successfully deleted!`)
                 },
                 () => {
-                    notification.payload.status = NotificationStatus.Error
-                    notification.payload.message = `Couldn\'t delete selected ${
-                        viewConfig.get('plural') as string
-                    }`
                     dispatch({ type: types.BULK_DELETE_ERROR })
-                    void dispatch(updateNotification(notification.payload))
+                    toast.dismiss(toastId)
+                    toast.error(`Couldn't delete selected ${plural}`)
                 },
             )
     }
@@ -234,12 +212,7 @@ export function mergeCustomers(
                             queryKeys.customers.getCustomer(mergeCustomerId),
                     })
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Customers successfully merged.',
-                        }),
-                    )
+                    toast.success('Customers successfully merged.')
 
                     return Promise.resolve(resp)
                 },

@@ -1,65 +1,65 @@
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { createElement } from 'react'
+
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { handleError } from '../errorHandler'
 
-const mockedDispatch = jest.fn()
-
-jest.mock('state/notifications/actions')
+const renderErrorHandler = async (
+    error: unknown,
+    defaultMsg: string,
+    title?: string,
+) => {
+    const { user } = render(
+        createElement(
+            'button',
+            { onClick: () => handleError(error, defaultMsg, title) },
+            'Show',
+        ),
+    )
+    await user.click(screen.getByRole('button', { name: 'Show' }))
+}
 
 describe('handleError', () => {
-    it('should dispatch the provided error message', () => {
+    it('shows the provided error message', async () => {
         const message = 'test error'
-        handleError(
+        await renderErrorHandler(
             {
                 response: { data: { error: { msg: message } } },
                 isAxiosError: true,
             },
             '',
-            mockedDispatch,
         )
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message,
-            status: NotificationStatus.Error,
-        })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        const toastEl = await screen.findByRole('status', { name: message })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
-    it('should dispatch default error message', () => {
+    it('shows default error message', async () => {
         const message = 'default message'
-        handleError(
+        await renderErrorHandler(
             {
                 response: undefined,
             },
             message,
-            mockedDispatch,
         )
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message,
-            status: NotificationStatus.Error,
-            allowHTML: true,
-        })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        const toastEl = await screen.findByRole('status', { name: message })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
-    it('should dispatch default error message with title', () => {
+    it('shows default error message with title', async () => {
         const message = 'default message'
         const title = 'title'
 
-        handleError(
+        await renderErrorHandler(
             {
                 response: undefined,
             },
             message,
-            mockedDispatch,
             title,
         )
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message,
-            status: NotificationStatus.Error,
-            title,
-            allowHTML: true,
-        })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+
+        const toastEl = await screen.findByRole('status', { name: title })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        expect(toastEl).toHaveTextContent(message)
     })
 })

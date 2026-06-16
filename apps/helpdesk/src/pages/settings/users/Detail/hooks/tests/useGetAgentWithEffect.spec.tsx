@@ -3,7 +3,6 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { agents } from 'fixtures/agents'
 import { handleError } from 'hooks/agents/errorHandler'
 import { useGetAgent } from 'models/agents/queries'
-import type { StoreDispatch } from 'state/types'
 
 import { useGetAgentWithEffects } from '../useGetAgentWithEffect'
 
@@ -18,16 +17,12 @@ describe('useGetAgentWithEffects', () => {
     const isEdit = true
     const setAgentState = jest.fn()
     const set2FA = jest.fn()
-    const dispatch = jest.fn((fn: () => unknown) =>
-        fn(),
-    ) as unknown as StoreDispatch
 
     const params = {
         agentId,
         isEdit,
         setAgentState,
         set2FA,
-        dispatch,
     }
 
     it('should call useGetAgent with proper params and return the raw data and loading status', () => {

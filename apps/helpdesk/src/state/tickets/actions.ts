@@ -1,15 +1,12 @@
 import client from '@repo/api-resources'
 import { buildJobMessage } from '@repo/utils'
 import type { List } from 'immutable'
-import { notify as updateNotification } from 'reapop'
-import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
+import { toast } from '@gorgias/axiom'
 import type { JobType } from '@gorgias/helpdesk-queries'
 
 import { JOBS_PATH } from 'models/job/resources'
 
-import { notify } from '../notifications/actions'
-import { NotificationStatus } from '../notifications/types'
 import type { StoreDispatch } from '../types'
 import * as types from './constants'
 
@@ -25,7 +22,7 @@ export function createJob(
     jobType: JobType,
     jobPartialParams: Record<string, unknown>,
 ) {
-    return (dispatch: StoreDispatch) => {
+    return (__dispatch: StoreDispatch) => {
         const requestPayload = {
             type: jobType,
             params: Object.assign(
@@ -35,32 +32,26 @@ export function createJob(
             ),
         }
 
-        const notification = dispatch(
-            notify({
-                status: NotificationStatus.Loading,
-                dismissAfter: 0,
-                closeOnNext: true,
-                message: buildJobMessage(
-                    jobType,
-                    false,
-                    ids.size === 1 ? 'ticket' : 'tickets',
-                    jobPartialParams,
-                    ids.size,
-                ),
-            }),
-        ) as unknown as UpsertNotificationAction
+        const startMessage = buildJobMessage(
+            jobType,
+            false,
+            ids.size === 1 ? 'ticket' : 'tickets',
+            jobPartialParams,
+            ids.size,
+        )
+        const toastId = toast.info(startMessage, { duration: Infinity })
 
         return client
             .post(JOBS_PATH, requestPayload)
             .then(() => {
-                notification.payload.status = NotificationStatus.Success
-                return dispatch(updateNotification(notification.payload))
+                toast.dismiss(toastId)
+                toast.success(startMessage)
             })
             .catch((error) => {
-                notification.payload.status = NotificationStatus.Error
-                notification.payload.message =
-                    'Failed to apply action on tickets. Please try again.'
-                dispatch(updateNotification(notification.payload))
+                toast.dismiss(toastId)
+                toast.error(
+                    'Failed to apply action on tickets. Please try again.',
+                )
                 throw error
             })
     }

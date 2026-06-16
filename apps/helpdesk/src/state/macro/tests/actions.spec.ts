@@ -6,6 +6,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import type { StoreDispatch } from 'state/types'
 import { CancelToken } from 'tests/axiosRuntime'
 
@@ -27,6 +29,20 @@ describe('macro actions', () => {
     beforeEach(() => {
         store = mockStore()
         mockServer = new MockAdapter(client)
+        jest.clearAllMocks()
+    })
+
+    describe('fetchMacros', () => {
+        it('should show an error toast when the request fails', async () => {
+            const toastErrorSpy = jest.spyOn(toast, 'error')
+            mockServer.onGet('/api/macros/').reply(500)
+
+            await store.dispatch(
+                actions.fetchMacros({}, CancelToken.source().token),
+            )
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Failed to fetch macros')
+        })
     })
 
     describe('fetchAllMacros', () => {
@@ -54,10 +70,22 @@ describe('macro actions', () => {
                     ])
                 })
         })
+
+        it('should show an error toast when the request fails', async () => {
+            const toastErrorSpy = jest.spyOn(toast, 'error')
+            mockServer.onGet('/api/macros/').reply(500)
+
+            await store.dispatch(
+                actions.fetchAllMacros({}, CancelToken.source().token),
+            )
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Failed to fetch macros')
+        })
     })
 
     describe('createMacro', () => {
         it('should return created macro and dispatch UPSERT_MACRO action on success', async () => {
+            const toastSuccessSpy = jest.spyOn(toast, 'success')
             const macro: Map<string, unknown> = fromJS({
                 id: 1,
                 name: 'Pizza Pepperoni',
@@ -69,11 +97,34 @@ describe('macro actions', () => {
                 type: constants.UPSERT_MACRO,
                 payload: macro,
             })
+            expect(toastSuccessSpy).toHaveBeenCalledWith('Macro created')
+        })
+
+        it('should show an error toast when create fails', async () => {
+            const toastErrorSpy = jest.spyOn(toast, 'error')
+            const macro: Map<string, unknown> = fromJS({
+                name: 'Pizza Pepperoni',
+            })
+            mockServer.onPost('/api/macros/').reply(400, {
+                error: {
+                    msg: 'Macro name is invalid',
+                    data: {
+                        name: ['Choose another name'],
+                    },
+                },
+            })
+
+            await store.dispatch(actions.createMacro(macro))
+
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'Macro name is invalid Choose another name',
+            )
         })
     })
 
     describe('updateMacro', () => {
         it('should return updated macro and dispatch UPSERT_MACRO action on success', async () => {
+            const toastSuccessSpy = jest.spyOn(toast, 'success')
             const macro: Map<string, unknown> = fromJS({
                 id: 1,
                 name: 'Pizza Pepperoni',
@@ -85,6 +136,29 @@ describe('macro actions', () => {
                 type: constants.UPSERT_MACRO,
                 payload: macro,
             })
+            expect(toastSuccessSpy).toHaveBeenCalledWith('Macro updated')
+        })
+
+        it('should show an error toast when update fails', async () => {
+            const toastErrorSpy = jest.spyOn(toast, 'error')
+            const macro: Map<string, unknown> = fromJS({
+                id: 1,
+                name: 'Pizza Pepperoni',
+            })
+            mockServer.onPut('/api/macros/1/').reply(400, {
+                error: {
+                    msg: 'Macro update failed',
+                    data: {
+                        name: ['Use a unique name'],
+                    },
+                },
+            })
+
+            await store.dispatch(actions.updateMacro(macro))
+
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'Macro update failed Use a unique name',
+            )
         })
     })
 

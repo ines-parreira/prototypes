@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -9,14 +9,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { useBulkUnarchiveMacros } from 'hooks/macros/useBulkUnarchiveMacros'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-
-jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = jest.mocked(useAppDispatch)
-
-jest.mock('state/notifications/actions')
 
 const server = setupServer()
 
@@ -38,12 +30,6 @@ function renderUseBulkUnarchiveMacros() {
 }
 
 describe('useBulkUnarchiveMacros', () => {
-    const dispatchMock = jest.fn()
-
-    beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
-    })
-
     it('should handle successful request with a single macro', async () => {
         server.use(
             mockBulkUnarchiveMacrosHandler(async () =>
@@ -58,13 +44,10 @@ describe('useBulkUnarchiveMacros', () => {
 
         result.current.mutate({ data: { ids: [1] } })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Successfully unarchived macro',
-                status: NotificationStatus.Success,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: 'Successfully unarchived macro',
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle successful request with multiple macros', async () => {
@@ -84,13 +67,10 @@ describe('useBulkUnarchiveMacros', () => {
 
         result.current.mutate({ data: { ids: [1, 2] } })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Successfully unarchived macros',
-                status: NotificationStatus.Success,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: 'Successfully unarchived macros',
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle nested unarchive results from the runtime response envelope', async () => {
@@ -110,13 +90,10 @@ describe('useBulkUnarchiveMacros', () => {
 
         result.current.mutate({ data: { ids: [1, 2] } })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Successfully unarchived macros',
-                status: NotificationStatus.Success,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: 'Successfully unarchived macros',
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle unarchive responses without result data', async () => {
@@ -129,13 +106,10 @@ describe('useBulkUnarchiveMacros', () => {
 
         result.current.mutate({ data: { ids: [1] } })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Successfully unarchived macro',
-                status: NotificationStatus.Success,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: 'Successfully unarchived macro',
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle failed request', async () => {
@@ -152,14 +126,9 @@ describe('useBulkUnarchiveMacros', () => {
 
         result.current.mutate({ data: { ids: [1, 2] } })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                title: errorMessage,
-                message: undefined,
-                allowHTML: true,
-                status: NotificationStatus.Error,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: errorMessage,
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

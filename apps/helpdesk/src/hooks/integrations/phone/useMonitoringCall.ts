@@ -8,7 +8,6 @@ import {
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     MONITORING_GENERIC_ERROR,
@@ -44,7 +43,6 @@ type PrepareMonitoringResult =
       }
 
 export function useMonitoringCall() {
-    const dispatch = useAppDispatch()
     const { device, call: currentCall, actions } = useVoiceDevice()
     const { mutateAsync: prepareCallMonitoringMutation } =
         usePrepareCallMonitoring()
@@ -139,7 +137,7 @@ export function useMonitoringCall() {
                 data: gatherCallContext(call),
             })
 
-            handleCallEvents(call, dispatch, actions, (message) => {
+            handleCallEvents(call, actions, (message) => {
                 if (
                     message.type ===
                     TwilioMessageType.MonitoringValidationFailed
@@ -150,7 +148,7 @@ export function useMonitoringCall() {
 
             actions.setCall(call)
         },
-        [device, currentCall, dispatch, actions],
+        [device, currentCall, actions],
     )
 
     return { prepareMonitoringCall, makeMonitoringCall }

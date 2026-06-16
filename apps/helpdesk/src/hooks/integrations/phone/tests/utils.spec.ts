@@ -56,7 +56,6 @@ const fetchFlagMock = require('@repo/feature-flags').fetchFlag as jest.Mock
 const requestNotificationPermissionMock =
     requestNotificationPermission as jest.Mock
 
-const dispatch = jest.fn()
 const device = {
     on: jest.fn(),
     register: jest.fn(),
@@ -124,7 +123,7 @@ describe('connectDevice', () => {
             VoiceAppErrorCode.HttpsProtoRequired,
         )
 
-        void connectDevice(dispatch, 0, actions)
+        void connectDevice(0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
@@ -141,7 +140,7 @@ describe('connectDevice', () => {
             VoiceAppErrorCode.TooManyReconnectionAttepts,
         )
 
-        void connectDevice(dispatch, 6, actions)
+        void connectDevice(6, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
@@ -160,7 +159,7 @@ describe('connectDevice', () => {
 
         jest.spyOn(api, 'getToken').mockReturnValue(Promise.resolve(null))
 
-        void connectDevice(dispatch, 0, actions)
+        void connectDevice(0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
@@ -175,7 +174,7 @@ describe('connectDevice', () => {
     it('should set error when getting the token fails', async () => {
         jest.spyOn(api, 'getToken').mockReturnValue(Promise.reject())
 
-        void connectDevice(dispatch, 0, actions)
+        void connectDevice(0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
@@ -189,13 +188,13 @@ describe('connectDevice', () => {
     it('should implement an exponential backoff for connections', () => {
         const sleep = jest.spyOn(utils, 'sleep')
 
-        void connectDevice(dispatch, 1, actions)
+        void connectDevice(1, actions)
         expect(sleep).toHaveBeenCalledWith(5000)
 
-        void connectDevice(dispatch, 2, actions)
+        void connectDevice(2, actions)
         expect(sleep).toHaveBeenCalledWith(10000)
 
-        void connectDevice(dispatch, 5, actions)
+        void connectDevice(5, actions)
         expect(sleep).toHaveBeenCalledWith(25000)
     })
 
@@ -204,7 +203,7 @@ describe('connectDevice', () => {
 
         const register = jest.spyOn(utils, 'registerDevice')
 
-        void connectDevice(dispatch, 0, actions)
+        void connectDevice(0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
@@ -212,7 +211,7 @@ describe('connectDevice', () => {
             expect(actions.incrementReconnectAttempts).toHaveBeenCalled()
             expect(actions.setDevice).toHaveBeenCalledWith(device)
             expect(actions.setIsConnecting).toHaveBeenCalledWith(false)
-            expect(register).toHaveBeenCalledWith(device, dispatch, actions)
+            expect(register).toHaveBeenCalledWith(device, actions)
         })
     })
 })
@@ -331,15 +330,11 @@ describe('registerDevice', () => {
     it('should register the device and bind the event handlers', async () => {
         const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
 
-        void registerDevice(device, dispatch, actions)
+        void registerDevice(device, actions)
 
         await waitFor(() => {
             expect(device.register).toHaveBeenCalledTimes(1)
-            expect(handleDeviceEvents).toHaveBeenCalledWith(
-                device,
-                dispatch,
-                actions,
-            )
+            expect(handleDeviceEvents).toHaveBeenCalledWith(device, actions)
         })
     })
 
@@ -356,7 +351,7 @@ describe('registerDevice', () => {
 
         const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
 
-        await registerDevice(deviceWithAudio, dispatch, actions)
+        await registerDevice(deviceWithAudio, actions)
 
         await waitFor(() => {
             expect(deviceWithAudio.register).toHaveBeenCalledTimes(1)
@@ -365,7 +360,6 @@ describe('registerDevice', () => {
             })
             expect(handleDeviceEvents).toHaveBeenCalledWith(
                 deviceWithAudio,
-                dispatch,
                 actions,
             )
         })
@@ -380,13 +374,12 @@ describe('registerDevice', () => {
 
         const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
 
-        await registerDevice(deviceWithoutAudio, dispatch, actions)
+        await registerDevice(deviceWithoutAudio, actions)
 
         await waitFor(() => {
             expect(deviceWithoutAudio.register).toHaveBeenCalledTimes(1)
             expect(handleDeviceEvents).toHaveBeenCalledWith(
                 deviceWithoutAudio,
-                dispatch,
                 actions,
             )
         })
@@ -407,7 +400,7 @@ describe('registerDevice', () => {
 
         const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
 
-        await registerDevice(deviceWithFailingAudio, dispatch, actions)
+        await registerDevice(deviceWithFailingAudio, actions)
 
         await waitFor(() => {
             expect(deviceWithFailingAudio.register).toHaveBeenCalledTimes(1)
@@ -416,7 +409,6 @@ describe('registerDevice', () => {
             })
             expect(handleDeviceEvents).toHaveBeenCalledWith(
                 deviceWithFailingAudio,
-                dispatch,
                 actions,
             )
         })
@@ -436,7 +428,7 @@ describe('handleDeviceEvents', () => {
         let variation: jest.Mock
 
         beforeAll(() => {
-            handleDeviceEvents(device as Device, dispatch, actions)
+            handleDeviceEvents(device as Device, actions)
         })
 
         beforeEach(() => {
@@ -557,11 +549,7 @@ describe('handleDeviceEvents', () => {
 
             expect(actions.setIsRinging).toHaveBeenCalledWith(true)
             expect(actions.setCall).toHaveBeenCalledWith(call)
-            expect(handleCallEvents).toHaveBeenCalledWith(
-                call,
-                dispatch,
-                actions,
-            )
+            expect(handleCallEvents).toHaveBeenCalledWith(call, actions)
         })
 
         it('should handle Device.EventName.Incoming event with desktop notifications enabled', async () => {
@@ -590,11 +578,7 @@ describe('handleDeviceEvents', () => {
 
             expect(actions.setIsRinging).toHaveBeenCalledWith(true)
             expect(actions.setCall).toHaveBeenCalledWith(call)
-            expect(handleCallEvents).toHaveBeenCalledWith(
-                call,
-                dispatch,
-                actions,
-            )
+            expect(handleCallEvents).toHaveBeenCalledWith(call, actions)
 
             await waitFor(() => {
                 expect(desktopNotify).toHaveBeenCalledWith(
@@ -650,7 +634,7 @@ describe('handleCallEvents', () => {
         }
 
         beforeAll(() => {
-            handleCallEvents(call as Call, dispatch, actions)
+            handleCallEvents(call as Call, actions)
         })
 
         it('should handle "accept" event', () => {
@@ -782,9 +766,10 @@ describe('handleAcceptedCallEvent', () => {
             direction: Call.CallDirection.Outgoing,
         } as unknown as Call
 
-        handleAcceptedCallEvent(call, dispatch)
+        handleAcceptedCallEvent(call)
 
-        expect(dispatch).not.toHaveBeenCalled()
+        expect(cancelCall).not.toHaveBeenCalled()
+        expect(acceptCall).not.toHaveBeenCalled()
     })
 
     it('should be skipped if call is (already) closed', () => {
@@ -792,7 +777,7 @@ describe('handleAcceptedCallEvent', () => {
             status: () => Call.State.Closed,
         } as unknown as Call
 
-        handleAcceptedCallEvent(call, dispatch)
+        handleAcceptedCallEvent(call)
 
         expect(cancelCall).toHaveBeenCalled()
     })
@@ -805,7 +790,7 @@ describe('handleAcceptedCallEvent', () => {
             customParameters: new Map([['ticket_id', '123456']]),
         } as unknown as Call
 
-        handleAcceptedCallEvent(call, dispatch)
+        handleAcceptedCallEvent(call)
 
         expect(acceptCall).toHaveBeenCalledWith(call)
         expect(logEventSpy).toHaveBeenCalledWith(

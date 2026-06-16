@@ -9,6 +9,7 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import type { JobType } from '@gorgias/helpdesk-queries'
 
 import { baseView, getExpirationTimeForCount } from 'config/views'
@@ -88,6 +89,7 @@ const defaultDateNowValue = 1487076708000
 beforeEach(() => {
     store.clearActions()
     mockServer.reset()
+    jest.clearAllMocks()
     dateNowSpy = jest
         .spyOn(Date, 'now')
         .mockImplementation(() => defaultDateNowValue)
@@ -1082,6 +1084,88 @@ describe('actions', () => {
                     expect(mockServer.history).toMatchSnapshot()
                 })
         })
+
+        it('should cancel the job from the success toast inline action', async () => {
+            const toastInfoSpy = jest
+                .spyOn(toast, 'info')
+                .mockReturnValue('loading-toast-id')
+            const toastDismissSpy = jest.spyOn(toast, 'dismiss')
+            const toastSuccessSpy = jest
+                .spyOn(toast, 'success')
+                .mockReturnValue('success-toast-id')
+            const store = mockStore()
+            const view = fromJS({
+                id: viewId,
+                type: ViewType.TicketList,
+                dirty: false,
+            })
+            mockServer.onPost('/api/jobs/').reply(200, { id: 123 })
+            mockServer.onDelete('/api/jobs/123').reply(200)
+
+            await store.dispatch(
+                actions.createJob(view, 'jobTypeValue' as unknown as JobType, {
+                    exampleVar: 'exampleValue',
+                }),
+            )
+
+            const [, successOptions] = toastSuccessSpy.mock.calls[0]
+            const cancelButton = (
+                successOptions as {
+                    inlineActions: (options: { id: string }) => {
+                        props: { onClick: () => Promise<void> }
+                    }
+                }
+            ).inlineActions({ id: 'success-toast-id' })
+
+            await cancelButton.props.onClick()
+
+            expect(toastInfoSpy).toHaveBeenCalledWith(expect.any(String), {
+                duration: Infinity,
+            })
+            expect(toastDismissSpy).toHaveBeenCalledWith('loading-toast-id')
+            expect(toastDismissSpy).toHaveBeenCalledWith('success-toast-id')
+            expect(mockServer.history.delete[0].url).toBe('/api/jobs/123')
+            expect(toastSuccessSpy).toHaveBeenLastCalledWith(
+                'The job has been canceled.',
+            )
+        })
+
+        it('should show an error toast when canceling a job fails', async () => {
+            jest.spyOn(toast, 'info').mockReturnValue('loading-toast-id')
+            const toastErrorSpy = jest.spyOn(toast, 'error')
+            const toastSuccessSpy = jest
+                .spyOn(toast, 'success')
+                .mockReturnValue('success-toast-id')
+            const store = mockStore()
+            const view = fromJS({
+                id: viewId,
+                type: ViewType.TicketList,
+                dirty: false,
+            })
+            mockServer.onPost('/api/jobs/').reply(200, { id: 123 })
+            mockServer.onDelete('/api/jobs/123').reply(400, {
+                error: { msg: 'Cannot cancel this job' },
+            })
+
+            await store.dispatch(
+                actions.createJob(view, 'jobTypeValue' as unknown as JobType, {
+                    exampleVar: 'exampleValue',
+                }),
+            )
+
+            const [, successOptions] = toastSuccessSpy.mock.calls[0]
+            const cancelButton = (
+                successOptions as {
+                    inlineActions: (options: { id: string }) => {
+                        props: { onClick: () => Promise<void> }
+                    }
+                }
+            ).inlineActions({ id: 'success-toast-id' })
+
+            await cancelButton.props.onClick()
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Cannot cancel this job')
+        })
     })
 
     describe('deleteView()', () => {
@@ -1097,6 +1181,7 @@ describe('actions', () => {
         })
 
         it('should prevent deletion of last view of same type', async () => {
+            const toastErrorSpy = jest.spyOn(toast, 'error')
             const views = initialState.set('items', fromJS([view]))
             const store = mockStore({ views })
 
@@ -1104,6 +1189,13 @@ describe('actions', () => {
 
             expect(mockServer.history).toMatchSnapshot()
             expect(store.getActions()).toMatchSnapshot()
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'This view cannot be deleted',
+                {
+                    caption:
+                        'This is your last view, it needs to exist in order for the helpdesk to function correctly.',
+                },
+            )
         })
 
         it('should update the active view with the same type when deletion succeeds', async () => {

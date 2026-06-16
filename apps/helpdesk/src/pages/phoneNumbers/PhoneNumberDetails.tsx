@@ -23,7 +23,7 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { countryOptions, PhoneUseCase } from 'business/twilio'
 import { useAppDispatch } from 'hooks/useAppDispatch'
-import type { GorgiasApiError } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import {
     deleteNewPhoneNumber,
@@ -88,7 +88,9 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
                 history.push('/app/settings/phone-numbers')
             } catch (error) {
                 toast.error(
-                    (error as GorgiasApiError).response.data.error.msg,
+                    isGorgiasApiError(error)
+                        ? error.response.data.error.msg
+                        : 'Failed to delete phone number',
                     {
                         caption: stripHtmlTags(
                             String(errorToChildren(error) ?? ''),

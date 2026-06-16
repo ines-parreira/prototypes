@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -8,16 +8,7 @@ import {
     mockCreateMacroResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-
 import { useCreateMacro } from '../useCreateMacro'
-
-jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = jest.mocked(useAppDispatch)
-
-jest.mock('state/notifications/actions')
 
 const server = setupServer()
 
@@ -39,10 +30,6 @@ function renderUseCreateMacro() {
 }
 
 describe('useCreateMacro', () => {
-    beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(jest.fn())
-    })
-
     it('should create a macro and notify on success', async () => {
         const createMacroMock = mockCreateMacroHandler(async () =>
             HttpResponse.json(mockCreateMacroResponse({ id: 111 })),
@@ -60,10 +47,10 @@ describe('useCreateMacro', () => {
         await waitForCreateMacroRequest(async (request) => {
             expect(await request.json()).toEqual({ name: 'New Macro' })
         })
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Successfully created macro',
-            status: NotificationStatus.Success,
+        const toastEl = await screen.findByRole('status', {
+            name: 'Successfully created macro',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle failed request', async () => {
@@ -85,13 +72,9 @@ describe('useCreateMacro', () => {
             }),
         ).rejects.toBeDefined()
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                title: errorMessage,
-                status: NotificationStatus.Error,
-                allowHTML: true,
-                message: null,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: errorMessage,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

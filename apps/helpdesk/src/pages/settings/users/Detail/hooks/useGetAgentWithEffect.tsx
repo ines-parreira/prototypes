@@ -4,14 +4,12 @@ import { useEffect } from 'react'
 import { UserRole } from 'config/types/user'
 import { handleError } from 'hooks/agents/errorHandler'
 import { useGetAgent } from 'models/agents/queries'
-import type { StoreDispatch } from 'state/types'
 
 export const useGetAgentWithEffects = ({
     agentId,
     isEdit,
     setAgentState,
     set2FA,
-    dispatch,
 }: {
     agentId: number
     isEdit: boolean
@@ -19,7 +17,6 @@ export const useGetAgentWithEffects = ({
         SetStateAction<{ name: string; email: string; role: UserRole }>
     >
     set2FA: Dispatch<SetStateAction<boolean | undefined>>
-    dispatch: StoreDispatch
 }) => {
     const {
         data: agent,
@@ -31,11 +28,7 @@ export const useGetAgentWithEffects = ({
 
     useEffect(() => {
         if (error) {
-            handleError(
-                error,
-                `Failed to fetch agent with id ${agentId}`,
-                dispatch,
-            )
+            handleError(error, `Failed to fetch agent with id ${agentId}`)
         } else {
             setAgentState({
                 name: agent?.name || '',
@@ -48,7 +41,7 @@ export const useGetAgentWithEffects = ({
                 has2FA === undefined ? agent?.has_2fa_enabled : has2FA,
             )
         }
-    }, [agent, error, agentId, setAgentState, set2FA, dispatch])
+    }, [agent, error, agentId, setAgentState, set2FA])
 
     return { rawData: agent, isLoading }
 }

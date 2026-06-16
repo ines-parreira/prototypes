@@ -537,20 +537,6 @@ exports[`infobarActions.shopify.createOrder actions onInit() on error should cal
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
   {
-    "payload": {
-      "allowHTML": true,
-      "buttons": [],
-      "dismissAfter": 3000,
-      "dismissible": true,
-      "id": 1,
-      "message": "Error while calculating draft order",
-      "position": "top-center",
-      "showDismissButton": false,
-      "status": "error",
-    },
-    "type": "reapop/upsertNotification",
-  },
-  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",

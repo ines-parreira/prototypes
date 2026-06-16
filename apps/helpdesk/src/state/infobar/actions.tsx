@@ -4,13 +4,13 @@ import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import _noop from 'lodash/noop'
 
+import { Button, toast } from '@gorgias/axiom'
+
 import { searchCustomers } from 'models/customer/resources'
 import type { Customer } from 'models/customer/types'
 import type { ActionExecutedEvent } from 'services/socketManager/types'
 import * as constants from 'state/infobar/constants'
 import * as utils from 'state/infobar/utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 import { isCurrentlyOnTicket, stripErrorMessage } from 'utils'
@@ -167,14 +167,10 @@ export const executeAction =
             payload,
         }
 
-        void dispatch(
-            notify({
-                status: NotificationStatus.Loading,
-                dismissAfter: 0,
-                closeOnNext: true,
-                message: 'Executing action...',
-            }),
-        )
+        toast.info('Executing action...', {
+            id: actionId,
+            duration: Infinity,
+        })
 
         dispatch({
             type: constants.EXECUTE_ACTION_START,
@@ -211,42 +207,30 @@ export const handleExecutedAction =
         const actionId = response.action_id
 
         if (response.status === 'error') {
-            let buttons = []
-            if (response.user_id !== undefined) {
-                buttons.push({
-                    primary: true,
-                    name: 'Review',
-                    onClick: () => {
-                        history.push(`/app/customer/${response.user_id || ''}`)
-                    },
-                })
-            }
-
             const ticketId = response.ticket_id
-            if (ticketId) {
-                if (isCurrentlyOnTicket(ticketId)) {
-                    buttons = []
-                } else {
-                    buttons = []
-                    buttons.push({
-                        primary: true,
-                        name: 'Review',
-                        onClick: () => {
-                            history.push(`/app/ticket/${ticketId}`)
-                        },
-                    })
-                }
+            let reviewHref: string | null = null
+            if (ticketId && !isCurrentlyOnTicket(ticketId)) {
+                reviewHref = `/app/ticket/${ticketId}`
+            } else if (!ticketId && response.user_id !== undefined) {
+                reviewHref = `/app/customer/${response.user_id || ''}`
             }
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    title: 'Something went wrong on your last action 😞',
-                    dismissAfter: 0,
-                    message: stripErrorMessage(response.msg),
-                    buttons,
+            toast.dismiss(actionId)
+            toast.error('Something went wrong on your last action 😞', {
+                caption: stripErrorMessage(response.msg),
+                duration: Infinity,
+                ...(reviewHref && {
+                    inlineActions: (
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => history.push(reviewHref!)}
+                        >
+                            Review
+                        </Button>
+                    ),
                 }),
-            )
+            })
 
             return dispatch({
                 type: constants.EXECUTE_ACTION_ERROR,
@@ -255,13 +239,9 @@ export const handleExecutedAction =
             })
         }
 
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                title: response.msg
-                    ? response.msg
-                    : 'Action successfully executed',
-            }),
+        toast.dismiss(actionId)
+        toast.success(
+            response.msg ? response.msg : 'Action successfully executed',
         )
 
         return dispatch({

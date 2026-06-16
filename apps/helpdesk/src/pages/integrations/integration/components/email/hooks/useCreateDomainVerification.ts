@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { toast } from '@gorgias/axiom'
 
-import type { GorgiasApiError } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import type { EmailProvider } from 'models/integration/constants'
 import { createDomainVerification as createDomainVerificationRequest } from 'models/integration/resources/email'
 
@@ -18,11 +18,10 @@ export function useCreateDomainVerification() {
             setIsLoading(true)
             return await createDomainVerificationRequest(payload)
         } catch (error) {
-            const { response } = error as GorgiasApiError
-
             toast.error(
-                response?.data?.error?.msg ??
-                    'Failed to create domain verification',
+                isGorgiasApiError(error)
+                    ? error.response.data.error.msg
+                    : 'Failed to create domain verification',
             )
             throw error
         } finally {

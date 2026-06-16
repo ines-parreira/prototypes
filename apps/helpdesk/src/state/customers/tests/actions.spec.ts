@@ -6,6 +6,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import type { Customer, CustomerDraft } from 'models/customer/types'
 import type { StoreDispatch } from 'state/types'
 
@@ -42,6 +44,7 @@ describe('customers actions', () => {
     beforeEach(() => {
         store = mockStore({ customers: initialState })
         mockServer = new MockAdapter(client)
+        jest.clearAllMocks()
     })
 
     describe('fetch customer', () => {
@@ -139,6 +142,18 @@ describe('customers actions', () => {
                 expect(mockServer.history).toMatchSnapshot()
                 expect(store.getActions()).toMatchSnapshot()
             })
+    })
+
+    it('bulkDeleteCustomer() shows an error toast on failure', async () => {
+        const toastErrorSpy = jest.spyOn(toast, 'error')
+        const customersIds = fromJS([1, 2])
+        mockServer.onAny().reply(500)
+
+        await store.dispatch(actions.bulkDeleteCustomer(customersIds))
+
+        expect(toastErrorSpy).toHaveBeenCalledWith(
+            "Couldn't delete selected customers",
+        )
     })
 
     it('merge customers', () => {
