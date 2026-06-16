@@ -1,7 +1,7 @@
 import { SidebarProvider } from '@repo/navigation'
 import { history } from '@repo/routing'
 import { assumeMock, render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
@@ -88,7 +88,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         })
 
         const buttons = screen.getAllByRole('radio')
-        await act(() => user.click(buttons[0]))
+        await user.click(buttons[0])
 
         expect(history.push).toHaveBeenCalledWith('/app/stats/live-overview')
     })
@@ -123,7 +123,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         })
 
         const buttons = screen.getAllByRole('radio')
-        await act(() => user.click(buttons[0]))
+        await user.click(buttons[0])
 
         expect(history.push).not.toHaveBeenCalled()
     })
@@ -144,7 +144,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         )
 
         const buttons = screen.getAllByRole('radio')
-        await act(() => user.click(buttons[0]))
+        await user.click(buttons[0])
 
         expect(history.push).not.toHaveBeenCalled()
     })
@@ -155,11 +155,9 @@ describe('CollapsedAnalyticsSidebar', () => {
             wrapper: SidebarProvider,
         })
 
-        await act(() => user.click(screen.getAllByRole('radio')[0]))
+        await user.click(screen.getAllByRole('radio')[0])
         jest.clearAllMocks()
-        await act(() =>
-            user.click(screen.getByRole('menuitemradio', { name: 'Agents' })),
-        )
+        await user.click(screen.getByRole('menuitemradio', { name: 'Agents' }))
 
         expect(history.push).toHaveBeenCalledWith('/app/stats/live-agents')
     })
@@ -193,7 +191,7 @@ describe('CollapsedAnalyticsSidebar', () => {
             { wrapper: SidebarProvider },
         )
 
-        await act(() => user.click(screen.getByRole('radio')))
+        await user.click(screen.getByRole('radio'))
 
         expect(screen.getByText('Beta')).toBeInTheDocument()
         expect(screen.getByText('New')).toBeInTheDocument()
@@ -226,7 +224,7 @@ describe('CollapsedAnalyticsSidebar', () => {
             wrapper: SidebarProvider,
         })
 
-        await act(() => user.click(screen.getByRole('radio')))
+        await user.click(screen.getByRole('radio'))
 
         const menuItems = screen.getAllByRole('menuitemradio')
         expect(menuItems[0].querySelector('svg')).toBeInTheDocument()
@@ -309,6 +307,27 @@ describe('CollapsedAnalyticsSidebar', () => {
         expect(VideoPreviewTooltipMock).not.toHaveBeenCalled()
     })
 
+    it('navigates directly to a route-only section without opening a menu', async () => {
+        const user = userEvent.setup()
+        const routeOnlySections: StatsNavbarSection[] = [
+            {
+                id: 'metrics-glossary',
+                label: 'Metrics glossary',
+                icon: 'book-open',
+                route: 'metrics-glossary',
+            },
+        ]
+
+        render(<CollapsedAnalyticsSidebar sections={routeOnlySections} />, {
+            wrapper: SidebarProvider,
+        })
+
+        await user.click(screen.getByRole('radio'))
+
+        expect(history.push).toHaveBeenCalledWith('/app/stats/metrics-glossary')
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument()
+    })
+
     it('navigates directly when clicking a single-item section without opening a menu', async () => {
         const user = userEvent.setup()
         render(<CollapsedAnalyticsSidebar sections={mockSections} />, {
@@ -316,7 +335,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         })
 
         const buttons = screen.getAllByRole('radio')
-        await act(() => user.click(buttons[2]))
+        await user.click(buttons[2])
 
         expect(history.push).toHaveBeenCalledWith(
             '/app/stats/ticket-insights/ticket-fields',

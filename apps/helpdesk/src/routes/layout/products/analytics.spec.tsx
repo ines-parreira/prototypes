@@ -930,4 +930,41 @@ describe('useStatsNavbarConfig', () => {
             expect(dashboardsSection?.items).toHaveLength(0)
         })
     })
+
+    describe('Metrics Glossary section', () => {
+        it('should include a standalone Metrics Glossary section with a route when the MetricsGlossary flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.MetricsGlossary,
+                isLoading: false,
+            }))
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
+            const metricsGlossarySection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.MetricsGlossary,
+            )
+
+            expect(metricsGlossarySection).toBeDefined()
+            expect(metricsGlossarySection?.route).toBe(
+                STATS_ROUTES.METRICS_GLOSSARY,
+            )
+            expect(metricsGlossarySection?.label).toBe('Metrics glossary')
+            // Standalone link: no nested items to expand.
+            expect(metricsGlossarySection?.items).toBeUndefined()
+        })
+
+        it('should not include the Metrics Glossary section when the MetricsGlossary flag is disabled', () => {
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
+            const sectionIds = result.current.sections.map((s) => s.id)
+
+            expect(sectionIds).not.toContain(
+                StatsNavbarViewSections.MetricsGlossary,
+            )
+        })
+    })
 })

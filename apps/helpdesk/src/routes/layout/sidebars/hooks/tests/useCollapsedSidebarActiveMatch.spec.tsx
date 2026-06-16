@@ -148,4 +148,98 @@ describe('useCollapsedSidebarActiveMatch', () => {
 
         expect(result.current).toBeUndefined()
     })
+
+    describe('with getSectionPath (route-only sections)', () => {
+        const sectionsWithRoute = [
+            { id: 'metrics-glossary', route: 'metrics-glossary' },
+            {
+                id: 'section-a',
+                items: [{ id: '/app/stats/live', path: '/app/stats/live' }],
+            },
+        ]
+
+        const getSectionPath = (section: { id: string; route?: string }) =>
+            section.route ? `/app/stats/${section.route}` : undefined
+
+        const renderWithSectionPath = (route: string) =>
+            renderHook(
+                () =>
+                    useCollapsedSidebarActiveMatch(
+                        sectionsWithRoute,
+                        (item: TestItem) => item.path,
+                        getSectionPath,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <MemoryRouter initialEntries={[route]}>
+                            {children}
+                        </MemoryRouter>
+                    ),
+                },
+            )
+
+        it('matches a route-only section by its section path, using the section id as itemId', () => {
+            const { result } = renderWithSectionPath(
+                '/app/stats/metrics-glossary',
+            )
+
+            expect(result.current).toEqual({
+                sectionId: 'metrics-glossary',
+                itemId: 'metrics-glossary',
+            })
+        })
+
+        it('still matches item paths in other sections', () => {
+            const { result } = renderWithSectionPath('/app/stats/live')
+
+            expect(result.current).toEqual({
+                sectionId: 'section-a',
+                itemId: '/app/stats/live',
+            })
+        })
+
+        it('returns undefined when neither an item nor a section route matches', () => {
+            const { result } = renderWithSectionPath('/app/stats/unknown')
+
+            expect(result.current).toBeUndefined()
+        })
+
+        it('prefers an item match over a section-path match within the same section', () => {
+            const overlappingSections = [
+                {
+                    id: 'combo',
+                    route: 'combo',
+                    items: [
+                        {
+                            id: 'combo-item',
+                            path: '/app/stats/combo/item',
+                        },
+                    ],
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useCollapsedSidebarActiveMatch(
+                        overlappingSections,
+                        (item: TestItem) => item.path,
+                        getSectionPath,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <MemoryRouter
+                            initialEntries={['/app/stats/combo/item']}
+                        >
+                            {children}
+                        </MemoryRouter>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                sectionId: 'combo',
+                itemId: 'combo-item',
+            })
+        })
+    })
 })

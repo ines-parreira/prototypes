@@ -168,6 +168,7 @@ export enum FeatureFlagKey {
     LiveAgentsDataTable = 'live-agents-data-table',
     MacroArchives = 'macro-archives',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
+    MetricsGlossary = 'linear-project-analytics-metrics-glossary',
     MessagesTranslations = 'linear.introduce-native-translations-for-inbound-and-outbound-messages.fe-implementation',
     HelpdeskMicrosoftClarity = 'helpdesk-microsoft-clarity',
     MLFeaturesKillswitch = 'ml-features-killswitch',

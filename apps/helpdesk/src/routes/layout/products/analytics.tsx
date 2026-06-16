@@ -55,6 +55,7 @@ export type StatsNavbarSection = {
     sectionCanduId?: string
     actionsSlot?: ReactNode
     tooltipProps?: TooltipProps
+    route?: string
     items?: {
         id: string
         route: string
@@ -111,6 +112,11 @@ export const analyticsSections: Record<
         label: 'Voice',
         icon: 'soundwave',
     },
+    [StatsNavbarViewSections.MetricsGlossary]: {
+        id: 'metrics-glossary',
+        label: 'Metrics glossary',
+        icon: 'book-open',
+    },
 }
 
 export function useStatsNavbarConfig() {
@@ -142,6 +148,9 @@ export function useStatsNavbarConfig() {
     )
     const { value: isRevampOverallPerformanceNewScreensEnabled } =
         useFlagWithLoading(FeatureFlagKey.RevampOverallPerformanceNewScreens)
+    const { value: isMetricsGlossaryEnabled } = useFlagWithLoading(
+        FeatureFlagKey.MetricsGlossary,
+    )
 
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAccess,
@@ -474,6 +483,20 @@ export function useStatsNavbarConfig() {
                     },
                 ],
             },
+            ...(isMetricsGlossaryEnabled
+                ? [
+                      {
+                          id: StatsNavbarViewSections.MetricsGlossary,
+                          label: analyticsSections[
+                              StatsNavbarViewSections.MetricsGlossary
+                          ].label,
+                          icon: analyticsSections[
+                              StatsNavbarViewSections.MetricsGlossary
+                          ].icon,
+                          route: STATS_ROUTES.METRICS_GLOSSARY,
+                      },
+                  ]
+                : []),
         ]
     }, [
         isNewSatisfactionReportEnabled,
@@ -486,6 +509,7 @@ export function useStatsNavbarConfig() {
         isLegacyReportsDisabled,
         isNavTooltipEnabled,
         isRevampOverallPerformanceNewScreensEnabled,
+        isMetricsGlossaryEnabled,
         canUseAiSalesAgent,
         getDashboardsHandler,
         isConvertSubscriber,
