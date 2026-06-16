@@ -8,6 +8,7 @@ import type { Context } from 'domains/reporting/models/scopes/scope'
 import {
     createScopeFilters,
     getBreakdownQuery,
+    getTimeseriesQuery,
 } from 'domains/reporting/models/scopes/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
@@ -326,3 +327,13 @@ export const handoverInteractionsPerSkill = handoverInteractionsScope
 export const handoverInteractionsPerSkillQueryFactory = (
     ctx: HandoverInteractionsContext,
 ) => handoverInteractionsPerSkill.build(ctx)
+
+export const {
+    timeseriesQuery: handoverInteractionsTimeseries,
+    timeseriesQueryFactory: handoverInteractionsTimeseriesQueryFactoryV2,
+} = getTimeseriesQuery(
+    handoverInteractionsScope,
+    () => ({ measures: ['handoverInteractionsCount'] as const }),
+    METRIC_NAMES.AI_AGENT_OVERVIEW_HANDOVER_INTERACTIONS_TIMESERIES,
+    'eventDatetime',
+)

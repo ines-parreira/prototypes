@@ -1,6 +1,15 @@
-import { overallDecreaseInFirstResponseTimeScope } from 'domains/reporting/models/scopes/overallDecreaseInFirstResponseTime'
+import {
+    medianDecreaseInFirstResponseTime,
+    medianDecreaseInFirstResponseTimeQueryV2Factory,
+    overallDecreaseInFirstResponseTimeScope,
+    overallDecreaseInFRTTimeseries,
+    overallDecreaseInFRTTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/overallDecreaseInFirstResponseTime'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    ApiStatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('overallDecreaseInFirstResponseTimeScope', () => {
@@ -122,5 +131,61 @@ describe('overallDecreaseInFirstResponseTimeScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+
+    describe('QueryV2Factory methods', () => {
+        const context = { filters: baseFilters, timezone: 'UTC' }
+
+        describe('medianDecreaseInFirstResponseTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    medianDecreaseInFirstResponseTimeQueryV2Factory(context),
+                ).toEqual(medianDecreaseInFirstResponseTime.build(context))
+            })
+
+            it('uses the median decrease in FRT measure', () => {
+                const result =
+                    medianDecreaseInFirstResponseTimeQueryV2Factory(context)
+
+                expect(result.measures).toEqual([
+                    'medianDecreaseInFirstResponseTime',
+                ])
+            })
+        })
+
+        describe('overallDecreaseInFRTTimeseriesQueryV2Factory', () => {
+            const timeseriesContext = {
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: [],
+            }
+
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    overallDecreaseInFRTTimeseriesQueryV2Factory(
+                        timeseriesContext,
+                    ),
+                ).toEqual(
+                    overallDecreaseInFRTTimeseries.build(timeseriesContext),
+                )
+            })
+
+            it('creates a timeseries query with granularity from context', () => {
+                const result =
+                    overallDecreaseInFRTTimeseriesQueryV2Factory(
+                        timeseriesContext,
+                    )
+
+                expect(result).toEqual(
+                    expect.objectContaining({
+                        measures: ['medianDecreaseInFirstResponseTime'],
+                        time_dimensions: [
+                            { dimension: 'eventDatetime', granularity: 'day' },
+                        ],
+                        limit: 10000,
+                    }),
+                )
+            })
+        })
     })
 })

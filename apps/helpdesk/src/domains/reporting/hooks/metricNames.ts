@@ -212,8 +212,14 @@ export const METRIC_NAMES = {
     AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILL_DOWN:
         'ai-agent-support-agent-resolution-time-drill-down',
     AI_AGENT_OVERVIEW_DECREASE_IN_FRT: 'ai-agent-overview-decrease-in-frt',
+    AI_AGENT_OVERVIEW_DECREASE_IN_FRT_TIMESERIES:
+        'ai-agent-overview-decrease-in-frt-timeseries',
     AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME:
         'ai-agent-overview-decrease-in-resolution-time',
+    AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_TIMESERIES:
+        'ai-agent-overview-decrease-in-resolution-time-timeseries',
+    AI_AGENT_OVERVIEW_HANDOVER_INTERACTIONS_TIMESERIES:
+        'ai-agent-overview-handover-interactions-timeseries',
     AI_AGENT_SUPPORT_AGENT_DECREASE_IN_RESOLUTION_TIME:
         'ai-agent-support-agent-decrease-in-resolution-time',
     AI_AGENT_ALL_AGENTS_DECREASE_IN_RESOLUTION_TIME:
@@ -1480,6 +1486,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_HANDOVER_INTERACTIONS_PER_ENGAGEMENT_TYPE,
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_BY_SKILL,
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_PER_SKILL,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_HANDOVER_INTERACTIONS_TIMESERIES,
     ],
 
     // P5
@@ -1606,9 +1613,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.OverallDecreaseInResolutionTime]: [
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME_TIMESERIES,
     ],
     [MetricScope.OverallDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT,
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT_TIMESERIES,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,

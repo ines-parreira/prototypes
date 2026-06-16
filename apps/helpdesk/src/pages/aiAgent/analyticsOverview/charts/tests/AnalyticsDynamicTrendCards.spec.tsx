@@ -3,6 +3,9 @@ import type { MetricTrendFormat } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { handoverInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/handoverInteractions'
+import { overallDecreaseInFRTTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/overallDecreaseInFirstResponseTime'
+import { overallDecreaseInResolutionTimeTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/overallDecreaseInResolutionTime'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type {
     ChartConfig,
@@ -486,6 +489,9 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 120,
                 prevValue: 150,
             },
+            timeSeriesView: {
+                queryFactory: handoverInteractionsTimeseriesQueryFactoryV2,
+            },
         },
         {
             name: 'AnalyticsAiAgentAllAgentsDecreaseInFRTCard',
@@ -549,6 +555,9 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 3600,
                 prevValue: 4200,
             },
+            timeSeriesView: {
+                queryFactory: overallDecreaseInFRTTimeseriesQueryV2Factory,
+            },
         },
         {
             name: 'AnalyticsAiAgentSupportHandoverInteractionsCard',
@@ -602,6 +611,10 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'duration' as const,
                 value: 88770,
                 prevValue: 88200,
+            },
+            timeSeriesView: {
+                queryFactory:
+                    overallDecreaseInResolutionTimeTimeseriesQueryV2Factory,
             },
         },
         {
