@@ -1,5 +1,6 @@
 import { ConfigurableGraphType } from '@repo/reporting'
 import type {
+    ChartDataItem,
     ConfigurableGraphGroupingConfig,
     ConfigurableGraphMetricConfig,
     MetricTrendFormat,
@@ -67,13 +68,46 @@ export type BarChartSankeyMetricConfig = {
     }
 }
 
+// A "static bars" metric renders a fixed set of independent value queries as
+// the bars of a single chart (e.g. tickets created / open / closed), rather
+// than breaking one metric down by a dimension. Like the Sankey variant, the
+// page supplies both the rendering hook and the imperative export fetch over
+// the same value queries.
+export type BarChartStaticMetricConfig = {
+    measure: string
+    name: string
+    metricFormat: MetricTrendFormat
+    staticBars: {
+        dimensionId: string
+        dimensionName: string
+        graphType:
+            | ConfigurableGraphType.Bar
+            | ConfigurableGraphType.HorizontalBar
+        useChartData: (
+            filters: StatsFilters,
+            timezone: string,
+        ) => { data: ChartDataItem[]; isLoading: boolean; isError: boolean }
+        fetchExportRows: (
+            filters: StatsFilters,
+            timezone: string,
+        ) => Promise<{ name: string; value: number | null }[]>
+        csvMetricName: string
+        csvDimensionName: string
+    }
+}
+
 export type BarChartMetricConfig<TDimension extends DimensionName> =
     | BarChartBreakdownMetricConfig<TDimension>
     | BarChartSankeyMetricConfig
+    | BarChartStaticMetricConfig
 
 const isSankeyMetric = <TDimension extends DimensionName>(
     metric: BarChartMetricConfig<TDimension>,
 ): metric is BarChartSankeyMetricConfig => 'sankey' in metric
+
+const isStaticMetric = <TDimension extends DimensionName>(
+    metric: BarChartMetricConfig<TDimension>,
+): metric is BarChartStaticMetricConfig => 'staticBars' in metric
 
 export type BarChartDimensionDefinition = {
     label: string
@@ -115,6 +149,26 @@ export const getBarChartGraphConfig = <TDimension extends DimensionName>(
                         useChartData: () =>
                             sankey.useChartData(statsFilters, timezone),
                         ...sankey.displayProps,
+                    },
+                ],
+            }
+        }
+
+        if (isStaticMetric(metric)) {
+            const { staticBars } = metric
+
+            return {
+                measure: metric.measure,
+                name: metric.name,
+                metricFormat: metric.metricFormat,
+                dimensions: [
+                    {
+                        id: staticBars.dimensionId,
+                        name: staticBars.dimensionName,
+                        configurableGraphType: staticBars.graphType,
+                        useChartData: () =>
+                            staticBars.useChartData(statsFilters, timezone),
+                        period,
                     },
                 ],
             }
@@ -169,6 +223,23 @@ export const createBarChartFetch =
                     rows,
                     metric.sankey.csvMetricName,
                     metric.sankey.csvDimensionName,
+                    metric.metricFormat,
+                    filters.period,
+                ),
+            }
+        }
+
+        if (isStaticMetric(metric)) {
+            const rows = await metric.staticBars.fetchExportRows(
+                filters,
+                timezone,
+            )
+
+            return {
+                files: buildBarCsvFiles(
+                    rows,
+                    metric.staticBars.csvMetricName,
+                    metric.staticBars.csvDimensionName,
                     metric.metricFormat,
                     filters.period,
                 ),

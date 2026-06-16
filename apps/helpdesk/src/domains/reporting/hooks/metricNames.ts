@@ -1125,6 +1125,10 @@ export const METRIC_NAMES = {
     PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_TIMESERIES_PER_CHANNEL:
         'performance-channels-email-closed-tickets-timeseries-per-channel',
 
+    // Open Tickets
+    PERFORMANCE_CHANNELS_EMAIL_OPEN_TICKETS_VALUE:
+        'performance-channels-email-open-tickets-value',
+
     // Tickets Replied
     PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_VALUE:
         'performance-channels-email-tickets-replied-value',

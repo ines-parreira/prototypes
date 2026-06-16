@@ -2,7 +2,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useStatsMetricBreakdownPerDimension } from 'domains/reporting/hooks/useStatsMetricBreakdownPerDimension'
+import { useStatsMetric } from 'domains/reporting/hooks/useStatsMetric'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type {
     ChartConfig,
@@ -12,7 +12,7 @@ import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { ChannelsEmailConfigurableBarGraph } from 'domains/reporting/pages/performance/channels/email/charts/configurableGraphs/ChannelsEmailConfigurableBarGraph/ChannelsEmailConfigurableBarGraph'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('domains/reporting/hooks/useStatsMetricBreakdownPerDimension')
+jest.mock('domains/reporting/hooks/useStatsMetric')
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
@@ -22,9 +22,7 @@ jest.mock(
 )
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-const useStatsMetricBreakdownPerDimensionMock = assumeMock(
-    useStatsMetricBreakdownPerDimension,
-)
+const useStatsMetricMock = assumeMock(useStatsMetric)
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
 
 const chartConfig: ChartConfig = {
@@ -91,19 +89,22 @@ describe('ChannelsEmailConfigurableBarGraph', () => {
             granularity: undefined,
         } as any)
 
-        useStatsMetricBreakdownPerDimensionMock.mockReturnValue({
-            data: {
-                value: null,
-                decile: null,
-                allData: [],
-                allValues: [
-                    { dimension: 'email', value: 4.5, decile: null },
-                    { dimension: 'chat', value: 4.7, decile: null },
-                ],
-            },
-            isFetching: false,
-            isError: false,
-        })
+        useStatsMetricMock
+            .mockReturnValueOnce({
+                data: { value: 120 },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: { value: 30 },
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: { value: 90 },
+                isFetching: false,
+                isError: false,
+            })
 
         ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)
     })
@@ -112,40 +113,14 @@ describe('ChannelsEmailConfigurableBarGraph', () => {
         jest.clearAllMocks()
     })
 
-    it('renders the first metric title', () => {
-        render(
-            <ChannelsEmailConfigurableBarGraph chartId="performance-channels-email-configurable-bar-graph" />,
-        )
-
-        expect(
-            screen.getAllByText('Email tickets created').length,
-        ).toBeGreaterThan(0)
-    })
-
-    it('renders the metric selector with all four measures available', () => {
-        render(
-            <ChannelsEmailConfigurableBarGraph chartId="performance-channels-email-configurable-bar-graph" />,
-        )
-
-        expect(
-            screen.getByRole('button', { name: /Email tickets created/i }),
-        ).toBeInTheDocument()
-        expect(screen.getAllByText('Resolution time').length).toBeGreaterThan(0)
-        expect(
-            screen.getAllByText('First response time').length,
-        ).toBeGreaterThan(0)
-        expect(
-            screen.getAllByText('Messages per ticket').length,
-        ).toBeGreaterThan(0)
-    })
-
-    it('renders humanized channel labels from the per-channel data', () => {
+    it('renders a bar for each ticket status', () => {
         const { container } = render(
             <ChannelsEmailConfigurableBarGraph chartId="performance-channels-email-configurable-bar-graph" />,
         )
 
-        expect(findSvgTextByContent(container, 'Email')).toBeTruthy()
-        expect(findSvgTextByContent(container, 'Chat')).toBeTruthy()
+        expect(findSvgTextByContent(container, 'Created')).toBeTruthy()
+        expect(findSvgTextByContent(container, 'Open')).toBeTruthy()
+        expect(findSvgTextByContent(container, 'Closed')).toBeTruthy()
     })
 
     it('renders the responsive chart container', () => {
