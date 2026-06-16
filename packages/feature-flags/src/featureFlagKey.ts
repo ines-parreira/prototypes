@@ -138,6 +138,7 @@ export enum FeatureFlagKey {
     EnableNewLanguages = 'enable-new-languages',
     EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',
     EnforceChatRedesignWithoutAiAgent = 'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent',
+    FacebookIntegrationsReconnectedToAbly = 'linear-HELP-6439-migrate_facebook-integrations-reconnected-to-ably',
     FakeActionPlaceholder = 'fake-action-placeholder',
     FeatureFlagEnginePrimary = 'feature-flag-engine-primary',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',

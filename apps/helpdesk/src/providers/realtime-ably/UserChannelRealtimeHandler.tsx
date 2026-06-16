@@ -10,6 +10,10 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import {
+    FACEBOOK_INTEGRATIONS_RECONNECTED_EVENT,
+    useFacebookIntegrationsReconnectedRealtimeMessageHandler,
+} from './useFacebookIntegrationsReconnectedRealtimeMessageHandler'
+import {
     TICKET_MESSAGE_ACTION_FAILED_EVENT,
     useTicketMessageActionFailedRealtimeMessageHandler,
 } from './useTicketMessageActionFailedRealtimeMessageHandler'
@@ -31,8 +35,13 @@ export function UserChannelRealtimeHandler() {
     const isWhatsAppOnboardingToAblyEnabled = useFlag(
         FeatureFlagKey.WhatsAppOnboardingToAbly,
     )
+    const isFacebookIntegrationsReconnectedToAblyEnabled = useFlag(
+        FeatureFlagKey.FacebookIntegrationsReconnectedToAbly,
+    )
     const { handleTicketMessageActionFailedRealtimeMessage } =
         useTicketMessageActionFailedRealtimeMessageHandler()
+    const { handleFacebookIntegrationsReconnectedRealtimeMessage } =
+        useFacebookIntegrationsReconnectedRealtimeMessageHandler()
     const {
         handleWhatsAppOnboardingFailedRealtimeMessage,
         handleWhatsAppOnboardingSuccessRealtimeMessage,
@@ -45,6 +54,14 @@ export function UserChannelRealtimeHandler() {
                     if (!isTicketMessageActionFailedToAblyEnabled) return
 
                     handleTicketMessageActionFailedRealtimeMessage(message)
+                    return
+                }
+                case FACEBOOK_INTEGRATIONS_RECONNECTED_EVENT: {
+                    if (!isFacebookIntegrationsReconnectedToAblyEnabled) return
+
+                    handleFacebookIntegrationsReconnectedRealtimeMessage(
+                        message,
+                    )
                     return
                 }
                 case WHATSAPP_ONBOARDING_SUCCEEDED_EVENT: {
@@ -64,9 +81,11 @@ export function UserChannelRealtimeHandler() {
             }
         },
         [
+            handleFacebookIntegrationsReconnectedRealtimeMessage,
             handleTicketMessageActionFailedRealtimeMessage,
             handleWhatsAppOnboardingFailedRealtimeMessage,
             handleWhatsAppOnboardingSuccessRealtimeMessage,
+            isFacebookIntegrationsReconnectedToAblyEnabled,
             isTicketMessageActionFailedToAblyEnabled,
             isWhatsAppOnboardingToAblyEnabled,
         ],

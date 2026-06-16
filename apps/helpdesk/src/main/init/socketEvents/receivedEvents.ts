@@ -109,6 +109,15 @@ async function isTicketMessageActionFailedToAblyEnabled() {
     return flag
 }
 
+async function isFacebookIntegrationsReconnectedToAblyEnabled() {
+    const { flag } = await fetchFlag(
+        FeatureFlagKey.FacebookIntegrationsReconnectedToAbly,
+        false,
+    )
+
+    return flag
+}
+
 function invalidateAllViewsQuery() {
     void appQueryClient.invalidateQueries({
         queryKey: queryKeys.views.listAllViews(),
@@ -605,7 +614,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.FacebookIntegrationsReconnected,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isFacebookIntegrationsReconnectedToAblyEnabled()) return
+
             reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
 
             const { total } = (json as FacebookIntegrationsReconnected).event

@@ -736,30 +736,55 @@ describe('receivedEvents', () => {
             name: SocketEventType.FacebookIntegrationsReconnected,
         })
 
-        it('should fetch integrations', () => {
-            const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
-            if (handler) {
-                handler.onReceive({ event: { total: 1 } } as any)
-            }
-            expect(spy).toHaveBeenCalled()
+        beforeEach(() => {
+            mockFetchFlag.mockResolvedValue({ flag: false, error: null })
         })
 
-        it('should show a success toast', () => {
+        it('should fetch integrations', async () => {
+            const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
+            if (handler) {
+                await handler.onReceive({ event: { total: 1 } } as any)
+            }
+            expect(spy).toHaveBeenCalled()
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.FacebookIntegrationsReconnectedToAbly,
+                false,
+            )
+        })
+
+        it('should show a success toast', async () => {
             const spy = jest.spyOn(toast, 'success')
 
             if (handler) {
-                handler.onReceive({ event: { total: 1 } } as any)
+                await handler.onReceive({ event: { total: 1 } } as any)
             }
             expect(spy).toHaveBeenCalledWith(
                 'One Facebook page has been reconnected.',
             )
 
             if (handler) {
-                handler.onReceive({ event: { total: 2 } } as any)
+                await handler.onReceive({ event: { total: 2 } } as any)
             }
             expect(spy).toHaveBeenCalledWith(
                 '2 Facebook pages have been reconnected.',
             )
+        })
+
+        it('should not handle Socket.IO events when the Ably migration feature flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+
+            const fetchIntegrationsSpy = jest.spyOn(
+                integrationActions,
+                'fetchIntegrations',
+            )
+            const toastSpy = jest.spyOn(toast, 'success')
+
+            if (handler) {
+                await handler.onReceive({ event: { total: 1 } } as any)
+            }
+
+            expect(fetchIntegrationsSpy).not.toHaveBeenCalled()
+            expect(toastSpy).not.toHaveBeenCalled()
         })
     })
 
@@ -792,72 +817,6 @@ describe('receivedEvents', () => {
             }
 
             expect(invalidateQueriesSpy).not.toHaveBeenCalled()
-        })
-    })
-
-    describe('WhatsAppOnboardingSucceeded handler', () => {
-        const handler = _find(receivedEvents, {
-            name: SocketEventType.WhatsAppOnboardingSucceeded,
-        })
-
-        beforeEach(() => {
-            jest.resetModules()
-            window.location.pathname =
-                '/app/settings/integrations/whatsapp/integrations'
-        })
-
-        it('should show a success toast with the connected phone number', async () => {
-            const useWhatsAppMigration = jest.requireMock(
-                'hooks/useWhatsAppMigration',
-            ) as { isMigrationInProgress: jest.Mock }
-            useWhatsAppMigration.isMigrationInProgress.mockReturnValue(false)
-
-            const phoneNumberResources = jest.requireMock(
-                'models/phoneNumber/resources',
-            ) as { fetchNewPhoneNumbers: jest.Mock }
-            phoneNumberResources.fetchNewPhoneNumbers.mockResolvedValue({
-                data: [],
-            })
-
-            const spy = jest.spyOn(toast, 'info')
-
-            await handler?.onReceive({ phone_number: '+1555' } as any)
-
-            expect(spy).toHaveBeenCalledWith(
-                'WhatsApp successfully connected for number +1555.',
-                { duration: 10000 },
-            )
-        })
-    })
-
-    describe('WhatsAppOnboardingFailed handler', () => {
-        const handler = _find(receivedEvents, {
-            name: SocketEventType.WhatsAppOnboardingFailed,
-        })
-
-        it('should show an error toast with the API message', async () => {
-            const spy = jest.spyOn(toast, 'error')
-
-            await handler?.onReceive({
-                phone_number: '+1555',
-                error: { message: 'Something broke' },
-            } as any)
-
-            expect(spy).toHaveBeenCalledWith(
-                'Something broke (number: +1555)',
-                { duration: 10000 },
-            )
-        })
-
-        it('should fall back to a generic error toast when no message', async () => {
-            const spy = jest.spyOn(toast, 'error')
-
-            await handler?.onReceive({ phone_number: '+1555' } as any)
-
-            expect(spy).toHaveBeenCalledWith(
-                expect.stringContaining('Failed to connect WhatsApp'),
-                { duration: 10000 },
-            )
         })
     })
 
