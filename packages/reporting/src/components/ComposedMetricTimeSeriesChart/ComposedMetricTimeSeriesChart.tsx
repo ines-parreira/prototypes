@@ -268,7 +268,7 @@ export const ComposedMetricTimeSeriesChart = ({
                                 return renderComposedMetricTimeSeriesTooltipContent(
                                     {
                                         barMetric,
-                                        lineMetric: lineMetric,
+                                        lineMetric,
                                         dateKey,
                                         dateFormatter,
                                         markers,

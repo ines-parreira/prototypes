@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type {
     ComposedMetricTimeSeriesDataItem,
     ComposedMetricTimeSeriesMetricConfig,
@@ -15,6 +14,7 @@ import {
     DateTimeFormatType,
     formatDatetime,
 } from '@repo/utils'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { Box, getColorValue } from '@gorgias/axiom'
 
@@ -107,9 +107,7 @@ const buildTicketVolumeAxisDomain = (
 }
 
 export const SkillPerformanceChart = () => {
-    const isSuccessRateEnabled = useFlag(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-    )
+    const isSuccessRateEnabled = useSkillReportingEnabled()
     const [selectedLineMetricDataKey, setSelectedLineMetricDataKey] = useState(
         SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY,
     )

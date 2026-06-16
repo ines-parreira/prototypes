@@ -2,10 +2,10 @@ import { useCallback, useMemo } from 'react'
 
 import moment from 'moment'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { TrendCard } from '@repo/reporting'
 import type { MetricTrend, MetricTrendFormat } from '@repo/reporting'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { Box } from '@gorgias/axiom'
 
@@ -218,9 +218,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
     outcomeCustomFieldId,
     intentCustomFieldId,
 }: Props) => {
-    const isSuccessRateEnabled = useFlag(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-    )
+    const isSuccessRateEnabled = useSkillReportingEnabled()
 
     // Drilldown requires a date range; without it, fall back to plain cards.
     const renderMetricCard = (

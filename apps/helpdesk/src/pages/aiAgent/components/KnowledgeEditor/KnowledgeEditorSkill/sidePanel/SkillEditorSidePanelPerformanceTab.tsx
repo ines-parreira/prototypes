@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
@@ -19,10 +19,7 @@ import css from './SkillEditorSidePanelPerformanceTab.less'
 
 export const SkillEditorSidePanelPerformanceTab = () => {
     const [isTrendModalOpen, setIsTrendModalOpen] = useState(false)
-    const { value: isNewReportingLayerEnabled } = useFlagWithLoading(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-        false,
-    )
+    const isNewReportingLayerEnabled = useSkillReportingEnabled()
     const skillPerformanceData = useSkillPerformanceFromContext()
     const { skillMetrics, recentTickets, historicalVersionDateRange } =
         skillPerformanceData

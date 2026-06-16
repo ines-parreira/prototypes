@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import { mockFeatureFlags } from 'tests/mockFeatureFlags'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
 import { useSkillPerformanceDataContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
@@ -32,7 +31,9 @@ const mockChartCard = jest.fn(
     ),
 )
 
-jest.mock('@repo/feature-flags')
+jest.mock('pages/aiAgent/skills/hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
+}))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext',
@@ -68,6 +69,7 @@ const mockUseSkillPerformanceTrendFromContext =
 const mockUseSkillPerformanceDataContext =
     useSkillPerformanceDataContext as jest.Mock
 const mockUseSkillEventMarkers = useSkillEventMarkers as jest.Mock
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 
 type ChartProps = {
     data: { date: string; ticketVolume: number; csat: number | null }[]
@@ -112,7 +114,7 @@ const renderChart = () => render(<SkillPerformanceChart />)
 describe('SkillPerformanceChart', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockFeatureFlags({})
+        mockUseSkillReportingEnabled.mockReturnValue(false)
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [
                 { date: '2026-04-20', ticketVolume: 34, csat: 4.2 },
@@ -329,9 +331,7 @@ describe('SkillPerformanceChart', () => {
 
     describe('success rate toggle in ChartCard title (M3 reporting flag)', () => {
         it('shows only the CSAT title with no dropdown when the flag is off', () => {
-            mockFeatureFlags({
-                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: false,
-            })
+            mockUseSkillReportingEnabled.mockReturnValue(false)
 
             renderChart()
 
@@ -341,9 +341,7 @@ describe('SkillPerformanceChart', () => {
         })
 
         it('passes CSAT and success rate as ChartCard metrics when the flag is on', () => {
-            mockFeatureFlags({
-                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
-            })
+            mockUseSkillReportingEnabled.mockReturnValue(true)
 
             renderChart()
 
@@ -356,9 +354,7 @@ describe('SkillPerformanceChart', () => {
         })
 
         it('switches the chart lineMetric and ChartCard title when onMetricChange is called', () => {
-            mockFeatureFlags({
-                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
-            })
+            mockUseSkillReportingEnabled.mockReturnValue(true)
 
             renderChart()
 
@@ -383,9 +379,7 @@ describe('SkillPerformanceChart', () => {
         })
 
         it('formats success rate values as whole-number percentages once selected', () => {
-            mockFeatureFlags({
-                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
-            })
+            mockUseSkillReportingEnabled.mockReturnValue(true)
 
             renderChart()
 

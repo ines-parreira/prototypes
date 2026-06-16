@@ -1,7 +1,7 @@
-import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 import { useSkillSuccessRateMetric } from 'pages/aiAgent/skills/hooks/useSkillSuccessRateMetric'
 
 import { SkillEditorSidePanelPerformanceMetricCards } from './SkillEditorSidePanelPerformanceMetricCards'
@@ -10,12 +10,9 @@ jest.mock('pages/aiAgent/skills/hooks/useSkillSuccessRateMetric', () => ({
     useSkillSuccessRateMetric: jest.fn(),
 }))
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
+jest.mock('pages/aiAgent/skills/hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
 }))
-
-const mockUseFlag = useFlag as jest.Mock
 
 type MockTrendCardProps = {
     trend: {
@@ -86,6 +83,7 @@ jest.mock('@repo/reporting', () => ({
 }))
 
 const mockUseSkillSuccessRateMetric = useSkillSuccessRateMetric as jest.Mock
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 
 const baseProps = {
     metrics: null,
@@ -127,7 +125,7 @@ const fieldOf = (card: HTMLElement, testId: string): string | null =>
 
 beforeEach(() => {
     jest.clearAllMocks()
-    mockUseFlag.mockReturnValue(true)
+    mockUseSkillReportingEnabled.mockReturnValue(true)
     mockUseSkillSuccessRateMetric.mockReturnValue({
         value: 0.85,
         prevValue: 0.83,
@@ -342,7 +340,7 @@ describe('SkillEditorSidePanelPerformanceMetricCards', () => {
     })
 
     it('hides the Success rate card when the M3 reporting flag is off', () => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseSkillReportingEnabled.mockReturnValue(false)
 
         render(
             <SkillEditorSidePanelPerformanceMetricCards

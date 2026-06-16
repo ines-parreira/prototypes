@@ -3,7 +3,7 @@ import { createContext, createElement, useContext, useMemo } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import type { ImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
@@ -98,9 +98,7 @@ export const useSkillPerformanceFromContext = ({
         })),
     )
 
-    const isSuccessRateEnabled = useFlag(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-    )
+    const isSuccessRateEnabled = useSkillReportingEnabled()
 
     const dateRange = useMemo(
         () =>

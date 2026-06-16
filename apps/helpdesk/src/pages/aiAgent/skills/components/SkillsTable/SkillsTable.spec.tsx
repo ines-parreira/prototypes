@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,6 +10,7 @@ import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
+import { useSkillReportingEnabled } from '../../hooks/useSkillReportingEnabled'
 import { useSkillsArticles } from '../../hooks/useSkillsArticles'
 import { useTotalAiAgentTickets } from '../../hooks/useTotalAiAgentTickets'
 import type { TransformedArticle } from '../../types'
@@ -30,9 +30,8 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         },
     }),
 }))
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
+jest.mock('../../hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
 }))
 jest.mock('../../hooks/useSkillsArticles')
 jest.mock('../../hooks/useTotalAiAgentTickets')
@@ -54,7 +53,7 @@ const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
     useGetCustomTicketsFieldsDefinitionData as jest.Mock
-const mockUseFlag = useFlag as jest.Mock
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 const mockStore = configureMockStore([thunk])
 Element.prototype.getAnimations = jest.fn(() => [])
 describe('SkillsTable', () => {
@@ -121,7 +120,7 @@ describe('SkillsTable', () => {
     ]
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(false)
+        mockUseSkillReportingEnabled.mockReturnValue(false)
         __store = mockStore({})
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -371,7 +370,7 @@ describe('SkillsTable', () => {
             })
         })
         it('requests articles with success rate when the flag is on', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseSkillReportingEnabled.mockReturnValue(true)
             renderComponent()
             expect(mockUseSkillsArticles).toHaveBeenCalledWith(123, 456, {
                 includeSuccessRate: true,
@@ -384,7 +383,7 @@ describe('SkillsTable', () => {
             ).toBeInTheDocument()
         })
         it('hides the Percentage / Numeric toggle when the flag is on', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseSkillReportingEnabled.mockReturnValue(true)
             renderComponent()
             expect(
                 screen.queryByRole('radio', { name: /percent/i }),
@@ -394,7 +393,7 @@ describe('SkillsTable', () => {
             ).not.toBeInTheDocument()
         })
         it('renders the Success rate column with renamed headers when the flag is on', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseSkillReportingEnabled.mockReturnValue(true)
             renderComponent()
             expect(screen.getByText('Success rate')).toBeInTheDocument()
             expect(screen.getByText('Tickets')).toBeInTheDocument()
@@ -402,7 +401,7 @@ describe('SkillsTable', () => {
             expect(screen.getByText('CSAT')).toBeInTheDocument()
         })
         it('forces numeric display so ticket volume renders raw counts when the flag is on', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseSkillReportingEnabled.mockReturnValue(true)
             renderComponent()
             expect(screen.getByText('100')).toBeInTheDocument()
             expect(screen.queryByText('44.4%')).not.toBeInTheDocument()

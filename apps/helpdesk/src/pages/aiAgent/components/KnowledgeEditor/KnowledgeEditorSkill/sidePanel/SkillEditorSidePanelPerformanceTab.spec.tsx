@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
@@ -9,14 +8,17 @@ import userEvent from '@testing-library/user-event'
 import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { useSkillPerformanceTrendFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext'
-import { mockFeatureFlags } from 'tests/mockFeatureFlags'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { SkillEditorSidePanelPerformanceTab } from './SkillEditorSidePanelPerformanceTab'
 
-jest.mock('@repo/feature-flags')
 jest.mock('@repo/logging')
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+
+jest.mock('pages/aiAgent/skills/hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
+}))
 
 Element.prototype.getAnimations = jest.fn(() => [])
 
@@ -85,6 +87,7 @@ const mockUseSkillPerformanceFromContext =
 const mockUseSkillPerformanceTrendFromContext =
     useSkillPerformanceTrendFromContext as jest.Mock
 const mockUseSkillEventMarkers = useSkillEventMarkers as jest.Mock
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 
 const defaultSkillMetrics = {
     metrics: null,
@@ -109,7 +112,7 @@ const defaultEventMarkers = [
 describe('SkillEditorSidePanelPerformanceTab', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockFeatureFlags({})
+        mockUseSkillReportingEnabled.mockReturnValue(false)
         mockUseSkillPerformanceFromContext.mockReturnValue({
             skillMetrics: defaultSkillMetrics,
             recentTickets: undefined,
@@ -201,12 +204,10 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('opens the Skill performance modal from the Explore trend button when the new reporting layer flag is on', async () => {
+    it('opens the Skill performance modal from the Explore trend button when reporting is enabled', async () => {
         const user = userEvent.setup()
 
-        mockFeatureFlags({
-            [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
-        })
+        mockUseSkillReportingEnabled.mockReturnValue(true)
 
         render(<SkillEditorSidePanelPerformanceTab />)
 
@@ -292,9 +293,7 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
     it('fires AiAgentExploreTrendPerSkillClicked when the Explore trend button is clicked', async () => {
         const user = userEvent.setup()
 
-        mockFeatureFlags({
-            [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
-        })
+        mockUseSkillReportingEnabled.mockReturnValue(true)
 
         render(<SkillEditorSidePanelPerformanceTab />)
 
@@ -327,9 +326,7 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
     it('shows a no-data placeholder in the trend modal when chart data is empty', async () => {
         const user = userEvent.setup()
 
-        mockFeatureFlags({
-            [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
-        })
+        mockUseSkillReportingEnabled.mockReturnValue(true)
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [],
             dateRange: defaultSkillMetrics.dateRange,

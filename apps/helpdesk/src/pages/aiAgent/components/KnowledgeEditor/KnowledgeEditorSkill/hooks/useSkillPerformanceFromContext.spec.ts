@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -12,9 +12,8 @@ import { useKnowledgeRecentTickets } from '../../shared/hooks/useKnowledgeRecent
 import { useSkillEditorStore } from '../context'
 import { useSkillPerformanceFromContext } from './useSkillPerformanceFromContext'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
+jest.mock('pages/aiAgent/skills/hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
 }))
 jest.mock('../context', () => ({ useSkillEditorStore: jest.fn() }))
 jest.mock('pages/aiAgent/skills/hooks/useSkillMetrics', () => ({
@@ -42,7 +41,7 @@ jest.mock('../../shared/hooks/useKnowledgeRecentTickets', () => ({
     useKnowledgeRecentTickets: jest.fn(),
 }))
 
-const mockUseFlag = useFlag as jest.Mock
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 const mockUseSkillEditorStore = useSkillEditorStore as jest.Mock
 const mockUseSkillMetrics = useSkillMetrics as jest.Mock
 const mockUseSkillMetricsByDay = useSkillMetricsByDay as jest.Mock
@@ -76,7 +75,7 @@ describe('useSkillPerformanceFromContext', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseFlag.mockReturnValue(false)
+        mockUseSkillReportingEnabled.mockReturnValue(false)
         mockGetLast28DaysDateRange.mockReturnValue(mockDateRange)
 
         mockUseSkillEditorStore.mockImplementation((selector) =>
@@ -447,9 +446,7 @@ describe('useSkillPerformanceFromContext', () => {
     })
 
     describe('includeSuccessRate flag forwarding', () => {
-        it('passes includeSuccessRate: false to useSkillMetricsByDay when the M3 reporting flag is off', () => {
-            mockUseFlag.mockReturnValue(false)
-
+        it('passes includeSuccessRate: false to useSkillMetricsByDay when reporting is disabled', () => {
             renderHook(() => useSkillPerformanceFromContext())
 
             expect(mockUseSkillMetricsByDay).toHaveBeenCalledWith(
@@ -457,12 +454,8 @@ describe('useSkillPerformanceFromContext', () => {
             )
         })
 
-        it('passes includeSuccessRate: true to useSkillMetricsByDay when the M3 reporting flag is on', () => {
-            mockUseFlag.mockImplementation(
-                (flag: string) =>
-                    flag ===
-                    FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-            )
+        it('passes includeSuccessRate: true to useSkillMetricsByDay when reporting is enabled', () => {
+            mockUseSkillReportingEnabled.mockReturnValue(true)
 
             renderHook(() => useSkillPerformanceFromContext())
 

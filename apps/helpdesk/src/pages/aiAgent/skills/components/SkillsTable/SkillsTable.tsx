@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useSkillReportingEnabled } from '../../hooks/useSkillReportingEnabled'
 
 import type { Row } from '@gorgias/axiom'
 import {
@@ -52,9 +52,7 @@ export const SkillsTable = () => {
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const isSuccessRateEnabled = useFlag(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-    )
+    const isSuccessRateEnabled = useSkillReportingEnabled()
 
     const { articles, isLoading, isMetricsLoading, metricsDateRange } =
         useSkillsArticles(helpCenterId, shopIntegrationId || 0, {
