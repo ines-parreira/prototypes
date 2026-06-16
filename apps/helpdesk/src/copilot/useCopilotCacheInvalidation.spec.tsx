@@ -122,6 +122,9 @@ describe('useCopilotCacheInvalidation', () => {
                     queryKey: helpCenterKeys.intents(7),
                 })
                 expect(invalidateSpy).toHaveBeenCalledWith({
+                    queryKey: helpCenterKeys.wizard(7),
+                })
+                expect(invalidateSpy).toHaveBeenCalledWith({
                     queryKey: knowledgeHubArticlesKey,
                 })
                 expect(invalidateSpy).not.toHaveBeenCalledWith({
@@ -209,6 +212,44 @@ describe('useCopilotCacheInvalidation', () => {
 
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: helpCenterKeys.details(),
+            })
+        })
+
+        it('invalidates the wizard query on update_draft_agent_skill', () => {
+            const { wrapper, invalidateSpy } = makeWrapper()
+            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
+
+            copilotMock.__emit(
+                makeInfo({
+                    toolName: 'update_draft_agent_skill',
+                    args: { shop_name: 'shop', skill_id: 42 },
+                    result: { id: 42, helpCenterId: 7 },
+                }),
+            )
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: helpCenterKeys.wizard(7),
+            })
+        })
+
+        it('invalidates the wizard query on set_agent_skill_status', () => {
+            const { wrapper, invalidateSpy } = makeWrapper()
+            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
+
+            copilotMock.__emit(
+                makeInfo({
+                    toolName: 'set_agent_skill_status',
+                    args: {
+                        shop_name: 'shop',
+                        skill_id: 42,
+                        status: 'disabled',
+                    },
+                    result: { id: 42, helpCenterId: 7 },
+                }),
+            )
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: helpCenterKeys.wizard(7),
             })
         })
     })

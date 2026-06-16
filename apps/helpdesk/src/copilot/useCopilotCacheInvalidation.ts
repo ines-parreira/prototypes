@@ -46,6 +46,11 @@ export function useCopilotCacheInvalidation(): void {
                     return
                 }
                 const { helpCenterId, id } = info.result
+                // The Skill Wizard renders per-skill status and recommendation
+                // metadata from the wizard payload, so refresh it too.
+                queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.wizard(helpCenterId),
+                })
                 if (info.toolName === 'create_draft_agent_skill') {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.articles(helpCenterId),

@@ -14,8 +14,24 @@ import { SkillWizardContext } from './SkillWizardContext'
 import type { SkillWizardContextValue } from './SkillWizardContext'
 
 jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
-    GuidanceEditor: ({ content }: { content: string }) => (
-        <div data-stub="guidance-editor">Editor with content: {content}</div>
+    GuidanceEditor: ({
+        content,
+        handleUpdateContent,
+    }: {
+        content: string
+        handleUpdateContent: (next: string) => void
+    }) => (
+        <div>
+            <div data-stub="guidance-editor">
+                Editor with content: {content}
+            </div>
+            <button
+                type="button"
+                onClick={() => handleUpdateContent('<p>Local edit</p>')}
+            >
+                simulate local edit
+            </button>
+        </div>
     ),
 }))
 jest.mock(
@@ -259,5 +275,76 @@ describe('SkillReviewStep', () => {
         expect(onStatusChange).toHaveBeenCalledWith(
             SkillWizardSkillStatus.Draft,
         )
+    })
+})
+
+describe('syncing instructions content from upstream', () => {
+    const skillWithContent = (content: string) =>
+        buildSkill({
+            article: {
+                id: 11,
+                translation: {
+                    title: 'Returns and exchanges',
+                    content,
+                    intents: ['Return / Request'],
+                },
+            } as unknown as WizardSkill['article'],
+        })
+
+    it('adopts new upstream content when there are no local edits', () => {
+        const { rerender } = renderStep({
+            skill: skillWithContent('<p>Initial instructions</p>'),
+        })
+        expect(
+            screen.getByText(
+                /Editor with content: <p>Initial instructions<\/p>/,
+            ),
+        ).toBeInTheDocument()
+
+        rerender(
+            <ThemeProvider>
+                <SkillWizardContext.Provider value={wizardContextValue}>
+                    <SkillReviewStep
+                        skill={skillWithContent('<p>Updated by Gaia</p>')}
+                        status={SkillWizardSkillStatus.Approved}
+                        onStatusChange={jest.fn()}
+                    />
+                </SkillWizardContext.Provider>
+            </ThemeProvider>,
+        )
+
+        expect(
+            screen.getByText(/Editor with content: <p>Updated by Gaia<\/p>/),
+        ).toBeInTheDocument()
+    })
+
+    it('keeps in-progress local edits instead of clobbering them', async () => {
+        const user = userEvent.setup()
+        const { rerender } = renderStep({
+            skill: skillWithContent('<p>Initial instructions</p>'),
+        })
+
+        await user.click(
+            screen.getByRole('button', { name: /simulate local edit/i }),
+        )
+        expect(
+            screen.getByText(/Editor with content: <p>Local edit<\/p>/),
+        ).toBeInTheDocument()
+
+        rerender(
+            <ThemeProvider>
+                <SkillWizardContext.Provider value={wizardContextValue}>
+                    <SkillReviewStep
+                        skill={skillWithContent('<p>Updated by Gaia</p>')}
+                        status={SkillWizardSkillStatus.Approved}
+                        onStatusChange={jest.fn()}
+                    />
+                </SkillWizardContext.Provider>
+            </ThemeProvider>,
+        )
+
+        expect(
+            screen.getByText(/Editor with content: <p>Local edit<\/p>/),
+        ).toBeInTheDocument()
     })
 })

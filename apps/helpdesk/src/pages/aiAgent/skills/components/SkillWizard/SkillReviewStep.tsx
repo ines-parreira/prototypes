@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Banner, Box, Button, Card } from '@gorgias/axiom'
 
@@ -65,9 +65,22 @@ export const SkillReviewStep = ({
     const { apps } = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
-    const [instructionsContent, setInstructionsContent] = useState<string>(
-        skill.article?.translation.content ?? '',
-    )
+    const upstreamContent = skill.article?.translation.content ?? ''
+    const [instructionsContent, setInstructionsContent] =
+        useState<string>(upstreamContent)
+    const lastUpstreamRef = useRef<string>(upstreamContent)
+
+    // When Copilot edits this skill the article list refetches; adopt the new
+    // upstream content unless the user has unsaved local edits (last-write-wins).
+    useEffect(() => {
+        const previousUpstream = lastUpstreamRef.current
+        if (upstreamContent === previousUpstream) return
+        lastUpstreamRef.current = upstreamContent
+        setInstructionsContent((local) =>
+            local === previousUpstream ? upstreamContent : local,
+        )
+    }, [upstreamContent])
+
     const handleInstructionsChange = useCallback(
         (next: string) => {
             setInstructionsContent(next)
