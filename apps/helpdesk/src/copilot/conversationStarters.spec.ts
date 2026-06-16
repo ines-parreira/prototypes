@@ -36,6 +36,16 @@ describe('getCopilotConversationStarters', () => {
     })
 
     describe('Skills section', () => {
+        it('shows the two wizard starters on the skill wizard', () => {
+            const starters = getCopilotConversationStarters(
+                `${SHOP_PREFIX}/skills/wizard`,
+            )
+            expect(starters.map((s) => s.message)).toEqual([
+                'Why is this skill important for my setup',
+                'What guidance is this skill based on',
+            ])
+        })
+
         it('shows the audit, difference, and universal starters on the Skills list view', () => {
             const starters = getCopilotConversationStarters(
                 `${SHOP_PREFIX}/skills`,
@@ -47,16 +57,15 @@ describe('getCopilotConversationStarters', () => {
             ])
         })
 
-        it.each([`${SHOP_PREFIX}/skills/new`, `${SHOP_PREFIX}/skills/wizard`])(
-            'shows the difference and universal starters on %s',
-            (pathname) => {
-                const starters = getCopilotConversationStarters(pathname)
-                expect(starters.map((s) => s.message)).toEqual([
-                    "What's the difference between a skill and guidance?",
-                    'Optimize my AI Agent setup',
-                ])
-            },
-        )
+        it('shows the difference and universal starters on the new-skill view', () => {
+            const starters = getCopilotConversationStarters(
+                `${SHOP_PREFIX}/skills/new`,
+            )
+            expect(starters.map((s) => s.message)).toEqual([
+                "What's the difference between a skill and guidance?",
+                'Optimize my AI Agent setup',
+            ])
+        })
 
         it('shows the detail-view starters on the Skills detail view', () => {
             const starters = getCopilotConversationStarters(
@@ -133,19 +142,17 @@ describe('getCopilotConversationStarters', () => {
 
     it('ignores query strings and hash fragments', () => {
         const starters = getCopilotConversationStarters(
-            `${SHOP_PREFIX}/skills?filter=active#top`,
+            `${SHOP_PREFIX}/skills/wizard?step=2#top`,
         )
         expect(starters.map((s) => s.message)).toEqual([
-            'Audit my skills and tell me which ones to improve',
-            "What's the difference between a skill and guidance?",
-            'Optimize my AI Agent setup',
+            'Why is this skill important for my setup',
+            'What guidance is this skill based on',
         ])
     })
 
     it('uses message text as the title for every starter', () => {
         const allPaths = [
-            `${SHOP_PREFIX}/skills`,
-            `${SHOP_PREFIX}/skills/42`,
+            `${SHOP_PREFIX}/skills/wizard`,
             `${SHOP_PREFIX}/knowledge`,
             `${SHOP_PREFIX}/actions`,
             `${SHOP_PREFIX}/intents`,

@@ -59,10 +59,10 @@ catalogs:
     '@gorgias/toolkit': '0.6.2'
     '@gorgias/toolkit-react': '0.5.0'
   copilot:
-    '@gorgias/copilot': '0.76.1'
+    '@gorgias/copilot': '0.80.1'
   rest-api-sdk:
-    '@gorgias/copilot-client': '^0.1.1'
-    '@gorgias/copilot-queries': '^0.1.1'
+    '@gorgias/copilot-client': '^0.1.6'
+    '@gorgias/copilot-queries': '^0.1.6'
     '@gorgias/convert-client': '^0.3.68'
     '@gorgias/convert-mocks': '^0.2.85'
     '@gorgias/convert-queries': '^0.2.86'

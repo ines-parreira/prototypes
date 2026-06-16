@@ -45,6 +45,17 @@ describe('CopilotConversationStarters', () => {
         ])
     })
 
+    it('registers the wizard starters on the skill wizard', () => {
+        render(<CopilotConversationStarters />, {
+            initialEntries: ['/app/ai-agent/shopify/acme/skills/wizard'],
+        })
+
+        expect(getLastRegisteredSuggestions().map((s) => s.message)).toEqual([
+            'Why is this skill important for my setup',
+            'What guidance is this skill based on',
+        ])
+    })
+
     it('registers the detail-view starters on a Skill detail view', () => {
         render(<CopilotConversationStarters />, {
             initialEntries: ['/app/ai-agent/shopify/acme/skills/42'],
@@ -80,7 +91,7 @@ describe('CopilotConversationStarters', () => {
 
     it('uses the before-first-message availability', () => {
         render(<CopilotConversationStarters />, {
-            initialEntries: ['/app/ai-agent/shopify/acme/skills'],
+            initialEntries: ['/app/ai-agent/shopify/acme/skills/wizard'],
         })
 
         expect(getLastRegisteredConfig()?.available).toBe(

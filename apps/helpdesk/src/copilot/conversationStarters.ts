@@ -7,6 +7,16 @@ const UNIVERSAL_STARTER: ConversationStarter = {
     message: 'Optimize my AI Agent setup',
 }
 
+const WIZARD_SKILL_IMPORTANCE_STARTER: ConversationStarter = {
+    title: 'Why is this skill important for my setup',
+    message: 'Why is this skill important for my setup',
+}
+
+const WIZARD_SKILL_GUIDANCE_STARTER: ConversationStarter = {
+    title: 'What guidance is this skill based on',
+    message: 'What guidance is this skill based on',
+}
+
 const SKILLS_LIST_STARTER: ConversationStarter = {
     title: 'Audit my skills and tell me which ones to improve',
     message: 'Audit my skills and tell me which ones to improve',
@@ -60,6 +70,9 @@ export function getCopilotConversationStarters(
     if (subPath === 'test') return []
     if (subPath === 'tone-of-voice') return []
 
+    if (subPath === 'skills/wizard') {
+        return [WIZARD_SKILL_IMPORTANCE_STARTER, WIZARD_SKILL_GUIDANCE_STARTER]
+    }
     if (subPath === 'skills') {
         return [
             SKILLS_LIST_STARTER,
@@ -67,7 +80,7 @@ export function getCopilotConversationStarters(
             UNIVERSAL_STARTER,
         ]
     }
-    if (subPath === 'skills/new' || subPath === 'skills/wizard') {
+    if (subPath === 'skills/new') {
         return [SKILL_GUIDANCE_DIFFERENCE_STARTER, UNIVERSAL_STARTER]
     }
     if (subPath.startsWith('skills/')) {
