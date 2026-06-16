@@ -40,7 +40,7 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { EMAIL_INTEGRATION_TYPES } from '../../../../constants/integration'
 import { useAppDispatch } from '../../../../hooks/useAppDispatch'
-import { SubdomainInput } from '../components/SubdomainSection'
+import { SubdomainInput } from '../components/SubdomainSection/components/SubdomainInput'
 import {
     HELP_CENTER_BASE_PATH,
     HELP_CENTER_DEFAULT_COLOR,

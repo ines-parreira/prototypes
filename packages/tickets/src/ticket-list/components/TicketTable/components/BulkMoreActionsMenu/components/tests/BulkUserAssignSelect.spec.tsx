@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -7,13 +7,26 @@ import {
     mockListUsersHandler,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
+import { ListUsersRolesItem } from '@gorgias/helpdesk-types'
 
 import { render } from '../../../../../../../tests/render.utils'
 import { BulkUserAssignSelect } from '../BulkUserAssignSelect'
 
-const currentUser = mockUser({ id: 99, name: 'Current User' })
-const user1 = mockUser({ id: 1, name: 'Alice' })
-const user2 = mockUser({ id: 2, name: 'Bob' })
+const currentUser = mockUser({
+    id: 99,
+    name: 'Current User',
+    role: { name: ListUsersRolesItem.Admin },
+})
+const user1 = mockUser({
+    id: 1,
+    name: 'Alice',
+    role: { name: ListUsersRolesItem.Agent },
+})
+const user2 = mockUser({
+    id: 2,
+    name: 'Bob',
+    role: { name: ListUsersRolesItem.Agent },
+})
 
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(currentUser),
@@ -53,6 +66,23 @@ const waitUntilLoaded = async () => {
         trigger = elements[0]
     })
     return trigger
+}
+
+const selectHiddenUserOption = (value: string) => {
+    const select = screen
+        .getByTestId('hidden-select-container')
+        .querySelector('select')
+
+    if (!(select instanceof HTMLSelectElement)) {
+        throw new Error('Expected hidden user select to be rendered')
+    }
+
+    select.value = value
+    Array.from(select.options).forEach((option) => {
+        option.selected = option.value === value
+    })
+
+    fireEvent.change(select)
 }
 
 const renderBulkUserAssignSelect = ({
@@ -103,15 +133,14 @@ describe('BulkUserAssignSelect', () => {
 
     it('calls onChange with the selected user', async () => {
         const onChange = vi.fn()
-        const { user } = renderBulkUserAssignSelect({
+        renderBulkUserAssignSelect({
             onChange,
             isOpen: true,
         })
 
         await waitUntilLoaded()
 
-        const aliceOptions = await screen.findAllByText('Alice')
-        await user.click(aliceOptions[aliceOptions.length - 1])
+        selectHiddenUserOption('1')
 
         expect(onChange).toHaveBeenCalledWith(
             expect.objectContaining({ id: 1, name: 'Alice' }),

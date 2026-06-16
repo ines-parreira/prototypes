@@ -1,8 +1,8 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { mockUser } from '@gorgias/helpdesk-mocks'
 
-import type { NonNullableUser } from '../../../../components/TicketAssignee/hooks/useListUsersSearch'
+import type { UserWithRequiredFields } from '../../../../components/TicketAssignee/hooks/useUserOptions'
 import { useUserOptions } from '../../../../components/TicketAssignee/hooks/useUserOptions'
 import { render } from '../../../../tests/render.utils'
 import { AssignUserMenu } from '../AssignUserMenu'
@@ -21,30 +21,45 @@ const user2 = mockUser({ id: 2, name: 'Jane Smith', email: 'jane@example.com' })
 
 const mockUseUserOptions = vi.mocked(useUserOptions)
 
+const selectHiddenUserOption = (value: string) => {
+    const select = screen
+        .getByTestId('hidden-select-container')
+        .querySelector('select')
+
+    if (!(select instanceof HTMLSelectElement)) {
+        throw new Error('Expected hidden user select to be rendered')
+    }
+
+    select.value = value
+    Array.from(select.options).forEach((option) => {
+        option.selected = option.value === value
+    })
+
+    fireEvent.change(select)
+}
+
 beforeEach(() => {
     mockUseUserOptions.mockReturnValue({
         usersMap: new Map([
-            [1, currentUser],
-            [2, user2],
-        ]) as Map<number, NonNullableUser>,
+            ['1', currentUser],
+            ['2', user2],
+        ]) as Map<string, UserWithRequiredFields>,
         userSections: [
             {
                 id: 'self',
                 name: '',
-                items: [{ id: 1, label: 'Assign yourself' }],
+                items: [{ id: '1', label: 'Assign yourself' }],
             },
             {
                 id: 'others',
                 name: 'Assign to others',
-                items: [{ id: 2, label: 'Jane Smith' }],
+                items: [{ id: '2', label: 'Jane Smith' }],
             },
         ],
         selectedOption: { id: 'no_user', label: 'Unassigned' },
         isLoading: false,
         search: '',
         setSearch: vi.fn(),
-        onLoad: vi.fn(),
-        shouldLoadMore: false,
     })
 })
 
@@ -125,17 +140,15 @@ describe('AssignUserMenu', () => {
 
     it('hides the "Unassigned" header item when searching', async () => {
         mockUseUserOptions.mockReturnValue({
-            usersMap: new Map([[1, currentUser]]) as Map<
-                number,
-                NonNullableUser
+            usersMap: new Map([['1', currentUser]]) as Map<
+                string,
+                UserWithRequiredFields
             >,
             userSections: [],
             selectedOption: { id: 'no_user', label: 'Unassigned' },
             isLoading: false,
             search: 'cur',
             setSearch: vi.fn(),
-            onLoad: vi.fn(),
-            shouldLoadMore: false,
         })
 
         const { user } = render(
@@ -206,8 +219,7 @@ describe('AssignUserMenu', () => {
 
         await user.click(screen.getByRole('button', { name: /user/i }))
 
-        const janeOptions = await screen.findAllByText('Jane Smith')
-        await user.click(janeOptions[janeOptions.length - 1])
+        selectHiddenUserOption('2')
 
         expect(onAssignUser).toHaveBeenCalledWith(
             expect.objectContaining({ id: 2, name: 'Jane Smith' }),

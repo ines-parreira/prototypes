@@ -57,7 +57,7 @@ import { GoogleAnalyticsSection } from './GoogleAnalyticSection'
 import { HelpCenterAutoEmbedPublishSection } from './HelpCenterAutoEmbedPublishSection'
 import { HelpCenterPageWrapper } from './HelpCenterPageWrapper'
 import { ManageEmbedments } from './ManageEmbedments'
-import { SubdomainSection } from './SubdomainSection'
+import { SubdomainSection } from './SubdomainSection/SubdomainSection'
 import { UpdateToggle } from './UpdateToggle'
 
 import css from './HelpCenterPublishAndTrackView.less'

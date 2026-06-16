@@ -11,11 +11,11 @@ catalogs:
       version: 0.1.25
   axiom:
     '@gorgias/axiom':
-      specifier: 0.299.1
-      version: 0.299.1
+      specifier: 0.301.1
+      version: 0.301.1
     '@gorgias/design-tokens':
-      specifier: 0.12.0
-      version: 0.12.0
+      specifier: 0.13.1
+      version: 0.13.1
   browser-storage:
     '@types/zen-observable':
       specifier: ^0.8.7
@@ -456,8 +456,8 @@ catalogs:
       specifier: 0.6.2
       version: 0.6.2
     '@gorgias/toolkit-react':
-      specifier: 0.4.2
-      version: 0.4.2
+      specifier: 0.5.0
+      version: 0.5.0
   typescript:
     '@typescript/native-preview':
       specifier: 7.0.0-dev.20260421.2
@@ -646,7 +646,7 @@ importers:
         version: 0.1.25(classnames@2.2.6)(core-js@3.42.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -661,7 +661,7 @@ importers:
         version: 0.2.86(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/copilot':
         specifier: catalog:copilot
-        version: 0.76.1(a2c1c5d6ceb99f083c52a831c5ae0ee9)
+        version: 0.76.1(ad66d399610257d20c4a0e2a59dd3dbc)
       '@gorgias/copilot-client':
         specifier: catalog:rest-api-sdk
         version: 0.1.2
@@ -679,7 +679,7 @@ importers:
         version: 0.2.7
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.12.0
+        version: 0.13.1
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.11
@@ -1283,7 +1283,7 @@ importers:
         version: 0.3.0(@types/node@24.12.2)
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/workflows-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.45(@types/node@24.12.2)(typescript@6.0.3)
@@ -1812,10 +1812,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.12.0
+        version: 0.13.1
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.113(@types/node@24.12.2)(typescript@6.0.3)
@@ -1908,10 +1908,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.12.0
+        version: 0.13.1
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.113(@types/node@24.12.2)(typescript@6.0.3)
@@ -1989,7 +1989,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.6.2
@@ -2219,7 +2219,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.11(@types/node@24.12.2)(typescript@6.0.3)
@@ -2243,7 +2243,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2372,7 +2372,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2426,7 +2426,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.11(@types/node@24.12.2)(typescript@6.0.3)
@@ -2441,7 +2441,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2532,10 +2532,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -2598,13 +2598,13 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.227
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2737,10 +2737,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2807,7 +2807,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2876,10 +2876,10 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/logging':
         specifier: workspace:*
         version: link:../logging
@@ -2964,14 +2964,14 @@ importers:
     dependencies:
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-router-dom:
         specifier: catalog:react-router
         version: 5.2.0(react@18.2.0)
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@knocklabs/client':
         specifier: ^0.16.3
         version: 0.16.3
@@ -3031,7 +3031,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3172,7 +3172,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       html2canvas:
         specifier: ^1.4.1
         version: 1.4.1
@@ -3197,7 +3197,7 @@ importers:
         version: 0.1.25(classnames@2.2.6)(core-js@3.47.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.12.0
+        version: 0.13.1
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.113(@types/node@24.12.2)(typescript@6.0.3)
@@ -3212,7 +3212,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3294,7 +3294,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3366,7 +3366,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.170
@@ -3381,7 +3381,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -3531,7 +3531,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3585,7 +3585,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3679,7 +3679,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.170
@@ -3697,7 +3697,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3845,7 +3845,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
         version: 0.14.11
@@ -3869,7 +3869,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -3912,6 +3912,9 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../ui
+      '@repo/users':
+        specifier: workspace:*
+        version: link:../users
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -4031,7 +4034,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
     devDependencies:
       '@repo/config':
         specifier: workspace:*
@@ -4098,7 +4101,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
         version: 0.14.11
@@ -4122,7 +4125,7 @@ importers:
         version: 0.6.2
       '@gorgias/toolkit-react':
         specifier: catalog:toolkit
-        version: 0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/api-resources':
         specifier: workspace:*
         version: link:../api-resources
@@ -4321,7 +4324,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.113(@types/node@24.12.2)(typescript@6.0.3)
@@ -5774,10 +5777,12 @@ packages:
       react: ^17
       react-dom: ^17
 
-  '@gorgias/axiom@0.299.1':
-    resolution: {integrity: sha512-N+mwJ46/mx/Momr5UjJep+aiRYLpkih4S2G6NGyZJwpEcFsLN+jn6qUoNXUNwEMVAQNSMg2w2ZU+R27ZM7vwaQ==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.299.1/33f7ca3f0b7c69d178309973affde8e684f08c07}
+  '@gorgias/axiom@0.301.1':
+    resolution: {integrity: sha512-Iogc4vTe5zFpxFaQ6170T0DnP9dKJ8D/UJwKFU4qD2tb1N/JDKrZJx4Gvb+lzpF9YYLdRSevsLcGAQ8xgdMV0g==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.301.1/596d36708793c8a314fba3bc6d221bc048cf509f}
     engines: {node: '>=22.22.0'}
     peerDependencies:
+      '@gorgias/toolkit': ^0.6.2
+      '@gorgias/toolkit-react': ^0.5.0
       react: ^18
       react-dom: ^18
       reactstrap: ^8.9.0
@@ -5838,6 +5843,9 @@ packages:
       react-dom: ^18
       rxjs: ^7.8.0
       zustand: 5.0.9
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
 
   '@gorgias/customer-segmentation-client@0.2.9':
     resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
@@ -5857,11 +5865,8 @@ packages:
   '@gorgias/customer-segmentation-types@0.2.8':
     resolution: {integrity: sha512-MrMhgkPwtNgVXYAOl7iDmOYBxeBGhnhXA4pBfLA1VmXs59fWgsUNqKTD+pIDlCUqRI5M+7r1hxg4SQhUkMMg1w==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-types/0.2.8/aa38790207fdedd74388c8b71311be9fb5e57bbf}
 
-  '@gorgias/design-tokens@0.12.0':
-    resolution: {integrity: sha512-XGIr9p4rnGngS0AbwpuVz5Q4dGrJ1l/7yfyhHDq7YsdeXACMqc7bkb7tYWku0Y1wbHDlyytAleAdWv3APVayGw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.12.0/70154608d6ff4e8e4429954e715d1e4bcef7dbf6}
-
-  '@gorgias/design-tokens@0.13.0':
-    resolution: {integrity: sha512-lOckgTKY66bzitaykxZNFAeBYv+HxMPkuXseiAEgpUNAiJYNcNgujzvbdYcT1KVFYwu+H2PzHHawiRTaGWmN6A==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.13.0/26e1a95e7bf2fde7eea17318a053de9443c5dd24}
+  '@gorgias/design-tokens@0.13.1':
+    resolution: {integrity: sha512-QXCt9m8R4T3BmKMAqaoK8UfStAGloPw5gVd1qn+o/FLRju0y0wa5kUsDR7UAc/5cqZ0vAqt2czH9Z1RoAtvdAA==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.13.1/5bd00ec708bb06cf7b048735866d54f828d11b9a}
 
   '@gorgias/ecommerce-storage-client@0.2.11':
     resolution: {integrity: sha512-EQcG4a7ooQH1YMrrmDoboUb2KgFZ0IK1i9rJI1BOVI/wcAYro6YQv/IkiYG8x8+925KpjtUHHT0wjJf4OAYsxg==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-client/0.2.11/1c0487994e4800aa5ab7ca9d143d3653b6cf6b7c}
@@ -6037,8 +6042,8 @@ packages:
     engines: {node: '>=22'}
     hasBin: true
 
-  '@gorgias/toolkit-react@0.4.2':
-    resolution: {integrity: sha512-qnZgsJ8xzh1Kzv9uuIkA+Fz9gjWPbFk7CxsUAifhFyipi8dRqh452LRykblEEjR5c/MFUruDJIs8T5geOBFmXw==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit-react/0.4.2/c59bad1522d365512e07e2105119da257a8786ae}
+  '@gorgias/toolkit-react@0.5.0':
+    resolution: {integrity: sha512-8HpcSVNT4Ut9XpyK/I6P+INzl8SkCfneZRoUWhJL7U5FKNWLtegEr/S7ez/NwftZs2dyqz6HECaTDMC6aazQkA==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit-react/0.5.0/7fb2f63d476c8dc334f39ba55cdc344b962f5cdd}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@gorgias/toolkit': ^0.6.0
@@ -6048,10 +6053,6 @@ packages:
 
   '@gorgias/toolkit@0.3.0':
     resolution: {integrity: sha512-ZyNOL9N9wqT8yjGhcndaYxU55ZXZfMwlDieBrT70JetENq2JLpRnVoHDEl+g+nOo6FU5+IPOSl4+BiQ8nHYQ9g==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit/0.3.0/fdea97fe508a7aede3a2842facd3e832b4a0de98}
-    engines: {node: '>=22.22.0'}
-
-  '@gorgias/toolkit@0.4.0':
-    resolution: {integrity: sha512-yxrKks0Bh/RGekPmHLM2riG9EXxwDUNI47zgJebWtUXqK9eXVpLMOXVyvbNIrNnUDk7PfpLd5gPcme6Qh7HOuw==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit/0.4.0/a085943216b17d5f5b22136392ef6db33d6e3637}
     engines: {node: '>=22.22.0'}
 
   '@gorgias/toolkit@0.6.2':
@@ -19981,11 +19982,12 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@gorgias/axiom@0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@gorgias/design-tokens': 0.13.0
-      '@gorgias/toolkit': 0.4.0
+      '@gorgias/design-tokens': 0.13.1
+      '@gorgias/toolkit': 0.6.2
+      '@gorgias/toolkit-react': 0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@internationalized/date': 3.10.0
       '@react-aria/utils': 3.31.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@tanstack/react-table': 8.21.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -20075,10 +20077,10 @@ snapshots:
 
   '@gorgias/copilot-types@0.1.1': {}
 
-  '@gorgias/copilot@0.76.1(a2c1c5d6ceb99f083c52a831c5ae0ee9)':
+  '@gorgias/copilot@0.76.1(ad66d399610257d20c4a0e2a59dd3dbc)':
     dependencies:
       '@copilotkit/react-core': 1.57.1(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(encoding@0.1.13)(graphql@16.11.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@3.25.76)
-      '@gorgias/axiom': 0.299.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/axiom': 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/copilot-client': 0.1.2
       '@gorgias/copilot-queries': 0.1.2(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/knowledge-service-client': 0.3.70
@@ -20095,9 +20097,10 @@ snapshots:
       react-markdown: 10.1.0(@types/react@18.2.67)(react@18.2.0)
       remark-gfm: 4.0.1
       remend: 1.3.0
-      rxjs: 7.8.1
       zod: 3.25.76
       zustand: 5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.6.0(react@18.2.0))
+    optionalDependencies:
+      rxjs: 7.8.1
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - '@types/mdast'
@@ -20148,9 +20151,7 @@ snapshots:
 
   '@gorgias/customer-segmentation-types@0.2.8': {}
 
-  '@gorgias/design-tokens@0.12.0': {}
-
-  '@gorgias/design-tokens@0.13.0': {}
+  '@gorgias/design-tokens@0.13.1': {}
 
   '@gorgias/ecommerce-storage-client@0.2.11':
     dependencies:
@@ -20578,7 +20579,7 @@ snapshots:
       oxc-walker: 0.6.0(oxc-parser@0.98.0)
       ts-pattern: 5.9.0
 
-  '@gorgias/toolkit-react@0.4.2(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@gorgias/toolkit': 0.6.2
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -20587,8 +20588,6 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
 
   '@gorgias/toolkit@0.3.0': {}
-
-  '@gorgias/toolkit@0.4.0': {}
 
   '@gorgias/toolkit@0.6.2':
     dependencies:

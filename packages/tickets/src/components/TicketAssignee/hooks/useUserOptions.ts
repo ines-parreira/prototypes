@@ -1,10 +1,10 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
-import type { TicketUser } from '@gorgias/helpdesk-queries'
+import { useAllUsers, useAllUsersLoadingState } from '@repo/users'
+import type { TicketUser, User } from '@gorgias/helpdesk-queries'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
-
-import type { NonNullableUser } from './useListUsersSearch'
-import { useListUsersSearch } from './useListUsersSearch'
+import { ListUsersRolesItem } from '@gorgias/helpdesk-types'
+import { fuzzySearch } from '@gorgias/toolkit/fuzzy-search'
 
 const SECTION_DETAILS = {
     SELECTED: {
@@ -32,7 +32,7 @@ export const NO_USER_OPTION = {
 
 export type UserOption =
     | {
-          id: number
+          id: string
           label: string
       }
     | typeof NO_USER_OPTION
@@ -43,17 +43,63 @@ export type UserSection = {
     items: UserOption[]
 }
 
+export type UserWithRequiredFields = User & {
+    id: NonNullable<User['id']>
+    name: NonNullable<User['name']>
+}
+
+const ASSIGNABLE_USER_ROLES = new Set<string>([
+    ListUsersRolesItem.Admin,
+    ListUsersRolesItem.Agent,
+    ListUsersRolesItem.BasicAgent,
+    ListUsersRolesItem.LiteAgent,
+    ListUsersRolesItem.ObserverAgent,
+])
+
+const getUserOptionId = (userId: number) => userId.toString()
+
+function hasRequiredUserFields(user: User): user is UserWithRequiredFields {
+    return typeof user.id === 'number' && typeof user.name === 'string'
+}
+
+function isBotUser(user: User) {
+    return user.role?.name === ListUsersRolesItem.Bot
+}
+
+function isAssignableUser(user: User): user is UserWithRequiredFields {
+    const roleName = user.role?.name
+    return (
+        hasRequiredUserFields(user) &&
+        !isBotUser(user) &&
+        typeof roleName === 'string' &&
+        ASSIGNABLE_USER_ROLES.has(roleName)
+    )
+}
+
 type UseUserOptionsParams = {
     currentAssignee?: TicketUser | null
 }
 
 export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
-    const { users, isLoading, search, setSearch, onLoad, shouldLoadMore } =
-        useListUsersSearch()
+    const [search, setSearch] = useState('')
+    const allUsers = useAllUsers()
+    const { isLoading } = useAllUsersLoadingState()
 
     const { data: currentUserData } = useGetCurrentUser()
     const currentUser = currentUserData?.data
     const currentUserId = currentUser?.id
+
+    const users = useMemo(() => {
+        const assignableUsers = allUsers.filter(isAssignableUser)
+
+        if (!search) {
+            return assignableUsers
+        }
+
+        return fuzzySearch(search, assignableUsers, {
+            keys: [(user) => user.name, (user) => user.email ?? ''],
+        }).map((result) => result.item)
+    }, [allUsers, search])
 
     const otherUsers = useMemo(
         () =>
@@ -70,7 +116,7 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
                 isCurrentAssigneeLoaded = true
             }
             return {
-                id: user.id,
+                id: getUserOptionId(user.id),
                 label: user.name,
             }
         })
@@ -83,20 +129,25 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
 
         if (shouldPreserveSelectedAssigneeOption) {
             options.push({
-                id: currentAssignee?.id,
-                label: currentAssignee?.name,
+                id: getUserOptionId(currentAssignee.id),
+                label: currentAssignee.name,
             })
         }
         return options
     }, [otherUsers, currentAssignee, currentUserId, search])
 
     const usersMap = useMemo(() => {
-        const map = new Map(otherUsers.map((user) => [user.id, user]))
-        if (currentUser && !!currentUser.id && !!currentUser.name) {
-            map.set(currentUser.id, currentUser as NonNullableUser)
+        const map = new Map(
+            otherUsers.map((user) => [getUserOptionId(user.id), user]),
+        )
+        if (currentUser && hasRequiredUserFields(currentUser)) {
+            map.set(getUserOptionId(currentUser.id), currentUser)
         }
         if (currentAssignee?.id && currentAssignee.name) {
-            map.set(currentAssignee.id, currentAssignee as NonNullableUser)
+            map.set(
+                getUserOptionId(currentAssignee.id),
+                currentAssignee as UserWithRequiredFields,
+            )
         }
         return map
     }, [otherUsers, currentUser, currentAssignee])
@@ -110,7 +161,7 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
                 ...SECTION_DETAILS.SELF,
                 items: [
                     {
-                        id: currentUserId,
+                        id: getUserOptionId(currentUserId),
                         label: 'Assign yourself',
                     },
                 ],
@@ -122,7 +173,7 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
             search &&
             !isCurrentUserAssigned &&
             !otherUsersOptions.some(
-                (option) => option.id === currentAssignee.id,
+                (option) => option.id === getUserOptionId(currentAssignee.id),
             )
 
         if (shouldShowSelectedAssigneeSection) {
@@ -130,7 +181,7 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
                 ...SECTION_DETAILS.SELECTED,
                 items: [
                     {
-                        id: currentAssignee.id,
+                        id: getUserOptionId(currentAssignee.id),
                         label: currentAssignee.name,
                     },
                 ],
@@ -166,9 +217,12 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
         if (currentAssignee === null) {
             return NO_USER_OPTION
         }
+
         return (
-            userOptions.find((option) => option.id === currentAssignee.id) ?? {
-                id: currentAssignee.id,
+            userOptions.find(
+                (option) => option.id === getUserOptionId(currentAssignee.id),
+            ) ?? {
+                id: getUserOptionId(currentAssignee.id),
                 label:
                     currentAssignee.id === currentUserId
                         ? 'Assign yourself'
@@ -184,7 +238,5 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
         isLoading,
         search,
         setSearch,
-        onLoad,
-        shouldLoadMore,
     }
 }
