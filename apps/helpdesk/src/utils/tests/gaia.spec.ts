@@ -71,8 +71,7 @@ describe('initGaia()', () => {
     })
 
     it('appends the embed script and logs the segment event when the flag is true', async () => {
-        fetchFlagMock.mockResolvedValueOnce({ flag: true, error: null }) // GaiaEmbed
-        fetchFlagMock.mockResolvedValueOnce({ flag: true, error: null }) // KnowledgeIntentManagementSystem
+        fetchFlagMock.mockResolvedValueOnce({ flag: true, error: null })
 
         cleanupGaiaButtonEnhancer = await initGaia()
 
@@ -102,31 +101,6 @@ describe('initGaia()', () => {
         expect(script?.async).toBe(true)
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
-        expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.GaiaEmbedLoaded)
-    })
-
-    it('does not append the script when Skills access is disabled even if the GaiaEmbed flag is true', async () => {
-        window.USER_IMPERSONATED = null
-        fetchFlagMock.mockResolvedValueOnce({ flag: true, error: null }) // GaiaEmbed
-        fetchFlagMock.mockResolvedValueOnce({ flag: false, error: null }) // KnowledgeIntentManagementSystem
-
-        cleanupGaiaButtonEnhancer = await initGaia()
-
-        expect(document.head.querySelector(GAIA_SCRIPT_SELECTOR)).toBeNull()
-        expect(logEventMock).not.toHaveBeenCalled()
-    })
-
-    it('appends the script when impersonated even if Skills access is disabled', async () => {
-        window.USER_IMPERSONATED = true
-        fetchFlagMock.mockResolvedValueOnce({ flag: true, error: null }) // GaiaEmbed
-        // No second mock needed — impersonated sessions skip the KnowledgeIntentManagementSystem check
-
-        cleanupGaiaButtonEnhancer = await initGaia()
-
-        const script =
-            document.head.querySelector<HTMLScriptElement>(GAIA_SCRIPT_SELECTOR)
-        expect(script).not.toBeNull()
-        expect(script?.async).toBe(true)
         expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.GaiaEmbedLoaded)
     })
 
