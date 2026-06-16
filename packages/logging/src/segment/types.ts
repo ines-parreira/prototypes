@@ -16,6 +16,7 @@ export enum SegmentEvent {
     AiAgentSmsConfigurationDisabled = 'ai-agent-sms-configuration-disabled',
     AiAgentEnabled = 'ai-agent-enabled',
     AiAgentEnablementPostReceivedOnboardingNotification = 'ai-agent-enablement-post-received-onboarding-notification',
+    AiAgentExploreTrendPerSkillClicked = 'ai-agent-explore-trend-per-skill-clicked',
     AiAgentFeedbackBannerClicked = 'ai-agent-feedback-banner-clicked',
     AiAgentFeedbackFirstMessageButtonClicked = 'ai-agent-feedback-first-message-button-clicked',
     AiAgentFeedbackOtherReasonSelectAddOption = 'ai-agent-feedback-other-reason-select-add-option',

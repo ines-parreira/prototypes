@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
@@ -25,6 +26,13 @@ export const SkillEditorSidePanelPerformanceTab = () => {
     const skillPerformanceData = useSkillPerformanceFromContext()
     const { skillMetrics, recentTickets, historicalVersionDateRange } =
         skillPerformanceData
+
+    const handleExploreTrendClick = () => {
+        logEvent(SegmentEvent.AiAgentExploreTrendPerSkillClicked, {
+            skillId: skillMetrics.resourceSourceId,
+        })
+        setIsTrendModalOpen(true)
+    }
 
     const hasMetrics = skillMetrics.metrics !== null
     const hasRecentTickets =
@@ -53,7 +61,7 @@ export const SkillEditorSidePanelPerformanceTab = () => {
                                     size="md"
                                     leadingSlot="chart-line"
                                     aria-label="Explore trend"
-                                    onClick={() => setIsTrendModalOpen(true)}
+                                    onClick={handleExploreTrendClick}
                                 >
                                     Explore trend
                                 </Button>

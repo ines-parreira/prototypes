@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -13,6 +14,9 @@ import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { SkillEditorSidePanelPerformanceTab } from './SkillEditorSidePanelPerformanceTab'
 
 jest.mock('@repo/feature-flags')
+jest.mock('@repo/logging')
+
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 Element.prototype.getAnimations = jest.fn(() => [])
 
@@ -282,6 +286,41 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
                 month: 'short',
                 day: 'numeric',
             }).format(new Date(2026, 3, 20)),
+        )
+    })
+
+    it('fires AiAgentExploreTrendPerSkillClicked when the Explore trend button is clicked', async () => {
+        const user = userEvent.setup()
+
+        mockFeatureFlags({
+            [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
+        })
+
+        render(<SkillEditorSidePanelPerformanceTab />)
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: 'Explore trend' }),
+            )
+        })
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentExploreTrendPerSkillClicked,
+            {
+                skillId: defaultSkillMetrics.resourceSourceId,
+            },
+        )
+    })
+
+    it('does not fire AiAgentExploreTrendPerSkillClicked when the flag is off', () => {
+        render(<SkillEditorSidePanelPerformanceTab />)
+
+        expect(
+            screen.queryByRole('button', { name: 'Explore trend' }),
+        ).not.toBeInTheDocument()
+        expect(mockLogEvent).not.toHaveBeenCalledWith(
+            SegmentEvent.AiAgentExploreTrendPerSkillClicked,
+            expect.anything(),
         )
     })
 
