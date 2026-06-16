@@ -59,7 +59,7 @@ catalogs:
     '@gorgias/toolkit': '0.6.2'
     '@gorgias/toolkit-react': '0.5.0'
   copilot:
-    '@gorgias/copilot': '0.80.1'
+    '@gorgias/copilot': '0.81.0'
   rest-api-sdk:
     '@gorgias/copilot-client': '^0.1.6'
     '@gorgias/copilot-queries': '^0.1.6'

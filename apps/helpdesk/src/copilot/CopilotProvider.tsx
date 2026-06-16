@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import type { ReactNode } from 'react'
 
 import {
     CopilotProvider as BaseCopilotProvider,
     useCopilot,
-    useCopilotPanel,
+    useRunLifecycle,
+    useThreadLifecycle,
 } from '@gorgias/copilot'
 import type {
     RenderConfirmationPreview,
@@ -26,18 +27,20 @@ import { useCopilotContextAttachmentSync } from './contextAttachments/useCopilot
 import { CopilotConversationStarters } from './CopilotConversationStarters'
 import { ReferenceLink } from './reference/ReferenceLink'
 import { CopilotTracking } from './tracking/CopilotTracking'
-import { useTrackCopilotOpen } from './tracking/useTrackCopilotOpen'
 import { CopilotUiActionsProvider } from './uiActions/CopilotUiActionsProvider'
 import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
+
+export const GAIA_CONVERSATION_ID_QUERY_PARAM = 'gaia_conv_id'
 
 type Props = {
     children: ReactNode
 }
 
-export const COPILOT_CONVERSATION_ID_QUERY_PARAM = 'copilotConversationId'
-
 export function CopilotProvider({ children }: Props) {
     const agent = useMemo(() => createCopilotAgent(), [])
+    const [conversationThreadId] = useSearchParam(
+        GAIA_CONVERSATION_ID_QUERY_PARAM,
+    )
 
     return (
         <BaseCopilotProvider
@@ -48,12 +51,14 @@ export function CopilotProvider({ children }: Props) {
             renderConfirmationPreview={renderConfirmationPreview}
             attachmentsConfig={copilotAttachmentsConfig}
             fetchShops={fetchCopilotShops}
+            initialThreadId={conversationThreadId ?? undefined}
+            conversationLinkParam={GAIA_CONVERSATION_ID_QUERY_PARAM}
         >
             <CopilotContextAttachmentProvider>
                 <CopilotCacheInvalidator />
                 <CopilotUiActionsProvider />
                 <CopilotContextAttachmentSynchronizer />
-                <ForcedCopilotConversationSynchronizer />
+                <CopilotConversationUrlSynchronizer />
                 <CopilotConversationStarters />
                 <CopilotTracking />
                 {children}
@@ -72,37 +77,31 @@ function CopilotContextAttachmentSynchronizer() {
     return null
 }
 
-function ForcedCopilotConversationSynchronizer() {
-    const [forcedConversationIdParam, setForcedConversationIdParam] =
-        useSearchParam(COPILOT_CONVERSATION_ID_QUERY_PARAM)
-    const forcedConversationId = forcedConversationIdParam?.trim() || undefined
-    const { threadId, switchThread } = useCopilot()
-    const { isOpen, setIsOpen } = useCopilotPanel()
-    const trackOpen = useTrackCopilotOpen()
+function CopilotConversationUrlSynchronizer() {
+    const { threadId } = useCopilot()
+    const [, setConversationThreadId] = useSearchParam(
+        GAIA_CONVERSATION_ID_QUERY_PARAM,
+    )
 
-    useEffect(() => {
-        if (!forcedConversationId) return
-
-        if (forcedConversationId !== threadId) {
-            switchThread(forcedConversationId)
-        }
-
-        // A deep link opens the panel without going through the icon/shortcut
-        // controls, so emit CopilotOpened here too — otherwise this open is
-        // untracked while the eventual close still fires.
-        trackOpen('deep-link', isOpen)
-        setIsOpen(true)
-
-        setForcedConversationIdParam(null)
-    }, [
-        forcedConversationId,
-        isOpen,
-        setForcedConversationIdParam,
-        setIsOpen,
-        switchThread,
+    useRunLifecycle(
+        {
+            onStart: (info) => {
+                if (info.userMessage) {
+                    setConversationThreadId(info.threadId)
+                }
+            },
+        },
         threadId,
-        trackOpen,
-    ])
+    )
+
+    useThreadLifecycle({
+        onThreadCreated: () => {
+            setConversationThreadId(null)
+        },
+        onThreadSwitched: (info) => {
+            setConversationThreadId(info.toThreadId)
+        },
+    })
 
     return null
 }

@@ -41,8 +41,8 @@ catalogs:
       version: 0.11.10
   copilot:
     '@gorgias/copilot':
-      specifier: 0.80.1
-      version: 0.80.1
+      specifier: 0.81.0
+      version: 0.81.0
   copy-to-clipboard:
     copy-to-clipboard:
       specifier: 3.3.1
@@ -661,7 +661,7 @@ importers:
         version: 0.2.86(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/copilot':
         specifier: catalog:copilot
-        version: 0.80.1(eb1043cad5bf15a9be8dadb10d9f9e6c)
+        version: 0.81.0(eb1043cad5bf15a9be8dadb10d9f9e6c)
       '@gorgias/copilot-client':
         specifier: catalog:rest-api-sdk
         version: 0.1.6
@@ -5809,8 +5809,8 @@ packages:
   '@gorgias/copilot-types@0.1.4':
     resolution: {integrity: sha512-LtRmlYmTCLg8gm3/iL2wY6Jc5zY1m6QWorBndYwV537/G/gH+fzC+qQp8DHXLyw9OJq/BH62Lhe73007BigsZg==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-types/0.1.4/cc06a911450ea71e0716639753a7234ea8f0ae88}
 
-  '@gorgias/copilot@0.80.1':
-    resolution: {integrity: sha512-grVHhe7rNOhAnBtKMyaJdKc7emWogHxDzE8vTlbsHwXWWN1Rvxsn0sP0mhAJR4nnPGY4FCQ8dkTJqKtdjf+7FQ==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot/0.80.1/8b311e9080d2102c419d4f7261d714ee11ad0305}
+  '@gorgias/copilot@0.81.0':
+    resolution: {integrity: sha512-oSyyb+X07KFjs0LnIbfHxPqQ3yceMg4woTjK9BYMdTC4urOiVyoQRH/OXhyrk3duYrwEC7v2/OLVzcr9ZqCMlw==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot/0.81.0/f2d36b2230d2d6f9b26cda1d5b46399cb7269caa}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@gorgias/axiom': ^0.295.0
@@ -20029,7 +20029,7 @@ snapshots:
 
   '@gorgias/copilot-types@0.1.4': {}
 
-  '@gorgias/copilot@0.80.1(eb1043cad5bf15a9be8dadb10d9f9e6c)':
+  '@gorgias/copilot@0.81.0(eb1043cad5bf15a9be8dadb10d9f9e6c)':
     dependencies:
       '@copilotkit/react-core': 1.57.1(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(encoding@0.1.13)(graphql@16.11.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@3.25.76)
       '@gorgias/axiom': 0.301.1(@gorgias/toolkit-react@0.5.0(@gorgias/toolkit@0.6.2)(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(@gorgias/toolkit@0.6.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
