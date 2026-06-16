@@ -483,7 +483,7 @@ describe('<Segments />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should open the side panel with "(copy)" appended to the name when duplicate is clicked', async () => {
+        it('should open the side panel in create mode with "(copy)" appended to the name when duplicate is clicked', async () => {
             const user = userEvent.setup()
             renderSegments()
 
@@ -492,7 +492,7 @@ describe('<Segments />', () => {
             })
 
             expect(
-                screen.getByRole('heading', { name: 'Edit segment' }),
+                screen.getByRole('heading', { name: 'Create new segment' }),
             ).toBeInTheDocument()
             expect(screen.getByLabelText(/segment name/i)).toHaveValue(
                 'Support small business (copy)',

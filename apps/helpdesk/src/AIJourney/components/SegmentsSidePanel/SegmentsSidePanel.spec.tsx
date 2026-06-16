@@ -564,6 +564,67 @@ describe('<SegmentsSidePanel />', () => {
         })
     })
 
+    describe('duplicate mode (segment + isDuplicating)', () => {
+        it('should render "Create new segment" heading', () => {
+            renderComponent({ segment: mockSegment, isDuplicating: true })
+
+            expect(
+                screen.getByRole('heading', { name: 'Create new segment' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should prefill the segment name from the duplicated segment', () => {
+            renderComponent({ segment: mockSegment, isDuplicating: true })
+
+            expect(screen.getByLabelText(/segment name/i)).toHaveValue(
+                'Support small business',
+            )
+        })
+
+        it('should create a new segment instead of updating the original on save', async () => {
+            mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
+            const user = userEvent.setup()
+            renderComponent({ segment: mockSegment, isDuplicating: true })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /save segment/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(mockMutateAsync).toHaveBeenCalledWith({
+                    name: 'Support small business',
+                    conditions: 'gt(shopper.lifetime_value, 1000)',
+                    integration_id: 123,
+                })
+            })
+            expect(mockMutateAsync).not.toHaveBeenCalledWith(
+                expect.objectContaining({ segmentId: mockSegment.id }),
+            )
+        })
+
+        it('should not render the "Used in" section even when usage exists', () => {
+            mockUseSegmentsUsage.mockReturnValue({
+                segmentUsage: [
+                    {
+                        id: 'j1',
+                        name: 'Cart Abandoned',
+                        type: 'cart_abandoned',
+                        state: 'active',
+                        isCampaign: false,
+                    },
+                ],
+                isLoading: false,
+            })
+            renderComponent({ segment: mockSegment, isDuplicating: true })
+
+            expect(
+                screen.queryByRole('heading', { name: 'Used in' }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('create mode (no segment) - "Used in" section', () => {
         it('should not render "Used in" heading', () => {
             renderComponent()

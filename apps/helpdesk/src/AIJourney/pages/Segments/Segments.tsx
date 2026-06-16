@@ -38,6 +38,7 @@ export type Segment = {
 export const Segments = () => {
     const selectedSegmentRef = useRef<Segment | undefined>(undefined)
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+    const [isDuplicating, setIsDuplicating] = useState(false)
     const [segmentToDelete, setSegmentToDelete] = useState<Segment | undefined>(
         undefined,
     )
@@ -76,6 +77,7 @@ export const Segments = () => {
 
     const openSidePanel = (segment: Segment) => {
         selectedSegmentRef.current = segment
+        setIsDuplicating(false)
         setIsSidePanelOpen(true)
     }
 
@@ -84,7 +86,12 @@ export const Segments = () => {
     }
 
     const handleDuplicateClick = (segment: Segment) => {
-        openSidePanel({ ...segment, name: `${segment.name} (copy)` })
+        selectedSegmentRef.current = {
+            ...segment,
+            name: `${segment.name} (copy)`,
+        }
+        setIsDuplicating(true)
+        setIsSidePanelOpen(true)
     }
 
     const blockedCampaignStates: JourneyCampaignStateEnum[] = [
@@ -137,6 +144,7 @@ export const Segments = () => {
                             isDisabled={isSchemaLoading || isSchemaError}
                             onClick={() => {
                                 selectedSegmentRef.current = undefined
+                                setIsDuplicating(false)
                                 setIsSidePanelOpen(true)
                             }}
                         >
@@ -188,6 +196,7 @@ export const Segments = () => {
                     onClose={handleClose}
                     segment={selectedSegmentRef.current}
                     schema={schema}
+                    isDuplicating={isDuplicating}
                 />
             )}
         </Box>
