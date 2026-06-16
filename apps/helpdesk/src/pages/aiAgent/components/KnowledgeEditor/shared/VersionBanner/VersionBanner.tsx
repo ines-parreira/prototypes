@@ -144,7 +144,7 @@ export function VersionBanner({
                                             onChange={() => onToggleDiff()}
                                             isDisabled={isDisabled}
                                         />
-                                        <Text size="sm" variant="medium">
+                                        <Text size="sm" variant="regular">
                                             Compare to current
                                         </Text>
                                     </Box>
@@ -209,7 +209,7 @@ export function VersionBanner({
                                             onChange={() => onToggleDiff()}
                                             isDisabled={isDisabled}
                                         />
-                                        <Text size="sm" variant="medium">
+                                        <Text size="sm" variant="regular">
                                             Compare to current
                                         </Text>
                                     </Box>
