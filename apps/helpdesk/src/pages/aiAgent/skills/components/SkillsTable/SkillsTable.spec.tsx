@@ -244,6 +244,24 @@ describe('SkillsTable', () => {
             expect(screen.getByText('How to cancel order')).toBeInTheDocument()
             expect(screen.getByText('Shipping information')).toBeInTheDocument()
         })
+        // Anchors are produced by `copilotAnchorProps` from @gorgias/copilot,
+        // which the repo mocks wholesale in tests/setup.tsx (see the
+        // `copilotAnchorProps` entry there mirroring the real `type:id`
+        // format). The real export ships on the unpublished SDK branch, so the
+        // source typechecks only once the catalog bumps past 0.66.1.
+        it('renders a skill copilot anchor on each row', () => {
+            const { container } = renderComponent()
+
+            expect(
+                container.querySelector('[data-copilot-anchor="skill:1"]'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-copilot-anchor="skill:2"]'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-copilot-anchor="skill:3"]'),
+            ).toBeInTheDocument()
+        })
         it('should render column headers', () => {
             renderComponent()
             expect(screen.getByText('Name')).toBeInTheDocument()

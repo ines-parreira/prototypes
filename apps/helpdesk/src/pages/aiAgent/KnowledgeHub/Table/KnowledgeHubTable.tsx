@@ -17,6 +17,8 @@ import {
 } from '@gorgias/axiom'
 import type { Row, SortingState } from '@gorgias/axiom'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
+
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
@@ -363,6 +365,14 @@ export const KnowledgeHubTable = ({
                     row.original.id === selectedArticleId &&
                     row.original.type === selectedArticleType
 
+                const anchorProps =
+                    row.original.type === KnowledgeTypeEnum.Guidance
+                        ? copilotAnchorProps({
+                              type: 'guidance',
+                              id: row.original.id,
+                          })
+                        : undefined
+
                 return (
                     <TableRow
                         key={row.id}
@@ -375,6 +385,7 @@ export const KnowledgeHubTable = ({
                         className={classNames({
                             [css.selectedRow]: isSelectedArticle,
                         })}
+                        {...anchorProps}
                     >
                         {row.getVisibleCells().map((cell) => (
                             <TableCell key={cell.id}>

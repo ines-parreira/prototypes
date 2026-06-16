@@ -65,14 +65,26 @@ jest.mock('./KnowledgeEditorGuidanceVersionBanner', () => ({
 }))
 
 jest.mock('./edit/KnowledgeEditorGuidanceEditView', () => ({
-    KnowledgeEditorGuidanceEditView: () => (
-        <div data-testid="edit-view">Edit View</div>
+    KnowledgeEditorGuidanceEditView: ({
+        contentAnchorProps,
+    }: {
+        contentAnchorProps?: { 'data-copilot-anchor': string }
+    }) => (
+        <div data-testid="edit-view" {...contentAnchorProps}>
+            Edit View
+        </div>
     ),
 }))
 
 jest.mock('./read', () => ({
-    KnowledgeEditorGuidanceReadView: () => (
-        <div data-testid="read-view">Read View</div>
+    KnowledgeEditorGuidanceReadView: ({
+        contentAnchorProps,
+    }: {
+        contentAnchorProps?: { 'data-copilot-anchor': string }
+    }) => (
+        <div data-testid="read-view" {...contentAnchorProps}>
+            Read View
+        </div>
     ),
 }))
 
@@ -188,6 +200,35 @@ describe('KnowledgeEditorGuidanceContent', () => {
 
             expect(
                 screen.getByTestId('side-panel-guidance'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    // Anchors come from `copilotAnchorProps` (@gorgias/copilot), mocked
+    // wholesale in tests/setup.tsx. The real export ships on the unpublished
+    // SDK branch, so the source typechecks only once the catalog bumps past
+    // 0.66.1.
+    describe('copilot anchors', () => {
+        it('renders the guidance entity and content section anchors', () => {
+            const closeHandlerRef = { current: null }
+
+            const { container } = render(
+                <KnowledgeEditorGuidanceProvider
+                    config={{ ...baseConfig, initialMode: 'edit' }}
+                >
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </KnowledgeEditorGuidanceProvider>,
+            )
+
+            expect(
+                container.querySelector('[data-copilot-anchor="guidance:1"]'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector(
+                    '[data-copilot-anchor="guidance:1:content"]',
+                ),
             ).toBeInTheDocument()
         })
     })

@@ -27,7 +27,10 @@ import {
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import {
+    areGraphsEqual,
+    transformVisualBuilderGraphIntoWfConfiguration,
+} from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
@@ -41,6 +44,8 @@ import { ModalActionsFooter } from 'pages/common/components/modal/ModalActionsFo
 import { DefaultExportModalBody as ModalBody } from 'pages/common/components/modal/ModalBody'
 import { ModalHeader } from 'pages/common/components/modal/ModalHeader'
 import { useUnsavedChangesPrompt } from 'pages/common/components/useUnsavedChangesPrompt'
+
+import { useCopilotNavigationGuard } from 'copilot/uiActions/unsavedWorkGuard'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import { ActionFormView } from './components/ActionFormView'
@@ -157,6 +162,16 @@ const CreateActionView = () => {
 
     const { getVariableListForNode, initialVisualBuilderGraph } =
         visualBuilderContextValue
+
+    const isVisualBuilderGraphDirty = useMemo(
+        () =>
+            !areGraphsEqual(initialVisualBuilderGraph, visualBuilderGraphDirty),
+        [initialVisualBuilderGraph, visualBuilderGraphDirty],
+    )
+
+    useCopilotNavigationGuard(
+        !isCreateActionSuccess && isVisualBuilderGraphDirty,
+    )
 
     const { data: actions = [] } = useGetStoreWorkflowsConfigurations({
         storeName: shopName,

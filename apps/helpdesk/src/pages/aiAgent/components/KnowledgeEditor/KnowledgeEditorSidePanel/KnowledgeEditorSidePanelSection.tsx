@@ -19,6 +19,7 @@ type Props = {
     sectionId: string
     alwaysExpanded?: boolean
     withBorderBottom?: boolean
+    anchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const KnowledgeEditorSidePanelSection = ({
@@ -28,6 +29,7 @@ export const KnowledgeEditorSidePanelSection = ({
     sectionId,
     alwaysExpanded = false,
     withBorderBottom = true,
+    anchorProps,
 }: Props) => {
     const headerTooltipContent =
         typeof header?.tooltip === 'string' ? (
@@ -81,6 +83,7 @@ export const KnowledgeEditorSidePanelSection = ({
                     css.section,
                     withBorderBottom && css.sectionWithBorderBottom,
                 )}
+                {...anchorProps}
             >
                 {header && (
                     <div
@@ -107,6 +110,7 @@ export const KnowledgeEditorSidePanelSection = ({
                     css.section,
                     withBorderBottom && css.sectionWithBorderBottom,
                 )}
+                {...anchorProps}
             >
                 {header && (
                     <Accordion.ItemTrigger

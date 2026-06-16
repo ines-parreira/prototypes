@@ -29,6 +29,7 @@ type Props = {
     setStatus: (status: string) => any
     onGoToNextTicket?: () => void
     onToggleUnread?: OnToggleUnreadFn
+    anchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const TicketView = ({
@@ -38,6 +39,7 @@ export const TicketView = ({
     submit,
     onGoToNextTicket,
     onToggleUnread,
+    anchorProps,
 }: Props) => {
     const drawerContainerRef = useRef<HTMLDivElement>(null)
     const hasCTDrawer = useFlag(FeatureFlagKey.CustomerTimelineDrawerUX)
@@ -88,7 +90,11 @@ export const TicketView = ({
     )
 
     return (
-        <div className={css.outerView} ref={drawerContainerRef}>
+        <div
+            className={css.outerView}
+            ref={drawerContainerRef}
+            {...anchorProps}
+        >
             {hasCTDrawer ? (
                 <Drawer.Root
                     container={drawerContainerRef.current}

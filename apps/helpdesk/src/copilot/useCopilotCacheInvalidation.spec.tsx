@@ -375,7 +375,7 @@ describe('useCopilotCacheInvalidation', () => {
             'disable_support_action' as const,
             'convert_to_advanced_view' as const,
             'create_action_from_template' as const,
-        ])('invalidates lists + specific action on %s', (toolName) => {
+        ])('invalidates store + all action config on %s', (toolName) => {
             const { wrapper, invalidateSpy } = makeWrapper()
             renderHook(() => useCopilotCacheInvalidation(), { wrapper })
 
@@ -397,18 +397,20 @@ describe('useCopilotCacheInvalidation', () => {
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: storeWorkflowsConfigurationDefinitionKeys.all(),
             })
+            // Wholesale so an open action editor (keyed by routeId, not the
+            // action id) refetches — no longer scoped to .lists()/.get(id).
             expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey: workflowsConfigurationDefinitionKeys.lists(),
-            })
-            expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey: workflowsConfigurationDefinitionKeys.get('act_xyz'),
+                queryKey: workflowsConfigurationDefinitionKeys.all(),
             })
             expect(invalidateSpy).not.toHaveBeenCalledWith({
-                queryKey: workflowsConfigurationDefinitionKeys.all(),
+                queryKey: workflowsConfigurationDefinitionKeys.lists(),
+            })
+            expect(invalidateSpy).not.toHaveBeenCalledWith({
+                queryKey: workflowsConfigurationDefinitionKeys.get('act_xyz'),
             })
         })
 
-        it('falls back to action_id from args when output is malformed', () => {
+        it('still invalidates wholesale when the output is malformed', () => {
             const { wrapper, invalidateSpy } = makeWrapper()
             renderHook(() => useCopilotCacheInvalidation(), { wrapper })
 
@@ -422,8 +424,7 @@ describe('useCopilotCacheInvalidation', () => {
             )
 
             expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey:
-                    workflowsConfigurationDefinitionKeys.get('act_from_args'),
+                queryKey: workflowsConfigurationDefinitionKeys.all(),
             })
         })
     })

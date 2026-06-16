@@ -223,6 +223,35 @@ describe('KnowledgeHubTable - Row Interactions', () => {
         await act(async () => {})
     })
 
+    // Anchors come from `copilotAnchorProps` (@gorgias/copilot), mocked
+    // wholesale in tests/setup.tsx. The real export ships on the unpublished
+    // SDK branch, so the source typechecks only once the catalog bumps past
+    // 0.66.1.
+    describe('copilot anchors', () => {
+        const dataWithGuidance: KnowledgeItem[] = [
+            ...mockData,
+            {
+                id: '7',
+                type: KnowledgeType.Guidance,
+                title: 'Test Guidance',
+                lastUpdatedAt: '2025-01-07T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+            },
+        ]
+
+        it('renders a guidance anchor on guidance rows and none on other types', () => {
+            const { container } = renderComponent({ data: dataWithGuidance })
+
+            expect(
+                container.querySelector('[data-copilot-anchor="guidance:7"]'),
+            ).toBeInTheDocument()
+            // Documents/URLs/Domains are not copilot navigation targets.
+            expect(
+                container.querySelector('[data-copilot-anchor="document:1"]'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('row selection', () => {
         const dataWithSelectableRows: KnowledgeItem[] = [
             ...mockData,

@@ -10,18 +10,21 @@ jest.mock(
         KnowledgeEditorTopBarTitle: ({
             title,
             onChangeTitle,
+            anchorProps,
         }: {
             title: string
             onChangeTitle?: (value: string) => void
+            anchorProps?: { 'data-copilot-anchor': string }
         }) =>
             onChangeTitle ? (
                 <input
                     aria-label="title"
                     value={title}
                     onChange={(e) => onChangeTitle(e.target.value)}
+                    {...anchorProps}
                 />
             ) : (
-                <span>{title}</span>
+                <span {...anchorProps}>{title}</span>
             ),
     }),
 )
@@ -118,6 +121,34 @@ describe('SkillEditorHeader', () => {
         expect(
             screen.getByRole('img', { name: /cloud-check/i }),
         ).toBeInTheDocument()
+    })
+
+    it('spreads the title and status copilot anchors onto their containers', () => {
+        const { container } = render(
+            <SkillEditorHeader
+                {...defaultProps}
+                titleAnchorProps={{ 'data-copilot-anchor': 'skill:42:title' }}
+                statusAnchorProps={{
+                    'data-copilot-anchor': 'skill:42:status',
+                }}
+            >
+                <button>Publish</button>
+            </SkillEditorHeader>,
+        )
+
+        expect(
+            container.querySelector('[data-copilot-anchor="skill:42:title"]'),
+        ).toBeInTheDocument()
+
+        // The status anchor sits on the right-hand controls container that
+        // holds the publish/enable control, not on the autosave indicators.
+        const statusAnchor = container.querySelector(
+            '[data-copilot-anchor="skill:42:status"]',
+        )
+        expect(statusAnchor).toBeInTheDocument()
+        expect(statusAnchor?.querySelector('button')).toHaveTextContent(
+            'Publish',
+        )
     })
 
     describe('preview mode (isPreview=true)', () => {

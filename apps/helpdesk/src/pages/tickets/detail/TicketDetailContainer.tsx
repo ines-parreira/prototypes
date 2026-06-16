@@ -29,6 +29,8 @@ import {
     usePrevious,
 } from '@gorgias/toolkit-react'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
+
 import { toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import type { Macro } from '@gorgias/helpdesk-types'
@@ -923,6 +925,11 @@ export const TicketDetailContainer = ({
                 setStatus={handleStatusChange}
                 onGoToNextTicket={onGoToNextTicket}
                 onToggleUnread={onToggleUnread}
+                anchorProps={
+                    ticketId
+                        ? copilotAnchorProps({ type: 'ticket', id: ticketId })
+                        : undefined
+                }
             />
         </>
     )

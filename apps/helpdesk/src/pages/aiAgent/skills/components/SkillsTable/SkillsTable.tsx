@@ -23,6 +23,8 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
+
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -122,6 +124,10 @@ export const SkillsTable = () => {
                 key={row.id}
                 onClick={() => handleRowClick(row)}
                 className={css.clickableRow}
+                {...copilotAnchorProps({
+                    type: 'skill',
+                    id: row.original.id,
+                })}
             >
                 {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

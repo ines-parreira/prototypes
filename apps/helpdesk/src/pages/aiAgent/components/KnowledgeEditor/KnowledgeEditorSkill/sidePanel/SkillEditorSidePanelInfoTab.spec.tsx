@@ -3,6 +3,11 @@ import { screen } from '@testing-library/react'
 
 import { SkillEditorSidePanelInfoTab } from './SkillEditorSidePanelInfoTab'
 
+jest.mock('../context', () => ({
+    useSkillEditorStore: (
+        selector: (state: { state: { skill?: { id?: number } } }) => unknown,
+    ) => selector({ state: { skill: { id: 42 } } }),
+}))
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanel',
     () => ({

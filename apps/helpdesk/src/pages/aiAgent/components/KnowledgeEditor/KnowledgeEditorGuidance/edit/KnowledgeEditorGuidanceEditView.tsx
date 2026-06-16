@@ -17,6 +17,8 @@ type Props = {
 
     availableActions?: GuidanceAction[]
     availableVariables?: GuidanceVariableGroup[]
+    titleAnchorProps?: { 'data-copilot-anchor': string }
+    contentAnchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const KnowledgeEditorGuidanceEditView = ({
@@ -27,6 +29,8 @@ export const KnowledgeEditorGuidanceEditView = ({
     shopName,
     availableActions,
     availableVariables,
+    titleAnchorProps,
+    contentAnchorProps,
 }: Props) => {
     const hasSkillsAccess = useSkillsAccess()
     const caption = hasSkillsAccess ? (
@@ -43,17 +47,19 @@ export const KnowledgeEditorGuidanceEditView = ({
 
     return (
         <div className={css.container}>
-            <InputField
-                label="Guidance name"
-                isRequired
-                caption={caption}
-                onChange={onChangeTitle}
-                name="name"
-                value={title}
-                maxLength={135}
-                placeholder="Untitled"
-            />
-            <div className={css.editorContainer}>
+            <div {...titleAnchorProps}>
+                <InputField
+                    label="Guidance name"
+                    isRequired
+                    caption={caption}
+                    onChange={onChangeTitle}
+                    name="name"
+                    value={title}
+                    maxLength={135}
+                    placeholder="Untitled"
+                />
+            </div>
+            <div className={css.editorContainer} {...contentAnchorProps}>
                 <GuidanceEditor
                     content={content}
                     handleUpdateContent={onChangeContent}

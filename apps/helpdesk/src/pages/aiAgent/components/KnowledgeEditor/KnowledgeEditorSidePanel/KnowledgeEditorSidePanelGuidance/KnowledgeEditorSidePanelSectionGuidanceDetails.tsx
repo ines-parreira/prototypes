@@ -6,6 +6,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { Tag } from '@gorgias/axiom'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
 import { useUpdateArticle } from 'models/helpCenter/mutations'
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
@@ -137,6 +138,13 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         setIsConvertToSkillModalOpen(true)
     }
 
+    // Copilot follow-mode `status` anchor: guidance has no status control in
+    // the editor toolbar, so the highlight points at the Status field here.
+    const statusAnchorProps =
+        guidanceId !== undefined
+            ? copilotAnchorProps({ type: 'guidance', id: guidanceId }, 'status')
+            : undefined
+
     const columns = [
         {
             left: 'Type',
@@ -149,14 +157,18 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         },
         {
             left: 'Status',
-            right: isViewingHistoricalVersion ? (
-                <Tag key="status">Previous version</Tag>
-            ) : (
-                <KnowledgeEditorSidePanelFieldStatus
-                    key="status"
-                    isDraft={isDraft}
-                    mode={mode}
-                />
+            right: (
+                <span {...statusAnchorProps}>
+                    {isViewingHistoricalVersion ? (
+                        <Tag key="status">Previous version</Tag>
+                    ) : (
+                        <KnowledgeEditorSidePanelFieldStatus
+                            key="status"
+                            isDraft={isDraft}
+                            mode={mode}
+                        />
+                    )}
+                </span>
             ),
         },
         {

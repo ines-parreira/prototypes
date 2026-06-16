@@ -131,21 +131,13 @@ export function useCopilotCacheInvalidation(): void {
                 queryClient.invalidateQueries({
                     queryKey: storeWorkflowsConfigurationDefinitionKeys.all(),
                 })
+                // Wholesale invalidation rather than scoping to the action id:
+                // an open action editor's query is keyed by routeId, not the
+                // action id, so a `.get(targetId)` leaves it stale. `.all()`
+                // covers the lists and any open editor alike.
                 queryClient.invalidateQueries({
-                    queryKey: workflowsConfigurationDefinitionKeys.lists(),
+                    queryKey: workflowsConfigurationDefinitionKeys.all(),
                 })
-                const argsActionId =
-                    info.toolName === 'create_support_action' ||
-                    info.toolName === 'create_action_from_template'
-                        ? null
-                        : (info.args as { action_id: string }).action_id
-                const targetId = info.result?.id ?? argsActionId
-                if (targetId) {
-                    queryClient.invalidateQueries({
-                        queryKey:
-                            workflowsConfigurationDefinitionKeys.get(targetId),
-                    })
-                }
                 return
             }
         }
