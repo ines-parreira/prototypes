@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type {
     ComposedMetricTimeSeriesDataItem,
     ComposedMetricTimeSeriesMetricConfig,
@@ -19,6 +20,7 @@ import { Box, getColorValue } from '@gorgias/axiom'
 
 import {
     SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY,
+    SKILL_PERFORMANCE_TREND_SUCCESS_RATE_DATA_KEY,
     SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/skillPerformanceTrendDataKeys'
 import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
@@ -30,12 +32,14 @@ const CHART_HEIGHT = 262
 const CHART_LEGEND_GAP = 36
 const TICKET_VOLUME_AXIS_SCALE = 2
 const CSAT_AXIS_MAX = 5
+const SUCCESS_RATE_AXIS_MAX = 1
 const TICKET_VOLUME_COLOR = getColorValue('dataviz-coral')
-const CSAT_COLOR = getColorValue('dataviz-purple')
+const LINE_COLOR = getColorValue('dataviz-purple')
 const MARKER_LEGEND_LABEL = 'Changes published in skill'
 const numberFormatter = new Intl.NumberFormat()
 
 const formatNumber = (value: number) => numberFormatter.format(value)
+const formatSuccessRate = (value: number) => `${Math.round(value * 100)}%`
 
 const formatDate = (value: string) =>
     formatDatetime(
@@ -51,21 +55,29 @@ const barMetric: ComposedMetricTimeSeriesMetricConfig = {
     yAxisFormatter: formatNumber,
 }
 
-const lineMetric: ComposedMetricTimeSeriesMetricConfig = {
+const csatLineMetric: ComposedMetricTimeSeriesMetricConfig = {
     dataKey: SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY,
     label: 'CSAT',
-    color: CSAT_COLOR,
+    color: LINE_COLOR,
     valueFormatter: formatCsat,
     yAxisFormatter: formatCsat,
     yAxisDomain: [0, CSAT_AXIS_MAX],
 }
 
-const CSAT_LINE_METRIC_ID = 'csat'
+const successRateLineMetric: ComposedMetricTimeSeriesMetricConfig = {
+    dataKey: SKILL_PERFORMANCE_TREND_SUCCESS_RATE_DATA_KEY,
+    label: 'Success rate',
+    color: LINE_COLOR,
+    valueFormatter: formatSuccessRate,
+    yAxisFormatter: formatSuccessRate,
+    yAxisDomain: [0, SUCCESS_RATE_AXIS_MAX],
+}
 
-const LINE_METRIC_OPTIONS = [
-    // Success rate option will be added in M4 once real cube data is wired.
-    { id: CSAT_LINE_METRIC_ID, label: lineMetric.label },
-]
+const LINE_METRIC_OPTIONS = [csatLineMetric, successRateLineMetric]
+const CHART_CARD_METRICS = LINE_METRIC_OPTIONS.map((opt) => ({
+    id: opt.dataKey,
+    label: opt.label,
+}))
 
 const AXIS_STEPS = [1, 2, 5, 10]
 
@@ -95,16 +107,28 @@ const buildTicketVolumeAxisDomain = (
 }
 
 export const SkillPerformanceChart = () => {
+    const isSuccessRateEnabled = useFlag(
+        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
+    )
+    const [selectedLineMetricDataKey, setSelectedLineMetricDataKey] = useState(
+        SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY,
+    )
+
+    const activeLineMetric =
+        LINE_METRIC_OPTIONS.find(
+            (opt) => opt.dataKey === selectedLineMetricDataKey,
+        ) ?? csatLineMetric
+
+    const handleMetricChange = (label: string) => {
+        const opt = LINE_METRIC_OPTIONS.find((o) => o.label === label)
+        if (opt) setSelectedLineMetricDataKey(opt.dataKey)
+    }
+
     const { chartData, isLoading } = useSkillPerformanceTrendFromContext()
     const { skillMetrics } = useSkillPerformanceDataContext()
     const { markers } = useSkillEventMarkers(skillMetrics.resourceSourceId, {
         dateRange: skillMetrics.dateRange,
     })
-    const [selectedLineMetricId, setSelectedLineMetricId] =
-        useState(CSAT_LINE_METRIC_ID)
-    const selectedLineMetricLabel =
-        LINE_METRIC_OPTIONS.find((m) => m.id === selectedLineMetricId)?.label ??
-        lineMetric.label
 
     const chartBarMetric = useMemo<ComposedMetricTimeSeriesMetricConfig>(
         () => ({
@@ -118,9 +142,11 @@ export const SkillPerformanceChart = () => {
     return (
         <Box>
             <ChartCard
-                title={selectedLineMetricLabel}
-                metrics={LINE_METRIC_OPTIONS}
-                onMetricChange={setSelectedLineMetricId}
+                title={activeLineMetric.label}
+                metrics={isSuccessRateEnabled ? CHART_CARD_METRICS : undefined}
+                onMetricChange={
+                    isSuccessRateEnabled ? handleMetricChange : undefined
+                }
                 withTrend={false}
                 isLoading={isLoading}
             >
@@ -130,7 +156,7 @@ export const SkillPerformanceChart = () => {
                     <ComposedMetricTimeSeriesChart
                         data={chartData}
                         barMetric={chartBarMetric}
-                        lineMetric={lineMetric}
+                        lineMetric={activeLineMetric}
                         isLoading={isLoading}
                         dateFormatter={formatDate}
                         chartHeight={CHART_HEIGHT}

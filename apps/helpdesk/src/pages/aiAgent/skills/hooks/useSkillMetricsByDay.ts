@@ -12,7 +12,10 @@ import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { averageAiAgentCsatBySkillQueryFactory } from 'domains/reporting/models/scopes/aiAgentCsat'
-import { aiAgentTicketVolumeBySkillQueryFactory } from 'domains/reporting/models/scopes/aiAgentSuccessRate'
+import {
+    aiAgentSuccessRateBySkillQueryFactory,
+    aiAgentTicketVolumeBySkillQueryFactory,
+} from 'domains/reporting/models/scopes/aiAgentSuccessRate'
 import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
 import {
     APIOnlyFilterKey,
@@ -37,6 +40,7 @@ export type SkillMetricsByDayPoint = {
     date: string
     tickets: number | null
     csat: number | null
+    successRate: number | null
 }
 
 type Row = Record<string, unknown>
@@ -65,6 +69,7 @@ type UseSkillMetricsByDayParams = {
     resourceSourceId: number
     resourceSourceSetId: number
     enabled?: boolean
+    includeSuccessRate?: boolean
     dateRange?: DateRange
 }
 
@@ -79,6 +84,7 @@ export const useSkillMetricsByDay = ({
     resourceSourceId,
     resourceSourceSetId,
     enabled = true,
+    includeSuccessRate = false,
     dateRange,
 }: UseSkillMetricsByDayParams): UseSkillMetricsByDayResult => {
     const timezone = useAppSelector(getTimezone) ?? 'UTC'
@@ -123,6 +129,16 @@ export const useSkillMetricsByDay = ({
         [timezone, filters],
     )
 
+    const successRateQuery = useMemo(
+        () =>
+            aiAgentSuccessRateBySkillQueryFactory({
+                timezone,
+                filters,
+                granularity: ReportingGranularity.Day,
+            }),
+        [timezone, filters],
+    )
+
     const tickets = usePostReportingV2<Row[], Map<string, number | null>>(
         undefined,
         ticketsQuery,
@@ -160,14 +176,35 @@ export const useSkillMetricsByDay = ({
         },
     )
 
-    const isLoading = isAvailable && (tickets.isFetching || csat.isFetching)
-    const isError = isAvailable && (tickets.isError || csat.isError)
+    const successRate = usePostReportingV2<Row[], Map<string, number | null>>(
+        undefined,
+        successRateQuery,
+        {
+            enabled: isAvailable && includeSuccessRate,
+            select: (response) => {
+                const map = new Map<string, number | null>()
+                ;(response.data.data as Row[]).forEach((row) => {
+                    const date = readCubeDateBucket(row)
+                    if (!date) return
+                    map.set(date, readCubeNumber(row, 'successRate'))
+                })
+                return map
+            },
+        },
+    )
+
+    const isLoading =
+        isAvailable &&
+        (tickets.isFetching || csat.isFetching || successRate.isFetching)
+    const isError =
+        isAvailable && (tickets.isError || csat.isError || successRate.isError)
 
     const data = useMemo<SkillMetricsByDayPoint[] | undefined>(() => {
         if (!isAvailable || isLoading || isError) return undefined
         const dates = new Set<string>([
             ...(tickets.data?.keys() ?? []),
             ...(csat.data?.keys() ?? []),
+            ...(successRate.data?.keys() ?? []),
         ])
         return Array.from(dates)
             .sort()
@@ -175,8 +212,16 @@ export const useSkillMetricsByDay = ({
                 date,
                 tickets: tickets.data?.get(date) ?? null,
                 csat: csat.data?.get(date) ?? null,
+                successRate: successRate.data?.get(date) ?? null,
             }))
-    }, [isAvailable, isLoading, isError, tickets.data, csat.data])
+    }, [
+        isAvailable,
+        isLoading,
+        isError,
+        tickets.data,
+        csat.data,
+        successRate.data,
+    ])
 
     return { data, isLoading, isError }
 }

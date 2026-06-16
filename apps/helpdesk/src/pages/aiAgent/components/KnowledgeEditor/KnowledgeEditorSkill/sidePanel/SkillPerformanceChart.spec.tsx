@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
 import { useSkillPerformanceDataContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
@@ -13,13 +16,23 @@ const mockComposedMetricTimeSeriesChart = jest.fn((__props: unknown) => (
     <div data-testid="skill-performance-chart">Skill performance chart</div>
 ))
 const mockChartCard = jest.fn(
-    ({ title, children }: { title: ReactNode; children: ReactNode }) => (
+    ({
+        title,
+        children,
+    }: {
+        title: ReactNode
+        children: ReactNode
+        metrics?: unknown
+        onMetricChange?: unknown
+    }) => (
         <div data-testid="skill-performance-chart-card">
             <div>{title}</div>
             {children}
         </div>
     ),
 )
+
+jest.mock('@repo/feature-flags')
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext',
@@ -43,8 +56,8 @@ jest.mock(
 )
 
 jest.mock('@repo/reporting', () => ({
-    ChartCard: (props: { title: ReactNode; children: ReactNode }) =>
-        mockChartCard(props),
+    ChartCard: (props: unknown) =>
+        mockChartCard(props as Parameters<typeof mockChartCard>[0]),
     ComposedMetricTimeSeriesChart: (props: unknown) =>
         mockComposedMetricTimeSeriesChart(props),
     NoDataPlaceholder: () => <div>No data found</div>,
@@ -64,6 +77,8 @@ type ChartProps = {
         yAxisDomain?: [number, number]
     }
     lineMetric: {
+        dataKey: string
+        label: string
         valueFormatter: (value: number) => string
         yAxisFormatter: (value: number) => string
         yAxisDomain?: [number, number]
@@ -74,8 +89,18 @@ type ChartProps = {
     isLoading?: boolean
 }
 
+type ChartCardProps = {
+    title: string
+    metrics?: { id: string; label: string }[]
+    onMetricChange?: (label: string) => void
+    children: ReactNode
+}
+
 const getChartProps = (): ChartProps =>
     mockComposedMetricTimeSeriesChart.mock.calls.at(-1)?.[0] as ChartProps
+
+const getChartCardProps = (): ChartCardProps =>
+    mockChartCard.mock.calls.at(-1)?.[0] as ChartCardProps
 
 const mockDateRange = {
     start_datetime: '2026-04-01',
@@ -87,6 +112,7 @@ const renderChart = () => render(<SkillPerformanceChart />)
 describe('SkillPerformanceChart', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockFeatureFlags({})
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [
                 { date: '2026-04-20', ticketVolume: 34, csat: 4.2 },
@@ -104,7 +130,7 @@ describe('SkillPerformanceChart', () => {
         })
     })
 
-    it('renders the chart card titled with the line metric label when there is data', () => {
+    it('renders the chart card with the active metric as the title when there is data', () => {
         renderChart()
 
         expect(
@@ -301,34 +327,76 @@ describe('SkillPerformanceChart', () => {
         })
     })
 
-    describe('line-metric selector', () => {
-        const getChartCardProps = () =>
-            mockChartCard.mock.calls.at(-1)?.[0] as {
-                title: string
-                metrics?: Array<{ id: string; label: string }>
-                onMetricChange?: (id: string) => void
-            }
+    describe('success rate toggle in ChartCard title (M3 reporting flag)', () => {
+        it('shows only the CSAT title with no dropdown when the flag is off', () => {
+            mockFeatureFlags({
+                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: false,
+            })
 
-        it('sets the chart card title to the default CSAT metric label', () => {
             renderChart()
 
             expect(getChartCardProps().title).toBe('CSAT')
+            expect(getChartCardProps().metrics).toBeUndefined()
+            expect(getChartCardProps().onMetricChange).toBeUndefined()
         })
 
-        it('forwards the M3 line-metric options to ChartCard so it can render a selector', () => {
+        it('passes CSAT and success rate as ChartCard metrics when the flag is on', () => {
+            mockFeatureFlags({
+                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
+            })
+
             renderChart()
 
-            const metrics = getChartCardProps().metrics
-            expect(metrics).toEqual([{ id: 'csat', label: 'CSAT' }])
+            expect(getChartCardProps().title).toBe('CSAT')
+            expect(getChartCardProps().metrics).toEqual([
+                { id: 'csat', label: 'CSAT' },
+                { id: 'successRate', label: 'Success rate' },
+            ])
+            expect(typeof getChartCardProps().onMetricChange).toBe('function')
         })
 
-        it('wires onMetricChange so the selected line metric drives the title', () => {
+        it('switches the chart lineMetric and ChartCard title when onMetricChange is called', () => {
+            mockFeatureFlags({
+                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
+            })
+
             renderChart()
 
-            const props = getChartCardProps()
-            expect(typeof props.onMetricChange).toBe('function')
-            // Single-option list today; the wiring exists so M4's Success rate
-            // option will surface a working dropdown without further changes.
+            act(() => {
+                getChartCardProps().onMetricChange?.('Success rate')
+            })
+
+            expect(getChartCardProps().title).toBe('Success rate')
+            expect(getChartProps().lineMetric).toMatchObject({
+                dataKey: 'successRate',
+                label: 'Success rate',
+            })
+        })
+
+        it('defaults to CSAT lineMetric regardless of the flag', () => {
+            renderChart()
+
+            expect(getChartProps().lineMetric).toMatchObject({
+                dataKey: 'csat',
+                label: 'CSAT',
+            })
+        })
+
+        it('formats success rate values as whole-number percentages once selected', () => {
+            mockFeatureFlags({
+                [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
+            })
+
+            renderChart()
+
+            act(() => {
+                getChartCardProps().onMetricChange?.('Success rate')
+            })
+
+            const { lineMetric } = getChartProps()
+            expect(lineMetric.valueFormatter?.(0.85)).toBe('85%')
+            expect(lineMetric.valueFormatter?.(0.1)).toBe('10%')
+            expect(lineMetric.yAxisFormatter?.(1)).toBe('100%')
         })
     })
 })

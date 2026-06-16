@@ -4,12 +4,13 @@ import moment from 'moment'
 
 import type { ComposedMetricTimeSeriesDataItem } from '@repo/reporting'
 
-import type { ResourceMetricsByDay } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import type { SkillMetricsByDayPoint } from 'pages/aiAgent/skills/hooks/useSkillMetricsByDay'
 
 import type { DateRange } from '../../shared/types'
 
 import {
     SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY,
+    SKILL_PERFORMANCE_TREND_SUCCESS_RATE_DATA_KEY,
     SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY,
 } from './skillPerformanceTrendDataKeys'
 import {
@@ -40,7 +41,7 @@ const enumerateDays = (dateRange: DateRange): string[] => {
 }
 
 export const buildSkillPerformanceChartData = (
-    metricsByDay: ResourceMetricsByDay[] | null,
+    metricsByDay: SkillMetricsByDayPoint[] | null,
     dateRange: DateRange,
 ): ComposedMetricTimeSeriesDataItem[] => {
     if (!metricsByDay || metricsByDay.length === 0) return []
@@ -53,11 +54,13 @@ export const buildSkillPerformanceChartData = (
         const entry = entriesByDate.get(date)
         const ticketVolume = entry?.tickets ?? 0
         const csat = entry?.csat ?? null
+        const successRate = entry?.successRate ?? null
 
         return {
             date,
             [SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY]: ticketVolume,
             [SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY]: csat,
+            [SKILL_PERFORMANCE_TREND_SUCCESS_RATE_DATA_KEY]: successRate,
         }
     })
 }
@@ -83,6 +86,8 @@ const buildMockChartDataForRange = (
                 sample[SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY],
             [SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY]:
                 sample[SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY],
+            [SKILL_PERFORMANCE_TREND_SUCCESS_RATE_DATA_KEY]:
+                sample[SKILL_PERFORMANCE_TREND_SUCCESS_RATE_DATA_KEY],
         }
     })
 }

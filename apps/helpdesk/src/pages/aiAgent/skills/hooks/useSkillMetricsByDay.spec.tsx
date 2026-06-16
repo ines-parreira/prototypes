@@ -93,11 +93,81 @@ describe('useSkillMetricsByDay', () => {
         })
 
         expect(result.current.data).toEqual([
-            { date: '2026-06-01', tickets: 10, csat: 4.5 },
-            { date: '2026-06-02', tickets: 12, csat: null },
-            { date: '2026-06-03', tickets: null, csat: 4.2 },
-            { date: '2026-06-04', tickets: 8, csat: 4.7 },
+            { date: '2026-06-01', tickets: 10, csat: 4.5, successRate: null },
+            { date: '2026-06-02', tickets: 12, csat: null, successRate: null },
+            { date: '2026-06-03', tickets: null, csat: 4.2, successRate: null },
+            { date: '2026-06-04', tickets: 8, csat: 4.7, successRate: null },
         ])
+    })
+
+    it('disables the success rate query when includeSuccessRate is not set', () => {
+        renderHook(() => useSkillMetricsByDay(PARAMS), { wrapper })
+
+        const successRateCall = mockUsePostReportingV2.mock.calls.find(
+            (call) => call[1]?.metricName === 'ai-agent-success-rate-by-skill',
+        )
+
+        expect(successRateCall).toBeDefined()
+        expect(successRateCall?.[2]?.enabled).toBe(false)
+    })
+
+    it('merges per-day success rate values when includeSuccessRate is true', () => {
+        const ticketsMap = new Map<string, number | null>([['2026-06-01', 5]])
+        const csatMap = new Map<string, number | null>([['2026-06-01', 4.2]])
+        const successRateMap = new Map<string, number | null>([
+            ['2026-06-01', 0.85],
+        ])
+        mockUsePostReportingV2
+            .mockReturnValueOnce({
+                data: ticketsMap,
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: csatMap,
+                isFetching: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: successRateMap,
+                isFetching: false,
+                isError: false,
+            })
+
+        const { result } = renderHook(
+            () => useSkillMetricsByDay({ ...PARAMS, includeSuccessRate: true }),
+            { wrapper },
+        )
+
+        expect(result.current.data).toEqual([
+            { date: '2026-06-01', tickets: 5, csat: 4.2, successRate: 0.85 },
+        ])
+    })
+
+    it('stores raw 0-1 success rate values in the per-day map', () => {
+        renderHook(
+            () => useSkillMetricsByDay({ ...PARAMS, includeSuccessRate: true }),
+            { wrapper },
+        )
+
+        const successRateCall = mockUsePostReportingV2.mock.calls.find(
+            (call) => call[1]?.metricName === 'ai-agent-success-rate-by-skill',
+        )
+
+        expect(successRateCall).toBeDefined()
+        const selectFn = successRateCall?.[2]?.select
+        const map = selectFn?.({
+            data: {
+                data: [
+                    {
+                        'eventDatetime.day': '2026-06-01T00:00:00.000Z',
+                        successRate: '0.85',
+                    },
+                ],
+            },
+        })
+
+        expect(map?.get('2026-06-01')).toBe(0.85)
     })
 
     it('builds the tickets map from rows via select', () => {
