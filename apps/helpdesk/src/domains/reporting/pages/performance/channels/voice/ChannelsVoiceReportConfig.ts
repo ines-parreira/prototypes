@@ -35,6 +35,7 @@ import { ChannelsVoiceOutboundCallsCard } from 'domains/reporting/pages/performa
 import { ChannelsVoiceTicketsCreatedCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTicketsCreatedCard'
 import { ChannelsVoiceTotalCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceTotalCallsCard'
 import { ChannelsVoiceUnansweredCallsCard } from 'domains/reporting/pages/performance/channels/voice/charts/kpiCharts/ChannelsVoiceUnansweredCallsCard'
+import { createChannelsVoiceCallOutcomeFetch } from 'domains/reporting/pages/performance/channels/voice/utils/getChannelsVoiceConfigurableGraphConfig'
 import { createChannelsVoiceLineChartFetch } from 'domains/reporting/pages/performance/channels/voice/utils/getChannelsVoiceConfigurableLineGraphConfig'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -212,7 +213,12 @@ export const ChannelsVoiceReportConfig: ReportConfig<PerformanceChannelsVoiceCha
             [PerformanceChannelsVoiceChart.ConfigurableGraph]: {
                 chartComponent: ChannelsVoiceConfigurableGraph,
                 label: 'Call outcome',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: createChannelsVoiceCallOutcomeFetch(),
+                    },
+                ],
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal',
             },

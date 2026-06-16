@@ -1,3 +1,4 @@
+import type { SankeyChartData } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
 
@@ -59,6 +60,32 @@ const buildMetric = (dimensions: TestDimension[]) => ({
     queryFactory: jest.fn().mockReturnValue(builtQuery),
 })
 
+const sankeyChartData: SankeyChartData = {
+    nodes: [{ name: 'Inbound', color: '#000' }],
+    links: [],
+}
+
+const buildSankeyMetric = () => ({
+    measure: 'callOutcome',
+    name: 'Call outcome',
+    metricFormat: 'decimal' as const,
+    sankey: {
+        dimensionId: 'overall',
+        dimensionName: 'Overall',
+        useChartData: jest.fn().mockReturnValue({
+            data: sankeyChartData,
+            isLoading: false,
+        }),
+        fetchExportRows: jest.fn().mockResolvedValue([
+            { name: 'Inbound', value: 10 },
+            { name: 'Outbound', value: 4 },
+        ]),
+        csvMetricName: 'Calls',
+        csvDimensionName: 'Call outcome',
+        displayProps: { nodeAlign: 'left' as const },
+    },
+})
+
 beforeEach(() => {
     jest.clearAllMocks()
 })
@@ -96,6 +123,34 @@ describe('getBarChartGraphConfig', () => {
                 configurableGraphType: ConfigurableGraphType.Donut,
             }),
         ])
+    })
+
+    it('builds a single sankey grouping from a sankey metric and its display props', () => {
+        const metric = buildSankeyMetric()
+
+        const config = getBarChartGraphConfig([metric], {}, filters, 'UTC')
+
+        expect(config[0]).toMatchObject({
+            measure: 'callOutcome',
+            name: 'Call outcome',
+        })
+        expect(config[0].dimensions).toEqual([
+            expect.objectContaining({
+                id: 'overall',
+                name: 'Overall',
+                configurableGraphType: ConfigurableGraphType.Sankey,
+                nodeAlign: 'left',
+            }),
+        ])
+
+        const { result } = renderHook(() =>
+            config[0].dimensions[0].useChartData(),
+        )
+        expect(result.current).toEqual({
+            data: sankeyChartData,
+            isLoading: false,
+        })
+        expect(metric.sankey.useChartData).toHaveBeenCalledWith(filters, 'UTC')
     })
 
     it('maps the breakdown values through the dimension formatName', () => {
@@ -203,5 +258,30 @@ describe('createBarChartFetch', () => {
 
         expect(files).toEqual({})
         expect(fetchStatsMetricBreakdownPerDimensionMock).not.toHaveBeenCalled()
+    })
+
+    it('exports a sankey metric as metric/value CSV rows', async () => {
+        const metric = buildSankeyMetric()
+        const fetch = createBarChartFetch([metric], {})
+
+        const { files } = await fetch(
+            'callOutcome',
+            'overall',
+            filters,
+            'UTC',
+            ReportingGranularity.Day,
+        )
+
+        expect(metric.sankey.fetchExportRows).toHaveBeenCalledWith(
+            filters,
+            'UTC',
+        )
+        expect(fetchStatsMetricBreakdownPerDimensionMock).not.toHaveBeenCalled()
+
+        const csv = Object.values(files)[0]
+        expect(csv).toContain('Call outcome')
+        expect(csv).toContain('Calls')
+        expect(csv).toContain('Inbound')
+        expect(csv).toContain('Outbound')
     })
 })

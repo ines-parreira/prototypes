@@ -1,12 +1,16 @@
 import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
 
-import { usePostStats } from 'domains/reporting/models/queries'
+import { fetchPostStats, usePostStats } from 'domains/reporting/models/queries'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { CALL_OUTCOME_NODE } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/callOutcomeSankey'
-import { useChannelsVoiceCallOutcomeSankeyData } from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/useChannelsVoiceCallOutcomeSankeyData'
+import {
+    fetchChannelsVoiceCallOutcomeRows,
+    useChannelsVoiceCallOutcomeSankeyData,
+} from 'domains/reporting/pages/performance/channels/voice/charts/configurableGraphs/ChannelsVoiceConfigurableGraph/useChannelsVoiceCallOutcomeSankeyData'
 
 jest.mock('domains/reporting/models/queries')
 const usePostStatsMock = assumeMock(usePostStats)
+const fetchPostStatsMock = assumeMock(fetchPostStats)
 
 describe('useChannelsVoiceCallOutcomeSankeyData', () => {
     const filters: StatsFilters = {
@@ -140,6 +144,57 @@ describe('useChannelsVoiceCallOutcomeSankeyData', () => {
             const result = select?.({ data: { data: [] } } as any)
 
             expect(result).toEqual({ nodes: [], links: [] })
+        })
+    })
+
+    describe('fetchChannelsVoiceCallOutcomeRows', () => {
+        it('returns one metric/value row per call outcome', async () => {
+            fetchPostStatsMock.mockResolvedValue({
+                data: {
+                    data: [
+                        {
+                            inboundCallsCount: '892',
+                            outboundCallsCount: '382',
+                            inboundAnsweredCallsCount: '248',
+                            inboundUnansweredCallsCount: '644',
+                            inboundMissedCallsCount: '310',
+                            inboundAbandonedCallsCount: '175',
+                            inboundCancelledCallsCount: '86',
+                            inboundCallbackRequestedCallsCount: '73',
+                        },
+                    ],
+                },
+            } as any)
+
+            const rows = await fetchChannelsVoiceCallOutcomeRows(
+                filters,
+                timezone,
+            )
+
+            expect(rows).toEqual([
+                { name: 'Inbound', value: 892 },
+                { name: 'Outbound', value: 382 },
+                { name: 'Answered', value: 248 },
+                { name: 'Unanswered', value: 644 },
+                { name: 'Missed', value: 310 },
+                { name: 'Abandoned', value: 175 },
+                { name: 'Canceled', value: 86 },
+                { name: 'Callback requested', value: 73 },
+            ])
+        })
+
+        it('treats missing or null measures as zero', async () => {
+            fetchPostStatsMock.mockResolvedValue({
+                data: { data: [{ inboundCallsCount: '10' }] },
+            } as any)
+
+            const rows = await fetchChannelsVoiceCallOutcomeRows(
+                filters,
+                timezone,
+            )
+
+            expect(rows).toContainEqual({ name: 'Inbound', value: 10 })
+            expect(rows).toContainEqual({ name: 'Outbound', value: 0 })
         })
     })
 })
