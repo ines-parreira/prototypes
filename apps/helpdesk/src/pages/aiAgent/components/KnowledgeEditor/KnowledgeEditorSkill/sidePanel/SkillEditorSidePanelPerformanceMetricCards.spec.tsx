@@ -172,7 +172,7 @@ describe('SkillEditorSidePanelPerformanceMetricCards', () => {
         expect(fieldOf(getCardByLabel('CSAT')!, 'prev-value')).toBe('4.3')
     })
 
-    it('coerces null prev values to 0 once the request has settled', () => {
+    it('passes null prev values through once settled so the badge stays neutral instead of fabricating a 0 baseline', () => {
         render(
             <SkillEditorSidePanelPerformanceMetricCards
                 {...baseProps}
@@ -185,9 +185,9 @@ describe('SkillEditorSidePanelPerformanceMetricCards', () => {
             />,
         )
 
-        expect(fieldOf(getCardByLabel('Tickets')!, 'prev-value')).toBe('0')
-        expect(fieldOf(getCardByLabel('Handovers')!, 'prev-value')).toBe('0')
-        expect(fieldOf(getCardByLabel('CSAT')!, 'prev-value')).toBe('0')
+        expect(fieldOf(getCardByLabel('Tickets')!, 'prev-value')).toBe('null')
+        expect(fieldOf(getCardByLabel('Handovers')!, 'prev-value')).toBe('null')
+        expect(fieldOf(getCardByLabel('CSAT')!, 'prev-value')).toBe('null')
     })
 
     it('keeps null prev values during loading so TrendCard can render its skeleton', () => {

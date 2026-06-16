@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -29,6 +30,10 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         },
     }),
 }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 jest.mock('../../hooks/useSkillsArticles')
 jest.mock('../../hooks/useTotalAiAgentTickets')
 jest.mock(
@@ -49,6 +54,7 @@ const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
     useGetCustomTicketsFieldsDefinitionData as jest.Mock
+const mockUseFlag = useFlag as jest.Mock
 const mockStore = configureMockStore([thunk])
 Element.prototype.getAnimations = jest.fn(() => [])
 describe('SkillsTable', () => {
@@ -115,6 +121,7 @@ describe('SkillsTable', () => {
     ]
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
         __store = mockStore({})
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -336,6 +343,51 @@ describe('SkillsTable', () => {
         it('should display percentages in percentage mode', () => {
             renderComponent()
             expect(screen.getByText('44.4%')).toBeInTheDocument()
+        })
+    })
+    describe('New reporting layer flag', () => {
+        it('requests articles without success rate when the flag is off', () => {
+            renderComponent()
+            expect(mockUseSkillsArticles).toHaveBeenCalledWith(123, 456, {
+                includeSuccessRate: false,
+            })
+        })
+        it('requests articles with success rate when the flag is on', () => {
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+            expect(mockUseSkillsArticles).toHaveBeenCalledWith(123, 456, {
+                includeSuccessRate: true,
+            })
+        })
+        it('shows the Percentage / Numeric toggle when the flag is off', () => {
+            renderComponent()
+            expect(
+                screen.getByRole('radio', { name: /percent/i }),
+            ).toBeInTheDocument()
+        })
+        it('hides the Percentage / Numeric toggle when the flag is on', () => {
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+            expect(
+                screen.queryByRole('radio', { name: /percent/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('radio', { name: /hashtag/i }),
+            ).not.toBeInTheDocument()
+        })
+        it('renders the Success rate column with renamed headers when the flag is on', () => {
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+            expect(screen.getByText('Success rate')).toBeInTheDocument()
+            expect(screen.getByText('Tickets')).toBeInTheDocument()
+            expect(screen.getByText('Handovers')).toBeInTheDocument()
+            expect(screen.getByText('CSAT')).toBeInTheDocument()
+        })
+        it('forces numeric display so ticket volume renders raw counts when the flag is on', () => {
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+            expect(screen.getByText('100')).toBeInTheDocument()
+            expect(screen.queryByText('44.4%')).not.toBeInTheDocument()
         })
     })
     describe('Intents column', () => {

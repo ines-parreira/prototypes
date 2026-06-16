@@ -75,6 +75,10 @@ export interface SkillMetrics {
     csat: number | null
     /** Average CSAT for the prior period. */
     prevCsat: number | null
+    /** AI Agent success rate as a 0–1 ratio (null when no tickets in period). */
+    successRate?: number | null
+    /** Prior-period success rate (same window length, shifted backward). */
+    prevSuccessRate?: number | null
     /** Resource source set ID (required for drilldown) */
     resourceSourceSetId: number
 }

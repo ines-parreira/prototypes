@@ -127,6 +127,7 @@ import type {
     ConvertMetrics,
     DrillDownMetric,
     IntentMetrics,
+    KnowledgeMetrics,
     SatisfactionAverageSurveyScoreMetrics,
     SatisfactionMetrics,
     SentimentForProductMetrics,
@@ -758,6 +759,16 @@ describe('getDrillDownQuery', () => {
         },
         {
             metricName: KnowledgeMetric.CSAT,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            shopIntegrationId: 789,
+            dateRange: {
+                start_datetime: '2025-01-15T00:00:00.000',
+                end_datetime: '2025-01-20T23:59:59.000',
+            },
+        },
+        {
+            metricName: KnowledgeMetric.SuccessRate,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
             shopIntegrationId: 789,
@@ -2184,6 +2195,82 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should be populated with KnowledgeMetric.SuccessRate', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const dateRange = {
+            start_datetime: '2025-01-15T00:00:00.000',
+            end_datetime: '2025-01-20T23:59:59.000',
+        }
+        const drillDownMetric = {
+            metricName: KnowledgeMetric.SuccessRate,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            shopIntegrationId: 789,
+            dateRange,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(knowledgeTicketsDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: dateRange,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [789],
+                },
+            }),
+            timezone,
+            123,
+            456,
+            undefined,
+        )
+    })
+
+    it('should pass ticketIds to knowledgeTicketsDrillDownQueryFactory for KnowledgeMetric.SuccessRate', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const dateRange = {
+            start_datetime: '2025-01-15T00:00:00.000',
+            end_datetime: '2025-01-20T23:59:59.000',
+        }
+        const ticketIds = ['T1', 'T2', 'T3']
+        const drillDownMetric = {
+            metricName: KnowledgeMetric.SuccessRate,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            shopIntegrationId: 789,
+            dateRange,
+            ticketIds,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(knowledgeTicketsDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: dateRange,
+            }),
+            timezone,
+            123,
+            456,
+            ticketIds,
+        )
+    })
+
     it('should be populated with IntentMetric.TicketVolume', () => {
         const statsFilters: StatsFilters = {
             period: {
@@ -2913,6 +3000,40 @@ describe('getDrillDownMetric', () => {
                 metricTitle: 'Success rate',
                 showMetric: false,
                 metricValueFormat: 'decimal-to-percent',
+            },
+        },
+        {
+            metricData: {
+                metricName: KnowledgeMetric.SuccessRate,
+                title: 'Success rate',
+                resourceSourceId: 123,
+                resourceSourceSetId: 456,
+                dateRange: {
+                    start_datetime: '2025-01-15T00:00:00.000',
+                    end_datetime: '2025-01-20T23:59:59.000',
+                },
+            } as KnowledgeMetrics,
+            expectedValues: {
+                metricTitle: 'Success rate',
+                showMetric: false,
+                metricValueFormat: 'decimal-to-percent',
+            },
+        },
+        {
+            metricData: {
+                metricName: KnowledgeMetric.CSAT,
+                title: 'CSAT',
+                resourceSourceId: 123,
+                resourceSourceSetId: 456,
+                dateRange: {
+                    start_datetime: '2025-01-15T00:00:00.000',
+                    end_datetime: '2025-01-20T23:59:59.000',
+                },
+            } as KnowledgeMetrics,
+            expectedValues: {
+                metricTitle: 'CSAT',
+                showMetric: false,
+                metricValueFormat: 'decimal',
             },
         },
     ]

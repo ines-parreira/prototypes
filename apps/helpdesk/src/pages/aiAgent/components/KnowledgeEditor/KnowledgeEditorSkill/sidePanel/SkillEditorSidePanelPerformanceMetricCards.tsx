@@ -50,7 +50,7 @@ const toTrend = (
     data: {
         label,
         value: isLoading ? value : (value ?? 0),
-        prevValue: isLoading ? prevValue : (prevValue ?? 0),
+        prevValue,
     },
 })
 

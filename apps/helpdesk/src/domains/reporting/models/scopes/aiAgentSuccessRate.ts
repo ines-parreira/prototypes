@@ -173,3 +173,21 @@ export const aiAgentTicketVolumePerSkill = aiAgentSuccessRateScope
 export const aiAgentTicketVolumePerSkillQueryFactory = (
     ctx: AiAgentSuccessRateContext,
 ) => aiAgentTicketVolumePerSkill.build(ctx)
+
+/**
+ * Success rate grouped by skill identity. Returns one row per
+ * (resourceSourceSetId, resourceSourceId) pair joined through the
+ * TicketInsightsSkillParticipation helper cube. Powers the Skills page table,
+ * which needs success rate per row in a single query (calling
+ * `aiAgentSuccessRateBySkill` once per skill would be N requests).
+ */
+export const aiAgentSuccessRatePerSkill = aiAgentSuccessRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_SKILL)
+    .defineQuery(() => ({
+        measures: ['successRate'] as const,
+        dimensions: ['resourceSourceSetId', 'resourceSourceId'] as const,
+    }))
+
+export const aiAgentSuccessRatePerSkillQueryFactory = (
+    ctx: AiAgentSuccessRateContext,
+) => aiAgentSuccessRatePerSkill.build(ctx)

@@ -103,6 +103,7 @@ export enum KnowledgeMetric {
     Tickets = 'knowledge_tickets',
     HandoverTickets = 'knowledge_handover',
     CSAT = 'knowledge_csat',
+    SuccessRate = 'knowledge_success_rate',
 }
 
 export enum IntentMetric {

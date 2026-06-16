@@ -9,10 +9,16 @@ import {
     skillKey,
     useSkillsAggregateMetrics,
 } from './useSkillsAggregateMetrics'
+import { useSkillsSuccessRates } from './useSkillsSuccessRates'
+
+type UseSkillsArticlesOptions = {
+    includeSuccessRate?: boolean
+}
 
 export const useSkillsArticles = (
     helpCenterId: number,
     shopIntegrationId: number,
+    { includeSuccessRate = false }: UseSkillsArticlesOptions = {},
 ) => {
     const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
 
@@ -38,40 +44,55 @@ export const useSkillsArticles = (
         enabled: !!shopIntegrationId,
     })
 
+    // Success rate is gated by the M3 reporting-layer feature flag — the column
+    // it powers is hidden when the flag is off, so we skip the fan-out too.
+    const {
+        data: successRateMap,
+        isLoading: isSuccessRateLoading,
+        isError: isSuccessRateError,
+    } = useSkillsSuccessRates({
+        shopIntegrationId,
+        dateRange: metricsDateRange,
+        enabled: !!shopIntegrationId && includeSuccessRate,
+    })
+
     const articles = useMemo<TransformedArticle[]>(() => {
         if (!data?.data) return []
         return transformArticleListToSkillsView(data.data)
     }, [data])
 
     const enrichedArticles = useMemo(() => {
-        if (!metricsMap) return articles
+        if (!metricsMap && !successRateMap) return articles
         return articles.map((article) => {
             // Skill identity in the helper cube is the pair
             // (resourceSourceSetId, resourceSourceId), which here corresponds
             // to (helpCenterId, articleId) by construction.
             const key = skillKey(helpCenterId, article.id)
-            const aggregate = metricsMap.get(key)
-            if (!aggregate) return article
+            const aggregate = metricsMap?.get(key)
+            const successRateEntry = successRateMap?.get(key)
+            if (!aggregate && !successRateEntry) return article
 
             const metrics: SkillMetrics = {
-                tickets: aggregate.tickets,
+                tickets: aggregate?.tickets ?? null,
                 prevTickets: null,
-                handoverTickets: aggregate.handoverTickets,
+                handoverTickets: aggregate?.handoverTickets ?? null,
                 prevHandoverTickets: null,
-                csat: aggregate.csat,
+                csat: aggregate?.csat ?? null,
                 prevCsat: null,
+                successRate: successRateEntry?.value ?? null,
+                prevSuccessRate: successRateEntry?.prevValue ?? null,
                 resourceSourceSetId: helpCenterId,
             }
             return { ...article, metrics }
         })
-    }, [articles, metricsMap, helpCenterId])
+    }, [articles, metricsMap, successRateMap, helpCenterId])
 
     return {
         articles: enrichedArticles,
         isLoading,
         isError,
-        isMetricsLoading,
-        isMetricsError,
+        isMetricsLoading: isMetricsLoading || isSuccessRateLoading,
+        isMetricsError: isMetricsError || isSuccessRateError,
         metricsDateRange,
     }
 }

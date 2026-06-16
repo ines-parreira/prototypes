@@ -14,4 +14,8 @@ export const KnowledgeMetricConfig = {
         showMetric: false,
         domain: Domain.Knowledge,
     },
+    [KnowledgeMetric.SuccessRate]: {
+        showMetric: false,
+        domain: Domain.Knowledge,
+    },
 }

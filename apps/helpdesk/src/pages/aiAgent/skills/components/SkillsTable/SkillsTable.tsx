@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type { Row } from '@gorgias/axiom'
 import {
     Box,
@@ -48,8 +50,14 @@ export const SkillsTable = () => {
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
+    const isSuccessRateEnabled = useFlag(
+        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
+    )
+
     const { articles, isLoading, isMetricsLoading, metricsDateRange } =
-        useSkillsArticles(helpCenterId, shopIntegrationId || 0)
+        useSkillsArticles(helpCenterId, shopIntegrationId || 0, {
+            includeSuccessRate: isSuccessRateEnabled,
+        })
 
     const { totalCount: totalAiAgentTickets } = useTotalAiAgentTickets()
 
@@ -60,8 +68,11 @@ export const SkillsTable = () => {
     )
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [statsDisplayMode, setStatsDisplayMode] =
+    const [statsDisplayModeState, setStatsDisplayMode] =
         useState<StatsDisplayMode>('percentage')
+    const statsDisplayMode: StatsDisplayMode = isSuccessRateEnabled
+        ? 'numeric'
+        : statsDisplayModeState
 
     const filteredArticles = useMemo(() => {
         if (!searchTerm.trim()) return articles
@@ -83,6 +94,7 @@ export const SkillsTable = () => {
                 intentCustomFieldId,
                 totalAiAgentTickets,
                 availableActions: guidanceActions,
+                isNewReportingLayerEnabled: isSuccessRateEnabled,
             }),
         [
             statsDisplayMode,
@@ -93,6 +105,7 @@ export const SkillsTable = () => {
             intentCustomFieldId,
             totalAiAgentTickets,
             guidanceActions,
+            isSuccessRateEnabled,
         ],
     )
 
@@ -155,19 +168,21 @@ export const SkillsTable = () => {
                     />
                 </Box>
 
-                <ButtonGroup
-                    defaultSelectedKey="percentage"
-                    onSelectionChange={(id) =>
-                        setStatsDisplayMode(id as StatsDisplayMode)
-                    }
-                >
-                    <ButtonGroupItem icon="percent" id="percentage">
-                        Percentage
-                    </ButtonGroupItem>
-                    <ButtonGroupItem icon="hashtag" id="numeric">
-                        Numeric
-                    </ButtonGroupItem>
-                </ButtonGroup>
+                {!isSuccessRateEnabled && (
+                    <ButtonGroup
+                        defaultSelectedKey="percentage"
+                        onSelectionChange={(id) =>
+                            setStatsDisplayMode(id as StatsDisplayMode)
+                        }
+                    >
+                        <ButtonGroupItem icon="percent" id="percentage">
+                            Percentage
+                        </ButtonGroupItem>
+                        <ButtonGroupItem icon="hashtag" id="numeric">
+                            Numeric
+                        </ButtonGroupItem>
+                    </ButtonGroup>
+                )}
             </Box>
 
             <Box

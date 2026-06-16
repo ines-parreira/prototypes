@@ -186,6 +186,8 @@ describe('useSkillsArticles', () => {
             prevHandoverTickets: null,
             csat: 4.5,
             prevCsat: null,
+            successRate: null,
+            prevSuccessRate: null,
             resourceSourceSetId: HELP_CENTER_ID,
         })
     })
