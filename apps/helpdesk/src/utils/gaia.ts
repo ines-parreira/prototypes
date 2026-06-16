@@ -32,9 +32,20 @@ export async function initGaia() {
         FeatureFlagKey.GaiaEmbed,
         false,
     )
-    const isEnabled = isFlagEnabled || !!window.USER_IMPERSONATED
+    const isImpersonated = !!window.USER_IMPERSONATED
+    const isEnabled = isFlagEnabled || isImpersonated
 
     if (!isEnabled) return
+
+    // During impersonation, always allow the Skills popup (COACH-2685 rule).
+    // For normal merchant sessions, also require the Skills feature flag.
+    if (!isImpersonated) {
+        const { flag: skillsFlag } = await fetchFlag(
+            FeatureFlagKey.KnowledgeIntentManagementSystem,
+            false,
+        )
+        if (skillsFlag !== true) return
+    }
 
     const cleanup = enableDraggableGaiaButton()
 
