@@ -14,6 +14,7 @@ import { AnalyticsAiAgentAllAgentsAverageCsatCard } from 'pages/aiAgent/analytic
 import { AnalyticsAiAgentAllAgentsDecreaseInFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsDecreaseInFRTCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
+import { AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard'
 import { AnalyticsAiAgentAllAgentsResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsResolutionTimeCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
 import { AnalyticsAiAgentAllAgentsTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsTimeSavedCard'
@@ -52,6 +53,7 @@ import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyt
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
+import { AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard'
 import { AnalyticsOverviewOverallAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewOverallAutomationRateCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
@@ -756,6 +758,33 @@ describe('Analytics Dynamic Trend Cards', () => {
                 interpretAs: 'more-is-better',
                 value: 12.5,
                 prevValue: 10,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard',
+            Component: AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard,
+            config: {
+                label: 'Human response time after AI handoff',
+                description:
+                    'Median time between first human agent response and last AI Agent response, for tickets where the response was sent within the selected timeframe.',
+                metricFormat: 'duration' as const,
+                value: 3600,
+                prevValue: 4200,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard',
+            Component:
+                AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard,
+            config: {
+                label: 'Human response time after AI handoff',
+                description:
+                    'Median time between first human agent response and last AI Agent response, for tickets where the response was sent within the selected timeframe.',
+                metricFormat: 'duration' as const,
+                value: 3600,
+                prevValue: 4200,
             },
             timeSeriesView: { queryFactory: expect.any(Function) },
         },

@@ -47,6 +47,12 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<AnalyticsO
                         gridSize: 3,
                         visibility: true,
                     },
+                    {
+                        chartId:
+                            AnalyticsOverviewChart.HumanResponseTimeAfterAiHandoffCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
                 ],
             },
             {

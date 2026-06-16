@@ -9,11 +9,11 @@ describe('defaultLayoutConfig', () => {
             expect(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections).toHaveLength(3)
         })
 
-        it('should have kpis section with 7 cards', () => {
+        it('should have kpis section with 8 cards', () => {
             const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe(ChartType.Card)
-            expect(kpisSection.items).toHaveLength(7)
+            expect(kpisSection.items).toHaveLength(8)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -38,6 +38,9 @@ describe('defaultLayoutConfig', () => {
             )
             expect(kpisSection.items[6].chartId).toBe(
                 AnalyticsOverviewChart.DecreaseInFRTCard,
+            )
+            expect(kpisSection.items[7].chartId).toBe(
+                AnalyticsOverviewChart.HumanResponseTimeAfterAiHandoffCard,
             )
         })
 
@@ -113,7 +116,7 @@ describe('defaultLayoutConfig', () => {
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(14)
+            expect(totalCharts).toBe(15)
         })
 
         it('should only contain valid chart types', () => {

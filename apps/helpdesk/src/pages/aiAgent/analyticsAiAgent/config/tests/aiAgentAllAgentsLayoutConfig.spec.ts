@@ -11,11 +11,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 16 cards', () => {
+        it('should have kpis section with 17 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe(ChartType.Card)
-            expect(kpisSection.items).toHaveLength(16)
+            expect(kpisSection.items).toHaveLength(17)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -57,15 +57,18 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                 AnalyticsAiAgentAllAgentsChart.DecreaseInFRTCard,
             )
             expect(kpisSection.items[12].chartId).toBe(
-                AnalyticsAiAgentAllAgentsChart.SuccessRateCard,
+                AnalyticsAiAgentAllAgentsChart.HumanResponseTimeAfterAiHandoffCard,
             )
             expect(kpisSection.items[13].chartId).toBe(
-                AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
+                AnalyticsAiAgentAllAgentsChart.SuccessRateCard,
             )
             expect(kpisSection.items[14].chartId).toBe(
-                AnalyticsAiAgentAllAgentsChart.FRTCard,
+                AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
             )
             expect(kpisSection.items[15].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.FRTCard,
+            )
+            expect(kpisSection.items[16].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.ResolutionTimeCard,
             )
         })
@@ -133,7 +136,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(21)
+            expect(totalCharts).toBe(22)
         })
 
         it('should have all required chart types defined', () => {
