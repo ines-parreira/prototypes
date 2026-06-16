@@ -14,6 +14,14 @@ const GAIA_SCRIPT_SELECTOR =
     'script[src="https://gaia.gorgias-decision-engine.com/embed.js"]'
 const GAIA_BUTTON_POSITION_KEY = 'gaia-embed-button-position'
 
+// jsdom defaults: window.innerWidth=1024, window.innerHeight=768
+// Button size fallback: 60x60
+// Default position: x = 1024-60-30 = 934, y = 768-60-100 = 608
+// Stored as: { rightOffset: 1024-60-934 = 30, bottomOffset: 768-60-608 = 100 }
+const DEFAULT_STORED = { rightOffset: 30, bottomOffset: 100 }
+const DEFAULT_LEFT = '934px'
+const DEFAULT_TOP = '608px'
+
 const createGaiaButton = () => {
     const button = document.createElement('button')
     button.id = 'gaia-embed-btn'
@@ -131,10 +139,21 @@ describe('enableDraggableGaiaButton()', () => {
         document.body.innerHTML = ''
     })
 
-    it('restores the saved Gaia button position when the button is inserted after initialization', async () => {
+    it('positions the Gaia button at bottom-right by default when no position is saved', async () => {
+        cleanupGaiaButtonEnhancer = enableDraggableGaiaButton()
+
+        const button = createGaiaButton()
+        await Promise.resolve()
+        await Promise.resolve()
+
+        expect(button.style.left).toBe(DEFAULT_LEFT)
+        expect(button.style.top).toBe(DEFAULT_TOP)
+    })
+
+    it('restores to the default bottom-right position when the default stored offsets are loaded', async () => {
         localStorage.setItem(
             GAIA_BUTTON_POSITION_KEY,
-            JSON.stringify({ x: 9999, y: 9999 }),
+            JSON.stringify(DEFAULT_STORED),
         )
 
         cleanupGaiaButtonEnhancer = enableDraggableGaiaButton()
@@ -143,14 +162,107 @@ describe('enableDraggableGaiaButton()', () => {
         await Promise.resolve()
         await Promise.resolve()
 
-        expect(button.style.left).toBe('948px')
-        expect(button.style.top).toBe('692px')
+        expect(button.style.left).toBe(DEFAULT_LEFT)
+        expect(button.style.top).toBe(DEFAULT_TOP)
+    })
+
+    it('restores a saved position (relative offsets) when the button is inserted after initialization', async () => {
+        // Save position 50px from right, 80px from bottom
+        // → x = 1024 - 60 - 50 = 914, y = 768 - 60 - 80 = 628
+        localStorage.setItem(
+            GAIA_BUTTON_POSITION_KEY,
+            JSON.stringify({ rightOffset: 50, bottomOffset: 80 }),
+        )
+
+        cleanupGaiaButtonEnhancer = enableDraggableGaiaButton()
+
+        const button = createGaiaButton()
+        await Promise.resolve()
+        await Promise.resolve()
+
+        expect(button.style.left).toBe('914px')
+        expect(button.style.top).toBe('628px')
         expect(button.style.right).toBe('')
         expect(button.style.bottom).toBe('')
         expect(button.getAttribute('data-react-aria-top-layer')).toBe('true')
     })
 
-    it('persists the dragged Gaia button position and suppresses the drag-ending click', () => {
+    it('clamps a restored position that falls outside the viewport', async () => {
+        // Very large offsets → button would be off-screen → clamped to edge margin
+        localStorage.setItem(
+            GAIA_BUTTON_POSITION_KEY,
+            JSON.stringify({ rightOffset: -9999, bottomOffset: -9999 }),
+        )
+
+        cleanupGaiaButtonEnhancer = enableDraggableGaiaButton()
+
+        const button = createGaiaButton()
+        await Promise.resolve()
+        await Promise.resolve()
+
+        // maxX = 1024 - 60 - 16 = 948, maxY = 768 - 60 - 16 = 692
+        expect(button.style.left).toBe('948px')
+        expect(button.style.top).toBe('692px')
+    })
+
+    it('snaps to viewport boundary on drag release and stays there after a DOM mutation', async () => {
+        const button = createGaiaButton()
+        cleanupGaiaButtonEnhancer = enableDraggableGaiaButton()
+
+        // Drag to a position outside maxX (1024-60-16=948) — e.g. x=960
+        dispatchPointerEvent(button, 'pointerdown', {
+            clientX: 900,
+            clientY: 600,
+        })
+        dispatchPointerEvent(button, 'pointermove', {
+            clientX: 926,
+            clientY: 600,
+        }) // 934+26 = 960, outside maxX
+        dispatchPointerEvent(button, 'pointerup', {
+            clientX: 926,
+            clientY: 600,
+        })
+
+        // Clamped to maxX=948 immediately on release
+        expect(button.style.left).toBe('948px')
+
+        // DOM mutation after drop (e.g. tooltip, re-render) — no further movement
+        document.body.appendChild(document.createElement('div'))
+        await Promise.resolve()
+        await Promise.resolve()
+
+        expect(button.style.left).toBe('948px')
+    })
+
+    it('does not snap the button back when a DOM mutation fires during a drag', async () => {
+        const button = createGaiaButton()
+        cleanupGaiaButtonEnhancer = enableDraggableGaiaButton()
+
+        dispatchPointerEvent(button, 'pointerdown', {
+            clientX: 900,
+            clientY: 600,
+        })
+        dispatchPointerEvent(button, 'pointermove', {
+            clientX: 860,
+            clientY: 560,
+        })
+
+        const positionDuringDrag = button.style.left
+
+        // Simulate a DOM mutation (e.g. tooltip) while the drag is active
+        document.body.appendChild(document.createElement('div'))
+        await Promise.resolve()
+        await Promise.resolve()
+
+        expect(button.style.left).toBe(positionDuringDrag)
+
+        dispatchPointerEvent(button, 'pointerup', {
+            clientX: 860,
+            clientY: 560,
+        })
+    })
+
+    it('persists the dragged position as relative offsets and suppresses the drag-ending click', () => {
         jest.useFakeTimers()
 
         const button = createGaiaButton()
@@ -159,6 +271,7 @@ describe('enableDraggableGaiaButton()', () => {
         const clickSpy = jest.fn()
         button.addEventListener('click', clickSpy)
 
+        // Starts from default: x=934, y=608. Drag -20,-20 → x=914, y=588.
         dispatchPointerEvent(button, 'pointerdown', {
             clientX: 900,
             clientY: 600,
@@ -177,8 +290,9 @@ describe('enableDraggableGaiaButton()', () => {
         expect(clickSpy).not.toHaveBeenCalled()
         expect(button.style.left).toBe('914px')
         expect(button.style.top).toBe('588px')
+        // Stored as relative: rightOffset = 1024-60-914 = 50, bottomOffset = 768-60-588 = 120
         expect(localStorage.getItem(GAIA_BUTTON_POSITION_KEY)).toBe(
-            JSON.stringify({ x: 914, y: 588 }),
+            JSON.stringify({ rightOffset: 50, bottomOffset: 120 }),
         )
 
         jest.runAllTimers()

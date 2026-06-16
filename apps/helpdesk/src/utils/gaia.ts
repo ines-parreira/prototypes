@@ -12,9 +12,17 @@ const GAIA_BUTTON_DRAG_THRESHOLD = 6
 const GAIA_BUTTON_POSITION_KEY = 'gaia-embed-button-position'
 const GAIA_BUTTON_ENHANCED_ATTR = 'data-gaia-draggable'
 
+// Absolute pixel position used internally during the session.
 type ButtonPosition = {
     x: number
     y: number
+}
+
+// What gets persisted to localStorage — relative to the screen edges so the
+// button restores to the same visual corner regardless of screen size.
+type StoredPosition = {
+    rightOffset: number
+    bottomOffset: number
 }
 
 let cleanupGaiaButtonEnhancer: (() => void) | null = null
@@ -51,11 +59,15 @@ export function enableDraggableGaiaButton() {
     }
 
     let activeButton: HTMLButtonElement | null = null
-    let buttonPosition = loadGaiaButtonPosition()
+    let buttonPosition: ButtonPosition | null = null
+    let storedPosition: StoredPosition | null = loadGaiaButtonPosition()
+    let isDragging = false
+    let lastApplied = { left: '', top: '', right: '', bottom: '' }
+    let buttonStyleObserver: MutationObserver | null = null
 
     const applyPosition = (
         button: HTMLButtonElement,
-        position = buttonPosition,
+        position: ButtonPosition | null = buttonPosition,
     ) => {
         buttonPosition = clampGaiaButtonPosition(position, button)
         button.style.left = `${buttonPosition.x}px`
@@ -64,24 +76,68 @@ export function enableDraggableGaiaButton() {
         button.style.bottom = 'auto'
         button.style.cursor = 'grab'
         button.setAttribute('data-react-aria-top-layer', 'true')
+        lastApplied = {
+            left: button.style.left,
+            top: button.style.top,
+            right: button.style.right,
+            bottom: button.style.bottom,
+        }
     }
 
-    const savePosition = (position = buttonPosition) => {
-        buttonPosition = clampGaiaButtonPosition(position, activeButton)
+    const savePosition = () => {
+        if (!buttonPosition || !activeButton) return
+        const { width, height } = getGaiaButtonSize(activeButton)
+        storedPosition = {
+            rightOffset: Math.round(
+                window.innerWidth - width - buttonPosition.x,
+            ),
+            bottomOffset: Math.round(
+                window.innerHeight - height - buttonPosition.y,
+            ),
+        }
         try {
             localStorage.setItem(
                 GAIA_BUTTON_POSITION_KEY,
-                JSON.stringify(buttonPosition),
+                JSON.stringify(storedPosition),
             )
         } catch {
             // Ignore storage failures.
         }
-        return buttonPosition
+    }
+
+    const storedToAbsolute = (
+        stored: StoredPosition,
+        button: HTMLButtonElement | null,
+    ): ButtonPosition => {
+        const { width, height } = getGaiaButtonSize(button)
+        return {
+            x: window.innerWidth - width - stored.rightOffset,
+            y: window.innerHeight - height - stored.bottomOffset,
+        }
     }
 
     const enhanceButton = (button: HTMLButtonElement) => {
         activeButton = button
-        applyPosition(button)
+
+        // On first enhancement, convert the stored relative position to absolute
+        // using the current button size and viewport dimensions.
+        if (storedPosition !== null && buttonPosition === null) {
+            buttonPosition = storedToAbsolute(storedPosition, button)
+        }
+
+        if (!isDragging) {
+            // Skip re-applying if the button is already at our expected position.
+            // This prevents the body MutationObserver (which fires on any DOM
+            // change) from clamping a freely-dropped position after a drag.
+            const isAtExpectedPosition =
+                buttonPosition !== null &&
+                button.style.left === `${buttonPosition.x}px` &&
+                button.style.top === `${buttonPosition.y}px`
+
+            if (!isAtExpectedPosition) {
+                applyPosition(button)
+            }
+        }
 
         button.style.touchAction = 'none'
         button.style.userSelect = 'none'
@@ -93,8 +149,26 @@ export function enableDraggableGaiaButton() {
 
         button.setAttribute(GAIA_BUTTON_ENHANCED_ATTR, 'true')
 
+        // Watch for embed.js overriding our position styles and immediately
+        // restore our position when it does.
+        buttonStyleObserver?.disconnect()
+        buttonStyleObserver = new MutationObserver(() => {
+            if (isDragging) return
+            if (
+                button.style.left === lastApplied.left &&
+                button.style.top === lastApplied.top &&
+                button.style.right === lastApplied.right &&
+                button.style.bottom === lastApplied.bottom
+            )
+                return
+            applyPosition(button)
+        })
+        buttonStyleObserver.observe(button, {
+            attributes: true,
+            attributeFilter: ['style'],
+        })
+
         let pointerId: number | null = null
-        let isDragging = false
         let suppressClick = false
         let suppressClickResetId: number | null = null
         let startX = 0
@@ -122,9 +196,13 @@ export function enableDraggableGaiaButton() {
             startX = event.clientX
             startY = event.clientY
 
-            const position = clampGaiaButtonPosition(buttonPosition, button)
-            startButtonX = position.x
-            startButtonY = position.y
+            // Read the actual rendered position so the drag starts from where
+            // the button visually is, not a stale stored value.
+            const parsedLeft = parseFloat(button.style.left)
+            const parsedTop = parseFloat(button.style.top)
+            const rect = button.getBoundingClientRect()
+            startButtonX = Number.isFinite(parsedLeft) ? parsedLeft : rect.left
+            startButtonY = Number.isFinite(parsedTop) ? parsedTop : rect.top
 
             try {
                 button.setPointerCapture?.(pointerId)
@@ -154,10 +232,20 @@ export function enableDraggableGaiaButton() {
             }
 
             event.preventDefault()
-            applyPosition(button, {
-                x: startButtonX + deltaX,
-                y: startButtonY + deltaY,
-            })
+
+            // Apply without clamping during drag so the button follows the
+            // pointer freely. Clamping to viewport bounds happens on release.
+            const x = Math.round(startButtonX + deltaX)
+            const y = Math.round(startButtonY + deltaY)
+            buttonPosition = { x, y }
+            button.style.left = `${x}px`
+            button.style.top = `${y}px`
+            lastApplied = {
+                left: button.style.left,
+                top: button.style.top,
+                right: button.style.right,
+                bottom: button.style.bottom,
+            }
         }
 
         const endPointerInteraction = (event?: PointerEvent) => {
@@ -179,7 +267,8 @@ export function enableDraggableGaiaButton() {
             pointerId = null
 
             if (isDragging) {
-                savePosition(buttonPosition)
+                applyPosition(button)
+                savePosition()
             }
 
             isDragging = false
@@ -217,11 +306,17 @@ export function enableDraggableGaiaButton() {
 
     const handleResize = () => {
         syncActiveButton()
-        if (!activeButton) return
+        if (!activeButton || isDragging) return
 
-        buttonPosition = clampGaiaButtonPosition(buttonPosition, activeButton)
-        applyPosition(activeButton, buttonPosition)
-        savePosition(buttonPosition)
+        // Re-derive absolute position from the stored relative offsets so the
+        // button stays at the same corner on the resized viewport.
+        if (storedPosition !== null) {
+            buttonPosition = storedToAbsolute(storedPosition, activeButton)
+        } else {
+            buttonPosition = null // re-compute default bottom-right for new size
+        }
+
+        applyPosition(activeButton)
     }
 
     const observer = new MutationObserver(syncActiveButton)
@@ -232,6 +327,7 @@ export function enableDraggableGaiaButton() {
 
     cleanupGaiaButtonEnhancer = () => {
         observer.disconnect()
+        buttonStyleObserver?.disconnect()
         window.removeEventListener('resize', handleResize)
         cleanupGaiaButtonEnhancer = null
     }
@@ -244,14 +340,23 @@ function findGaiaButton() {
     return button instanceof HTMLButtonElement ? button : null
 }
 
-function loadGaiaButtonPosition() {
+function loadGaiaButtonPosition(): StoredPosition | null {
     try {
-        const rawPosition = localStorage.getItem(GAIA_BUTTON_POSITION_KEY)
-        if (!rawPosition) return clampGaiaButtonPosition(null)
+        const raw = localStorage.getItem(GAIA_BUTTON_POSITION_KEY)
+        if (!raw) return null
 
-        return clampGaiaButtonPosition(JSON.parse(rawPosition))
+        const parsed = JSON.parse(raw)
+        if (
+            parsed == null ||
+            typeof parsed.rightOffset !== 'number' ||
+            typeof parsed.bottomOffset !== 'number'
+        ) {
+            return null
+        }
+
+        return parsed as StoredPosition
     } catch {
-        return clampGaiaButtonPosition(null)
+        return null
     }
 }
 
