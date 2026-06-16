@@ -29,6 +29,8 @@ overrides:
   'sha.js': '2.4.12'
   'underscore': '1.13.8'
   'node-forge': '1.4.0'
+  # GHSA-gv7w-rqvm-qjhr: missing binary integrity verification in esbuild < 0.28.1
+  'esbuild': '0.28.1'
   # CVE-2026-9277: arbitrary code execution in shell-quote < 1.8.4
   'shell-quote': '1.8.4'
   '@babel/plugin-transform-modules-systemjs': '7.29.4'
