@@ -242,6 +242,7 @@ export enum FeatureFlagKey {
     ViewCountSchedulerConfig = 'view-count-scheduler-config',
     ViewCountSchedulerV3 = 'view-count-scheduler-v3',
     ViewCountSchedulerV3Config = 'view-count-scheduler-v3-config',
+    ViewSectionsToAbly = 'linear-task_HELP-5506-migrate-view-sections-to-ably',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     VoiceSLA = 'voice-sla',
     WayfindingMobileResolution = 'linear-HELP-6564-re-enable-wayfinding-for-mobile-resolution',

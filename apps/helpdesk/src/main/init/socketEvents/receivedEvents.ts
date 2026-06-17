@@ -118,6 +118,12 @@ async function isFacebookIntegrationsReconnectedToAblyEnabled() {
     return flag
 }
 
+async function isViewSectionsToAblyEnabled() {
+    const { flag } = await fetchFlag(FeatureFlagKey.ViewSectionsToAbly, false)
+
+    return flag
+}
+
 function invalidateAllViewsQuery() {
     void appQueryClient.invalidateQueries({
         queryKey: queryKeys.views.listAllViews(),
@@ -359,7 +365,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.ViewSectionCreated,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isViewSectionsToAblyEnabled()) return
+
             const { view_section: viewSection } =
                 json as ViewSectionCreatedEvent
             reduxStore.dispatch(sectionCreated(viewSection))
@@ -371,7 +379,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.ViewSectionUpdated,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isViewSectionsToAblyEnabled()) return
+
             const { view_section: viewSection } =
                 json as ViewSectionUpdatedEvent
             reduxStore.dispatch(sectionUpdated(viewSection))
@@ -383,7 +393,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.ViewSectionDeleted,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isViewSectionsToAblyEnabled()) return
+
             const { view_section: viewSection } =
                 json as ViewSectionDeletedEvent
             reduxStore.dispatch(sectionDeleted(viewSection.id))

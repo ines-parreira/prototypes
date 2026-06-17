@@ -1017,7 +1017,9 @@ describe('receivedEvents', () => {
 
     describe('View section events', () => {
         it('should dispatch redux store action for `view-section-created` event', async () => {
-            await enableTicketNavViewSourceSdkSocketSync()
+            mockFetchFlag
+                .mockResolvedValueOnce({ flag: false, error: null })
+                .mockResolvedValueOnce({ flag: true, error: null })
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
@@ -1034,6 +1036,10 @@ describe('receivedEvents', () => {
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
                 sectionCreated(section),
             )
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.ViewSectionsToAbly,
+                false,
+            )
             await waitFor(() => {
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.views.listAllViewSections(),
@@ -1041,8 +1047,34 @@ describe('receivedEvents', () => {
             })
         })
 
+        it('should ignore `view-section-created` SocketIO events when the Ably migration flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionCreated,
+            }) as ReceivedEvent
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.ViewSectionCreated,
+                },
+                view_section: section,
+            })
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.ViewSectionsToAbly,
+                false,
+            )
+            expect(typeSafeReduxStore.dispatch).not.toHaveBeenCalled()
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
+
         it('should dispatch redux store action for `view-section-updated` event', async () => {
-            await enableTicketNavViewSourceSdkSocketSync()
+            mockFetchFlag
+                .mockResolvedValueOnce({ flag: false, error: null })
+                .mockResolvedValueOnce({ flag: true, error: null })
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
@@ -1059,6 +1091,10 @@ describe('receivedEvents', () => {
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
                 sectionUpdated(section),
             )
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.ViewSectionsToAbly,
+                false,
+            )
             await waitFor(() => {
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.views.listAllViewSections(),
@@ -1066,8 +1102,34 @@ describe('receivedEvents', () => {
             })
         })
 
+        it('should ignore `view-section-updated` SocketIO events when the Ably migration flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionUpdated,
+            }) as ReceivedEvent
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.ViewSectionUpdated,
+                },
+                view_section: section,
+            })
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.ViewSectionsToAbly,
+                false,
+            )
+            expect(typeSafeReduxStore.dispatch).not.toHaveBeenCalled()
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
+
         it('should dispatch redux store action for `view-section-deleted` event', async () => {
-            await enableTicketNavViewSourceSdkSocketSync()
+            mockFetchFlag
+                .mockResolvedValueOnce({ flag: false, error: null })
+                .mockResolvedValueOnce({ flag: true, error: null })
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
@@ -1084,11 +1146,39 @@ describe('receivedEvents', () => {
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
                 sectionDeleted(section.id),
             )
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.ViewSectionsToAbly,
+                false,
+            )
             await waitFor(() => {
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.views.listAllViewSections(),
                 })
             })
+        })
+
+        it('should ignore `view-section-deleted` SocketIO events when the Ably migration flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionDeleted,
+            }) as ReceivedEvent
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.ViewSectionDeleted,
+                },
+                view_section: section,
+            })
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.ViewSectionsToAbly,
+                false,
+            )
+            expect(typeSafeReduxStore.dispatch).not.toHaveBeenCalled()
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
         })
 
         it('should not update React Query section cache when the SDK source flag is disabled', async () => {
