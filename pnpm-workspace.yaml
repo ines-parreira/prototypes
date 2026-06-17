@@ -54,7 +54,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.301.1'
+    '@gorgias/axiom': '0.306.0'
     '@gorgias/design-tokens': '0.13.1'
     '@internationalized/date': '3.10.0'
   analytics-ui-kit:
@@ -63,7 +63,7 @@ catalogs:
     '@gorgias/toolkit': '0.6.2'
     '@gorgias/toolkit-react': '0.5.0'
   copilot:
-    '@gorgias/copilot': '0.81.0'
+    '@gorgias/copilot': '0.84.0'
   rest-api-sdk:
     '@gorgias/copilot-client': '^0.1.6'
     '@gorgias/copilot-queries': '^0.1.6'
