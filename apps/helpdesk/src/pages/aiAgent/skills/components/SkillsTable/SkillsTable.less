@@ -1,14 +1,39 @@
 :local {
-    .container {
-        width: 100%;
+    .panel {
+        [data-name='data-table-status-bar'],
+        [data-name='data-table-status-row'] {
+            display: none !important;
+        }
+
+        // The header content (search + toggle + counts) should span the full
+        // toolbar width so the two rows lay out edge to edge.
+        [data-name='data-table-header'] > [data-name='box'] {
+            flex: 1;
+        }
+
+        // The sticky stack positions the toolbar/column headers via an animated
+        // `transform` (transition: all), which makes the column header visibly
+        // jump on every scroll tick. Pin them instantly instead.
+        [data-sticky-stack-layer] {
+            transition: none !important;
+        }
+
+        // The sticky toolbar sits at a fractional offset (the scroll container
+        // starts below the page chrome), leaving a sub-pixel seam above the
+        // sticky column header where scrolling rows bleed through. Extend the
+        // toolbar background down a couple px to cover it.
+        [data-name='data-table-toolbar'] {
+            box-shadow: 0 2px 0 0 var(--elevation-neutral-default);
+        }
+
+        // Drop the pagination sticky-footer drop shadow.
+        [class*='datatablepagination-stickyfooter'][data-sticky-state='stuck'] {
+            box-shadow: none !important;
+        }
     }
 
     .additionalIntentsCount {
         padding: 0 var(--spacing-xs);
-    }
-
-    .clickableRow {
-        cursor: pointer;
     }
 
     .draftCTA {
@@ -18,67 +43,5 @@
     .titleWrapper {
         min-width: 0;
         overflow: hidden;
-    }
-
-    .tableRoot {
-        width: 100%;
-        overflow-x: auto;
-        border: 1px solid var(--border-neutral-default);
-        border-radius: var(--spacing-xs);
-
-        table {
-            table-layout: fixed;
-            width: 100%;
-            min-width: 1144px;
-        }
-
-        // Name column — takes remaining width
-        table th:first-child,
-        table td:first-child {
-            width: 378px;
-            height: 46px;
-        }
-
-        // Intents column
-        table th:nth-child(2),
-        table td:nth-child(2) {
-            width: 288px;
-        }
-
-        // Success rate column
-        table th:nth-child(3),
-        table td:nth-child(3) {
-            width: 144px;
-        }
-
-        // Ticket Volume column
-        table th:nth-child(4),
-        table td:nth-child(4) {
-            width: 92px;
-        }
-
-        // Handover column
-        table th:nth-child(5),
-        table td:nth-child(5) {
-            width: 97px;
-        }
-
-        // Average CSAT column
-        table th:nth-child(6),
-        table td:nth-child(6) {
-            width: 91px;
-        }
-
-        // Status column
-        table th:last-child,
-        table td:last-child {
-            width: 95px;
-        }
-    }
-
-    .pagination {
-        margin-top: var(--spacing-md);
-        margin-right: var(--spacing-md);
-        padding-bottom: 100px; // To avoid pagination buttons be covered by chat widget
     }
 }

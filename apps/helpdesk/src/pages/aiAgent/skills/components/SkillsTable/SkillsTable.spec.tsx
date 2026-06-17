@@ -273,7 +273,7 @@ describe('SkillsTable', () => {
         it('should display article count', () => {
             renderComponent()
             expect(
-                screen.getByText('Showing 3 of 3 skills'),
+                screen.getByText('Showing 1-3 of 3 items'),
             ).toBeInTheDocument()
         })
         it('should display metrics date range info', () => {
@@ -321,7 +321,7 @@ describe('SkillsTable', () => {
             await user.type(searchInput, 'order')
             await waitFor(() => {
                 expect(
-                    screen.getByText('Showing 2 of 3 skills'),
+                    screen.getByText('Showing 1-2 of 2 items'),
                 ).toBeInTheDocument()
             })
         })
@@ -513,12 +513,14 @@ describe('SkillsTable', () => {
             const user = userEvent.setup()
             renderComponent()
             const ticketVolumeHeader = screen.getByText('Ticket volume')
+            // First click sorts ascending, so the lowest ticket volume
+            // (How to cancel order, 50) moves to the top.
             await user.click(ticketVolumeHeader)
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
                 const firstDataRow = rows[1]
                 expect(
-                    within(firstDataRow).getByText('How to track order'),
+                    within(firstDataRow).getByText('How to cancel order'),
                 ).toBeInTheDocument()
             })
         })
@@ -575,12 +577,13 @@ describe('SkillsTable', () => {
         })
     })
     describe('Row click navigation', () => {
-        it('should navigate to skill detail when a row is clicked', async () => {
-            const user = userEvent.setup()
+        it('should link each row to its skill detail page', () => {
             renderComponent()
             const rows = screen.getAllByRole('row')
-            await user.click(rows[1])
-            expect(mockPush).toHaveBeenCalledWith(
+            // The DataTable renders each row as a navigable link via
+            // getRowHref; assert the resolved destination on the first row.
+            expect(rows[1]).toHaveAttribute(
+                'data-row-href',
                 '/app/ai-agent/shopify/test-store/skills/1',
             )
         })
@@ -603,7 +606,7 @@ describe('SkillsTable', () => {
             })
             renderComponent()
             expect(
-                screen.getByText('Showing 0 of 0 skills'),
+                screen.getByText('Showing 0-0 of 0 items'),
             ).toBeInTheDocument()
         })
         it('should handle missing shop integration', () => {

@@ -25,7 +25,9 @@ const headerLabel = (
     id: string,
 ): string | undefined => {
     const col = cols.find((c) => c.id === id)
-    if (!col || typeof col.header !== 'function') return undefined
+    if (!col) return undefined
+    if (typeof col.header === 'string') return col.header
+    if (typeof col.header !== 'function') return undefined
     const headerInfo = {
         column: { getIsSorted: () => false as const },
     } as Parameters<NonNullable<typeof col.header>>[0]
@@ -119,8 +121,8 @@ describe('getColumns', () => {
         } as Parameters<NonNullable<typeof successCol.cell>>[0]
 
         const rendered = successCol.cell(cellInfo) as {
-            props?: { children?: string }
+            props?: { children?: { props?: { children?: string } } }
         }
-        expect(rendered?.props?.children).toBe('--')
+        expect(rendered?.props?.children?.props?.children).toBe('--')
     })
 })
