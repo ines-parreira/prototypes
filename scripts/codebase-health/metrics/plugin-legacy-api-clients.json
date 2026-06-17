@@ -1,0 +1,1342 @@
+{
+    "byFile": {
+        "apps/helpdesk/src/AIJourney/components/KlaviyoPermissionBanner/KlaviyoPermissionBanner.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceLists/useAudienceLists.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceLists/useAudienceLists.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceSegments/useAudienceSegments.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceSegments/useAudienceSegments.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCreateNewJourney/useCreateNewJourney.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCreateNewJourney/useCreateNewJourney.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCustomFlows/useCustomFlows.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCustomFlows/useCustomFlows.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useDeleteJourney/useDeleteJourney.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useDeleteJourney/useDeleteJourney.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneyData/useJourneyData.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneyData/useJourneyData.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneys/useJourneys.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneys/useJourneys.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useRcsTestSend/useRcsTestSend.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useSmsIntegrations/useSmsIntegrations.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useSmsIntegrations/useSmsIntegrations.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useTestSms/useTestSms.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useTestSms/useTestSms.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useUpdateJourney/useUpdateJourney.spec.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useUpdateJourney/useUpdateJourney.tsx": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/common/notifications/hooks/useAuthentication.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/common/utils/tests/uploadFiles.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/common/utils/uploadFiles.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/copilot/reference/cards/supportAction/SupportActionReferenceCard.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/copilot/reference/cards/supportAction/SupportActionReferenceCardView.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/articleRecommendations.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/stat/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/stat/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/domains/reporting/pages/help-center/hooks/tests/usePerformanceByArticleMetrics.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/fixtures/campaign.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/fixtures/convert.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/hooks/integrations/phone/api.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/hooks/integrations/phone/tests/api.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/hooks/tests/useCancellableRequest.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/account/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/account/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/agents/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/agents/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/queries.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/guidances.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/test/configuration.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/test/message-processing.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/test/playground.test.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/test/transform-tone-of-voice.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/tests/guidances.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/tests/queries.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/aiAgentPlayground/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/aiAgentPlayground/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/application/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/articleRecommendationPrediction/queries.ts": {
+            "rest_api/ssp_api": 3
+        },
+        "apps/helpdesk/src/models/articleRecommendationPrediction/tests/article-recommendation-prediction.fixture.ts": {
+            "rest_api/ssp_api": 1
+        },
+        "apps/helpdesk/src/models/billing/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/billing/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/channel/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/chatApplicationAutomationSettings/resources.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/models/chatApplicationAutomationSettings/tests/resources.spec.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/models/contactForm/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/convert/abTest/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/abTest/types.ts": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/models/convert/abVariants/__tests__/resource.spec.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/abVariants/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/abVariants/types.ts": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/models/convert/bundle/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/bundle/tests/resources.spec.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/bundle/types.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/campaign/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/campaign/tests/resources.spec.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/campaign/types.ts": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/models/convert/channelConnection/queries.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/channelConnection/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/channelConnection/tests/resources.spec.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/channelConnection/types.ts": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/models/convert/discountOffer/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/discountOffer/types.ts": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/models/convert/settings/__test__/resources.spec.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/settings/resources.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/models/convert/settings/types.ts": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/models/customer/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/customer/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/ecommerce/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/ecommerce/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/event/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/event/test/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/mutations.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/models/helpCenter/queries.test.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/queries.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/models/helpCenter/resources.test.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/resources.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/models/helpCenter/tests/queries.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/models/helpCenter/tests/resources.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/models/integration/queries.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/queries/tests/http.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/alloy.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/bigcommerce.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/email.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/http.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/shopify.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/tests/bigcommerce.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/tests/http.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/tests/shopify.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/resources/whatsapp.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/tests/queries.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/integration/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/job/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/job/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/language/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/macro/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/macro/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/phoneNumber/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/phoneNumber/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/rule/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/rule/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/ruleRecipe/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/ruleRecipe/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/search/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/search/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/section/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/section/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/selfServiceConfiguration/resources.ts": {
+            "rest_api/ssp_api": 1
+        },
+        "apps/helpdesk/src/models/singleSenderVerification/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/storeMapping/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/storeMapping/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/tag/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/tag/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/team/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/team/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/ticket/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/twoFactorAuthentication/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/twoFactorAuthentication/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/user/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/user/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/view/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/view/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/voiceCall/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/voiceCall/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/whatsAppMessageTemplates/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/whatsAppMessageTemplates/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/widget/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/widget/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/models/workflows/queries.ts": {
+            "rest_api/workflows_api": 3
+        },
+        "apps/helpdesk/src/models/workflows/tests/queries.spec.tsx": {
+            "rest_api/workflows_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/Activation/hooks/tests/storeActivationReducer.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/DeleteDocumentModal.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/UploadDocumentModal.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/UploadDocumentModal.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/hooks/useFileIngestionStatus.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/utils/enrichDocumentsWithIngestion.test.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/utils/enrichDocumentsWithIngestion.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData.tsx": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/utils/tests/knowledgeSourcesAnalysis.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/components/ActionEventSidePanel.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/components/ActionStepAccordionItem.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/components/HttpRequestLogsView.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/components/tests/ActionStepAccordionItem.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/components/tests/HttpRequestLogsView.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/providers/StoreAppsContext.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/tests/ActionEventsViewContainer.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/types.ts": {
+            "rest_api/workflows_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings.tsx": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/hooks/useTexts.ts": {
+            "rest_api/gorgias_chat_protected_api": 3
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/tests/CustomerEngagementSettings.spec.tsx": {
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/tests/useTexts.spec.ts": {
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/GuidanceEditor/useEnableGuidanceAction.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions.tsx": {
+            "rest_api/workflows_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/Knowledge/tests/ExternalFilesSection.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/utils.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/ArticleContext.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/modals/KnowledgeEditorSidePanelSectionLinkedIntentsModal.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/context/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillIntentConflicts.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillIntentConflicts.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/modals/hooks/useLinkedIntentsModalSkill.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/test/utils.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/utils.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/handoverCustomization/tests/useHandoverCustomizationChatLanguageTextsConfiguration.spec.ts": {
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatLanguageTextsConfiguration.ts": {
+            "rest_api/gorgias_chat_protected_api": 3
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/test/useMultiplePublicResources.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/test/useMultipleStoreWebsiteQuestions.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/test/useStoresDomainIngestionLogs.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/test/useStoresKnowledgeStatus.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/useFileIngestion.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/useGuidanceArticleMutation.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/useGuidanceArticles.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/usePublicResourcesPooling.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/hooks/useEnrichedOpportunity.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/hooks/useEnrichedOpportunity.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/utils/enrichOpportunityWithIngestion.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/utils/tests/enrichOpportunityWithIngestion.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/components/SkillWizard/SkillRecapStep.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useApplyWizardChanges.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useEnableAction.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useEnableAction.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useEnrichedSkillWizard.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useSkillWizardMutations.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useUpdateIntentStatus.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/utils/transformArticleListToSkillsView.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/utils/transformArticleListToSkillsView.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/trial/hooks/useNotifyTrialExtensionSlackChannel.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/trial/tests/useNotifyTrialExtensionSlackChannel.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/types.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/utils/guidance.utils.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils.ts": {
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization/tests/handoverCustomizationChatFallbackSettingsForm.utils.spec.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/actionsPlatform/types.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowsSettings.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/ArticleSelect.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/ArticleSelectPreview.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/MessageCard.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/PreviewArticle.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/PreviewHeader.tsx": {
+            "rest_api/ssp_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/PreviewSection.tsx": {
+            "rest_api/ssp_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/components/RecommendationFilters.tsx": {
+            "rest_api/ssp_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/trainMyAi/hooks/useHelpCenterArticleTree.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/ConnectTrackstarButton.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/NodeMenu.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/LiquidTemplateEditor/useSendTestLiquidTemplate.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/automate/workflows/types.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/DiscountCodeCreateModal/tests/DiscountCodeCreateModal.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/DiscountCodeResults/DiscountCodeResults.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/DiscountCodeResults/tests/DiscountCodeResults.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/IncomingPhoneCall/tests/IncomingPhoneCall.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/OngoingPhoneCall.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/tests/OngoingPhoneCall.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/tests/PhoneIntegrationCallBar.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/tests/PrivateReplyModal.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/ShopifyProductLine/tests/ShopifyProductLine.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/ViewTable/Table/tests/MissingBillingInformationRow.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/ast/widget/tests/MacroSelect.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/tests/ShippingMethod.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/tests/utils.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/tests/RefundOrderModal.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/tests/utils.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/draftjs/plugins/prediction/client.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/draftjs/plugins/prediction/tests/client.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/forms/SearchInput/tests/SearchInput.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/common/utils/tests/withCancellableRequest.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/bundles/components/ConvertBundle1ClickInstallCard/ConvertBundle1ClickInstallCard.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/bundles/components/ConvertBundle1ClickInstallCard/__tests__/ConvertBundle1ClickInstallCard.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/bundles/components/ConvertBundleDetail/ConvertBundleDetail.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/bundles/components/ConvertBundleView/__tests__/ConvertBundleView.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/bundles/hooks/__tests__/useInstallBundle.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/bundles/hooks/useInstallBundle.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/campaigns/templates/constructor.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/campaigns/templates/tests/constructor.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/campaigns/templates/tests/templates.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/common/components/ConvertSubscriptionModal/tests/ConvertSubscriptionModal.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/convert/common/hooks/useConvertApi.tsx": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/pages/convert/common/hooks/useGetConvertStatus.tsx": {
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/pages/convert/common/utils/isExceedingPlanLimit.ts": {
+            "rest_api/revenue_addon_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/Advanced/tests/AppAdvanced.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/Store/Mine/tests/Mine.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/Store/tests/All.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/components/tests/AlloyConnectButton.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/app/tests/App.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/email/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/email/tests/EmailForwardingButton.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationInProgress.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx": {
+            "rest_api/gorgias_chat_protected_api": 3
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputGroup.tsx": {
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx": {
+            "rest_api/gorgias_chat_protected_api": 5
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/utils/CompareTextsPerLanguage.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/utils/tests/CompareTextsPerLanguage.test.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx": {
+            "rest_api/gorgias_chat_protected_api": 4
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/GorgiasChatIntegrationAppearance.spec.tsx": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/hooks/usePrivacyPolicyText.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/hooks/useGorgiasTranslateText.ts": {
+            "rest_api/gorgias_chat_protected_api": 4
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/hooks/useUpdateApplicationTexts.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/utils/translateTextHelpers.ts": {
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/utils/translations-available-keys.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/common/components/FlowsCard/FlowsCard.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/common/components/FlowsCard/FlowsSettings.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/common/components/FlowsCard/types.ts": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/phone/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/phone/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/phoneNumbers/tests/PhoneNumbersListContainer.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/access/SsoToggleButton.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/access/tests/SsoToggleButton.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/audit/tests/UserAuditList.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormEntrypointPreview/tests/ContactFormEntrypointPreview.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormMailtoReplacementSection/queries.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormMailtoReplacementSection/resources.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormMailtoReplacementSection/tests/queries.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormMailtoReplacementSection/useContactFormMailtoReplacementConfig.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/fixtures/contacForm.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/fixtures/pageEmbedment.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/fixtures/shopifyPage.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/queries.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/resources.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/tests/queries.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/tests/resources.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/views/ContactFormCreateView/test/ContactFormCreateView.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/views/ContactFormStartView/ManageContactForms/tests/ContactFormTableRow.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/views/ContactFormStartView/tests/ContactFormStartView.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/tests/EmailContactInfoSection.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/HelpCenterCreationWizardUtils.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/hooks/tests/useHelpCenterFlows.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/hooks/tests/useStoreToChannelMappings.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/hooks/useStoreToChannelMappings.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCustomizationView.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView.spec.tsx": {
+            "rest_api/migration_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/types.ts": {
+            "rest_api/migration_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/utils.ts": {
+            "rest_api/migration_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/ImportSection/ImportSection.spec.tsx": {
+            "rest_api/migration_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/ImportSection/types.ts": {
+            "rest_api/migration_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/ManageRedirects/queries.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/ManageRedirects/resources.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/UpdateToggle/tests/UpdateToggle.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent/HelpCenterArticleModalAdvancedViewContent.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent/HelpCenterArticleModalBasicViewContent.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditor/HelpCenterEditor.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/fixtures/analyseCsvResponse.fixture.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/fixtures/getHelpCenterTranslationsResponse.fixture.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/fixtures/pageEmbedment.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/fixtures/shopifyPage.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/tests/useCategoriesActions.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/tests/useFileUpload.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/tests/useHelpCenterApi.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/tests/useMigrationApi.spec.tsx": {
+            "rest_api/migration_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/useArticlesActions.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/useFileUpload.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/useHelpCenterApi.tsx": {
+            "rest_api/help_center_api": 3
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/useHelpCenterCategories.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/useHelpCenterList.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/hooks/useMigrationApi.tsx": {
+            "rest_api/migration_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/providers/HelpCenterPreferencesSettings/tests/HelpCenterPreferencesSettings.spec.tsx": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/queries.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/resources.ts": {
+            "rest_api/help_center_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/tests/queries.spec.tsx": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/tests/resources.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/utils/__tests__/navigationLinks.spec.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/utils/navigationLinks.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/pages/settings/macros/tests/MacrosCSVImportPopover.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/CancelProductModal/resources.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/CancelProductModal/tests/resources.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/ContactSupportModal/tests/ContactSupportModal.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/ShopifyBillingInactiveBanner/tests/ShopifyBillingInactiveBanner.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/SummaryPaymentSection/tests/NewSummaryPaymentSection.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/hooks/tests/useBillingPlan.spec.tsx": {
+            "@repo/api-resources#client": 1,
+            "rest_api/revenue_addon_api": 2
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/hooks/tests/useIsPaymentEnabled.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/utils/sendRemoveNotificationZap.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/utils/sendSupportTicket.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/utils/tests/sendRemoveNotificationZap.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/utils/tests/sendSupportTickets.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/BillingAddressSetupView/components/tests/FormContainer.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/BillingAddressSetupView/tests/BillingAddressSetupView.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/BillingProcessView/tests/BillingProcessView.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentInformationView/components/__tests__/BillingInformationSection.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/tests/FormContainer.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useConfirmStripeSetupIntent.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useSubmitPaymentMethod.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useSubmitPaymentMethodWithBillingContact.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/tests/PaymentMethodSetupView.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/settings/teams/tests/List.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/CreateShopifyCharge.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/CreditShopifyBillingIntegration.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/ImportPhoneNumber.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/RemoveShopifyBilling.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/TwilioSubaccountStatusForm.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/tests/CreateShopifyCharge.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/tests/CreditShopifyBillingIntegration.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/tests/ImportPhoneNumber.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/tests/RemoveShopifyBilling.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tasks/detail/tests/TwilioSubaccountStatusForm.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent/tests/DownloadableDeletableRecording.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketFields/tests/TicketFields.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketHeaderWrapper/tests/TicketHeaderWrapper.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/CollapsedSourceActions/tests/CollapsedSourceActions.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/IntentsFeedback/tests/IntentsFeedback.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/tests/AiAgentFailedWorkflowMessage.spec.tsx": {
+            "rest_api/workflows_api": 1
+        },
+        "apps/helpdesk/src/pages/tickets/navbar/tests/TicketNavbar.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/search/tests/useSearch.spec.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/search/useSearch.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/services/gorgiasApi.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/services/tests/gorgiasApi.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/auths/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/auths/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/chats/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/chats/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/currentAccount/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/currentAccount/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/currentUser/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/currentUser/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/customers/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/customers/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/entities/helpCenter/articles/actions.ts": {
+            "rest_api/help_center_api": 1
+        },
+        "apps/helpdesk/src/state/infobar/actions.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/infobar/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/infobarActions/shopify/cancelOrder/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/infobarActions/shopify/createOrder/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/infobarActions/shopify/editOrder/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/infobarActions/shopify/refundOrder/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/integrations/actions/gorgias-chat.actions.ts": {
+            "rest_api/gorgias_chat_protected_api": 6
+        },
+        "apps/helpdesk/src/state/integrations/actions/index.ts": {
+            "@repo/api-resources#client": 1,
+            "rest_api/gorgias_chat_protected_api": 2
+        },
+        "apps/helpdesk/src/state/integrations/helpers.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/state/integrations/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1,
+            "rest_api/gorgias_chat_protected_api": 3
+        },
+        "apps/helpdesk/src/state/integrations/tests/gorgias-chat.actions.spec.ts": {
+            "@repo/api-resources#client": 1,
+            "rest_api/gorgias_chat_protected_api": 6
+        },
+        "apps/helpdesk/src/state/integrations/tests/helpers.spec.ts": {
+            "rest_api/gorgias_chat_protected_api": 1
+        },
+        "apps/helpdesk/src/state/macro/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/macro/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/mergeTickets/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/mergeTickets/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/newMessage/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/tags/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/tags/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/ticket/actions.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/ticket/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/tickets/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/tickets/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/views/actions.tsx": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/views/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/widgets/actions.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/state/widgets/tests/actions.spec.ts": {
+            "@repo/api-resources#client": 1
+        },
+        "apps/helpdesk/src/utils/sdk.ts": {
+            "rest_api/revenue_addon_api": 1
+        }
+    },
+    "byPattern": {
+        "@repo/api-resources#client": 207,
+        "rest_api/gorgias_chat_protected_api": 65,
+        "rest_api/help_center_api": 138,
+        "rest_api/migration_api": 9,
+        "rest_api/revenue_addon_api": 57,
+        "rest_api/ssp_api": 8,
+        "rest_api/workflows_api": 35
+    },
+    "plugin": "legacy-api-clients",
+    "summary": {
+        "filesWithFindings": 440,
+        "total": 519
+    }
+}

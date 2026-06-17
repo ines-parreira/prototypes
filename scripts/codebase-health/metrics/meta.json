@@ -1,0 +1,32 @@
+{
+    "commit": "14711b541ded62142c25c1e3b916e971f48127ec",
+    "generatedAt": "2026-06-17T09:38:12.270Z",
+    "selectedTools": [
+        "react-doctor",
+        "fallow",
+        "oxlint",
+        "static-analysis"
+    ],
+    "toolResults": [
+        {
+            "headline": "6966 diagnostics (485 errors, 6481 warnings) across 34 projects",
+            "status": "ok",
+            "tool": "react-doctor"
+        },
+        {
+            "headline": "dead-code=2378, dupes=179, health-score=64.6",
+            "status": "ok",
+            "tool": "fallow"
+        },
+        {
+            "headline": "685 diagnostics (0 errors, 685 warnings) across 34 workspaces",
+            "status": "ok",
+            "tool": "oxlint"
+        },
+        {
+            "headline": "any-types=14804, as-casts=8308, deprecated-components=2433, legacy-api-clients=519, handwritten-react-query=142, legacy-generated-clients=320, deprecated-nodes=2838",
+            "status": "ok",
+            "tool": "static-analysis"
+        }
+    ]
+}

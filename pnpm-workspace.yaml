@@ -175,7 +175,7 @@ catalogs:
   formatter:
     'oxfmt': '^0.48.0'
   oxlint:
-    'oxlint': '^1.50.0'
+    'oxlint': '1.56.0'
   lodash:
     'lodash': '4.18.1'
     '@types/lodash': '4.14.158'
