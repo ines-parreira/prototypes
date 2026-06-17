@@ -17,6 +17,7 @@ import { CompatRoute } from 'react-router-dom-v5-compat'
 
 import { AiJourneyRoutes } from 'AIJourney/routes'
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { GaiaHomePage } from 'pages/aiAgent/gaiaHome/GaiaHomePage'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { CampaignStatsOrPaywallPage as RevenueCampaignsStats } from 'domains/reporting/pages/convert/pages/CampaignsStats'
@@ -197,6 +198,9 @@ export function AppRoutes() {
                 component={RedirectToAiAgentRoutes}
             />
             <Route path={`${path}/ai-agent`} render={AiAgentBaseRoutes} />
+            <Route path={`${path}/gaia-home`} exact>
+                <GaiaHomePage />
+            </Route>
             <Route path={`${path}/ai-journey`} render={AiJourneyRoutes} />
             <Route path={`${path}/convert`}>
                 <ConvertRoutes />

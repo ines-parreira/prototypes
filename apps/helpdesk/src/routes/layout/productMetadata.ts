@@ -37,7 +37,7 @@ export const productMetadata: Record<Product, ProductMetadata> = {
         id: Product.Home,
         name: 'Home',
         productType: 'secondary',
-        urlPatterns: ['home'],
+        urlPatterns: ['home', 'gaia-home'],
         icon: 'nav-home',
         defaultPath: '/app/home',
     },

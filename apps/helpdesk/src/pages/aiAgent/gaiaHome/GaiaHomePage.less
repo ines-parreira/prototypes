@@ -1,0 +1,699 @@
+:local {
+    .main {
+        /*
+         * Shared homepage surface tokens — one warm canvas + one off-white
+         * surface for every panel/overlay/card so nothing reads as a brighter
+         * pure-white block on top of the off-white page.
+         */
+        --home-page-bg: #eee9e2;
+        --home-panel-bg: #fbfaf8;
+        --home-surface-bg: #fbfaf8;
+        --home-border: rgba(31, 31, 31, 0.08);
+        --home-shadow-soft: 0 24px 70px rgba(20, 20, 20, 0.12);
+
+        position: relative;
+        height: 100%;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        padding: var(--layout-spacing-xs);
+        padding-left: 0;
+        overflow: hidden;
+        background-color: var(--home-page-bg);
+    }
+
+    .surface {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        /* Trap the ask-area z-index so it never paints over the chat overlay. */
+        isolation: isolate;
+        background-color: var(--home-panel-bg);
+        color: var(--content-neutral-default);
+        border: 1px solid var(--home-border);
+        border-radius: var(--spacing-md);
+        box-shadow:
+            3px 3px 10px 0px #0000000d,
+            12px 13px 18px 0px #0000000a,
+            27px 30px 24px 0px #00000008,
+            48px 53px 28px 0px #00000003;
+    }
+
+    .content {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-lg);
+    }
+
+    .hero {
+        text-align: center;
+        margin-top: 8vh;
+        margin-bottom: var(--spacing-xl, 48px);
+    }
+
+    .heroEyebrow {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 22px;
+        color: var(--content-neutral-secondary);
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .heroTitle {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 32px;
+        line-height: 1.1;
+        font-weight: 500;
+        color: var(--content-neutral-default);
+        margin: 0;
+    }
+
+    /* ---------------- Metrics + chart card ---------------- */
+
+    /*
+     * By default this is a bare container — the metric row sits directly on
+     * the page canvas with no border/background. On hover it becomes the TOP
+     * of a single unified panel (rounded top corners, no bottom border) that
+     * connects seamlessly to the chart overlay below.
+     */
+    .chartCard {
+        position: relative;
+        width: 100%;
+        max-width: 960px;
+        padding: var(--spacing-md);
+    }
+
+    .chartCardActive {
+        background-color: var(--home-surface-bg);
+        border: 1px solid var(--home-border);
+        border-bottom: none;
+        border-radius: 12px 12px 0 0;
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.04),
+            0 8px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    .metricsRow {
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+    }
+
+    /*
+     * The chart is hidden by default and revealed on hover as the BOTTOM of
+     * the same unified panel — it touches the metric area (top: 100%, shared
+     * background, no border between them, rounded bottom corners) so the two
+     * read as one cohesive analytics panel while still overlaying the content
+     * beneath without pushing the layout.
+     */
+    .chartOverlay {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        padding: 0 var(--spacing-md) var(--spacing-md);
+        border: 1px solid var(--home-border);
+        border-top: none;
+        border-radius: 0 0 12px 12px;
+        background-color: var(--home-surface-bg);
+        box-shadow: var(--home-shadow-soft);
+        animation: gaiaChartOverlayIn 0.16s ease;
+    }
+
+    .metricCard {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-sm);
+        border: 1px solid transparent;
+        border-radius: var(--spacing-sm);
+        transition:
+            border-color 0.12s ease,
+            box-shadow 0.12s ease,
+            background-color 0.12s ease;
+    }
+
+    .metricCardActive {
+        border-color: var(--home-border);
+        background-color: var(--home-surface-bg);
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.06),
+            0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .metricCardHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xs);
+    }
+
+    .metricEdit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--content-neutral-secondary);
+        opacity: 0;
+        transition: opacity 0.12s ease;
+    }
+
+    .metricCard:hover .metricEdit,
+    .metricCardActive .metricEdit {
+        opacity: 1;
+    }
+
+    /* Metric picker dropdown — anchored under its card, left-aligned. */
+    .metricDropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 7px;
+        z-index: 50;
+        /* hover bridge across the gap is added via ::before below */
+        width: 100%;
+        min-width: 240px;
+        overflow: hidden;
+        background-color: var(--home-surface-bg);
+        border: 1px solid var(--home-border);
+        border-radius: 12px;
+        box-shadow:
+            0 4px 16px rgba(0, 0, 0, 0.1),
+            0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Invisible bridge so hover survives the gap between card and dropdown. */
+    .metricDropdown::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -7px;
+        height: 7px;
+    }
+
+    .metricSearchRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-sm);
+        border-bottom: 1px solid var(--home-border);
+        color: var(--content-neutral-secondary);
+    }
+
+    .metricSearchInput {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+    }
+
+    .metricSearchInput::placeholder {
+        color: var(--content-neutral-secondary);
+    }
+
+    .metricOptionList {
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-xxs);
+        max-height: 240px;
+        overflow-y: auto;
+    }
+
+    .metricOption {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        width: 100%;
+        padding: var(--spacing-xs);
+        border: none;
+        background: none;
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+        color: var(--content-neutral-default);
+        border-radius: var(--spacing-xxs);
+    }
+
+    .metricOption:hover {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .chartHeader {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .chartHeaderLeft {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+    }
+
+    .chartTitleRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        color: var(--content-neutral-secondary);
+    }
+
+    .chartTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    /* currentColor drives the recharts stroke/gradient (purple accent). */
+    .chart {
+        width: 100%;
+        color: var(--content-accent-default);
+    }
+
+    .metricLabel {
+        font-size: 13px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .metricValueRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .metricValue {
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .metricDelta {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--content-success-default);
+    }
+
+    .sparkline {
+        color: var(--content-accent-default);
+    }
+
+    /* ---------------- Opportunities ---------------- */
+
+    .opportunities {
+        width: 100%;
+        max-width: 960px;
+        margin-top: 56px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-lg);
+    }
+
+    .opportunityGrid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .opportunityCard {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-md);
+        border: 1px solid var(--home-border);
+        border-radius: var(--spacing-sm);
+        background-color: var(--home-surface-bg);
+    }
+
+    .opportunityTitle {
+        margin-top: var(--spacing-xxs);
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .opportunitySubtitle {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--content-neutral-secondary);
+    }
+
+    .opportunityImpact {
+        margin-bottom: var(--spacing-xs);
+        font-size: 14px;
+        color: var(--content-neutral-tertiary);
+    }
+
+    .viewMore {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    /* ---------------- Ask section: input + chips (in normal flow) ---------------- */
+
+    .askSection {
+        width: 100%;
+        margin-top: 56px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .launcher {
+        position: relative;
+        /* Hug the chip group so the dropdown can left-align to its edge. */
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chipsRow {
+        display: flex;
+        gap: var(--spacing-sm);
+        justify-content: center;
+    }
+
+    .chipWrap {
+        display: inline-flex;
+    }
+
+    /* Fully-rounded pill + regular-md typography (14px / 400 / 20px) */
+    .chipWrap button {
+        border-radius: 999px !important;
+        border-width: 0.5px !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        line-height: 20px !important;
+    }
+
+    /*
+     * Opens downward as an absolute popover, left-aligned to the chip group,
+     * overlaying the Opportunities section (high z-index). A small gap sits
+     * between the chips and the panel; a transparent ::before bridges that
+     * gap so the pointer can travel from a chip into the panel without it
+     * closing.
+     */
+    .starters {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        min-width: 360px;
+        padding: var(--spacing-xxxs) var(--spacing-xs);
+        border: 1px solid var(--home-border);
+        border-radius: var(--spacing-sm);
+        background-color: var(--home-surface-bg);
+        box-shadow:
+            0 4px 16px rgba(0, 0, 0, 0.1),
+            0 1px 4px rgba(0, 0, 0, 0.06);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition:
+            opacity 0.18s ease,
+            transform 0.18s ease,
+            visibility 0s linear 0.18s;
+    }
+
+    /* Invisible bridge across the gap so hover doesn't drop between the
+       chips and the dropdown. */
+    .starters::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -8px;
+        height: 8px;
+    }
+
+    .startersOpen {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition:
+            opacity 0.18s ease,
+            transform 0.18s ease,
+            visibility 0s;
+    }
+
+    .starterItem {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: var(--spacing-sm) var(--spacing-xs);
+        border: none;
+        border-bottom: 1px solid var(--home-border);
+        background: transparent;
+        color: var(--content-neutral-default);
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .starterItem:last-child {
+        border-bottom: none;
+    }
+
+    .starterItem:hover {
+        color: var(--content-accent-default);
+    }
+
+    .inputBar {
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 999px;
+        border: 1px solid var(--home-border);
+        background-color: var(--home-surface-bg);
+        box-shadow: var(--effects-shadow-container, 0 2px 8px rgba(0, 0, 0, 0.06));
+    }
+
+    .inputOrb {
+        height: 22px;
+        width: 22px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: radial-gradient(circle at 35% 30%, #ff8a73, #f4583b);
+    }
+
+    .inputField {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+        color: var(--content-neutral-default);
+    }
+
+    .inputField::placeholder {
+        color: var(--content-neutral-secondary);
+    }
+
+    .inputActions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        color: var(--content-neutral-secondary);
+    }
+
+    /* ---------------- Full-screen Gaia chat overlay ---------------- */
+
+    /*
+     * Overlay is anchored to the content region (.main), NOT the full
+     * viewport, so the app navigation stays visible and usable beside it.
+     * It uses the same card framing as the homepage surface so it reads as
+     * a dedicated full-screen chat within the workspace.
+     */
+    .chatOverlay {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background-color: var(--home-panel-bg);
+        border: 1px solid var(--home-border);
+        border-radius: var(--spacing-md);
+        box-shadow:
+            3px 3px 10px 0px #0000000d,
+            12px 13px 18px 0px #0000000a,
+            27px 30px 24px 0px #00000008,
+            48px 53px 28px 0px #00000003;
+        animation: gaiaChatOverlayIn 0.24s ease;
+    }
+
+    .chatHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-bottom: 1px solid var(--home-border);
+    }
+
+    .chatTitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .chatScroll {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Centered single conversation column, matching the homepage width. */
+    .chatThread {
+        width: 100%;
+        max-width: 720px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .bubbleUser {
+        align-self: flex-end;
+        max-width: 80%;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 16px;
+        border-bottom-right-radius: 4px;
+        background-color: var(--surface-accent-secondary);
+        color: var(--content-neutral-default);
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .bubbleAssistant {
+        align-self: flex-start;
+        max-width: 80%;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 16px;
+        border-bottom-left-radius: 4px;
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+
+    .chatComposer {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        padding: var(--spacing-md);
+    }
+
+    .typingDots {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        height: 18px;
+    }
+
+    .typingDots span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--content-neutral-secondary);
+        animation: gaiaTyping 1s infinite ease-in-out;
+    }
+
+    .typingDots span:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+
+    .typingDots span:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .chatOverlayClose {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        width: 32px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--content-neutral-default);
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .chatOverlayClose:hover {
+        background-color: var(--surface-neutral-tertiary, var(--surface-neutral-secondary));
+    }
+}
+
+:global {
+    @keyframes gaiaChatOverlayIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px) scale(0.985);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes gaiaChartOverlayIn {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @keyframes gaiaTyping {
+        0%,
+        60%,
+        100% {
+            opacity: 0.3;
+            transform: translateY(0);
+        }
+
+        30% {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+    }
+}
