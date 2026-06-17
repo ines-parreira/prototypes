@@ -1,6 +1,16 @@
 @import '~@gorgias/axiom/tokens/typography.css';
 
 :local {
+    .emptyStateContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        height: 100%;
+        padding-top: var(--spacing-lg);
+        padding-left: var(--layout-spacing-m);
+        padding-right: var(--layout-spacing-m);
+    }
+
     .emptyTable {
         height: 100%;
         flex-grow: 1;
@@ -10,149 +20,74 @@
         align-items: center;
         justify-content: center;
     }
-    .tableContainer {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        margin-top: var(--spacing-md);
 
-        > [data-name='table-toolbar']:first-child
-            > [data-name='box']:first-child {
-            justify-content: flex-start !important;
+    .panel {
+        padding-left: var(--layout-spacing-m);
+        padding-right: var(--layout-spacing-m);
+
+        [data-name='data-table-status-bar'],
+        [data-name='data-table-status-row'] {
+            display: none !important;
         }
 
-        > [data-name='table-toolbar'] {
-            padding-left: var(--spacing-lg);
-
-            // Prevent text wrapping in toolbar items
-            [data-name='box'] {
-                white-space: nowrap;
-            }
-
-            p,
-            span {
-                white-space: nowrap;
-            }
+        [data-name='data-table-header'] > [data-name='box'] {
+            flex: 1;
         }
 
-        button[slot='button'][aria-label='Items per page'] {
-            color: var(--color-neutral-700) !important;
-
-            p,
-            span,
-            div {
-                color: var(--color-neutral-700) !important;
-            }
+        [data-sticky-stack-layer] {
+            transition: none !important;
         }
 
-        // Force table to use full width
-        table {
-            table-layout: fixed;
-            height: 100%;
+        [data-name='data-table-toolbar'] {
+            padding-top: var(--spacing-lg);
+            box-shadow: 0 2px 0 0 var(--elevation-neutral-default);
             width: 100%;
+            background-color: var(--elevation-neutral-default);
         }
 
-        // Base column widths (when metrics disabled)
-        // Minimum total width: 51px + 200px + 130px + 150px = 531px
-        &:not([data-metrics-enabled='true']) table {
-            min-width: 531px;
+        [class*='datatablepagination-stickyfooter'][data-sticky-state='stuck'] {
+            box-shadow: none !important;
         }
 
-        // Checkbox column (first column)
-        table th:first-child,
-        table td:first-child {
-            width: 51px;
-            box-sizing: border-box;
-            padding-left: 26px;
-            padding-right: 8px;
-        }
-
-        // Title column - takes remaining space (second column)
-        table th:nth-child(2),
-        table td:nth-child(2) {
-            width: auto;
-            height: 40px;
-            min-width: 200px;
-        }
-
-        // Last Updated column (when no metrics)
-        table th:nth-child(3),
-        table td:nth-child(3) {
-            width: 130px;
-        }
-
-        // In Use by AI Agent column (when no metrics)
-        table th:nth-child(4),
-        table td:nth-child(4) {
-            width: 150px;
-        }
-
-        // Metrics-enabled widths
-        // Minimum total width: 51px + 300px + 91px + 134px + 93px + 126px + 148px = 843px
-        &[data-metrics-enabled='true'] {
-            table {
-                min-width: 943px;
-            }
-
-            // Title column remains auto
-            table th:nth-child(2),
-            table td:nth-child(2) {
-                width: auto;
-                min-width: 300px;
-            }
-
-            // Tickets column
-            table th:nth-child(3),
-            table td:nth-child(3) {
-                width: 106px;
-                min-width: 91px;
-            }
-
-            // Handover Tickets column
-            table th:nth-child(4),
-            table td:nth-child(4) {
-                width: 147px;
-                min-width: 134px;
-            }
-
-            // CSAT column
-            table th:nth-child(5),
-            table td:nth-child(5) {
-                width: 106px;
-                min-width: 93px;
-            }
-
-            // Last Updated column (second to last when metrics enabled)
-            table th:nth-last-child(2),
-            table td:nth-last-child(2) {
-                width: 126px;
-                min-width: 126px;
-            }
-
-            // In Use by AI Agent column (last column)
-            table th:last-child,
-            table td:last-child {
-                width: 153px;
-                min-width: 148px;
-            }
-        }
-
-        // Row hover effect
-        table tbody tr:hover {
-            background-color: var(--hover-default);
-        }
-
-        table tbody tr[data-selected-article='true'] {
+        tbody tr:has([data-selected-article='true']) {
             background-color: var(--hover-default) !important;
         }
 
-        table tbody tr[data-selected-article='true']:hover {
-            background-color: var(--hover-default) !important;
-        }
-
-        // Disable hover effect for empty state rows
-        table tbody tr:has([data-empty-state='no-results']):hover {
+        tbody tr:has([data-empty-state='no-results']):hover {
             background-color: transparent !important;
+        }
+    }
+
+    .panel[data-no-results='true'] {
+        flex: 1 1 auto;
+
+        thead {
+            display: none;
+        }
+
+        [data-name='data-table-toolbar'] {
+            box-shadow: none;
+        }
+
+        [data-name='table-root'] {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+        }
+
+        [data-name='table-root'] > table {
+            flex: 1 1 auto;
+            height: 100%;
+        }
+
+        [data-name='table-body'] {
+            height: 100%;
+        }
+
+        td[data-name='table-cell']:has([data-empty-state='no-results']) {
+            height: 100%;
+            vertical-align: middle;
+            box-shadow: none !important;
         }
     }
 
@@ -164,30 +99,37 @@
         max-width: 240px;
     }
 
-    .pagination {
-        margin-top: var(--spacing-md);
-        margin-right: var(--spacing-md);
-        padding-bottom: 100px; // To avoid pagination buttons be covered by chat widget
-    }
-
-    .hidden {
-        display: none;
-    }
-
     .highlight {
         background-color: var(--surface-additional-yellow);
     }
 
     .titleCell {
         cursor: pointer;
+        min-width: 0;
+        width: 100%;
     }
 
     .clickableCell {
         cursor: pointer;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
     }
 
     .nonClickableCell {
         cursor: default;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .titleWrapper {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .titleCell > *:not(.titleWrapper) {
+        flex-shrink: 0;
     }
 
     .quantity {
@@ -201,12 +143,6 @@
         color: var(--content-neutral-tertiary);
         font-size: 14px;
         font-weight: 400;
-    }
-
-    .searchEmptyTable {
-        [data-name='table-root'] {
-            flex-grow: 1;
-        }
     }
 
     .sortableColumnHeader {
@@ -248,19 +184,5 @@
         all: unset;
         display: inline-flex;
         cursor: pointer;
-    }
-
-    .selectedRow {
-        background-color: var(
-            --surface-brand-secondary,
-            rgba(59, 130, 246, 0.1)
-        ) !important;
-
-        &:hover {
-            background-color: var(
-                --surface-brand-tertiary,
-                rgba(59, 130, 246, 0.15)
-            ) !important;
-        }
     }
 }

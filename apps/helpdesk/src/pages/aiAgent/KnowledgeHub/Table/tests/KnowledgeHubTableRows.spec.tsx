@@ -273,14 +273,19 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             expect(checkbox).toBeDisabled()
         })
 
-        it('disables header select-all checkbox when all rows are non-selectable', () => {
+        it('selects no rows via select-all when all rows are non-selectable', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
             const selectAllCheckbox = screen.getByRole('checkbox', {
                 name: /select all/i,
             })
 
-            expect(selectAllCheckbox).toBeDisabled()
+            await user.click(selectAllCheckbox)
+
+            screen.getAllByRole('checkbox').forEach((checkbox) => {
+                expect(checkbox).not.toBeChecked()
+            })
         })
 
         it('should reset selection when entering a snippet folder', async () => {

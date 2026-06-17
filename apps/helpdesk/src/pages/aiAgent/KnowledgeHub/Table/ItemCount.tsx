@@ -1,23 +1,21 @@
-import type { TableV1Instance } from '@gorgias/axiom'
-import { Text } from '@gorgias/axiom'
+import { Text, useDataTable } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 
 import css from './ItemCount.less'
 
 type ItemCountProps = {
-    table: TableV1Instance<GroupedKnowledgeItem>
     isSearchActive: boolean
     hasActiveFilters?: boolean
     hasInUseByAIFilter?: boolean
 }
 
 export const ItemCount = ({
-    table,
     isSearchActive,
     hasActiveFilters = false,
     hasInUseByAIFilter = false,
 }: ItemCountProps) => {
+    const table = useDataTable<GroupedKnowledgeItem>()
     const selectedRows = table.getFilteredSelectedRowModel().rows
     const selectedCount = selectedRows.length
     const totalRows = table.getFilteredRowModel().rows.length

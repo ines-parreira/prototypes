@@ -311,9 +311,26 @@ jest.mock('pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable', () => ({
         onRowClick,
         selectedFolder,
         shopName,
+        selectedTypeFilter,
+        onDocumentFilterChange,
     }: any) => (
         <div>
             <span data-testid="table-shop-name">{shopName || 'no-shop'}</span>
+            {!selectedFolder && (
+                <div>
+                    <button
+                        onClick={() => onDocumentFilterChange?.('document')}
+                    >
+                        Document Filter
+                    </button>
+                    <button
+                        onClick={() => onDocumentFilterChange?.('guidance')}
+                    >
+                        Guidance Filter
+                    </button>
+                    <span>Selected: {selectedTypeFilter || 'none'}</span>
+                </div>
+            )}
             {!selectedFolder &&
                 data.length > 0 &&
                 data.map((item: any) => (

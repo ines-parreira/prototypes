@@ -231,7 +231,7 @@ describe('KnowledgeHubTable - Filters', () => {
 
     const getToolbar = () => {
         const toolbars = document.querySelectorAll(
-            '[data-name="table-toolbar"]',
+            '[data-name="data-table-toolbar"]',
         )
         return toolbars[0] as HTMLElement
     }
@@ -562,9 +562,14 @@ describe('KnowledgeHubTable - Filters', () => {
                 </Provider>,
             )
 
-            expect(screen.getByText('Last updated date')).toBeInTheDocument()
+            const toolbar = getToolbar()
             expect(
-                screen.getByRole('button', { name: /in use by ai agent/i }),
+                within(toolbar).getByText('Last updated date'),
+            ).toBeInTheDocument()
+            expect(
+                within(toolbar).getByRole('button', {
+                    name: /in use by ai agent/i,
+                }),
             ).toBeInTheDocument()
         })
 

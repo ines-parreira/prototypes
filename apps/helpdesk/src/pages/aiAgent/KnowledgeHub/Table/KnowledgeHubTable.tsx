@@ -1,26 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import classNames from 'classnames'
 import moment from 'moment-timezone'
 
 import {
-    flexRender,
-    TableV1Cell as TableCell,
-    TableV1Header as TableHeader,
-    TableV1Row as TableRow,
-    TableV1BodyContent,
-    TableV1HeaderRowGroup,
-    TableV1Pagination,
-    TableV1Root,
-    TableV1Toolbar,
-    useTableV1,
+    Box,
+    DataTable,
+    DataTableHeader,
+    DataTableItemCount,
+    DataTablePagination,
+    Panel,
 } from '@gorgias/axiom'
-import type { Row, SortingState } from '@gorgias/axiom'
-
-import { copilotAnchorProps } from 'copilot/uiActions'
+import type { Row, RowSelectionState, SortingState } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { DocumentFilters } from 'pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters'
 import {
     EmptyStateNoSearchResults,
     EmptyStateWrapper,
@@ -63,6 +57,10 @@ const FILTER_OPTIONS: FilterOption[] = [
     { label: 'In use by AI Agent', value: 'inUseByAI' },
 ]
 
+const PAGE_SIZE = 50
+
+const TABLE_MIN_WIDTH = 942
+
 type KnowledgeHubTableProps = {
     data: KnowledgeItem[]
     metricsDateRange: { start_datetime: string; end_datetime: string }
@@ -78,6 +76,7 @@ type KnowledgeHubTableProps = {
     selectedArticleType?: string
     selectedArticleId?: string
     selectedTypeFilter?: KnowledgeType | null
+    onDocumentFilterChange?: (filter: KnowledgeType | null) => void
     searchTerm: string
     onSearchChange: (value: string) => void
     dateRange: { startDate: string | null; endDate: string | null }
@@ -111,6 +110,7 @@ export const KnowledgeHubTable = ({
     selectedArticleType,
     selectedArticleId,
     selectedTypeFilter = null,
+    onDocumentFilterChange,
     searchTerm,
     onSearchChange,
     dateRange,
@@ -138,6 +138,27 @@ export const KnowledgeHubTable = ({
             return active
         },
     )
+
+    const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+
+    const resizeObserverRef = useRef<ResizeObserver | null>(null)
+    const [overflow, setOverflow] = useState<'constrain' | 'scroll'>(
+        'constrain',
+    )
+
+    const measurePanelRef = useCallback((node: HTMLDivElement | null) => {
+        resizeObserverRef.current?.disconnect()
+        if (!node) {
+            return
+        }
+        const update = (width: number) =>
+            setOverflow(width < TABLE_MIN_WIDTH ? 'scroll' : 'constrain')
+        update(node.clientWidth)
+        resizeObserverRef.current = new ResizeObserver((entries) =>
+            update(entries[0].contentRect.width),
+        )
+        resizeObserverRef.current.observe(node)
+    }, [])
 
     const availableColumnIds = useMemo(() => {
         const baseColumns = [
@@ -356,52 +377,6 @@ export const KnowledgeHubTable = ({
         [onRowClick, onGuidanceRowClick, onFaqRowClick, onSnippetRowClick],
     )
 
-    const renderRows = useCallback(
-        (rows: Row<GroupedKnowledgeItem>[]) => {
-            return rows.map((row) => {
-                const isSelectedArticle =
-                    !!selectedArticleId &&
-                    !!selectedArticleType &&
-                    row.original.id === selectedArticleId &&
-                    row.original.type === selectedArticleType
-
-                const anchorProps =
-                    row.original.type === KnowledgeTypeEnum.Guidance
-                        ? copilotAnchorProps({
-                              type: 'guidance',
-                              id: row.original.id,
-                          })
-                        : undefined
-
-                return (
-                    <TableRow
-                        key={row.id}
-                        data-name="table-body-row"
-                        data-state={
-                            row.getIsSelected() ? 'selected' : undefined
-                        }
-                        data-selected-article={isSelectedArticle}
-                        aria-selected={row.getIsSelected()}
-                        className={classNames({
-                            [css.selectedRow]: isSelectedArticle,
-                        })}
-                        {...anchorProps}
-                    >
-                        {row.getVisibleCells().map((cell) => (
-                            <TableCell key={cell.id}>
-                                {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                )}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                )
-            })
-        },
-        [selectedArticleId, selectedArticleType],
-    )
-
     const columnsWithHighlight = useMemo(() => {
         return getColumns(
             searchTerm,
@@ -416,6 +391,8 @@ export const KnowledgeHubTable = ({
             sortState, // Pass sort state
             handleColumnClick, // Pass click handler
             syncStatusData,
+            selectedArticleId,
+            selectedArticleType,
         )
     }, [
         searchTerm,
@@ -430,29 +407,38 @@ export const KnowledgeHubTable = ({
         sortState,
         handleColumnClick,
         syncStatusData,
+        selectedArticleId,
+        selectedArticleType,
     ])
 
-    // Custom sorting - no TanStack sorting, we handle column clicks manually
-    const table = useTableV1<GroupedKnowledgeItem>({
-        data: displayData,
-        columns: columnsWithHighlight,
-        paginationConfig: {
-            enablePagination: true,
-            manualPagination: false,
-            pageSize: 50,
-            initialPageIndex: 0,
+    const rowSelection = useMemo<RowSelectionState>(() => {
+        const selection: RowSelectionState = {}
+        displayData.forEach((item, index) => {
+            if (!item.isGrouped && selectedIds.has(String(item.id))) {
+                selection[index] = true
+            }
+        })
+        return selection
+    }, [displayData, selectedIds])
+
+    const handleSelectionChange = useCallback(
+        (next: RowSelectionState) => {
+            const ids = new Set<string>()
+            Object.entries(next).forEach(([index, isSelected]) => {
+                if (!isSelected) {
+                    return
+                }
+                const item = displayData[Number(index)]
+                if (item && !item.isGrouped) {
+                    ids.add(String(item.id))
+                }
+            })
+            setSelectedIds(ids)
         },
-        selectionConfig: {
-            enableRowSelection: (row: { original: GroupedKnowledgeItem }) => {
-                return !row.original.isGrouped
-            },
-            enableMultiRowSelection: true,
-        },
-        additionalOptions: {
-            // TanStack Table requires string row IDs for consistent internal tracking
-            getRowId: (row) => String(row.id),
-        },
-    })
+        [displayData],
+    )
+
+    const clearSelection = useCallback(() => setSelectedIds(new Set()), [])
 
     const prevSelectedFolderRef = useRef(selectedFolder)
 
@@ -525,13 +511,18 @@ export const KnowledgeHubTable = ({
             isEnteringSnippetFolder ||
             (isExitingFolder && prevIsSnippetFolder)
         ) {
-            table.resetRowSelection()
+            clearSelection()
             handleDateRangeClear()
             handleInUseByAIClear()
         }
 
         prevSelectedFolderRef.current = current
-    }, [selectedFolder, table, handleDateRangeClear, handleInUseByAIClear])
+    }, [
+        selectedFolder,
+        clearSelection,
+        handleDateRangeClear,
+        handleInUseByAIClear,
+    ])
 
     const isSearchEmptyPage =
         !isLoading &&
@@ -550,110 +541,122 @@ export const KnowledgeHubTable = ({
         setActiveFilterTypes((prev) => new Set(prev).add(filterValue))
     }, [])
 
+    const contentFilters =
+        !selectedFolder && onDocumentFilterChange ? (
+            <DocumentFilters
+                selectedFilter={selectedTypeFilter}
+                onFilterChange={onDocumentFilterChange}
+            />
+        ) : null
+
     if (!isSearchEmptyPage && displayData.length === 0 && !tableIsLoading) {
         return (
-            <div className={css.emptyTable}>
-                <EmptyStateWrapper
-                    shopName={shopName}
-                    documentFilter={selectedTypeFilter}
-                    articles={displayData}
-                    helpCenterId={faqHelpCenterId}
-                    onFaqEditorOpen={onFaqEditorOpen}
-                />
+            <div className={css.emptyStateContainer}>
+                {contentFilters}
+                <div className={css.emptyTable}>
+                    <EmptyStateWrapper
+                        shopName={shopName}
+                        documentFilter={selectedTypeFilter}
+                        articles={displayData}
+                        helpCenterId={faqHelpCenterId}
+                        onFaqEditorOpen={onFaqEditorOpen}
+                    />
+                </div>
             </div>
         )
     }
 
+    const showPagination = !isSearchEmptyPage && displayData.length > PAGE_SIZE
+
     return (
-        <div
-            className={classNames(css.tableContainer, {
-                [css.searchEmptyTable]: isSearchEmptyPage,
-            })}
+        <Panel
+            ref={measurePanelRef}
+            className={css.panel}
+            w="100%"
+            withoutBorder
             data-metrics-enabled={isMetricsEnabled}
+            data-no-results={isSearchEmptyPage}
         >
-            <TableV1Toolbar<GroupedKnowledgeItem>
-                table={table}
-                topRow={{
-                    left: [
-                        {
-                            key: 'mySearch',
-                            content: (
-                                <SearchInput
-                                    value={searchTerm}
-                                    onChange={onSearchChange}
-                                    placeholder="Search..."
-                                />
-                            ),
-                        },
-                        ...(activeFilterTypes.has('lastUpdatedAt')
-                            ? [
-                                  {
-                                      key: 'dateFilter',
-                                      content: (
-                                          <LastUpdatedDateFilter
-                                              startDate={dateRange.startDate}
-                                              endDate={dateRange.endDate}
-                                              onChange={onDateRangeChange}
-                                              onClear={handleDateRangeClear}
-                                          />
-                                      ),
-                                  },
-                              ]
-                            : []),
-                        ...(activeFilterTypes.has('inUseByAI')
-                            ? [
-                                  {
-                                      key: 'inUseByAIFilter',
-                                      content: (
-                                          <InUseByAIFilter
-                                              value={inUseByAIFilter}
-                                              onChange={onInUseByAIChange}
-                                              onClear={handleInUseByAIClear}
-                                          />
-                                      ),
-                                  },
-                              ]
-                            : []),
-                        ...(activeFilterTypes.size < FILTER_OPTIONS.length
-                            ? [
-                                  {
-                                      key: 'addFilter',
-                                      content: (
-                                          <AddFilterButton
-                                              options={FILTER_OPTIONS.filter(
-                                                  (option) =>
-                                                      !activeFilterTypes.has(
-                                                          option.value,
-                                                      ),
-                                              )}
-                                              onOptionSelect={
-                                                  handleFilterSelect
-                                              }
-                                          />
-                                      ),
-                                  },
-                              ]
-                            : []),
-                    ],
+            <DataTable<GroupedKnowledgeItem>
+                data={displayData}
+                columns={columnsWithHighlight}
+                isLoading={tableIsLoading}
+                stickyToolbar
+                overflow={overflow}
+                sorting={{ enable: false }}
+                selection={{
+                    enable: (row: Row<GroupedKnowledgeItem>) =>
+                        !row.original.isGrouped,
+                    multiple: true,
+                    value: rowSelection,
+                    onChange: handleSelectionChange,
                 }}
-                bottomRow={{
-                    left: [
-                        {
-                            key: 'itemSelected',
-                            content: (
+                pagination={{
+                    enable: showPagination,
+                    defaultValue: { pageIndex: 0, pageSize: PAGE_SIZE },
+                }}
+                renderEmptyState={() => (
+                    <EmptyStateNoSearchResults clearSearch={clearSearch} />
+                )}
+            >
+                <DataTableHeader>
+                    <Box flexDirection="column" gap="md" flex={1} width="100%">
+                        {contentFilters}
+                        <Box
+                            flexDirection="row"
+                            alignItems="center"
+                            gap="sm"
+                            width="100%"
+                        >
+                            <SearchInput
+                                value={searchTerm}
+                                onChange={onSearchChange}
+                                placeholder="Search..."
+                            />
+                            {activeFilterTypes.has('lastUpdatedAt') && (
+                                <LastUpdatedDateFilter
+                                    startDate={dateRange.startDate}
+                                    endDate={dateRange.endDate}
+                                    onChange={onDateRangeChange}
+                                    onClear={handleDateRangeClear}
+                                />
+                            )}
+                            {activeFilterTypes.has('inUseByAI') && (
+                                <InUseByAIFilter
+                                    value={inUseByAIFilter}
+                                    onChange={onInUseByAIChange}
+                                    onClear={handleInUseByAIClear}
+                                />
+                            )}
+                            {activeFilterTypes.size < FILTER_OPTIONS.length && (
+                                <AddFilterButton
+                                    options={FILTER_OPTIONS.filter(
+                                        (option) =>
+                                            !activeFilterTypes.has(
+                                                option.value,
+                                            ),
+                                    )}
+                                    onOptionSelect={handleFilterSelect}
+                                />
+                            )}
+                        </Box>
+                        <Box
+                            flexDirection="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            width="100%"
+                        >
+                            <Box
+                                flexDirection="row"
+                                alignItems="center"
+                                gap="sm"
+                            >
                                 <ItemCount
-                                    table={table}
                                     isSearchActive={isSearchActive}
                                     hasActiveFilters={hasActiveFilters}
                                     hasInUseByAIFilter={hasInUseByAIFilter}
                                 />
-                            ),
-                        },
-                        {
-                            key: 'bulkActions',
-                            content: (
                                 <BulkActions
-                                    table={table}
                                     helpCenterIds={{
                                         guidanceHelpCenterId,
                                         faqHelpCenterId,
@@ -664,70 +667,18 @@ export const KnowledgeHubTable = ({
                                     activeContentType={selectedTypeFilter}
                                     shopName={shopName}
                                 />
-                            ),
-                        },
-                    ],
-                    right: isMetricsEnabled
-                        ? [
-                              {
-                                  key: 'metricsDateRange',
-                                  content: (
-                                      <MetricsDateRangeDisplay days={28} />
-                                  ),
-                              },
-                          ]
-                        : [],
-                }}
-            />
-
-            <TableV1Root withBorder={false}>
-                {!isSearchEmptyPage && (
-                    <TableHeader>
-                        <TableV1HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
-                        />
-                    </TableHeader>
+                            </Box>
+                            {isMetricsEnabled && (
+                                <MetricsDateRangeDisplay days={28} />
+                            )}
+                        </Box>
+                    </Box>
+                </DataTableHeader>
+                <DataTableItemCount>{() => null}</DataTableItemCount>
+                {showPagination && (
+                    <DataTablePagination pageSizeOptions={[50, 100]} />
                 )}
-
-                <TableV1BodyContent
-                    isLoading={tableIsLoading}
-                    rows={table.getRowModel().rows}
-                    columnCount={table.getAllColumns().length}
-                    table={table}
-                    renderRows={renderRows}
-                    renderEmptyStateComponent={() => {
-                        return (
-                            <EmptyStateNoSearchResults
-                                clearSearch={clearSearch}
-                            />
-                        )
-                    }}
-                />
-            </TableV1Root>
-            <div
-                className={classNames(
-                    css.pagination,
-                    (displayData.length <= 50 || isSearchEmptyPage) &&
-                        css.hidden,
-                )}
-            >
-                <TableV1Toolbar<GroupedKnowledgeItem>
-                    table={table}
-                    bottomRow={{
-                        right: [
-                            {
-                                key: 'pagination',
-                                content: (
-                                    <TableV1Pagination
-                                        table={table}
-                                        pageSizeOptions={[50, 100]}
-                                    />
-                                ),
-                            },
-                        ],
-                    }}
-                />
-            </div>
-        </div>
+            </DataTable>
+        </Panel>
     )
 }

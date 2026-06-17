@@ -2,7 +2,13 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { TableV1Instance } from '@gorgias/axiom'
+import {
+    DataTable,
+    DataTableBaseCell,
+    DataTableHeader,
+    DataTableItemCount,
+} from '@gorgias/axiom'
+import type { DataTableColumnDef, RowSelectionState } from '@gorgias/axiom'
 
 import { useGuidanceArticleMutation } from '../../../hooks/useGuidanceArticleMutation'
 import * as useBulkKnowledgeActionsModule from '../../hooks/useBulkKnowledgeActions'
@@ -69,6 +75,46 @@ const mockUseBulkKnowledgeActions =
 
 const mockUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 
+type TableDescriptor = {
+    data: GroupedKnowledgeItem[]
+    value: RowSelectionState
+}
+
+const harnessColumns: DataTableColumnDef<GroupedKnowledgeItem>[] = [
+    {
+        id: 'title',
+        accessorKey: 'title',
+        cell: (info) => (
+            <DataTableBaseCell {...info}>
+                {info.row.original.title}
+            </DataTableBaseCell>
+        ),
+    },
+]
+
+type BulkActionsWithTableProps = Omit<
+    React.ComponentProps<typeof BulkActions>,
+    never
+> & {
+    table: TableDescriptor
+}
+
+const BulkActionsWithTable = ({
+    table,
+    ...props
+}: BulkActionsWithTableProps) => (
+    <DataTable<GroupedKnowledgeItem>
+        data={table.data}
+        columns={harnessColumns}
+        selection={{ enable: true, multiple: true, value: table.value }}
+    >
+        <DataTableHeader>
+            <BulkActions {...props} />
+        </DataTableHeader>
+        <DataTableItemCount>{() => null}</DataTableItemCount>
+    </DataTable>
+)
+
 describe('BulkActions', () => {
     const mockHandleBulkEnable = jest.fn()
     const mockHandleBulkDisable = jest.fn()
@@ -104,32 +150,31 @@ describe('BulkActions', () => {
     const createMockTable = (
         selectedItems: GroupedKnowledgeItem[],
         totalRows: GroupedKnowledgeItem[] = selectedItems,
-    ): TableV1Instance<GroupedKnowledgeItem> => {
-        return {
-            getFilteredSelectedRowModel: () => ({
-                rows: selectedItems.map((original) => ({ original })),
-            }),
-            getRowModel: () => ({
-                rows: totalRows.map((original) => ({ original })),
-            }),
-            getCoreRowModel: () => ({
-                rows: totalRows.map((original) => ({ original })),
-            }),
-        } as TableV1Instance<GroupedKnowledgeItem>
+    ): TableDescriptor => {
+        const selectedIds = new Set(selectedItems.map((item) => item.id))
+        const value: RowSelectionState = {}
+        totalRows.forEach((row, index) => {
+            if (selectedIds.has(row.id)) {
+                value[index] = true
+            }
+        })
+        return { data: totalRows, value }
     }
 
     it('should render nothing when no items selected and search not active', () => {
         const table = createMockTable([])
 
         const { container } = render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
             />,
         )
 
-        expect(container.firstChild).toBeNull()
+        expect(
+            container.querySelector('[data-name="bulk-actions"]'),
+        ).not.toBeInTheDocument()
     })
 
     it('should render enable and disable buttons when items are selected', () => {
@@ -144,7 +189,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -171,7 +216,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -195,7 +240,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -225,7 +270,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -253,7 +298,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -277,7 +322,7 @@ describe('BulkActions', () => {
         const onClearSearch = jest.fn()
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={true}
@@ -304,7 +349,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -334,7 +379,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -362,7 +407,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -389,7 +434,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -421,7 +466,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -452,7 +497,7 @@ describe('BulkActions', () => {
         const onClearSearch = jest.fn()
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={true}
@@ -488,7 +533,7 @@ describe('BulkActions', () => {
         const table = createMockTable(selectedItems)
 
         render(
-            <BulkActions
+            <BulkActionsWithTable
                 table={table}
                 helpCenterIds={helpCenterIds}
                 isSearchActive={false}
@@ -524,7 +569,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -564,7 +609,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -602,7 +647,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -634,7 +679,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -666,7 +711,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -706,7 +751,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -744,7 +789,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -774,7 +819,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -804,7 +849,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -837,7 +882,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -865,7 +910,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -893,7 +938,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -921,7 +966,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -953,7 +998,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -993,7 +1038,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1033,7 +1078,7 @@ describe('BulkActions', () => {
                 const table = createMockTable(selectedItems)
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1088,7 +1133,7 @@ describe('BulkActions', () => {
                 ])
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1136,7 +1181,7 @@ describe('BulkActions', () => {
                 ])
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1197,7 +1242,7 @@ describe('BulkActions', () => {
                 ])
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1243,7 +1288,7 @@ describe('BulkActions', () => {
                 ])
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1304,7 +1349,7 @@ describe('BulkActions', () => {
                 ])
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1357,7 +1402,7 @@ describe('BulkActions', () => {
                 ])
 
                 render(
-                    <BulkActions
+                    <BulkActionsWithTable
                         table={table}
                         helpCenterIds={helpCenterIds}
                         isSearchActive={false}
@@ -1386,7 +1431,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -1417,7 +1462,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -1439,7 +1484,7 @@ describe('BulkActions', () => {
             const table = createMockTable(selectedItems)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -1476,7 +1521,7 @@ describe('BulkActions', () => {
             } as any)
 
             const { container } = render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={{
                         guidanceHelpCenterId: null,
@@ -1520,7 +1565,7 @@ describe('BulkActions', () => {
             } as any)
 
             const { container } = render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={{
                         guidanceHelpCenterId: undefined,
@@ -1570,7 +1615,7 @@ describe('BulkActions', () => {
             } as any)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -1611,7 +1656,7 @@ describe('BulkActions', () => {
             } as any)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
@@ -1662,7 +1707,7 @@ describe('BulkActions', () => {
             } as any)
 
             render(
-                <BulkActions
+                <BulkActionsWithTable
                     table={table}
                     helpCenterIds={helpCenterIds}
                     isSearchActive={false}
