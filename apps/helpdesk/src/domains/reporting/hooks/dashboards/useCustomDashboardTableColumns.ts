@@ -8,6 +8,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 
 import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
+import { useDashboardChartContext } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 
 type Params = {
     customDashboardChartSchema?: DashboardChartSchema
@@ -15,9 +16,13 @@ type Params = {
 }
 
 export function useCustomDashboardTableColumns({
-    customDashboardChartSchema,
-    dashboard,
+    customDashboardChartSchema: schemaProp,
+    dashboard: dashboardProp,
 }: Params) {
+    const ctx = useDashboardChartContext()
+    const customDashboardChartSchema = ctx?.schema ?? schemaProp
+    const dashboard = ctx?.dashboard ?? dashboardProp
+
     const { savePreferences } = useSaveCustomDashboardPreference({
         dashboard,
         configId: customDashboardChartSchema?.config_id ?? '',

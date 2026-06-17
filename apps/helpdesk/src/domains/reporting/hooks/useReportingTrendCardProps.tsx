@@ -8,6 +8,7 @@ import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { useStatsMetricTimeSeries } from 'domains/reporting/hooks/useStatsMetricTimeSeries'
 import type { MetricQueryFactory } from 'domains/reporting/models/scopes/scope'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import { useDashboardChartContext } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -18,9 +19,9 @@ import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/form
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useReportingTrendCardProps = ({
-    chartConfig,
-    chartId,
-    dashboard,
+    chartConfig: chartConfigProp,
+    chartId: chartIdProp,
+    dashboard: dashboardProp,
     useTrend,
     isAiAgentTrendCard,
     drillDownMetricName,
@@ -45,6 +46,11 @@ export const useReportingTrendCardProps = ({
         measureName?: string
     }
 }) => {
+    const ctx = useDashboardChartContext()
+    const chartId = ctx?.chartId ?? chartIdProp
+    const dashboard = ctx?.dashboard ?? dashboardProp
+    const chartConfig = ctx?.chartConfig ?? chartConfigProp
+
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const { statsFilters: aiAgentFilters } = useAiAgentStatsFilters()
 

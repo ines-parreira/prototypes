@@ -10,6 +10,7 @@ import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/s
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { DashboardChartProvider } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -702,5 +703,35 @@ describe('useReportingTrendCardProps', () => {
         )
 
         expect(result.current.drillDown).toBeUndefined()
+    })
+
+    describe('when chartId and dashboard come from context', () => {
+        it('includes actionMenu when chartId and dashboard are provided via context only', () => {
+            mockUseTrend.mockReturnValue(mockTrendData)
+
+            const { result } = renderHook(
+                () =>
+                    useReportingTrendCardProps({
+                        isAiAgentTrendCard: true,
+                        chartConfig: mockChartConfig,
+                        useTrend: mockUseTrend,
+                    }),
+                {
+                    storeState: defaultState,
+                    wrapper: ({ children }) => (
+                        <DashboardChartProvider
+                            value={{
+                                chartId: 'context-chart-id',
+                                dashboard: mockDashboard,
+                            }}
+                        >
+                            {children}
+                        </DashboardChartProvider>
+                    ),
+                },
+            )
+
+            expect(result.current.actionMenu).toBeDefined()
+        })
     })
 })

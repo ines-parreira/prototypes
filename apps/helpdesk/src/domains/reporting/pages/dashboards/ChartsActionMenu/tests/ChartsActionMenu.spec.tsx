@@ -15,6 +15,7 @@ import {
     NO_DASHBOARDS_LABEL,
     REMOVE_FROM_DASHBOARD,
 } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import { DashboardChartProvider } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
@@ -477,5 +478,21 @@ describe('<ChartsActionMenu />', () => {
         expect(screen.queryByText(mockData[0].name)).not.toBeInTheDocument()
         // Action menu is visible again
         expect(screen.getByText(ADD_TO_DASHBOARD)).toBeInTheDocument()
+    })
+
+    describe('when dashboard is provided via context instead of props', () => {
+        it('shows the remove action when dashboard comes from context', () => {
+            render(
+                <DashboardChartProvider value={{ chartId, dashboard }}>
+                    <ChartsActionMenu chartId={chartId} chartName={chartName} />
+                </DashboardChartProvider>,
+                { storeState: defaultState },
+            )
+
+            userEvent.click(
+                screen.getByRole('button', { name: 'Chart actions' }),
+            )
+            expect(screen.getByText(REMOVE_FROM_DASHBOARD)).toBeInTheDocument()
+        })
     })
 })

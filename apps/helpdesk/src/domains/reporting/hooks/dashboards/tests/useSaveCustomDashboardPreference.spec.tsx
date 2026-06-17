@@ -7,8 +7,12 @@ import { mockUpdateAnalyticsCustomReportHandler } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useSaveCustomDashboardPreference } from 'domains/reporting/hooks/dashboards/useSaveCustomDashboardPreference'
+import { DashboardChartProvider } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardChartSchema,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
 
 const server = setupServer()
 
@@ -324,6 +328,60 @@ describe('useSaveCustomDashboardPreference', () => {
                     { column_id: 'col1', visible: true },
                 ])
                 expect(otherChart.metadata?.preferences).toBeUndefined()
+            })
+        })
+    })
+
+    describe('when dashboard and configId come from context', () => {
+        const schema: DashboardChartSchema = {
+            type: DashboardChildType.Chart,
+            config_id: CHART_CONFIG_ID,
+        }
+
+        const renderWithContext = () =>
+            renderHook(
+                () =>
+                    useSaveCustomDashboardPreference({
+                        dashboard: undefined,
+                        configId: '',
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <DashboardChartProvider value={{ dashboard, schema }}>
+                            {children}
+                        </DashboardChartProvider>
+                    ),
+                },
+            )
+
+        it('sends column preferences using dashboard and configId from context', async () => {
+            const waitForRequest = updateMock.waitForRequest(server)
+            const { result } = renderWithContext()
+
+            act(() => {
+                result.current.savePreferences({
+                    columns: [{ column_id: 'col1', visible: true }],
+                })
+                jest.advanceTimersByTime(DEBOUNCE_MS)
+            })
+
+            await waitForRequest(async (request: Request) => {
+                const body = await request.json()
+                expect(body).toMatchObject({
+                    children: [
+                        {
+                            type: 'chart',
+                            config_id: CHART_CONFIG_ID,
+                            metadata: {
+                                preferences: {
+                                    columns: [
+                                        { column_id: 'col1', visible: true },
+                                    ],
+                                },
+                            },
+                        },
+                    ],
+                })
             })
         })
     })

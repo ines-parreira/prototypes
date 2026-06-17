@@ -10,6 +10,7 @@ import {
 
 import { Duration } from '@gorgias/toolkit'
 import { useDebouncedCallback } from '@gorgias/toolkit-react'
+import { useDashboardChartContext } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import type {
     ChartPreferences,
     DashboardSchema,
@@ -26,9 +27,13 @@ type Params = {
 }
 
 export function useSaveCustomDashboardPreference({
-    dashboard,
-    configId,
+    dashboard: dashboardProp,
+    configId: configIdProp,
 }: Params) {
+    const ctx = useDashboardChartContext()
+    const dashboard = ctx?.dashboard ?? dashboardProp
+    const configId = ctx?.schema?.config_id ?? configIdProp
+
     const queryClient = useQueryClient()
     const { mutate } = useUpdateAnalyticsCustomReport({
         mutation: { retry: false },
