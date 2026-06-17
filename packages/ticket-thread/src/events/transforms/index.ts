@@ -3,8 +3,6 @@ import { slidingWindow } from '@repo/utils'
 
 import type { Event } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import type { TicketThreadItem } from '../../thread/types'
 import {
     isActionExecutedEvent,
     isAuditLogEvent,
@@ -12,15 +10,17 @@ import {
     isPrivateReplyEvent,
     isSatisfactionSurveyRespondedEvent,
     isSingleEventItem,
-} from '../predicates'
-import type { TicketEventSchema } from '../schemas'
+} from '#events/predicates'
+import type { TicketEventSchema } from '#events/schemas'
 import type {
     TicketThreadAuditLogAttribution,
     TicketThreadAuditLogEvent,
     TicketThreadAuditLogEventItem,
     TicketThreadEventSource,
     TicketThreadSingleEventItem,
-} from '../types'
+} from '#events/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 export function toTaggedEvent(
     event: TicketThreadEventSource,

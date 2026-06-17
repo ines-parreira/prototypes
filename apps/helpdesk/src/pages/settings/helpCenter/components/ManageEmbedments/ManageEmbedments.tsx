@@ -6,9 +6,8 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import { Link, useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import { IconButton } from 'pages/common/components/button/IconButton'
@@ -34,8 +33,6 @@ import {
 } from 'pages/settings/helpCenter/queries'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { HELP_CENTER_BASE_PATH } from '../../constants'
 import { HelpCenterAutoEmbedModalAssistant } from '../HelpCenterAutoEmbedModalAssistant'
@@ -73,7 +70,6 @@ const ManageEmbedments = ({
     helpCenterId,
     shopName,
 }: ManageEmbedmentsProps): JSX.Element | null => {
-    const appDispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const history = useHistory()
@@ -105,52 +101,31 @@ const ManageEmbedments = ({
     const updatePageEmbedmentMutation = useUpdatePageEmbedment({
         onSuccess: async (updatedPageEmbedment) => {
             if (!updatedPageEmbedment) {
-                return void appDispatch(
-                    notify({ message: 'Something went wrong' }),
-                )
+                toast.info('Something went wrong')
+                return
             }
 
-            void appDispatch(
-                notify({
-                    message: 'Help Center position updated',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Help Center position updated')
 
             await queryClient.invalidateQueries(
                 helpCenterPageEmbedmentsKeys.lists(helpCenterId),
             )
         },
         onError: () => {
-            void appDispatch(
-                notify({
-                    message: 'Something went wrong',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Something went wrong')
         },
     })
 
     const deletePageEmbedmentMutation = useDeletePageEmbedment({
         onSuccess: async () => {
-            void appDispatch(
-                notify({
-                    message: 'Help Center removed from page.',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Help Center removed from page.')
 
             await queryClient.invalidateQueries(
                 helpCenterPageEmbedmentsKeys.lists(helpCenterId),
             )
         },
         onError: () => {
-            void appDispatch(
-                notify({
-                    message: 'Something went wrong',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Something went wrong')
         },
     })
 

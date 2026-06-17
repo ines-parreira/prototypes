@@ -7,15 +7,12 @@ import classnames from 'classnames'
 import { zip } from 'lodash'
 import type FroalaEditorComponentType from 'react-froala-wysiwyg'
 
-import { Skeleton } from '@gorgias/axiom'
+import { Skeleton, toast } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { LocaleCode } from 'models/helpCenter/types'
 import { useCurrentHelpCenter } from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { replaceUploadUrls } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { config, configXS, FroalaEditor } from './froala-config'
 import { FroalaEditorFunctionality as FroalaEditorComponent } from './FroalaEditorComponent'
@@ -54,7 +51,6 @@ const HelpCenterEditor = ({
     onEditorReady,
     setIsEditorCodeViewActive,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
 
     const nrOfFileAttachments = useRef(0)
@@ -140,12 +136,7 @@ const HelpCenterEditor = ({
                             )
 
                             if (errorMessage !== null) {
-                                void dispatch(
-                                    notify({
-                                        status: NotificationStatus.Error,
-                                        message: errorMessage,
-                                    }),
-                                )
+                                toast.error(errorMessage)
                                 return false
                             }
 
@@ -194,12 +185,7 @@ const HelpCenterEditor = ({
                                     )
                                 })
                                 .catch((err) => {
-                                    void dispatch(
-                                        notify({
-                                            status: NotificationStatus.Error,
-                                            message: err.message,
-                                        }),
-                                    )
+                                    toast.error(err.message)
                                 })
 
                             return false
@@ -237,13 +223,7 @@ const HelpCenterEditor = ({
                                     }, Duration.millis(500))
                                 })
                                 .catch(() => {
-                                    void dispatch(
-                                        notify({
-                                            message:
-                                                'Failed to upload the image',
-                                            status: NotificationStatus.Error,
-                                        }),
-                                    )
+                                    toast.error('Failed to upload the image')
                                 })
 
                             // return false so that Froala next actions won't be triggered

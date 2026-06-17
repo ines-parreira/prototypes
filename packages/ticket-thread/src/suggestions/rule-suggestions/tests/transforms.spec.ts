@@ -1,8 +1,8 @@
 import {
     isRuleSuggestionEmpty,
     shouldRenderRuleSuggestion,
-} from '../transforms'
-import type { RuleSuggestionMeta } from '../types'
+} from '#suggestions/rule-suggestions/transforms'
+import type { RuleSuggestionMeta } from '#suggestions/rule-suggestions/types'
 
 function createRuleSuggestionMeta(actions: unknown[]): RuleSuggestionMeta {
     return {

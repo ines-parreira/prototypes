@@ -1,6 +1,8 @@
+import { toast } from '@gorgias/axiom'
+
 import { history } from '@repo/routing'
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { useAppSelector } from 'hooks/useAppSelector'
@@ -88,6 +90,10 @@ describe('useHelpCenterCreationWizard', () => {
             mutateAsync: jest.fn(),
             isLoading: false,
         } as unknown as ReturnType<typeof mockedUseDeleteHelpCenterTranslation>)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should return default help center', () => {
@@ -253,5 +259,95 @@ describe('useHelpCenterCreationWizard', () => {
                 search: `${HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY}=${HELP_CENTER_WIZARD_COMPLETED_STATE.AlmostDone}`,
             })
         })
+    })
+
+    it('shows a destructive toast when creating a help center fails', async () => {
+        mockedUseCreateHelpCenter.mockReturnValue({
+            mutateAsync: jest
+                .fn()
+                .mockRejectedValue(new Error('create failed')),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useCreateHelpCenter>)
+
+        const { result } = renderHook(() =>
+            useHelpCenterCreationWizard(
+                undefined,
+                HelpCenterCreationWizardStep.Basics,
+            ),
+        )
+
+        act(() => {
+            result.current.handleSave({})
+        })
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: /Help center not successfully created/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive'),
+        )
+    })
+
+    it('shows a destructive toast when updating a help center fails', async () => {
+        mockedUseUpdateHelpCenter.mockReturnValue({
+            mutateAsync: jest
+                .fn()
+                .mockRejectedValue(new Error('update failed')),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useUpdateHelpCenter>)
+
+        const { result } = renderHook(() =>
+            useHelpCenterCreationWizard(
+                helpCenter,
+                HelpCenterCreationWizardStep.Basics,
+            ),
+        )
+
+        act(() => {
+            result.current.handleSave({})
+        })
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: /Help center not successfully updated/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive'),
+        )
+    })
+
+    it('shows a destructive toast when updating translations fails', async () => {
+        mockedUseCreateHelpCenterTranslation.mockReturnValue({
+            mutateAsync: jest
+                .fn()
+                .mockRejectedValue(new Error('translation failed')),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useCreateHelpCenterTranslation>)
+
+        const { result } = renderHook(() =>
+            useHelpCenterCreationWizard(
+                undefined,
+                HelpCenterCreationWizardStep.Basics,
+            ),
+        )
+
+        act(() => {
+            result.current.handleFormUpdate({
+                supportedLocales: ['en-US', 'fr-FR'],
+            })
+        })
+
+        act(() => {
+            result.current.handleSave({})
+        })
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: /Translations not successfully updated/i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive'),
+        )
     })
 })

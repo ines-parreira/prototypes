@@ -33,27 +33,6 @@ exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_AT
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
   {
-    "payload": {
-      "allowHTML": true,
-      "buttons": [],
-      "dismissAfter": 9000,
-      "dismissible": true,
-      "id": "newMessageAddAttachmentsError",
-      "message": "
-                    Facebook comments have limitations on attachments:
-                    <ul>
-                        <li>You cannot send more than one attachment.</li>
-                        <li>You can only send images or videos.</li>
-                    </ul>
-                ",
-      "position": "top-center",
-      "showDismissButton": false,
-      "status": "error",
-      "title": "We could not add all of your attachments !",
-    },
-    "type": "reapop/upsertNotification",
-  },
-  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
   },
 ]
@@ -78,27 +57,6 @@ exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_AT
 [
   {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
-  },
-  {
-    "payload": {
-      "allowHTML": true,
-      "buttons": [],
-      "dismissAfter": 9000,
-      "dismissible": true,
-      "id": "newMessageAddAttachmentsError",
-      "message": "
-                    Facebook comments have limitations on attachments:
-                    <ul>
-                        <li>You cannot send more than one attachment.</li>
-                        <li>You can only send images or videos.</li>
-                    </ul>
-                ",
-      "position": "top-center",
-      "showDismissButton": false,
-      "status": "error",
-      "title": "We could not add all of your attachments !",
-    },
-    "type": "reapop/upsertNotification",
   },
   {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",

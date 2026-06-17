@@ -221,6 +221,36 @@ describe('<EditActionView />', () => {
         )
         expect(screen.getByText('Save changes')).toBeInTheDocument()
     })
+    // Anchors come from `copilotAnchorProps` (@gorgias/copilot), mocked
+    // wholesale in tests/setup.tsx. The real export ships on the unpublished
+    // SDK branch, so the source typechecks only once the catalog bumps past
+    // 0.66.1.
+    it('renders the support-action entity, configuration, and status anchors', () => {
+        const { container } = render(
+            <>
+                {' '}
+                <EditActionView configuration={configuration} />{' '}
+                <LocationPath />{' '}
+            </>,
+            {},
+        )
+
+        expect(
+            container.querySelector(
+                `[data-copilot-anchor="support-action:${configuration.id}"]`,
+            ),
+        ).toBeInTheDocument()
+        expect(
+            container.querySelector(
+                `[data-copilot-anchor="support-action:${configuration.id}:configuration"]`,
+            ),
+        ).toBeInTheDocument()
+        expect(
+            container.querySelector(
+                `[data-copilot-anchor="support-action:${configuration.id}:status"]`,
+            ),
+        ).toBeInTheDocument()
+    })
     it('should redirect on "Back to support actions" click', () => {
         render(
             <>

@@ -432,8 +432,7 @@ export function AppDetail() {
                     ) : null
                 }
                 inbound={
-                    (appItem.connectUrl || appItem.alloyIntegrationId) &&
-                    !isTrackstarConnect ? (
+                    appItem.connectUrl || appItem.alloyIntegrationId ? (
                         <InboundConnectionCard
                             appId={appItem.appId}
                             appTitle={appItem.title}

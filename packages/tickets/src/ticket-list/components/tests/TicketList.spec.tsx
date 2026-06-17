@@ -163,7 +163,16 @@ const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
 const mockCurrentUser = mockGetCurrentUserHandler()
 const mockGetView = mockGetViewHandler()
 const mockListTeams = mockListTeamsHandler()
-const mockListUsers = mockListUsersHandler()
+const mockListUsers = mockListUsersHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        data: [],
+        meta: {
+            prev_cursor: null,
+            next_cursor: null,
+        },
+    }),
+)
 const mockUpdateTicket = mockUpdateTicketHandler()
 
 const server = setupServer()

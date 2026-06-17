@@ -1,0 +1,389 @@
+{
+    "byFile": {
+        "apps/helpdesk/src/AIJourney/queries/useAudienceCount/useAudienceCount.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceLists/useAudienceLists.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceSegments/useAudienceSegments.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudiencesUsage/useAudiencesUsage.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useConditionsMetadata/useConditionsMetadata.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCreateNewJourney/useCreateNewJourney.tsx": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCreateSegment/useCreateSegment.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCustomFlows/useCustomFlows.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useDeleteJourney/useDeleteJourney.tsx": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useDeleteSegment/useDeleteSegment.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneyData/useJourneyData.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneys/useJourneys.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useRcsTestSend/useRcsTestSend.tsx": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useSegments/useSegments.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useSmsIntegrations/useSmsIntegrations.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useTestSms/useTestSms.tsx": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useUpdateJourney/useUpdateJourney.tsx": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useUpdateSegment/useUpdateSegment.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/custom-fields/hooks/queries/useUpdateAiAutofill.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/domains/reporting/hooks/common/tests/useInfiniteListVoiceQueues.spec.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/domains/reporting/hooks/common/useInfiniteListVoiceQueues.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/articleRecommendations.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/domains/reporting/models/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/domains/reporting/pages/live/agents/dataTable/hooks/useLiveAgentsStats.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/hooks/aiAgent/useGetOrCreateAccountConfiguration.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/hooks/businessHours/tests/useInfiniteListBusinessHours.spec.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/hooks/businessHours/tests/useInfiniteListBusinessHoursIntegrations.spec.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/hooks/businessHours/useInfiniteListBusinessHours.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/hooks/businessHours/useInfiniteListBusinessHoursIntegrations.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/hooks/useExhaustEndpoint.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/models/agents/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/aiAgentFeedback/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/aiAgentPostStoreInstallationSteps/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/application/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/articleRecommendationPrediction/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/automation/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/billing/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/channel/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/convert/abTest/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/convert/abVariants/queries.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/models/convert/bundle/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/convert/campaign/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/convert/channelConnection/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/convert/discountOffer/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/convert/settings/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/customer/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/ecommerce/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/mutations.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/queries.ts": {
+            "useInfiniteQuery": 1,
+            "useMutation": 1,
+            "useQueries": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/helpCenter/tests/queries.spec.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/integration/queries.ts": {
+            "useInfiniteQuery": 1,
+            "useMutation": 1,
+            "useQueries": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/integration/queries/http.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/macro/queries.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/models/phoneNumber/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/phoneNumber/tests/queries.spec.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/selfServiceConfiguration/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/storeMapping/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/team/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/view/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/voiceCall/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/whatsAppMessageTemplates/queries.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/models/workflows/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/hooks/usePaginatedProductCollectionsByIds.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/hooks/usePaginatedProductsByIds.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/hooks/usePaginatedProductIntegration.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/useGetOnboardings.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Overview/hooks/pendingTasks/useFetchChatIntegrationsStatusData.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/Overview/hooks/useStartAiSalesAgentTrialForMultipleStores.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesByProduct.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/shared/VersionHistoryButton/useVersionUsers.spec.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/shared/VersionHistoryButton/useVersionUsers.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/hooks/usePublicResources.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/hooks/useCheckOpportunityRelevance.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/opportunities/hooks/useEnrichedOpportunity.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useApplyWizardChanges.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/skills/hooks/useSkillWizardMutations.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/trial/hooks/useStartShoppingAssistantTrial.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/trial/hooks/useTrialMetrics.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/common/editor/hooks/useMacrosSearch.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/pages/convert/common/hooks/useGetConvertStatus.tsx": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/hooks/useUpdateApplicationTexts.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/voice/hooks/tests/useInfiniteListVoiceIntegrations.spec.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/voice/hooks/useInfiniteListVoiceIntegrations.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/voice/useMicrophonePermissions.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormMailtoReplacementSection/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/settings/contactForm/queries.ts": {
+            "useInfiniteQuery": 1,
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/components/ManageRedirects/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/settings/helpCenter/queries.ts": {
+            "useMutation": 1,
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/components/AddSalesCouponModal/AddSalesCouponModal.tsx": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useConfirmStripeSetupIntent.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/hooks/useImportMetafields.ts": {
+            "useMutation": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetVersionedArticles.ts": {
+            "useQueries": 1
+        },
+        "apps/helpdesk/src/search/useSearch.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/tags/useListTags.tsx": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/teams/queries/useListTeams.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/tickets/ticket-timeline/hooks/useInfiniteListTickets.ts": {
+            "useInfiniteQuery": 1
+        },
+        "apps/helpdesk/src/tickets/ticket-timeline/hooks/useOrderProducts.ts": {
+            "useQuery": 1
+        },
+        "apps/helpdesk/src/users/useListUsers.tsx": {
+            "useInfiniteQuery": 1
+        },
+        "packages/customer/src/components/ShopifyCustomer/hooks/useShopifyShopTags.ts": {
+            "useQuery": 1
+        },
+        "packages/search/src/hooks/tests/useInfiniteVoiceCallSearch.spec.ts": {
+            "useInfiniteQuery": 1
+        },
+        "packages/search/src/hooks/useInfiniteVoiceCallSearch.ts": {
+            "useInfiniteQuery": 1
+        },
+        "packages/ticket-thread/src/ticket-messages/hooks/useSaveMessageIntents.ts": {
+            "useMutation": 1
+        },
+        "packages/tickets/src/components/InfobarTicketCustomerDetails/hooks/useGetSimilarCustomer.ts": {
+            "useQuery": 1
+        },
+        "packages/tickets/src/components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useInfiniteListTags.ts": {
+            "useInfiniteQuery": 1
+        },
+        "packages/tickets/src/components/TicketAssignee/hooks/useInfiniteListTeams.ts": {
+            "useInfiniteQuery": 1
+        },
+        "packages/tickets/src/hooks/useCachedTicketViewNavigation.ts": {
+            "useQuery": 1
+        },
+        "packages/tickets/src/ticket-list/hooks/useTicketsList.ts": {
+            "useInfiniteQuery": 1
+        },
+        "packages/views/src/hooks/usePrivateViewsOrdering.ts": {
+            "useQuery": 1
+        }
+    },
+    "byPattern": {
+        "useInfiniteQuery": 23,
+        "useMutation": 44,
+        "useQueries": 11,
+        "useQuery": 64
+    },
+    "plugin": "handwritten-react-query",
+    "summary": {
+        "filesWithFindings": 116,
+        "total": 142
+    }
+}

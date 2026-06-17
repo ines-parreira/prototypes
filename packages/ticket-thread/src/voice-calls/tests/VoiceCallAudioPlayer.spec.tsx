@@ -13,13 +13,13 @@ import {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallAudioPlayer } from '../components/TicketThreadCallItem/components/VoiceCallAudioPlayer'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallAudioPlayer } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallAudioPlayer'
 import {
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
-} from '../models/types'
+} from '#voice-calls/models/types'
 
 const deletingAgent = mockUser({ id: 99, name: 'Deleting Agent' })
 

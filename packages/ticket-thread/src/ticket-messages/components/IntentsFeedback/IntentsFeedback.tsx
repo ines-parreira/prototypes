@@ -16,7 +16,7 @@ import type { IconName } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 import type { TicketMessageIntent } from '@gorgias/helpdesk-types'
 
-import { useSaveMessageIntents } from '../../hooks/useSaveMessageIntents'
+import { useSaveMessageIntents } from '#ticket-messages/hooks/useSaveMessageIntents'
 import { AvailableIntentRow } from './AvailableIntentRow'
 
 import css from './IntentsFeedback.less'

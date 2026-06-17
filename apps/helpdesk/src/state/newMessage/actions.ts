@@ -17,6 +17,7 @@ import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import _split from 'lodash/split'
 
+import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
@@ -62,8 +63,6 @@ import {
 } from 'state/currentAccount/selectors'
 import * as integrationSelectors from 'state/integrations/selectors'
 import { NEW_MESSAGE_SUBMIT_TICKET_ERROR } from 'state/newMessage/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import * as ticketConstants from 'state/ticket/constants'
 import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
 import * as ticketSelectors from 'state/ticket/selectors'
@@ -166,22 +165,12 @@ export const addAttachments =
                 atts.length > 1 ||
                 atts.length !== attachmentsFiltered.length
             ) {
-                void dispatch(
-                    notify({
-                        id: 'newMessageAddAttachmentsError',
-                        dismissAfter: 0,
-                        status: NotificationStatus.Error,
-                        title: 'We could not add all of your attachments !',
-                        allowHTML: true,
-                        message: `
-                    Facebook comments have limitations on attachments:
-                    <ul>
-                        <li>You cannot send more than one attachment.</li>
-                        <li>You can only send images or videos.</li>
-                    </ul>
-                `,
-                    }),
-                )
+                toast.error('We could not add all of your attachments !', {
+                    id: 'newMessageAddAttachmentsError',
+                    duration: Infinity,
+                    caption:
+                        'Facebook comments have limitations on attachments: you cannot send more than one attachment, and you can only send images or videos.',
+                })
                 return dispatch({
                     type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
                 })
@@ -861,14 +850,10 @@ export function prepareTicketDataToSend(
                 newMessage.body_text.length === 0 &&
                 newMessage.attachments.length > 0
             ) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        title: 'Your message cannot be sent',
-                        message:
-                            'You cannot send an attachment without a message in a Facebook comment.',
-                    }),
-                )
+                toast.error('Your message cannot be sent', {
+                    caption:
+                        'You cannot send an attachment without a message in a Facebook comment.',
+                })
                 return null
             }
         }

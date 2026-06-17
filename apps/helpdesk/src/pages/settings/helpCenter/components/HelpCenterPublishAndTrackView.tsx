@@ -8,7 +8,7 @@ import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
@@ -32,8 +32,6 @@ import {
     helpCenterDeleted,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     HELP_CENTER_BASE_PATH,
@@ -57,7 +55,7 @@ import { GoogleAnalyticsSection } from './GoogleAnalyticSection'
 import { HelpCenterAutoEmbedPublishSection } from './HelpCenterAutoEmbedPublishSection'
 import { HelpCenterPageWrapper } from './HelpCenterPageWrapper'
 import { ManageEmbedments } from './ManageEmbedments'
-import { SubdomainSection } from './SubdomainSection'
+import { SubdomainSection } from './SubdomainSection/SubdomainSection'
 import { UpdateToggle } from './UpdateToggle'
 
 import css from './HelpCenterPublishAndTrackView.less'
@@ -165,12 +163,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     history.push(
                         location.pathname.split(helpCenterId.toString())[0],
                     )
-                    void dispatch(
-                        notify({
-                            message: 'Help Center deleted with success',
-                            status: NotificationStatus.Success,
-                        }),
-                    )
+                    toast.success('Help Center deleted with success')
                 })
                 .catch((err) => {
                     const errorMessage =
@@ -179,12 +172,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                             get(err, 'response.data.message')) ||
                         'Could not delete the Help Center'
 
-                    void dispatch(
-                        notify({
-                            message: errorMessage,
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error(errorMessage)
                     reportError(err as Error)
                 })
         }
@@ -205,20 +193,10 @@ export const HelpCenterInstallationView: React.FC = () => {
                 )
 
                 dispatch(helpCenterUpdated(response.data))
-                void dispatch(
-                    notify({
-                        message: 'Help Center updated with success',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Help Center updated with success')
             } catch (err) {
                 // TODO: Add different messages based on error response code
-                void dispatch(
-                    notify({
-                        message: 'Could not update the Help Center',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Could not update the Help Center')
                 reportError(err as Error)
             }
         },

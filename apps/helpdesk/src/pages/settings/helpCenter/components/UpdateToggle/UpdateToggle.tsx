@@ -1,4 +1,5 @@
 import { reportError } from '@repo/logging'
+import { toast } from '@gorgias/axiom'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -7,8 +8,6 @@ import { ToggleInput } from 'pages/common/forms/ToggleInput'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './UpdateToggle.less'
 
@@ -38,21 +37,11 @@ export const UpdateToggle = ({
                         { [fieldName]: !toggleValue },
                     )
                     void dispatch(helpCenterUpdated(data))
-                    void dispatch(
-                        notify({
-                            message: 'Help Center updated with success',
-                            status: NotificationStatus.Success,
-                        }),
-                    )
+                    toast.success('Help Center updated with success')
                 } catch (err) {
                     reportError(err as Error)
 
-                    void dispatch(
-                        notify({
-                            message: 'Failed to update the Help Center',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to update the Help Center')
                 }
             }
         },

@@ -55,12 +55,23 @@ describe('useIsTrashLikeView', () => {
         expect(getViewRequestCount).toBe(0)
     })
 
+    it('does not fetch persisted view metadata for non-persisted view ids', async () => {
+        const { result } = renderHook(() => useIsTrashLikeView(0))
+
+        await new Promise((resolve) => setTimeout(resolve, 0))
+
+        expect(result.current).toBe(false)
+        expect(getViewRequestCount).toBe(0)
+    })
+
     it('returns false when the current view does not include the trash filter', async () => {
         const { result } = renderHook(() => useIsTrashLikeView(viewId))
 
         await waitFor(() => {
             expect(result.current).toBe(false)
         })
+
+        expect(getViewRequestCount).toBe(1)
     })
 
     it('returns false when the current view response is missing', async () => {

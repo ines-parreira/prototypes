@@ -2,8 +2,8 @@ import { formatDatetime } from '@repo/utils'
 
 import { Box, Dot, Text, Tooltip } from '@gorgias/axiom'
 
-import { useTicketThreadDateTimeFormat } from '../../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { DateTooltipContent } from '../../../../ticket-messages/components/MessageBubble/components/MessageHeader/DateTooltipContent'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { DateTooltipContent } from '#ticket-messages/components/MessageBubble/components/MessageHeader/DateTooltipContent'
 
 type TicketThreadEventDateTimeProps = {
     datetime: string

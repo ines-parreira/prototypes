@@ -62,6 +62,20 @@ jest.mock(
         fetchTimeSavedPerFeature: jest.fn(),
     }),
 )
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDecreaseInResolutionTimeBreakdowns',
+    () => ({
+        useDecreaseInResolutionTimePerFeature: jest.fn(),
+        fetchDecreaseInResolutionTimePerFeature: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDecreaseInFirstResponseTimeBreakdowns',
+    () => ({
+        useDecreaseInFirstResponseTimePerFeature: jest.fn(),
+        fetchDecreaseInFirstResponseTimePerFeature: jest.fn(),
+    }),
+)
 
 const mockUseAiAgentStatsFilters = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentStatsFilters',
@@ -124,6 +138,18 @@ const defaultEntityData = {
         'article-recommendation': 1100,
         'order-management': 550,
     },
+    decreaseInResolutionTime: {
+        'ai-agent': 3600,
+        flow: 1800,
+        'article-recommendation': null,
+        'order-management': 7200,
+    },
+    decreaseInFirstResponseTime: {
+        'ai-agent': 1800,
+        flow: 900,
+        'article-recommendation': null,
+        'order-management': 3600,
+    },
 }
 
 const defaultRows = [
@@ -134,6 +160,8 @@ const defaultRows = [
         handoverInteractions: 189,
         costSaved: 8370,
         timeSaved: 9900,
+        decreaseInResolutionTime: 3600,
+        decreaseInFirstResponseTime: 1800,
     },
     {
         feature: 'Article Recommendation',
@@ -142,6 +170,8 @@ const defaultRows = [
         handoverInteractions: 0,
         costSaved: 930,
         timeSaved: 1100,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
 ]
 
@@ -162,6 +192,8 @@ describe('usePerformanceMetricsPerFeature', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
         mockAssembleEntityRows.mockReturnValue(defaultRows)
@@ -186,6 +218,8 @@ describe('usePerformanceMetricsPerFeature', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -205,6 +239,8 @@ describe('usePerformanceMetricsPerFeature', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -224,6 +260,8 @@ describe('usePerformanceMetricsPerFeature', () => {
                 handoverInteractions: false,
                 costSaved: true,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -245,6 +283,8 @@ describe('usePerformanceMetricsPerFeature', () => {
                     handoverInteractions: {},
                     costSaved: {},
                     timeSaved: {},
+                    decreaseInResolutionTime: {},
+                    decreaseInFirstResponseTime: {},
                 },
                 isLoading: false,
                 isError: false,
@@ -254,6 +294,8 @@ describe('usePerformanceMetricsPerFeature', () => {
                     handoverInteractions: false,
                     costSaved: false,
                     timeSaved: false,
+                    decreaseInResolutionTime: false,
+                    decreaseInFirstResponseTime: false,
                 },
             })
 
@@ -268,6 +310,8 @@ describe('usePerformanceMetricsPerFeature', () => {
             expect(row.handoverInteractions).toBeNull()
             expect(row.costSaved).toBeNull()
             expect(row.timeSaved).toBeNull()
+            expect(row.decreaseInResolutionTime).toBeNull()
+            expect(row.decreaseInFirstResponseTime).toBeNull()
         })
 
         it('maps AutomationFeatureType values to display names', () => {
@@ -294,6 +338,8 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         handoverInteractions: { 'ai-agent': 189 },
         costSaved: { 'ai-agent': 8370 },
         timeSaved: { 'ai-agent': 9900 },
+        decreaseInResolutionTime: { 'ai-agent': 3600 },
+        decreaseInFirstResponseTime: { 'ai-agent': 1800 },
     }
 
     const mockRow = {
@@ -303,6 +349,8 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         handoverInteractions: 189,
         costSaved: 8370,
         timeSaved: 9900,
+        decreaseInResolutionTime: 3600,
+        decreaseInFirstResponseTime: 1800,
     }
 
     beforeEach(() => {
@@ -419,6 +467,8 @@ describe('fetchPerformanceMetricsPerFeatureAsConfigurableTable', () => {
         handoverInteractions: 189,
         costSaved: 8370,
         timeSaved: 9900,
+        decreaseInResolutionTime: 3600,
+        decreaseInFirstResponseTime: 1800,
     }
 
     beforeEach(() => {
@@ -430,6 +480,8 @@ describe('fetchPerformanceMetricsPerFeatureAsConfigurableTable', () => {
                 handoverInteractions: { 'ai-agent': 189 },
                 costSaved: { 'ai-agent': 8370 },
                 timeSaved: { 'ai-agent': 9900 },
+                decreaseInResolutionTime: { 'ai-agent': 3600 },
+                decreaseInFirstResponseTime: { 'ai-agent': 1800 },
             },
             isLoading: false,
             isError: false,

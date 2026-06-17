@@ -2,7 +2,7 @@ import { vi } from 'vitest'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { VoiceCallSubjectType } from '../models/types'
+import { VoiceCallSubjectType } from '#voice-calls/models/types'
 import {
     getAnsweringVoiceSubject,
     getFormattedDurationEndedCall,
@@ -13,7 +13,7 @@ import {
     isCallTransfer,
     isFinalVoiceCallStatus,
     shouldShowDuration,
-} from '../models/utils'
+} from '#voice-calls/models/utils'
 
 describe('isFinalVoiceCallStatus', () => {
     const finalStatuses = [

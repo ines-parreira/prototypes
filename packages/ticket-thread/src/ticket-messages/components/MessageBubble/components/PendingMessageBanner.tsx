@@ -1,7 +1,7 @@
 import { Box, Button, Icon, Text } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { useTicketThreadLegacyBridge } from '../../../../legacy-bridge'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge'
 
 import styles from './PendingMessageBanner.less'
 

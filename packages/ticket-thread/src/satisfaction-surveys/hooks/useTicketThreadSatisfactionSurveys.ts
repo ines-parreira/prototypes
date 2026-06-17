@@ -3,9 +3,12 @@ import { useMemo } from 'react'
 import type { Ticket } from '@gorgias/helpdesk-queries'
 import { useListSatisfactionSurveys } from '@gorgias/helpdesk-queries'
 
-import { isTicketSatisfactionSurvey } from '../predicates'
-import { toSurveyItemFromEvent, toSurveyItemFromSurvey } from '../transforms'
-import type { TicketThreadSatisfactionSurveyItem } from '../types'
+import { isTicketSatisfactionSurvey } from '#satisfaction-surveys/predicates'
+import {
+    toSurveyItemFromEvent,
+    toSurveyItemFromSurvey,
+} from '#satisfaction-surveys/transforms'
+import type { TicketThreadSatisfactionSurveyItem } from '#satisfaction-surveys/types'
 import { useListSatisfactionSurveyRespondedEvents } from './useListSatisfactionSurveyRespondedEvents'
 
 type UseTicketThreadSatisfactionSurveysParams = {

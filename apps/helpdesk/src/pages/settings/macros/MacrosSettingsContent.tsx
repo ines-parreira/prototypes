@@ -10,7 +10,8 @@ import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 import { useListMacros } from '@gorgias/helpdesk-queries'
 
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
-import type { GorgiasApiError, OrderDirection } from 'models/api/types'
+import type { OrderDirection } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import type { MacroSortableProperties } from 'models/macro/types'
 import { MacroFilters } from 'pages/common/components/MacroFilters/MacroFilters'
 import { Navigation } from 'pages/common/components/Navigation/Navigation'
@@ -101,8 +102,9 @@ export function MacrosSettingsContent() {
                 },
                 onError: (error) => {
                     toast.error(
-                        (error as GorgiasApiError).response.data.error.msg ??
-                            'Failed to duplicate macro',
+                        isGorgiasApiError(error)
+                            ? error.response.data.error.msg
+                            : 'Failed to duplicate macro',
                     )
                 },
             },

@@ -1,8 +1,8 @@
 import { FLOWS_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
 
 describe('FLOWS_COLUMNS', () => {
-    it('has 5 entries', () => {
-        expect(FLOWS_COLUMNS).toHaveLength(5)
+    it('has 7 entries', () => {
+        expect(FLOWS_COLUMNS).toHaveLength(7)
     })
 
     it('has the correct accessorKeys in order', () => {
@@ -12,6 +12,8 @@ describe('FLOWS_COLUMNS', () => {
             'handoverInteractions',
             'costSaved',
             'timeSaved',
+            'decreaseInResolutionTime',
+            'decreaseInFirstResponseTime',
         ])
     })
 })

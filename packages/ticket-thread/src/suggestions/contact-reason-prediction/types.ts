@@ -1,4 +1,4 @@
-import type { TicketThreadItemTag } from '../../thread/itemTags'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 
 export type TicketThreadContactReasonSuggestionItem = {
     _tag: typeof TicketThreadItemTag.ContactReasonSuggestion

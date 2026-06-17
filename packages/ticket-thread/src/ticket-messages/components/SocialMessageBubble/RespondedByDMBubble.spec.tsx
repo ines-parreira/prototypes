@@ -11,10 +11,10 @@ import {
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
-import { useTicketThreadDateTimeFormat } from '../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -30,7 +30,7 @@ afterAll(() => {
 
 import { RespondedByDMBubble } from './RespondedByDMBubble'
 
-vi.mock('../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

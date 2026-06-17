@@ -41,7 +41,16 @@ vi.mock('../../../translations/components/TicketTranslationMenu', () => ({
 const mockUseFlag = vi.mocked(useFlag)
 
 const mockListTeams = mockListTeamsHandler()
-const mockListUsers = mockListUsersHandler()
+const mockListUsers = mockListUsersHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        data: [],
+        meta: {
+            prev_cursor: null,
+            next_cursor: null,
+        },
+    }),
+)
 const mockSearchTickets = mockSearchTicketsHandler()
 const mockListTicketTranslations = mockListTicketTranslationsHandler()
 const mockListCustomFields = mockListCustomFieldsHandler(async () =>

@@ -17,9 +17,12 @@ import type { VoiceCall } from '@gorgias/helpdesk-queries'
 import {
     getInboundDisplayStatus,
     getPrettyVoiceCallDisplayStatusName,
-} from '../../../models/statusMapping'
-import { VoiceCallDisplayStatus } from '../../../models/types'
-import { getAnsweringVoiceSubject, isCallTransfer } from '../../../models/utils'
+} from '#voice-calls/models/statusMapping'
+import { VoiceCallDisplayStatus } from '#voice-calls/models/types'
+import {
+    getAnsweringVoiceSubject,
+    isCallTransfer,
+} from '#voice-calls/models/utils'
 import { VoiceCallAgentLabel } from './VoiceCallAgentLabel'
 import { VoiceCallDuration } from './VoiceCallDuration'
 import { VoiceCallEvents } from './VoiceCallEvents'

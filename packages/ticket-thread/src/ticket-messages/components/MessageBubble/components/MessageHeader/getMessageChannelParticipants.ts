@@ -1,4 +1,4 @@
-import { formatPhoneNumberInternational } from '../../../../../voice-calls/models/phoneFormatting'
+import { formatPhoneNumberInternational } from '#voice-calls/models/phoneFormatting'
 
 type MessageSourceAddressLike = {
     address?: string | null

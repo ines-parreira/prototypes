@@ -1,7 +1,7 @@
 import {
     getRuleFailedActionDisplay,
     getRuleFailedActionsDisplay,
-} from '../ruleFailureTransforms'
+} from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEvents/components/TicketThreadAuditLogRuleExecutedEvent/ruleFailureTransforms'
 
 describe('ruleFailureTransforms', () => {
     it('maps known action names and failure reasons to legacy wording', () => {

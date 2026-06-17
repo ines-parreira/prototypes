@@ -17,6 +17,8 @@ type Props = {
     shopName: string
     availableActions?: GuidanceAction[]
     availableVariables?: GuidanceVariableGroup[]
+    titleAnchorProps?: { 'data-copilot-anchor': string }
+    contentAnchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const KnowledgeEditorGuidanceReadView = ({
@@ -25,6 +27,8 @@ export const KnowledgeEditorGuidanceReadView = ({
     shopName,
     availableActions,
     availableVariables,
+    titleAnchorProps,
+    contentAnchorProps,
 }: Props) => {
     const richFieldValue = useMemo(
         () => ({
@@ -36,38 +40,42 @@ export const KnowledgeEditorGuidanceReadView = ({
 
     return (
         <div className={css.container}>
-            <Heading size="lg">{title}</Heading>
-            <ToolbarProvider
-                canAddProductCard={true}
-                canAddDiscountCodeLink={false}
-                canAddVideoPlayer={false}
-                guidanceVariables={availableVariables}
-                guidanceActions={availableActions}
-                shopName={shopName}
-            >
-                <RichField
-                    key={content}
-                    minHeight={320}
-                    maxLength={textLimit}
-                    value={richFieldValue}
-                    allowExternalChanges
-                    displayOnly
-                    onChange={() => {}}
-                    displayedActions={[
-                        ActionName.Bold,
-                        ActionName.Italic,
-                        ActionName.Underline,
-                        ActionName.Link,
-                        ActionName.Emoji,
-                        ActionName.GuidanceVariable,
-                        ActionName.GuidanceAction,
-                        ActionName.BulletedList,
-                        ActionName.OrderedList,
-                    ]}
-                    noAutoScroll
-                    getGuidanceVariables={() => availableVariables || []}
-                />
-            </ToolbarProvider>
+            <div className={css.titleAnchor} {...titleAnchorProps}>
+                <Heading size="lg">{title}</Heading>
+            </div>
+            <div className={css.contentAnchor} {...contentAnchorProps}>
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    canAddDiscountCodeLink={false}
+                    canAddVideoPlayer={false}
+                    guidanceVariables={availableVariables}
+                    guidanceActions={availableActions}
+                    shopName={shopName}
+                >
+                    <RichField
+                        key={content}
+                        minHeight={320}
+                        maxLength={textLimit}
+                        value={richFieldValue}
+                        allowExternalChanges
+                        displayOnly
+                        onChange={() => {}}
+                        displayedActions={[
+                            ActionName.Bold,
+                            ActionName.Italic,
+                            ActionName.Underline,
+                            ActionName.Link,
+                            ActionName.Emoji,
+                            ActionName.GuidanceVariable,
+                            ActionName.GuidanceAction,
+                            ActionName.BulletedList,
+                            ActionName.OrderedList,
+                        ]}
+                        noAutoScroll
+                        getGuidanceVariables={() => availableVariables || []}
+                    />
+                </ToolbarProvider>
+            </div>
         </div>
     )
 }

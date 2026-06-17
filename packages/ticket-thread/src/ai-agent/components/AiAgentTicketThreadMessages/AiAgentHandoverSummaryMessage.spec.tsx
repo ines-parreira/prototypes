@@ -12,20 +12,20 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { DisplayedTicketThreadMessageItem } from '../../../ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
-import { AI_AGENT_BOT_EMAILS } from '../../../ticket-messages/constants'
-import type { TicketThreadAiAgentHandoverMessageItem } from '../../../ticket-messages/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { AI_AGENT_BOT_EMAILS } from '#ticket-messages/constants'
+import type { TicketThreadAiAgentHandoverMessageItem } from '#ticket-messages/types'
 import { AiAgentHandoverSummaryMessage } from './AiAgentHandoverSummaryMessage'
 
 const MESSAGE_DATETIME = '2024-03-21T11:00:00Z'
 const mockUseDisplayedTicketMessage = vi.fn()
 
 vi.mock(
-    '../../../ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage',
+    '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage',
     () => ({
         useDisplayedTicketMessage: (args: {
             item: TicketThreadAiAgentHandoverMessageItem
@@ -34,7 +34,7 @@ vi.mock(
 )
 
 vi.mock(
-    '../../../ticket-messages/components/MessageBubble/components/MessageFooter',
+    '#ticket-messages/components/MessageBubble/components/MessageFooter',
     () => ({
         MessageFooter: () => <div>MessageFooter</div>,
     }),

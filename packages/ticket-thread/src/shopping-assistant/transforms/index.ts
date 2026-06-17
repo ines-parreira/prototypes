@@ -1,14 +1,14 @@
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { InfluencedOrderSource } from '../constants'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
 import {
     influencedOrderSchema,
     shopifyIntegrationSchema,
     shopifyOrderSchema,
-} from '../schemas'
+} from '#shopping-assistant/schemas'
 import type {
     TicketThreadInfluencedOrderItem,
     TicketThreadShoppingAssistantSources,
-} from '../types'
+} from '#shopping-assistant/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function sourceToInfluencedOrderSource(
     source: string | null | undefined,

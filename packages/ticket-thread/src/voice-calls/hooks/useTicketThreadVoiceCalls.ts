@@ -3,13 +3,13 @@ import { useMemo } from 'react'
 import type { VoiceCall } from '@gorgias/helpdesk-queries'
 import { useListVoiceCalls } from '@gorgias/helpdesk-queries'
 
-import { getQueryOptions } from '../../shared/queryOption'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { isOutboundVoiceCall } from '../predicates'
+import { getQueryOptions } from '#shared/queryOption'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { isOutboundVoiceCall } from '#voice-calls/predicates'
 import type {
     TicketThreadOutboundVoiceCallItem,
     TicketThreadVoiceCallItem,
-} from '../types'
+} from '#voice-calls/types'
 
 type UseTicketThreadVoiceCallsParams = {
     ticketId: number

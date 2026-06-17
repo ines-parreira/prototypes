@@ -12,8 +12,8 @@ import {
 } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadEventContainer } from '../../../../events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../../../../events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
 import { getActionName, getDisplayedActionTitle } from './appliedActionDisplay'
 import { AppliedTag } from './AppliedTag'
 

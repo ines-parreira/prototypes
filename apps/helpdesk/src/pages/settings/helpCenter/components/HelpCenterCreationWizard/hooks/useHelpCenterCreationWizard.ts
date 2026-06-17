@@ -210,11 +210,7 @@ export const useHelpCenterCreationWizard = (
 
             return res?.data
         } catch (error) {
-            handleOnError(
-                error,
-                'Help center not successfully created.',
-                dispatch,
-            )
+            handleOnError(error, 'Help center not successfully created.')
 
             return null
         }
@@ -238,11 +234,7 @@ export const useHelpCenterCreationWizard = (
 
             return res?.data
         } catch (error) {
-            handleOnError(
-                error,
-                'Help center not successfully updated.',
-                dispatch,
-            )
+            handleOnError(error, 'Help center not successfully updated.')
 
             return null
         }
@@ -315,11 +307,7 @@ export const useHelpCenterCreationWizard = (
             await Promise.all(createTranslationsWithMutation)
             await Promise.all(deleteTranslationsWithMutation)
         } catch (error) {
-            handleOnError(
-                error,
-                'Translations not successfully updated.',
-                dispatch,
-            )
+            handleOnError(error, 'Translations not successfully updated.')
         }
     }
 

@@ -1,11 +1,11 @@
 import { AIThinking, Box, Icon, Text } from '@gorgias/axiom'
 
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge'
-import { MessageErrors } from '../../../ticket-messages/components/MessageBubble/components/MessageErrors'
-import { MessageHeaderContainer } from '../../../ticket-messages/components/MessageBubble/components/MessageHeader/Layout'
-import { MessageSender } from '../../../ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
-import { MessageBubble } from '../../../ticket-messages/components/MessageBubble/MessageBubble'
-import type { TicketThreadAiAgentTrialMessageItem } from '../../../ticket-messages/types'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge'
+import { MessageErrors } from '#ticket-messages/components/MessageBubble/components/MessageErrors'
+import { MessageHeaderContainer } from '#ticket-messages/components/MessageBubble/components/MessageHeader/Layout'
+import { MessageSender } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
+import type { TicketThreadAiAgentTrialMessageItem } from '#ticket-messages/types'
 import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
 type AiAgentTicketThreadTrialMessageProps = {

@@ -11,10 +11,10 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallSubjectLabel } from '../components/TicketThreadCallItem/components/VoiceCallSubjectLabel'
-import { VoiceCallSubjectType } from '../models/types'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallSubjectLabel } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallSubjectLabel'
+import { VoiceCallSubjectType } from '#voice-calls/models/types'
 
 describe('VoiceCallSubjectLabel', () => {
     describe('Agent subject', () => {

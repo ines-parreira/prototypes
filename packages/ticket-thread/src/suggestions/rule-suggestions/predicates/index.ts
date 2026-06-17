@@ -1,8 +1,8 @@
 import {
     messageMetaWithRuleSuggestionSlugSchema,
     ruleSuggestionMetaSchema,
-} from '../schemas'
-import type { RuleSuggestionMeta } from '../types'
+} from '#suggestions/rule-suggestions/schemas'
+import type { RuleSuggestionMeta } from '#suggestions/rule-suggestions/types'
 
 export function isRuleSuggestion(input: unknown): input is RuleSuggestionMeta {
     return ruleSuggestionMetaSchema.safeParse(input).success

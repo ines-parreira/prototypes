@@ -161,6 +161,7 @@ export type KnowledgeMetrics = {
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
     ticketIds?: string[]
+    isSkillScoped?: boolean
     dateRange: {
         start_datetime: string
         end_datetime: string

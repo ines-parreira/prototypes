@@ -2,8 +2,8 @@ import type { Prettify } from '@repo/types'
 
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import type { TicketThreadAiAgentPseudoEvent } from '../ai-agent/types'
-import type { TicketThreadItemTag } from '../thread/itemTags'
+import type { TicketThreadAiAgentPseudoEvent } from '#ai-agent/types'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 import type {
     AiAgentDraftMessageSchema,
     AiAgentHandoverMessageSchema,

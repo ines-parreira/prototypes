@@ -1,6 +1,15 @@
-import { overallDecreaseInResolutionTimeScope } from 'domains/reporting/models/scopes/overallDecreaseInResolutionTime'
+import {
+    overallDecreaseInResolutionTime,
+    overallDecreaseInResolutionTimeQueryV2Factory,
+    overallDecreaseInResolutionTimeScope,
+    overallDecreaseInResolutionTimeTimeseries,
+    overallDecreaseInResolutionTimeTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/overallDecreaseInResolutionTime'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    ApiStatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('overallDecreaseInResolutionTimeScope', () => {
@@ -122,5 +131,63 @@ describe('overallDecreaseInResolutionTimeScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+
+    describe('QueryV2Factory methods', () => {
+        const context = { filters: baseFilters, timezone: 'UTC' }
+
+        describe('overallDecreaseInResolutionTimeQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    overallDecreaseInResolutionTimeQueryV2Factory(context),
+                ).toEqual(overallDecreaseInResolutionTime.build(context))
+            })
+
+            it('uses the median decrease in resolution time measure', () => {
+                const result =
+                    overallDecreaseInResolutionTimeQueryV2Factory(context)
+
+                expect(result.measures).toEqual([
+                    'medianDecreaseInResolutionTime',
+                ])
+            })
+        })
+
+        describe('overallDecreaseInResolutionTimeTimeseriesQueryV2Factory', () => {
+            const timeseriesContext = {
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: [],
+            }
+
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    overallDecreaseInResolutionTimeTimeseriesQueryV2Factory(
+                        timeseriesContext,
+                    ),
+                ).toEqual(
+                    overallDecreaseInResolutionTimeTimeseries.build(
+                        timeseriesContext,
+                    ),
+                )
+            })
+
+            it('creates a timeseries query with granularity from context', () => {
+                const result =
+                    overallDecreaseInResolutionTimeTimeseriesQueryV2Factory(
+                        timeseriesContext,
+                    )
+
+                expect(result).toEqual(
+                    expect.objectContaining({
+                        measures: ['medianDecreaseInResolutionTime'],
+                        time_dimensions: [
+                            { dimension: 'eventDatetime', granularity: 'day' },
+                        ],
+                        limit: 10000,
+                    }),
+                )
+            })
+        })
     })
 })

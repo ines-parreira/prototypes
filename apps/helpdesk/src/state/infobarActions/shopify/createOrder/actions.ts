@@ -5,6 +5,7 @@ import { fromJS, List } from 'immutable'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
+import { toast } from '@gorgias/axiom'
 import { getCalculateDraftOrderPayload } from 'business/shopify/calculatedDraftOrder'
 import {
     getDiscountAmount,
@@ -26,8 +27,6 @@ import { DiscountType } from 'constants/integrations/types/shopify'
 import { GorgiasApi } from 'services/gorgiasApi'
 import { executeAction } from 'state/infobar/actions'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { onApiError } from 'state/utils'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
@@ -384,11 +383,8 @@ export const sendInvoice =
                     if ((response.status as unknown as string) !== 'error') {
                         onSuccess()
 
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Success,
-                                message: `Draft order ${draftOrderName} created, invoice successfully sent`,
-                            }),
+                        toast.success(
+                            `Draft order ${draftOrderName} created, invoice successfully sent`,
                         )
                     }
 

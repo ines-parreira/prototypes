@@ -7,6 +7,7 @@ import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
+import { useFacebookIntegrationsReconnectedRealtimeMessageHandler } from '../useFacebookIntegrationsReconnectedRealtimeMessageHandler'
 import { UserChannelRealtimeHandler } from '../UserChannelRealtimeHandler'
 import { useTicketMessageActionFailedRealtimeMessageHandler } from '../useTicketMessageActionFailedRealtimeMessageHandler'
 import { useWhatsAppOnboardingRealtimeMessageHandler } from '../useWhatsAppOnboardingRealtimeMessageHandler'
@@ -14,6 +15,14 @@ import { useWhatsAppOnboardingRealtimeMessageHandler } from '../useWhatsAppOnboa
 jest.mock('@gorgias/realtime')
 jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
+jest.mock(
+    '../useFacebookIntegrationsReconnectedRealtimeMessageHandler',
+    () => ({
+        FACEBOOK_INTEGRATIONS_RECONNECTED_EVENT:
+            'facebook-integrations.reconnected',
+        useFacebookIntegrationsReconnectedRealtimeMessageHandler: jest.fn(),
+    }),
+)
 jest.mock('../useTicketMessageActionFailedRealtimeMessageHandler', () => ({
     TICKET_MESSAGE_ACTION_FAILED_EVENT: 'ticket-message-action.failed',
     useTicketMessageActionFailedRealtimeMessageHandler: jest.fn(),
@@ -27,11 +36,14 @@ jest.mock('../useWhatsAppOnboardingRealtimeMessageHandler', () => ({
 const mockUseChannel = useChannel as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
+const mockUseFacebookIntegrationsReconnectedRealtimeMessageHandler =
+    useFacebookIntegrationsReconnectedRealtimeMessageHandler as jest.Mock
 const mockUseTicketMessageActionFailedRealtimeMessageHandler =
     useTicketMessageActionFailedRealtimeMessageHandler as jest.Mock
 const mockUseWhatsAppOnboardingRealtimeMessageHandler =
     useWhatsAppOnboardingRealtimeMessageHandler as jest.Mock
 const mockHandleTicketMessageActionFailedRealtimeMessage = jest.fn()
+const mockHandleFacebookIntegrationsReconnectedRealtimeMessage = jest.fn()
 const mockHandleWhatsAppOnboardingFailedRealtimeMessage = jest.fn()
 const mockHandleWhatsAppOnboardingSuccessRealtimeMessage = jest.fn()
 
@@ -42,6 +54,12 @@ function enableFlags(enabledFlags: FeatureFlagKey[]) {
 describe('UserChannelRealtimeHandler', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFacebookIntegrationsReconnectedRealtimeMessageHandler.mockReturnValue(
+            {
+                handleFacebookIntegrationsReconnectedRealtimeMessage:
+                    mockHandleFacebookIntegrationsReconnectedRealtimeMessage,
+            },
+        )
         mockUseTicketMessageActionFailedRealtimeMessageHandler.mockReturnValue({
             handleTicketMessageActionFailedRealtimeMessage:
                 mockHandleTicketMessageActionFailedRealtimeMessage,
@@ -125,6 +143,42 @@ describe('UserChannelRealtimeHandler', () => {
 
         expect(
             mockHandleTicketMessageActionFailedRealtimeMessage,
+        ).not.toHaveBeenCalled()
+    })
+
+    it('handles facebook integrations reconnected messages when the feature flag is enabled', () => {
+        enableFlags([FeatureFlagKey.FacebookIntegrationsReconnectedToAbly])
+        render(<UserChannelRealtimeHandler />)
+
+        const [{ onMessage }] = mockUseChannel.mock.calls[0]
+        const message = {
+            name: 'facebook-integrations.reconnected',
+            data: {
+                total: 1,
+            },
+        }
+
+        onMessage(message)
+
+        expect(
+            mockHandleFacebookIntegrationsReconnectedRealtimeMessage,
+        ).toHaveBeenCalledWith(message)
+    })
+
+    it('ignores facebook integrations reconnected messages when the feature flag is disabled', () => {
+        render(<UserChannelRealtimeHandler />)
+
+        const [{ onMessage }] = mockUseChannel.mock.calls[0]
+
+        onMessage({
+            name: 'facebook-integrations.reconnected',
+            data: {
+                total: 1,
+            },
+        })
+
+        expect(
+            mockHandleFacebookIntegrationsReconnectedRealtimeMessage,
         ).not.toHaveBeenCalled()
     })
 

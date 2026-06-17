@@ -41,6 +41,7 @@ export function StatsNavbarView() {
     const isRevampOverallPerformanceNewScreensEnabled = useFlag(
         FeatureFlagKey.RevampOverallPerformanceNewScreens,
     )
+    const isMetricsGlossaryEnabled = useFlag(FeatureFlagKey.MetricsGlossary)
 
     const { isStandaloneAiAgent } = useStandaloneAiContext()
 
@@ -257,6 +258,13 @@ export function StatsNavbarView() {
                     </StatsNavSectionItem>
                 </Navigation.SectionContent>
             </Navigation.Section>
+            {isMetricsGlossaryEnabled && (
+                <StatsNavSectionItem
+                    to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.METRICS_GLOSSARY}`}
+                >
+                    Metrics glossary
+                </StatsNavSectionItem>
+            )}
         </Navigation.Root>
     )
 }

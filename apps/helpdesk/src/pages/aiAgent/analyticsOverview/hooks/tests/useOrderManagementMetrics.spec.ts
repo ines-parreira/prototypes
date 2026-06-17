@@ -62,6 +62,20 @@ jest.mock(
         fetchOverallTimeSavedByAgentPerOrderManagementType: jest.fn(),
     }),
 )
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDecreaseInResolutionTimeBreakdowns',
+    () => ({
+        useDecreaseInResolutionTimePerOrderManagementType: jest.fn(),
+        fetchDecreaseInResolutionTimePerOrderManagementType: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDecreaseInFirstResponseTimeBreakdowns',
+    () => ({
+        useDecreaseInFirstResponseTimePerOrderManagementType: jest.fn(),
+        fetchDecreaseInFirstResponseTimePerOrderManagementType: jest.fn(),
+    }),
+)
 
 const mockUseAiAgentStatsFilters = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentStatsFilters',
@@ -124,6 +138,18 @@ const defaultEntityData = {
         loop_returns_started: 60,
         automated_response_started: 45,
     },
+    decreaseInResolutionTime: {
+        cancel_order: 180,
+        track_order: 120,
+        loop_returns_started: 60,
+        automated_response_started: 30,
+    },
+    decreaseInFirstResponseTime: {
+        cancel_order: 90,
+        track_order: 60,
+        loop_returns_started: 30,
+        automated_response_started: 15,
+    },
 }
 
 const defaultRows = [
@@ -134,6 +160,8 @@ const defaultRows = [
         handoverInteractions: 2,
         costSaved: 31,
         timeSaved: 120,
+        decreaseInResolutionTime: 180,
+        decreaseInFirstResponseTime: 90,
     },
     {
         entity: 'track_order',
@@ -142,6 +170,8 @@ const defaultRows = [
         handoverInteractions: 4,
         costSaved: 77.5,
         timeSaved: 90,
+        decreaseInResolutionTime: 120,
+        decreaseInFirstResponseTime: 60,
     },
     {
         entity: 'loop_returns_started',
@@ -150,6 +180,8 @@ const defaultRows = [
         handoverInteractions: 1,
         costSaved: 15.5,
         timeSaved: 60,
+        decreaseInResolutionTime: 60,
+        decreaseInFirstResponseTime: 30,
     },
     {
         entity: 'automated_response_started',
@@ -158,6 +190,8 @@ const defaultRows = [
         handoverInteractions: 3,
         costSaved: 24.8,
         timeSaved: 45,
+        decreaseInResolutionTime: 30,
+        decreaseInFirstResponseTime: 15,
     },
 ]
 
@@ -178,6 +212,8 @@ describe('useOrderManagementMetrics', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
         mockAssembleEntityRows.mockReturnValue(defaultRows)
@@ -202,6 +238,8 @@ describe('useOrderManagementMetrics', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -221,6 +259,8 @@ describe('useOrderManagementMetrics', () => {
                 handoverInteractions: false,
                 costSaved: false,
                 timeSaved: false,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -240,6 +280,8 @@ describe('useOrderManagementMetrics', () => {
                 handoverInteractions: true,
                 costSaved: false,
                 timeSaved: true,
+                decreaseInResolutionTime: false,
+                decreaseInFirstResponseTime: false,
             },
         })
 
@@ -284,6 +326,8 @@ describe('useOrderManagementMetrics', () => {
                     handoverInteractions: {},
                     costSaved: {},
                     timeSaved: {},
+                    decreaseInResolutionTime: {},
+                    decreaseInFirstResponseTime: {},
                 },
                 isLoading: false,
                 isError: false,
@@ -293,6 +337,8 @@ describe('useOrderManagementMetrics', () => {
                     handoverInteractions: false,
                     costSaved: false,
                     timeSaved: false,
+                    decreaseInResolutionTime: false,
+                    decreaseInFirstResponseTime: false,
                 },
             })
 
@@ -306,6 +352,8 @@ describe('useOrderManagementMetrics', () => {
             expect(row.handoverInteractions).toBeNull()
             expect(row.costSaved).toBeNull()
             expect(row.timeSaved).toBeNull()
+            expect(row.decreaseInResolutionTime).toBeNull()
+            expect(row.decreaseInFirstResponseTime).toBeNull()
         })
     })
 
@@ -320,6 +368,8 @@ describe('useOrderManagementMetrics', () => {
                 handoverInteractions: true,
                 costSaved: true,
                 timeSaved: true,
+                decreaseInResolutionTime: true,
+                decreaseInFirstResponseTime: true,
             },
         })
         mockAssembleEntityRows.mockReturnValue([])
@@ -338,6 +388,8 @@ describe('fetchOrderManagementMetrics', () => {
         handoverInteractions: { cancel_order: 3 },
         costSaved: { cancel_order: 31 },
         timeSaved: { cancel_order: 120 },
+        decreaseInResolutionTime: { cancel_order: 180 },
+        decreaseInFirstResponseTime: { cancel_order: 90 },
     }
 
     const mockRow = {
@@ -347,6 +399,8 @@ describe('fetchOrderManagementMetrics', () => {
         handoverInteractions: 3,
         costSaved: 31,
         timeSaved: 120,
+        decreaseInResolutionTime: 180,
+        decreaseInFirstResponseTime: 90,
     }
 
     beforeEach(() => {

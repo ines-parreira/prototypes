@@ -7,8 +7,8 @@ import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import { useGetUserAvailability } from '@gorgias/helpdesk-queries'
 import type { TicketMessageUserOrCustomer } from '@gorgias/helpdesk-types'
 
-import { customerGetQueryOptions } from '../../../../../shared/hooks/customerQueryOptions'
-import { useTicketThreadDateTimeFormat } from '../../../../../shared/hooks/useTicketThreadDateTimeFormat'
+import { customerGetQueryOptions } from '#shared/hooks/customerQueryOptions'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
 
 const GORGIAS_CHAT_INTEGRATION_TYPE = 'gorgias_chat'
 const ACTIVE_THRESHOLD_SECONDS = 125

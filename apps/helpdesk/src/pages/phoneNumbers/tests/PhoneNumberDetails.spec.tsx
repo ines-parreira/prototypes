@@ -299,6 +299,7 @@ describe('<PhoneNumberDetails/>', () => {
 
         it('shows an error toast when the deletion fails', async () => {
             mockDelete.mockRejectedValueOnce({
+                isAxiosError: true,
                 response: { data: { error: { msg: 'API delete error' } } },
             })
             const { getByText } = render(

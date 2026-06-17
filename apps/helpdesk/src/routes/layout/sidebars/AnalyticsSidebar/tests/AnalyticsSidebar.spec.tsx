@@ -109,6 +109,26 @@ describe('AnalyticsSidebar', () => {
             expect(screen.getByText('Dashboards')).toBeInTheDocument()
         })
 
+        it('renders a route-only section as a standalone navigation link', () => {
+            useStatsNavbarConfigMock.mockReturnValue({
+                sections: [
+                    {
+                        id: 'metrics-glossary',
+                        label: 'Metrics glossary',
+                        icon: 'book-open',
+                        route: 'metrics-glossary',
+                    },
+                    ...mockSections,
+                ] as any,
+            })
+
+            render(<AnalyticsSidebar />, { wrapper })
+
+            expect(
+                screen.getByRole('link', { name: /Metrics glossary/ }),
+            ).toHaveAttribute('href', '/app/stats/metrics-glossary')
+        })
+
         it('does not render CollapsedAnalyticsSidebar', () => {
             render(<AnalyticsSidebar />, { wrapper })
 

@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 
-import { render } from '../../tests/render.utils'
-import { AudioPlayer } from '../components/TicketThreadCallItem/components/AudioPlayer'
+import { render } from '#tests/render.utils'
+import { AudioPlayer } from '#voice-calls/components/TicketThreadCallItem/components/AudioPlayer'
 
 beforeAll(() => {
     window.HTMLMediaElement.prototype.play = vi

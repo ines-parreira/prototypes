@@ -45,6 +45,9 @@ type Props = {
     editorMode?: GuidanceMode['mode']
 
     shouldHideFullscreenButton?: boolean
+
+    titleAnchorProps?: { 'data-copilot-anchor': string }
+    statusAnchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const defaultProps: Props = {
@@ -94,7 +97,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     )}
                 </Box>
             )}
-            <div className={css.title}>
+            <div className={css.title} {...props.titleAnchorProps}>
                 <KnowledgeEditorTopBarTitle
                     onChangeTitle={props.onChangeTitle}
                     title={props.title}
@@ -144,7 +147,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     )}
             </div>
 
-            <Box gap="xs">
+            <Box gap="xs" {...props.statusAnchorProps}>
                 {props.children && (
                     <>
                         {props.children}

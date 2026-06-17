@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -9,16 +9,8 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { macros } from 'fixtures/macro'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useBulkArchiveMacros } from '../useBulkArchiveMacros'
-
-jest.mock('hooks/useAppDispatch', () => ({ useAppDispatch: jest.fn() }))
-const useAppDispatchMock = jest.mocked(useAppDispatch)
-
-jest.mock('state/notifications/actions')
 
 const server = setupServer()
 
@@ -40,12 +32,6 @@ function renderUseBulkArchiveMacros(macrosFixtures = macros) {
 }
 
 describe('useBulkArchiveMacros', () => {
-    const dispatchMock = jest.fn()
-
-    beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
-    })
-
     it('should handle successful and failed archive results', async () => {
         const archivedMacro = { ...macros[0], id: 1 }
         const macroUsedInRule = { ...macros[1], id: 2 }
@@ -89,19 +75,15 @@ describe('useBulkArchiveMacros', () => {
                 ids: [archivedMacro.id, macroUsedInRule.id],
             })
         })
-        await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: `Successfully archived macro: ${archivedMacro.name}`,
-                status: NotificationStatus.Success,
-            })
+        const successToast = await screen.findByRole('status', {
+            name: `Successfully archived macro: ${archivedMacro.name}`,
         })
-        expect(notify).toHaveBeenNthCalledWith(2, {
-            allowHTML: true,
-            title: `${macroUsedInRule.name}: ${error.msg}`,
-            message: expect.stringMatching(error.data.rules[0]),
-            status: NotificationStatus.Error,
+        expect(successToast).toHaveAttribute('data-intent', 'success')
+
+        const errorToast = await screen.findByRole('status', {
+            name: `${macroUsedInRule.name}: ${error.msg}`,
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(errorToast).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should handle nested archive results from the runtime response envelope', async () => {
@@ -126,13 +108,10 @@ describe('useBulkArchiveMacros', () => {
             data: { ids: [archivedMacro.id] },
         })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: `Successfully archived macro: ${archivedMacro.name}`,
-                status: NotificationStatus.Success,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: `Successfully archived macro: ${archivedMacro.name}`,
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle archive responses without result data', async () => {
@@ -148,7 +127,7 @@ describe('useBulkArchiveMacros', () => {
         await waitFor(() => {
             expect(result.current.isSuccess).toBe(true)
         })
-        expect(notify).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     it('should handle failed archive request', async () => {
@@ -165,14 +144,9 @@ describe('useBulkArchiveMacros', () => {
 
         result.current.mutate({ data: { ids: [1, 2] } })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                title: errorMessage,
-                message: undefined,
-                allowHTML: true,
-                status: NotificationStatus.Error,
-            })
+        const toastEl = await screen.findByRole('status', {
+            name: errorMessage,
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

@@ -5,6 +5,7 @@ export enum StatsNavbarViewSections {
     Convert = 'convert',
     Dashboards = 'dashboards',
     Live = 'live',
+    MetricsGlossary = 'metrics-glossary',
     Voice = 'voice',
     QualityManagement = 'quality-management',
     SupportPerformance = 'support-performance',

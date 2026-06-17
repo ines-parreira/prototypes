@@ -1,7 +1,7 @@
 import type { AxiosError } from 'axios'
 
-import { notify } from './notifications/actions'
-import { NotificationStatus } from './notifications/types'
+import { toast } from '@gorgias/axiom'
+
 import type { StoreDispatch } from './types'
 
 export const createErrorNotification = (error: unknown, reason: string) => ({
@@ -17,11 +17,5 @@ export const onApiError =
             ?.response?.data?.error?.msg
 
         action && dispatch(action)
-        void dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                message: message || defaultMessage,
-                allowHTML: true,
-            }),
-        )
+        toast.error(message || defaultMessage)
     }

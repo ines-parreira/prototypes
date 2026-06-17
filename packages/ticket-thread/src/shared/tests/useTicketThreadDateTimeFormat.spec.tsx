@@ -2,7 +2,7 @@ import { useUserDateTimePreferences } from '@repo/preferences'
 import { DateFormatType, formatDatetime, TimeFormatType } from '@repo/utils'
 import { renderHook } from '@testing-library/react'
 
-import { useTicketThreadDateTimeFormat } from '../hooks/useTicketThreadDateTimeFormat'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
 
 vi.mock('@repo/preferences', () => ({
     useUserDateTimePreferences: vi.fn(),

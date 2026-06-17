@@ -1,5 +1,7 @@
 import { renderHook } from '@repo/testing'
 
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
+
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useSkillMetrics } from 'pages/aiAgent/skills/hooks/useSkillMetrics'
@@ -10,6 +12,9 @@ import { useKnowledgeRecentTickets } from '../../shared/hooks/useKnowledgeRecent
 import { useSkillEditorStore } from '../context'
 import { useSkillPerformanceFromContext } from './useSkillPerformanceFromContext'
 
+jest.mock('pages/aiAgent/skills/hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
+}))
 jest.mock('../context', () => ({ useSkillEditorStore: jest.fn() }))
 jest.mock('pages/aiAgent/skills/hooks/useSkillMetrics', () => ({
     useSkillMetrics: jest.fn(),
@@ -36,6 +41,7 @@ jest.mock('../../shared/hooks/useKnowledgeRecentTickets', () => ({
     useKnowledgeRecentTickets: jest.fn(),
 }))
 
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 const mockUseSkillEditorStore = useSkillEditorStore as jest.Mock
 const mockUseSkillMetrics = useSkillMetrics as jest.Mock
 const mockUseSkillMetricsByDay = useSkillMetricsByDay as jest.Mock
@@ -69,6 +75,7 @@ describe('useSkillPerformanceFromContext', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockUseSkillReportingEnabled.mockReturnValue(false)
         mockGetLast28DaysDateRange.mockReturnValue(mockDateRange)
 
         mockUseSkillEditorStore.mockImplementation((selector) =>
@@ -364,6 +371,7 @@ describe('useSkillPerformanceFromContext', () => {
                 resourceSourceId: 42,
                 resourceSourceSetId: 10,
                 enabled: true,
+                includeSuccessRate: false,
                 dateRange: overrideRange,
             })
         })
@@ -434,6 +442,26 @@ describe('useSkillPerformanceFromContext', () => {
             )
 
             expect(result.current.skillMetrics.dateRange).toBe(mockDateRange)
+        })
+    })
+
+    describe('includeSuccessRate flag forwarding', () => {
+        it('passes includeSuccessRate: false to useSkillMetricsByDay when reporting is disabled', () => {
+            renderHook(() => useSkillPerformanceFromContext())
+
+            expect(mockUseSkillMetricsByDay).toHaveBeenCalledWith(
+                expect.objectContaining({ includeSuccessRate: false }),
+            )
+        })
+
+        it('passes includeSuccessRate: true to useSkillMetricsByDay when reporting is enabled', () => {
+            mockUseSkillReportingEnabled.mockReturnValue(true)
+
+            renderHook(() => useSkillPerformanceFromContext())
+
+            expect(mockUseSkillMetricsByDay).toHaveBeenCalledWith(
+                expect.objectContaining({ includeSuccessRate: true }),
+            )
         })
     })
 })

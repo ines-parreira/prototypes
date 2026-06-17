@@ -93,7 +93,14 @@ describe('MetricCell', () => {
             },
             outcomeCustomFieldId: 111,
             intentCustomFieldId: 222,
+            isSkillScoped: undefined,
         })
+    })
+    it('should pass isSkillScoped to useKnowledgeDrillDownTrigger when provided', () => {
+        renderComponent({ isSkillScoped: true })
+        expect(mockUseKnowledgeDrillDownTrigger).toHaveBeenCalledWith(
+            expect.objectContaining({ isSkillScoped: true }),
+        )
     })
     it('should render with different metric types', () => {
         renderComponent({

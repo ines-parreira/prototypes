@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { useFlag } from '@repo/feature-flags'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -487,17 +487,24 @@ describe('<ActionConfigTab />', () => {
 
     describe('Steps list', () => {
         const mockTemplates = (apps: { type: string; app_id?: string }[]) => {
+            const template = {
+                id: REUSABLE_TEMPLATE_ID,
+                internal_id: REUSABLE_TEMPLATE_INTERNAL_ID,
+                name: 'Get inventory stock',
+                apps,
+                inputs: [],
+            }
+
             mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
-                data: [
-                    {
-                        id: REUSABLE_TEMPLATE_ID,
-                        internal_id: REUSABLE_TEMPLATE_INTERNAL_ID,
-                        name: 'Get inventory stock',
-                        apps,
-                    },
-                ],
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } as any)
+                data: [template],
+            } as unknown as ReturnType<
+                typeof useGetWorkflowConfigurationTemplates
+            >)
+            mockUseGetWorkflowConfigurationTemplate.mockReturnValue({
+                data: template,
+            } as unknown as ReturnType<
+                typeof useGetWorkflowConfigurationTemplate
+            >)
         }
 
         const mockShopifyApp = () => {
@@ -539,9 +546,17 @@ describe('<ActionConfigTab />', () => {
             const row = screen.getByRole('button', {
                 name: 'Shopify — Get inventory stock',
             })
-            await user.click(row)
+            row.focus()
+            await user.keyboard('{Enter}')
 
-            expect(row).toBeInTheDocument()
+            const drawer = await screen.findByRole('dialog', {
+                name: 'Node editor',
+            })
+            expect(
+                within(drawer).getByRole('heading', {
+                    name: 'Get inventory stock in Shopify',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('exposes the delete affordance on each step row', () => {

@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import {
@@ -108,6 +108,34 @@ const waitUntilLoaded = async () => {
     return selectElement
 }
 
+const getHiddenUserSelect = () => {
+    const select = screen
+        .getByTestId('hidden-select-container')
+        .querySelector('select')
+
+    if (!(select instanceof HTMLSelectElement)) {
+        throw new Error('Expected hidden user select to be rendered')
+    }
+
+    return select
+}
+
+const getHiddenUserOptionLabels = () =>
+    Array.from(getHiddenUserSelect().options)
+        .map((option) => option.textContent)
+        .filter(Boolean)
+
+const selectHiddenUserOption = (value: string) => {
+    const select = getHiddenUserSelect()
+
+    select.value = value
+    Array.from(select.options).forEach((option) => {
+        option.selected = option.value === value
+    })
+
+    fireEvent.change(select)
+}
+
 describe('UserAssignee', () => {
     it('should render with "Unassigned" placeholder when no user assigned', async () => {
         render(<UserAssignee ticketId={ticketId} currentAssignee={null} />)
@@ -157,8 +185,7 @@ describe('UserAssignee', () => {
 
         await user.click(await waitUntilLoaded())
 
-        const options = await screen.findAllByRole('option')
-        expect(options[0]).toHaveTextContent('Unassigned')
+        expect(getHiddenUserOptionLabels()).toContain('Unassigned')
     })
 
     it('should keep the current user selected while searching for another user', async () => {
@@ -181,10 +208,9 @@ describe('UserAssignee', () => {
             expect(trigger).not.toHaveTextContent('Unassigned')
         })
 
-        const options = await screen.findAllByRole('option')
-        expect(options.map((option) => option.textContent)).not.toContain(
-            'Assign yourself',
-        )
+        const optionLabels = getHiddenUserOptionLabels()
+        expect(optionLabels).toContain('Jane Smith')
+        expect(optionLabels).not.toContain('Assign yourself')
         expect(screen.getByText('Assign to others')).toBeInTheDocument()
     })
 
@@ -216,10 +242,7 @@ describe('UserAssignee', () => {
             await user.click(select)
         })
 
-        await waitFor(() => {
-            const randomUserTexts = screen.getAllByText('Random User')
-            expect(randomUserTexts.length).toBe(3)
-        })
+        expect(getHiddenUserOptionLabels()).toContain('Random User')
     })
 
     it('should render options when the current assignee meta is not an object', async () => {
@@ -240,9 +263,7 @@ describe('UserAssignee', () => {
         const select = await waitUntilLoaded()
         await user.click(select)
 
-        expect(
-            await screen.findByRole('option', { name: /String Meta User/ }),
-        ).toBeInTheDocument()
+        expect(getHiddenUserOptionLabels()).toContain('String Meta User')
     })
 
     it('should update user assignment when selecting current user (Assign yourself)', async () => {
@@ -258,10 +279,7 @@ describe('UserAssignee', () => {
             await user.click(select)
         })
 
-        const yourselfOptions = await screen.findAllByText('Assign yourself')
-        await act(async () => {
-            await user.click(yourselfOptions[yourselfOptions.length - 1])
-        })
+        selectHiddenUserOption('1')
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -284,10 +302,7 @@ describe('UserAssignee', () => {
             await user.click(select)
         })
 
-        const janeOptions = await screen.findAllByText('Jane Smith')
-        await act(async () => {
-            await user.click(janeOptions[janeOptions.length - 1])
-        })
+        selectHiddenUserOption('2')
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -313,10 +328,7 @@ describe('UserAssignee', () => {
             await user.click(select)
         })
 
-        const unassignedOptions = await screen.findAllByText('Unassigned')
-        await act(async () => {
-            await user.click(unassignedOptions[unassignedOptions.length - 1])
-        })
+        selectHiddenUserOption('no_user')
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()

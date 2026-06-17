@@ -7,12 +7,12 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallEventItem } from '../components/TicketThreadCallItem/components/VoiceCallEventItem'
-import type { ProcessedEvent } from '../models/processEvents'
-import { VoiceCallSubjectType } from '../models/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallEventItem } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallEventItem'
+import type { ProcessedEvent } from '#voice-calls/models/processEvents'
+import { VoiceCallSubjectType } from '#voice-calls/models/types'
 
 const testAgent = mockUser({ id: 42, name: 'Agent Smith' })
 

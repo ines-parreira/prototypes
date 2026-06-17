@@ -31,6 +31,8 @@ type Props = {
     steps: ActionTemplate[]
     isConditionsRecommendationAlertOpen?: boolean
     onConditionsRecommendationAlertClose?: () => void
+    statusAnchorProps?: { 'data-copilot-anchor': string }
+    configurationAnchorProps?: { 'data-copilot-anchor': string }
 }
 
 const ActionFormView = ({
@@ -39,6 +41,8 @@ const ActionFormView = ({
     steps,
     isConditionsRecommendationAlertOpen,
     onConditionsRecommendationAlertClose,
+    statusAnchorProps,
+    configurationAnchorProps,
 }: Props) => {
     const { visualBuilderGraph, dispatch, getVariableListForNode } =
         useVisualBuilderContext<LLMPromptTriggerNodeType>()
@@ -170,21 +174,27 @@ const ActionFormView = ({
             </div>
 
             <div className={classnames(css.section, css.big)}>
-                {isAdvanced ? (
-                    <ActionsPlatformTemplateSteps
-                        error={visualBuilderGraph.errors?.nodes}
-                        onEditSteps={onEditSteps}
-                    />
-                ) : (
-                    <SimplifiedStepBuilder
-                        graph={visualBuilderGraph}
-                        dispatch={dispatch}
-                        steps={steps}
-                        shopName={shopName}
-                        shopType={shopType}
-                    />
-                )}
-                <div className={css.toggle} ref={enabledToggleRef}>
+                <div {...configurationAnchorProps}>
+                    {isAdvanced ? (
+                        <ActionsPlatformTemplateSteps
+                            error={visualBuilderGraph.errors?.nodes}
+                            onEditSteps={onEditSteps}
+                        />
+                    ) : (
+                        <SimplifiedStepBuilder
+                            graph={visualBuilderGraph}
+                            dispatch={dispatch}
+                            steps={steps}
+                            shopName={shopName}
+                            shopType={shopType}
+                        />
+                    )}
+                </div>
+                <div
+                    className={css.toggle}
+                    ref={enabledToggleRef}
+                    {...statusAnchorProps}
+                >
                     <ToggleField
                         value={!triggerNode.data.deactivated_datetime}
                         onChange={(nextValue) => {

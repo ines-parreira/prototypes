@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
-import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../../satisfaction-surveys/constants'
-import type { AUDIT_LOG_EVENT_TYPES } from '../constants'
+import type { AUDIT_LOG_EVENT_TYPES } from '#events/constants'
 import {
     ACTION_EXECUTED_EVENT_TYPE,
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
@@ -10,7 +9,8 @@ import {
     PRIVATE_REPLY_ACTIONS,
     RENDERABLE_ACTION_EXECUTED_ACTIONS,
     SYSTEM_RULE_TYPE,
-} from '../constants'
+} from '#events/constants'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '#satisfaction-surveys/constants'
 
 export const ticketEventSchema = z.object({
     object_type: z.string(),

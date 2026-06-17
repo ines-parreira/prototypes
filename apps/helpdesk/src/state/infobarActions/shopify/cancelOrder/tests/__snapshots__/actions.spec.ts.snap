@@ -119,20 +119,6 @@ exports[`infobarActions.shopify.cancelOrder actions on error onInit() should not
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  {
-    "payload": {
-      "allowHTML": true,
-      "buttons": [],
-      "dismissAfter": 3000,
-      "dismissible": true,
-      "id": 1,
-      "message": "foo",
-      "position": "top-center",
-      "showDismissButton": false,
-      "status": "error",
-    },
-    "type": "reapop/upsertNotification",
-  },
 ]
 `;
 

@@ -1,4 +1,4 @@
-import { sortTicketThreadItems } from '../transforms/sortTicketThread'
+import { sortTicketThreadItems } from '#thread/transforms/sortTicketThread'
 
 describe('sortTicketThreadItems', () => {
     it('sorts items by datetime ascending', () => {

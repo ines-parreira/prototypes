@@ -10,11 +10,11 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-types'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallEvents } from '../components/TicketThreadCallItem/components/VoiceCallEvents'
-import { PhoneIntegrationEvent } from '../models/voiceCallEventTypes'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallEvents } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallEvents'
+import { PhoneIntegrationEvent } from '#voice-calls/models/voiceCallEventTypes'
 
 const emptyEventsHandler = mockListVoiceCallEventsHandler(async () =>
     HttpResponse.json(mockListVoiceCallEventsResponse({ data: [] })),

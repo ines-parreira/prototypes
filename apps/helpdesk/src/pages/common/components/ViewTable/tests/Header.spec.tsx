@@ -14,7 +14,7 @@ import { fetchViewItems } from 'state/views/actions'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 
-jest.mock('state/views/actions.ts', () => {
+jest.mock('state/views/actions', () => {
     const _identity: <T>(arg: T) => T = jest.requireActual('lodash/identity')
     return {
         fetchViewItems: jest.fn(() => _identity),

@@ -18,9 +18,9 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
     }
 
     const handleSelectionChange = (id: string) => {
-        const sectionOverviewRoute = sections.find(
-            (section) => section.id === id,
-        )?.items?.[0]?.route
+        const section = sections.find((section) => section.id === id)
+        const sectionOverviewRoute =
+            section?.items?.[0]?.route ?? section?.route
 
         if (!sectionOverviewRoute) return
 
@@ -30,6 +30,8 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
     const activeMatch = useCollapsedSidebarActiveMatch(
         sections,
         (item) => `${STATS_ROUTE_PREFIX}${item.route}`,
+        (section) =>
+            section.route ? `${STATS_ROUTE_PREFIX}${section.route}` : undefined,
     )
 
     return (
@@ -38,7 +40,7 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
             selectedKey={activeMatch?.sectionId}
         >
             {sections.map((section) => {
-                if (section.items?.length === 1) {
+                if (section.route || section.items?.length === 1) {
                     return (
                         <SidebarCollapsedItem
                             key={section.id}

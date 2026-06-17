@@ -1,5 +1,5 @@
 import type { SyntheticEvent } from 'react'
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Call } from '@twilio/voice-sdk'
@@ -54,6 +54,7 @@ export function IncomingPhoneCall({ call }: Props): JSX.Element {
 
     const now = useNow()
     const waitTimeStart = useRef(new Date())
+    const [isConnecting, setIsConnecting] = useState(false)
 
     const openTicket = useCallback(() => {
         const isWhatsAppMigrationPage = location.pathname.startsWith(
@@ -63,6 +64,12 @@ export function IncomingPhoneCall({ call }: Props): JSX.Element {
             history.push(`/app/ticket/${ticketId}`)
         }
     }, [history, ticketId, location])
+
+    const handleAccept = useCallback(() => {
+        setIsConnecting(true)
+        call.once('accept', openTicket)
+        call.accept()
+    }, [call, openTicket])
 
     const formattedWaitTime = moment
         .utc(moment(now).diff(moment(waitTimeStart.current)))
@@ -118,10 +125,8 @@ export function IncomingPhoneCall({ call }: Props): JSX.Element {
                         <Box gap="md">
                             <Button
                                 aria-label="Accept phone call"
-                                onClick={() => {
-                                    call.once('accept', openTicket)
-                                    call.accept()
-                                }}
+                                isLoading={isConnecting}
+                                onClick={handleAccept}
                                 leadingSlot="phone-incoming"
                             >
                                 Accept

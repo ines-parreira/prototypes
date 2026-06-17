@@ -32,6 +32,7 @@ type KnowledgeMetricCellProps = BaseMetricCellProps & {
     resourceSourceId: number
     resourceSourceSetId: number
     shopIntegrationId: number
+    isSkillScoped?: boolean
 }
 
 type IntentMetricCellProps = BaseMetricCellProps & {
@@ -63,6 +64,7 @@ export const MetricCell = (props: MetricCellProps) => {
         outcomeCustomFieldId: props.outcomeCustomFieldId,
         intentCustomFieldId: props.intentCustomFieldId,
         title: knowledgeData?.title,
+        isSkillScoped: knowledgeData?.isSkillScoped,
     })
 
     const {

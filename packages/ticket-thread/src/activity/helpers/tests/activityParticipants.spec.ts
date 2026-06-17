@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
     formatHiddenParticipantsLabel,
     getActivityParticipantTextParts,
-} from '../activityParticipants'
+} from '#activity/helpers/activityParticipants'
 
 describe('getActivityParticipantTextParts', () => {
     it('returns no prefix or suffix for a single visible participant', () => {

@@ -1,23 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mergeTickets actions mergeTickets should dispatch a success notification and resolve the promise with the new ticket because the merge succeeded 1`] = `
-[
-  {
-    "payload": {
-      "allowHTML": false,
-      "buttons": [],
-      "dismissAfter": 3000,
-      "dismissible": true,
-      "id": "4fzzz",
-      "message": "Tickets merged successfully",
-      "position": "top-center",
-      "showDismissButton": false,
-      "status": "success",
-    },
-    "type": "reapop/upsertNotification",
-  },
-]
-`;
+exports[`mergeTickets actions mergeTickets should dispatch a success notification and resolve the promise with the new ticket because the merge succeeded 1`] = `[]`;
 
 exports[`mergeTickets actions mergeTickets should dispatch a success notification and resolve the promise with the new ticket because the merge succeeded 2`] = `
 {

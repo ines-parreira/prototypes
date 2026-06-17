@@ -135,6 +135,7 @@ export type DimensionName =
     | 'orderId'
     | 'purchaseTime'
     | 'totalAmount'
+    | 'accountId'
 
 export type MeasureName =
     | 'ticketCount'
@@ -334,6 +335,7 @@ export type NumberFilterName =
     | 'talkTime'
     | 'waitTime'
     | 'orderId'
+    | 'accountId'
 
 export type BooleanFilterName =
     | 'isAnsweredByAgent'

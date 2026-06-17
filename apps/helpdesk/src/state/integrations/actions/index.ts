@@ -1,7 +1,6 @@
 import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
-import { isAxiosError } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _capitalize from 'lodash/capitalize'
@@ -9,11 +8,10 @@ import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 import { Duration } from '@gorgias/toolkit'
 
+import { toast } from '@gorgias/axiom'
 import { isChannel } from 'config'
-import type {
-    ApiListResponseLegacyPagination,
-    GorgiasApiError,
-} from 'models/api/types'
+import type { ApiListResponseLegacyPagination } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import { fetchIntegrations as fetchIntegrationsResources } from 'models/integration/resources'
 import type {
     GorgiasChatIntegration,
@@ -31,8 +29,6 @@ import { fetchAccountSettings } from 'state/currentAccount/actions'
 import { AccountSettingType } from 'state/currentAccount/types'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import * as helpers from '../helpers'
@@ -160,12 +156,7 @@ export function activateOnboardingIntegrations(
                         integrationType,
                     )} integration${data.length > 1 ? 's' : ''}`
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: `${formattedType} successfully activated.`,
-                        }),
-                    )
+                    toast.success(`${formattedType} successfully activated.`)
                     return dispatch({
                         type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
                         resp,
@@ -226,12 +217,7 @@ export function onCreateSuccess(
         return
     }
 
-    void dispatch(
-        notify({
-            status: NotificationStatus.Success,
-            message: message || 'Integration successfully added',
-        }),
-    )
+    toast.success(message || 'Integration successfully added')
 }
 
 export function triggerCreateSuccess(integration: Integration) {
@@ -259,13 +245,11 @@ export function onUpdateSuccess(
         return Promise.resolve()
     }
 
-    return dispatch(
-        notify({
-            id: notificationId,
-            status: NotificationStatus.Success,
-            message: message || 'Integration successfully updated',
-        }),
-    ) as Promise<Record<string, unknown>>
+    toast.success(
+        message || 'Integration successfully updated',
+        notificationId ? { id: notificationId } : undefined,
+    )
+    return Promise.resolve()
 }
 
 export function fetchIntegration(
@@ -390,12 +374,8 @@ export function deleteIntegration(
                         return Promise.resolve()
                     }
 
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Integration successfully deleted',
-                        }),
-                    )
+                    toast.success('Integration successfully deleted')
+                    return Promise.resolve()
                 },
                 (error: AxiosError) => {
                     if (disableErrorNotification) {
@@ -524,12 +504,7 @@ export function createImportIntegration(integration: Map<any, any>) {
                         '/app/settings/historical-imports?activeTab=import-zendesk',
                     )
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Import successfully started',
-                        }),
-                    )
+                    toast.success('Import successfully started')
 
                     return dispatch({
                         type: constants.CREATE_INTEGRATION_SUCCESS,
@@ -601,20 +576,11 @@ export function createGorgiasChatIntegration(
                     },
                 )
             } catch (error) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Integration successfully added',
-                    }),
-                )
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: isAxiosError(error)
-                            ? (error as GorgiasApiError).response?.data.error
-                                  ?.msg
-                            : 'Failed to install the chat to the store',
-                    }),
+                toast.success('Integration successfully added')
+                toast.error(
+                    isGorgiasApiError(error)
+                        ? error.response.data.error.msg
+                        : 'Failed to install the chat to the store',
                 )
                 dispatch({
                     type: constants.CREATE_INTEGRATION_SUCCESS,
@@ -658,12 +624,7 @@ export function createGorgiasChatIntegration(
             type: constants.CREATE_INTEGRATION_SUCCESS,
             resp: savedIntegration,
         })
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: successBannerText,
-            }),
-        )
+        toast.success(successBannerText)
 
         return savedIntegrationId
     }
@@ -727,12 +688,7 @@ export function onVerify(
     dispatch: StoreDispatch,
     integrationId: number,
 ): ReturnType<StoreDispatch> {
-    void dispatch(
-        notify({
-            status: NotificationStatus.Success,
-            message: 'You can now receive emails using this integration',
-        }),
-    )
+    toast.success('You can now receive emails using this integration')
     return dispatch({
         type: constants.EMAIL_INTEGRATION_VERIFIED,
         integrationId,
@@ -744,12 +700,7 @@ export function onVerifyMigrationForwarding(
     integrationId: number,
     address: string,
 ): ReturnType<StoreDispatch> {
-    void dispatch(
-        notify({
-            status: NotificationStatus.Success,
-            message: `Forwarding verified for ${address}`,
-        }),
-    )
+    toast.success(`Forwarding verified for ${address}`)
     return dispatch({
         type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
         integrationId,
@@ -763,11 +714,8 @@ export function onVerifyMigrationForwardingFailure(
     integrationId: number,
     address: string,
 ): ReturnType<StoreDispatch> {
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message: `${address} could not be verified. Make sure forwarding it set up correctly and re-verify. `,
-        }),
+    toast.error(
+        `${address} could not be verified. Make sure forwarding it set up correctly and re-verify. `,
     )
     return dispatch({
         type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
@@ -805,14 +753,10 @@ export function verifyEmailIntegration(token: string) {
                     return onVerify(dispatch, integration.get('id') as number)
                 },
                 (error: AxiosError) => {
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: (
-                                fromJS(error.response) as Map<any, any>
-                            ).getIn(['data', 'error', 'msg']),
-                        }),
-                    )
+                    const msg = (fromJS(error.response) as Map<any, any>).getIn(
+                        ['data', 'error', 'msg'],
+                    ) as string | undefined
+                    toast.error(msg ?? 'Something went wrong')
                 },
             )
     }
@@ -834,22 +778,13 @@ export function klaviyoSyncHistoricalEvent() {
             )
             .then(
                 () => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Syncing process has started!',
-                        }),
-                    )
+                    toast.success('Syncing process has started!')
                 },
                 (error: AxiosError) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: (
-                                fromJS(error.response) as Map<any, any>
-                            ).getIn(['data', 'error', 'msg']),
-                        }),
-                    )
+                    const msg = (fromJS(error.response) as Map<any, any>).getIn(
+                        ['data', 'error', 'msg'],
+                    ) as string | undefined
+                    toast.error(msg ?? 'Something went wrong')
                 },
             )
     }
@@ -871,22 +806,13 @@ export function sendVerificationEmail() {
             )
             .then(
                 () => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'The verification email has been re-sent!',
-                        }),
-                    )
+                    toast.success('The verification email has been re-sent!')
                 },
                 (error: AxiosError) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: (
-                                fromJS(error.response) as Map<any, any>
-                            ).getIn(['data', 'error', 'msg']),
-                        }),
-                    )
+                    const msg = (fromJS(error.response) as Map<any, any>).getIn(
+                        ['data', 'error', 'msg'],
+                    ) as string | undefined
+                    toast.error(msg ?? 'Something went wrong')
                 },
             )
     }
@@ -912,14 +838,10 @@ export function verifyEmailIntegrationManually(token: string) {
                     return onVerify(dispatch, integrationId)
                 },
                 (error: AxiosError) => {
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: (
-                                fromJS(error.response) as Map<any, any>
-                            ).getIn(['data', 'error', 'msg']),
-                        }),
-                    )
+                    const msg = (fromJS(error.response) as Map<any, any>).getIn(
+                        ['data', 'error', 'msg'],
+                    ) as string | undefined
+                    toast.error(msg ?? 'Something went wrong')
                 },
             )
     }

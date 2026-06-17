@@ -15,7 +15,137 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
       aria-live="polite"
       aria-relevant="additions text"
       tabindex="-1"
-    />
+    >
+      <ol
+        data-sonner-theme="light"
+        data-sonner-toaster="true"
+        data-x-position="right"
+        data-y-position="bottom"
+        dir=""
+        style="--front-toast-height: 0px; --width: 356px; --gap: 14px; z-index: 2147483647; --offset-top: 24px; --offset-right: 24px; --offset-bottom: 24px; --offset-left: 24px; --mobile-offset-top: 16px; --mobile-offset-right: 16px; --mobile-offset-bottom: 16px; --mobile-offset-left: 16px;"
+        tabindex="-1"
+      >
+        <li
+          class=""
+          data-dismissible="true"
+          data-expanded="false"
+          data-front="true"
+          data-index="0"
+          data-mounted="true"
+          data-promise="false"
+          data-removed="false"
+          data-sonner-toast=""
+          data-styled="false"
+          data-swipe-out="false"
+          data-swiped="false"
+          data-swiping="false"
+          data-visible="true"
+          data-x-position="right"
+          data-y-position="bottom"
+          style="--index: 0; --toasts-before: 0; --z-index: 1; --offset: 0px; --initial-height: 0px;"
+          tabindex="0"
+        >
+          <div
+            class=""
+            data-content=""
+          >
+            <div
+              class=""
+              data-title=""
+            >
+              <div
+                aria-label="Two-Factor Authentication has successfully been activated"
+                aria-live="polite"
+                class="ui-toast-toast-6178"
+                data-intent="success"
+                data-name="toast"
+                role="status"
+              >
+                <div
+                  class="ui-toast-icon-6178"
+                  data-name="box"
+                  style="height: 24px; align-items: center; display: flex;"
+                >
+                  <span
+                    class="ui-icon-icon-b14f ui-icon-md-b14f ui-icon-regularicon-b14f"
+                    data-name="icon"
+                  >
+                    <svg
+                      aria-label="check-circle"
+                      role="img"
+                    >
+                      <use
+                        href="#check-circle"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <div
+                  data-name="box"
+                  style="flex-grow: 1; flex-direction: column; display: flex;"
+                >
+                  <div
+                    data-name="box"
+                    style="min-height: 24px; align-items: center; display: flex; gap: 8px;"
+                  >
+                    <div
+                      data-name="box"
+                      style="flex-grow: 1; display: flex;"
+                    >
+                      <span
+                        class="typography-bold-md ui-text-text-d239"
+                        data-name="text"
+                        style="text-align: left;"
+                      >
+                        <strong>
+                          Two-Factor Authentication has successfully been activated
+                        </strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  aria-disabled="false"
+                  class="ui-button-wrapper-a432 ui-button-sm-a432 ui-button-tertiary-a432 ui-button-iconbutton-a432"
+                  data-name="button"
+                  data-rac=""
+                  data-react-aria-pressable="true"
+                  id="react-aria-:rh:"
+                  tabindex="0"
+                  type="button"
+                >
+                  <div
+                    class="ui-button-surface-a432"
+                  >
+                    <span
+                      class="ui-button-content-a432"
+                    >
+                      <div
+                        class="ui-buttonslot-icon-504b ui-buttonslot-sm-504b"
+                      >
+                        <span
+                          class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"
+                          data-name="icon"
+                        >
+                          <svg
+                            aria-label="close"
+                            role="img"
+                          >
+                            <use
+                              href="#close"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
   </div>
   <div
     style="position: relative; z-index: 1050; display: block;"
@@ -2239,7 +2369,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                 data-name="button"
                 data-rac=""
                 data-react-aria-pressable="true"
-                id="react-aria-:rk:"
+                id="react-aria-:r10:"
                 tabindex="0"
                 type="button"
               >
@@ -2479,7 +2609,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                 data-name="button"
                 data-rac=""
                 data-react-aria-pressable="true"
-                id="react-aria-:ru:"
+                id="react-aria-:r1a:"
                 tabindex="0"
                 type="button"
               >
@@ -2664,7 +2794,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 data-rac=""
                 data-react-aria-pressable="true"
                 disabled=""
-                id="react-aria-:rq:"
+                id="react-aria-:r16:"
                 type="button"
               >
                 <div
@@ -2846,7 +2976,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 data-name="button"
                 data-rac=""
                 data-react-aria-pressable="true"
-                id="react-aria-:rs:"
+                id="react-aria-:r18:"
                 tabindex="0"
                 type="button"
               >

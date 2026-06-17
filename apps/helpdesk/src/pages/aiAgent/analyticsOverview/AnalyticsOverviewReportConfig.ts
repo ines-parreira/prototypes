@@ -1,5 +1,7 @@
 import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
+import { getStatsTrendFetch } from 'domains/reporting/hooks/useStatsMetricTrend'
+import { humanResponseTimeAfterAiHandoffValueQueryFactoryV2 } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -13,6 +15,7 @@ import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyt
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
+import { AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard'
 import { AnalyticsOverviewOverallAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewOverallAutomationRateCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 import {
@@ -64,6 +67,7 @@ export const AnalyticsOverviewChart = {
     ArticleRecommendationTable: `${AI_AGENT_CHART_ID_PREFIX}overview-article_recommendation_table`,
     HandoverInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}overview-handover_interactions_card`,
     DecreaseInFRTCard: `${AI_AGENT_CHART_ID_PREFIX}overview-decrease_in_frt_card`,
+    HumanResponseTimeAfterAiHandoffCard: `${AI_AGENT_CHART_ID_PREFIX}overview-human_response_time_after_ai_handoff_card`,
     StoreIntegrationTable: `${AI_AGENT_CHART_ID_PREFIX}overview-store_integration_table`,
 } as const
 
@@ -181,6 +185,24 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 chartType: ChartType.CardWithTimeseries,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
+            },
+            [AnalyticsOverviewChart.HumanResponseTimeAfterAiHandoffCard]: {
+                chartComponent:
+                    AnalyticsOverviewHumanResponseTimeAfterAiHandoffCard,
+                label: 'Human response time after AI handoff',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: getStatsTrendFetch(
+                            humanResponseTimeAfterAiHandoffValueQueryFactoryV2,
+                        ),
+                        metricFormat: 'duration',
+                    },
+                ],
+                tooltipConfig: METRIC_TOOLTIPS.humanResponseTimeAfterAiHandoff,
+                chartType: ChartType.CardWithTimeseries,
+                metricFormat: 'duration',
+                interpretAs: 'less-is-better',
             },
             [AnalyticsOverviewChart.ConfigurableBarGraph]: {
                 chartComponent: AnalyticsOverviewConfigurableBarGraph,

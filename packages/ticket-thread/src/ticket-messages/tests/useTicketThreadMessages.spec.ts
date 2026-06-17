@@ -7,15 +7,15 @@ import {
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { useTicketThreadMessages } from '../hooks/useTicketThreadMessages'
-import { TicketThreadPendingState } from '../types'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { useTicketThreadMessages } from '#ticket-messages/hooks/useTicketThreadMessages'
+import { TicketThreadPendingState } from '#ticket-messages/types'
 import type {
     TicketThreadMessageItem,
     TicketThreadSingleMessageItem,
-} from '../types'
+} from '#ticket-messages/types'
 
 function createMessage(overrides?: Record<string, unknown>) {
     const id = overrides?.id ?? 'default'

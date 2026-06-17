@@ -1,6 +1,7 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { handoverInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/handoverInteractions'
 import { useHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
@@ -15,6 +16,9 @@ export const AnalyticsAiAgentHandoverInteractionsCard = ({
         dashboard,
         useTrend: useHandoverInteractionsTrend,
         isAiAgentTrendCard: true,
+        timeSeriesView: {
+            queryFactory: handoverInteractionsTimeseriesQueryFactoryV2,
+        },
     })
 
     return <TrendCard {...trendCardProps} />

@@ -8,11 +8,11 @@ import {
     mockListEventsResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../constants'
-import { useListAllSatisfactionSurveyEvents } from '../hooks/useListAllSatisfactionSurveyEvents'
-import { useListSatisfactionSurveyRespondedEvents } from '../hooks/useListSatisfactionSurveyRespondedEvents'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '#satisfaction-surveys/constants'
+import { useListAllSatisfactionSurveyEvents } from '#satisfaction-surveys/hooks/useListAllSatisfactionSurveyEvents'
+import { useListSatisfactionSurveyRespondedEvents } from '#satisfaction-surveys/hooks/useListSatisfactionSurveyRespondedEvents'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 describe('useListAllSatisfactionSurveyEvents', () => {
     it('returns no responded events when there is no satisfaction survey id', () => {

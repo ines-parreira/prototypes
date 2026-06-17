@@ -6,18 +6,18 @@ import {
     isHiddenMessage,
     isSignalMessage,
     isTicketMessage,
-} from '../predicates'
+} from '#ticket-messages/predicates'
 import {
     groupConsecutiveMessages,
     markLastCustomerMessage,
     toTaggedMessage,
-} from '../transforms'
-import { TicketThreadPendingState } from '../types'
+} from '#ticket-messages/transforms'
+import { TicketThreadPendingState } from '#ticket-messages/types'
 import type {
     TicketThreadMessageData,
     TicketThreadMessageItem,
     TicketThreadSingleMessageItem,
-} from '../types'
+} from '#ticket-messages/types'
 import { useListTicketMessages } from './useListTicketMessages'
 
 type UseTicketThreadMessagesParams = {

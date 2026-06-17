@@ -14,9 +14,9 @@ import {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { ListMessages200, TicketMessage } from '@gorgias/helpdesk-types'
 
-import { server } from '../../../../tests/server'
-import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '../../../../ticket-messages/hooks/useListTicketMessages'
-import { useTicketMessageCreatedSignalHandler } from '../useTicketMessageCreatedSignalHandler'
+import { server } from '#tests/server'
+import { useTicketMessageCreatedSignalHandler } from '#thread/hooks/realtime/useTicketMessageCreatedSignalHandler'
+import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '#ticket-messages/hooks/useListTicketMessages'
 
 function createMessage(
     overrides?: Partial<TicketMessage> & Record<string, unknown>,

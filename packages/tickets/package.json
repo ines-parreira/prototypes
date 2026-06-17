@@ -15,6 +15,15 @@
         "./utils/routing": "./src/utils/routing/index.ts",
         "./useGetTicket": "./src/hooks/useGetTicket.ts"
     },
+    "imports": {
+        "#*": [
+            "./src/*",
+            "./src/*.ts",
+            "./src/*.tsx",
+            "./src/*/index.ts",
+            "./src/*/index.tsx"
+        ]
+    },
     "scripts": {
         "format:check": "oxfmt --check .",
         "format:fix": "oxfmt --write .",
@@ -48,6 +57,7 @@
         "@repo/permissions": "workspace:*",
         "@repo/teams": "workspace:*",
         "@repo/ui": "workspace:*",
+        "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
         "@repo/views": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
@@ -91,6 +101,7 @@
         "@repo/testing": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/ui": "workspace:*",
+        "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
         "@repo/views": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",

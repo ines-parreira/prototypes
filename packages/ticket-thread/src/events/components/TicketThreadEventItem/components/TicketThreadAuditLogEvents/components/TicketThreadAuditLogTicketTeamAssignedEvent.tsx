@@ -1,10 +1,10 @@
 import { Icon, Text } from '@gorgias/axiom'
 
-import type { TicketThreadAuditLogEventByType } from '../../../../../types'
-import { TicketThreadAuditLogEventAttribution } from '../../TicketThreadAuditLogEventAttribution'
-import { TicketThreadEventContainer } from '../../TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../../TicketThreadEventDateTime'
-import { TicketThreadEventTarget } from '../../TicketThreadEventTarget'
+import { TicketThreadAuditLogEventAttribution } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEventAttribution'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import { TicketThreadEventTarget } from '#events/components/TicketThreadEventItem/components/TicketThreadEventTarget'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
 
 type TicketThreadAuditLogTicketTeamAssignedEventProps = {
     item: TicketThreadAuditLogEventByType<'ticket-team-assigned'>

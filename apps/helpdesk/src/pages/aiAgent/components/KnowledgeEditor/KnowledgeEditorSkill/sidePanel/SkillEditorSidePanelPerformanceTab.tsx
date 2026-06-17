@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
@@ -18,13 +19,17 @@ import css from './SkillEditorSidePanelPerformanceTab.less'
 
 export const SkillEditorSidePanelPerformanceTab = () => {
     const [isTrendModalOpen, setIsTrendModalOpen] = useState(false)
-    const { value: isNewReportingLayerEnabled } = useFlagWithLoading(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-        false,
-    )
+    const isNewReportingLayerEnabled = useSkillReportingEnabled()
     const skillPerformanceData = useSkillPerformanceFromContext()
     const { skillMetrics, recentTickets, historicalVersionDateRange } =
         skillPerformanceData
+
+    const handleExploreTrendClick = () => {
+        logEvent(SegmentEvent.AiAgentExploreTrendPerSkillClicked, {
+            skillId: skillMetrics.resourceSourceId,
+        })
+        setIsTrendModalOpen(true)
+    }
 
     const hasMetrics = skillMetrics.metrics !== null
     const hasRecentTickets =
@@ -53,7 +58,7 @@ export const SkillEditorSidePanelPerformanceTab = () => {
                                     size="md"
                                     leadingSlot="chart-line"
                                     aria-label="Explore trend"
-                                    onClick={() => setIsTrendModalOpen(true)}
+                                    onClick={handleExploreTrendClick}
                                 >
                                     Explore trend
                                 </Button>

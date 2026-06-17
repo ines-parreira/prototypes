@@ -10,6 +10,7 @@ import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
+import { useSkillReportingEnabled } from '../../hooks/useSkillReportingEnabled'
 import { useSkillsArticles } from '../../hooks/useSkillsArticles'
 import { useTotalAiAgentTickets } from '../../hooks/useTotalAiAgentTickets'
 import type { TransformedArticle } from '../../types'
@@ -28,6 +29,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
                 `/app/ai-agent/shopify/test-store/skills/${id}`,
         },
     }),
+}))
+jest.mock('../../hooks/useSkillReportingEnabled', () => ({
+    useSkillReportingEnabled: jest.fn(),
 }))
 jest.mock('../../hooks/useSkillsArticles')
 jest.mock('../../hooks/useTotalAiAgentTickets')
@@ -49,6 +53,7 @@ const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
     useGetCustomTicketsFieldsDefinitionData as jest.Mock
+const mockUseSkillReportingEnabled = useSkillReportingEnabled as jest.Mock
 const mockStore = configureMockStore([thunk])
 Element.prototype.getAnimations = jest.fn(() => [])
 describe('SkillsTable', () => {
@@ -115,6 +120,7 @@ describe('SkillsTable', () => {
     ]
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseSkillReportingEnabled.mockReturnValue(false)
         __store = mockStore({})
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -237,6 +243,24 @@ describe('SkillsTable', () => {
             expect(screen.getByText('How to cancel order')).toBeInTheDocument()
             expect(screen.getByText('Shipping information')).toBeInTheDocument()
         })
+        // Anchors are produced by `copilotAnchorProps` from @gorgias/copilot,
+        // which the repo mocks wholesale in tests/setup.tsx (see the
+        // `copilotAnchorProps` entry there mirroring the real `type:id`
+        // format). The real export ships on the unpublished SDK branch, so the
+        // source typechecks only once the catalog bumps past 0.66.1.
+        it('renders a skill copilot anchor on each row', () => {
+            const { container } = renderComponent()
+
+            expect(
+                container.querySelector('[data-copilot-anchor="skill:1"]'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-copilot-anchor="skill:2"]'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-copilot-anchor="skill:3"]'),
+            ).toBeInTheDocument()
+        })
         it('should render column headers', () => {
             renderComponent()
             expect(screen.getByText('Name')).toBeInTheDocument()
@@ -249,7 +273,7 @@ describe('SkillsTable', () => {
         it('should display article count', () => {
             renderComponent()
             expect(
-                screen.getByText('Showing 3 of 3 skills'),
+                screen.getByText('Showing 1-3 of 3 items'),
             ).toBeInTheDocument()
         })
         it('should display metrics date range info', () => {
@@ -297,7 +321,7 @@ describe('SkillsTable', () => {
             await user.type(searchInput, 'order')
             await waitFor(() => {
                 expect(
-                    screen.getByText('Showing 2 of 3 skills'),
+                    screen.getByText('Showing 1-2 of 2 items'),
                 ).toBeInTheDocument()
             })
         })
@@ -336,6 +360,51 @@ describe('SkillsTable', () => {
         it('should display percentages in percentage mode', () => {
             renderComponent()
             expect(screen.getByText('44.4%')).toBeInTheDocument()
+        })
+    })
+    describe('New reporting layer flag', () => {
+        it('requests articles without success rate when the flag is off', () => {
+            renderComponent()
+            expect(mockUseSkillsArticles).toHaveBeenCalledWith(123, 456, {
+                includeSuccessRate: false,
+            })
+        })
+        it('requests articles with success rate when the flag is on', () => {
+            mockUseSkillReportingEnabled.mockReturnValue(true)
+            renderComponent()
+            expect(mockUseSkillsArticles).toHaveBeenCalledWith(123, 456, {
+                includeSuccessRate: true,
+            })
+        })
+        it('shows the Percentage / Numeric toggle when the flag is off', () => {
+            renderComponent()
+            expect(
+                screen.getByRole('radio', { name: /percent/i }),
+            ).toBeInTheDocument()
+        })
+        it('hides the Percentage / Numeric toggle when the flag is on', () => {
+            mockUseSkillReportingEnabled.mockReturnValue(true)
+            renderComponent()
+            expect(
+                screen.queryByRole('radio', { name: /percent/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('radio', { name: /hashtag/i }),
+            ).not.toBeInTheDocument()
+        })
+        it('renders the Success rate column with renamed headers when the flag is on', () => {
+            mockUseSkillReportingEnabled.mockReturnValue(true)
+            renderComponent()
+            expect(screen.getByText('Success rate')).toBeInTheDocument()
+            expect(screen.getByText('Tickets')).toBeInTheDocument()
+            expect(screen.getByText('Handovers')).toBeInTheDocument()
+            expect(screen.getByText('CSAT')).toBeInTheDocument()
+        })
+        it('forces numeric display so ticket volume renders raw counts when the flag is on', () => {
+            mockUseSkillReportingEnabled.mockReturnValue(true)
+            renderComponent()
+            expect(screen.getByText('100')).toBeInTheDocument()
+            expect(screen.queryByText('44.4%')).not.toBeInTheDocument()
         })
     })
     describe('Intents column', () => {
@@ -444,12 +513,14 @@ describe('SkillsTable', () => {
             const user = userEvent.setup()
             renderComponent()
             const ticketVolumeHeader = screen.getByText('Ticket volume')
+            // First click sorts ascending, so the lowest ticket volume
+            // (How to cancel order, 50) moves to the top.
             await user.click(ticketVolumeHeader)
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
                 const firstDataRow = rows[1]
                 expect(
-                    within(firstDataRow).getByText('How to track order'),
+                    within(firstDataRow).getByText('How to cancel order'),
                 ).toBeInTheDocument()
             })
         })
@@ -506,12 +577,13 @@ describe('SkillsTable', () => {
         })
     })
     describe('Row click navigation', () => {
-        it('should navigate to skill detail when a row is clicked', async () => {
-            const user = userEvent.setup()
+        it('should link each row to its skill detail page', () => {
             renderComponent()
             const rows = screen.getAllByRole('row')
-            await user.click(rows[1])
-            expect(mockPush).toHaveBeenCalledWith(
+            // The DataTable renders each row as a navigable link via
+            // getRowHref; assert the resolved destination on the first row.
+            expect(rows[1]).toHaveAttribute(
+                'data-row-href',
                 '/app/ai-agent/shopify/test-store/skills/1',
             )
         })
@@ -534,7 +606,7 @@ describe('SkillsTable', () => {
             })
             renderComponent()
             expect(
-                screen.getByText('Showing 0 of 0 skills'),
+                screen.getByText('Showing 0-0 of 0 items'),
             ).toBeInTheDocument()
         })
         it('should handle missing shop integration', () => {

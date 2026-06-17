@@ -15,10 +15,10 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallOutbound } from '../components/TicketThreadCallItem/components/VoiceCallOutbound'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallOutbound } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallOutbound'
 
 const agent = mockUser({ id: 5, name: 'Bob Agent' })
 

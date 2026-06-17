@@ -1,11 +1,11 @@
 import { replaceAttachmentURL } from '@repo/utils'
 
-import type { TicketThreadSocialMediaInstagramMediaItem } from '../../types'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
-import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
-import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { SocialMessageBubble } from '#ticket-messages/components/SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { TicketMessageActions } from '#ticket-messages/components/TicketMessageActions/TicketMessageActions'
+import type { TicketThreadSocialMediaInstagramMediaItem } from '#ticket-messages/types'
 import type { InstagramMentionType } from './ViewOnInstagramLink'
 import { ViewOnInstagramLink } from './ViewOnInstagramLink'
 

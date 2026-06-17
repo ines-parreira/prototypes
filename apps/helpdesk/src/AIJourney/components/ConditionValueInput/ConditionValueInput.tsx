@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { useShopifyShopTags } from '@repo/customer'
@@ -195,6 +195,50 @@ const StateMultiValueSelect = ({
 
 type TagItem = { id: string; label: string }
 
+const toSelectedIds = (value: ConditionValue): string[] =>
+    Array.isArray(value)
+        ? value.map(String)
+        : value !== null && value !== undefined
+          ? [String(value)]
+          : []
+
+/**
+ * Resolves the selected ids into {id, label} items while remembering labels
+ * from every page of results seen so far. Server-side search replaces the
+ * available items on each query, so without this cache a previously selected
+ * item's label would be lost once it no longer matches the search results.
+ */
+const useSelectedItems = (
+    items: TagItem[],
+    value: ConditionValue,
+): TagItem[] => {
+    const labelCacheRef = useRef<Map<string, string>>(new Map())
+    for (const item of items) {
+        labelCacheRef.current.set(item.id, item.label)
+    }
+
+    return toSelectedIds(value).map((id) => ({
+        id,
+        label: labelCacheRef.current.get(id) ?? id,
+    }))
+}
+
+/**
+ * MultiSelectField rebuilds its outgoing value (and renders the selected tags)
+ * from the items collection, so any selected item missing from the current
+ * server-search results is dropped on the next change. Keeping the selected
+ * items in the collection preserves the selection across searches.
+ */
+const mergeSelectedIntoItems = (
+    selectedItems: TagItem[],
+    items: TagItem[],
+): TagItem[] => {
+    const byId = new Map<string, TagItem>()
+    for (const item of selectedItems) byId.set(item.id, item)
+    for (const item of items) byId.set(item.id, item)
+    return [...byId.values()]
+}
+
 const TagsMultiSelect = ({
     value,
     onChange,
@@ -287,17 +331,12 @@ const ProductVariantIdsMultiSelect = ({
         [data],
     )
 
-    const isLoading = isSearchPending || isFetching
-    const displayItems = isLoading ? LOADING_ITEMS : productItems
+    const selectedItems = useSelectedItems(productItems, value)
 
-    const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value)
-            ? value
-            : typeof value === 'string'
-              ? [value]
-              : []
-        return productItems.filter((item) => selected.includes(item.id))
-    }, [productItems, value])
+    const isLoading = isSearchPending || isFetching
+    const displayItems = isLoading
+        ? [...selectedItems, ...LOADING_ITEMS]
+        : mergeSelectedIntoItems(selectedItems, productItems)
 
     return (
         <Box width={320}>
@@ -422,14 +461,8 @@ const ProductTagsMultiSelect = ({
         [data],
     )
 
-    const selectedItems = useMemo(() => {
-        const selected = Array.isArray(value)
-            ? value
-            : typeof value === 'string'
-              ? [value]
-              : []
-        return tagItems.filter((item) => selected.includes(item.id))
-    }, [tagItems, value])
+    const selectedItems = useSelectedItems(tagItems, value)
+    const displayItems = mergeSelectedIntoItems(selectedItems, tagItems)
 
     return (
         <Box width={320}>
@@ -437,7 +470,7 @@ const ProductTagsMultiSelect = ({
                 aria-label="Value"
                 placement="bottom left"
                 placeholder="Select tags"
-                items={tagItems}
+                items={displayItems}
                 value={selectedItems}
                 isSearchable
                 searchValue={searchValue}

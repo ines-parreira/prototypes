@@ -1,13 +1,16 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../tests/render.utils'
-import { TicketThreadAuditLogEventAttribution } from '../TicketThreadAuditLogEventAttribution'
+import { TicketThreadAuditLogEventAttribution } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEventAttribution'
+import { render } from '#tests/render.utils'
 
-vi.mock('../TicketThreadEventAuthor', () => ({
-    TicketThreadEventAuthor: ({ authorId }: { authorId: number }) => (
-        <span>author-{authorId}</span>
-    ),
-}))
+vi.mock(
+    '#events/components/TicketThreadEventItem/components/TicketThreadEventAuthor',
+    () => ({
+        TicketThreadEventAuthor: ({ authorId }: { authorId: number }) => (
+            <span>author-{authorId}</span>
+        ),
+    }),
+)
 
 describe('TicketThreadAuditLogEventAttribution', () => {
     it('renders via rule method for via-rule attribution', () => {

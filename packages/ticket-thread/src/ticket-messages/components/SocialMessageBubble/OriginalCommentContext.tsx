@@ -1,14 +1,14 @@
 import { Box, Text } from '@gorgias/axiom'
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
-import type { TicketMessageChannel } from '../../schemas'
-import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
-import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
-import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
-import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
-import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
-import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
-import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { getMessageChannelParticipants } from '#ticket-messages/components/MessageBubble/components/MessageHeader/getMessageChannelParticipants'
+import { MessageHeaderContainer } from '#ticket-messages/components/MessageBubble/components/MessageHeader/Layout'
+import { MessageAvatar } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
+import { MessageChannel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
+import { MessageSender } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
+import type { TicketMessageChannel } from '#ticket-messages/schemas'
 import { RepliedViaLabel } from './RepliedViaLabel'
 
 type OriginalCommentContextProps = {

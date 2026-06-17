@@ -22,4 +22,13 @@
             }
         }
     }
+
+    // Content-height wrapper carrying the copilot instructions anchor: it
+    // sizes to the editor block instead of stretching with the flex-1
+    // container above, so the highlight frames only the visible editor.
+    .editorAnchor {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
 }

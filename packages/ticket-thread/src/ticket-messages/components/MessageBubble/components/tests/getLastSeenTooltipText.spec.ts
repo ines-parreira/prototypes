@@ -1,7 +1,7 @@
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { vi } from 'vitest'
 
-import { getLastSeenTooltipText } from '../MessageHeader/useMessageAvatarTooltip'
+import { getLastSeenTooltipText } from '#ticket-messages/components/MessageBubble/components/MessageHeader/useMessageAvatarTooltip'
 
 const FIXED_NOW = new Date('2024-01-15T12:00:00.000Z').getTime()
 const format =

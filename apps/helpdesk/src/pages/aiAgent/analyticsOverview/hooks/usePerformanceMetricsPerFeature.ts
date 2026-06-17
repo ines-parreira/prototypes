@@ -25,6 +25,14 @@ import {
     useCostSavedPerFeature,
 } from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedPerFeature'
 import {
+    fetchDecreaseInFirstResponseTimePerFeature,
+    useDecreaseInFirstResponseTimePerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useDecreaseInFirstResponseTimeBreakdowns'
+import {
+    fetchDecreaseInResolutionTimePerFeature,
+    useDecreaseInResolutionTimePerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useDecreaseInResolutionTimeBreakdowns'
+import {
     fetchHandoverInteractionsPerFeature,
     useHandoverInteractionsPerFeature,
 } from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature'
@@ -53,6 +61,8 @@ export type FeatureMetrics = {
     handoverInteractions: number | null
     costSaved: number | null
     timeSaved: number | null
+    decreaseInResolutionTime: number | null
+    decreaseInFirstResponseTime: number | null
 }
 
 const FEATURE_TYPE_TO_NAME: Record<AutomationFeatureType, FeatureName> = {
@@ -75,6 +85,8 @@ type AllFeaturesMetricKeys =
     | 'handoverInteractions'
     | 'costSaved'
     | 'timeSaved'
+    | 'decreaseInResolutionTime'
+    | 'decreaseInFirstResponseTime'
 
 const buildAllFeaturesRow =
     (
@@ -90,6 +102,10 @@ const buildAllFeaturesRow =
         handoverInteractions: entityData.handoverInteractions[entity] ?? null,
         costSaved: entityData.costSaved[entity] ?? null,
         timeSaved: entityData.timeSaved[entity] ?? null,
+        decreaseInResolutionTime:
+            entityData.decreaseInResolutionTime[entity] ?? null,
+        decreaseInFirstResponseTime:
+            entityData.decreaseInFirstResponseTime[entity] ?? null,
     })
 
 const ALL_FEATURES_METRICS_CONFIG: Record<
@@ -115,6 +131,14 @@ const ALL_FEATURES_METRICS_CONFIG: Record<
     timeSaved: {
         use: useTimeSavedPerFeature,
         fetch: fetchTimeSavedPerFeature,
+    },
+    decreaseInResolutionTime: {
+        use: useDecreaseInResolutionTimePerFeature,
+        fetch: fetchDecreaseInResolutionTimePerFeature,
+    },
+    decreaseInFirstResponseTime: {
+        use: useDecreaseInFirstResponseTimePerFeature,
+        fetch: fetchDecreaseInFirstResponseTimePerFeature,
     },
 }
 

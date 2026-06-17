@@ -787,6 +787,7 @@ export const getDrillDownQuery = (
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
                     knowledgeMetricData.ticketIds,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
@@ -828,6 +829,7 @@ export const getDrillDownQuery = (
                     timezone,
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
@@ -858,6 +860,43 @@ export const getDrillDownQuery = (
                     timezone,
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
+                    knowledgeMetricData.isSkillScoped,
+                )
+            }
+        }
+        case KnowledgeMetric.SuccessRate: {
+            // v1 drill-down: lists every ticket attributed to this skill in
+            // the period (same set the success rate is computed over). A
+            // future iteration can split successful/unsuccessful via the
+            // `SuccessRate.isSuccessful` per-ticket flag.
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                __sorting?: OrderDirection,
+            ) => {
+                const knowledgeMetricData = metricData as KnowledgeMetrics
+                const filtersWithPeriod: StatsFilters = {
+                    ...statsFilters,
+                    [FilterKey.Period]: {
+                        start_datetime:
+                            knowledgeMetricData.dateRange.start_datetime,
+                        end_datetime:
+                            knowledgeMetricData.dateRange.end_datetime,
+                    },
+                    ...(knowledgeMetricData.shopIntegrationId && {
+                        [FilterKey.Stores]: {
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [knowledgeMetricData.shopIntegrationId],
+                        },
+                    }),
+                }
+                return knowledgeTicketsDrillDownQueryFactory(
+                    filtersWithPeriod,
+                    timezone,
+                    knowledgeMetricData.resourceSourceId,
+                    knowledgeMetricData.resourceSourceSetId,
+                    knowledgeMetricData.ticketIds,
+                    knowledgeMetricData.isSkillScoped,
                 )
             }
         }
@@ -1225,10 +1264,14 @@ export const getDrillDownMetricColumn = (
     } else if (
         metricData.metricName === KnowledgeMetric.Tickets ||
         metricData.metricName === KnowledgeMetric.HandoverTickets ||
-        metricData.metricName === KnowledgeMetric.CSAT
+        metricData.metricName === KnowledgeMetric.CSAT ||
+        metricData.metricName === KnowledgeMetric.SuccessRate
     ) {
         metricTitle = metricData.title || ''
-        metricValueFormat = 'decimal'
+        metricValueFormat =
+            metricData.metricName === KnowledgeMetric.SuccessRate
+                ? 'decimal-to-percent'
+                : 'decimal'
     } else if (
         metricData.metricName === IntentMetric.TicketVolume ||
         metricData.metricName === IntentMetric.Handover

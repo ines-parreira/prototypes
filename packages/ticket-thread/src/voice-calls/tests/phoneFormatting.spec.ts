@@ -1,4 +1,4 @@
-import { formatPhoneNumberInternational } from '../models/phoneFormatting'
+import { formatPhoneNumberInternational } from '#voice-calls/models/phoneFormatting'
 
 describe('formatPhoneNumberInternational', () => {
     it('formats a valid US number in international format', () => {

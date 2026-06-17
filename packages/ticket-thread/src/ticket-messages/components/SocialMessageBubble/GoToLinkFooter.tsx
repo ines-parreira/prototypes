@@ -1,6 +1,6 @@
 import { Box, Text } from '@gorgias/axiom'
 
-import type { GoToLink } from '../../utils/buildGoToLink'
+import type { GoToLink } from '#ticket-messages/utils/buildGoToLink'
 
 import css from './SocialMessageBubble.less'
 

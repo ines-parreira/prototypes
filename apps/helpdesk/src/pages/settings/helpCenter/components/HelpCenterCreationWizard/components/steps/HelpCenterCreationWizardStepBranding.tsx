@@ -1,8 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
+import { LegacyLabel as Label, toast } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import {
@@ -21,8 +20,6 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import { useFileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
 import type { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { HelpCenterPreview } from '../../../HelpCenterPreview/HelpCenterPreview'
 import { HelpCenterPreviewHomePage } from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
@@ -39,7 +36,6 @@ type Props = {
 const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
     helpCenter,
 }) => {
-    const dispatch = useAppDispatch()
     const {
         helpCenter: newHelpCenter,
         handleFormUpdate,
@@ -75,12 +71,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
             handleFormUpdate({ brandLogoUrl })
             return brandLogoUrl
         } catch {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to upload the logo. Please try again.',
-                }),
-            )
+            toast.error('Failed to upload the logo. Please try again.')
         }
     }
 

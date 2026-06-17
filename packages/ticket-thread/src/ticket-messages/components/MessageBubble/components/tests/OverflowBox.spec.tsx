@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../tests/render.utils'
-import { OverflowBox } from '../OverflowBox'
+import { render } from '#tests/render.utils'
+import { OverflowBox } from '#ticket-messages/components/MessageBubble/components/OverflowBox'
 
 describe('OverflowBox', () => {
     beforeEach(() => {

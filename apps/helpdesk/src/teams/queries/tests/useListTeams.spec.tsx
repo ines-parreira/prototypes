@@ -93,7 +93,6 @@ describe('useListTeams', () => {
                 response: errorMsgMock,
             }),
             expect.any(String),
-            dispatchMock,
         )
         expect(result.current.isLoading).toBe(false)
     })

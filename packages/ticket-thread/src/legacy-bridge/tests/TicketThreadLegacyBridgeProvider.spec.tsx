@@ -1,9 +1,9 @@
-import { renderHook } from '../../tests/render.utils'
 import type {
     CurrentTicketShoppingAssistantData,
     VoiceCallBridgeCallbacks,
-} from '../types'
-import { useTicketThreadLegacyBridge } from '../useTicketThreadLegacyBridge'
+} from '#legacy-bridge/types'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge/useTicketThreadLegacyBridge'
+import { renderHook } from '#tests/render.utils'
 
 const currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData = {
     influencedOrders: [],

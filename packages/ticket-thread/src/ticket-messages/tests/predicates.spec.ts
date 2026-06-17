@@ -1,6 +1,9 @@
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { isActivePendingMessage, isFailedPendingMessage } from '../predicates'
+import {
+    isActivePendingMessage,
+    isFailedPendingMessage,
+} from '#ticket-messages/predicates'
 
 function createMessage(overrides: Partial<TicketMessage>): TicketMessage {
     return {

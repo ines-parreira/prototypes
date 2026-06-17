@@ -1,22 +1,18 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useUpdateMacro as useUpdateMacroPrimitive,
 } from '@gorgias/helpdesk-queries'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import type { GorgiasApiError } from 'models/api/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { errorToChildren } from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
 
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()
 
 export function useUpdateMacro(errorMessage?: string) {
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
 
     return useUpdateMacroPrimitive({
         mutation: {
@@ -26,26 +22,14 @@ export function useUpdateMacro(errorMessage?: string) {
                 })
             },
             onError: (error) => {
-                void dispatch(
-                    notify({
-                        title:
-                            (error as GorgiasApiError).response.data.error
-                                .msg ??
-                            errorMessage ??
-                            'Failed to update macro',
-                        message: errorToChildren(error)!,
-                        allowHTML: true,
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    isGorgiasApiError(error)
+                        ? error.response.data.error.msg
+                        : (errorMessage ?? 'Failed to update macro'),
                 )
             },
             onSuccess: () => {
-                void dispatch(
-                    notify({
-                        message: 'Successfully updated macro',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Successfully updated macro')
             },
         },
     })

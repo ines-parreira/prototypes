@@ -1,22 +1,22 @@
 import { Box } from '@gorgias/axiom'
 
+import { MessageAppliedActions } from '#ticket-messages/components/MessageBubble/components/MessageAppliedActions'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageErrors } from '#ticket-messages/components/MessageBubble/components/MessageErrors'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { MessageHeaderContainer } from '#ticket-messages/components/MessageBubble/components/MessageHeader/Layout'
+import { MessageAvatar } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
+import { MessageChannel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
+import { MessageSender } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSender'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
+import { TicketMessageActions } from '#ticket-messages/components/TicketMessageActions/TicketMessageActions'
 import {
     isActivePendingMessageItem,
     isFailedPendingMessageItem,
-} from '../../predicates'
-import { TicketThreadPendingState } from '../../types'
-import type { TicketThreadInternalNoteItem } from '../../types'
-import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageErrors } from '../MessageBubble/components/MessageErrors'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
-import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
-import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
-import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
-import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
-import { MessageBubble } from '../MessageBubble/MessageBubble'
-import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
+} from '#ticket-messages/predicates'
+import { TicketThreadPendingState } from '#ticket-messages/types'
+import type { TicketThreadInternalNoteItem } from '#ticket-messages/types'
 
 import css from './TicketInternalNote.less'
 

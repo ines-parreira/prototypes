@@ -166,6 +166,7 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
     filters: ApiStatsFilters,
     timezone: string,
     measure: string,
+    isSkillScoped?: boolean,
 ): ReportingQuery<TCube> => {
     // Build base filters
     const baseFilters: ReportingFilter[] = []
@@ -181,16 +182,13 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
             operator: ReportingFilterOperator.Equals,
             values: [String(resourceSourceId)],
         })
-        // Skill-scoped queries (resourceSourceId pinned to a single value) must
-        // narrow to skill participation only. Without this, the V1 drilldown
-        // returns every ticket that used the resource — articles, macros,
-        // snippets included — instead of just the skill rows that match the
-        // helper-cube path used by the side-panel and table KPIs.
-        baseFilters.push({
-            member: TicketInsightsTaskDimension.ResourceIsSkill,
-            operator: ReportingFilterOperator.Equals,
-            values: ['true'],
-        })
+        if (isSkillScoped) {
+            baseFilters.push({
+                member: TicketInsightsTaskDimension.ResourceIsSkill,
+                operator: ReportingFilterOperator.Equals,
+                values: ['true'],
+            })
+        }
     } else if (
         resourceSourceIdFilter &&
         resourceSourceIdFilter.values.length > 0
@@ -495,6 +493,7 @@ export const createV1DrillDownQuery = (
     resourceSourceSetId: number,
     filters: ApiStatsFilters,
     timezone: string,
+    isSkillScoped?: boolean,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     const baseQuery = createV1Query<TicketInsightsTaskCubeWithJoins>(
         metricName,
@@ -503,6 +502,7 @@ export const createV1DrillDownQuery = (
         filters,
         timezone,
         '', // measure not needed for drilldown
+        isSkillScoped,
     )
 
     return {
@@ -529,6 +529,7 @@ export const knowledgeTicketsDrillDownQueryFactory = (
     resourceSourceId: number,
     resourceSourceSetId: number,
     ticketIds?: string[],
+    isSkillScoped?: boolean,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     const baseQuery = createV1DrillDownQuery(
         METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN,
@@ -536,6 +537,7 @@ export const knowledgeTicketsDrillDownQueryFactory = (
         resourceSourceSetId,
         filters,
         timezone,
+        isSkillScoped,
     )
     if (!ticketIds?.length) return baseQuery
     return {
@@ -560,6 +562,7 @@ export const knowledgeHandoverTicketsDrillDownQueryFactory = (
     timezone: string,
     resourceSourceId: number,
     resourceSourceSetId: number,
+    isSkillScoped?: boolean,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     return createV1DrillDownQuery(
         METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS_DRILL_DOWN,
@@ -567,6 +570,7 @@ export const knowledgeHandoverTicketsDrillDownQueryFactory = (
         resourceSourceSetId,
         filters,
         timezone,
+        isSkillScoped,
     )
 }
 
@@ -579,6 +583,7 @@ export const knowledgeCSATDrillDownQueryFactory = (
     timezone: string,
     resourceSourceId: number,
     resourceSourceSetId: number,
+    isSkillScoped?: boolean,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     const baseQuery = createV1DrillDownQuery(
         METRIC_NAMES.KNOWLEDGE_CSAT_DRILL_DOWN,
@@ -586,6 +591,7 @@ export const knowledgeCSATDrillDownQueryFactory = (
         resourceSourceSetId,
         filters,
         timezone,
+        isSkillScoped,
     )
 
     // Override measures to include avgSurveyScore for CSAT drilldown

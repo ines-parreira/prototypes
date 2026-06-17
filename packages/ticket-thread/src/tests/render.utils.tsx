@@ -10,7 +10,7 @@ import type {
     RenderOptions as RenderOptionsPrimitive,
 } from '@testing-library/react'
 
-import { TicketThreadLegacyBridgeProvider } from '../legacy-bridge'
+import { TicketThreadLegacyBridgeProvider } from '#legacy-bridge'
 import type {
     CurrentTicketRuleSuggestionData,
     CurrentTicketShoppingAssistantData,
@@ -18,8 +18,8 @@ import type {
     LegacyBridgeContextType,
     LegacyBridgeState,
     VoiceCallBridgeCallbacks,
-} from '../legacy-bridge/types'
-import { ExpandedMessagesProvider } from '../ticket-messages/context/ExpandedMessages'
+} from '#legacy-bridge/types'
+import { ExpandedMessagesProvider } from '#ticket-messages/context/ExpandedMessages'
 
 type LegacyBridgeOptions = {
     currentTicketShoppingAssistantData?: CurrentTicketShoppingAssistantData

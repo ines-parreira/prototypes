@@ -1,6 +1,9 @@
-import { hasFlowEndEvent, processEvents } from '../models/processEvents'
-import { VoiceCallSubjectType } from '../models/types'
-import { PhoneIntegrationEvent } from '../models/voiceCallEventTypes'
+import {
+    hasFlowEndEvent,
+    processEvents,
+} from '#voice-calls/models/processEvents'
+import { VoiceCallSubjectType } from '#voice-calls/models/types'
+import { PhoneIntegrationEvent } from '#voice-calls/models/voiceCallEventTypes'
 
 function makeEvent(
     type: PhoneIntegrationEvent,

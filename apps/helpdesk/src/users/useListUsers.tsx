@@ -6,7 +6,6 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchAgents } from 'models/agents/resources'
 
 export function useListUsers(
@@ -16,7 +15,6 @@ export function useListUsers(
         unknown
     >,
 ) {
-    const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
         queryKey: queryKeys.users.listUsers(),
         queryFn: async ({ pageParam }) =>
@@ -32,9 +30,9 @@ export function useListUsers(
 
     useEffect(() => {
         if (response.error) {
-            handleError(response.error, 'Failed to fetch users', dispatch)
+            handleError(response.error, 'Failed to fetch users')
         }
-    }, [dispatch, response])
+    }, [response])
 
     return response
 }

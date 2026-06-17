@@ -10,14 +10,20 @@ export function useIsTrashLikeView(
     viewId: number,
     { isDraftView = false }: Options = {},
 ) {
+    const shouldFetchView = !isDraftView && viewId > 0
+
     const { data: viewResponse } = useGetView(viewId, {
         query: {
-            enabled: !isDraftView,
+            enabled: shouldFetchView,
         },
     })
 
     return useMemo(() => {
+        if (!shouldFetchView) {
+            return false
+        }
+
         const filters = viewResponse?.data?.filters ?? ''
         return filters.includes('isNotEmpty(ticket.trashed_datetime)')
-    }, [viewResponse])
+    }, [shouldFetchView, viewResponse])
 }

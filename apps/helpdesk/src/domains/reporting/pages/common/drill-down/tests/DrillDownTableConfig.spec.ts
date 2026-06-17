@@ -111,6 +111,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     KnowledgeMetric.Tickets,
     KnowledgeMetric.HandoverTickets,
     KnowledgeMetric.CSAT,
+    KnowledgeMetric.SuccessRate,
     IntentMetric.TicketVolume,
     IntentMetric.Handover,
     AiAgentDrillDownMetricName.AutomatedInteractionsCard,

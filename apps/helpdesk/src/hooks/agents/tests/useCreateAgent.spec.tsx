@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 
 import { agents } from 'fixtures/agents'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -9,8 +10,6 @@ import {
     useCreateAgent as usePureCreateAgent,
 } from 'models/agents/queries'
 import { CREATE_AGENT_SUCCESS } from 'state/agents/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { handleError } from '../errorHandler'
 import { useCreateAgent } from '../useCreateAgent'
@@ -26,7 +25,6 @@ const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => ({
     useAppDispatch: () => mockedDispatch,
 }))
-jest.mock('state/notifications/actions')
 const useQueryClientMock = assumeMock(useQueryClient)
 
 describe('useCreateAgent', () => {
@@ -40,7 +38,7 @@ describe('useCreateAgent', () => {
         )
     })
 
-    it('should dispatch success notification on success and invalidate lists queries', () => {
+    it('should show success toast on success and invalidate lists queries', async () => {
         renderHook(() => useCreateAgent())
 
         usePureCreateAgentMock.mock.calls[0][0]?.onSuccess!(
@@ -58,12 +56,10 @@ describe('useCreateAgent', () => {
             resp: agents[0],
         })
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: `Team member created. We've sent login instructions to ${agents[0].email}.`,
-            status: NotificationStatus.Success,
+        const toastEl = await screen.findByRole('status', {
+            name: `Team member created. We've sent login instructions to ${agents[0].email}.`,
         })
-
-        expect(mockedDispatch).toHaveBeenCalledTimes(2)
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should call handleError on error', () => {
@@ -79,7 +75,6 @@ describe('useCreateAgent', () => {
             1,
             null,
             null,
-            mockedDispatch,
             'Error while creating user',
         )
     })

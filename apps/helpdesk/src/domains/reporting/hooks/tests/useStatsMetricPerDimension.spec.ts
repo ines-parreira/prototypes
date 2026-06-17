@@ -5,6 +5,7 @@ import { waitFor } from '@testing-library/react'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     assembleEntityRows,
+    createMetricPerDimensionHooks,
     fetchEntityMetrics,
     fetchStatsMetricPerDimension,
     mapMetricValues,
@@ -865,6 +866,186 @@ describe('useStatsMetricPerDimension', () => {
                     automationRate: false,
                     handoverCount: false,
                 })
+            })
+        })
+    })
+
+    describe('createMetricPerDimensionHooks', () => {
+        const mockFilters = {
+            period: {
+                start_datetime: '2025-01-01T00:00:00.000',
+                end_datetime: '2025-01-31T23:59:59.000',
+            },
+        }
+        const TIMEZONE = 'UTC'
+        const mockQuery: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
+            dimensions: ['channel'],
+            measures: ['automatedInteractions'],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+        const mockQueryFactory = jest.fn()
+
+        beforeEach(() => {
+            mockQueryFactory.mockReturnValue(mockQuery)
+        })
+
+        describe('use', () => {
+            it('calls the query factory with filters and timezone', () => {
+                usePostStatsMock.mockReturnValue({
+                    data: null,
+                    isFetching: false,
+                    isError: false,
+                } as any)
+
+                const { use } = createMetricPerDimensionHooks(mockQueryFactory)
+                renderHook(() => use(mockFilters, TIMEZONE), {
+                    wrapper: mockQueryClientProvider().QueryClientProvider,
+                })
+
+                expect(mockQueryFactory).toHaveBeenCalledWith({
+                    filters: mockFilters,
+                    timezone: TIMEZONE,
+                })
+            })
+
+            it('passes the built query to usePostStats', () => {
+                usePostStatsMock.mockReturnValue({
+                    data: null,
+                    isFetching: false,
+                    isError: false,
+                } as any)
+
+                const { use } = createMetricPerDimensionHooks(mockQueryFactory)
+                renderHook(() => use(mockFilters, TIMEZONE), {
+                    wrapper: mockQueryClientProvider().QueryClientProvider,
+                })
+
+                expect(usePostStatsMock).toHaveBeenCalledWith(
+                    mockQuery,
+                    expect.objectContaining({ select: expect.any(Function) }),
+                )
+            })
+
+            it('returns the metric result', async () => {
+                const mockData = {
+                    value: null,
+                    decile: null,
+                    allData: [],
+                    allValues: [
+                        { dimension: 'ai-agent', value: 100, decile: null },
+                    ],
+                    dimensions: ['channel'],
+                    measures: ['automatedInteractions'],
+                }
+                usePostStatsMock.mockReturnValue({
+                    data: mockData,
+                    isFetching: false,
+                    isError: false,
+                } as any)
+
+                const { use } = createMetricPerDimensionHooks(mockQueryFactory)
+                const { result } = renderHook(
+                    () => use(mockFilters, TIMEZONE),
+                    {
+                        wrapper: mockQueryClientProvider().QueryClientProvider,
+                    },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.data).toEqual(mockData)
+                    expect(result.current.isFetching).toBe(false)
+                    expect(result.current.isError).toBe(false)
+                })
+            })
+
+            it('reflects isFetching when loading', async () => {
+                usePostStatsMock.mockReturnValue({
+                    data: null,
+                    isFetching: true,
+                    isError: false,
+                } as any)
+
+                const { use } = createMetricPerDimensionHooks(mockQueryFactory)
+                const { result } = renderHook(
+                    () => use(mockFilters, TIMEZONE),
+                    {
+                        wrapper: mockQueryClientProvider().QueryClientProvider,
+                    },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.isFetching).toBe(true)
+                })
+            })
+        })
+
+        describe('fetch', () => {
+            it('calls the query factory with filters and timezone', async () => {
+                fetchPostStatsMock.mockResolvedValue({
+                    data: { data: [] },
+                } as any)
+
+                const { fetch } =
+                    createMetricPerDimensionHooks(mockQueryFactory)
+                await fetch(mockFilters, TIMEZONE)
+
+                expect(mockQueryFactory).toHaveBeenCalledWith({
+                    filters: mockFilters,
+                    timezone: TIMEZONE,
+                })
+            })
+
+            it('passes the built query to fetchPostStats', async () => {
+                fetchPostStatsMock.mockResolvedValue({
+                    data: { data: [] },
+                } as any)
+
+                const { fetch } =
+                    createMetricPerDimensionHooks(mockQueryFactory)
+                await fetch(mockFilters, TIMEZONE)
+
+                expect(fetchPostStatsMock).toHaveBeenCalledWith(mockQuery)
+            })
+
+            it('returns the metric result', async () => {
+                fetchPostStatsMock.mockResolvedValue({
+                    data: {
+                        data: [
+                            {
+                                channel: 'ai-agent',
+                                automatedInteractions: '3600',
+                            },
+                        ],
+                    },
+                } as any)
+
+                const { fetch } =
+                    createMetricPerDimensionHooks(mockQueryFactory)
+                const result = await fetch(mockFilters, TIMEZONE)
+
+                expect(result.isFetching).toBe(false)
+                expect(result.isError).toBe(false)
+                expect(result.data?.allValues).toEqual([
+                    {
+                        dimension: 'ai-agent',
+                        value: 3600,
+                        decile: expect.any(Number),
+                    },
+                ])
+            })
+
+            it('handles fetch errors gracefully', async () => {
+                fetchPostStatsMock.mockRejectedValue(new Error('API error'))
+
+                const { fetch } =
+                    createMetricPerDimensionHooks(mockQueryFactory)
+                const result = await fetch(mockFilters, TIMEZONE)
+
+                expect(result.isFetching).toBe(false)
+                expect(result.isError).toBe(true)
+                expect(result.data).toBe(null)
             })
         })
     })

@@ -86,7 +86,6 @@ export const ComposedMetricTimeSeriesChart = ({
         top: number
         payload: any[]
     } | null>(null)
-
     const xAxisAvailableWidth =
         typeof containerWidth === 'number' ? containerWidth : chartWrapperWidth
     const xAxisTickValues = useMemo(
@@ -340,7 +339,7 @@ export const ComposedMetricTimeSeriesChart = ({
                         >
                             {renderComposedMetricTimeSeriesTooltipContent({
                                 barMetric,
-                                lineMetric,
+                                lineMetric: lineMetric,
                                 dateKey,
                                 dateFormatter,
                                 markers,

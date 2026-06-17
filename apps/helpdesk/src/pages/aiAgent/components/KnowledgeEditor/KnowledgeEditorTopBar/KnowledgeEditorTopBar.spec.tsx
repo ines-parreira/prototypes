@@ -76,6 +76,33 @@ describe('KnowledgeEditorTopBar', () => {
         expect(onToggleFullscreen).toHaveBeenCalledTimes(2)
     })
 
+    it('spreads the status copilot anchor onto the controls container', () => {
+        const { container } = render(
+            <KnowledgeEditorTopBar
+                disabled={false}
+                title="Guidance"
+                isFullscreen={false}
+                onToggleFullscreen={jest.fn()}
+                onClose={jest.fn()}
+                isDetailsView={false}
+                onToggleDetailsView={jest.fn()}
+                statusAnchorProps={{
+                    'data-copilot-anchor': 'guidance:1:status',
+                }}
+            >
+                <button>Publish</button>
+            </KnowledgeEditorTopBar>,
+        )
+
+        const statusAnchor = container.querySelector(
+            '[data-copilot-anchor="guidance:1:status"]',
+        )
+        expect(statusAnchor).toBeInTheDocument()
+        expect(statusAnchor?.querySelector('button')).toHaveTextContent(
+            'Publish',
+        )
+    })
+
     it('renders disabled when updating', () => {
         render(
             <KnowledgeEditorTopBar

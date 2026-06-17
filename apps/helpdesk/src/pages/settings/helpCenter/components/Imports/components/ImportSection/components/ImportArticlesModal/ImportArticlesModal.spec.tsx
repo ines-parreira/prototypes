@@ -1,7 +1,10 @@
 import type React from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import { render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { noop } from 'lodash'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -38,6 +41,14 @@ const defaultState: Partial<RootState> = {
     } as any,
 }
 
+const mockUploadFiles = jest.fn()
+
+jest.mock('common/utils', () => ({
+    __esModule: true,
+    ...jest.requireActual('common/utils'),
+    uploadFiles: (...args: unknown[]) => mockUploadFiles(...args),
+}))
+
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({
@@ -69,6 +80,17 @@ const renderComponent = (element: React.ReactElement) =>
     })
 
 describe('<ImportArticlesModal />', () => {
+    beforeEach(() => {
+        mockUploadFiles.mockResolvedValue([
+            { url: 'https://storage.example/imported.csv' },
+        ])
+    })
+
+    afterEach(() => {
+        toast.dismiss()
+        mockUploadFiles.mockReset()
+    })
+
     describe('renders correctly for each state', () => {
         test('migration feature disabled', () => {
             renderComponent(
@@ -310,6 +332,123 @@ describe('<ImportArticlesModal />', () => {
             fireEvent.click(screen.getByText('Import File'))
 
             expect(importStartHandler).toBeCalled()
+        })
+    })
+
+    describe('shows destructive toasts on upload errors', () => {
+        test('dropping a non-CSV file shows a destructive toast', async () => {
+            renderComponent(
+                <ImportArticlesModal
+                    isOpen
+                    onClose={noop}
+                    modalState={{
+                        state: 'NO_FILE_SELECTED',
+                    }}
+                    fetchedProviders={fetchedProvidersStateSuccess}
+                    onFileRemove={noop}
+                    onFileSelect={noop}
+                    onImportStart={noop}
+                    isMigrationAvailable
+                    onMigrationDropAreaClick={noop}
+                />,
+            )
+
+            const dropArea = screen.getByTestId(
+                'import-articles-modal-file-drop-area',
+            )
+
+            fireEvent.drop(dropArea, {
+                dataTransfer: {
+                    items: [
+                        {
+                            getAsFile() {
+                                return new File([], 'not-a-csv.txt')
+                            },
+                        },
+                    ],
+                },
+            })
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: /The file you dropped is not in CSV format/i,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
+        })
+
+        test('413 upload error shows the size-limit destructive toast', async () => {
+            mockUploadFiles.mockRejectedValue({
+                response: { status: 413 },
+            })
+
+            const user = userEvent.setup()
+
+            renderComponent(
+                <ImportArticlesModal
+                    isOpen
+                    onClose={noop}
+                    modalState={{
+                        state: 'FILE_SELECTED',
+                        file: getFile(),
+                    }}
+                    fetchedProviders={fetchedProvidersStateSuccess}
+                    onFileRemove={noop}
+                    onFileSelect={noop}
+                    onImportStart={noop}
+                    isMigrationAvailable
+                    onMigrationDropAreaClick={noop}
+                />,
+            )
+
+            await user.click(screen.getByText('Import File'))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: /bigger than 10MB/i,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
+        })
+
+        test('non-413 upload error shows the API error message in a destructive toast', async () => {
+            mockUploadFiles.mockRejectedValue({
+                response: {
+                    status: 500,
+                    data: { error: { msg: 'Server exploded' } },
+                },
+            })
+
+            const user = userEvent.setup()
+
+            renderComponent(
+                <ImportArticlesModal
+                    isOpen
+                    onClose={noop}
+                    modalState={{
+                        state: 'FILE_SELECTED',
+                        file: getFile(),
+                    }}
+                    fetchedProviders={fetchedProvidersStateSuccess}
+                    onFileRemove={noop}
+                    onFileSelect={noop}
+                    onImportStart={noop}
+                    isMigrationAvailable
+                    onMigrationDropAreaClick={noop}
+                />,
+            )
+
+            await user.click(screen.getByText('Import File'))
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: /Server exploded/i,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
         })
     })
 

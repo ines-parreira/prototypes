@@ -1,13 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import {
     agentsKeys,
     useCreateAgent as usePureCreateAgent,
 } from 'models/agents/queries'
 import { CREATE_AGENT_SUCCESS } from 'state/agents/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 
 import { handleError } from './errorHandler'
@@ -25,11 +25,8 @@ export const useCreateAgent = () => {
                 type: CREATE_AGENT_SUCCESS,
                 resp: data.data,
             })
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: `Team member created. We've sent login instructions to ${data.data.email}.`,
-                }),
+            toast.success(
+                `Team member created. We've sent login instructions to ${data.data.email}.`,
             )
         },
         onError: (error) => {
@@ -38,7 +35,6 @@ export const useCreateAgent = () => {
             handleError(
                 null,
                 mappedError as string,
-                dispatch,
                 'Error while creating user',
             )
         },

@@ -2,10 +2,10 @@ import { useCallback, useMemo } from 'react'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { getQueryOptions } from '../../../shared/queryOption'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadItem } from '../../../thread/types'
-import { getContactReasonSuggestionCount } from '../predicates'
+import { getQueryOptions } from '#shared/queryOption'
+import { getContactReasonSuggestionCount } from '#suggestions/contact-reason-prediction/predicates'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 
 type UseContactReasonPredictionParams = {
     ticketId: number

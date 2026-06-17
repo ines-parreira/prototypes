@@ -15,10 +15,10 @@ import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
 import {
     mockTranslateTicketModalContextValue,
     render,
-} from '../../../../../tests/render.utils'
-import { server } from '../../../../../tests/server'
-import * as ExpandedMessagesModule from '../../../../context/ExpandedMessages'
-import { TranslationsDropdown } from '../TranslationsDropdown'
+} from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TranslationsDropdown } from '#ticket-messages/components/MessageBubble/components/TranslationsDropdown'
+import * as ExpandedMessagesModule from '#ticket-messages/context/ExpandedMessages'
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')

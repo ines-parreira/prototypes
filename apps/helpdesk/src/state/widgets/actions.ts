@@ -6,6 +6,7 @@ import _last from 'lodash/last'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 
+import { toast } from '@gorgias/axiom'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import { fetchWidgets as fetchWidgetsRequest } from 'models/widget/resources'
 import type {
@@ -20,8 +21,6 @@ import type {
 import { jsonToWidgets } from 'pages/common/components/infobar/utils'
 import { GorgiasApi } from 'services/gorgiasApi'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { getSources, getSourcesWithCustomer } from 'state/widgets/selectors'
 
@@ -303,12 +302,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
                         context,
                     })
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Widgets successfully updated',
-                        }),
-                    )
+                    toast.success('Widgets successfully updated')
                 },
                 (error: AxiosError) => {
                     return dispatch({

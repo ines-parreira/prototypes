@@ -1,18 +1,18 @@
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import type { TicketThreadItem } from '../../thread/types'
-import type { TicketThreadMessageItem } from '../../ticket-messages/types'
-import type { TicketThreadAiAgentPseudoEventRenderableItem } from '../predicates/pseudoEvents'
+import type { TicketThreadAiAgentPseudoEventRenderableItem } from '#ai-agent/predicates/pseudoEvents'
 import {
     isAiAgentPseudoEventMessageItem,
     shouldGroupLegacyAiAgentMessages,
-} from '../predicates/pseudoEvents'
+} from '#ai-agent/predicates/pseudoEvents'
 import type {
     TicketThreadAiAgentPseudoEvent,
     TicketThreadAiAgentPseudoEventTag,
-} from '../types'
-import { TicketThreadAiAgentPseudoEventAction } from '../types'
+} from '#ai-agent/types'
+import { TicketThreadAiAgentPseudoEventAction } from '#ai-agent/types'
+import type { TicketThreadItem } from '#thread/types'
+import type { TicketThreadMessageItem } from '#ticket-messages/types'
 
 const ACTION_NAME_ADD_TAGS = 'addTags'
 const ACTION_NAME_SET_STATUS = 'setStatus'

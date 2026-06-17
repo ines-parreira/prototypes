@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import { SYSTEM_RULE_TYPE } from '../../../../../../constants'
-import type { TicketThreadAuditLogEventByType } from '../../../../../../types'
-import { TicketThreadAuditLogEventAttribution } from '../../../TicketThreadAuditLogEventAttribution'
-import { TicketThreadEventContainer } from '../../../TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../../../TicketThreadEventDateTime'
+import { TicketThreadAuditLogEventAttribution } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEventAttribution'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import { SYSTEM_RULE_TYPE } from '#events/constants'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
 import { getRuleFailedActionsDisplay } from './ruleFailureTransforms'
 
 import css from './TicketThreadAuditLogRuleExecutedEvent.less'

@@ -75,6 +75,7 @@ yalc.lock
 .nx/workspace-data
 
 .diagnostics
+scripts/codebase-health/artefacts/
 .playwright-mcp/
 
 .rulesync/skills/.curated/

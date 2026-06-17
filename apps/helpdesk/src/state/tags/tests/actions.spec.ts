@@ -1,5 +1,4 @@
 import client from '@repo/api-resources'
-import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -8,13 +7,12 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import type { Tag } from '@gorgias/helpdesk-types'
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 import type { TagDraft } from 'models/tag/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
 import { initialState } from 'state/tags/reducers'
@@ -31,10 +29,6 @@ const meta = {
     prev_cursor: null,
 }
 
-jest.mock('state/notifications/actions')
-
-const mockNotify = notify as jest.Mock
-
 type MockedRootState = {
     tags: Map<any, any>
 }
@@ -44,11 +38,9 @@ describe('tags actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        mockNotify.mockImplementation(
-            () => (args: Record<string, unknown>) => args,
-        )
         store = mockStore({ tags: initialState })
         mockServer = new MockAdapter(client)
+        jest.clearAllMocks()
     })
 
     it('addTags', () => {
@@ -206,13 +198,9 @@ describe('tags actions', () => {
 
     it('remove', async () => {
         mockServer.onDelete('/api/tags/1/').reply(200)
-        await store.dispatch(actions.remove('1'))
-        await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: 'Tag deleted successfully',
-            })
-        })
+        await expect(store.dispatch(actions.remove('1'))).resolves.toBe(
+            undefined,
+        )
     })
 
     it('remove error', async () => {
@@ -229,13 +217,22 @@ describe('tags actions', () => {
     it('bulkDelete', async () => {
         mockServer.onDelete('/api/tags/').reply(204)
 
-        await store.dispatch(actions.bulkDelete(['1', '2']))
-        await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: '2 tags deleted successfully',
-            })
-        })
+        await expect(
+            store.dispatch(actions.bulkDelete(['1', '2'])),
+        ).resolves.toBe(undefined)
+    })
+
+    it('bulkDelete single tag', async () => {
+        const toastSuccessSpy = jest.spyOn(toast, 'success')
+        mockServer.onDelete('/api/tags/').reply(204)
+
+        await expect(store.dispatch(actions.bulkDelete(['1']))).resolves.toBe(
+            undefined,
+        )
+
+        expect(toastSuccessSpy).toHaveBeenCalledWith(
+            '1 tag deleted successfully',
+        )
     })
 
     it('bulkDelete error', async () => {

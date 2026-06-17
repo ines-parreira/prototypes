@@ -3,8 +3,11 @@ import { screen, waitFor } from '@testing-library/react'
 
 import type * as Utils from '@repo/utils'
 
-import { render } from '../../../../../tests/render.utils'
-import { MoreLikeThisCaption, ProductReference } from '../SimilarProductsSearch'
+import { render } from '#tests/render.utils'
+import {
+    MoreLikeThisCaption,
+    ProductReference,
+} from '#ticket-messages/components/MessageBubble/components/SimilarProductsSearch'
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()

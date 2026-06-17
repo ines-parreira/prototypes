@@ -119,9 +119,11 @@ export const TitleCell = ({
         >
             <Box gap="xs" alignItems="center" className={css.titleCell}>
                 <Icon size="sm" name={getIcon()} />
-                <TruncatedTextWithTooltip tooltipContent={title}>
-                    <Text>{highlightText(title, searchTerm)}</Text>
-                </TruncatedTextWithTooltip>
+                <div className={css.titleWrapper}>
+                    <TruncatedTextWithTooltip tooltipContent={title}>
+                        <Text>{highlightText(title, searchTerm)}</Text>
+                    </TruncatedTextWithTooltip>
+                </div>
                 {isGrouped && itemCount && (
                     <div className={css.quantity}>
                         <Icon name="arrow-sub-down-right" size="sm" />

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { useShortcuts } from '@repo/utils'
-import { isNumber } from 'lodash'
 
 import {
     Avatar,
@@ -15,6 +14,8 @@ import type { TicketUser, User } from '@gorgias/helpdesk-queries'
 import { SELECT_WIDTH } from './constant'
 import { UserSelectBase } from './UserSelectBase'
 
+import { NO_USER_OPTION } from '../hooks/useUserOptions'
+import { getUserProfilePictureURL } from '../utils/getUserProfilePictureURL'
 import css from './SelectStyles.less'
 
 export type UserAssigneeSelectProps = {
@@ -58,15 +59,11 @@ export function UserAssigneeSelect({
                 usersMap,
                 selectedOption,
             }) => {
-                const user = isNumber(selectedOption?.id)
-                    ? usersMap.get(selectedOption?.id)
-                    : null
-                const profilePictureUrl =
-                    user?.meta &&
-                    typeof user.meta === 'object' &&
-                    'profile_picture_url' in user.meta
-                        ? user.meta.profile_picture_url
+                const user =
+                    selectedOption && selectedOption.id !== NO_USER_OPTION.id
+                        ? usersMap.get(selectedOption.id)
                         : null
+                const profilePictureUrl = getUserProfilePictureURL(user ?? null)
 
                 return (
                     <Tooltip
@@ -79,10 +76,7 @@ export function UserAssigneeSelect({
                                         <div>
                                             <Avatar
                                                 name={user.name || ''}
-                                                url={
-                                                    profilePictureUrl ??
-                                                    undefined
-                                                }
+                                                url={profilePictureUrl}
                                                 size="sm"
                                             />
                                         </div>

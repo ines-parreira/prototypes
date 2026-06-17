@@ -2,12 +2,12 @@ import { screen, within } from '@testing-library/react'
 
 import { mockListTicketTagsHandler } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../../tests/render.utils'
-import { server } from '../../../../../tests/server'
-import { MessageAppliedActions } from '../MessageAppliedActions'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { MessageAppliedActions } from '#ticket-messages/components/MessageBubble/components/MessageAppliedActions'
 
 vi.mock(
-    '../../../../../events/components/TicketThreadEventItem/components/TicketThreadEventDateTime',
+    '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime',
     () => ({
         TicketThreadEventDateTime: ({ datetime }: { datetime: string }) => (
             <span>{datetime}</span>

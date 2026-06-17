@@ -3,6 +3,8 @@ import { createContext, createElement, useContext, useMemo } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
+
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import type { ImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
@@ -96,6 +98,8 @@ export const useSkillPerformanceFromContext = ({
         })),
     )
 
+    const isSuccessRateEnabled = useSkillReportingEnabled()
+
     const dateRange = useMemo(
         () =>
             dateRangeOverride ??
@@ -118,6 +122,7 @@ export const useSkillPerformanceFromContext = ({
             resourceSourceId: skillArticleId ?? 0,
             resourceSourceSetId: helpCenterId,
             enabled: !!skillArticleId && !!shopIntegrationId && !!helpCenterId,
+            includeSuccessRate: isSuccessRateEnabled,
             dateRange,
         })
 

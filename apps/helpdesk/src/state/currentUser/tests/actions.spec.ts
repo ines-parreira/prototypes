@@ -7,6 +7,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import type { UserSetting } from 'config/types/user'
 import { UserSettingType } from 'config/types/user'
 import * as notificationActions from 'state/notifications/actions'
@@ -36,9 +38,11 @@ describe('current user actions', () => {
             notifications: [],
         })
         mockServer = new MockAdapter(client)
+        jest.clearAllMocks()
     })
 
     it('change password', () => {
+        const toastSuccessSpy = jest.spyOn(toast, 'success')
         const data = {
             old_password: 'password',
             new_password: 'newPassword',
@@ -48,7 +52,33 @@ describe('current user actions', () => {
             .dispatch(
                 actions.changePassword(data.old_password, data.new_password),
             )
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+            .then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(toastSuccessSpy).toHaveBeenCalledWith(
+                    'Password successfully changed!',
+                )
+            })
+    })
+
+    it('update current user', async () => {
+        const toastSuccessSpy = jest.spyOn(toast, 'success')
+        const data = {
+            email: 'jane@example.com',
+        }
+        mockServer.onPut('/api/users/0/').reply(200, data)
+
+        await store.dispatch(actions.updateCurrentUser(data))
+
+        expect(store.getActions()).toEqual([
+            { type: types.SUBMIT_CURRENT_USER_START },
+            {
+                type: types.SUBMIT_CURRENT_USER_SUCCESS,
+                resp: data,
+            },
+        ])
+        expect(toastSuccessSpy).toHaveBeenCalledWith(
+            'User successfully updated',
+        )
     })
 
     it('change password with 2fa', () => {
@@ -95,6 +125,23 @@ describe('current user actions', () => {
             return store
                 .dispatch(actions.submitSetting(data, false))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('shows a notification when requested', async () => {
+            const toastSuccessSpy = jest.spyOn(toast, 'success')
+            const data = {
+                type: 'macro',
+                id: 1,
+                hello: 'world',
+                data: {},
+            } as unknown as UserSetting
+            mockServer.onPut('/api/users/0/settings/1/').reply(200, data)
+
+            await store.dispatch(actions.submitSetting(data, true))
+
+            expect(toastSuccessSpy).toHaveBeenCalledWith(
+                'Settings successfully updated',
+            )
         })
 
         it('should update available status and fetch chats', () => {

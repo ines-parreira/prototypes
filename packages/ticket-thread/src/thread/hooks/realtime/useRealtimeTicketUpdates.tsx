@@ -7,7 +7,7 @@ import type { DomainEvent } from '@gorgias/events'
 import { isDomainEvent } from '@gorgias/events'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '../../../ticket-messages/hooks/useListTicketMessages'
+import { TICKET_THREAD_MESSAGES_PAGE_LIMIT } from '#ticket-messages/hooks/useListTicketMessages'
 import { useTicketMessageCreatedSignalHandler } from './useTicketMessageCreatedSignalHandler'
 
 type UseRealtimeTicketUpdatesParams = {

@@ -28,15 +28,19 @@ export function createInitialDraftView(
     viewName?: string,
     filters?: string,
 ) {
-    return (
+    const initialDraftView = (
         viewsConfig.getConfigByType(ViewType.TicketList).get('newView') as (
             visibility?: ViewVisibilityType,
             viewName?: string,
             filters?: string,
         ) => ViewImmutable
-    )(visibility, viewName, filters)
-        .set('name', '')
-        .set('slug', '')
+    )(visibility, viewName, filters).set('slug', '')
+
+    if (viewName) {
+        return initialDraftView
+    }
+
+    return initialDraftView.set('name', '')
 }
 
 function getInitialDraftFields(

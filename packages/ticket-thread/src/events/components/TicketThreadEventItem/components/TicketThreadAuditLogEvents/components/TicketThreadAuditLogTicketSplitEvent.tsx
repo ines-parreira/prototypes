@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom'
 
 import { Icon, Text } from '@gorgias/axiom'
 
-import type { TicketThreadAuditLogEventByType } from '../../../../../types'
-import { TicketThreadAuditLogEventAttribution } from '../../TicketThreadAuditLogEventAttribution'
-import { TicketThreadEventContainer } from '../../TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../../TicketThreadEventDateTime'
+import { TicketThreadAuditLogEventAttribution } from '#events/components/TicketThreadEventItem/components/TicketThreadAuditLogEventAttribution'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import type { TicketThreadAuditLogEventByType } from '#events/types'
 
 type TicketThreadAuditLogTicketSplitEventProps = {
     item: TicketThreadAuditLogEventByType<'ticket-split'>

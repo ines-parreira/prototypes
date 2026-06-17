@@ -1,4 +1,9 @@
 import { reportError } from '@repo/logging'
+import { renderHook } from '@repo/testing'
+
+import { toast } from '@gorgias/axiom'
+
+import { screen, waitFor } from '@testing-library/react'
 
 import type {
     HelpCenter,
@@ -24,8 +29,6 @@ import {
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 import { mapHelpCenterArticleItemToArticle } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     findArticleByKey,
@@ -44,7 +47,6 @@ import {
     mapUIHelpCenterToApiHelpCenter,
 } from '../HelpCenterCreationWizardUtils'
 
-jest.mock('state/notifications/actions')
 jest.mock('@repo/logging')
 
 const defaultApiHelpCenter = HelpCenterApiBasicsFixture
@@ -308,20 +310,20 @@ describe('helpCenterCreationWizardUtils', () => {
     })
 
     describe('handleOnError', () => {
-        it('reports error to Sentry and dispatches notification', () => {
-            const dispatch = jest.fn()
-            handleOnError(
-                new Error('An error occurred'),
-                'An error occurred',
-                dispatch,
+        afterEach(() => {
+            toast.dismiss()
+        })
+
+        it('reports error to Sentry and shows an error toast', async () => {
+            renderHook(() => null)
+
+            handleOnError(new Error('An error occurred'), 'An error occurred')
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', { name: 'An error occurred' }),
+                ).toHaveAttribute('data-intent', 'destructive'),
             )
-
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: `An error occurred`,
-                status: NotificationStatus.Error,
-            })
-
-            expect(dispatch).toHaveBeenCalledTimes(1)
 
             expect(reportError).toHaveBeenCalledTimes(1)
             expect(reportError).toHaveBeenCalledWith(

@@ -13,7 +13,6 @@ import {
     disconnectDevice,
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useHasPhone } from 'hooks/useHasPhone'
 import { LAST_USED_INTEGRATION_STORAGE_KEY } from 'pages/integrations/integration/components/voice/constants'
@@ -38,8 +37,6 @@ export function VoiceDeviceProvider({
         LAST_USED_INTEGRATION_STORAGE_KEY,
         '',
     )
-
-    const appDispatch = useAppDispatch()
 
     const actions = useMemo(
         () => bindActionCreators(contextActions, dispatch as Dispatch),
@@ -82,7 +79,7 @@ export function VoiceDeviceProvider({
         }
 
         if (!state.device) {
-            void connectDevice(appDispatch, state.reconnectAttempts, actions)
+            void connectDevice(state.reconnectAttempts, actions)
             return
         }
 
@@ -99,7 +96,7 @@ export function VoiceDeviceProvider({
             default:
                 break
         }
-    }, [state, appDispatch, isDesktop, isAgentActive, actions, hasPhone])
+    }, [state, isDesktop, isAgentActive, actions, hasPhone])
 
     const value = useMemo(() => ({ ...state, actions }), [state, actions])
 

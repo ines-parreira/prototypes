@@ -4,7 +4,7 @@ import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 import { listEvents, ListEventsObjectType } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../constants'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '#satisfaction-surveys/constants'
 
 export function useListAllSatisfactionSurveyEvents(
     satisfactionSurveyId: number | null | undefined,

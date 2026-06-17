@@ -11,51 +11,51 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadAiAgentPseudoEventAction } from '../../ai-agent/types'
-import { useTicketThreadEvents } from '../../events/hooks/useTicketThreadEvents'
-import type { TicketThreadActionExecutedEventItem } from '../../events/types'
-import { useTicketThreadSatisfactionSurveys } from '../../satisfaction-surveys/hooks/useTicketThreadSatisfactionSurveys'
-import { useTicketThreadShoppingAssistantEvents } from '../../shopping-assistant/hooks/useTicketThreadShoppingAssistantEvents'
-import { useContactReasonPrediction } from '../../suggestions/contact-reason-prediction/hooks/useContactReasonPrediction'
-import { useRuleSuggestion } from '../../suggestions/rule-suggestions/hooks/useRuleSuggestion'
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { AI_AGENT_BOT_EMAILS } from '../../ticket-messages/constants'
-import { useTicketThreadMessages } from '../../ticket-messages/hooks/useTicketThreadMessages'
+import { TicketThreadAiAgentPseudoEventAction } from '#ai-agent/types'
+import { useTicketThreadEvents } from '#events/hooks/useTicketThreadEvents'
+import type { TicketThreadActionExecutedEventItem } from '#events/types'
+import { useTicketThreadSatisfactionSurveys } from '#satisfaction-surveys/hooks/useTicketThreadSatisfactionSurveys'
+import { useTicketThreadShoppingAssistantEvents } from '#shopping-assistant/hooks/useTicketThreadShoppingAssistantEvents'
+import { useContactReasonPrediction } from '#suggestions/contact-reason-prediction/hooks/useContactReasonPrediction'
+import { useRuleSuggestion } from '#suggestions/rule-suggestions/hooks/useRuleSuggestion'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { useTicketThread } from '#thread/hooks/useTicketThread'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { AI_AGENT_BOT_EMAILS } from '#ticket-messages/constants'
+import { useTicketThreadMessages } from '#ticket-messages/hooks/useTicketThreadMessages'
 import type {
     TicketThreadMessageData,
     TicketThreadRegularMessageItem,
-} from '../../ticket-messages/types'
-import { useTicketThreadVoiceCalls } from '../../voice-calls/hooks/useTicketThreadVoiceCalls'
-import { useTicketThread } from '../hooks/useTicketThread'
-import { TicketThreadItemTag } from '../itemTags'
+} from '#ticket-messages/types'
+import { useTicketThreadVoiceCalls } from '#voice-calls/hooks/useTicketThreadVoiceCalls'
 
-vi.mock('../../ticket-messages/hooks/useTicketThreadMessages', () => ({
+vi.mock('#ticket-messages/hooks/useTicketThreadMessages', () => ({
     useTicketThreadMessages: vi.fn(),
 }))
-vi.mock('../../events/hooks/useTicketThreadEvents', () => ({
+vi.mock('#events/hooks/useTicketThreadEvents', () => ({
     useTicketThreadEvents: vi.fn(),
 }))
-vi.mock('../../voice-calls/hooks/useTicketThreadVoiceCalls', () => ({
+vi.mock('#voice-calls/hooks/useTicketThreadVoiceCalls', () => ({
     useTicketThreadVoiceCalls: vi.fn(),
 }))
 vi.mock(
-    '../../satisfaction-surveys/hooks/useTicketThreadSatisfactionSurveys',
+    '#satisfaction-surveys/hooks/useTicketThreadSatisfactionSurveys',
     () => ({
         useTicketThreadSatisfactionSurveys: vi.fn(),
     }),
 )
 vi.mock(
-    '../../shopping-assistant/hooks/useTicketThreadShoppingAssistantEvents',
+    '#shopping-assistant/hooks/useTicketThreadShoppingAssistantEvents',
     () => ({
         useTicketThreadShoppingAssistantEvents: vi.fn(),
     }),
 )
-vi.mock('../../suggestions/rule-suggestions/hooks/useRuleSuggestion', () => ({
+vi.mock('#suggestions/rule-suggestions/hooks/useRuleSuggestion', () => ({
     useRuleSuggestion: vi.fn(),
 }))
 vi.mock(
-    '../../suggestions/contact-reason-prediction/hooks/useContactReasonPrediction',
+    '#suggestions/contact-reason-prediction/hooks/useContactReasonPrediction',
     () => ({
         useContactReasonPrediction: vi.fn(),
     }),

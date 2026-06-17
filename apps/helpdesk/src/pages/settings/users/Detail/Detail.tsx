@@ -9,7 +9,6 @@ import type { UserDraft } from 'config/types/user'
 import { UserRole } from 'config/types/user'
 import { useCreateAgent } from 'hooks/agents/useCreateAgent'
 import { useUpdateAgent } from 'hooks/agents/useUpdateAgent'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { Loader } from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
@@ -26,7 +25,6 @@ import { Statuses } from './Statuses'
 import type { AgentState } from './types'
 
 export const Detail = () => {
-    const dispatch = useAppDispatch()
     const { id: unsafeAgentId } = useParams<{
         id: string
     }>()
@@ -47,7 +45,6 @@ export const Detail = () => {
         isEdit,
         setAgentState,
         set2FA,
-        dispatch,
     })
 
     const { mutate: createAgent, isLoading: isCreating } = useCreateAgent()

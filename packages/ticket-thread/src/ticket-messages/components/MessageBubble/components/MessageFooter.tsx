@@ -2,8 +2,9 @@ import { isNumber } from 'lodash'
 
 import { Box, Icon, Tag, TagColor } from '@gorgias/axiom'
 
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
-import { useExpandedMessages } from '../../../context/ExpandedMessages'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { useExpandedMessages } from '#ticket-messages/context/ExpandedMessages'
 import type {
     TicketThreadAiAgentHandoverMessageItem,
     TicketThreadAiAgentMessageItem,
@@ -19,8 +20,7 @@ import type {
     TicketThreadSocialMediaTwitterDirectMessageItem,
     TicketThreadSocialMediaTwitterTweetItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
-} from '../../../types'
-import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
+} from '#ticket-messages/types'
 import type { MessageAttachmentsItem } from './MessageAttachments'
 import { MessageAttachments } from './MessageAttachments'
 import type { MessageVideosItem } from './MessageVideos'

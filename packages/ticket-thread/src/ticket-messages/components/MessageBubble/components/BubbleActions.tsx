@@ -14,7 +14,7 @@ import {
 } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
-import { useTicketThreadWidth } from '../../../../thread/context/TicketThreadWidth'
+import { useTicketThreadWidth } from '#thread/context/TicketThreadWidth'
 
 import css from '../MessageBubble.less'
 

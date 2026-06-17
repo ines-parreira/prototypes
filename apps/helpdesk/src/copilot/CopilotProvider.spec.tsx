@@ -1,15 +1,18 @@
 import { isValidElement } from 'react'
 import type { ReactElement } from 'react'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { history } from '@repo/routing'
 import { assumeMock, render } from '@repo/testing'
 
-import { useLocation } from 'react-router-dom'
 import {
     CopilotProvider as BaseCopilotProvider,
-    useCopilot,
-    useCopilotPanel,
+    useRunLifecycle,
+    useThreadLifecycle,
+} from '@gorgias/copilot'
+import type {
+    RunLifecycleCallbacks,
+    ThreadLifecycleCallbacks,
 } from '@gorgias/copilot'
 
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
@@ -17,8 +20,8 @@ import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 import { GuidanceConfirmationPreview } from './confirmation/GuidanceConfirmationPreview'
 import { SkillConfirmationPreview } from './confirmation/SkillConfirmationPreview'
 import {
-    COPILOT_CONVERSATION_ID_QUERY_PARAM,
     CopilotProvider,
+    GAIA_CONVERSATION_ID_QUERY_PARAM,
 } from './CopilotProvider'
 
 jest.mock('utils/sdk', () => ({
@@ -26,25 +29,40 @@ jest.mock('utils/sdk', () => ({
     fetchCopilotShops: jest.fn(async () => []),
 }))
 
-jest.mock('@repo/logging', () => ({
-    ...jest.requireActual('@repo/logging'),
-    logEvent: jest.fn(),
+jest.mock('./tracking/CopilotTracking', () => ({
+    CopilotTracking: () => null,
 }))
 
-const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+jest.mock('./uiActions/CopilotUiActionsProvider', () => ({
+    CopilotUiActionsProvider: () => null,
+}))
 
 describe('CopilotProvider', () => {
     const baseCopilotProviderMock = assumeMock(BaseCopilotProvider)
     const createCopilotAgentMock = assumeMock(createCopilotAgent)
-    const useCopilotMock = assumeMock(useCopilot)
-    const useCopilotPanelMock = assumeMock(useCopilotPanel)
+    const historyReplaceMock = assumeMock(history.replace)
+    const useRunLifecycleMock = assumeMock(useRunLifecycle)
+    const useThreadLifecycleMock = assumeMock(useThreadLifecycle)
+    let runLifecycleCallbacks: RunLifecycleCallbacks
+    let threadLifecycleCallbacks: ThreadLifecycleCallbacks
 
     beforeEach(() => {
         baseCopilotProviderMock.mockClear()
         createCopilotAgentMock.mockClear()
-        mockLogEvent.mockClear()
-        useCopilotMock.mockReturnValue(buildCopilotMockReturn())
-        useCopilotPanelMock.mockReturnValue(buildCopilotPanelMockReturn())
+        historyReplaceMock.mockClear()
+        runLifecycleCallbacks = {}
+        threadLifecycleCallbacks = {}
+        useRunLifecycleMock.mockImplementation(
+            (callbacks: RunLifecycleCallbacks) => {
+                runLifecycleCallbacks = callbacks
+                return { isRunning: false }
+            },
+        )
+        useThreadLifecycleMock.mockImplementation(
+            (callbacks: ThreadLifecycleCallbacks) => {
+                threadLifecycleCallbacks = callbacks
+            },
+        )
         window.GORGIAS_STATE = {
             currentAccount: { domain: 'acme', id: 123 },
         } as typeof window.GORGIAS_STATE
@@ -161,183 +179,94 @@ describe('CopilotProvider', () => {
         expect(unknownElement).toBeNull()
     })
 
-    it('opens copilot and switches to the forced conversation from the URL', () => {
-        const switchThread = jest.fn()
-        const setIsOpen = jest.fn()
-        useCopilotMock.mockReturnValue(buildCopilotMockReturn({ switchThread }))
-        useCopilotPanelMock.mockReturnValue(
-            buildCopilotPanelMockReturn({ setIsOpen }),
-        )
-
+    it('passes conversation deep-link props to BaseCopilotProvider', () => {
         render(
             <CopilotProvider>
                 <div>Helpdesk</div>
             </CopilotProvider>,
             {
                 initialEntries: [
-                    `/app/ticket/42?${COPILOT_CONVERSATION_ID_QUERY_PARAM}=forced-conversation-123`,
+                    `/app/ticket/42?${GAIA_CONVERSATION_ID_QUERY_PARAM}=0b85907b-7f8e-4ef8-9b8a-9f2c2b8f8d11`,
                 ],
             },
         )
 
-        expect(switchThread).toHaveBeenCalledWith('forced-conversation-123')
-        expect(setIsOpen).toHaveBeenCalledWith(true)
+        const props = baseCopilotProviderMock.mock.calls[0][0]
+        expect(props.initialThreadId).toBe(
+            '0b85907b-7f8e-4ef8-9b8a-9f2c2b8f8d11',
+        )
+        expect(props.conversationLinkParam).toBe(
+            GAIA_CONVERSATION_ID_QUERY_PARAM,
+        )
     })
 
-    it('clears the forced conversation param and preserves the rest of the query string', async () => {
-        const switchThread = jest.fn()
-        const setIsOpen = jest.fn()
-        useCopilotMock.mockReturnValue(buildCopilotMockReturn({ switchThread }))
-        useCopilotPanelMock.mockReturnValue(
-            buildCopilotPanelMockReturn({ setIsOpen }),
-        )
-
+    it('updates the conversation deep link when the active thread switches', () => {
         render(
             <CopilotProvider>
-                <LocationSearchProbe />
+                <div>Helpdesk</div>
             </CopilotProvider>,
             {
                 initialEntries: [
-                    '/app/ticket/42?tab=details&copilotConversationId=forced-conversation-123',
+                    `/app/ticket/42?foo=bar&${GAIA_CONVERSATION_ID_QUERY_PARAM}=previous-thread`,
                 ],
             },
         )
 
-        expect(switchThread).toHaveBeenCalledWith('forced-conversation-123')
-        expect(setIsOpen).toHaveBeenCalledWith(true)
-        await waitFor(() => {
-            expect(screen.getByLabelText('Current search')).toHaveTextContent(
-                '?tab=details',
-            )
+        act(() => {
+            threadLifecycleCallbacks.onThreadSwitched?.({
+                fromThreadId: 'previous-thread',
+                toThreadId: 'selected-thread',
+            })
+        })
+
+        expect(historyReplaceMock).toHaveBeenCalledWith({
+            search: `foo=bar&${GAIA_CONVERSATION_ID_QUERY_PARAM}=selected-thread`,
         })
     })
 
-    it('opens copilot without switching when the forced conversation is already active', () => {
-        const switchThread = jest.fn()
-        const setIsOpen = jest.fn()
-        useCopilotMock.mockReturnValue(
-            buildCopilotMockReturn({
-                switchThread,
-                threadId: 'active-conversation',
-            }),
-        )
-        useCopilotPanelMock.mockReturnValue(
-            buildCopilotPanelMockReturn({ setIsOpen }),
-        )
-
+    it('clears the conversation deep link when a new empty thread is created', () => {
         render(
             <CopilotProvider>
                 <div>Helpdesk</div>
             </CopilotProvider>,
             {
                 initialEntries: [
-                    '/app/ticket/42?copilotConversationId=active-conversation',
+                    `/app/ticket/42?foo=bar&${GAIA_CONVERSATION_ID_QUERY_PARAM}=previous-thread`,
                 ],
             },
         )
 
-        expect(switchThread).not.toHaveBeenCalled()
-        expect(setIsOpen).toHaveBeenCalledWith(true)
+        act(() => {
+            threadLifecycleCallbacks.onThreadCreated?.({
+                threadId: 'new-thread',
+            })
+        })
+
+        expect(historyReplaceMock).toHaveBeenCalledWith({
+            search: 'foo=bar',
+        })
     })
 
-    it('tracks a deep-link open so it is not an untracked open paired with a tracked close', () => {
-        const setIsOpen = jest.fn()
-        useCopilotPanelMock.mockReturnValue(
-            buildCopilotPanelMockReturn({ setIsOpen }),
-        )
-
+    it('sets the conversation deep link when a new thread starts from a user message', () => {
         render(
             <CopilotProvider>
                 <div>Helpdesk</div>
             </CopilotProvider>,
             {
-                initialEntries: [
-                    `/app/ticket/42?${COPILOT_CONVERSATION_ID_QUERY_PARAM}=forced-conversation-123`,
-                ],
+                initialEntries: ['/app/ticket/42?foo=bar'],
             },
         )
 
-        expect(mockLogEvent).toHaveBeenCalledWith(
-            SegmentEvent.CopilotOpened,
-            expect.objectContaining({ trigger: 'deep-link', product: 'inbox' }),
-        )
-    })
+        act(() => {
+            runLifecycleCallbacks.onStart?.({
+                threadId: 'new-thread',
+                runId: 'run-1',
+                userMessage: 'hello',
+            })
+        })
 
-    it('ignores missing and blank forced conversation params', () => {
-        const switchThread = jest.fn()
-        const setIsOpen = jest.fn()
-        useCopilotMock.mockReturnValue(buildCopilotMockReturn({ switchThread }))
-        useCopilotPanelMock.mockReturnValue(
-            buildCopilotPanelMockReturn({ setIsOpen }),
-        )
-
-        render(
-            <CopilotProvider>
-                <div>Helpdesk</div>
-            </CopilotProvider>,
-            {
-                initialEntries: ['/app/ticket/42?copilotConversationId=%20'],
-            },
-        )
-
-        expect(switchThread).not.toHaveBeenCalled()
-        expect(setIsOpen).not.toHaveBeenCalled()
-    })
-
-    it('uses only the supported forced conversation query param', () => {
-        const switchThread = jest.fn()
-        const setIsOpen = jest.fn()
-        useCopilotMock.mockReturnValue(buildCopilotMockReturn({ switchThread }))
-        useCopilotPanelMock.mockReturnValue(
-            buildCopilotPanelMockReturn({ setIsOpen }),
-        )
-
-        render(
-            <CopilotProvider>
-                <div>Helpdesk</div>
-            </CopilotProvider>,
-            {
-                initialEntries: [
-                    '/app/ticket/42?copilot-conversation-id=ignored&copilot_conversation_id=ignored',
-                ],
-            },
-        )
-
-        expect(switchThread).not.toHaveBeenCalled()
-        expect(setIsOpen).not.toHaveBeenCalled()
+        expect(historyReplaceMock).toHaveBeenCalledWith({
+            search: `foo=bar&${GAIA_CONVERSATION_ID_QUERY_PARAM}=new-thread`,
+        })
     })
 })
-
-function buildCopilotMockReturn(
-    overrides: Partial<ReturnType<typeof useCopilot>> = {},
-): ReturnType<typeof useCopilot> {
-    return {
-        abort: jest.fn(),
-        agent: {} as ReturnType<typeof useCopilot>['agent'],
-        agentKey: 'agent-key',
-        eventBus: {} as ReturnType<typeof useCopilot>['eventBus'],
-        newThread: jest.fn(),
-        sendPrompt: jest.fn(() => 'message-id'),
-        switchThread: jest.fn(),
-        threadId: 'current-thread',
-        ...overrides,
-    }
-}
-
-function buildCopilotPanelMockReturn(
-    overrides: Partial<ReturnType<typeof useCopilotPanel>> = {},
-): ReturnType<typeof useCopilotPanel> {
-    return {
-        isOpen: false,
-        setIsOpen: jest.fn(),
-        setWidth: jest.fn(),
-        width: 400,
-        ...overrides,
-    }
-}
-
-function LocationSearchProbe() {
-    const { search } = useLocation()
-
-    return <output aria-label="Current search">{search}</output>
-}

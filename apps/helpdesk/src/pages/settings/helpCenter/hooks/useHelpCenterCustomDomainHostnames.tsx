@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { toast } from '@gorgias/axiom'
 
 import { useHelpCenterApi } from './useHelpCenterApi'
 
@@ -12,7 +10,6 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
         string[]
     >([])
     const [isLoading, setIsLoading] = useState(true)
-    const dispatch = useAppDispatch()
 
     const fetchCustomDomains = useCallback(async () => {
         if (!client || !helpCenterId) {
@@ -34,16 +31,11 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
                 activeCustomDomains.map((domain) => domain.hostname),
             )
         } catch {
-            void dispatch(
-                notify({
-                    message: "Failed to fetch Help Center's custom domains",
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error("Failed to fetch Help Center's custom domains")
         } finally {
             setIsLoading(false)
         }
-    }, [client, helpCenterId, dispatch])
+    }, [client, helpCenterId])
 
     useEffect(() => {
         void fetchCustomDomains()

@@ -2,7 +2,10 @@ import { useCallback, useEffect } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
+
 import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
+import { useCopilotNavigationGuard } from 'copilot/uiActions/unsavedWorkGuard'
 import { GuidanceDisabledActionsBar } from 'pages/aiAgent/components/GuidanceEditor/GuidanceDisabledActionsBar'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
@@ -98,6 +101,17 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
         isFormValid(storeState.state),
     )
 
+    const guidanceId = useGuidanceStore(
+        (storeState) => storeState.state.guidance?.id,
+    )
+
+    useCopilotNavigationGuard(hasPendingChanges)
+
+    const guidanceAnchorTarget =
+        guidanceId !== undefined
+            ? ({ type: 'guidance', id: guidanceId } as const)
+            : undefined
+
     const { guidanceActions } = useGetGuidancesAvailableActions(
         shopName,
         shopType,
@@ -123,7 +137,12 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
     }, [closeHandlerRef, onClickCancel])
 
     return (
-        <div className={css.knowledgeEditorContainer}>
+        <div
+            className={css.knowledgeEditorContainer}
+            {...(guidanceAnchorTarget
+                ? copilotAnchorProps(guidanceAnchorTarget)
+                : {})}
+        >
             <KnowledgeEditorTopBar
                 onClickPrevious={
                     mode !== 'edit' && mode !== 'diff'
@@ -174,6 +193,22 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                                 shopName={shopName}
                                 availableActions={guidanceActions}
                                 availableVariables={guidanceVariables}
+                                titleAnchorProps={
+                                    guidanceAnchorTarget
+                                        ? copilotAnchorProps(
+                                              guidanceAnchorTarget,
+                                              'title',
+                                          )
+                                        : undefined
+                                }
+                                contentAnchorProps={
+                                    guidanceAnchorTarget
+                                        ? copilotAnchorProps(
+                                              guidanceAnchorTarget,
+                                              'content',
+                                          )
+                                        : undefined
+                                }
                             />
                         )}
 
@@ -217,6 +252,22 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                                 shopName={shopName}
                                 availableActions={guidanceActions}
                                 availableVariables={guidanceVariables}
+                                titleAnchorProps={
+                                    guidanceAnchorTarget
+                                        ? copilotAnchorProps(
+                                              guidanceAnchorTarget,
+                                              'title',
+                                          )
+                                        : undefined
+                                }
+                                contentAnchorProps={
+                                    guidanceAnchorTarget
+                                        ? copilotAnchorProps(
+                                              guidanceAnchorTarget,
+                                              'content',
+                                          )
+                                        : undefined
+                                }
                             />
                         )}
                     </div>

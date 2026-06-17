@@ -45,6 +45,12 @@ jest.mock('../EmailIntegrationMigrationRealtimeHandler', () => ({
     ),
 }))
 
+jest.mock('../ViewSectionsRealtimeHandler', () => ({
+    ViewSectionsRealtimeHandler: () => (
+        <div data-testid="view-sections-realtime-handler" />
+    ),
+}))
+
 jest.mock('@gorgias/realtime', () => ({
     RealtimeProvider: ({
         children,
@@ -126,6 +132,30 @@ describe('AblyRealtimeProviders', () => {
         expect(
             getByTestId('email-migration-realtime-handler'),
         ).toBeInTheDocument()
+    })
+
+    it('should render the view sections realtime handler when the migration feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            return flag === FeatureFlagKey.ViewSectionsToAbly
+        })
+
+        const { getByTestId } = render(
+            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
+        )
+
+        expect(
+            getByTestId('view-sections-realtime-handler'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render the view sections realtime handler when the migration feature flag is disabled', () => {
+        const { queryByTestId } = render(
+            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
+        )
+
+        expect(
+            queryByTestId('view-sections-realtime-handler'),
+        ).not.toBeInTheDocument()
     })
 
     it('should enable logging if feature flag is enabled', () => {

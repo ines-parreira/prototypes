@@ -29,6 +29,23 @@ export function AnalyticsSidebar() {
             defaultExpandedKeys={Object.values(StatsNavbarViewSections)}
         >
             {sections.map((section) => {
+                // A `route` makes the section a standalone link and takes
+                // precedence over `items`. Sections today are either
+                // route-only or items-only; if one ever has both, the
+                // collapsed sidebar's active-match prefers items, so revisit
+                // both call sites before relying on the combined shape.
+                if (section.route) {
+                    return (
+                        <NavigationSection
+                            key={section.id}
+                            id={section.id}
+                            to={`${STATS_ROUTE_PREFIX}${section.route}`}
+                            label={section.label}
+                            leadingSlot={section.icon}
+                        />
+                    )
+                }
+
                 if (section.items) {
                     return (
                         <NavigationSection

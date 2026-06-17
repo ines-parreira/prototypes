@@ -3,8 +3,8 @@ import { screen, within } from '@testing-library/react'
 import type * as Tickets from '@repo/tickets'
 import type * as Utils from '@repo/utils'
 
-import { render } from '../../../../../tests/render.utils'
-import { MessageChannel } from '../MessageHeader/MessageChannel'
+import { render } from '#tests/render.utils'
+import { MessageChannel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
 
 vi.mock('@repo/tickets', async (importOriginal) => ({
     ...(await importOriginal<typeof Tickets>()),
@@ -16,7 +16,7 @@ vi.mock('@repo/utils', async (importOriginal) => ({
     formatDatetime: () => '2024-03-20 17:00',
 }))
 
-vi.mock('../../../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(() => ({
         format: {
             compact: 'YYYY-MM-DD HH:mm',

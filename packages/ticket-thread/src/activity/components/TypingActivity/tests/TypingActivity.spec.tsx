@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import { render } from '../../../../tests/render.utils'
-import type { ActivityParticipant } from '../../../helpers/activityParticipants'
-import { TypingActivity } from '../TypingActivity'
+import { TypingActivity } from '#activity/components/TypingActivity/TypingActivity'
+import type { ActivityParticipant } from '#activity/helpers/activityParticipants'
+import { render } from '#tests/render.utils'
 
 const animatedCollectionState = vi.hoisted(() => ({
     displayedItems: [] as ActivityParticipant[],
@@ -21,7 +21,7 @@ const trailingContentState = vi.hoisted(() => ({
 const activityOverflowListMock = vi.hoisted(() => vi.fn())
 const useAnimatedCollectionMock = vi.hoisted(() => vi.fn())
 
-vi.mock('../../ActivityOverflowList', () => ({
+vi.mock('#activity/components/ActivityOverflowList', () => ({
     ActivityOverflowList: (props: {
         participants: ActivityParticipant[]
         renderTrailingContent: (params?: {
@@ -43,7 +43,7 @@ vi.mock('../../ActivityOverflowList', () => ({
     },
 }))
 
-vi.mock('../../../hooks/useAnimatedCollection', () => ({
+vi.mock('#activity/hooks/useAnimatedCollection', () => ({
     useAnimatedCollection: useAnimatedCollectionMock,
 }))
 

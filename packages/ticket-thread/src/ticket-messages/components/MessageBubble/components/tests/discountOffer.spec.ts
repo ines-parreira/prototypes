@@ -1,6 +1,6 @@
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
-import { getDiscountOfferAttachmentData } from '../utils/discountOffer'
+import { getDiscountOfferAttachmentData } from '#ticket-messages/components/MessageBubble/components/utils/discountOffer'
 
 function makeAttachment(
     overrides: Partial<TicketMessageAttachment>,

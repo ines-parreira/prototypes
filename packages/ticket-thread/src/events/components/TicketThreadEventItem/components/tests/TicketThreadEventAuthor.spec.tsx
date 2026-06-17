@@ -7,9 +7,9 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../../tests/render.utils'
-import { server } from '../../../../../tests/server'
-import { TicketThreadEventAuthor } from '../TicketThreadEventAuthor'
+import { TicketThreadEventAuthor } from '#events/components/TicketThreadEventItem/components/TicketThreadEventAuthor'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
 
 function getUsersHandler(users: unknown[]) {
     return mockListUsersHandler(async () =>

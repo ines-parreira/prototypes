@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
-import type { TicketThreadContactReasonSuggestionItem } from '../../../contact-reason-prediction/types'
-import type { TicketThreadRuleSuggestionItem } from '../../../rule-suggestions/types'
-import { TicketThreadSuggestionItem } from '../TicketThreadSuggestionItem'
+import { TicketThreadSuggestionItem } from '#suggestions/components/TicketThreadSuggestions/TicketThreadSuggestionItem'
+import type { TicketThreadContactReasonSuggestionItem } from '#suggestions/contact-reason-prediction/types'
+import type { TicketThreadRuleSuggestionItem } from '#suggestions/rule-suggestions/types'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 const ruleSuggestionData = { rule_suggestion: { id: 1 } }
 

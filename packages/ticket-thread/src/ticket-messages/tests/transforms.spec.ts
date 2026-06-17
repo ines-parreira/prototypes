@@ -1,17 +1,17 @@
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import {
     AI_AGENT_DRAFT_MESSAGE_TAG,
     AI_AGENT_TRIAL_MESSAGE_TAG,
-} from '../constants'
+} from '#ticket-messages/constants'
 import {
     groupConsecutiveMessages,
     markLastCustomerMessage,
     toTaggedMessage,
-} from '../transforms'
-import { TicketThreadPendingState } from '../types'
-import type { TicketThreadMessageData } from '../types'
+} from '#ticket-messages/transforms'
+import { TicketThreadPendingState } from '#ticket-messages/types'
+import type { TicketThreadMessageData } from '#ticket-messages/types'
 
 type TicketMessageSender = NonNullable<TicketMessage['sender']>
 

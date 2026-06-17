@@ -2,8 +2,8 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../tests/render.utils'
-import { IntentsFeedback } from '../IntentsFeedback'
+import { render } from '#tests/render.utils'
+import { IntentsFeedback } from '#ticket-messages/components/IntentsFeedback/IntentsFeedback'
 
 const INTENTS: Record<string, string> = {
     billing_issue: 'Customer has a billing issue',

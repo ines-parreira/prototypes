@@ -25,6 +25,8 @@ type Props = {
     autoSaveError?: boolean
     lastUpdatedDatetime?: Date
     isPreview?: boolean
+    titleAnchorProps?: { 'data-copilot-anchor': string }
+    statusAnchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const SkillEditorHeader = ({
@@ -36,6 +38,8 @@ export const SkillEditorHeader = ({
     autoSaveError,
     lastUpdatedDatetime,
     isPreview,
+    titleAnchorProps,
+    statusAnchorProps,
 }: Props) => {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.RelativeDateAndTime,
@@ -71,6 +75,7 @@ export const SkillEditorHeader = ({
                     <KnowledgeEditorTopBarTitle
                         onChangeTitle={onChangeTitle}
                         title={title}
+                        anchorProps={titleAnchorProps}
                     />
                     {isSaving && (
                         <span className={css.savingIndicator}>
@@ -117,7 +122,7 @@ export const SkillEditorHeader = ({
                         )}
                 </Box>
             </Box>
-            <Box gap="xs" alignItems="center">
+            <Box gap="xs" alignItems="center" {...statusAnchorProps}>
                 {children}
             </Box>
         </Box>

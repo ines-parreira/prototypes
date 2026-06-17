@@ -2,10 +2,10 @@ import { useCallback } from 'react'
 
 import { reportError } from '@repo/logging'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useCurrentHelpCenter } from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterApi } from './useHelpCenterApi'
@@ -25,12 +25,7 @@ export const useHelpCenterActions = () => {
 
                 dispatch(helpCenterUpdated(data))
             } catch (err) {
-                void dispatch(
-                    notify({
-                        message: "Failed to fetch Help Center's translations",
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error("Failed to fetch Help Center's translations")
                 reportError(err as Error)
             }
         }
@@ -52,12 +47,7 @@ export const useHelpCenterActions = () => {
 
                 dispatch(helpCenterUpdated({ ...helpCenter, customDomain }))
             } catch (err) {
-                void dispatch(
-                    notify({
-                        message: "Failed to fetch Help Center's custom domains",
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error("Failed to fetch Help Center's custom domains")
 
                 reportError(err as Error)
             }

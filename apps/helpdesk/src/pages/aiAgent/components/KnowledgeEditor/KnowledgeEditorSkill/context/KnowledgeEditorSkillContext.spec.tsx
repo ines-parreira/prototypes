@@ -165,4 +165,50 @@ describe('KnowledgeEditorSkillContext sync effects', () => {
         expect(nextState?.title).toBe('User-edited title')
         expect(nextState?.content).toBe('<p>Original content</p>')
     })
+
+    it('syncs status and version metadata when the same skill arrives with a new status', () => {
+        const original = makeArticle()
+        const { storeRef, rerender } = renderProvider(original)
+
+        expect(storeRef.current?.getState().state.skill?.visibility).toBe(
+            VisibilityStatusEnum.PUBLIC,
+        )
+
+        rerender(
+            makeArticle({
+                visibility: VisibilityStatusEnum.UNLISTED,
+                isCurrent: false,
+                draftVersionId: 3,
+                publishedVersionId: 2,
+            }),
+        )
+
+        const nextState = storeRef.current?.getState().state
+        expect(nextState?.skill?.visibility).toBe(VisibilityStatusEnum.UNLISTED)
+        expect(nextState?.skill?.isCurrent).toBe(false)
+        expect(nextState?.skill?.publishedVersionId).toBe(2)
+        expect(nextState?.visibility).toBe(false)
+        // The editor body is left untouched.
+        expect(nextState?.title).toBe('Original title')
+        expect(nextState?.content).toBe('<p>Original content</p>')
+    })
+
+    it('syncs status metadata even when the body has pending local edits', () => {
+        const original = makeArticle()
+        const { storeRef, rerender } = renderProvider(original)
+
+        storeRef.current?.getState().dispatch({
+            type: 'SET_TITLE',
+            payload: 'User-edited title',
+        })
+
+        rerender(makeArticle({ visibility: VisibilityStatusEnum.UNLISTED }))
+
+        const nextState = storeRef.current?.getState().state
+        // Pending edit is preserved.
+        expect(nextState?.title).toBe('User-edited title')
+        // Status still reflects the server change.
+        expect(nextState?.skill?.visibility).toBe(VisibilityStatusEnum.UNLISTED)
+        expect(nextState?.visibility).toBe(false)
+    })
 })

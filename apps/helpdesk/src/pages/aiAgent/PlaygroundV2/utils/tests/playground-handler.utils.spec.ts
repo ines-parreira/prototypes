@@ -1,4 +1,7 @@
-import type { TestSessionLog } from 'models/aiAgentPlayground/types'
+import type {
+    AiAgentAttachment,
+    TestSessionLog,
+} from 'models/aiAgentPlayground/types'
 import {
     AgentSkill,
     MessageType,
@@ -254,6 +257,83 @@ describe('playground-handler.utils', () => {
                 aiJourneyTriggeredLog,
             )
             expect(result?.isReasoningEligible).toBe(false)
+        })
+
+        it('should include attachments in the result for AI_AGENT_REPLY when present', () => {
+            const attachment: AiAgentAttachment = {
+                name: 'ADIDAS | CLASSIC BACKPACK',
+                content_type: 'application/productCard',
+                public: true,
+                size: 0,
+                url: 'https://cdn.shopify.com/product_29_image1.jpg',
+                extra: {
+                    currency: 'USD',
+                    price: '70.00',
+                    product_id: '15029551104369',
+                    product_link:
+                        'https://example.myshopify.com/products/backpack',
+                    variant_name: 'OS / black',
+                    variant_id: '55276694962545',
+                    variant_link:
+                        'https://example.myshopify.com/products/backpack',
+                    featured_image:
+                        'https://cdn.shopify.com/product_29_image1.jpg',
+                    shortened_product_link:
+                        'https://staging.gorgias-convert.com/r/4hbGF7',
+                },
+            }
+
+            const log: TestSessionLog = {
+                id: '00000000-0000-0000-0000-000000000002',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_REPLY,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Here are some backpacks for you!',
+                    isSalesOpportunity: true,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: 789,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.WAIT,
+                    attachments: [attachment],
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toMatchObject({
+                type: MessageType.MESSAGE,
+                agentSkill: AgentSkill.SALES,
+                attachments: [attachment],
+            })
+        })
+
+        it('should set attachments to undefined in the result when not present in log data', () => {
+            const log: TestSessionLog = {
+                id: '00000000-0000-0000-0000-000000000003',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.AI_AGENT_REPLY,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'No products this time.',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.CLOSE,
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toMatchObject({ type: MessageType.MESSAGE })
+            expect(
+                result && 'attachments' in result && result.attachments,
+            ).toBeUndefined()
         })
     })
 })

@@ -6,7 +6,6 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { fetchTeams } from 'models/team/resources'
 
 export function useListTeams(
@@ -16,7 +15,6 @@ export function useListTeams(
         unknown
     >,
 ) {
-    const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
         queryKey: queryKeys.teams.listTeams(),
         queryFn: async ({ pageParam }) =>
@@ -32,9 +30,9 @@ export function useListTeams(
 
     useEffect(() => {
         if (response.error) {
-            handleError(response.error, 'Failed to fetch teams', dispatch)
+            handleError(response.error, 'Failed to fetch teams')
         }
-    }, [dispatch, response])
+    }, [response])
 
     return response
 }

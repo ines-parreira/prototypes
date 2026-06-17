@@ -27,8 +27,8 @@ const mockSkillPerformanceData: SkillPerformanceData = {
             resourceSourceSetId: 100,
         },
         metricsByDay: [
-            { date: '2024-01-01', tickets: 4, csat: 4.2 },
-            { date: '2024-01-03', tickets: 6, csat: 4.6 },
+            { date: '2024-01-01', tickets: 4, csat: 4.2, successRate: 0.8 },
+            { date: '2024-01-03', tickets: 6, csat: 4.6, successRate: 0.85 },
         ],
         isLoading: false,
         isMetricsByDayLoading: false,
@@ -69,16 +69,19 @@ describe('useSkillPerformanceTrendFromContext', () => {
                 date: '2024-01-01',
                 ticketVolume: mockSkillPerformanceChartData[0].ticketVolume,
                 csat: mockSkillPerformanceChartData[0].csat,
+                successRate: mockSkillPerformanceChartData[0].successRate,
             },
             {
                 date: '2024-01-02',
                 ticketVolume: mockSkillPerformanceChartData[1].ticketVolume,
                 csat: mockSkillPerformanceChartData[1].csat,
+                successRate: mockSkillPerformanceChartData[1].successRate,
             },
             {
                 date: '2024-01-03',
                 ticketVolume: mockSkillPerformanceChartData[2].ticketVolume,
                 csat: mockSkillPerformanceChartData[2].csat,
+                successRate: mockSkillPerformanceChartData[2].successRate,
             },
         ])
         expect(result.current.isLoading).toBe(false)
@@ -90,9 +93,24 @@ describe('useSkillPerformanceTrendFromContext', () => {
         })
 
         expect(result.current.chartData).toEqual([
-            { date: '2024-01-01', ticketVolume: 4, csat: 4.2 },
-            { date: '2024-01-02', ticketVolume: 0, csat: null },
-            { date: '2024-01-03', ticketVolume: 6, csat: 4.6 },
+            {
+                date: '2024-01-01',
+                ticketVolume: 4,
+                csat: 4.2,
+                successRate: 0.8,
+            },
+            {
+                date: '2024-01-02',
+                ticketVolume: 0,
+                csat: null,
+                successRate: null,
+            },
+            {
+                date: '2024-01-03',
+                ticketVolume: 6,
+                csat: 4.6,
+                successRate: 0.85,
+            },
         ])
     })
 
@@ -144,29 +162,88 @@ describe('buildSkillPerformanceChartData', () => {
         expect(buildSkillPerformanceChartData([], mockDateRange)).toEqual([])
     })
 
-    it('zero-fills ticket volume and gaps csat for days missing from the per-day metrics', () => {
+    it('zero-fills ticket volume and gaps csat and successRate for days missing from the per-day metrics', () => {
         expect(
             buildSkillPerformanceChartData(
-                [{ date: '2024-01-02', tickets: 10, csat: 4.3 }],
+                [
+                    {
+                        date: '2024-01-02',
+                        tickets: 10,
+                        csat: 4.3,
+                        successRate: 0.85,
+                    },
+                ],
                 mockDateRange,
             ),
         ).toEqual([
-            { date: '2024-01-01', ticketVolume: 0, csat: null },
-            { date: '2024-01-02', ticketVolume: 10, csat: 4.3 },
-            { date: '2024-01-03', ticketVolume: 0, csat: null },
+            {
+                date: '2024-01-01',
+                ticketVolume: 0,
+                csat: null,
+                successRate: null,
+            },
+            {
+                date: '2024-01-02',
+                ticketVolume: 10,
+                csat: 4.3,
+                successRate: 0.85,
+            },
+            {
+                date: '2024-01-03',
+                ticketVolume: 0,
+                csat: null,
+                successRate: null,
+            },
         ])
     })
 
     it('passes per-day csat through unchanged, surfacing null when the entry has none', () => {
         const result = buildSkillPerformanceChartData(
             [
-                { date: '2024-01-01', tickets: 4, csat: 4.5 },
-                { date: '2024-01-02', tickets: 10, csat: null },
-                { date: '2024-01-03', tickets: 8, csat: 3.8 },
+                { date: '2024-01-01', tickets: 4, csat: 4.5, successRate: 0.9 },
+                {
+                    date: '2024-01-02',
+                    tickets: 10,
+                    csat: null,
+                    successRate: null,
+                },
+                {
+                    date: '2024-01-03',
+                    tickets: 8,
+                    csat: 3.8,
+                    successRate: 0.75,
+                },
             ],
             mockDateRange,
         )
 
         expect(result.map((item) => item.csat)).toEqual([4.5, null, 3.8])
+    })
+
+    it('passes per-day successRate through unchanged, surfacing null when the entry has none', () => {
+        const result = buildSkillPerformanceChartData(
+            [
+                { date: '2024-01-01', tickets: 4, csat: 4.5, successRate: 0.9 },
+                {
+                    date: '2024-01-02',
+                    tickets: 10,
+                    csat: null,
+                    successRate: null,
+                },
+                {
+                    date: '2024-01-03',
+                    tickets: 8,
+                    csat: 3.8,
+                    successRate: 0.75,
+                },
+            ],
+            mockDateRange,
+        )
+
+        expect(result.map((item) => item.successRate)).toEqual([
+            0.9,
+            null,
+            0.75,
+        ])
     })
 })

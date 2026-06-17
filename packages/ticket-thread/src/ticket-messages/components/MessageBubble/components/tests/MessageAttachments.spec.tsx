@@ -1,14 +1,14 @@
 import { proxifyURL, replaceAttachmentURL, shortcutManager } from '@repo/utils'
 import type * as Utils from '@repo/utils'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../../../thread/itemTags'
-import type { TicketThreadRegularMessageItem } from '../../../../types'
-import { MessageAttachments } from '../MessageAttachments'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { MessageAttachments } from '#ticket-messages/components/MessageBubble/components/MessageAttachments'
+import type { TicketThreadRegularMessageItem } from '#ticket-messages/types'
 
 vi.mock('@repo/utils', async (importOriginal) => {
     const actual = await importOriginal<typeof Utils>()
@@ -87,6 +87,10 @@ function makeAttachment(
 describe('MessageAttachments', () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        mockReplaceAttachmentURL.mockImplementation(
+            (url: string, size?: string) =>
+                size ? `${url}?size=${size}` : `${url}?download=1`,
+        )
     })
 
     it('renders nothing when there are no attachments', () => {
@@ -148,11 +152,50 @@ describe('MessageAttachments', () => {
                 screen.getByRole('img', { name: 'preview.png' }),
             ).toBeInTheDocument()
         })
+        expect(
+            screen.getByRole('link', { name: 'preview.png' }),
+        ).toHaveAttribute(
+            'href',
+            'https://cdn.example.com/preview.png?download=1',
+        )
+        expect(
+            screen.getByRole('link', { name: 'preview.png' }),
+        ).toHaveAttribute('target', '_blank')
+        expect(
+            screen.getByRole('link', { name: 'preview.png' }),
+        ).toHaveAttribute('rel', 'noopener noreferrer')
         expect(screen.getByRole('link', { name: 'terms.pdf' })).toHaveAttribute(
             'href',
             'https://cdn.example.com/terms.pdf?download=1',
         )
         expect(screen.getByText('pdf')).toBeInTheDocument()
+    })
+
+    it('renders fallback names and hrefs when attachment metadata is missing', () => {
+        mockReplaceAttachmentURL.mockReturnValue(null as unknown as string)
+
+        const attachments = [
+            makeAttachment({
+                name: undefined,
+                url: '',
+                content_type: 'image/png',
+            }),
+            makeAttachment({
+                name: undefined,
+                url: '',
+                content_type: 'application/pdf',
+            }),
+        ]
+
+        render(<MessageAttachments item={makeItem(attachments)} />)
+
+        expect(
+            screen.getByRole('link', { name: 'Image attachment' }),
+        ).toHaveAttribute('href', '#')
+        expect(
+            screen.getByRole('link', { name: 'Attachment' }),
+        ).toHaveAttribute('href', '#')
+        expect(screen.getByText('File')).toBeInTheDocument()
     })
 
     it('renders a custom regular attachments section header', () => {
@@ -286,6 +329,39 @@ describe('MessageAttachments', () => {
         expect(mockShortcutManagerPause).toHaveBeenCalledTimes(1)
     })
 
+    it.each([
+        ['non-primary button', { button: 1 }],
+        ['meta key', { metaKey: true }],
+        ['control key', { ctrlKey: true }],
+        ['shift key', { shiftKey: true }],
+        ['alt key', { altKey: true }],
+    ])(
+        'keeps %s image link clicks available to the browser',
+        async (_eventName, clickOptions) => {
+            const attachments = [
+                makeAttachment({
+                    name: 'preview.png',
+                    url: 'https://cdn.example.com/preview.png',
+                }),
+            ]
+
+            render(<MessageAttachments item={makeItem(attachments)} />)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('link', { name: 'preview.png' }),
+                ).toBeInTheDocument()
+            })
+            fireEvent.click(
+                screen.getByRole('link', { name: 'preview.png' }),
+                clickOptions,
+            )
+
+            expect(screen.queryByText('Lightbox open')).not.toBeInTheDocument()
+            expect(mockShortcutManagerPause).not.toHaveBeenCalled()
+        },
+    )
+
     it('closes the lightbox and unpauses shortcuts', async () => {
         const attachments = [
             makeAttachment({
@@ -332,6 +408,9 @@ describe('MessageAttachments', () => {
 
         render(<MessageAttachments item={makeItem(attachments)} />)
 
+        expect(mockReplaceAttachmentURL).toHaveBeenCalledWith(
+            'https://cdn.example.com/preview.png',
+        )
         expect(mockReplaceAttachmentURL).toHaveBeenCalledWith(
             'https://cdn.example.com/preview.png',
             '120x80',

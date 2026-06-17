@@ -1,4 +1,4 @@
-import type { TicketThreadItem } from '../types'
+import type { TicketThreadItem } from '#thread/types'
 
 export function sortTicketThreadItems(
     items: TicketThreadItem[],

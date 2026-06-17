@@ -38,6 +38,7 @@ import {
     channelsEmailCreatedTicketsTimeseriesQueryFactoryV2,
     channelsEmailCreatedTicketsValueQueryFactoryV2,
 } from 'domains/reporting/models/scopes/ticketsCreated'
+import { channelsEmailOpenTicketsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/ticketsOpen'
 import {
     channelsEmailTicketsRepliedBreakdownQueryFactoryV2,
     channelsEmailTicketsRepliedTimeseriesQueryFactoryV2,
@@ -198,4 +199,36 @@ describe('channels email query factories', () => {
             }
         },
     )
+
+    describe('open tickets', () => {
+        it('value query uses the channels-email metric name and email channel filter', () => {
+            const query = channelsEmailOpenTicketsValueQueryFactoryV2(context)
+
+            expect(query.metricName).toBe(
+                'performance-channels-email-open-tickets-value',
+            )
+            expect(query.scope).toBe('tickets-open')
+            expect(query.measures).toEqual(['ticketCount'])
+            expectEmailChannelFilter(query)
+        })
+
+        it('value query includes the period filters', () => {
+            const query = channelsEmailOpenTicketsValueQueryFactoryV2(context)
+
+            expect(query.filters).toEqual(
+                expect.arrayContaining([
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                ]),
+            )
+        })
+    })
 })

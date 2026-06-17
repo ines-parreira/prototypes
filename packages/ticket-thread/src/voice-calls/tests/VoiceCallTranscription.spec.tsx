@@ -7,14 +7,14 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
-import { render } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { VoiceCallTranscription } from '../components/TicketThreadCallItem/components/VoiceCallTranscription'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { VoiceCallTranscription } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallTranscription'
 import {
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
-} from '../models/types'
+} from '#voice-calls/models/types'
 
 beforeAll(() => {
     class MockIntersectionObserver {

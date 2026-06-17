@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import type { TableV1Instance } from '@gorgias/axiom'
+import { useDataTable } from '@gorgias/axiom'
 
 import { DuplicateGuidance } from '../../../components/KnowledgeEditor/shared/DuplicateGuidance/DuplicateGuidance'
 import { useGuidanceArticleMutation } from '../../../hooks/useGuidanceArticleMutation'
@@ -28,7 +28,6 @@ import {
 import css from './BulkActions.less'
 
 type BulkActionsProps = {
-    table: TableV1Instance<GroupedKnowledgeItem>
     helpCenterIds: {
         guidanceHelpCenterId?: number | null
         faqHelpCenterId?: number | null
@@ -41,13 +40,13 @@ type BulkActionsProps = {
 }
 
 export const BulkActions = ({
-    table,
     helpCenterIds,
     isSearchActive = false,
     onClearSearch,
     activeContentType = null,
     shopName,
 }: BulkActionsProps) => {
+    const table = useDataTable<GroupedKnowledgeItem>()
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const selectedRows = table.getFilteredSelectedRowModel().rows || []
     const selectedItems = selectedRows.map((row) => row.original)

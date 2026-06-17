@@ -13,7 +13,7 @@ import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 import {
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
-} from '../../../models/types'
+} from '#voice-calls/models/types'
 import { VoiceCallTranscriptionData } from './VoiceCallTranscriptionData'
 
 type VoiceCallTranscriptionProps = {

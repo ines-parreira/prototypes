@@ -7,22 +7,18 @@ import {
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
-import { useAppDispatch } from 'hooks/useAppDispatch'
 
 import { connectCall } from '../api'
 import { useOutboundCall } from '../useOutboundCall'
 import { useVoiceDevice } from '../useVoiceDevice'
 
-jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/integrations/phone/twilioCall.utils')
 jest.mock('../useVoiceDevice')
 jest.mock('../api')
 
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 
 describe('useOutboundCall', () => {
-    const dispatchMock = jest.fn()
     const deviceMock = {
         connect: jest.fn().mockResolvedValue({}),
     }
@@ -32,7 +28,6 @@ describe('useOutboundCall', () => {
     }
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatchMock)
         useVoiceDeviceMock.mockReturnValue({
             device: deviceMock as any,
             actions: actionsMock as any,
@@ -78,11 +73,7 @@ describe('useOutboundCall', () => {
             })
         })
 
-        expect(handleCallEvents).toHaveBeenCalledWith(
-            {},
-            dispatchMock,
-            actionsMock,
-        )
+        expect(handleCallEvents).toHaveBeenCalledWith({}, actionsMock)
 
         expect(actionsMock.setIsDialing).toHaveBeenCalledWith(true)
         expect(actionsMock.setCall).toHaveBeenCalledWith({})

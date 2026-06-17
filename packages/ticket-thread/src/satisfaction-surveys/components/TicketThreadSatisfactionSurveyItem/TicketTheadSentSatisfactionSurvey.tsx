@@ -1,8 +1,8 @@
 import { Icon, Text } from '@gorgias/axiom'
 
-import { TicketThreadEventContainer } from '../../../events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../../../events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
-import type { TicketThreadSatisfactionSurveyItemByStatus } from '../../types'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import type { TicketThreadSatisfactionSurveyItemByStatus } from '#satisfaction-surveys/types'
 
 type TicketThreadSentSatisfactionSurveyProps = {
     item: TicketThreadSatisfactionSurveyItemByStatus<'sent'>

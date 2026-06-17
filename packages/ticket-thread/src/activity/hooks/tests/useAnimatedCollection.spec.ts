@@ -1,8 +1,8 @@
 import { act } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { renderHook } from '../../../tests/render.utils'
-import { useAnimatedCollection } from '../useAnimatedCollection'
+import { useAnimatedCollection } from '#activity/hooks/useAnimatedCollection'
+import { renderHook } from '#tests/render.utils'
 
 const animationFrameCallbacks: FrameRequestCallback[] = []
 const cancelAnimationFrameSpy = vi.spyOn(window, 'cancelAnimationFrame')

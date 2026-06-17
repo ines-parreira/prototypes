@@ -11,7 +11,7 @@ import {
 import type { VoiceCallRecordingTranscriptionSpeakersItem } from '@gorgias/helpdesk-queries'
 import { useGetVoiceCallRecordingTranscription } from '@gorgias/helpdesk-queries'
 
-import { VoiceCallRecordingType } from '../../../models/types'
+import { VoiceCallRecordingType } from '#voice-calls/models/types'
 import { VoiceCallTranscriptionReply } from './VoiceCallTranscriptionReply'
 
 import css from './VoiceCallTranscriptionData.less'

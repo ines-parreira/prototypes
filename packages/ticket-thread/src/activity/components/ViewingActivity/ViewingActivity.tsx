@@ -4,10 +4,10 @@ import classNames from 'classnames'
 
 import { Box, Text } from '@gorgias/axiom'
 
-import type { ActivityParticipant } from '../../helpers/activityParticipants'
-import { formatHiddenParticipantsLabel } from '../../helpers/activityParticipants'
-import { useAnimatedCollection } from '../../hooks/useAnimatedCollection'
-import { ActivityOverflowList } from '../ActivityOverflowList'
+import { ActivityOverflowList } from '#activity/components/ActivityOverflowList'
+import type { ActivityParticipant } from '#activity/helpers/activityParticipants'
+import { formatHiddenParticipantsLabel } from '#activity/helpers/activityParticipants'
+import { useAnimatedCollection } from '#activity/hooks/useAnimatedCollection'
 import { useRenderingBehaviour } from './useRenderingBehaviour'
 
 import css from './ViewingActivity.less'

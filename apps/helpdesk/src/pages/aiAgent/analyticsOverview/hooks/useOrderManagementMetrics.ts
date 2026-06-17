@@ -24,6 +24,14 @@ import {
     useCostSavedPerOrderManagementType,
 } from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedPerOrderManagementType'
 import {
+    fetchDecreaseInFirstResponseTimePerOrderManagementType,
+    useDecreaseInFirstResponseTimePerOrderManagementType,
+} from 'pages/aiAgent/analyticsOverview/hooks/useDecreaseInFirstResponseTimeBreakdowns'
+import {
+    fetchDecreaseInResolutionTimePerOrderManagementType,
+    useDecreaseInResolutionTimePerOrderManagementType,
+} from 'pages/aiAgent/analyticsOverview/hooks/useDecreaseInResolutionTimeBreakdowns'
+import {
     fetchHandoverInteractionsPerOrderManagementType,
     useHandoverInteractionsPerOrderManagementType,
 } from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerOrderManagementType'
@@ -65,6 +73,8 @@ export type OrderManagementEntityMetrics = {
     handoverInteractions: number | null
     costSaved: number | null
     timeSaved: number | null
+    decreaseInResolutionTime: number | null
+    decreaseInFirstResponseTime: number | null
 }
 
 export type OrderManagementMetricsData = {
@@ -77,6 +87,8 @@ export type OrderManagementMetricsData = {
         handoverInteractions: boolean
         timeSaved: boolean
         costSaved: boolean
+        decreaseInResolutionTime: boolean
+        decreaseInFirstResponseTime: boolean
     }
 }
 
@@ -86,6 +98,8 @@ type OrderManagementMetricKeys =
     | 'handoverInteractions'
     | 'costSaved'
     | 'timeSaved'
+    | 'decreaseInResolutionTime'
+    | 'decreaseInFirstResponseTime'
 
 const buildOrderManagementRow =
     (
@@ -105,6 +119,10 @@ const buildOrderManagementRow =
                 entityData.handoverInteractions[handoverKey] ?? null,
             costSaved: entityData.costSaved[entity] ?? null,
             timeSaved: entityData.timeSaved[entity] ?? null,
+            decreaseInResolutionTime:
+                entityData.decreaseInResolutionTime[entity] ?? null,
+            decreaseInFirstResponseTime:
+                entityData.decreaseInFirstResponseTime[entity] ?? null,
         }
     }
 
@@ -131,6 +149,14 @@ const ORDER_MANAGEMENT_METRICS_CONFIG: Record<
     timeSaved: {
         use: useOverallTimeSavedByAgentPerOrderManagementType,
         fetch: fetchOverallTimeSavedByAgentPerOrderManagementType,
+    },
+    decreaseInResolutionTime: {
+        use: useDecreaseInResolutionTimePerOrderManagementType,
+        fetch: fetchDecreaseInResolutionTimePerOrderManagementType,
+    },
+    decreaseInFirstResponseTime: {
+        use: useDecreaseInFirstResponseTimePerOrderManagementType,
+        fetch: fetchDecreaseInFirstResponseTimePerOrderManagementType,
     },
 }
 
@@ -164,6 +190,10 @@ export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
             handoverInteractions: entityLoadingStates.handoverInteractions,
             timeSaved: entityLoadingStates.timeSaved,
             costSaved: entityLoadingStates.costSaved,
+            decreaseInResolutionTime:
+                entityLoadingStates.decreaseInResolutionTime,
+            decreaseInFirstResponseTime:
+                entityLoadingStates.decreaseInFirstResponseTime,
         }),
         [entityLoadingStates],
     )

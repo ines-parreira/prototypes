@@ -1,6 +1,6 @@
 import { Text } from '@gorgias/axiom'
 
-import type { TicketThreadAuditLogAttribution } from '../../../types'
+import type { TicketThreadAuditLogAttribution } from '#events/types'
 import { TicketThreadEventAuthor } from './TicketThreadEventAuthor'
 import { TicketThreadEventMethod } from './TicketThreadEventMethod'
 

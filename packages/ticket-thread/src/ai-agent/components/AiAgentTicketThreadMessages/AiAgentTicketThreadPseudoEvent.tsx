@@ -1,9 +1,9 @@
 import type { ColorValue, IconName } from '@gorgias/axiom'
 import { Box, Dot, Icon, Tag, Text } from '@gorgias/axiom'
 
-import { TicketThreadEventContainer } from '../../../events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
-import type { TicketThreadAiAgentPseudoEvent } from '../../types'
-import { TicketThreadAiAgentPseudoEventAction } from '../../types'
+import type { TicketThreadAiAgentPseudoEvent } from '#ai-agent/types'
+import { TicketThreadAiAgentPseudoEventAction } from '#ai-agent/types'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
 import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
 const ACTION_LABELS: Record<

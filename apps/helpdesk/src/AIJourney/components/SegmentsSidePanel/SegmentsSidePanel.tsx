@@ -47,12 +47,14 @@ export const SegmentsSidePanel = ({
     segment,
     schema,
     onSegmentCreated,
+    isDuplicating = false,
 }: {
     isOpen: boolean
     onClose: () => void
     segment?: Segment
     schema: ConditionsSchema
     onSegmentCreated?: (segment: { id: string; name: string }) => void
+    isDuplicating?: boolean
 }) => {
     const { currentIntegration } = useJourneyContext()
     const { mutateAsync: createSegment, isLoading: isCreatingSegment } =
@@ -199,7 +201,7 @@ export const SegmentsSidePanel = ({
         })
     }, [isOpen, segment, form, schema])
 
-    const isEditing = segment !== undefined
+    const isEditing = segment !== undefined && !isDuplicating
 
     const shouldRenderCountPreview =
         !hasNoConditions && !hasConditionWithoutValue

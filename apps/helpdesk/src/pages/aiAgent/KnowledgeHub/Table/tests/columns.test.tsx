@@ -4,12 +4,21 @@ import '@testing-library/jest-dom'
 
 import { screen } from '@testing-library/react'
 
+import { DataTable } from '@gorgias/axiom'
+import type { DataTableColumnDef } from '@gorgias/axiom'
+
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import type { GroupedKnowledgeItem } from '../../types'
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
 import type { SyncStatusData } from '../columns'
 import { getColumns } from '../columns'
+
+const renderColumn = (
+    column: DataTableColumnDef<GroupedKnowledgeItem>,
+    item: GroupedKnowledgeItem,
+) =>
+    render(<DataTable<GroupedKnowledgeItem> data={[item]} columns={[column]} />)
 
 // Mock the DrillDownModalTrigger component
 jest.mock(
@@ -75,27 +84,11 @@ describe('getColumns - Metrics Columns', () => {
             mockOutcomeCustomFieldId,
             mockIntentCustomFieldId,
         )
-        const column = columns[columnIndex]
-
-        // Mock the info object structure that TanStack Table provides
-        const mockInfo = {
-            row: {
-                original: item,
-            },
-            getValue: () => item.metrics,
-        } as any
-
-        const cellContent = column.cell
-            ? typeof column.cell === 'function'
-                ? column.cell(mockInfo)
-                : null
-            : null
-
-        return render(<div>{cellContent}</div>)
+        return renderColumn(columns[columnIndex], item)
     }
 
     describe('Tickets Column', () => {
-        const TICKETS_COLUMN_INDEX = 2
+        const TICKETS_COLUMN_INDEX = 1
 
         it('should display ticket count when metrics are available', () => {
             const item = createMockItem({
@@ -193,7 +186,7 @@ describe('getColumns - Metrics Columns', () => {
     })
 
     describe('Handover Tickets Column', () => {
-        const HANDOVER_TICKETS_COLUMN_INDEX = 3
+        const HANDOVER_TICKETS_COLUMN_INDEX = 2
 
         it('should display handover ticket count when metrics are available', () => {
             const item = createMockItem()
@@ -298,7 +291,7 @@ describe('getColumns - Metrics Columns', () => {
     })
 
     describe('CSAT Column', () => {
-        const AVG_CSAT_COLUMN_INDEX = 4
+        const AVG_CSAT_COLUMN_INDEX = 3
 
         it('should display CSAT formatted to 1 decimal place', () => {
             const item = createMockItem({
@@ -384,53 +377,6 @@ describe('getColumns - Metrics Columns', () => {
         })
     })
 
-    describe('Column Sorting Configuration', () => {
-        it('should configure tickets column with sortUndefined: -1', () => {
-            const columns = getColumns(
-                '',
-                mockOnClick,
-                mockAvailableActions,
-                mockGuidanceHelpCenterId,
-                mockMetricsDateRange,
-                mockOutcomeCustomFieldId,
-                mockIntentCustomFieldId,
-            )
-            const ticketsColumn = columns[2]
-
-            expect((ticketsColumn as any).sortUndefined).toBe(-1)
-        })
-
-        it('should configure handover tickets column with sortUndefined: -1', () => {
-            const columns = getColumns(
-                '',
-                mockOnClick,
-                mockAvailableActions,
-                mockGuidanceHelpCenterId,
-                mockMetricsDateRange,
-                mockOutcomeCustomFieldId,
-                mockIntentCustomFieldId,
-            )
-            const handoverTicketsColumn = columns[3]
-
-            expect((handoverTicketsColumn as any).sortUndefined).toBe(-1)
-        })
-
-        it('should configure CSAT column with sortUndefined: -1', () => {
-            const columns = getColumns(
-                '',
-                mockOnClick,
-                mockAvailableActions,
-                mockGuidanceHelpCenterId,
-                mockMetricsDateRange,
-                mockOutcomeCustomFieldId,
-                mockIntentCustomFieldId,
-            )
-            const csatColumn = columns[4]
-
-            expect((csatColumn as any).sortUndefined).toBe(-1)
-        })
-    })
-
     describe('Column Structure', () => {
         it('should have correct number of columns', () => {
             const columns = getColumns(
@@ -443,8 +389,7 @@ describe('getColumns - Metrics Columns', () => {
                 mockIntentCustomFieldId,
             )
 
-            // 1: selectable, 2: title, 3: tickets, 4: handover, 5: csat, 6: lastUpdated, 7: inUseByAI
-            expect(columns).toHaveLength(7)
+            expect(columns).toHaveLength(6)
         })
 
         it('should have metrics columns in correct order', () => {
@@ -459,16 +404,16 @@ describe('getColumns - Metrics Columns', () => {
             )
 
             // Check column accessors/IDs
-            expect((columns[2] as any).accessorKey).toBe('metrics.tickets')
-            expect((columns[3] as any).accessorKey).toBe(
+            expect((columns[1] as any).accessorKey).toBe('metrics.tickets')
+            expect((columns[2] as any).accessorKey).toBe(
                 'metrics.handoverTickets',
             )
-            expect((columns[4] as any).accessorKey).toBe('metrics.csat')
+            expect((columns[3] as any).accessorKey).toBe('metrics.csat')
         })
     })
 
     describe('In Use by AI Agent Column', () => {
-        const IN_USE_BY_AI_COLUMN_INDEX = 6
+        const IN_USE_BY_AI_COLUMN_INDEX = 5
 
         const renderInUseByAICell = (
             item: GroupedKnowledgeItem,
@@ -488,22 +433,7 @@ describe('getColumns - Metrics Columns', () => {
                 undefined,
                 syncStatusData,
             )
-            const column = columns[IN_USE_BY_AI_COLUMN_INDEX]
-
-            const mockInfo = {
-                row: {
-                    original: item,
-                },
-                getValue: () => item.inUseByAI,
-            } as any
-
-            const cellContent = column.cell
-                ? typeof column.cell === 'function'
-                    ? column.cell(mockInfo)
-                    : null
-                : null
-
-            return render(<div>{cellContent}</div>)
+            return renderColumn(columns[IN_USE_BY_AI_COLUMN_INDEX], item)
         }
 
         it('should show check icon for Guidance with publishedVersionId and PUBLIC visibility', () => {

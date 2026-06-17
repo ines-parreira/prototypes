@@ -2,7 +2,9 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+
+import { toast } from '@gorgias/axiom'
 
 import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { AILibraryArticleItemsFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
@@ -27,6 +29,9 @@ jest.mock('hooks/useAppDispatch', () => ({
 }))
 
 const mockedUpsertArticleTemplateReview = jest.fn()
+
+type UpsertReviewOptions = Parameters<typeof useUpsertArticleTemplateReview>[0]
+let capturedReviewOptions: UpsertReviewOptions | undefined
 
 const wrapper = ({ children }: any) => (
     <CurrentHelpCenterContext.Provider
@@ -63,13 +68,19 @@ describe('useAILibraryActions', () => {
     beforeEach(() => {
         jest.resetAllMocks()
 
-        useUpsertArticleTemplateReviewMock.mockImplementation(() => {
+        capturedReviewOptions = undefined
+        useUpsertArticleTemplateReviewMock.mockImplementation((options) => {
+            capturedReviewOptions = options
             return {
                 mutate: mockedUpsertArticleTemplateReview,
                 mutateAsync: mockedUpsertArticleTemplateReview,
                 isLoading: false,
             } as unknown as ReturnType<typeof useUpsertArticleTemplateReview>
         })
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should review the article when calling onEditorSave', () => {
@@ -238,6 +249,84 @@ describe('useAILibraryActions', () => {
         expect(setEditModalMock).toHaveBeenCalledWith({
             view: null,
             isOpened: false,
+        })
+    })
+
+    it('shows a success toast when the review mutation succeeds', async () => {
+        const markArticleAsReviewed = jest.fn()
+        renderHook(
+            () =>
+                useAILibraryActions(
+                    getSingleHelpCenterResponseFixture,
+                    AILibraryArticleItemsFixture,
+                    markArticleAsReviewed,
+                ),
+            {
+                wrapper,
+            },
+        )
+
+        await act(async () => {
+            await capturedReviewOptions?.onSuccess?.(
+                null,
+                [
+                    undefined,
+                    { help_center_id: getSingleHelpCenterResponseFixture.id },
+                    {
+                        action: 'archive',
+                        template_key: AILibraryArticleItemsFixture[0].key,
+                    },
+                ],
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            const status = screen.getByRole('status', {
+                name: /Article archived\./,
+            })
+            expect(status).toHaveAttribute('data-intent', 'success')
+        })
+
+        expect(markArticleAsReviewed).toHaveBeenCalledWith(
+            AILibraryArticleItemsFixture[0].key,
+            'archive',
+        )
+    })
+
+    it('shows an error toast when the review mutation fails', async () => {
+        renderHook(
+            () =>
+                useAILibraryActions(
+                    getSingleHelpCenterResponseFixture,
+                    AILibraryArticleItemsFixture,
+                    jest.fn(),
+                ),
+            {
+                wrapper,
+            },
+        )
+
+        act(() => {
+            capturedReviewOptions?.onError?.(
+                {},
+                [
+                    undefined,
+                    { help_center_id: getSingleHelpCenterResponseFixture.id },
+                    {
+                        action: 'publish',
+                        template_key: AILibraryArticleItemsFixture[0].key,
+                    },
+                ],
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            const status = screen.getByRole('status', {
+                name: /Article could not be published\./,
+            })
+            expect(status).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

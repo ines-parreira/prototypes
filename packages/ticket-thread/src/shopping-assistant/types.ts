@@ -2,8 +2,8 @@ import type {
     LegacyBridgeInfluencedOrder,
     LegacyBridgeShopifyIntegration,
     LegacyBridgeShopifyOrder,
-} from '../legacy-bridge'
-import type { TicketThreadItemTag } from '../thread/itemTags'
+} from '#legacy-bridge'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 import type { TicketThreadInfluencedOrderSchema } from './schemas'
 
 export type TicketThreadInfluencedOrderItem = {

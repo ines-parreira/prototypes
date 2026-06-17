@@ -22,7 +22,6 @@ jest.mock('common/notifications')
 jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
 jest.mock('@repo/activity-tracker')
-const dispatch = jest.fn()
 
 const actions = Object.keys(slice.actions).reduce(
     (acc, key) => ({
@@ -51,7 +50,7 @@ describe('handleCallEvents', () => {
             .mockImplementation(() => {})
 
         beforeAll(() => {
-            handleCallEvents(call as Call, dispatch, actions)
+            handleCallEvents(call as Call, actions)
         })
 
         it('should handle "accept" event', () => {
@@ -217,7 +216,7 @@ describe('handleCallEvents', () => {
         it('should call onMessageReceived callback when provided', () => {
             const onMessageReceived = jest.fn()
 
-            handleCallEvents(call as Call, dispatch, actions, onMessageReceived)
+            handleCallEvents(call as Call, actions, onMessageReceived)
 
             call.emit('messageReceived', {
                 content: {
@@ -303,9 +302,10 @@ describe('handleAcceptedCallEvent', () => {
             direction: Call.CallDirection.Outgoing,
         } as unknown as Call
 
-        handleAcceptedCallEvent(call, dispatch)
+        handleAcceptedCallEvent(call)
 
-        expect(dispatch).not.toHaveBeenCalled()
+        expect(cancelCall).not.toHaveBeenCalled()
+        expect(acceptCall).not.toHaveBeenCalled()
     })
 
     it('should be skipped if call is (already) closed', () => {
@@ -313,7 +313,7 @@ describe('handleAcceptedCallEvent', () => {
             status: () => Call.State.Closed,
         } as unknown as Call
 
-        handleAcceptedCallEvent(call, dispatch)
+        handleAcceptedCallEvent(call)
 
         expect(cancelCall).toHaveBeenCalled()
     })
@@ -326,7 +326,7 @@ describe('handleAcceptedCallEvent', () => {
             customParameters: new Map([['ticket_id', '123456']]),
         } as unknown as Call
 
-        handleAcceptedCallEvent(call, dispatch)
+        handleAcceptedCallEvent(call)
 
         expect(acceptCall).toHaveBeenCalledWith(call)
         expect(logEventSpy).toHaveBeenCalledWith(

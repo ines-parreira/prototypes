@@ -8,7 +8,7 @@ import { isNumber } from 'lodash'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { useExpandedMessages } from '../../../context/ExpandedMessages'
+import { useExpandedMessages } from '#ticket-messages/context/ExpandedMessages'
 
 type UseMessageTranslationsParams = {
     messageId: number | null | undefined

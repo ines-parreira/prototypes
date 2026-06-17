@@ -1,4 +1,4 @@
-import { getMessageCampaignId } from '../MessageHeader/getMessageCampaignId'
+import { getMessageCampaignId } from '#ticket-messages/components/MessageBubble/components/MessageHeader/getMessageCampaignId'
 
 describe('getMessageCampaignId', () => {
     it('returns null when meta is null', () => {

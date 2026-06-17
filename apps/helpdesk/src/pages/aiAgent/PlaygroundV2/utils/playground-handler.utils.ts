@@ -48,6 +48,7 @@ export const handleAiAgentTestSessionLog = (
                 isReasoningEligible,
                 aiAgentMessageType: log.data.meta
                     ?.ai_agent_message_type as AiAgentMessageType,
+                attachments: log.data.attachments,
             } satisfies PlaygroundTextMessage
         case TestSessionLogType.SHOPPER_MESSAGE:
             // System-generated trigger logs are not real shopper messages

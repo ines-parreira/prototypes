@@ -10,6 +10,7 @@ import 'yet-another-react-lightbox/plugins/thumbnails.css'
 import { Banner, Box, IconName } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
 import type {
     TicketThreadAiAgentHandoverMessageItem,
     TicketThreadAiAgentMessageItem,
@@ -18,8 +19,7 @@ import type {
     TicketThreadSocialMediaFacebookMessageItem,
     TicketThreadSocialMediaInstagramDirectMessageItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
-} from '../../../types'
-import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
+} from '#ticket-messages/types'
 import { Attachment } from './Attachment'
 import { DiscountOfferAttachment } from './DiscountOfferAttachment'
 import { isProductAttachment, ProductAttachment } from './ProductAttachment'

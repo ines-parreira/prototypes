@@ -25,9 +25,13 @@ const TOOLTIP_MESSAGES = {
 
 type Props = {
     sectionId: string
+    anchorProps?: { 'data-copilot-anchor': string }
 }
 
-export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
+export const SkillEditorSidePanelKnowledgeSection = ({
+    sectionId,
+    anchorProps,
+}: Props) => {
     const [isDisableKnowledgeModalOpen, setIsDisableKnowledgeModalOpen] =
         useState(false)
 
@@ -139,6 +143,7 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
                 sectionId={sectionId}
                 alwaysExpanded={!isPreview}
                 withBorderBottom={!!isPreview}
+                anchorProps={anchorProps}
             >
                 {!!skillId &&
                     !!useSupportingKnowledge &&

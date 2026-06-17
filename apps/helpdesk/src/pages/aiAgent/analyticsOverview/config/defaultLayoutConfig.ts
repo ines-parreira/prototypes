@@ -2,6 +2,13 @@ import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
+const DEFAULT_TABLE_VISIBLE_COLUMNS = [
+    'automationRate',
+    'automatedInteractions',
+    'costSaved',
+    'timeSaved',
+]
+
 export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<AnalyticsOverviewChart> =
     {
         sections: [
@@ -47,6 +54,12 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<AnalyticsO
                         gridSize: 3,
                         visibility: true,
                     },
+                    {
+                        chartId:
+                            AnalyticsOverviewChart.HumanResponseTimeAfterAiHandoffCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
                 ],
             },
             {
@@ -74,6 +87,7 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<AnalyticsO
                         chartId: AnalyticsOverviewChart.PerformanceTable,
                         gridSize: 12,
                         visibility: true,
+                        visibleColumns: DEFAULT_TABLE_VISIBLE_COLUMNS,
                     },
                     {
                         chartId:
@@ -85,23 +99,19 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<AnalyticsO
                         chartId: AnalyticsOverviewChart.FlowsTable,
                         gridSize: 12,
                         visibility: false,
+                        visibleColumns: DEFAULT_TABLE_VISIBLE_COLUMNS,
                     },
                     {
                         chartId: AnalyticsOverviewChart.OrderManagementTable,
                         gridSize: 12,
                         visibility: false,
+                        visibleColumns: DEFAULT_TABLE_VISIBLE_COLUMNS,
                     },
                     {
                         chartId: AnalyticsOverviewChart.StoreIntegrationTable,
                         gridSize: 12,
                         visibility: false,
-                        visibleColumns: [
-                            'automationRate',
-                            'automatedInteractions',
-                            'handoverInteractions',
-                            'costSaved',
-                            'timeSaved',
-                        ],
+                        visibleColumns: DEFAULT_TABLE_VISIBLE_COLUMNS,
                     },
                 ],
             },

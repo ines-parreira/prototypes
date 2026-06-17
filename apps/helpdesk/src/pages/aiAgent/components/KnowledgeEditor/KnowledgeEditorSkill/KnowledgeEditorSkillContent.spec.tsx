@@ -191,6 +191,35 @@ describe('KnowledgeEditorSkillContent', () => {
         expect(screen.getByText('Diff View')).toBeInTheDocument()
     })
 
+    it('renders the skill entity copilot anchor on the page container', () => {
+        mockUseSkillEditorStore.mockImplementation((selector: Function) =>
+            selector({
+                state: {
+                    mode: 'read',
+                    title: 'Test Skill',
+                    content: '<p>content</p>',
+                    isAutoSaving: false,
+                    hasAutoSavedInSession: false,
+                    autoSaveError: false,
+                    skill: { id: 7 },
+                },
+                config: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    onClose: jest.fn(),
+                    isPreviewMode: false,
+                },
+                dispatch: jest.fn(),
+            }),
+        )
+
+        const { container } = render(<KnowledgeEditorSkillContent />)
+
+        expect(
+            container.querySelector('[data-copilot-anchor="skill:7"]'),
+        ).toBeInTheDocument()
+    })
+
     it('renders diff view with no comparison version', () => {
         mockUseSkillEditorStore.mockImplementation((selector: Function) =>
             selector({

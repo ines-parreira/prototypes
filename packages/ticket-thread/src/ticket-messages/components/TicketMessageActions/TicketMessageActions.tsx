@@ -4,11 +4,11 @@ import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { CopyButton } from '../../../shared/components/CopyButton/CopyButton'
-import { IntentsFeedback } from '../IntentsFeedback/IntentsFeedback'
-import type { IntentsFeedbackHandle } from '../IntentsFeedback/IntentsFeedback'
-import type { BubbleActionItem } from '../MessageBubble/components/BubbleActions'
-import { BubbleActions } from '../MessageBubble/components/BubbleActions'
+import { CopyButton } from '#shared/components/CopyButton/CopyButton'
+import { IntentsFeedback } from '#ticket-messages/components/IntentsFeedback/IntentsFeedback'
+import type { IntentsFeedbackHandle } from '#ticket-messages/components/IntentsFeedback/IntentsFeedback'
+import type { BubbleActionItem } from '#ticket-messages/components/MessageBubble/components/BubbleActions'
+import { BubbleActions } from '#ticket-messages/components/MessageBubble/components/BubbleActions'
 
 type TicketMessageActionsProps = {
     message: TicketMessage

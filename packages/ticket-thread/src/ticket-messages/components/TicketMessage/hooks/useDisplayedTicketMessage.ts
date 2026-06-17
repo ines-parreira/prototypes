@@ -10,7 +10,7 @@ import {
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import type { TicketThreadMessageData } from '../../../types'
+import type { TicketThreadMessageData } from '#ticket-messages/types'
 
 type TranslatableTicketThreadMessageItem = {
     data: TicketThreadMessageData

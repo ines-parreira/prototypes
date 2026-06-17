@@ -1,5 +1,6 @@
-import { createElement, memo } from 'react'
+import { createElement, memo, useMemo } from 'react'
 
+import { DashboardChartProvider } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import type {
     DashboardChartSchema,
     DashboardSchema,
@@ -24,18 +25,38 @@ export const DashboardComponent = memo(
         customDashboardChartSchema,
     }: Props<T>) => {
         const { isChartRestrictedToCurrentUser } = useReportChartRestrictions()
+        const chartConfig = config.charts[chart]
+        const contextValue = useMemo(
+            () => ({
+                dashboard: withChartMenu ? dashboard : undefined,
+                schema: customDashboardChartSchema,
+                chartId: chart,
+                chartConfig,
+            }),
+            [
+                withChartMenu,
+                dashboard,
+                customDashboardChartSchema,
+                chart,
+                chartConfig,
+            ],
+        )
 
         if (isChartRestrictedToCurrentUser(chart)) {
             return null
         }
 
         const props = {
-            chartConfig: config.charts[chart],
+            chartConfig,
             chartId: chart,
             withChartMenu,
             customDashboardChartSchema,
             ...(withChartMenu ? { dashboard } : {}),
         }
-        return createElement(config.charts[chart].chartComponent, props)
+        return createElement(
+            DashboardChartProvider,
+            { value: contextValue },
+            createElement(chartConfig.chartComponent, props),
+        )
     },
 )

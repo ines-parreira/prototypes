@@ -16,6 +16,7 @@ import {
     integrationDataItemProductFixture,
     shopifyProductFixture,
 } from 'fixtures/shopify'
+import { handleError } from 'hooks/agents/errorHandler'
 import {
     serviceConnectionsQueryKey,
     useCollectionsFromShopifyIntegration,
@@ -43,10 +44,8 @@ jest.mock('state/integrations/helpers', () => ({
     fetchIntegrationProducts: jest.fn(),
 }))
 
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    useAppDispatch: () => mockedDispatch,
-}))
+jest.mock('hooks/agents/errorHandler')
+const handleErrorMock = assumeMock(handleError)
 
 const fetchShopifyCollectionsMock = assumeMock(fetchShopifyCollections)
 const fetchIntegrationProductsMock = assumeMock(fetchIntegrationProducts)
@@ -138,7 +137,10 @@ describe('queries', () => {
 
             expect(fetchIntegrationProductsMock).toBeCalled()
             expect(result.current.error).toStrictEqual(Error('test error'))
-            expect(mockedDispatch).toHaveBeenCalled()
+            expect(handleErrorMock).toHaveBeenCalledWith(
+                Error('test error'),
+                'Failed to fetch products',
+            )
         })
     })
 

@@ -2,14 +2,14 @@ import type { ReactNode } from 'react'
 
 import { Text } from '@gorgias/axiom'
 
-import { isSocialMediaHiddenComment } from '../../predicates'
-import type { TicketThreadSocialMediaInstagramCommentItem } from '../../types'
-import { buildGoToLink } from '../../utils/buildGoToLink'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { HiddenCommentBanner } from '../SocialMessageBubble/HiddenCommentBanner'
-import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
-import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { HiddenCommentBanner } from '#ticket-messages/components/SocialMessageBubble/HiddenCommentBanner'
+import { SocialMessageBubble } from '#ticket-messages/components/SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { isSocialMediaHiddenComment } from '#ticket-messages/predicates'
+import type { TicketThreadSocialMediaInstagramCommentItem } from '#ticket-messages/types'
+import { buildGoToLink } from '#ticket-messages/utils/buildGoToLink'
 
 import css from './InstagramCommentMessage.less'
 

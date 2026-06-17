@@ -5,12 +5,12 @@ import type {
     VoiceCall,
 } from '@gorgias/helpdesk-queries'
 
-import { MessageAvatar } from '../../../../ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
-import { MessageChannel } from '../../../../ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
-import { MessageTimestamp } from '../../../../ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
-import { formatPhoneNumberInternational } from '../../../models/phoneFormatting'
-import { VoiceCallRecordingType } from '../../../models/types'
-import { isFinalVoiceCallStatus } from '../../../models/utils'
+import { MessageAvatar } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageAvatar'
+import { MessageChannel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageChannel'
+import { MessageTimestamp } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageTimestamp'
+import { formatPhoneNumberInternational } from '#voice-calls/models/phoneFormatting'
+import { VoiceCallRecordingType } from '#voice-calls/models/types'
+import { isFinalVoiceCallStatus } from '#voice-calls/models/utils'
 import {
     VoiceCallRecordings,
     VoiceCallTranscriptions,

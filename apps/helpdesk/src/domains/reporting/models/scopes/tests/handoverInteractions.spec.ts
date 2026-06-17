@@ -24,6 +24,8 @@ import {
     handoverInteractionsPerFeatureQueryFactoryV2,
     handoverInteractionsPerOrderManagementType,
     handoverInteractionsPerOrderManagementTypeQueryFactoryV2,
+    handoverInteractionsTimeseries,
+    handoverInteractionsTimeseriesQueryFactoryV2,
     handoverInteractionsV2QueryFactory,
 } from 'domains/reporting/models/scopes/handoverInteractions'
 import type {
@@ -544,6 +546,35 @@ describe('aiSalesAgentHandoverInteractionsPerChannel', () => {
                     context,
                 ),
             ).toEqual(aiSalesAgentHandoverInteractionsPerChannel.build(context))
+        })
+    })
+
+    describe('handoverInteractionsTimeseriesQueryFactoryV2', () => {
+        const timeseriesContext = {
+            ...context,
+            granularity: 'day' as AggregationWindow,
+            dimensions: [],
+        }
+
+        it('returns the same result as calling build directly', () => {
+            expect(
+                handoverInteractionsTimeseriesQueryFactoryV2(timeseriesContext),
+            ).toEqual(handoverInteractionsTimeseries.build(timeseriesContext))
+        })
+
+        it('creates a timeseries query with granularity from context', () => {
+            const result =
+                handoverInteractionsTimeseriesQueryFactoryV2(timeseriesContext)
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    measures: ['handoverInteractionsCount'],
+                    time_dimensions: [
+                        { dimension: 'eventDatetime', granularity: 'day' },
+                    ],
+                    limit: 10000,
+                }),
+            )
         })
     })
 })

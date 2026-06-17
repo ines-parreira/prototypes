@@ -2,11 +2,11 @@ import { screen } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../../tests/render.utils'
-import { TicketThreadItemTag } from '../../../../../thread/itemTags'
-import * as ExpandedMessagesModule from '../../../../context/ExpandedMessages'
-import type { TicketThreadRegularMessageItem } from '../../../../types'
-import { MessageVideos } from '../MessageVideos'
+import { render } from '#tests/render.utils'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { MessageVideos } from '#ticket-messages/components/MessageBubble/components/MessageVideos'
+import * as ExpandedMessagesModule from '#ticket-messages/context/ExpandedMessages'
+import type { TicketThreadRegularMessageItem } from '#ticket-messages/types'
 
 vi.mock('react-player', () => ({
     default: ({ url }: { url: string }) => <div>{`react-player:${url}`}</div>,

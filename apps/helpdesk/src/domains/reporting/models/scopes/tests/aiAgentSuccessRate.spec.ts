@@ -7,6 +7,8 @@ import {
     aiAgentSuccessRatePerChannelQueryFactoryV2,
     aiAgentSuccessRatePerIntent,
     aiAgentSuccessRatePerIntentQueryFactoryV2,
+    aiAgentSuccessRatePerSkill,
+    aiAgentSuccessRatePerSkillQueryFactory,
     aiAgentSuccessRateScope,
     aiSupportAgentSuccessRatePerIntent,
     aiSupportAgentSuccessRatePerIntentQueryFactoryV2,
@@ -399,6 +401,51 @@ describe('aiSupportAgentSuccessRatePerIntent', () => {
             expect(
                 aiSupportAgentSuccessRatePerIntentQueryFactoryV2(context),
             ).toEqual(aiSupportAgentSuccessRatePerIntent.build(context))
+        })
+    })
+})
+
+describe('aiAgentSuccessRatePerSkill', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query grouped by skill identity with correct metricName, scope, measures, dimensions, and filters', () => {
+        const actual = aiAgentSuccessRatePerSkill.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-success-rate-per-skill',
+            scope: 'ai-agent-success-rate',
+            measures: ['successRate'],
+            dimensions: ['resourceSourceSetId', 'resourceSourceId'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('aiAgentSuccessRatePerSkillQueryFactory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(aiAgentSuccessRatePerSkillQueryFactory(context)).toEqual(
+                aiAgentSuccessRatePerSkill.build(context),
+            )
         })
     })
 })

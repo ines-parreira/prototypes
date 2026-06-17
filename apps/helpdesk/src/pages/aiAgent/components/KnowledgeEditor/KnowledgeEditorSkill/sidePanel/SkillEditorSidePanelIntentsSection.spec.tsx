@@ -16,11 +16,13 @@ jest.mock(
         KnowledgeEditorSidePanelSection: ({
             children,
             header,
+            anchorProps,
         }: {
             children: React.ReactNode
             header: { title: React.ReactNode; subtitle: React.ReactNode }
+            anchorProps?: { 'data-copilot-anchor': string }
         }) => (
-            <div>
+            <div {...anchorProps}>
                 <div>{header.title}</div>
                 <div>{header.subtitle}</div>
                 {children}
@@ -115,6 +117,22 @@ describe('SkillEditorSidePanelIntentsSection', () => {
         expect(screen.getByText('Intents')).toBeInTheDocument()
         expect(
             screen.getByText(/When AI Agent detects one of these intents/),
+        ).toBeInTheDocument()
+    })
+
+    it('spreads the copilot anchor onto the section', () => {
+        mockUseLinkedIntentsSidebarSkill.mockReturnValue(defaultHookReturn)
+        const { container } = render(
+            <SkillEditorSidePanelIntentsSection
+                sectionId="intents"
+                anchorProps={{
+                    'data-copilot-anchor': 'skill:42:intents',
+                }}
+            />,
+        )
+
+        expect(
+            container.querySelector('[data-copilot-anchor="skill:42:intents"]'),
         ).toBeInTheDocument()
     })
 

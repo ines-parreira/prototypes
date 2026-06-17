@@ -12,6 +12,7 @@ type Props = {
 
     availableActions?: GuidanceAction[]
     availableVariables?: GuidanceVariableGroup[]
+    instructionsAnchorProps?: { 'data-copilot-anchor': string }
 }
 
 export const KnowledgeEditorSkillEditView = ({
@@ -20,18 +21,23 @@ export const KnowledgeEditorSkillEditView = ({
     shopName,
     availableActions,
     availableVariables,
+    instructionsAnchorProps,
 }: Props) => (
     <div className={css.container}>
-        <GuidanceEditor
-            content={content}
-            handleUpdateContent={onChangeContent}
-            label={GUIDANCE_EDITOR_DEFAULT_LABEL}
-            shopName={shopName}
-            availableActions={availableActions || []}
-            showActionsButton={true}
-            showVariablesButton={!!availableVariables?.length}
-            editorContextName="Skill"
-            description="Write step-by-step instructions for how AI Agent should handle conversations tied to this skill's intents."
-        />
+        {/* Anchor hugs the editor content, not the flex-grown container,
+            so the copilot highlight frames the visible instructions block. */}
+        <div className={css.editorAnchor} {...instructionsAnchorProps}>
+            <GuidanceEditor
+                content={content}
+                handleUpdateContent={onChangeContent}
+                label={GUIDANCE_EDITOR_DEFAULT_LABEL}
+                shopName={shopName}
+                availableActions={availableActions || []}
+                showActionsButton={true}
+                showVariablesButton={!!availableVariables?.length}
+                editorContextName="Skill"
+                description="Write step-by-step instructions for how AI Agent should handle conversations tied to this skill's intents."
+            />
+        </div>
     </div>
 )

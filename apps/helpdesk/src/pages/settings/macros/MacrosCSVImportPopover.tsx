@@ -3,6 +3,7 @@ import type React from 'react'
 import { useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { isAxiosError } from 'axios'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
@@ -13,7 +14,7 @@ import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import { useAppNode } from 'appNode'
 import { uploadFiles } from 'common/utils'
 import { useAppSelector } from 'hooks/useAppSelector'
-import type { GorgiasApiError } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'
 import { Alert, AlertType } from 'pages/common/components/Alert/Alert'
@@ -48,12 +49,12 @@ export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
         try {
             uploadedFiles = await uploadFiles([pickedFile])
         } catch (e) {
-            const error = e as GorgiasApiError
             toast.error(
-                error.response?.status === 413
+                isAxiosError(e) && e.response?.status === 413
                     ? 'Failed to upload file because its size is bigger than 10MB. Try splitting it into several smaller files.'
-                    : (error.response?.data.error.msg ??
-                          'Failed to upload file. Please try again later.'),
+                    : isGorgiasApiError(e)
+                      ? e.response.data.error.msg
+                      : 'Failed to upload file. Please try again later.',
             )
             return
         }
@@ -69,10 +70,10 @@ export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
             onClose()
             setPickedFile(null)
         } catch (e) {
-            const error = e as GorgiasApiError
             toast.error(
-                error.response?.data.error.msg ??
-                    'Failed to import macros. Please try again later.',
+                isGorgiasApiError(e)
+                    ? e.response.data.error.msg
+                    : 'Failed to import macros. Please try again later.',
             )
         }
     }, [pickedFile])

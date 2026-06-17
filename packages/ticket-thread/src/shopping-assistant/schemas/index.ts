@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { InfluencedOrderSource } from '../constants'
+import { InfluencedOrderSource } from '#shopping-assistant/constants'
 
 export const ticketThreadInfluencedOrderSchema = z.object({
     orderId: z.number(),

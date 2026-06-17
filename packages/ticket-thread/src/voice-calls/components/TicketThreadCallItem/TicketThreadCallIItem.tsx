@@ -1,13 +1,13 @@
 import { Box } from '@gorgias/axiom'
 
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge'
-import { assertNever } from '../../../shared/assertNever'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import { MessageBubble } from '../../../ticket-messages/components/MessageBubble/MessageBubble'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge'
+import { assertNever } from '#shared/assertNever'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
 import type {
     TicketThreadOutboundVoiceCallItem,
     TicketThreadVoiceCallItem,
-} from '../../types'
+} from '#voice-calls/types'
 import { VoiceCallInbound } from './components/VoiceCallInbound'
 import { VoiceCallOutbound } from './components/VoiceCallOutbound'
 import { VoiceCallSummary } from './components/VoiceCallSummary'

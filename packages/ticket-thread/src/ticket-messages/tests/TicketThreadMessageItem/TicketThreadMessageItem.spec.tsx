@@ -15,27 +15,27 @@ import {
     mockTicketTag,
 } from '@gorgias/helpdesk-mocks'
 
-import type { TicketThreadAiAgentPseudoEvent } from '../../../ai-agent/types'
-import { TicketThreadAiAgentPseudoEventAction } from '../../../ai-agent/types'
-import * as LegacyBridgeModule from '../../../legacy-bridge'
-import type { LegacyBridgeContextType } from '../../../legacy-bridge'
-import { useTicketThreadDateTimeFormat } from '../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '../../components/TicketThreadMessageItem'
+import type { TicketThreadAiAgentPseudoEvent } from '#ai-agent/types'
+import { TicketThreadAiAgentPseudoEventAction } from '#ai-agent/types'
+import * as LegacyBridgeModule from '#legacy-bridge'
+import type { LegacyBridgeContextType } from '#legacy-bridge'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '#ticket-messages/components/TicketThreadMessageItem'
 import {
     AI_AGENT_BOT_EMAILS,
     AI_AGENT_DRAFT_MESSAGE_TAG,
     AI_AGENT_TRIAL_MESSAGE_TAG,
-} from '../../constants'
+} from '#ticket-messages/constants'
 import type {
     TicketThreadGroupedMessagesItem,
     TicketThreadMessageItem,
     TicketThreadRegularMessageItem,
     TicketThreadSingleMessageItem,
-} from '../../types'
+} from '#ticket-messages/types'
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
@@ -60,7 +60,7 @@ vi.mock('@repo/feature-flags', () => ({
     useFlag: vi.fn(),
 }))
 
-vi.mock('../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

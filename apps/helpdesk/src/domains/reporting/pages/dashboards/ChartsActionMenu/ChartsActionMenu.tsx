@@ -9,6 +9,7 @@ import { Button } from '@gorgias/axiom'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { AddChartToDashboardModal } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddChartToDashboardModal'
 import { AddToDashboardPicker } from 'domains/reporting/pages/dashboards/ChartsActionMenu/AddToDashboardPicker'
+import { useDashboardChartContext } from 'domains/reporting/pages/dashboards/DashboardChartContext'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -24,8 +25,8 @@ export {
 
 export const ChartsActionMenu = ({
     chartName,
-    chartId,
-    dashboard,
+    chartId: chartIdProp,
+    dashboard: dashboardProp,
     exportCsvAction,
 }: {
     chartId: string
@@ -33,6 +34,10 @@ export const ChartsActionMenu = ({
     dashboard?: DashboardSchema
     exportCsvAction?: { onClick: () => void; isLoading?: boolean }
 }) => {
+    const ctx = useDashboardChartContext()
+    const chartId = ctx?.chartId ?? chartIdProp
+    const dashboard = ctx?.dashboard ?? dashboardProp
+
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const { removeChartFromDashboardHandler } = useDashboardActions()

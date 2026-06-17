@@ -2,15 +2,18 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
+
 import { Box } from '@gorgias/axiom'
 
+import { useCopilotNavigationGuard } from 'copilot/uiActions/unsavedWorkGuard'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { SkillToolbarControls } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarSkillControls'
 
 import { DiffView } from '../shared/DiffView'
-import { useSkillEditorStore } from './context'
+import { hasPendingChanges, useSkillEditorStore } from './context'
 import { KnowledgeEditorSkillEditView } from './edit/KnowledgeEditorSkillEditView'
 import { useSkillAutoSave } from './hooks/useSkillAutoSave'
 import { KnowledgeEditorSkillVersionBanner } from './KnowledgeEditorSkillVersionBanner'
@@ -69,6 +72,20 @@ export const KnowledgeEditorSkillContent = ({ isSidePanelLoading }: Props) => {
         })),
     )
 
+    const skillId = useSkillEditorStore(
+        (storeState) => storeState.state.skill?.id,
+    )
+    const skillHasPendingChanges = useSkillEditorStore((storeState) =>
+        hasPendingChanges(storeState.state),
+    )
+
+    useCopilotNavigationGuard(skillHasPendingChanges)
+
+    const skillAnchorTarget =
+        skillId !== undefined
+            ? ({ type: 'skill', id: skillId } as const)
+            : undefined
+
     const { guidanceActions } = useGetGuidancesAvailableActions(
         shopName,
         shopType,
@@ -112,13 +129,24 @@ export const KnowledgeEditorSkillContent = ({ isSidePanelLoading }: Props) => {
             autoSaveError={autoSaveError}
             lastUpdatedDatetime={lastUpdatedDatetime}
             isPreview={isPreview}
+            titleAnchorProps={
+                skillAnchorTarget
+                    ? copilotAnchorProps(skillAnchorTarget, 'title')
+                    : undefined
+            }
         >
             <SkillToolbarControls />
         </SkillEditorHeader>
     )
 
     return (
-        <Box flexDirection="column" height="100%">
+        <Box
+            flexDirection="column"
+            height="100%"
+            {...(skillAnchorTarget
+                ? copilotAnchorProps(skillAnchorTarget)
+                : {})}
+        >
             {isPreview && SkillEditorHeaderSection}
             <Box flexDirection="row" height="100%" overflow="auto">
                 <Box
@@ -187,6 +215,14 @@ export const KnowledgeEditorSkillContent = ({ isSidePanelLoading }: Props) => {
                                     shopName={shopName}
                                     availableActions={guidanceActions}
                                     availableVariables={guidanceVariables}
+                                    instructionsAnchorProps={
+                                        skillAnchorTarget
+                                            ? copilotAnchorProps(
+                                                  skillAnchorTarget,
+                                                  'instructions',
+                                              )
+                                            : undefined
+                                    }
                                 />
                             )}
                         </Box>

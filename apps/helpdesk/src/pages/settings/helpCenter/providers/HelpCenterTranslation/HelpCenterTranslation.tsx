@@ -9,8 +9,8 @@ import {
 } from 'react'
 
 import { reportError } from '@repo/logging'
+import { toast } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     ContactForm,
@@ -29,8 +29,6 @@ import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCen
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Paths } from 'rest_api/help_center_api/client.generated'
 import { getContactFormById } from 'state/entities/contactForm/contactForms'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import { getGenericMessageFromError } from '../../utils'
@@ -93,7 +91,6 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     children,
     helpCenter,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const { client } = useHelpCenterApi()
     const { fetchHelpCenterTranslations } = useHelpCenterActions()
     const viewLanguage =
@@ -129,11 +126,8 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                     (option) => option.trim() === '',
                 )
             ) {
-                void dispatch(
-                    notify({
-                        message: `Could not update the Help Center: some subject lines are empty.`,
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    `Could not update the Help Center: some subject lines are empty.`,
                 )
                 return
             }
@@ -188,21 +182,11 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
             setIsDirty(false)
 
-            void dispatch(
-                notify({
-                    message: 'Help Center updated with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Help Center updated with success')
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
 
-            void dispatch(
-                notify({
-                    message: `Could not update the Help Center: ${errorMessage}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Could not update the Help Center: ${errorMessage}`)
 
             reportError(err as Error)
         }
@@ -210,7 +194,6 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         emailIntegration,
         isReady,
         client,
-        dispatch,
         contactForm,
         helpCenter,
         viewLanguage,
@@ -357,26 +340,16 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             )
 
             if (error) {
-                void dispatch(
-                    notify({
-                        message: 'Something went wrong',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Something went wrong')
             }
 
             if (!result) {
-                void dispatch(
-                    notify({
-                        message: 'Contact Form not found',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Contact Form not found')
             }
         }
 
         void fetchContactForm()
-    }, [translation.contactFormId, fetchContactFormById, isReady, dispatch])
+    }, [translation.contactFormId, fetchContactFormById, isReady])
 
     const value = useMemo(
         () => ({

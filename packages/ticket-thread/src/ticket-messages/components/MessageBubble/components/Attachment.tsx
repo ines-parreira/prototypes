@@ -1,3 +1,5 @@
+import type { MouseEvent } from 'react'
+
 import { replaceAttachmentURL } from '@repo/utils'
 import cn from 'classnames'
 
@@ -23,35 +25,60 @@ type AttachmentProps = {
 
 export function Attachment({ attachment, onImageClick }: AttachmentProps) {
     const imageAttachment = isImage(attachment)
+    const attachmentUrl = replaceAttachmentURL(attachment.url) || '#'
+
+    function handleImageLinkClick(event: MouseEvent<HTMLAnchorElement>) {
+        if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+        ) {
+            return
+        }
+
+        event.preventDefault()
+        onImageClick(attachment)
+    }
 
     return (
         <Tooltip
             trigger={() => {
                 return imageAttachment ? (
-                    <Image
-                        src={
-                            replaceAttachmentURL(attachment.url, '120x80') ?? ''
-                        }
-                        alt={attachment.name ?? 'Image attachment'}
-                        fit="cover"
-                        className={cn(
-                            css.cardSurface,
-                            css.attachment,
-                            css.preview,
-                        )}
+                    <a
+                        href={attachmentUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         aria-label={attachment.name ?? 'Image attachment'}
-                        onClick={() => onImageClick(attachment)}
-                        fallback={
-                            <Icon
-                                name="media-image"
-                                size="md"
-                                color="content-neutral-secondary"
-                            />
-                        }
-                    />
+                        onClick={handleImageLinkClick}
+                    >
+                        <Image
+                            src={
+                                replaceAttachmentURL(
+                                    attachment.url,
+                                    '120x80',
+                                ) ?? ''
+                            }
+                            alt={attachment.name ?? 'Image attachment'}
+                            fit="cover"
+                            className={cn(
+                                css.cardSurface,
+                                css.attachment,
+                                css.preview,
+                            )}
+                            fallback={
+                                <Icon
+                                    name="media-image"
+                                    size="md"
+                                    color="content-neutral-secondary"
+                                />
+                            }
+                        />
+                    </a>
                 ) : (
                     <a
-                        href={replaceAttachmentURL(attachment.url) || '#'}
+                        href={attachmentUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={cn(css.cardSurface, css.attachment)}

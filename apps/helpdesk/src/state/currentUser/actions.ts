@@ -11,6 +11,8 @@ import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
 
+import { toast } from '@gorgias/axiom'
+
 import { AlertBannerTypes } from 'AlertBanners'
 import type {
     EditableUserProfile,
@@ -27,10 +29,7 @@ import {
     TWO_FA_REQUIRED_NOTIFICATION_ID,
 } from 'state/currentUser/constants'
 import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
+import { NotificationStyle } from 'state/notifications/types'
 
 import type { RootState, StoreDispatch } from '../types'
 import * as constants from './constants'
@@ -59,12 +58,7 @@ export const changePassword =
                         type: constants.CHANGE_PASSWORD_SUCCESS,
                         resp,
                     })
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Password successfully changed!',
-                        }),
-                    )
+                    toast.success('Password successfully changed!')
                 },
                 (error: AxiosError) => {
                     return dispatch({
@@ -91,13 +85,10 @@ export function updateCurrentUser(data: Partial<EditableUserProfile>) {
                         type: constants.SUBMIT_CURRENT_USER_SUCCESS,
                         resp,
                     })
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: _get(data, ['meta', 'profile_picture_url'])
-                                ? 'User picture successfully updated'
-                                : 'User successfully updated',
-                        }),
+                    toast.success(
+                        _get(data, ['meta', 'profile_picture_url'])
+                            ? 'User picture successfully updated'
+                            : 'User successfully updated',
                     )
 
                     return resp
@@ -170,12 +161,7 @@ export function submitSetting(data: UserSetting, notification: boolean) {
                     }
 
                     if (notification) {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Success,
-                                message: 'Settings successfully updated',
-                            }),
-                        )
+                        toast.success('Settings successfully updated')
                     }
 
                     return resp
@@ -221,12 +207,8 @@ export const update2FAEnabled =
             action = 'updated'
         }
 
-        // Show a success notification
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: `Two-Factor Authentication has successfully been ${action}`,
-            }),
+        toast.success(
+            `Two-Factor Authentication has successfully been ${action}`,
         )
 
         // Update the value in the currentUser object

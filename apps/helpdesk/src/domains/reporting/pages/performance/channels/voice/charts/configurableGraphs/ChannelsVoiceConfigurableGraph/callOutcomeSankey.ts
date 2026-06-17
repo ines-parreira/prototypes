@@ -13,6 +13,33 @@ export const CALL_OUTCOME_MEASURES = [
 
 export type CallOutcomeMeasure = (typeof CALL_OUTCOME_MEASURES)[number]
 
+// Human-readable label for each measure, used as the "metric" column when
+// exporting the call-outcome funnel to CSV.
+export const CALL_OUTCOME_MEASURE_LABELS: Record<CallOutcomeMeasure, string> = {
+    inboundCallsCount: 'Inbound',
+    outboundCallsCount: 'Outbound',
+    inboundAnsweredCallsCount: 'Answered',
+    inboundUnansweredCallsCount: 'Unanswered',
+    inboundMissedCallsCount: 'Missed',
+    inboundAbandonedCallsCount: 'Abandoned',
+    inboundCancelledCallsCount: 'Canceled',
+    inboundCallbackRequestedCallsCount: 'Callback requested',
+}
+
+export type CallOutcomeRow = Record<CallOutcomeMeasure, string | null>
+
+export const parseCallOutcomeValues = (
+    row: CallOutcomeRow | undefined,
+): Record<CallOutcomeMeasure, number> =>
+    CALL_OUTCOME_MEASURES.reduce(
+        (acc, measure) => {
+            const value = row?.[measure]
+            acc[measure] = value != null ? parseFloat(value) : 0
+            return acc
+        },
+        {} as Record<CallOutcomeMeasure, number>,
+    )
+
 export const CALL_OUTCOME_NODE = {
     TotalCalls: 'Total calls',
     Inbound: 'Inbound',

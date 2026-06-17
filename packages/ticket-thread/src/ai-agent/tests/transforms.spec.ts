@@ -2,25 +2,25 @@ import { mockTicketMessage, mockTicketTag } from '@gorgias/helpdesk-mocks'
 import { TicketStatus } from '@gorgias/helpdesk-queries'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import type { TicketThreadItem } from '../../thread/types'
+import {
+    decorateMessagesWithAiAgentPseudoEvents,
+    findAndSplitMessageTags,
+    getAiAgentPseudoEventFromMessage,
+} from '#ai-agent/transforms/pseudoEvents'
+import type { TicketThreadAiAgentPseudoEvent } from '#ai-agent/types'
+import { TicketThreadAiAgentPseudoEventAction } from '#ai-agent/types'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadItem } from '#thread/types'
 import {
     AI_AGENT_BOT_EMAILS,
     AI_AGENT_DRAFT_MESSAGE_TAG,
-} from '../../ticket-messages/constants'
+} from '#ticket-messages/constants'
 import type {
     TicketThreadAiAgentDraftMessageItem,
     TicketThreadAiAgentInternalNoteItem,
     TicketThreadAiAgentMessageItem,
     TicketThreadMessageItem,
-} from '../../ticket-messages/types'
-import {
-    decorateMessagesWithAiAgentPseudoEvents,
-    findAndSplitMessageTags,
-    getAiAgentPseudoEventFromMessage,
-} from '../transforms/pseudoEvents'
-import type { TicketThreadAiAgentPseudoEvent } from '../types'
-import { TicketThreadAiAgentPseudoEventAction } from '../types'
+} from '#ticket-messages/types'
 
 function createAiAgentMessageItem(
     overrides: Partial<TicketThreadAiAgentMessageItem['data']> = {},

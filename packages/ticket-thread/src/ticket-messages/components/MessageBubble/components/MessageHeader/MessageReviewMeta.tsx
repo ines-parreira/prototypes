@@ -2,7 +2,7 @@ import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { Box, Link } from '@gorgias/axiom'
 
-import { ProductReviewRating } from '../ProductReviewRating'
+import { ProductReviewRating } from '#ticket-messages/components/MessageBubble/components/ProductReviewRating'
 import { getMessageReviewMeta } from './getMessageReviewMeta'
 import { MessageMetaLabel } from './MessageMetaLabel'
 

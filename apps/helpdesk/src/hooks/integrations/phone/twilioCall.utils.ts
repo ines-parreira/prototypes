@@ -7,6 +7,7 @@ import { Call } from '@twilio/voice-sdk'
 import { pick } from 'lodash'
 import { Duration } from '@gorgias/toolkit'
 
+import { toast } from '@gorgias/axiom'
 import type { TwilioSocketEvent } from 'business/twilio'
 import { TwilioSocketEventType } from 'business/twilio'
 import {
@@ -21,15 +22,11 @@ import type { ListVoiceCallsParams } from 'models/voiceCall/types'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import { socketManager } from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { StoreDispatch } from 'state/types'
 
 import * as twilioCallUtils from './twilioCall.utils'
 
 export function handleCallEvents(
     call: Call,
-    dispatch: StoreDispatch,
     actions: VoiceDeviceActions,
     onMessageReceived?: (twilioMessage: TwilioMessage) => void,
 ) {
@@ -48,7 +45,7 @@ export function handleCallEvents(
         // creating wrong events "Call answered by x". See issue APPC-795
 
         setTimeout(
-            () => twilioCallUtils.handleAcceptedCallEvent(call, dispatch),
+            () => twilioCallUtils.handleAcceptedCallEvent(call),
             Duration.seconds(1),
         )
     })
@@ -185,18 +182,13 @@ export function logCallEnd(call: Call) {
     })
 }
 
-export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
+export function handleAcceptedCallEvent(call: Call) {
     if (call.direction === Call.CallDirection.Outgoing) {
         return
     }
 
     if (call.status() === Call.State.Closed) {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Info,
-                message: 'Another agent already accepted the call',
-            }),
-        )
+        toast.info('Another agent already accepted the call')
 
         void cancelCall()
     } else {

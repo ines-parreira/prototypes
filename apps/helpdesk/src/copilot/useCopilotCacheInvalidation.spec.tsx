@@ -122,6 +122,9 @@ describe('useCopilotCacheInvalidation', () => {
                     queryKey: helpCenterKeys.intents(7),
                 })
                 expect(invalidateSpy).toHaveBeenCalledWith({
+                    queryKey: helpCenterKeys.wizard(7),
+                })
+                expect(invalidateSpy).toHaveBeenCalledWith({
                     queryKey: knowledgeHubArticlesKey,
                 })
                 expect(invalidateSpy).not.toHaveBeenCalledWith({
@@ -209,6 +212,44 @@ describe('useCopilotCacheInvalidation', () => {
 
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: helpCenterKeys.details(),
+            })
+        })
+
+        it('invalidates the wizard query on update_draft_agent_skill', () => {
+            const { wrapper, invalidateSpy } = makeWrapper()
+            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
+
+            copilotMock.__emit(
+                makeInfo({
+                    toolName: 'update_draft_agent_skill',
+                    args: { shop_name: 'shop', skill_id: 42 },
+                    result: { id: 42, helpCenterId: 7 },
+                }),
+            )
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: helpCenterKeys.wizard(7),
+            })
+        })
+
+        it('invalidates the wizard query on set_agent_skill_status', () => {
+            const { wrapper, invalidateSpy } = makeWrapper()
+            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
+
+            copilotMock.__emit(
+                makeInfo({
+                    toolName: 'set_agent_skill_status',
+                    args: {
+                        shop_name: 'shop',
+                        skill_id: 42,
+                        status: 'disabled',
+                    },
+                    result: { id: 42, helpCenterId: 7 },
+                }),
+            )
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: helpCenterKeys.wizard(7),
             })
         })
     })
@@ -334,7 +375,7 @@ describe('useCopilotCacheInvalidation', () => {
             'disable_support_action' as const,
             'convert_to_advanced_view' as const,
             'create_action_from_template' as const,
-        ])('invalidates lists + specific action on %s', (toolName) => {
+        ])('invalidates store + all action config on %s', (toolName) => {
             const { wrapper, invalidateSpy } = makeWrapper()
             renderHook(() => useCopilotCacheInvalidation(), { wrapper })
 
@@ -356,18 +397,20 @@ describe('useCopilotCacheInvalidation', () => {
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: storeWorkflowsConfigurationDefinitionKeys.all(),
             })
+            // Wholesale so an open action editor (keyed by routeId, not the
+            // action id) refetches — no longer scoped to .lists()/.get(id).
             expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey: workflowsConfigurationDefinitionKeys.lists(),
-            })
-            expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey: workflowsConfigurationDefinitionKeys.get('act_xyz'),
+                queryKey: workflowsConfigurationDefinitionKeys.all(),
             })
             expect(invalidateSpy).not.toHaveBeenCalledWith({
-                queryKey: workflowsConfigurationDefinitionKeys.all(),
+                queryKey: workflowsConfigurationDefinitionKeys.lists(),
+            })
+            expect(invalidateSpy).not.toHaveBeenCalledWith({
+                queryKey: workflowsConfigurationDefinitionKeys.get('act_xyz'),
             })
         })
 
-        it('falls back to action_id from args when output is malformed', () => {
+        it('still invalidates wholesale when the output is malformed', () => {
             const { wrapper, invalidateSpy } = makeWrapper()
             renderHook(() => useCopilotCacheInvalidation(), { wrapper })
 
@@ -381,8 +424,7 @@ describe('useCopilotCacheInvalidation', () => {
             )
 
             expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey:
-                    workflowsConfigurationDefinitionKeys.get('act_from_args'),
+                queryKey: workflowsConfigurationDefinitionKeys.all(),
             })
         })
     })

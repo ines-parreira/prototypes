@@ -2,11 +2,12 @@ import type { ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { toast } from '@gorgias/axiom'
 
 import type { LocaleCode } from 'models/helpCenter/types'
 import { DefaultExportCurrentHelpCenterContext as CurrentHelpCenterContext } from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
@@ -76,6 +77,7 @@ describe('HelpCenterPreferencesSettings', () => {
 
     afterEach(() => {
         jest.clearAllMocks()
+        toast.dismiss()
     })
 
     it('should update preferences from help center data', async () => {
@@ -250,14 +252,13 @@ describe('HelpCenterPreferencesSettings', () => {
             type: 'HELPCENTER/HELPCENTER_UPDATED',
             payload: updatedHelpCenter,
         })
-        expect(
-            actions.some(
-                (action) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload.message ===
-                        'Help Center updated with success' &&
-                    action.payload.status === 'success',
-            ),
-        ).toBe(true)
+
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Help Center updated with success',
+                }),
+            ).toHaveAttribute('data-intent', 'success'),
+        )
     })
 })

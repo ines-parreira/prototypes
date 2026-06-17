@@ -3,13 +3,12 @@ import type { AxiosError, AxiosRequestConfig } from 'axios'
 import { isCancel } from 'axios'
 import type { List } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
 import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
 
 import { fetchTags as fetchTagsResources } from 'models/tag/resources'
 import type { OrderByOrderDir, TagDraft } from 'models/tag/types'
 import { GorgiasApi } from 'services/gorgiasApi'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
 import { createErrorNotification } from 'state/utils'
 
@@ -97,12 +96,7 @@ export const save = (tag: Tag) => {
         return client
             .put<Tag>(`/api/tags/${tag.id}/`, tag)
             .then(() => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Tag saved successfully',
-                    }),
-                )
+                toast.success('Tag saved successfully')
                 return dispatch({
                     type: constants.SAVE_TAG,
                     tag,
@@ -127,12 +121,7 @@ export const create = (tag: TagDraft) => {
 
         return client.post<Tag>('/api/tags/', tag).then(
             (resp) => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `Created tag: ${tag.name}`,
-                    }),
-                )
+                toast.success(`Created tag: ${tag.name}`)
                 dispatch({
                     type: constants.CREATE_TAG_SUCCESS,
                     tag: resp.data,
@@ -154,12 +143,7 @@ export const remove = (id: string) => {
         return client
             .delete(`/api/tags/${id}/`)
             .then(() => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Tag deleted successfully',
-                    }),
-                )
+                toast.success('Tag deleted successfully')
             })
             .catch((error: AxiosError) => {
                 dispatch({
@@ -178,13 +162,10 @@ export const bulkDelete = (ids: Array<string>) => {
         return client
             .delete('/api/tags/', { data: { ids } })
             .then(() => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `${ids.length} tag${
-                            ids.length > 1 ? 's' : ''
-                        } deleted successfully`,
-                    }),
+                toast.success(
+                    `${ids.length} tag${
+                        ids.length > 1 ? 's' : ''
+                    } deleted successfully`,
                 )
             })
             .catch((error: AxiosError) => {
@@ -214,12 +195,7 @@ export const merge = (ids: List<any>) => {
             })
             .then(
                 () => {
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Tags merged successfully',
-                        }),
-                    )
+                    toast.success('Tags merged successfully')
                 },
                 (error: AxiosError) => {
                     return dispatch(

@@ -15,18 +15,18 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../../tests/render.utils'
-import { server } from '../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../thread/itemTags'
-import { AI_AGENT_BOT_EMAILS } from '../../../../constants'
-import * as ExpandedMessagesModule from '../../../../context/ExpandedMessages'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type * as MessageAttachmentsModule from '#ticket-messages/components/MessageBubble/components/MessageAttachments'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { AI_AGENT_BOT_EMAILS } from '#ticket-messages/constants'
+import * as ExpandedMessagesModule from '#ticket-messages/context/ExpandedMessages'
 import type {
     TicketThreadAiAgentHandoverMessageItem,
     TicketThreadRegularMessageItem,
-} from '../../../../types'
-import type { DisplayedTicketThreadMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
-import type * as MessageAttachmentsModule from '../MessageAttachments'
-import { MessageFooter } from '../MessageFooter'
+} from '#ticket-messages/types'
 
 type MessageFooterData =
     DisplayedTicketThreadMessageItem<TicketThreadRegularMessageItem>['data']
@@ -48,30 +48,36 @@ vi.mock('react-player', () => ({
     default: ({ url }: { url: string }) => <div>{`react-player:${url}`}</div>,
 }))
 
-vi.mock('../MessageAttachments', async () => {
-    const actual = await vi.importActual<typeof MessageAttachmentsModule>(
-        '../MessageAttachments',
-    )
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/MessageAttachments',
+    async () => {
+        const actual = await vi.importActual<typeof MessageAttachmentsModule>(
+            '../MessageAttachments',
+        )
 
-    return {
-        ...actual,
-        MessageAttachments: ({
-            item,
+        return {
+            ...actual,
+            MessageAttachments: ({
+                item,
+            }: {
+                item: { data: { id?: number | null } }
+            }) => <div>{`attachments:${item.data.id}`}</div>,
+        }
+    },
+)
+
+vi.mock(
+    '#ticket-messages/components/MessageBubble/components/TranslationsDropdown',
+    () => ({
+        TranslationsDropdown: ({
+            messageId,
+            ticketId,
         }: {
-            item: { data: { id?: number | null } }
-        }) => <div>{`attachments:${item.data.id}`}</div>,
-    }
-})
-
-vi.mock('../TranslationsDropdown', () => ({
-    TranslationsDropdown: ({
-        messageId,
-        ticketId,
-    }: {
-        messageId: number
-        ticketId: number
-    }) => <div>{`translations:${messageId}:${ticketId}`}</div>,
-}))
+            messageId: number
+            ticketId: number
+        }) => <div>{`translations:${messageId}:${ticketId}`}</div>,
+    }),
+)
 
 const mockUseExpandedMessages = vi.spyOn(
     ExpandedMessagesModule,

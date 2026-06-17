@@ -1,6 +1,7 @@
 import ReactPlayer from 'react-player'
 
-import { useExpandedMessages } from '../../../context/ExpandedMessages'
+import type { DisplayedTicketThreadMessageItem } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
+import { useExpandedMessages } from '#ticket-messages/context/ExpandedMessages'
 import type {
     TicketThreadAiAgentHandoverMessageItem,
     TicketThreadAiAgentMessageItem,
@@ -9,8 +10,7 @@ import type {
     TicketThreadSocialMediaFacebookMessageItem,
     TicketThreadSocialMediaInstagramDirectMessageItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
-} from '../../../types'
-import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
+} from '#ticket-messages/types'
 import { getMessageVideoUrls } from './utils/getMessageVideoUrls'
 
 import css from './MessageVideos.less'

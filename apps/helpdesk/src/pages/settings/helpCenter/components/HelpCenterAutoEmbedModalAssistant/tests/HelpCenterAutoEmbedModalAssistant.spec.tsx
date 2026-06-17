@@ -3,35 +3,41 @@ import React from 'react'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { toast } from '@gorgias/axiom'
 
 import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
 import { HELP_CENTER_EMBED_FORM_TEXTS } from 'pages/settings/helpCenter/constants'
+import { PageEmbedmentFixture } from 'pages/settings/helpCenter/fixtures/pageEmbedment'
 import { useCreatePageEmbedment } from 'pages/settings/helpCenter/queries'
+import type { createPageEmbedment } from 'pages/settings/helpCenter/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { MODAL_LABELS } from '../constants'
 import { HelpCenterAutoEmbedModalAssistant } from '../HelpCenterAutoEmbedModalAssistant'
 
 const queryClient = mockQueryClient()
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    useAppDispatch: () => mockedDispatch,
-}))
-jest.mock('state/notifications/actions')
 jest.mock('pages/settings/helpCenter/queries')
 const mockCreatePageEmbedment = jest.fn()
 const useCreatePageEmbedmentMock = assumeMock(useCreatePageEmbedment)
 
+let capturedOverrides: Parameters<typeof useCreatePageEmbedment>[0] | undefined
+
 describe('<HelpCenterAutoEmbedModalAssistant />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        useCreatePageEmbedmentMock.mockImplementation(() => {
+        capturedOverrides = undefined
+        useCreatePageEmbedmentMock.mockImplementation((overrides) => {
+            capturedOverrides = overrides
             return {
                 mutate: mockCreatePageEmbedment,
                 mutateAsync: mockCreatePageEmbedment,
                 isLoading: false,
             } as unknown as ReturnType<typeof useCreatePageEmbedment>
         })
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
     it('it renders the component', () => {
         const isOpen = true
@@ -124,5 +130,69 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
         await waitFor(() => {
             expect(mockCreatePageEmbedment).toHaveBeenCalled()
         })
+    })
+
+    const renderModal = () => {
+        const onClose = jest.fn()
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <HelpCenterAutoEmbedModalAssistant
+                    isOpen
+                    onClose={onClose}
+                    pages={ShopifyPagesListFixture}
+                    helpCenterId={1}
+                />
+            </QueryClientProvider>,
+        )
+
+        return { onClose }
+    }
+
+    const mutationVariables: Parameters<typeof createPageEmbedment> = [
+        undefined,
+        { help_center_id: 1 },
+        { page_external_id: '1', position: 'TOP' },
+    ]
+
+    it('shows an info toast when the page embedment succeeds without a result', async () => {
+        renderModal()
+
+        await capturedOverrides?.onSuccess?.(null, mutationVariables, undefined)
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Something went wrong',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'info')
+    })
+
+    it('shows a success toast when the page embedment succeeds', async () => {
+        renderModal()
+
+        await capturedOverrides?.onSuccess?.(
+            PageEmbedmentFixture,
+            mutationVariables,
+            undefined,
+        )
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Help Center embedded to page.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
+    })
+
+    it('shows an error toast when the page embedment fails', async () => {
+        renderModal()
+
+        await capturedOverrides?.onError?.(
+            { response: { data: { error: { msg: 'Embedding failed' } } } },
+            mutationVariables,
+            undefined,
+        )
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Embedding failed',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

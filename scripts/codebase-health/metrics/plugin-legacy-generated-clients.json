@@ -1,0 +1,551 @@
+{
+    "byFile": {
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignName/CampaignName.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignStateBadge/CampaignStateBadge.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignStateBadge/CampaignStateBadge.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/Columns.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/Columns.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/MoreOptions/MoreOptions.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/MoreOptions/MoreOptions.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/types.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/useCampaignActions.spec.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/CampaignsTable/useCampaignActions.ts": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/components/CreateFlowButton/CreateFlowButton.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/ExecutionModeCard/ExecutionModeCard.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneyName/JourneyName.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.spec.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/RowAdditionalOptions/RowAdditionalOptions.spec.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/components/JourneysTable/RowAdditionalOptions/RowAdditionalOptions.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/components/MessageGuidanceCard/MessageGuidanceCard.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/MessageGuidanceCard/MessageGuidanceCard.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/MessageGuidanceCard/types.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/PlaygroundPreview/PlaygroundPreview.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/components/SegmentUsageTable/SegmentUsageTable.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/constants/index.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/data/FlowTemplatesData.spec.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/data/FlowTemplatesData.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/formFields/ExecutionModeSelect/ExecutionModeSelect.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/formFields/ExecutionModeSelect/ExecutionModeSelect.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/formFields/MinutesDelay/MinutesDelay.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/formFields/MinutesDelay/MinutesDelay.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/formFields/TargetOrderStatus/TargetOrderStatus.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/formFields/TargetOrderStatus/TargetOrderStatus.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useGeneratePlaygroundMessage/useGeneratePlaygroundMessage.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useGeneratePlaygroundMessage/useGeneratePlaygroundMessage.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useHandleSendTestSMS/useHandleSendTestSMS.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useHandleSendTestSMS/useHandleSendTestSMS.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useJourneyCreateHandler/useJourneyCreateHandler.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useJourneyUpdateHandler/useUpdateJourneyHandler.tsx": {
+            "@gorgias/convert-client": 7
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useSegmentsUsage/useSegmentsUsage.spec.ts": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useSegmentsUsage/useSegmentsUsage.ts": {
+            "@gorgias/convert-client": 4
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useSetupFormInit/useSetupFormInit.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/hooks/useSetupFormInit/useSetupFormInit.ts": {
+            "@gorgias/convert-client": 4
+        },
+        "apps/helpdesk/src/AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/Campaigns/Campaigns.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/Flows/Flows.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/pages/Flows/Flows.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/pages/JourneyEditorLayout/JourneyEditorLayout.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/JourneyEditorLayout/JourneyEditorLayout.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/JourneyEditorLayout/JourneyEditorSidePanel.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/pages/JourneyEditorLayout/JourneyEditorSidePanel.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/pages/JourneyEditorLayout/PreviewPanel.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/pages/JourneyEditorLayout/SendTestSMSModal.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/Preview/Preview.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/pages/Segments/Segments.spec.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/pages/Segments/Segments.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/pages/Settings/Settings.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/pages/Setup/Setup.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/pages/Setup/Setup.tsx": {
+            "@gorgias/convert-client": 5
+        },
+        "apps/helpdesk/src/AIJourney/providers/JourneyProvider/JourneyProvider.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceCount/useAudienceCount.ts": {
+            "@gorgias/customer-segmentation-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceLists/useAudienceLists.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceSegments/useAudienceSegments.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudienceSegments/useAudienceSegments.ts": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudiencesUsage/useAudiencesUsage.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useAudiencesUsage/useAudiencesUsage.ts": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/queries/useConditionsMetadata/useConditionsMetadata.ts": {
+            "@gorgias/customer-segmentation-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCreateNewJourney/useCreateNewJourney.tsx": {
+            "@gorgias/convert-client": 7
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCreateSegment/useCreateSegment.ts": {
+            "@gorgias/customer-segmentation-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCustomFlows/useCustomFlows.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useCustomFlows/useCustomFlows.ts": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/queries/useDeleteJourney/useDeleteJourney.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useDeleteSegment/useDeleteSegment.ts": {
+            "@gorgias/customer-segmentation-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneyData/useJourneyData.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneys/useJourneys.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useJourneys/useJourneys.ts": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/queries/useSegments/useSegments.ts": {
+            "@gorgias/customer-segmentation-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useSmsIntegrations/useSmsIntegrations.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/useTestSms/useTestSms.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/queries/useUpdateJourney/useUpdateJourney.tsx": {
+            "@gorgias/convert-client": 4
+        },
+        "apps/helpdesk/src/AIJourney/queries/useUpdateSegment/useUpdateSegment.ts": {
+            "@gorgias/customer-segmentation-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/utils/index.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/queries/utils/index.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/AIJourney/routes/index.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/utils/index.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/AIJourney/utils/index.tsx": {
+            "@gorgias/convert-client": 3
+        },
+        "apps/helpdesk/src/AIJourney/utils/pickDefaultMessageInstructions.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/common/state/actions/triggerTicketFieldsRefreshAndInvalidation.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/domains/reporting/hooks/common/useInfiniteListVoiceQueues.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "apps/helpdesk/src/domains/reporting/pages/common/filters/JourneyCampaignsFilter.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/domains/reporting/pages/common/filters/JourneyFlowsFilter.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/domains/reporting/pages/common/filters/tests/JourneyCampaignsFilter.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/domains/reporting/pages/common/filters/tests/JourneyFlowsFilter.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/hooks/businessHours/tests/useBusinessHoursSearch.spec.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/hooks/businessHours/useInfiniteListBusinessHours.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "apps/helpdesk/src/hooks/businessHours/useInfiniteListBusinessHoursIntegrations.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "apps/helpdesk/src/hooks/useAllIntegrations.tsx": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/hooks/useExhaustEndpoint.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/ai-journey.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/resources/test/ai-journey.test.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/models/aiAgent/types.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/models/aiAgentPlayground/resources.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/models/customer/resources.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/models/knowledgeService/queries.ts": {
+            "@gorgias/knowledge-service-client": 7
+        },
+        "apps/helpdesk/src/models/knowledgeService/tests/mutations.spec.tsx": {
+            "@gorgias/knowledge-service-client": 3
+        },
+        "apps/helpdesk/src/models/knowledgeService/tests/queries.spec.tsx": {
+            "@gorgias/knowledge-service-client": 3
+        },
+        "apps/helpdesk/src/models/knowledgeService/utils.ts": {
+            "@gorgias/knowledge-service-client": 5
+        },
+        "apps/helpdesk/src/models/ticket/resources.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/models/voiceCall/resources.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/tests/AiAgentProductRecommendations.spec.tsx": {
+            "@gorgias/knowledge-service-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/tests/AiAgentProductRecommendationsExclude.spec.tsx": {
+            "@gorgias/knowledge-service-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/tests/AiAgentProductRecommendationsPromote.spec.tsx": {
+            "@gorgias/knowledge-service-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/utils/format-product-recommendation-rules.ts": {
+            "@gorgias/knowledge-service-client": 3
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings.spec.tsx": {
+            "@gorgias/convert-client": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundContentView/OutboundContentView.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundCustomerSelection/PlaygroundCustomerSelection.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext.tsx": {
+            "@gorgias/convert-client": 8
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/contexts/tests/AIJourneyContext.spec.tsx": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/hooks/useAiJourneyMessages.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/types.ts": {
+            "@gorgias/convert-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/utils/tests/ticket-extraction.utils.spec.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/utils/ticket-extraction.utils.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/providers/GuidanceReferenceProvider.tsx": {
+            "@gorgias/knowledge-service-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/actions/providers/tests/GuidanceReferenceProvider.spec.tsx": {
+            "@gorgias/knowledge-service-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/shared/VersionHistoryButton/useVersionUsers.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/TicketSearchDropdownSelect/TicketSearchDropdownSelectView.spec.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/components/TicketSearchDropdownSelect/TicketSearchDropdownSelectView.tsx": {
+            "@gorgias/helpdesk-client": 3
+        },
+        "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/aiAgent/utils/aiAgentMetrics.utils.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueEditOrCreateForm.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/voice/flows/nodes/tests/SendToSMSNode.spec.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/pages/integrations/integration/components/voice/hooks/useInfiniteListVoiceIntegrations.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketThread/tests/TicketThreadAiAgentHandoverSummary.spec.tsx": {
+            "@gorgias/knowledge-service-client": 1
+        },
+        "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/hooks.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/services/notificationTracker/constants.ts": {
+            "@gorgias/event-tracker-api": 1
+        },
+        "apps/helpdesk/src/services/notificationTracker/notificationTracker.ts": {
+            "@gorgias/event-tracker-api": 1
+        },
+        "apps/helpdesk/src/services/notificationTracker/tests/notificationTracker.spec.ts": {
+            "@gorgias/event-tracker-api": 1
+        },
+        "apps/helpdesk/src/tickets/pages/NewTicketPage/hooks/useNewTicketForm.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/tickets/ticket-detail/hooks/useAllEvents.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/tickets/ticket-detail/hooks/useAllVoiceCalls.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "apps/helpdesk/src/tickets/ticket-timeline/hooks/useInfiniteListTickets.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "apps/helpdesk/src/tickets/ticket-timeline/hooks/useTicketList.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "apps/helpdesk/src/utils/sdk.ts": {
+            "@gorgias/convert-client": 1,
+            "@gorgias/copilot-client": 1,
+            "@gorgias/customer-segmentation-client": 1,
+            "@gorgias/ecommerce-storage-client": 1,
+            "@gorgias/helpdesk-client": 1,
+            "@gorgias/knowledge-service-client": 1,
+            "@gorgias/workflows-client": 1
+        },
+        "apps/helpdesk/src/utils/tests/sdk.spec.ts": {
+            "@gorgias/convert-client": 1,
+            "@gorgias/ecommerce-storage-client": 1,
+            "@gorgias/helpdesk-client": 1,
+            "@gorgias/knowledge-service-client": 1,
+            "@gorgias/workflows-client": 1
+        },
+        "packages/activity-tracker/src/constants.ts": {
+            "@gorgias/event-tracker-api": 1
+        },
+        "packages/customer/src/components/ShopifyCustomer/hooks/useShopifyIntegrations.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/customer/src/hooks/useGetCustomer.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/search/src/hooks/useInfiniteVoiceCallSearch.ts": {
+            "@gorgias/helpdesk-client": 4
+        },
+        "packages/teams/src/hooks/useListAllTeams.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/events/hooks/useListAllEvents.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "packages/ticket-thread/src/events/tests/useListAllEvents.spec.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/satisfaction-surveys/components/TicketThreadSatisfactionSurveyItem/tests/TicketThreadSatisfactionSurvey.spec.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/satisfaction-surveys/hooks/useListAllSatisfactionSurveyEvents.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "packages/ticket-thread/src/satisfaction-surveys/tests/useListAllSatisfactionSurveyEvents.spec.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/satisfaction-surveys/tests/useTicketThreadSatisfactionSurveys.spec.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/thread/hooks/realtime/useTicketMessageCreatedSignalHandler.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/ticket-messages/hooks/useSaveMessageIntents.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/ticket-thread/src/voice-calls/hooks/useAudioPlayer.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/tickets/src/components/InfobarCustomerFields/hooks/useAllIntegrations.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "packages/tickets/src/components/InfobarCustomerFields/hooks/useAllPhoneNumbers.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/tickets/src/components/InfobarTicketCustomerInstagram/useCustomerInstagramProfile.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/tickets/src/components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useInfiniteListTags.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "packages/tickets/src/components/TicketAssignee/hooks/tests/useInfiniteListTeams.spec.tsx": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/tickets/src/components/TicketAssignee/hooks/useInfiniteListTeams.ts": {
+            "@gorgias/helpdesk-client": 5
+        },
+        "packages/tickets/src/ticket-list/hooks/useTicketTableData.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/tickets/src/ticket-list/hooks/useTicketsList.ts": {
+            "@gorgias/helpdesk-client": 1
+        },
+        "packages/tickets/src/utils/optimisticUpdates/tagListCache.ts": {
+            "@gorgias/helpdesk-client": 2
+        },
+        "packages/users/src/hooks/useUsersRealtimeUpdates.ts": {
+            "@gorgias/helpdesk-client": 1
+        }
+    },
+    "byPattern": {
+        "@gorgias/convert-client": 177,
+        "@gorgias/copilot-client": 1,
+        "@gorgias/customer-segmentation-client": 7,
+        "@gorgias/ecommerce-storage-client": 2,
+        "@gorgias/event-tracker-api": 4,
+        "@gorgias/helpdesk-client": 98,
+        "@gorgias/knowledge-service-client": 29,
+        "@gorgias/workflows-client": 2
+    },
+    "plugin": "legacy-generated-clients",
+    "summary": {
+        "filesWithFindings": 174,
+        "total": 320
+    }
+}

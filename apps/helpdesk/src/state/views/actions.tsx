@@ -8,10 +8,9 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _chunk from 'lodash/chunk'
 import type { Moment } from 'moment'
-import { notify as updateNotification } from 'reapop'
-import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 import { Duration } from '@gorgias/toolkit'
 
+import { Button, toast } from '@gorgias/axiom'
 import type { JobType } from '@gorgias/helpdesk-queries'
 import type { OrderDirection } from '@gorgias/helpdesk-types'
 
@@ -36,9 +35,6 @@ import { ViewType } from 'models/view/types'
 import { GorgiasApi } from 'services/gorgiasApi'
 import { socketManager } from 'services/socketManager/socketManager'
 import { JoinEventType, SocketEventType } from 'services/socketManager/types'
-import { notify } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import * as types from 'state/views/constants'
 import * as viewsSelectors from 'state/views/selectors'
@@ -341,14 +337,11 @@ export function deleteView(view: ViewImmutable) {
         ) as List<any>
 
         if (otherViewsOfType.size === 0) {
-            return dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    title: 'This view cannot be deleted',
-                    message:
-                        'This is your last view, it needs to exist in order for the helpdesk to function correctly.',
-                }),
-            )
+            toast.error('This view cannot be deleted', {
+                caption:
+                    'This is your last view, it needs to exist in order for the helpdesk to function correctly.',
+            })
+            return Promise.resolve()
         }
 
         return client.delete(`/api/views/${view.get('id') as number}/`).then(
@@ -594,7 +587,7 @@ export function createJob(
     jobType: JobType,
     jobPartialParams: Record<string, unknown>,
 ) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return (__dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         let requestPayload: {
             type: JobType
             scheduled_datetime: Moment
@@ -633,87 +626,68 @@ export function createJob(
             }
         }
 
-        const notification = dispatch(
-            notify({
-                status: NotificationStatus.Loading,
-                dismissAfter: Duration.seconds(10),
-                closeOnNext: true,
-                message: buildJobMessage(
-                    jobType,
-                    true,
-                    viewsConfig.getConfigByType(view.get('type')).get('plural'),
-                    jobPartialParams,
-                ),
-                buttons: [],
-            }),
-        ) as unknown as UpsertNotificationAction
+        const pluralName = viewsConfig
+            .getConfigByType(view.get('type'))
+            .get('plural') as string
+        const startMessage = buildJobMessage(
+            jobType,
+            true,
+            pluralName,
+            jobPartialParams,
+        )
+
+        const loadingToastId = toast.info(startMessage, {
+            duration: Infinity,
+        })
 
         return client
             .post<Job>(JOBS_PATH, requestPayload)
             .then((json) => json?.data)
             .then(
                 (job) => {
-                    notification.payload.status = NotificationStatus.Success
-                    notification.payload.buttons = [
-                        {
-                            name: 'Cancel',
-                            primary: true,
-                            onClick: () => {
-                                return client
-                                    .delete<void>(`/api/jobs/${job.id}`)
-                                    .then((json) => {
-                                        notification.payload.buttons = []
-                                        return json.data
-                                    })
-                                    .then(
-                                        () => {
-                                            notification.payload.status =
-                                                NotificationStatus.Success
-                                            notification.payload.message =
-                                                'The job has been canceled.'
-                                            return dispatch(
-                                                notify(
-                                                    notification.payload as Notification,
-                                                ),
-                                            )
-                                        },
-                                        (
-                                            error: AxiosError<{
-                                                error: { msg: string }
-                                            }>,
-                                        ) => {
-                                            notification.payload.status =
-                                                NotificationStatus.Error
-                                            notification.payload.message =
-                                                error.response?.data.error.msg
-                                            return dispatch(
-                                                notify(
-                                                    notification.payload as Notification,
-                                                ),
-                                            )
-                                        },
-                                    )
-                            },
-                        },
-                    ]
-                    return dispatch(
-                        updateNotification(notification.payload),
-                    ) as unknown as Promise<ReturnType<StoreDispatch>>
+                    toast.dismiss(loadingToastId)
+                    toast.success(startMessage, {
+                        duration: 10000,
+                        inlineActions: ({ id }) => (
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                onClick={() => {
+                                    toast.dismiss(id)
+                                    return client
+                                        .delete<void>(`/api/jobs/${job.id}`)
+                                        .then(
+                                            () => {
+                                                toast.success(
+                                                    'The job has been canceled.',
+                                                )
+                                            },
+                                            (
+                                                error: AxiosError<{
+                                                    error: { msg: string }
+                                                }>,
+                                            ) => {
+                                                toast.error(
+                                                    error.response?.data.error
+                                                        .msg ??
+                                                        'Failed to cancel job.',
+                                                )
+                                            },
+                                        )
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        ),
+                    })
                 },
                 (error: AxiosError<{ error: { msg: string } }>) => {
-                    notification.payload.status = NotificationStatus.Error
-                    if (error.response?.status === 403) {
-                        notification.payload.message =
-                            error.response.data.error.msg
-                    } else {
-                        notification.payload.message =
-                            'Failed to apply action on ' +
-                            (viewsConfig
-                                .getConfigByType(view.get('type'))
-                                .get('plural') as string) +
-                            ' view. Please try again.'
-                    }
-                    dispatch(updateNotification(notification.payload))
+                    toast.dismiss(loadingToastId)
+                    const message =
+                        error.response?.status === 403
+                            ? error.response.data.error.msg
+                            : `Failed to apply action on ${pluralName} view. Please try again.`
+                    toast.error(message)
                     throw error
                 },
             )

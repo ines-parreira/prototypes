@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { fetchRules } from 'models/rule/resources'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { rulesFetched } from './actions'
 import { rulesSelector } from './selectors'
@@ -25,12 +25,7 @@ export const useRules = (): [RulesState | null, boolean] => {
                     dispatch(rulesFetched(res.data))
                 })
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch rules',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch rules')
             }
         }
     }, [dispatch, rules])

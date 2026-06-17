@@ -42,7 +42,14 @@ export function PhoneIntegrationCallBar(): JSX.Element | null {
     }
 
     if (isRinging) {
-        return <IncomingPhoneCall call={call} />
+        // key ensures a fresh component instance per call, so local state
+        // (e.g. isConnecting) never leaks from one call to the next
+        return (
+            <IncomingPhoneCall
+                key={call.customParameters.get('call_sid')}
+                call={call}
+            />
+        )
     }
 
     if (isDialing) {

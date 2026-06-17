@@ -65,6 +65,8 @@ const defaultData: FeatureMetrics[] = [
         handoverInteractions: 189,
         costSaved: 1200,
         timeSaved: 9900,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
     {
         feature: 'Flows',
@@ -73,6 +75,8 @@ const defaultData: FeatureMetrics[] = [
         handoverInteractions: 63,
         costSaved: 500,
         timeSaved: 4500,
+        decreaseInResolutionTime: null,
+        decreaseInFirstResponseTime: null,
     },
 ]
 

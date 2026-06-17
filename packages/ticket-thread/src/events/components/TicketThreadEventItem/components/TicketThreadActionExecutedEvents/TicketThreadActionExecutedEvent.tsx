@@ -13,10 +13,10 @@ import {
 } from '@gorgias/axiom'
 import type { BaseIntegration } from '@gorgias/helpdesk-queries'
 
-import type { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemType } from '../../../../types'
-import { TicketThreadEventAuthor } from '../TicketThreadEventAuthor'
-import { TicketThreadEventContainer } from '../TicketThreadEventContainer'
-import { TicketThreadEventDateTime } from '../TicketThreadEventDateTime'
+import { TicketThreadEventAuthor } from '#events/components/TicketThreadEventItem/components/TicketThreadEventAuthor'
+import { TicketThreadEventContainer } from '#events/components/TicketThreadEventItem/components/TicketThreadEventContainer'
+import { TicketThreadEventDateTime } from '#events/components/TicketThreadEventItem/components/TicketThreadEventDateTime'
+import type { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemType } from '#events/types'
 import { EntryRow } from './EntryRow'
 import { HttpActionSection } from './HttpActionSection'
 import {

@@ -1,5 +1,5 @@
-import { assertNever } from '../../../../../shared/assertNever'
-import type { TicketThreadAuditLogEventItem } from '../../../../types'
+import type { TicketThreadAuditLogEventItem } from '#events/types'
+import { assertNever } from '#shared/assertNever'
 import { TicketThreadAuditLogCustomerUpdatedEvent } from './components/TicketThreadAuditLogCustomerUpdatedEvent'
 import { TicketThreadAuditLogRuleExecutedEvent } from './components/TicketThreadAuditLogRuleExecutedEvent/TicketThreadAuditLogRuleExecutedEvent'
 import { TicketThreadAuditLogRuleSuggestionEvent } from './components/TicketThreadAuditLogRuleSuggestionEvent'

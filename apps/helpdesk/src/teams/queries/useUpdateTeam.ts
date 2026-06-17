@@ -6,7 +6,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { useAppDispatch } from 'hooks/useAppDispatch'
-import type { GorgiasApiError } from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
@@ -26,8 +26,9 @@ export function useUpdateTeam(id: number) {
             onError: (error) => {
                 void dispatch(
                     notify({
-                        title: (error as GorgiasApiError).response.data.error
-                            .msg,
+                        title: isGorgiasApiError(error)
+                            ? error.response.data.error.msg
+                            : 'Failed to update team',
                         message: errorToChildren(error)!,
                         allowHTML: true,
                         status: NotificationStatus.Error,

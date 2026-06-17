@@ -1,6 +1,8 @@
-import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+
+import { toast } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -12,17 +14,22 @@ import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
 import type { ManageHelpCentersProps } from '../ManageHelpCenters'
 import { ManageHelpCenters } from '../ManageHelpCenters'
 
+const mockDuplicateHelpCenter = jest.fn()
+let mockHelpCenterClient: unknown = {
+    listArticles: jest.fn().mockResolvedValue({
+        data: { data: [], meta: { item_count: 0 } },
+    }),
+    listArticleTranslations: jest.fn().mockResolvedValue({
+        data: { data: [], meta: { item_count: 0 } },
+    }),
+    duplicateHelpCenter: mockDuplicateHelpCenter,
+}
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
         useHelpCenterApi: () => ({
             isReady: true,
-            client: {
-                listArticles: jest.fn().mockResolvedValue({
-                    data: { data: [], meta: { item_count: 0 } },
-                }),
-                listArticleTranslations: jest.fn().mockResolvedValue({
-                    data: { data: [], meta: { item_count: 0 } },
-                }),
+            get client() {
+                return mockHelpCenterClient
             },
             agentAbility: [
                 {
@@ -72,6 +79,21 @@ describe('<ManageHelpCenters />', () => {
             ],
         }),
     }
+    beforeEach(() => {
+        mockDuplicateHelpCenter.mockReset()
+        mockHelpCenterClient = {
+            listArticles: jest.fn().mockResolvedValue({
+                data: { data: [], meta: { item_count: 0 } },
+            }),
+            listArticleTranslations: jest.fn().mockResolvedValue({
+                data: { data: [], meta: { item_count: 0 } },
+            }),
+            duplicateHelpCenter: mockDuplicateHelpCenter,
+        }
+    })
+    afterEach(() => {
+        toast.dismiss()
+    })
     it('should render the component', () => {
         const { container } = render(<ManageHelpCenters {...props} />, {
             storeState: defaultState,
@@ -104,5 +126,63 @@ describe('<ManageHelpCenters />', () => {
         )
         screen.getByText(/You have no Help Centers at the moment./i)
         screen.getByText(/create help center/i)
+    })
+    it('shows loading then success toast when duplicating a help center succeeds', async () => {
+        const newHelpCenter = {
+            ...getHelpCentersResponseFixture.data[0],
+            id: 999,
+            name: 'ACME Help Center copy',
+        }
+        mockDuplicateHelpCenter.mockResolvedValue({ data: newHelpCenter })
+        render(<ManageHelpCenters {...props} />, {
+            storeState: defaultState,
+        })
+        const duplicateButtons = screen.getAllByTitle(/Duplicate Help Center/i)
+        await userEvent.click(duplicateButtons[0])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Duplicating ACME Help Center\. It may take up to a minute\./i,
+                }),
+            ).toHaveAttribute('data-intent', 'info')
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /ACME Help Center copy successfully created\./i,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
+    })
+    it('shows an error toast when duplicating a help center fails', async () => {
+        mockDuplicateHelpCenter.mockRejectedValue(new Error('failed'))
+        render(<ManageHelpCenters {...props} />, {
+            storeState: defaultState,
+        })
+        const duplicateButtons = screen.getAllByTitle(/Duplicate Help Center/i)
+        await userEvent.click(duplicateButtons[0])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Something went wrong\. We could not duplicate ACME Help Center\./i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+    it('shows an error toast when the help center client is unavailable', async () => {
+        mockHelpCenterClient = null
+        render(<ManageHelpCenters {...props} />, {
+            storeState: defaultState,
+        })
+        const duplicateButtons = screen.getAllByTitle(/Duplicate Help Center/i)
+        await userEvent.click(duplicateButtons[0])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: /Something went wrong\. We could not duplicate ACME Help Center\./i,
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+        expect(mockDuplicateHelpCenter).not.toHaveBeenCalled()
     })
 })

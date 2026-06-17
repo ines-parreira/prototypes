@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../tests/render.utils'
-import { VoiceCallHeader } from '../components/TicketThreadCallItem/components/VoiceCallHeader'
+import { render } from '#tests/render.utils'
+import { VoiceCallHeader } from '#voice-calls/components/TicketThreadCallItem/components/VoiceCallHeader'
 
 describe('VoiceCallHeader', () => {
     it('renders children', () => {

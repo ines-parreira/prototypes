@@ -1,10 +1,10 @@
 import { Box } from '@gorgias/axiom'
 
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge/useTicketThreadLegacyBridge'
-import { isSocialMediaHiddenComment } from '../../predicates'
-import type { TicketThreadSocialMediaInstagramCommentItem } from '../../types'
-import { RespondedByDMBubble } from '../SocialMessageBubble/RespondedByDMBubble'
-import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge/useTicketThreadLegacyBridge'
+import { RespondedByDMBubble } from '#ticket-messages/components/SocialMessageBubble/RespondedByDMBubble'
+import { TicketMessageActions } from '#ticket-messages/components/TicketMessageActions/TicketMessageActions'
+import { isSocialMediaHiddenComment } from '#ticket-messages/predicates'
+import type { TicketThreadSocialMediaInstagramCommentItem } from '#ticket-messages/types'
 import { InstagramCommentMessage } from './InstagramCommentMessage'
 import { InstagramCommentMessageActions } from './InstagramCommentMessageActions'
 

@@ -82,8 +82,6 @@ beforeEach(() => {
         isLoading: false,
         search: '',
         setSearch: vi.fn(),
-        onLoad: vi.fn(),
-        shouldLoadMore: false,
     })
     mockUseListTagsSearch.mockReturnValue({
         data: {

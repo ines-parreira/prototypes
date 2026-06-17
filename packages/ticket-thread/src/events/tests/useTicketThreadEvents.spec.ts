@@ -11,11 +11,11 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { TicketThreadItemTag } from '../../thread/itemTags'
-import { useTicketThreadEvents } from '../hooks/useTicketThreadEvents'
-import type { TicketThreadAuditLogEventItem } from '../types'
+import { useTicketThreadEvents } from '#events/hooks/useTicketThreadEvents'
+import type { TicketThreadAuditLogEventItem } from '#events/types'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 vi.mock('@repo/tickets/useGetTicket', () => ({
     useGetTicket: vi.fn(),

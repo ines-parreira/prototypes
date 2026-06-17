@@ -1,9 +1,9 @@
 import { screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { render } from '../../../tests/render.utils'
-import type { ActivityParticipant } from '../../helpers/activityParticipants'
-import { ActivityOverflowList } from '../ActivityOverflowList'
+import { ActivityOverflowList } from '#activity/components/ActivityOverflowList'
+import type { ActivityParticipant } from '#activity/helpers/activityParticipants'
+import { render } from '#tests/render.utils'
 
 const buildParticipant = (id: number, name: string): ActivityParticipant => ({
     id,

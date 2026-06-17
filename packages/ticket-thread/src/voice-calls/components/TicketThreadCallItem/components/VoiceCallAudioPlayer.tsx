@@ -11,7 +11,7 @@ import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 import {
     VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
-} from '../../../models/types'
+} from '#voice-calls/models/types'
 import { AudioPlayer } from './AudioPlayer'
 import { VoiceCallAgentLabel } from './VoiceCallAgentLabel'
 

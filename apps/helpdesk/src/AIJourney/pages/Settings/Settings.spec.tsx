@@ -642,7 +642,7 @@ describe('<Settings />', () => {
             expect(screen.getByText('Tone of voice')).toBeInTheDocument()
         })
 
-        it('should save tone_of_voice_guidance when the user provides custom guidance', async () => {
+        it('should include saved tone_of_voice_guidance in the save payload when the flag is on', async () => {
             enableToneOfVoiceFlag()
             mockSaveConfiguration.mockResolvedValue(undefined)
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
@@ -651,7 +651,7 @@ describe('<Settings />', () => {
                     sms_sender_integration_id: null,
                     sms_sender_number: null,
                     texas_exclusion_enabled: false,
-                    tone_of_voice_guidance: null,
+                    tone_of_voice_guidance: 'Be friendly',
                 },
                 isLoading: false,
                 error: null,
@@ -662,17 +662,12 @@ describe('<Settings />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                await screen.findByLabelText('Use custom tone of voice'),
-            )
-            await user.type(
-                screen.getByLabelText(/Tone of voice guidance/),
-                'Be friendly',
-            )
+            expect(
+                await screen.findByDisplayValue('Be friendly'),
+            ).toBeInTheDocument()
+            await user.type(screen.getByLabelText('Brand name'), 'A')
 
-            await act(async () => {
-                await user.click(screen.getByRole('button', { name: 'Save' }))
-            })
+            await user.click(screen.getByRole('button', { name: 'Save' }))
 
             await waitFor(() => {
                 expect(mockSaveConfiguration).toHaveBeenCalledWith(

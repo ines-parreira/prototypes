@@ -43,9 +43,6 @@ const mockEnableArticleRecommendation = jest.fn()
 jest.mock('../../hooks/useEnableArticleRecommendation', () => ({
     useEnableArticleRecommendation: () => mockEnableArticleRecommendation,
 }))
-jest.mock('state/notifications/actions', () => ({
-    notify: () => ({ type: 'test' }),
-}))
 describe('<HelpCenterNewView />', () => {
     const props = {}
     const emailIntegration = {

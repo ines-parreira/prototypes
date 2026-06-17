@@ -16,15 +16,15 @@ import {
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge/useTicketThreadLegacyBridge'
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadSocialMediaInstagramMediaItem } from '../../types'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge/useTicketThreadLegacyBridge'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadSocialMediaInstagramMediaItem } from '#ticket-messages/types'
 import { InstagramMediaMessage } from './InstagramMediaMessage'
 
-vi.mock('../../../legacy-bridge/useTicketThreadLegacyBridge', () => ({
+vi.mock('#legacy-bridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
 

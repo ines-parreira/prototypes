@@ -11,12 +11,12 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../../../tests/render.utils'
-import { server } from '../../../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../../../thread/itemTags'
-import type { TicketThreadActionExecutedEventItem } from '../../../../../types'
-import { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemComponent } from '../TicketThreadActionExecutedEventItem'
+import { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemComponent } from '#events/components/TicketThreadEventItem/components/TicketThreadActionExecutedEvents/TicketThreadActionExecutedEventItem'
+import type { TicketThreadActionExecutedEventItem } from '#events/types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 function getIntegrationHandler(
     integration: ReturnType<typeof mockIntegration>,

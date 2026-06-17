@@ -1,7 +1,7 @@
 import { slidingWindow } from '@repo/utils'
 import { Duration } from '@gorgias/toolkit'
 
-import { TicketThreadItemTag } from '../../thread/itemTags'
+import { TicketThreadItemTag } from '#thread/itemTags'
 import {
     isAiAgentDraftMessage,
     isAiAgentHandoverMessage,
@@ -22,13 +22,13 @@ import {
     isSocialMediaTwitterTweet,
     isSocialMediaWhatsAppMessage,
     isTicketMessage,
-} from '../predicates'
+} from '#ticket-messages/predicates'
 import type {
     TicketThreadMessageData,
     TicketThreadMessageItem,
     TicketThreadPendingState,
     TicketThreadSingleMessageItem,
-} from '../types'
+} from '#ticket-messages/types'
 
 type ToTaggedMessageOptions = {
     pendingState?: TicketThreadPendingState

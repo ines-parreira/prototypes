@@ -49,4 +49,18 @@ export const PERFORMANCE_BREAKDOWN_COLUMNS: MetricColumnConfig[] = [
         loadingStateKeys: ['automatedInteractions', 'timeSaved'],
         skeletonWidth: '80px',
     },
+    {
+        accessorKey: 'decreaseInResolutionTime',
+        label: 'Decrease in resolution time',
+        tooltipConfig: METRIC_TOOLTIPS.decreaseInResolutionTimeInOverview,
+        metricFormat: 'duration',
+        loadingStateKeys: ['decreaseInResolutionTime'],
+    },
+    {
+        accessorKey: 'decreaseInFirstResponseTime',
+        label: 'Decrease in first response time',
+        tooltipConfig: METRIC_TOOLTIPS.decreaseInFRTInOverview,
+        metricFormat: 'duration',
+        loadingStateKeys: ['decreaseInFirstResponseTime'],
+    },
 ]

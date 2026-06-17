@@ -1,4 +1,4 @@
-import type { TicketThreadPhoneEventItem } from '../../../../../types'
+import type { TicketThreadPhoneEventItem } from '#events/types'
 
 export type PhoneEventData = TicketThreadPhoneEventItem['data']
 export type PhoneEventType = PhoneEventData['type']

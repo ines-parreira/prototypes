@@ -14,8 +14,8 @@ import {
     useOverflowList,
 } from '@gorgias/axiom'
 
-import type { ActivityParticipant } from '../helpers/activityParticipants'
-import { getActivityParticipantTextParts } from '../helpers/activityParticipants'
+import type { ActivityParticipant } from '#activity/helpers/activityParticipants'
+import { getActivityParticipantTextParts } from '#activity/helpers/activityParticipants'
 
 import css from './ActivityOverflowList.less'
 

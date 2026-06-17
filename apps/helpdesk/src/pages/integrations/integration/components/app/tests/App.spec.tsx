@@ -1214,6 +1214,71 @@ describe(`App`, () => {
                 screen.getByRole('link', { name: /Authorize/ }),
             ).toBeInTheDocument()
         })
+
+        it('renders the Authorize inbound card for a Trackstar app that exposes a connectUrl', async () => {
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                connect_url: 'https://shipbob.example.com/install',
+                outbound_auth: trackstarOutboundAuth,
+            })
+            mockServer
+                .onGet('/api/service-connections/')
+                .reply(200, { data: [], meta: {} })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+
+            expect(
+                await screen.findByRole('heading', {
+                    name: `Let ${dummyAppData.name} read your Gorgias data`,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('link', { name: /Authorize/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render the inbound card when the app has neither a connectUrl nor an alloy integration', async () => {
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                app_url: '',
+                alloy_integration_id: '',
+                outbound_auth: trackstarOutboundAuth,
+            })
+            mockServer
+                .onGet('/api/service-connections/')
+                .reply(200, { data: [], meta: {} })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+
+            await screen.findByRole('heading', {
+                name: `Let Gorgias take action in ${dummyAppData.name}`,
+            })
+            expect(
+                screen.queryByRole('heading', {
+                    name: `Let ${dummyAppData.name} read your Gorgias data`,
+                }),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('Service connection store linking (ActionCentralizedLibrary FF on)', () => {

@@ -1,13 +1,15 @@
 import { reportError } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
+import { assumeMock, renderHook } from '@repo/testing'
+
+import { toast } from '@gorgias/axiom'
+
+import { screen, waitFor } from '@testing-library/react'
 import copy from 'copy-to-clipboard'
 
 import type {
     ShopifyIntegration,
     StoreIntegration,
 } from 'models/integration/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { getSingleArticleEnglish } from '../../fixtures/getArticlesResponse.fixture'
 import { getSingleCustomDomainResponseFixture } from '../../fixtures/getCustomDomainsResponse.fixture'
@@ -29,11 +31,9 @@ import {
 } from '../helpCenter.utils'
 
 jest.mock('copy-to-clipboard')
-jest.mock('state/notifications/actions')
 jest.mock('@repo/logging')
 
 const mockedCopy = assumeMock(copy)
-const mockedNotify = assumeMock(notify)
 const mockedReportError = assumeMock(reportError)
 
 describe('getNewArticleTranslation()', () => {
@@ -349,16 +349,19 @@ describe('getValidStoreIntegrationId', () => {
 })
 
 describe('copyArticleLinkToClipboard()', () => {
-    const mockDispatch = jest.fn()
-
     const mockArticle = getSingleArticleEnglish
     const mockHelpCenter = getSingleHelpCenterResponseFixture
 
     beforeEach(() => {
         jest.clearAllMocks()
+        renderHook(() => null)
     })
 
-    it('should return early when article.translation is null', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('should return early when article.translation is null', async () => {
         const articleWithoutTranslation = { ...mockArticle, translation: null }
 
         copyArticleLinkToClipboard({
@@ -366,15 +369,13 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: false,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: true,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).not.toHaveBeenCalled()
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Failed to copy the link',
-                status: NotificationStatus.Error,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', { name: 'Failed to copy the link' }),
+            ).toHaveAttribute('data-intent', 'destructive'),
         )
         expect(mockedReportError).toHaveBeenCalledWith(
             new Error('Help Center Article has no translation'),
@@ -382,7 +383,7 @@ describe('copyArticleLinkToClipboard()', () => {
         )
     })
 
-    it('should return early when article.translation is undefined', () => {
+    it('should return early when article.translation is undefined', async () => {
         const articleWithoutTranslation = {
             ...mockArticle,
             translation: undefined,
@@ -393,15 +394,13 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: false,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: true,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).not.toHaveBeenCalled()
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Failed to copy the link',
-                status: NotificationStatus.Error,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', { name: 'Failed to copy the link' }),
+            ).toHaveAttribute('data-intent', 'destructive'),
         )
         expect(mockedReportError).toHaveBeenCalledWith(
             new Error('Help Center Article has no translation'),
@@ -409,7 +408,7 @@ describe('copyArticleLinkToClipboard()', () => {
         )
     })
 
-    it('should copy article URL and dispatch success notification when hasDefaultLayout is true', () => {
+    it('should copy article URL and show success toast when hasDefaultLayout is true', async () => {
         mockedCopy.mockReturnValue(true)
 
         copyArticleLinkToClipboard({
@@ -417,21 +416,21 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: false,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: true,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).toHaveBeenCalledWith(
             'http://acme.gorgias.docker:4000/en-US/uncategorized-article-18',
         )
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Link copied with success',
+                }),
+            ).toHaveAttribute('data-intent', 'success'),
         )
     })
 
-    it('should copy article URL for unlisted article when hasDefaultLayout is true', () => {
+    it('should copy article URL for unlisted article when hasDefaultLayout is true', async () => {
         mockedCopy.mockReturnValue(true)
 
         copyArticleLinkToClipboard({
@@ -439,21 +438,21 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: true,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: true,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).toHaveBeenCalledWith(
             'http://acme.gorgias.docker:4000/en-US/18-2c4dc16efdb94307be6f31004054d3cb',
         )
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Link copied with success',
+                }),
+            ).toHaveAttribute('data-intent', 'success'),
         )
     })
 
-    it('should copy home page hash URL and dispatch success notification when hasDefaultLayout is false', () => {
+    it('should copy home page hash URL and show success toast when hasDefaultLayout is false', async () => {
         mockedCopy.mockReturnValue(true)
 
         copyArticleLinkToClipboard({
@@ -461,21 +460,21 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: false,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: false,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).toHaveBeenCalledWith(
             'http://acme.gorgias.docker:4000/en-US#article-18',
         )
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Link copied with success',
+                }),
+            ).toHaveAttribute('data-intent', 'success'),
         )
     })
 
-    it('should not copy hash URL for unlisted article when hasDefaultLayout is false', () => {
+    it('should not copy hash URL for unlisted article when hasDefaultLayout is false', async () => {
         mockedCopy.mockReturnValue(true)
 
         copyArticleLinkToClipboard({
@@ -483,17 +482,17 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: true,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: false,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).toHaveBeenCalledWith(
             'http://acme.gorgias.docker:4000/en-US',
         )
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', {
+                    name: 'Link copied with success',
+                }),
+            ).toHaveAttribute('data-intent', 'success'),
         )
     })
 
@@ -509,7 +508,6 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: false,
             helpCenter: helpCenterWithCustomDomain,
             hasDefaultLayout: true,
-            dispatch: mockDispatch,
         })
 
         expect(mockedCopy).toHaveBeenCalledWith(
@@ -517,7 +515,7 @@ describe('copyArticleLinkToClipboard()', () => {
         )
     })
 
-    it('should dispatch error notification and report error when copy throws', () => {
+    it('should show error toast and report error when copy throws', async () => {
         const testError = new Error('Copy failed')
         mockedCopy.mockImplementation(() => {
             throw testError
@@ -528,14 +526,12 @@ describe('copyArticleLinkToClipboard()', () => {
             isUnlisted: false,
             helpCenter: mockHelpCenter,
             hasDefaultLayout: true,
-            dispatch: mockDispatch,
         })
 
-        expect(mockDispatch).toHaveBeenCalledWith(
-            mockedNotify({
-                message: 'Failed to copy the link',
-                status: NotificationStatus.Error,
-            }),
+        await waitFor(() =>
+            expect(
+                screen.getByRole('status', { name: 'Failed to copy the link' }),
+            ).toHaveAttribute('data-intent', 'destructive'),
         )
         expect(mockedReportError).toHaveBeenCalledWith(testError)
     })

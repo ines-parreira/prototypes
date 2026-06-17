@@ -11,6 +11,7 @@ import { EmailIntegrationMigrationRealtimeHandler } from './EmailIntegrationMigr
 import { useRealtimeAccountPresenceSubscription } from './hooks/useRealtimeAccountPresenceSubscription'
 import { useRealtimeConnectionStateChanges } from './hooks/useRealtimeConnectionStateChanges'
 import { UserChannelRealtimeHandler } from './UserChannelRealtimeHandler'
+import { ViewSectionsRealtimeHandler } from './ViewSectionsRealtimeHandler'
 
 type Props = {
     children: ReactNode
@@ -33,6 +34,9 @@ const AblyRealtimeProviders = ({ children }: Props) => {
     )
     const isAblyFailedStateReportingEnabled = useFlag(
         FeatureFlagKey.AblyFailedStateReporting,
+    )
+    const isViewSectionsToAblyEnabled = useFlag(
+        FeatureFlagKey.ViewSectionsToAbly,
     )
     const isErrorReportingEnabled = useRef(isAblyRealtimeErrorReportingEnabled)
     const isFailedStateReportingEnabled = useRef(
@@ -92,6 +96,7 @@ const AblyRealtimeProviders = ({ children }: Props) => {
             <RealtimeSubscriptionsInitializer />
             <AgentActivityProvider>
                 <EmailIntegrationMigrationRealtimeHandler />
+                {isViewSectionsToAblyEnabled && <ViewSectionsRealtimeHandler />}
                 <UserChannelRealtimeHandler />
                 {children}
             </AgentActivityProvider>

@@ -9,18 +9,18 @@ import {
     mockListUsersResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../../../../satisfaction-surveys/constants'
-import { getCurrentUserHandler } from '../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
-import { PHONE_EVENTS, PRIVATE_REPLY_ACTIONS } from '../../../constants'
+import { TicketThreadSingleEventItem } from '#events/components/TicketThreadEventItem/TicketTheadEventItem'
+import { TicketThreadGroupedEventsItem } from '#events/components/TicketThreadEventItem/TicketTheadGroupedEventsItem'
+import { PHONE_EVENTS, PRIVATE_REPLY_ACTIONS } from '#events/constants'
 import type {
     TicketThreadGroupedEventsItem as TicketThreadGroupedEventsItemType,
     TicketThreadSingleEventItem as TicketThreadSingleEventItemType,
-} from '../../../types'
-import { TicketThreadSingleEventItem } from '../TicketTheadEventItem'
-import { TicketThreadGroupedEventsItem } from '../TicketTheadGroupedEventsItem'
+} from '#events/types'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '#satisfaction-surveys/constants'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
 
 const ticketEventData = {
     object_type: 'Ticket',

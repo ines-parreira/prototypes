@@ -18,11 +18,11 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadSocialMediaFacebookMessageItem } from '../../types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadSocialMediaFacebookMessageItem } from '#ticket-messages/types'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })

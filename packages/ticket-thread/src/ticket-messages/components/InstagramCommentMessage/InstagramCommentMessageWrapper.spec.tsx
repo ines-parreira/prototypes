@@ -18,12 +18,12 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
-import { render } from '../../../tests/render.utils'
-import { server } from '../../../tests/server'
-import { TicketThreadWidthContext } from '../../../thread/context/TicketThreadWidth'
-import { TicketThreadItemTag } from '../../../thread/itemTags'
-import type { TicketThreadSocialMediaInstagramCommentItem } from '../../types'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadWidthContext } from '#thread/context/TicketThreadWidth'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import type { TicketThreadSocialMediaInstagramCommentItem } from '#ticket-messages/types'
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -37,11 +37,11 @@ afterAll(() => {
     server.close()
 })
 
-import type { LegacyBridgeContextType } from '../../../legacy-bridge/types'
-import { useTicketThreadLegacyBridge } from '../../../legacy-bridge/useTicketThreadLegacyBridge'
+import type { LegacyBridgeContextType } from '#legacy-bridge/types'
+import { useTicketThreadLegacyBridge } from '#legacy-bridge/useTicketThreadLegacyBridge'
 import { InstagramCommentMessageWrapper } from './InstagramCommentMessageWrapper'
 
-vi.mock('../../../legacy-bridge/useTicketThreadLegacyBridge', () => ({
+vi.mock('#legacy-bridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
 

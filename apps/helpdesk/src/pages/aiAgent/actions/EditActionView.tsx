@@ -3,11 +3,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
+import { copilotAnchorProps } from 'copilot/uiActions'
+
 import {
     LegacyButton as Button,
     toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+
+import { useCopilotNavigationGuard } from 'copilot/uiActions/unsavedWorkGuard'
 
 import {
     useGetStoreWorkflowsConfigurations,
@@ -119,6 +123,12 @@ const EditActionView = ({ configuration }: Props) => {
             visualBuilderContextValue.initialVisualBuilderGraph,
             visualBuilderGraphDirty,
         ],
+    )
+
+    useCopilotNavigationGuard(
+        !isEditActionSuccess &&
+            !isDeleteActionSuccess &&
+            isVisualBuilderGraphDirty,
     )
 
     const { getVariableListForNode } = visualBuilderContextValue
@@ -272,7 +282,12 @@ const EditActionView = ({ configuration }: Props) => {
             className={css.container}
             title={actionsLabel}
         >
-            <div>
+            <div
+                {...copilotAnchorProps({
+                    type: 'support-action',
+                    id: configuration.id,
+                })}
+            >
                 <div className={css.links}>
                     <Button
                         intent="secondary"
@@ -307,6 +322,20 @@ const EditActionView = ({ configuration }: Props) => {
                                 setVisualBuilderGraph(visualBuilderGraphDirty)
                             }}
                             steps={steps}
+                            statusAnchorProps={copilotAnchorProps(
+                                {
+                                    type: 'support-action',
+                                    id: configuration.id,
+                                },
+                                'status',
+                            )}
+                            configurationAnchorProps={copilotAnchorProps(
+                                {
+                                    type: 'support-action',
+                                    id: configuration.id,
+                                },
+                                'configuration',
+                            )}
                         />
                     </VisualBuilderContext.Provider>
                 </div>

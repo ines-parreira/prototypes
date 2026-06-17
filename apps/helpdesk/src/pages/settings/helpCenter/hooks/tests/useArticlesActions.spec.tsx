@@ -1,9 +1,11 @@
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { toast } from '@gorgias/axiom'
 
 import type { CreateArticleTranslationDto } from 'models/helpCenter/types'
 import {
@@ -158,6 +160,12 @@ const mockGetCategoryArticlesPositions = jest
 const mockGetUncategorizedArticlesPositions = jest
     .fn()
     .mockResolvedValue({ data: [uncategoriedArticle.id] })
+const mockSetArticlesPositionsInCategory = jest
+    .fn()
+    .mockResolvedValue({ data: [] })
+const mockSetUncategorizedArticlesPositions = jest
+    .fn()
+    .mockResolvedValue({ data: [] })
 const mockListArticleTranslations = jest.fn().mockResolvedValue({
     data: {
         data: [
@@ -193,8 +201,10 @@ jest.mock('../useHelpCenterApi', () => {
                 deleteArticle: () => Promise.resolve(),
                 deleteArticleTranslation: () => Promise.resolve(),
                 listArticleTranslations: mockListArticleTranslations,
-                setArticlesPositionsInCategory: () => Promise.resolve([]),
-                setUncategorizedArticlesPositions: () => Promise.resolve([]),
+                setArticlesPositionsInCategory:
+                    mockSetArticlesPositionsInCategory,
+                setUncategorizedArticlesPositions:
+                    mockSetUncategorizedArticlesPositions,
                 getCategoryArticlesPositions: mockGetCategoryArticlesPositions,
                 getUncategorizedArticlesPositions:
                     mockGetUncategorizedArticlesPositions,
@@ -522,6 +532,10 @@ describe('useArticlesActions()', () => {
     })
 
     describe('updateArticlesPositions()', () => {
+        afterEach(() => {
+            toast.dismiss()
+        })
+
         it('dispatches updateArticlesOrder action for article in category', async () => {
             const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
@@ -546,6 +560,50 @@ describe('useArticlesActions()', () => {
             )
 
             expect(updateArticlesOrder).toHaveBeenCalled()
+        })
+
+        it('shows a success toast when the reorder succeeds', async () => {
+            const { result } = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.updateArticlesPositions(
+                [getSingleArticleEnglish],
+                1,
+            )
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Articles reordered with success',
+                    }),
+                ).toHaveAttribute('data-intent', 'success'),
+            )
+        })
+
+        it('shows an error toast when the reorder fails', async () => {
+            mockSetUncategorizedArticlesPositions.mockRejectedValueOnce(
+                new Error('reorder failed'),
+            )
+
+            const { result } = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await expect(
+                result.current.updateArticlesPositions(
+                    [getSingleArticleEnglish],
+                    null,
+                ),
+            ).rejects.toThrow()
+
+            await waitFor(() =>
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to reorder articles',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive'),
+            )
         })
     })
 

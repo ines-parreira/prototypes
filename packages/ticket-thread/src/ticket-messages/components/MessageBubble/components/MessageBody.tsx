@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { Banner } from '@gorgias/axiom'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { useExpandedMessages } from '../../../context/ExpandedMessages'
+import { useExpandedMessages } from '#ticket-messages/context/ExpandedMessages'
 import { ReviewedProductCard } from './ReviewedProductCard'
 import { SimilarProductsSearch } from './SimilarProductsSearch'
 import { useSimilarProductsSearch } from './useSimilarProductSearch'

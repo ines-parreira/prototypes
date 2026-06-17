@@ -2,19 +2,19 @@ import type { ReactNode } from 'react'
 
 import { Tag, TagColor } from '@gorgias/axiom'
 
+import { MessageBody } from '#ticket-messages/components/MessageBubble/components/MessageBody'
+import { MessageFooter } from '#ticket-messages/components/MessageBubble/components/MessageFooter'
+import { DeletedCommentBanner } from '#ticket-messages/components/SocialMessageBubble/DeletedCommentBanner'
+import { HiddenCommentBanner } from '#ticket-messages/components/SocialMessageBubble/HiddenCommentBanner'
+import { SocialMessageBubble } from '#ticket-messages/components/SocialMessageBubble/SocialMessageBubble'
+import { ViewOnSocialLink } from '#ticket-messages/components/SocialMessageBubble/ViewOnSocialLink'
+import { useDisplayedTicketMessage } from '#ticket-messages/components/TicketMessage/hooks/useDisplayedTicketMessage'
 import {
     isSocialMediaDeletedComment,
     isSocialMediaHiddenComment,
-} from '../../predicates'
-import type { TicketThreadSocialMediaFacebookCommentItem } from '../../types'
-import { buildGoToLink } from '../../utils/buildGoToLink'
-import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageFooter } from '../MessageBubble/components/MessageFooter'
-import { DeletedCommentBanner } from '../SocialMessageBubble/DeletedCommentBanner'
-import { HiddenCommentBanner } from '../SocialMessageBubble/HiddenCommentBanner'
-import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
-import { ViewOnSocialLink } from '../SocialMessageBubble/ViewOnSocialLink'
-import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
+} from '#ticket-messages/predicates'
+import type { TicketThreadSocialMediaFacebookCommentItem } from '#ticket-messages/types'
+import { buildGoToLink } from '#ticket-messages/utils/buildGoToLink'
 import type { FacebookCommentMeta } from './types'
 
 import css from './FacebookCommentMessage.less'

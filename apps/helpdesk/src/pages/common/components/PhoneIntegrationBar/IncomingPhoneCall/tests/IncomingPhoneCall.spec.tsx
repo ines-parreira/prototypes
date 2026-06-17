@@ -120,6 +120,23 @@ describe('<IncomingPhoneCall />', () => {
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
 
+    it('should show loading state on accept button while connecting', () => {
+        useFlagMock.mockReturnValue(true)
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        renderComponent({ call })
+
+        const acceptButton = screen.getByRole('button', {
+            name: /Accept phone call/i,
+        })
+        expect(acceptButton).not.toBeAriaDisabled()
+
+        fireEvent.click(screen.getByText(/Accept/))
+
+        expect(acceptButton).toBeAriaDisabled()
+        expect(call.accept).toHaveBeenCalled()
+    })
+
     it('should accept call when call-bar-restyling is disabled', () => {
         useFlagMock.mockReturnValue(false)
         const call = mockIncomingCall(integrationId, ticketId) as Call

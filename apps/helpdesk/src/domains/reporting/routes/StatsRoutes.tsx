@@ -26,6 +26,7 @@ import { HelpCenterStats } from 'domains/reporting/pages/help-center/pages/HelpC
 import { DefaultExportLiveAgentsDataTable as LiveAgentsDataTablePage } from 'domains/reporting/pages/live/agents/dataTable/LiveAgentsDataTable'
 import { DefaultExportLiveAgents as LiveAgents } from 'domains/reporting/pages/live/agents/LiveAgents'
 import { DefaultExportLiveOverview as LiveOverview } from 'domains/reporting/pages/live/overview/LiveOverview'
+import { MetricsGlossary } from 'domains/reporting/pages/metrics-glossary/MetricsGlossary'
 import { PerformanceChannelsReport } from 'domains/reporting/pages/performance/channels/PerformanceChannelsReport'
 import { PerformanceOverviewReport } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReport'
 import { SatisfactionReport } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
@@ -97,6 +98,10 @@ export const StatsRoutes = () => {
 
     const { value: isRevampOverallPerformanceNewScreensEnabled } =
         useFlagWithLoading(FeatureFlagKey.RevampOverallPerformanceNewScreens)
+
+    const { value: isMetricsGlossaryEnabled } = useFlagWithLoading(
+        FeatureFlagKey.MetricsGlossary,
+    )
 
     const {
         value: isLiveAgentsDataTableEnabled,
@@ -196,6 +201,22 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
+
+                {isMetricsGlossaryEnabled && (
+                    <ProtectedRoute
+                        path={`${path}/${STATS_ROUTES.METRICS_GLOSSARY}`}
+                    >
+                        <Route
+                            exact
+                            path={`${path}/${STATS_ROUTES.METRICS_GLOSSARY}`}
+                            render={() => (
+                                <Page navbar={StatsNavbarContainer}>
+                                    <MetricsGlossary />
+                                </Page>
+                            )}
+                        />
+                    </ProtectedRoute>
+                )}
 
                 {isRevampOverallPerformanceNewScreensEnabled && (
                     <ProtectedRoute

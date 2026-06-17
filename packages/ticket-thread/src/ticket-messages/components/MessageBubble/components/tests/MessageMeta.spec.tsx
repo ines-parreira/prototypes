@@ -1,18 +1,18 @@
 import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { MessageCampaignLink } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageCampaignLink'
+import { MessageMeta } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageMeta'
+import { MessageMetaLabel } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageMetaLabel'
+import { MessageMetaLink } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageMetaLink'
+import { MessageSearchQuery } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageSearchQuery'
 import {
     mockGetRuleHandler,
     mockGetRuleResponse,
 } from '@gorgias/helpdesk-mocks'
 import type { Rule } from '@gorgias/helpdesk-types'
-import { render } from '../../../../../tests/render.utils'
-import { server } from '../../../../../tests/server'
-import { MessageCampaignLink } from '../MessageHeader/MessageCampaignLink'
-import { MessageMeta } from '../MessageHeader/MessageMeta'
-import { MessageMetaLabel } from '../MessageHeader/MessageMetaLabel'
-import { MessageMetaLink } from '../MessageHeader/MessageMetaLink'
-import { MessageSearchQuery } from '../MessageHeader/MessageSearchQuery'
 
 vi.mock('react-rating-stars-component', () => ({
     default: ({ value }: { value: number }) => <div>{`Rating: ${value}`}</div>,

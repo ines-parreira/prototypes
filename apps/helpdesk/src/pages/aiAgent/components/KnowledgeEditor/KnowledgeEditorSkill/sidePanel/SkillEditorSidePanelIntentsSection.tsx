@@ -26,9 +26,13 @@ import css from './SkillEditorSidePanelIntentsSection.less'
 
 type Props = {
     sectionId: string
+    anchorProps?: { 'data-copilot-anchor': string }
 }
 
-export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
+export const SkillEditorSidePanelIntentsSection = ({
+    sectionId,
+    anchorProps,
+}: Props) => {
     const {
         items,
         showBanner,
@@ -114,6 +118,7 @@ export const SkillEditorSidePanelIntentsSection = ({ sectionId }: Props) => {
                 }}
                 sectionId={sectionId}
                 alwaysExpanded={!isPreview}
+                anchorProps={anchorProps}
             >
                 <div className={css.linkedIntentsContent}>
                     {showBanner && (

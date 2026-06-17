@@ -1039,6 +1039,45 @@ describe('<ConditionValueInput />', () => {
             jest.useRealTimers()
         })
 
+        it('should keep a previously selected tag visible after a search returns different results', () => {
+            const { useGetEcommerceLookupValues } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+
+            const { rerender } = render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={['sale']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getAllByText('sale').length).toBeGreaterThan(0)
+
+            useGetEcommerceLookupValues.mockReturnValue({
+                data: { data: [{ value: 'clearance' }] },
+            })
+
+            rerender(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={['sale']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('clearance')).toBeInTheDocument()
+            // The selected tag is kept in the options list (rendered as both a
+            // selected tag and an option) so it survives the search.
+            expect(screen.getAllByText('sale')).toHaveLength(2)
+        })
+
         it('should reset the search value to undefined when the dropdown closes', () => {
             jest.useFakeTimers()
             const { useGetEcommerceLookupValues } = jest.requireMock(
@@ -1587,6 +1626,68 @@ describe('<ConditionValueInput />', () => {
             )
 
             expect(capturedMultiSelectField.onSearchChange).toBeDefined()
+        })
+
+        it('should keep a previously selected product visible after a search returns different results', () => {
+            const { useListProducts } = jest.requireMock(
+                'models/integration/queries',
+            )
+
+            const { rerender } = render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={['1001']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(
+                screen.getAllByText('Classic T-Shirt').length,
+            ).toBeGreaterThan(0)
+
+            useListProducts.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: [
+                                    {
+                                        data: {
+                                            title: 'Denim Jacket',
+                                            variants: [
+                                                {
+                                                    id: 9001,
+                                                    title: 'Default Title',
+                                                },
+                                            ],
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                },
+                isFetching: false,
+            })
+
+            rerender(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={['1001']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Denim Jacket')).toBeInTheDocument()
+            // The selected product is kept in the options list (rendered as
+            // both a selected tag and an option) so it survives the search.
+            expect(screen.getAllByText('Classic T-Shirt')).toHaveLength(2)
         })
     })
 })

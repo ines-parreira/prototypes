@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../tests/render.utils'
-import { SmartFollowUps } from '../SmartFollowUps'
+import { SmartFollowUps } from '#ai-agent/components/AiAgentTicketThreadMessages/AiAgentTicketThreadMessage/SmartFollowUps'
+import { render } from '#tests/render.utils'
 
 const smartFollowUps = [
     {

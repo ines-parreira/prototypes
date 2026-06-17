@@ -2,10 +2,10 @@ import { useCallback, useMemo } from 'react'
 
 import moment from 'moment'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { TrendCard } from '@repo/reporting'
 import type { MetricTrend, MetricTrendFormat } from '@repo/reporting'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
+import { useSkillReportingEnabled } from 'pages/aiAgent/skills/hooks/useSkillReportingEnabled'
 
 import { Box } from '@gorgias/axiom'
 
@@ -50,7 +50,7 @@ const toTrend = (
     data: {
         label,
         value: isLoading ? value : (value ?? 0),
-        prevValue: isLoading ? prevValue : (prevValue ?? 0),
+        prevValue,
     },
 })
 
@@ -67,6 +67,7 @@ type KnowledgeTrendCardProps = {
     dateRange: DateRange
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
+    isSkillScoped?: boolean
 }
 
 const KnowledgeTrendCard = ({
@@ -82,6 +83,7 @@ const KnowledgeTrendCard = ({
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
+    isSkillScoped,
 }: KnowledgeTrendCardProps) => {
     const { openDrillDownModal, tooltipText } = useKnowledgeDrillDownTrigger({
         metricName,
@@ -92,6 +94,7 @@ const KnowledgeTrendCard = ({
         dateRange,
         outcomeCustomFieldId,
         intentCustomFieldId,
+        isSkillScoped,
     })
 
     const trend = useMemo(
@@ -218,9 +221,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
     outcomeCustomFieldId,
     intentCustomFieldId,
 }: Props) => {
-    const isSuccessRateEnabled = useFlag(
-        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
-    )
+    const isSuccessRateEnabled = useSkillReportingEnabled()
 
     // Drilldown requires a date range; without it, fall back to plain cards.
     const renderMetricCard = (
@@ -229,6 +230,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
         prevValue: number | null,
         metricFormat: MetricTrendFormat,
         metricName: KnowledgeMetric,
+        isSkillScoped?: boolean,
     ) => {
         if (!dateRange) {
             return (
@@ -256,6 +258,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 dateRange={dateRange}
                 outcomeCustomFieldId={outcomeCustomFieldId}
                 intentCustomFieldId={intentCustomFieldId}
+                isSkillScoped={isSkillScoped}
             />
         )
     }
@@ -276,6 +279,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 metrics?.prevTickets ?? null,
                 'decimal',
                 KnowledgeMetric.Tickets,
+                true,
             )}
             {renderMetricCard(
                 'Handovers',
@@ -283,6 +287,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 metrics?.prevHandoverTickets ?? null,
                 'decimal',
                 KnowledgeMetric.HandoverTickets,
+                true,
             )}
             {renderMetricCard(
                 'CSAT',
@@ -290,6 +295,7 @@ export const SkillEditorSidePanelPerformanceMetricCards = ({
                 metrics?.prevCsat ?? null,
                 'decimal-precision-1',
                 KnowledgeMetric.CSAT,
+                true,
             )}
         </Box>
     )

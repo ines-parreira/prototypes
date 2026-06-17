@@ -2,7 +2,7 @@ import type { Prettify } from '@repo/types'
 
 import type { Event } from '@gorgias/helpdesk-queries'
 
-import type { TicketThreadItemTag } from '../thread/itemTags'
+import type { TicketThreadItemTag } from '#thread/itemTags'
 import type {
     ActionExecutedEventSchema,
     AuditLogEventSchema,

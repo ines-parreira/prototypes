@@ -14,6 +14,7 @@ import type { TicketUser, User } from '@gorgias/helpdesk-queries'
 
 import type { UserOption, UserSection } from '../hooks/useUserOptions'
 import { NO_USER_OPTION, useUserOptions } from '../hooks/useUserOptions'
+import { getUserProfilePictureURL } from '../utils/getUserProfilePictureURL'
 
 export type UserSelectTriggerProps = {
     selectedText: string
@@ -32,7 +33,6 @@ export type UserSelectBaseProps = {
     onOpenChange: (isOpen: boolean) => void
     renderTrigger: (props: UserSelectTriggerProps) => ReactNode
     header?: (props: { onClear: () => void; search: string }) => ReactNode
-    footer?: (props: { onClear: () => void; search: string }) => ReactNode
     'aria-label'?: string
     maxHeight?: number
     minWidth?: number
@@ -47,7 +47,6 @@ export function UserSelectBase({
     onOpenChange,
     renderTrigger,
     header,
-    footer,
     'aria-label': ariaLabel = 'User selection',
     maxHeight = 306,
     minWidth = 208,
@@ -60,8 +59,6 @@ export function UserSelectBase({
         isLoading,
         search,
         setSearch,
-        onLoad,
-        shouldLoadMore,
     } = useUserOptions({ currentAssignee: value })
 
     const handleChange = useCallback(
@@ -80,17 +77,10 @@ export function UserSelectBase({
         if (!isOpen) setSearch('')
     }, [isOpen, setSearch])
 
-    const handleOpenChange = useCallback(
-        (open: boolean) => {
-            onOpenChange(open)
-        },
-        [onOpenChange],
-    )
-
     const handleClear = useCallback(() => {
         onChange(null)
-        handleOpenChange(false)
-    }, [onChange, handleOpenChange])
+        onOpenChange(false)
+    }, [onChange, onOpenChange])
 
     return (
         <Select
@@ -106,14 +96,13 @@ export function UserSelectBase({
             minWidth={minWidth}
             maxWidth={maxWidth}
             maxHeight={maxHeight}
-            onLoadMore={() => shouldLoadMore && onLoad()}
             isOpen={isOpen}
-            onOpenChange={handleOpenChange}
+            onOpenChange={onOpenChange}
             aria-label={ariaLabel}
             size="sm"
             autoFocus={false}
+            isVirtualized={true}
             header={header?.({ onClear: handleClear, search })}
-            footer={footer?.({ onClear: handleClear, search })}
             trigger={(args) =>
                 renderTrigger({ ...args, usersMap, selectedOption })
             }
@@ -124,46 +113,52 @@ export function UserSelectBase({
                     name={section.name}
                     items={section.items}
                 >
-                    {(option) => {
-                        const user =
-                            option.id !== NO_USER_OPTION.id
-                                ? usersMap.get(option.id)
-                                : null
-                        const profilePictureUrl =
-                            user?.meta &&
-                            typeof user.meta === 'object' &&
-                            'profile_picture_url' in user.meta
-                                ? user.meta.profile_picture_url
-                                : undefined
-
-                        return (
-                            <ListItem
-                                key={option.id}
-                                textValue={option.label}
-                                label={
-                                    <OverflowTooltip placement="right">
-                                        <Text size="sm" overflow="ellipsis">
-                                            {option.label}
-                                        </Text>
-                                    </OverflowTooltip>
-                                }
-                                wrap={false}
-                                leadingSlot={
-                                    user ? (
-                                        <Avatar
-                                            name={user.name || ''}
-                                            url={profilePictureUrl ?? undefined}
-                                            size="sm"
-                                        />
-                                    ) : (
-                                        <Icon name="user" size="sm" />
-                                    )
-                                }
-                            />
-                        )
-                    }}
+                    {(option) => (
+                        <UserListItem
+                            key={option.id}
+                            option={option}
+                            usersMap={usersMap}
+                        />
+                    )}
                 </ListSection>
             )}
         </Select>
+    )
+}
+
+type UserListItemProps = {
+    option: UserOption
+    usersMap: ReturnType<typeof useUserOptions>['usersMap']
+}
+
+function UserListItem({ option, usersMap }: UserListItemProps) {
+    const user =
+        option.id !== NO_USER_OPTION.id ? usersMap.get(option.id) : null
+    const profilePictureUrl = getUserProfilePictureURL(user ?? null)
+
+    return (
+        <ListItem
+            id={option.id}
+            textValue={option.label}
+            label={
+                <OverflowTooltip placement="right">
+                    <Text size="sm" overflow="ellipsis">
+                        {option.label}
+                    </Text>
+                </OverflowTooltip>
+            }
+            wrap={false}
+            leadingSlot={
+                user ? (
+                    <Avatar
+                        name={user.name || ''}
+                        url={profilePictureUrl}
+                        size="sm"
+                    />
+                ) : (
+                    <Icon name="user" size="sm" />
+                )
+            }
+        />
     )
 }

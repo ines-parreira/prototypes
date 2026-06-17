@@ -4,9 +4,8 @@ import { reportError } from '@repo/logging'
 import classNames from 'classnames'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
 import type { CustomDomain as CustomDomainEntity } from 'models/helpCenter/types'
 import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'
 import { Loader } from 'pages/common/components/Loader/Loader'
@@ -17,8 +16,6 @@ import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCen
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import settingsCss from 'pages/settings/settings.less'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { HelpText } from './components/HelpText'
 
@@ -43,7 +40,6 @@ export type CustomDomainProps = {
 }
 
 export const CustomDomain = ({ className }: CustomDomainProps) => {
-    const dispatch = useAppDispatch()
     const { client } = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
     const helpCenter = useCurrentHelpCenter()
@@ -65,22 +61,12 @@ export const CustomDomain = ({ className }: CustomDomainProps) => {
                     setCurrentDomain(undefined)
                 }
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Domain removed with success',
-                    }),
-                )
+                toast.success('Domain removed with success')
 
                 return null
             } catch (err) {
                 reportError(err as Error)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to delete the domain',
-                    }),
-                )
+                toast.error('Failed to delete the domain')
             }
         }
     }, [client, currentDomain])
@@ -102,22 +88,13 @@ export const CustomDomain = ({ className }: CustomDomainProps) => {
                     setCurrentDomain(response.data)
                 }
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Domain created with success',
-                    }),
-                )
+                toast.success('Domain created with success')
 
                 return response.data
             } catch (err) {
                 reportError(err as Error)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'Could not add the domain. Please try again or contact support.',
-                    }),
+                toast.error(
+                    'Could not add the domain. Please try again or contact support.',
                 )
             }
         }
@@ -133,22 +110,12 @@ export const CustomDomain = ({ className }: CustomDomainProps) => {
 
                 setCurrentDomain(response.data)
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Domain status updated with success',
-                    }),
-                )
+                toast.success('Domain status updated with success')
 
                 return response.data
             } catch (err) {
                 reportError(err as Error)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Could not check domain status',
-                    }),
-                )
+                toast.error('Could not check domain status')
             }
         }
     }, [client, helpCenterId, currentDomain])

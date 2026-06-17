@@ -7,6 +7,10 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
+import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
+
 import type {
     Category,
     CreateCategoryDto,
@@ -119,6 +123,10 @@ const Example = ({
 }
 
 describe('<HelpCenterCategoryEdit />', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     it('renders in a hidden state by default', () => {
         render(
             <HelpCenterCategoryEdit
@@ -404,6 +412,60 @@ describe('<HelpCenterCategoryEdit />', () => {
                     'en-US',
                 ),
             )
+        })
+    })
+
+    describe('toast notifications', () => {
+        beforeEach(() => {
+            window.URL.createObjectURL = jest.fn()
+        })
+
+        it('shows a success toast when the category URL is copied', async () => {
+            const user = userEvent.setup()
+            const translation = {
+                ...getSingleCategoryEnglish.translation,
+            } as LocalCategoryTranslation
+            const category = {
+                ...getSingleCategoryEnglish,
+                translation,
+            }
+            render(
+                <Example
+                    isOpen
+                    isCreate={false}
+                    category={category}
+                    translation={translation}
+                />,
+            )
+
+            await user.click(screen.getByLabelText('copy url'))
+
+            const status = await screen.findByRole('status', {
+                name: /Link copied with success/,
+            })
+            expect(status).toHaveAttribute('data-intent', 'success')
+        })
+
+        it('shows an error toast when image upload fails on save', async () => {
+            ;(uploadAttachments as jest.Mock).mockRejectedValueOnce(
+                new Error('upload failed'),
+            )
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' })
+            render(<Example onCreate={jest.fn()} isOpen isCreate />)
+
+            await userEvent.type(screen.getByTestId('title-input'), 'Title')
+
+            await userEvent.upload(
+                screen.getByLabelText('Drop zone files input'),
+                file,
+            )
+
+            await userEvent.click(screen.getByTestId('button-save'))
+
+            const status = await screen.findByRole('status', {
+                name: /Error during image upload/,
+            })
+            expect(status).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

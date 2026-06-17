@@ -7,9 +7,9 @@ import {
     mockVoiceCallEvent,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook } from '../../tests/render.utils'
-import { server } from '../../tests/server'
-import { useVoiceCallEvents } from '../hooks/useVoiceCallEvents'
+import { renderHook } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { useVoiceCallEvents } from '#voice-calls/hooks/useVoiceCallEvents'
 
 const testEvent = mockVoiceCallEvent({ id: 1, call_id: 55 })
 

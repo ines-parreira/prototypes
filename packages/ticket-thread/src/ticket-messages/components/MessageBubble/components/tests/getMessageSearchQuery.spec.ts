@@ -1,4 +1,4 @@
-import { getMessageSearchQuery } from '../MessageHeader/getMessageSearchQuery'
+import { getMessageSearchQuery } from '#ticket-messages/components/MessageBubble/components/MessageHeader/getMessageSearchQuery'
 
 describe('getMessageSearchQuery', () => {
     it('returns null when meta is null', () => {

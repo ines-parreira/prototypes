@@ -2,9 +2,9 @@ import { formatDatetime } from '@repo/utils'
 
 import { Avatar, Box, Color, Icon, Text } from '@gorgias/axiom'
 
-import { useTicketThreadDateTimeFormat } from '../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { MessageBubble } from '../../../ticket-messages/components/MessageBubble/MessageBubble'
-import type { TicketThreadSatisfactionSurveyItemByStatus } from '../../types'
+import type { TicketThreadSatisfactionSurveyItemByStatus } from '#satisfaction-surveys/types'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { MessageBubble } from '#ticket-messages/components/MessageBubble/MessageBubble'
 
 type TicketThreadRespondedSatisfactionSurveyProps = {
     item: TicketThreadSatisfactionSurveyItemByStatus<'responded'>

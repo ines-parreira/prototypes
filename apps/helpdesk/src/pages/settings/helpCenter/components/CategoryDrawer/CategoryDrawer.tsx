@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import { reportError } from '@repo/logging'
 import { useAsyncFn } from '@gorgias/toolkit-react'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
@@ -24,8 +26,6 @@ import {
     getCategoryById,
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 
 import { useSearchContext } from '../../providers/SearchContext'
@@ -123,24 +123,14 @@ export const CategoryDrawer: React.FC<Props> = ({ helpCenter }: Props) => {
                 })
             }
 
-            void dispatch(
-                notify({
-                    message: 'Category updated with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Category updated with success')
 
             closeModal()
             setSearchInput('')
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
 
-            void dispatch(
-                notify({
-                    message: `Failed to save the category: ${errorMessage}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Failed to save the category: ${errorMessage}`)
 
             reportError(err as Error)
         }
@@ -150,24 +140,14 @@ export const CategoryDrawer: React.FC<Props> = ({ helpCenter }: Props) => {
         try {
             await categoriesActions.createCategory(payload)
 
-            void dispatch(
-                notify({
-                    message: 'Category created with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Category created with success')
 
             closeModal()
             setSearchInput('')
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
 
-            void dispatch(
-                notify({
-                    message: `Failed to create the category: ${errorMessage}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Failed to create the category: ${errorMessage}`)
 
             reportError(err as Error)
         }
@@ -177,21 +157,11 @@ export const CategoryDrawer: React.FC<Props> = ({ helpCenter }: Props) => {
         try {
             await categoriesActions.deleteCategory(categoryId)
 
-            void dispatch(
-                notify({
-                    message: 'Category deleted with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Category deleted with success')
             closeModal()
             setSearchInput('')
         } catch (err) {
-            void dispatch(
-                notify({
-                    message: 'Failed to delete the category',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to delete the category')
 
             reportError(err as Error)
         }
@@ -207,20 +177,10 @@ export const CategoryDrawer: React.FC<Props> = ({ helpCenter }: Props) => {
                 locale,
             )
 
-            void dispatch(
-                notify({
-                    message: 'Category translation deleted with success',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Category translation deleted with success')
             setSearchInput('')
         } catch (err) {
-            void dispatch(
-                notify({
-                    message: 'Failed to delete category translation',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to delete category translation')
 
             reportError(err as Error)
         }

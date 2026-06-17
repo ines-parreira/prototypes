@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { reportError } from '@repo/logging'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
@@ -10,8 +12,6 @@ import {
     getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useHelpCenterApi } from './useHelpCenterApi'
 
@@ -67,12 +67,7 @@ export const useHelpCenterList = (
 
                     setPagination({ page: meta.page, nbPages: meta.nb_pages })
                 } catch (err) {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to retrieve the Help Center list',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to retrieve the Help Center list')
                     reportError(err as Error)
                 } finally {
                     setLoading(false)

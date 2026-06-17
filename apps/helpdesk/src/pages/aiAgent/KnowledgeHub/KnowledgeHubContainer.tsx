@@ -27,7 +27,6 @@ import {
     OPEN_UPLOAD_DOCUMENT_MODAL,
     REFETCH_KNOWLEDGE_HUB_TABLE,
 } from 'pages/aiAgent/KnowledgeHub/constants'
-import { DocumentFilters } from 'pages/aiAgent/KnowledgeHub/DocumentFilters/DocumentFilters'
 import {
     FaqEditorWrapper,
     GuidanceEditorWrapper,
@@ -697,13 +696,6 @@ export const KnowledgeHubContainer = () => {
                             />
                         </Box>
                     )}
-
-                    {!selectedFolder && (
-                        <DocumentFilters
-                            selectedFilter={selectedFilter}
-                            onFilterChange={handleDocumentFilterChange}
-                        />
-                    )}
                 </Box>
                 <KnowledgeHubTable
                     data={enrichedTableData}
@@ -725,6 +717,7 @@ export const KnowledgeHubContainer = () => {
                     selectedArticleType={type}
                     selectedArticleId={id}
                     selectedTypeFilter={selectedFilter}
+                    onDocumentFilterChange={handleDocumentFilterChange}
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
                     dateRange={dateRange}

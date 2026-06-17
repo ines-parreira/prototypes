@@ -3,13 +3,6 @@
 exports[`infobar actions execute action fail 1`] = `
 [
   {
-    "closeOnNext": true,
-    "dismissAfter": 0,
-    "message": "Executing action...",
-    "status": "loading",
-    "type": "NOTIFY-MOCK",
-  },
-  {
     "callback": [MockFunction],
     "data": {
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
@@ -50,13 +43,6 @@ exports[`infobar actions execute action fail 1`] = `
 exports[`infobar actions execute action success 1`] = `
 [
   {
-    "closeOnNext": true,
-    "dismissAfter": 0,
-    "message": "Executing action...",
-    "status": "loading",
-    "type": "NOTIFY-MOCK",
-  },
-  {
     "callback": [MockFunction],
     "data": {
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
@@ -79,14 +65,6 @@ exports[`infobar actions execute action success 1`] = `
 exports[`infobar actions handle executed action display error from ticket currently on 1`] = `
 [
   {
-    "buttons": [],
-    "dismissAfter": 0,
-    "message": "No way",
-    "status": "error",
-    "title": "Something went wrong on your last action 😞",
-    "type": "NOTIFY-MOCK",
-  },
-  {
     "data": {
       "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
@@ -102,20 +80,6 @@ exports[`infobar actions handle executed action display error from ticket curren
 
 exports[`infobar actions handle executed action display error from ticket not currently on 1`] = `
 [
-  {
-    "buttons": [
-      {
-        "name": "Review",
-        "onClick": [Function],
-        "primary": true,
-      },
-    ],
-    "dismissAfter": 0,
-    "message": "No way",
-    "status": "error",
-    "title": "Something went wrong on your last action 😞",
-    "type": "NOTIFY-MOCK",
-  },
   {
     "data": {
       "action_id": "someId",
@@ -133,20 +97,6 @@ exports[`infobar actions handle executed action display error from ticket not cu
 exports[`infobar actions handle executed action display error with button 1`] = `
 [
   {
-    "buttons": [
-      {
-        "name": "Review",
-        "onClick": [Function],
-        "primary": true,
-      },
-    ],
-    "dismissAfter": 0,
-    "message": "No way",
-    "status": "error",
-    "title": "Something went wrong on your last action 😞",
-    "type": "NOTIFY-MOCK",
-  },
-  {
     "data": {
       "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
@@ -163,14 +113,6 @@ exports[`infobar actions handle executed action display error with button 1`] = 
 exports[`infobar actions handle executed action display error without button 1`] = `
 [
   {
-    "buttons": [],
-    "dismissAfter": 0,
-    "message": "No way",
-    "status": "error",
-    "title": "Something went wrong on your last action 😞",
-    "type": "NOTIFY-MOCK",
-  },
-  {
     "data": {
       "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
@@ -186,11 +128,6 @@ exports[`infobar actions handle executed action display error without button 1`]
 exports[`infobar actions handle executed action success 1`] = `
 [
   {
-    "status": "success",
-    "title": "Action successfully executed",
-    "type": "NOTIFY-MOCK",
-  },
-  {
     "data": {
       "action_id": "someId",
       "payload": {},
@@ -204,11 +141,6 @@ exports[`infobar actions handle executed action success 1`] = `
 
 exports[`infobar actions handle executed action success with message 1`] = `
 [
-  {
-    "status": "success",
-    "title": "Action test message",
-    "type": "NOTIFY-MOCK",
-  },
   {
     "data": {
       "action_id": "someId",

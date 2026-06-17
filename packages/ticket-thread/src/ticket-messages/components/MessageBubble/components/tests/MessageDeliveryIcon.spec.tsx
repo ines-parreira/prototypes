@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import { TicketThreadItemTag } from '../../../../../thread/itemTags'
-import { TicketThreadPendingState } from '../../../../types'
-import type { TicketThreadRegularMessageItem } from '../../../../types'
-import { MessageDeliveryIcon } from '../MessageHeader/MessageDeliveryIcon'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { MessageDeliveryIcon } from '#ticket-messages/components/MessageBubble/components/MessageHeader/MessageDeliveryIcon'
+import { TicketThreadPendingState } from '#ticket-messages/types'
+import type { TicketThreadRegularMessageItem } from '#ticket-messages/types'
 
 function createItem(
     overrides: Partial<TicketThreadRegularMessageItem['data']> = {},

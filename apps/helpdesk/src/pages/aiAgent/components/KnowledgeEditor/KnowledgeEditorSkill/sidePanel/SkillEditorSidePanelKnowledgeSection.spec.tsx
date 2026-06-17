@@ -14,11 +14,13 @@ jest.mock(
         KnowledgeEditorSidePanelSection: ({
             children,
             header,
+            anchorProps,
         }: {
             children: React.ReactNode
             header?: { title: React.ReactNode; subtitle?: React.ReactNode }
+            anchorProps?: { 'data-copilot-anchor': string }
         }) => (
-            <div>
+            <div {...anchorProps}>
                 {header?.title}
                 {header?.subtitle}
                 {children}
@@ -111,6 +113,23 @@ describe('SkillEditorSidePanelKnowledgeSection', () => {
             defaultSupportingKnowledgeHook,
         )
         mockUseSkillTopKnowledges.mockReturnValue(defaultTopKnowledgesHook)
+    })
+
+    it('spreads the copilot anchor onto the section', () => {
+        const { container } = render(
+            <SkillEditorSidePanelKnowledgeSection
+                sectionId="knowledge"
+                anchorProps={{
+                    'data-copilot-anchor': 'skill:42:knowledge',
+                }}
+            />,
+        )
+
+        expect(
+            container.querySelector(
+                '[data-copilot-anchor="skill:42:knowledge"]',
+            ),
+        ).toBeInTheDocument()
     })
 
     describe('toggle state', () => {

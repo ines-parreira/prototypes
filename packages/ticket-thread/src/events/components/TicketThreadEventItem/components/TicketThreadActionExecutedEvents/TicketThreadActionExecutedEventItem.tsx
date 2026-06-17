@@ -2,7 +2,7 @@ import { Duration } from '@gorgias/toolkit'
 
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
-import type { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemType } from '../../../../types'
+import type { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemType } from '#events/types'
 import { TicketThreadActionExecutedEvent } from './TicketThreadActionExecutedEvent'
 import { TicketThreadActionExecutedEventItemLoadingState } from './TicketThreadActionExecutedEventItemLoadingState'
 

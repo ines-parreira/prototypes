@@ -1,5 +1,5 @@
-import { assertNever } from '../../../shared/assertNever'
-import type { TicketThreadSatisfactionSurveyItem } from '../../types'
+import type { TicketThreadSatisfactionSurveyItem } from '#satisfaction-surveys/types'
+import { assertNever } from '#shared/assertNever'
 import { TicketThreadRespondedSatisfactionSurvey } from './TicketTheadRespondedSatisfactionSurvey'
 import { TicketThreadScheduledSatisfactionSurvey } from './TicketTheadScheduledSatisfactionSurvey'
 import { TicketThreadSentSatisfactionSurvey } from './TicketTheadSentSatisfactionSurvey'

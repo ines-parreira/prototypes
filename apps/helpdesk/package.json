@@ -4,6 +4,15 @@
     "description": "Host application of the monorepo",
     "main": "src/main/init/index.tsx",
     "private": true,
+    "imports": {
+        "#*": [
+            "./src/*",
+            "./src/*.ts",
+            "./src/*.tsx",
+            "./src/*/index.ts",
+            "./src/*/index.tsx"
+        ]
+    },
     "scripts": {
         "typecheck": "tsgo -p ./tsconfig.json --noEmit true",
         "typecheck:watch": "tsgo -p ./tsconfig.json --noEmit true --watch",

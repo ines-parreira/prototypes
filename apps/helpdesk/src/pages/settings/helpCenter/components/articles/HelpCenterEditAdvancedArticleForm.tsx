@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 
-import { useAppDispatch } from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { useAppSelector } from 'hooks/useAppSelector'
 import type {
     ArticleTranslationSeoMeta,
@@ -17,8 +18,6 @@ import { DefaultExportInputField as InputField } from 'pages/common/forms/input/
 import { DefaultExportTextArea as TextArea } from 'pages/common/forms/TextArea'
 import settingsCss from 'pages/settings/settings.less'
 import { getCategories } from 'state/entities/helpCenter/categories'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { HELP_CENTER_TITLE_MAX_LENGTH } from '../../constants'
 import { useEditionManager } from '../../providers/EditionManagerContext'
@@ -56,8 +55,6 @@ export const HelpCenterEditAdvancedArticleForm = ({
     onChange,
     onCategoryChange,
 }: Props): JSX.Element => {
-    const dispatch = useAppDispatch()
-
     const { selectedCategoryId } = useEditionManager()
 
     const categories = useAppSelector(getCategories)
@@ -135,12 +132,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
             }),
         )
 
-        void dispatch(
-            notify({
-                message: 'Link copied with success',
-                status: NotificationStatus.Success,
-            }),
-        )
+        toast.success('Link copied with success')
     }
 
     return (

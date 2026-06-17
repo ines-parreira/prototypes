@@ -12,11 +12,12 @@ import {
     mockTicketMessageSourceAddress,
 } from '@gorgias/helpdesk-mocks'
 
-import { useTicketThreadDateTimeFormat } from '../../../../shared/hooks/useTicketThreadDateTimeFormat'
-import { getCurrentUserHandler } from '../../../../tests/getCurrentUser.mock'
-import { render } from '../../../../tests/render.utils'
-import { server } from '../../../../tests/server'
-import { TicketThreadItemTag } from '../../../../thread/itemTags'
+import { useTicketThreadDateTimeFormat } from '#shared/hooks/useTicketThreadDateTimeFormat'
+import { getCurrentUserHandler } from '#tests/getCurrentUser.mock'
+import { render } from '#tests/render.utils'
+import { server } from '#tests/server'
+import { TicketThreadItemTag } from '#thread/itemTags'
+import { TicketThreadGroupedMessages } from '#ticket-messages/components/TicketThreadGroupedMessages/TicketThreadGroupedMessages'
 import type {
     TicketThreadGroupedMessagesItem,
     TicketThreadRegularMessageItem,
@@ -24,8 +25,7 @@ import type {
     TicketThreadSocialMediaFacebookMessageItem,
     TicketThreadSocialMediaInstagramDirectMessageItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
-} from '../../../types'
-import { TicketThreadGroupedMessages } from '../TicketThreadGroupedMessages'
+} from '#ticket-messages/types'
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
@@ -44,7 +44,7 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
-vi.mock('../../../../shared/hooks/useTicketThreadDateTimeFormat', () => ({
+vi.mock('#shared/hooks/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

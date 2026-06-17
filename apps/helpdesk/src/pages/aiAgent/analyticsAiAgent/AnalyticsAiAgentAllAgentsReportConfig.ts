@@ -1,6 +1,8 @@
 import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { fetchAiAgentAllAgentsDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useAiAgentAllAgentsDecreaseInResolutionTimeTrend'
 import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCoverageRateTrend'
+import { getStatsTrendFetch } from 'domains/reporting/hooks/useStatsMetricTrend'
+import { humanResponseTimeAfterAiHandoffValueQueryFactoryV2 } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentAllAgentsHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentAllAgentsHandoverInteractionsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -23,6 +25,7 @@ import {
 import { AnalyticsAiAgentAllAgentsDecreaseInFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsDecreaseInFRTCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
+import { AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard'
 import { AnalyticsAiAgentAllAgentsResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsResolutionTimeCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
 import { AnalyticsAiAgentAllAgentsTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsTimeSavedCard'
@@ -75,6 +78,7 @@ export const AnalyticsAiAgentAllAgentsChart = {
     CostSavedCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-cost_saved_card`,
     DecreaseInResolutionTimeCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-decrease_in_resolution_time_card`,
     DecreaseInFRTCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-decrease_in_frt_card`,
+    HumanResponseTimeAfterAiHandoffCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-human_response_time_after_ai_handoff_card`,
     SuccessRateCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-success_rate_card`,
     FRTCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-frt_card`,
     ResolutionTimeCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-resolution_time_card`,
@@ -292,6 +296,26 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
             },
+            [AnalyticsAiAgentAllAgentsChart.HumanResponseTimeAfterAiHandoffCard]:
+                {
+                    chartComponent:
+                        AnalyticsAiAgentAllAgentsHumanResponseTimeAfterAiHandoffCard,
+                    label: 'Human response time after AI handoff',
+                    csvProducer: [
+                        {
+                            type: DataExportFormat.Trend,
+                            fetch: getStatsTrendFetch(
+                                humanResponseTimeAfterAiHandoffValueQueryFactoryV2,
+                            ),
+                            metricFormat: 'duration',
+                        },
+                    ],
+                    tooltipConfig:
+                        METRIC_TOOLTIPS.humanResponseTimeAfterAiHandoff,
+                    chartType: ChartType.CardWithTimeseries,
+                    metricFormat: 'duration',
+                    interpretAs: 'less-is-better',
+                },
             [AnalyticsAiAgentAllAgentsChart.SuccessRateCard]: {
                 chartComponent: AnalyticsAiAgentAllAgentsSuccessRateCard,
                 label: 'Success rate',

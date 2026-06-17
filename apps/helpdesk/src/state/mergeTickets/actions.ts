@@ -1,13 +1,13 @@
 import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import { defaultMergeTicketsView } from 'config/views'
 import { OrderDirection } from 'models/api/types'
 import { TicketSearchSortableProperties } from 'models/search/types'
 import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
 import type { Ticket } from 'models/ticket/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
 import { createErrorNotification } from 'state/utils'
 
@@ -65,12 +65,7 @@ export function mergeTickets(
             )
             .then(
                 (data) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Tickets merged successfully',
-                        }),
-                    )
+                    toast.success('Tickets merged successfully')
                     return Promise.resolve(data.data)
                 },
                 (error: AxiosError) => {

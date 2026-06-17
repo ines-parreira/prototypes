@@ -1,25 +1,21 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { useHistory } from 'react-router-dom'
+import { useSkillReportingEnabled } from '../../hooks/useSkillReportingEnabled'
 
-import type { Row } from '@gorgias/axiom'
 import {
     Box,
     ButtonGroup,
     ButtonGroupItem,
-    flexRender,
-    TableV1Cell as TableCell,
-    TableV1Header as TableHeader,
-    TableV1Row as TableRow,
-    TableV1BodyContent,
-    TableV1HeaderRowGroup,
-    TableV1Pagination,
-    TableV1Root,
-    TableV1Toolbar,
+    DataTable,
+    DataTableHeader,
+    DataTableItemCount,
+    DataTablePagination,
+    Panel,
     Text,
     TextField,
-    useTableV1,
+    useDataTable,
 } from '@gorgias/axiom'
+import type { PaginationState } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -35,8 +31,30 @@ import type { StatsDisplayMode } from './columns'
 
 import css from './SkillsTable.less'
 
+const DEFAULT_PAGINATION: PaginationState = {
+    pageIndex: 0,
+    pageSize: 20,
+}
+
+// Bounds the panel to the viewport so only the table body scrolls while the
+// toolbar and column headers stay pinned (matching the DataTable sticky-toolbar
+// story), instead of the panel growing to its full content height.
+const FULL_PAGE_HEIGHT = 'calc(100vh - 220px)'
+
+const SkillsItemCount = ({ total }: { total: number }) => {
+    const table = useDataTable<TransformedArticle>()
+    const { pageIndex, pageSize } = table.getState().pagination
+    const start = total === 0 ? 0 : pageIndex * pageSize + 1
+    const end = Math.min((pageIndex + 1) * pageSize, total)
+
+    return (
+        <Text size="sm" variant="medium" color="content-neutral-tertiary">
+            Showing {start}-{end} of {total} items
+        </Text>
+    )
+}
+
 export const SkillsTable = () => {
-    const history = useHistory()
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId || 0
     const shopName = storeConfiguration?.storeName || ''
@@ -48,8 +66,12 @@ export const SkillsTable = () => {
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
+    const isSuccessRateEnabled = useSkillReportingEnabled()
+
     const { articles, isLoading, isMetricsLoading, metricsDateRange } =
-        useSkillsArticles(helpCenterId, shopIntegrationId || 0)
+        useSkillsArticles(helpCenterId, shopIntegrationId || 0, {
+            includeSuccessRate: isSuccessRateEnabled,
+        })
 
     const { totalCount: totalAiAgentTickets } = useTotalAiAgentTickets()
 
@@ -60,8 +82,11 @@ export const SkillsTable = () => {
     )
 
     const [searchTerm, setSearchTerm] = useState('')
-    const [statsDisplayMode, setStatsDisplayMode] =
+    const [statsDisplayModeState, setStatsDisplayMode] =
         useState<StatsDisplayMode>('percentage')
+    const statsDisplayMode: StatsDisplayMode = isSuccessRateEnabled
+        ? 'numeric'
+        : statsDisplayModeState
 
     const filteredArticles = useMemo(() => {
         if (!searchTerm.trim()) return articles
@@ -83,6 +108,7 @@ export const SkillsTable = () => {
                 intentCustomFieldId,
                 totalAiAgentTickets,
                 availableActions: guidanceActions,
+                isNewReportingLayerEnabled: isSuccessRateEnabled,
             }),
         [
             statsDisplayMode,
@@ -93,144 +119,89 @@ export const SkillsTable = () => {
             intentCustomFieldId,
             totalAiAgentTickets,
             guidanceActions,
+            isSuccessRateEnabled,
         ],
     )
 
-    const handleRowClick = useCallback(
-        (row: Row<TransformedArticle>) => {
-            history.push(routes.skillDetail(row.original.id))
-        },
-        [history, routes],
-    )
-
-    const renderRows = (rows: Row<TransformedArticle>[]) => {
-        return rows.map((row) => (
-            <TableRow
-                key={row.id}
-                onClick={() => handleRowClick(row)}
-                className={css.clickableRow}
-            >
-                {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                        {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                        )}
-                    </TableCell>
-                ))}
-            </TableRow>
-        ))
-    }
-
-    const table = useTableV1<TransformedArticle>({
-        data: filteredArticles,
-        columns,
-        paginationConfig: {
-            enablePagination: true,
-            manualPagination: false,
-            pageSize: 20,
-            initialPageIndex: 0,
-        },
-        sortingConfig: {
-            enableSorting: true,
-            manualSorting: false,
-            enableSortingRemoval: true,
-        },
-    })
-
     return (
-        <Box flexDirection="column" className={css.container}>
-            <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                mb="xxxs"
+        <Panel
+            className={css.panel}
+            w="100%"
+            h={FULL_PAGE_HEIGHT}
+            overflow="auto"
+            withoutBorder
+        >
+            <DataTable<TransformedArticle>
+                data={filteredArticles}
+                columns={columns}
+                isLoading={isLoading}
+                stickyToolbar
+                withBorder
+                overflow="scroll"
+                sorting={{ enable: true }}
+                pagination={{ enable: true, defaultValue: DEFAULT_PAGINATION }}
+                getRowHref={(skill) => routes.skillDetail(skill.id)}
             >
-                <Box width="220px">
-                    <TextField
-                        placeholder="Search ..."
-                        value={searchTerm}
-                        onChange={setSearchTerm}
-                        leadingSlot="magnifying-glass"
-                    />
-                </Box>
-
-                <ButtonGroup
-                    defaultSelectedKey="percentage"
-                    onSelectionChange={(id) =>
-                        setStatsDisplayMode(id as StatsDisplayMode)
-                    }
-                >
-                    <ButtonGroupItem icon="percent" id="percentage">
-                        Percentage
-                    </ButtonGroupItem>
-                    <ButtonGroupItem icon="hashtag" id="numeric">
-                        Numeric
-                    </ButtonGroupItem>
-                </ButtonGroup>
-            </Box>
-
-            <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                mt="xs"
-                mb="24px"
-            >
-                <Text
-                    size="sm"
-                    variant="medium"
-                    color="content-neutral-tertiary"
-                >
-                    Showing {filteredArticles.length} of {articles.length}{' '}
-                    skills
-                </Text>
-                <Text
-                    size="sm"
-                    variant="medium"
-                    color="content-neutral-tertiary"
-                >
-                    Metrics from last 28 days
-                </Text>
-            </Box>
-
-            <div className={css.tableRoot}>
-                <TableV1Root>
-                    <TableHeader>
-                        <TableV1HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
-                        />
-                    </TableHeader>
-                    <TableV1BodyContent
-                        isLoading={isLoading}
-                        rows={table.getRowModel().rows}
-                        columnCount={table.getAllColumns().length}
-                        table={table}
-                        renderRows={renderRows}
-                    />
-                </TableV1Root>
-            </div>
-
-            {table.getPageCount() > 1 && (
-                <div className={css.pagination}>
-                    <TableV1Toolbar<TransformedArticle>
-                        table={table}
-                        bottomRow={{
-                            right: [
-                                {
-                                    key: 'pagination',
-                                    content: (
-                                        <TableV1Pagination
-                                            table={table}
-                                            pageSizeOptions={[20, 50, 100]}
-                                        />
-                                    ),
-                                },
-                            ],
-                        }}
-                    />
-                </div>
-            )}
-        </Box>
+                <DataTableHeader>
+                    <Box flexDirection="column" gap="xs" flex={1} width="100%">
+                        <Box
+                            flexDirection="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            width="100%"
+                        >
+                            <Box width="240px">
+                                <TextField
+                                    placeholder="Search ..."
+                                    value={searchTerm}
+                                    onChange={setSearchTerm}
+                                    leadingSlot="magnifying-glass"
+                                />
+                            </Box>
+                            {!isSuccessRateEnabled && (
+                                <ButtonGroup
+                                    defaultSelectedKey="percentage"
+                                    onSelectionChange={(id) =>
+                                        setStatsDisplayMode(
+                                            id as StatsDisplayMode,
+                                        )
+                                    }
+                                >
+                                    <ButtonGroupItem
+                                        icon="percent"
+                                        id="percentage"
+                                    >
+                                        Percentage
+                                    </ButtonGroupItem>
+                                    <ButtonGroupItem
+                                        icon="hashtag"
+                                        id="numeric"
+                                    >
+                                        Numeric
+                                    </ButtonGroupItem>
+                                </ButtonGroup>
+                            )}
+                        </Box>
+                        <Box
+                            flexDirection="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            width="100%"
+                        >
+                            <SkillsItemCount total={filteredArticles.length} />
+                            <Text
+                                size="sm"
+                                variant="medium"
+                                color="content-neutral-tertiary"
+                            >
+                                Metrics from last 28 days
+                            </Text>
+                        </Box>
+                    </Box>
+                </DataTableHeader>
+                <DataTableItemCount>{() => null}</DataTableItemCount>
+                <DataTablePagination pageSizeOptions={[20, 50, 100]} />
+            </DataTable>
+        </Panel>
     )
 }

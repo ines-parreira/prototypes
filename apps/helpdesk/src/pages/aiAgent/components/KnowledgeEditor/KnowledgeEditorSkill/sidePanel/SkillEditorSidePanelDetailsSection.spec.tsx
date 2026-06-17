@@ -6,6 +6,11 @@ import type { SkillDetailsData } from '../hooks/useSkillDetailsFromContext'
 import { SkillEditorSidePanelDetailsSection } from './SkillEditorSidePanelDetailsSection'
 
 jest.mock('../hooks/useSkillDetailsFromContext')
+jest.mock('../context', () => ({
+    useSkillEditorStore: (
+        selector: (state: { state: { skill?: { id?: number } } }) => unknown,
+    ) => selector({ state: { skill: { id: 42 } } }),
+}))
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection',
     () => ({
